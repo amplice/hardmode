@@ -1,0 +1,39 @@
+Asset Requirements
+Character Sprites
+
+4 base character classes (Bladedancer, Guardian, Hunter, Rogue)
+Each with 8-directional movement animations
+Attack animations for primary and secondary attacks
+Death animations
+Hit/damage reactions
+
+Environment Assets
+
+Tileset for each biome (5 total)
+Decorative elements (trees, rocks, plants)
+Interactive elements (resource nodes, portals)
+Weather and time-of-day effects
+Environmental hazards
+
+UI Elements
+
+Character creation interface
+In-game HUD (minimal)
+Inventory/equipment screen
+Chat system interface
+Leaderboard and achievement displays
+
+Monsters and NPCs
+
+3-5 monster types per biome
+NPC characters for safe settlements
+Boss monsters for special events
+Various death and attack animations
+
+Sound Effects
+
+Character movement sounds
+Attack and hit sounds
+Environmental ambience
+UI interaction sounds
+Music tracks for different biomes and situations
