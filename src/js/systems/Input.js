@@ -4,13 +4,13 @@ export class InputSystem {
             w: false,
             a: false,
             s: false,
-            d: false
+            d: false,
+            space: false
         };
         
         this.mouse = {
             position: { x: 0, y: 0 },
-            leftButton: false,
-            rightButton: false
+            leftButton: false
         };
         
         this.setupEventListeners();
@@ -25,6 +25,9 @@ export class InputSystem {
         window.addEventListener('mousemove', this.handleMouseMove.bind(this));
         window.addEventListener('mousedown', this.handleMouseDown.bind(this));
         window.addEventListener('mouseup', this.handleMouseUp.bind(this));
+        
+        // Prevent context menu on right-click
+        window.addEventListener('contextmenu', (e) => e.preventDefault());
     }
     
     handleKeyDown(event) {
@@ -33,6 +36,7 @@ export class InputSystem {
             case 'a': this.keys.a = true; break;
             case 's': this.keys.s = true; break;
             case 'd': this.keys.d = true; break;
+            case ' ': this.keys.space = true; break; // Space bar
         }
     }
     
@@ -42,6 +46,7 @@ export class InputSystem {
             case 'a': this.keys.a = false; break;
             case 's': this.keys.s = false; break;
             case 'd': this.keys.d = false; break;
+            case ' ': this.keys.space = false; break; // Space bar
         }
     }
     
@@ -53,16 +58,12 @@ export class InputSystem {
     handleMouseDown(event) {
         if (event.button === 0) { // Left mouse button
             this.mouse.leftButton = true;
-        } else if (event.button === 2) { // Right mouse button
-            this.mouse.rightButton = true;
         }
     }
     
     handleMouseUp(event) {
         if (event.button === 0) { // Left mouse button
             this.mouse.leftButton = false;
-        } else if (event.button === 2) { // Right mouse button
-            this.mouse.rightButton = false;
         }
     }
     
@@ -74,7 +75,7 @@ export class InputSystem {
             down: this.keys.s,
             right: this.keys.d,
             primaryAttack: this.mouse.leftButton,
-            secondaryAttack: this.mouse.rightButton,
+            secondaryAttack: this.keys.space, // Use space instead of right mouse button
             mousePosition: { ...this.mouse.position }
         };
     }

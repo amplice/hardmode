@@ -46,6 +46,9 @@ export class Game {
             player: null
         };
         
+        // Make the game instance globally available
+        window.game = this;
+        
         this.init();
     }
     

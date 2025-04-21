@@ -4,8 +4,6 @@ export class CombatSystem {
     constructor(app) {
         this.app = app;
         this.activeAttacks = [];
-        this.container = new PIXI.Container();
-        this.app.stage.addChild(this.container);
     }
     
     update(deltaTime) {
@@ -15,7 +13,7 @@ export class CombatSystem {
             attack.lifetime -= deltaTime;
             
             if (attack.lifetime <= 0) {
-                this.container.removeChild(attack.graphics);
+                window.game.entityContainer.removeChild(attack.graphics);
                 this.activeAttacks.splice(i, 1);
             }
         }
@@ -40,27 +38,30 @@ export class CombatSystem {
         
         if (attackAnimation) {
             this.activeAttacks.push(attackAnimation);
-            this.container.addChild(attackAnimation.graphics);
+            window.game.entityContainer.addChild(attackAnimation.graphics);
         }
     }
     
     createSlashAnimation(position, facing, arcAngle, range, duration, color) {
         const graphics = new PIXI.Graphics();
         
-        // Calculate the arc direction based on facing
-        let startAngle = 0;
+        // Convert direction to radians - use the center of the arc as the facing direction
+        let facingAngle = 0;
         switch(facing) {
-            case 'right': startAngle = -arcAngle / 2 * (Math.PI / 180); break;
-            case 'down': startAngle = 90 - arcAngle / 2 * (Math.PI / 180); break;
-            case 'left': startAngle = 180 - arcAngle / 2 * (Math.PI / 180); break;
-            case 'up': startAngle = 270 - arcAngle / 2 * (Math.PI / 180); break;
-            case 'down-right': startAngle = 45 - arcAngle / 2 * (Math.PI / 180); break;
-            case 'down-left': startAngle = 135 - arcAngle / 2 * (Math.PI / 180); break;
-            case 'up-left': startAngle = 225 - arcAngle / 2 * (Math.PI / 180); break;
-            case 'up-right': startAngle = 315 - arcAngle / 2 * (Math.PI / 180); break;
+            case 'right': facingAngle = 0; break;
+            case 'down-right': facingAngle = Math.PI / 4; break; // 45 degrees
+            case 'down': facingAngle = Math.PI / 2; break; // 90 degrees
+            case 'down-left': facingAngle = 3 * Math.PI / 4; break; // 135 degrees
+            case 'left': facingAngle = Math.PI; break; // 180 degrees
+            case 'up-left': facingAngle = 5 * Math.PI / 4; break; // 225 degrees
+            case 'up': facingAngle = 3 * Math.PI / 2; break; // 270 degrees
+            case 'up-right': facingAngle = 7 * Math.PI / 4; break; // 315 degrees
         }
         
-        const endAngle = startAngle + arcAngle * (Math.PI / 180);
+        // Calculate start and end angles for the arc
+        const halfArcAngle = (arcAngle / 2) * (Math.PI / 180);
+        const startAngle = facingAngle - halfArcAngle;
+        const endAngle = facingAngle + halfArcAngle;
         
         graphics.position.set(position.x, position.y);
         
