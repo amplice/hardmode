@@ -4,6 +4,8 @@ import { InputSystem } from '../systems/Input.js';
 import { PhysicsSystem } from '../systems/Physics.js';
 import { WorldGenerator } from '../systems/world/WorldGenerator.js';
 import { CombatSystem } from '../systems/CombatSystem.js';
+import { MonsterSystem } from '../systems/MonsterSystem.js';
+import { SpriteManager } from '../systems/animation/SpriteManager.js';
 
 export class Game {
     constructor() {
@@ -38,7 +40,8 @@ export class Game {
                 height: 30,
                 tileSize: 64
             }),
-            combat: new CombatSystem(this.app)
+            combat: new CombatSystem(this.app),
+            sprites: new SpriteManager()
         };
         
         // Create entities
@@ -49,7 +52,33 @@ export class Game {
         // Make the game instance globally available
         window.game = this;
         
-        this.init();
+        // Load sprites then initialize game
+        this.loadAndInit();
+    }
+    
+    async loadAndInit() {
+        try {
+            // Show loading message
+            const loadingText = new PIXI.Text('Loading sprites...', {
+                fontFamily: 'Arial',
+                fontSize: 24,
+                fill: 0xffffff
+            });
+            loadingText.anchor.set(0.5);
+            loadingText.position.set(this.app.screen.width / 2, this.app.screen.height / 2);
+            this.app.stage.addChild(loadingText);
+            
+            // Load sprites
+            await this.systems.sprites.loadSprites();
+            
+            // Remove loading text
+            this.app.stage.removeChild(loadingText);
+            
+            // Initialize game
+            this.init();
+        } catch (error) {
+            console.error("Failed to load game assets:", error);
+        }
     }
     
     init() {
@@ -57,15 +86,19 @@ export class Game {
         const worldDisplay = this.systems.world.generate();
         this.worldContainer.addChild(worldDisplay);
         
-        // Create player character (Bladedancer as starting class)
+        // Create player character (Knight)
         this.entities.player = new Player({
             x: this.systems.world.width / 2 * this.systems.world.tileSize,
             y: this.systems.world.height / 2 * this.systems.world.tileSize,
             class: 'bladedancer',
-            combatSystem: this.systems.combat
+            combatSystem: this.systems.combat,
+            spriteManager: this.systems.sprites
         });
         
         this.entityContainer.addChild(this.entities.player.sprite);
+        
+        // Initialize monster system after world is generated
+        this.systems.monsters = new MonsterSystem(this.systems.world);
         
         // Set initial camera position
         this.updateCamera();
@@ -85,6 +118,9 @@ export class Game {
         
         // Physics update (collision detection)
         this.systems.physics.update(deltaTime / 60, [this.entities.player], this.systems.world);
+        
+        // Update monsters
+        this.systems.monsters.update(deltaTime / 60, this.entities.player);
         
         // Combat system update
         this.systems.combat.update(deltaTime / 60);

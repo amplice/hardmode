@@ -68,4 +68,5 @@ export class WorldGenerator {
         const tile = this.getTileAt(worldX, worldY);
         return tile ? tile.isWalkable() : false;
     }
+    
 }
