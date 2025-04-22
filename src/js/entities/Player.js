@@ -60,8 +60,9 @@ export class Player {
     onAnimationComplete() {
         // If we just finished an attack animation, return to idle
         if (this.isAttacking) {
+            console.log("Attack animation completed");
             this.isAttacking = false;
-            this.attackHitFrameReached = false;
+            this.attackHitFrameReached = false; // Ensure this is reset
             this.currentAttackType = null;
             
             // Return to idle or movement animation
@@ -70,24 +71,8 @@ export class Player {
     }
     
     onFrameChange(currentFrame) {
-        // Check if this is the hit frame for an attack animation
-        if (this.isAttacking && !this.attackHitFrameReached) {
-            const attackAnim = this.spriteManager.getAttackAnimation(this.facing, this.currentAttackType);
-            const hitFrame = this.spriteManager.getAttackHitFrame(attackAnim);
-            
-            if (currentFrame === hitFrame) {
-                console.log(`Hit frame reached: ${currentFrame}`);
-                this.attackHitFrameReached = true;
-                
-                // Create attack visualization at the hit frame
-                if (this.combatSystem) {
-                    this.combatSystem.createAttackAnimation(this, this.currentAttackType);
-                }
-                
-                // Execute the attack hit
-                this.executeAttackHit();
-            }
-        }
+        // Disable the frame-based hit detection entirely
+        // We're using the setTimeout approach instead
     }
     
     executeAttackHit() {
@@ -185,10 +170,57 @@ export class Player {
             this.velocity.x = 0;
             this.velocity.y = 0;
             
-            if (inputState.up) this.velocity.y = -this.moveSpeed;
-            if (inputState.down) this.velocity.y = this.moveSpeed;
-            if (inputState.left) this.velocity.x = -this.moveSpeed;
-            if (inputState.right) this.velocity.x = this.moveSpeed;
+            // Track which directions are being pressed
+            const up = inputState.up;
+            const down = inputState.down;
+            const left = inputState.left;
+            const right = inputState.right;
+            
+            // Calculate base velocity components
+            let vx = 0;
+            let vy = 0;
+            
+            if (up) vy = -1;
+            if (down) vy = 1;
+            if (left) vx = -1;
+            if (right) vx = 1;
+            
+            // Only normalize diagonal movement slightly (0.85 instead of 0.7071)
+            // This makes diagonal movement closer to full speed
+            if (vx !== 0 && vy !== 0) {
+                const diagonalFactor = 0.85;
+                vx *= diagonalFactor;
+                vy *= diagonalFactor;
+            }
+            
+            // Get angle between facing direction and movement direction
+            const facingAngle = this.getFacingAngle();
+            const movementAngle = vx !== 0 || vy !== 0 ? Math.atan2(vy, vx) : facingAngle;
+            
+            // Calculate angle difference (in radians)
+            let angleDiff = Math.abs(facingAngle - movementAngle);
+            // Normalize to be between 0 and π
+            if (angleDiff > Math.PI) {
+                angleDiff = 2 * Math.PI - angleDiff;
+            }
+            
+            // Apply direction-based speed modifiers based on the angle difference
+            let speedModifier = 1.0;
+            
+            if (angleDiff < Math.PI / 4) {
+                // Moving forward (within 45 degrees of facing)
+                speedModifier = 1.0;
+            } else if (angleDiff > 3 * Math.PI / 4) {
+                // Moving backward (more than 135 degrees from facing)
+                speedModifier = 0.5;
+            } else {
+                // Strafing (between 45 and 135 degrees from facing)
+                speedModifier = 0.7;
+            }
+            
+            // Apply final velocity with modifier
+            this.velocity.x = vx * this.moveSpeed * speedModifier;
+            this.velocity.y = vy * this.moveSpeed * speedModifier;
             
             // Update isMoving flag and movement direction
             this.isMoving = (this.velocity.x !== 0 || this.velocity.y !== 0);
@@ -228,6 +260,21 @@ export class Player {
         // Decrease attack cooldown
         if (this.attackCooldown > 0) {
             this.attackCooldown -= deltaTime;
+        }
+    }
+    
+    // Add this helper method to the Player class
+    getFacingAngle() {
+        switch (this.facing) {
+            case 'right': return 0;
+            case 'down-right': return Math.PI / 4;
+            case 'down': return Math.PI / 2;
+            case 'down-left': return 3 * Math.PI / 4;
+            case 'left': return Math.PI;
+            case 'up-left': return 5 * Math.PI / 4;
+            case 'up': return 3 * Math.PI / 2;
+            case 'up-right': return 7 * Math.PI / 4;
+            default: return 0;
         }
     }
     
@@ -329,12 +376,27 @@ export class Player {
             this.animatedSprite.play();
             this.sprite.addChild(this.animatedSprite);
             
-            // Set up callbacks
+            // Set up animation complete callback
             this.animatedSprite.onComplete = () => this.onAnimationComplete();
-            this.animatedSprite.onFrameChange = this.onFrameChange.bind(this);
         }
         
-        // Don't create visual effect yet - it will be created at the hit frame
+        // Calculate delay for attack hit effect (approximately 8 frames at 60fps)
+        const hitDelay = 20 * (1000 / 60); // ~133ms for primary attack
+        
+        // Schedule the hit effect and damage after the delay
+        setTimeout(() => {
+            if (this.isAttacking && this.currentAttackType === 'primary') {
+                console.log("Primary attack hit effect triggered");
+                
+                // Create attack visualization
+                if (this.combatSystem) {
+                    this.combatSystem.createAttackAnimation(this, 'primary');
+                }
+                
+                // Execute the attack hit
+                this.executeAttackHit();
+            }
+        }, hitDelay);
         
         // Set cooldown (will be applied after animation completes)
         this.attackCooldown = 0.5; // 500ms cooldown
@@ -362,12 +424,27 @@ export class Player {
             this.animatedSprite.play();
             this.sprite.addChild(this.animatedSprite);
             
-            // Set up callbacks
+            // Set up animation complete callback
             this.animatedSprite.onComplete = () => this.onAnimationComplete();
-            this.animatedSprite.onFrameChange = this.onFrameChange.bind(this);
         }
         
-        // Don't create visual effect yet - it will be created at the hit frame
+        // Calculate delay for attack hit effect (approximately 12 frames at 60fps)
+        const hitDelay = 30 * (1000 / 60); // ~200ms for secondary attack
+        
+        // Schedule the hit effect and damage after the delay
+        setTimeout(() => {
+            if (this.isAttacking && this.currentAttackType === 'secondary') {
+                console.log("Secondary attack hit effect triggered");
+                
+                // Create attack visualization
+                if (this.combatSystem) {
+                    this.combatSystem.createAttackAnimation(this, 'secondary');
+                }
+                
+                // Execute the attack hit
+                this.executeAttackHit();
+            }
+        }, hitDelay);
         
         // Set cooldown (will be applied after animation completes)
         this.attackCooldown = 0.8; // 800ms cooldown (longer for the heavier attack)

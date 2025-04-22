@@ -103,35 +103,35 @@ export class CombatSystem {
         graphics.beginFill(color, 0.3);
         graphics.lineStyle(3, color, 0.7);
         
-        // Draw centered rectangle starting at the player position (origin)
-        // and extending forward in the facing direction
-        graphics.drawRect(-width / 2, 0, width, length);
+        // Always draw the rectangle pointing upward first (along negative Y axis)
+        // We'll rotate it to match the facing direction
+        graphics.drawRect(-width / 2, -length, width, length);
         
-        // Rotate to match facing direction
+        // Apply rotation based on facing direction
         switch(facing) {
             case 'right':
-                graphics.rotation = 0;
+                graphics.rotation = Math.PI / 2; // 90 degrees clockwise
                 break;
             case 'down-right':
-                graphics.rotation = Math.PI / 4; // 45 degrees
+                graphics.rotation = Math.PI / 4 + Math.PI / 2; // 135 degrees
                 break;
             case 'down':
-                graphics.rotation = Math.PI / 2; // 90 degrees
-                break;
-            case 'down-left':
-                graphics.rotation = 3 * Math.PI / 4; // 135 degrees
-                break;
-            case 'left':
                 graphics.rotation = Math.PI; // 180 degrees
                 break;
+            case 'down-left':
+                graphics.rotation = 3 * Math.PI / 4 + Math.PI / 2; // 225 degrees
+                break;
+            case 'left':
+                graphics.rotation = Math.PI + Math.PI / 2; // 270 degrees
+                break;
             case 'up-left':
-                graphics.rotation = 5 * Math.PI / 4; // 225 degrees
+                graphics.rotation = 5 * Math.PI / 4 + Math.PI / 2; // 315 degrees
                 break;
             case 'up':
-                graphics.rotation = 3 * Math.PI / 2; // 270 degrees
+                graphics.rotation = 0; // 0 degrees
                 break;
             case 'up-right':
-                graphics.rotation = 7 * Math.PI / 4; // 315 degrees
+                graphics.rotation = 7 * Math.PI / 4 + Math.PI / 2; // 45 degrees
                 break;
         }
         
@@ -203,26 +203,26 @@ export class CombatSystem {
                 const dx = monster.position.x - attackPosition.x;
                 const dy = monster.position.y - attackPosition.y;
                 
-                // Rotate point to align with the rectangle
+                // Define rotation based on facing direction - must match visual representation
                 let facingRadians = 0;
                 switch(facing) {
-                    case 'right': facingRadians = 0; break;
-                    case 'down-right': facingRadians = Math.PI / 4; break;
-                    case 'down': facingRadians = Math.PI / 2; break;
-                    case 'down-left': facingRadians = 3 * Math.PI / 4; break;
-                    case 'left': facingRadians = Math.PI; break;
-                    case 'up-left': facingRadians = 5 * Math.PI / 4; break;
-                    case 'up': facingRadians = 3 * Math.PI / 2; break;
-                    case 'up-right': facingRadians = 7 * Math.PI / 4; break;
+                    case 'right': facingRadians = Math.PI / 2; break; // 90 degrees
+                    case 'down-right': facingRadians = Math.PI / 4 + Math.PI / 2; break; // 135 degrees
+                    case 'down': facingRadians = Math.PI; break; // 180 degrees
+                    case 'down-left': facingRadians = 3 * Math.PI / 4 + Math.PI / 2; break; // 225 degrees
+                    case 'left': facingRadians = Math.PI + Math.PI / 2; break; // 270 degrees
+                    case 'up-left': facingRadians = 5 * Math.PI / 4 + Math.PI / 2; break; // 315 degrees
+                    case 'up': facingRadians = 0; break; // 0 degrees
+                    case 'up-right': facingRadians = 7 * Math.PI / 4 + Math.PI / 2; break; // 45 degrees
                 }
                 
                 // Rotate point to align with rectangle
                 const rotX = dx * Math.cos(-facingRadians) - dy * Math.sin(-facingRadians);
                 const rotY = dx * Math.sin(-facingRadians) + dy * Math.cos(-facingRadians);
                 
-                // Check if point is inside rectangle
+                // Check if point is inside rectangle (adjusted to match our visualization)
                 if (rotX >= -hitArea.width / 2 && rotX <= hitArea.width / 2 && 
-                    rotY >= 0 && rotY <= hitArea.length) {
+                    rotY >= -hitArea.length && rotY <= 0) {
                     // Hit!
                     monster.takeDamage(2); // Smash attack does more damage
                 }

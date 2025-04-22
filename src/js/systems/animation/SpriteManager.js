@@ -83,44 +83,44 @@ export class SpriteManager {
             // Idle animation
             this.animations[`knight_idle_${direction}`] = {
                 textures: this.textures[`knight_idle_${direction}`],
-                speed: 0.1
+                speed: 0.2
             };
 
             // Standard run animation
             this.animations[`knight_run_${direction}`] = {
                 textures: this.textures[`knight_run_${direction}`],
-                speed: 0.15
+                speed: 0.5
             };
             
             // Run backward animation
             this.animations[`knight_run_backward_${direction}`] = {
                 textures: this.textures[`knight_run_backward_${direction}`],
-                speed: 0.15
+                speed: 0.5
             };
             
             // Strafe left animation
             this.animations[`knight_strafe_left_${direction}`] = {
                 textures: this.textures[`knight_strafe_left_${direction}`],
-                speed: 0.15
+                speed: 0.5
             };
             
             // Strafe right animation
             this.animations[`knight_strafe_right_${direction}`] = {
                 textures: this.textures[`knight_strafe_right_${direction}`],
-                speed: 0.15
+                speed: 0.5
             };
             
             // Attack 1 (forehand slash) animation
             this.animations[`knight_attack1_${direction}`] = {
                 textures: this.textures[`knight_attack1_${direction}`],
-                speed: 0.2,
+                speed: 0.3,
                 hitFrame: 8
             };
             
             // Attack 2 (overhead smash) animation
             this.animations[`knight_attack2_${direction}`] = {
                 textures: this.textures[`knight_attack2_${direction}`],
-                speed: 0.2,
+                speed: 0.3,
                 hitFrame: 12
             };
         }
@@ -245,15 +245,15 @@ export class SpriteManager {
             // Attack 1: Cone directly in front, medium range
             return {
                 type: 'cone',
-                range: 120,
-                angle: 90 // 90 degree cone
+                range: 70,
+                angle: 75 // 75 degree cone
             };
         } else {
             // Attack 2: Rectangle in front, shorter range but wider
             return {
                 type: 'rectangle',
-                width: 100,
-                length: 150
+                width: 80,
+                length: 110
             };
         }
     }
