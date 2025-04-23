@@ -2,6 +2,7 @@
 import * as PIXI from 'pixi.js';
 import { Tile } from './Tile.js';
 import { createNoise2D } from 'simplex-noise';
+import { DecorationManager } from '../tiles/DecorationManager.js';
 
 export class WorldGenerator {
   constructor(options = {}) {
@@ -10,14 +11,15 @@ export class WorldGenerator {
     this.tileSize = options.tileSize || 32;
     this.tilesets = options.tilesets;
     this.noise2D = createNoise2D();
-
+    this.decorations = null;
     this.container = new PIXI.Container();
     this.tiles = [];
   }
 
   generate() {
-    const noiseScale = 0.05;
     
+    const noiseScale = 0.05;
+    this.createWorldBoundary();
     // Create base terrain using noise
     for (let y = 0; y < this.height; y++) {
       this.tiles[y] = [];
@@ -32,14 +34,26 @@ export class WorldGenerator {
     }
     
     // Add a 9x9 sand area in the center for debugging
-    this.createDebugSandArea();
+    // this.createDebugSandArea();
     
     // Process all transitions
     this.processTransitions();
-    
+    this.decorations = new DecorationManager(this, this.tilesets);
+    const decorationsContainer = this.decorations.generateDecorations();
+    this.container.addChild(decorationsContainer);
     return this.container;
+    
   }
-  
+  createWorldBoundary() {
+    // Create a green background just for the world area
+    const worldBackground = new PIXI.Graphics();
+    worldBackground.beginFill(0x6ea260); // Green color matching your grass
+    worldBackground.drawRect(0, 0, this.width * this.tileSize, this.height * this.tileSize);
+    worldBackground.endFill();
+    
+    // Add it to the container but underneath everything else
+    this.container.addChildAt(worldBackground, 0);
+  }
   // Create a 9x9 sand area in the center
   createDebugSandArea() {
     // Calculate center of the world

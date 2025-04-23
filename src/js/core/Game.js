@@ -23,7 +23,9 @@ export class Game {
       resolution: window.devicePixelRatio
     });
     // ensure HTML canvas uses pixelated rendering
-    this.app.renderer.roundPixels = true;
+    this.app.renderer.plugins.interaction.enableCursor = false; // Disable cursor interpolation
+
+    this.app.renderer.roundPixels = true; 
     this.app.view.style.imageRendering = 'pixelated';
 
     document.body.appendChild(this.app.view);
@@ -100,12 +102,12 @@ export class Game {
     this.camera.x = this.entities.player.position.x;
     this.camera.y = this.entities.player.position.y;
     this.worldContainer.position.set(
-      this.app.screen.width  / 2 - this.camera.x,
-      this.app.screen.height / 2 - this.camera.y
+      Math.floor(this.app.screen.width / 2 - this.camera.x),
+      Math.floor(this.app.screen.height / 2 - this.camera.y)
     );
     this.entityContainer.position.set(
-      this.app.screen.width  / 2 - this.camera.x,
-      this.app.screen.height / 2 - this.camera.y
+      Math.floor(this.app.screen.width / 2 - this.camera.x),
+      Math.floor(this.app.screen.height / 2 - this.camera.y)
     );
   }
 }

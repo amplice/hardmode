@@ -54,7 +54,8 @@ export class SpriteManager {
                                 frameHeight
                             )
                         );
-                        
+                        frameTexture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+
                         frames.push(frameTexture);
                     }
                     

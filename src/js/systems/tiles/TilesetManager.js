@@ -8,7 +8,8 @@ export class TilesetManager {
     
     Assets.addBundle('tilesets', {
       grass: 'assets/sprites/tiles/Grass.png',
-      sand: 'assets/sprites/tiles/Sand.png'
+      sand: 'assets/sprites/tiles/Sand.png',
+      plants: 'assets/sprites/tiles/Plants.png'  // Add this line
     });
   }
 
@@ -23,6 +24,8 @@ export class TilesetManager {
     const sandTex = Assets.get('sand');
     this.sandTextures = this.sliceTileset(sandTex.baseTexture);
     
+    const plantsTex = Assets.get('plants');
+this.plantTextures = this.slicePlantsTileset(plantsTex.baseTexture);
     console.log("Tilesets loaded successfully");
   }
   
@@ -43,6 +46,38 @@ export class TilesetManager {
     }
     
     return textures;
+  }
+  slicePlantsTileset(baseTexture) {
+    const tileSize = 16;
+    const textures = [];
+    
+    // Create a 6x3 array of textures (for the entire sheet)
+    for (let row = 0; row < 6; row++) {
+      for (let col = 0; col < 3; col++) {
+        textures.push(
+          new Texture(
+            baseTexture,
+            new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+          )
+        );
+      }
+    }
+    
+    return textures;
+  }
+  getPlantTexture(type) {
+    // Map type names to texture indices
+    const textureMap = {
+      'plant': 9,      // row 3, col 0
+      'branches': 10,  // row 3, col 1
+      'twigs': 11,     // row 3, col 2
+      'flower1': 12,   // row 4, col 0
+      'flower2': 13,   // row 4, col 1
+      'flower3': 15,   // row 5, col 0
+      'flower4': 16    // row 5, col 1
+    };
+    
+    return this.plantTextures[textureMap[type]];
   }
   
   // Get full grass tile (row 2, col 4)

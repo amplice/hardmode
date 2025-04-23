@@ -47,6 +47,7 @@ export class Player {
         this.animatedSprite = this.spriteManager.createAnimatedSprite(animationName);
         if (this.animatedSprite) {
             this.animatedSprite.play();
+            this.animatedSprite.anchor.set(0.5, 0.5); // Make sure this line exists
             this.sprite.addChild(this.animatedSprite);
             
             // Set up animation complete callback
@@ -232,8 +233,8 @@ export class Player {
             }
             
             // Update position
-            this.position.x += this.velocity.x;
-            this.position.y += this.velocity.y;
+            this.position.x = Math.round(this.position.x + this.velocity.x);
+            this.position.y = Math.round(this.position.y + this.velocity.y);
             this.sprite.position.set(this.position.x, this.position.y);
         } else {
             // While attacking, still update sprite position
