@@ -7,6 +7,7 @@ import { CombatSystem }   from '../systems/CombatSystem.js';
 import { MonsterSystem }  from '../systems/MonsterSystem.js';
 import { SpriteManager }  from '../systems/animation/SpriteManager.js';
 import { TilesetManager } from '../systems/tiles/TilesetManager.js';
+import { HealthUI } from '../ui/HealthUI.js';
 
 // 1) turn off antialias & force pixel‐perfect
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -32,8 +33,10 @@ export class Game {
 
     this.worldContainer  = new PIXI.Container();
     this.entityContainer = new PIXI.Container();
+    this.uiContainer = new PIXI.Container(); // Add this line
     this.app.stage.addChild(this.worldContainer);
     this.app.stage.addChild(this.entityContainer);
+    this.app.stage.addChild(this.uiContainer); // Add this line
 
     this.camera = { x: 0, y: 0, zoom: 1 };
 
@@ -82,6 +85,10 @@ export class Game {
     });
     this.entityContainer.addChild(this.entities.player.sprite);
 
+        // Add this code to create the health UI
+        this.healthUI = new HealthUI(this.entities.player);
+        this.uiContainer.addChild(this.healthUI.container);
+
     this.systems.monsters = new MonsterSystem(this.systems.world);
 
     this.updateCamera();
@@ -96,7 +103,10 @@ export class Game {
     this.systems.monsters.update(delta / 60, this.entities.player);
     this.systems.combat.update(delta / 60);
     this.updateCamera();
+        // Add this line to update the health UI
+        this.healthUI.update();
   }
+
 
   updateCamera() {
     this.camera.x = this.entities.player.position.x;

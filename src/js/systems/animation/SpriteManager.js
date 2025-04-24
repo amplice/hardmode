@@ -22,7 +22,7 @@ export class SpriteManager {
             this.loadSpritesheet('knight_strafe_right', 'assets/sprites/characters/Knight/StrafeRight.png', 15, 8),
             this.loadSpritesheet('knight_attack1', 'assets/sprites/characters/Knight/Attack1.png', 15, 8),
             this.loadSpritesheet('knight_attack2', 'assets/sprites/characters/Knight/Attack2.png', 15, 8),
-            
+            this.loadSpritesheet('knight_die', 'assets/sprites/characters/Knight/Die.png', 15, 8), // Add death animation
             // Monster sprites
             this.loadSpritesheet('skeleton_walk', 'assets/sprites/monsters/Skeleton/Walk.png', 15, 8),
             this.loadSpritesheet('skeleton_idle', 'assets/sprites/monsters/Skeleton/Idle.png', 15, 8),
@@ -131,6 +131,11 @@ export class SpriteManager {
                 speed: 0.3,
                 hitFrame: 12
             };
+             // Death animation
+        this.animations[`knight_die_${direction}`] = {
+            textures: this.textures[`knight_die_${direction}`],
+            speed: 0.2
+        };
         }
     }
     

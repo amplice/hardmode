@@ -17,6 +17,8 @@ export class Player {
         this.isMoving = false;
         this.movementDirection = null;
         this.lastFacing = this.facing;
+        this.isDying = false;
+        this.isDead = false;
         
         // Create animated sprite container
         this.sprite = new PIXI.Container();
@@ -165,6 +167,11 @@ export class Player {
     }
     
     update(deltaTime, inputState) {
+        if (this.isDying || this.isDead) {
+            // Only update sprite position
+            this.sprite.position.set(this.position.x, this.position.y);
+            return;
+        }
         // Don't move if attacking
         if (!this.isAttacking) {
             // Process movement input
@@ -297,6 +304,10 @@ export class Player {
                 this.setupAnimations();
                 return;
             }
+                    // If dying, don't change animation
+        if (this.isDying) {
+            return;
+        }
             
             // If attacking, don't change animation
             if (this.isAttacking) {
@@ -470,10 +481,70 @@ export class Player {
     
     die() {
         console.log("Player died!");
-        // In a real game, we would handle game over here
-        // For now, just respawn the player
+        this.isDying = true;
+        this.isDead = true;
+        
+        // Play death animation
+        if (this.spriteManager && this.spriteManager.loaded) {
+            // Get death animation for current facing direction
+            const deathAnimName = `knight_die_${this.getFacingAnimationKey()}`;
+            this.currentAnimation = deathAnimName;
+            
+            // Remove old sprite and create new death animation
+            if (this.animatedSprite && this.animatedSprite.parent) {
+                this.sprite.removeChild(this.animatedSprite);
+            }
+            
+            this.animatedSprite = this.spriteManager.createAnimatedSprite(deathAnimName);
+            if (this.animatedSprite) {
+                // Don't loop the death animation
+                this.animatedSprite.loop = false;
+                this.animatedSprite.play();
+                this.sprite.addChild(this.animatedSprite);
+                
+                // Set up animation complete callback for respawn
+                this.animatedSprite.onComplete = () => this.respawn();
+            }
+        } else {
+            // If no sprite manager, just respawn immediately
+            this.respawn();
+        }
+    }
+    respawn() {
+        console.log("Player respawning!");
+        
+        // Reset health
         this.hitPoints = this.getClassHitPoints();
+        
+        // Reset position to center of map
         this.position.x = window.game.systems.world.width / 2 * window.game.systems.world.tileSize;
         this.position.y = window.game.systems.world.height / 2 * window.game.systems.world.tileSize;
+        
+        // Reset state
+        this.isDying = false;
+        this.isDead = false;
+        this.isAttacking = false;
+        this.attackCooldown = 0;
+        this.currentAttackType = null;
+        this.attackHitFrameReached = false;
+        
+        // Reset animation to idle
+        this.currentAnimation = null; // Force animation change
+        this.updateAnimation();
     }
+    // Helper to convert facing direction to animation key
+getFacingAnimationKey() {
+    const directionMap = {
+        'right': 'e',
+        'down-right': 'se',
+        'down': 's',
+        'down-left': 'sw',
+        'left': 'w',
+        'up-left': 'nw',
+        'up': 'n',
+        'up-right': 'ne'
+    };
+    
+    return directionMap[this.facing] || 's'; // Default to south
+}
 }
