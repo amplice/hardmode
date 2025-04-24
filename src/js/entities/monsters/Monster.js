@@ -73,13 +73,12 @@ export class Monster {
         }
     }
     onAnimationComplete() {
-        // Only mark the animation as complete
-        if (this.isPlayingAttackAnimation && this.animatedSprite && !this.animatedSprite.playing) {
+        if (this.isPlayingAttackAnimation && this.animatedSprite) {
+            console.log("Attack animation completed");
             this.isPlayingAttackAnimation = false;
             
-            // Force an animation update to switch back to idle/walk
-            this.currentAnimation = null; // Reset so updateAnimation will change sprites
-            this.updateAnimation();
+            // Don't immediately update animation - let attack state finish first
+            // We'll show idle/walk after attack state completes
         }
     }
     updateAnimation() {
@@ -87,15 +86,9 @@ export class Monster {
             // Determine animation state based on current monster state
             let animationState = 'idle';
             
-            // Check if we should be playing an attack animation
-            if (this.isAttacking && !this.isPlayingAttackAnimation) {
-                animationState = 'attack1';
-                this.isPlayingAttackAnimation = true;
-            } else if (this.isPlayingAttackAnimation) {
-                // Continue playing attack animation if it's in progress
+            if (this.shouldPlayAttackAnimation) {
                 animationState = 'attack1';
             } else if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
-                // Otherwise check if we're moving or idle
                 animationState = 'walk';
                 this.isMoving = true;
             } else {
@@ -109,7 +102,6 @@ export class Monster {
             
             // Only update if animation changed
             if (this.currentAnimation !== animationName) {
-                console.log(`Changing monster animation to: ${animationName}`);
                 this.currentAnimation = animationName;
                 
                 // Remove old sprite
@@ -124,6 +116,7 @@ export class Monster {
                     // Don't loop attack animations
                     if (animationState === 'attack1') {
                         this.animatedSprite.loop = false;
+                        console.log("Starting non-looping attack animation");
                     } else {
                         this.animatedSprite.loop = true;
                     }
@@ -134,7 +127,12 @@ export class Monster {
                     
                     // Set animation complete callback for attacks
                     if (animationState === 'attack1') {
-                        this.animatedSprite.onComplete = () => this.onAnimationComplete();
+                        this.animatedSprite.onComplete = () => {
+                            console.log("Attack animation completed");
+                            this.shouldPlayAttackAnimation = false;
+                            this.currentAnimation = null; // Force animation change
+                            this.updateAnimation();
+                        };
                     }
                 }
             }
@@ -163,7 +161,7 @@ export class Monster {
         switch(this.type) {
             case 'slime': return 80;
             case 'goblin': return 100;
-            case 'skeleton': return 150;
+            case 'skeleton': return 70;
             default: return 100;
         }
     }
@@ -192,11 +190,11 @@ export class Monster {
                 };
             case 'skeleton':
                 return {
-                    windup: 1.0,
+                    windup: 0.2,
                     duration: 0.4,
                     recovery: 0.6,
-                    cooldown: 2.5,
-                    pattern: 'line',
+                    cooldown: 1.5,
+                    pattern: 'cone',
                     color: 0xEEEEEE,
                     range: this.attackRange
                 };
@@ -327,8 +325,9 @@ export class Monster {
         // Show attack windup indicator
         this.updateAttackIndicator(true);
         
-        // Force animation update to start attack animation
-        this.currentAnimation = null; // Reset so updateAnimation will change sprites
+        // Trigger attack animation
+        this.shouldPlayAttackAnimation = true;
+        this.currentAnimation = null; // Force animation change
         this.updateAnimation();
         
         // Schedule the actual attack to occur at the appropriate time

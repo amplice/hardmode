@@ -154,7 +154,7 @@ export class SpriteManager {
             // Attack animation
             this.animations[`skeleton_attack1_${direction}`] = {
                 textures: this.textures[`skeleton_attack1_${direction}`],
-                speed: 0.4,
+                speed: 0.3,
                 hitFrame: 8  // Assuming hit happens around frame 8, adjust as needed
             };
         }
