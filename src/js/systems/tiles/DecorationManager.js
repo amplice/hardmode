@@ -15,13 +15,13 @@ export class DecorationManager {
     
     // Define decoration types and their properties
     const decorationTypes = [
-      { type: 'plant', densityOnGrass: 0.02, densityOnSand: 0, grassOnly: true },
-      { type: 'branches', densityOnGrass: 0.02, densityOnSand: 0, grassOnly: true },
+      { type: 'plant', densityOnGrass: 0.005, densityOnSand: 0, grassOnly: true },
+      { type: 'branches', densityOnGrass: 0.005, densityOnSand: 0, grassOnly: true },
       { type: 'twigs', densityOnGrass: 0.005, densityOnSand: 0.005, grassOnly: false },
-      { type: 'flower1', densityOnGrass: 0.02, densityOnSand: 0, grassOnly: true },
-      { type: 'flower2', densityOnGrass: 0.02, densityOnSand: 0, grassOnly: true },
-      { type: 'flower3', densityOnGrass: 0.02, densityOnSand: 0, grassOnly: true },
-      { type: 'flower4', densityOnGrass: 0.02, densityOnSand: 0, grassOnly: true }
+      { type: 'flower1', densityOnGrass: 0.005, densityOnSand: 0, grassOnly: true },
+      { type: 'flower2', densityOnGrass: 0.005, densityOnSand: 0, grassOnly: true },
+      { type: 'flower3', densityOnGrass: 0.005, densityOnSand: 0, grassOnly: true },
+      { type: 'flower4', densityOnGrass: 0.005, densityOnSand: 0, grassOnly: true }
     ];
     
     // For each tile in the world

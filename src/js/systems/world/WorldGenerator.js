@@ -23,8 +23,9 @@ export class WorldGenerator {
     const waterNoiseScale = 0.08;
     const waterThreshold = -0.3;
     const sandDistanceThreshold = 3;
+    const cardinalCleanupThreshold = 3; // <-- Convert sand if >= 3 (out of 4) CARDINAL neighbors are grass
     const waterDistanceThreshold = 3; // Keep this if you want space between lakes
-
+    const sandCleanupThreshold = 5; // <-- NEW: Convert sand if >= 5 (of 8) neighbors are grass. Adjust if needed (3, 4, 5, 6...).
     this.createWorldBoundary();
 
     // --- Step 1: Create base terrain (Grass/Sand) ---
@@ -40,8 +41,61 @@ export class WorldGenerator {
       }
     }
     console.log("Base terrain generated.");
+// --- Step 1.5: Cleanup Isolated/Protruding Sand --- MODIFIED LOGIC
+console.log("Cleaning up isolated sand tiles (using cardinal neighbors)...");
+let sandCleanupCount = 0;
+const sandTilesToConvert = [];
 
+for (let y = 0; y < this.height; y++) {
+    for (let x = 0; x < this.width; x++) {
+         const tile = this.tiles[y][x];
 
+         // Only consider SAND tiles
+         if (tile.type === 'sand') {
+             let cardinalGrassNeighborCount = 0;
+             // Define cardinal neighbors relative offsets
+             const cardinalNeighbors = [
+                 { dx: 0, dy: -1 }, // North
+                 { dx: 1, dy: 0 },  // East
+                 { dx: 0, dy: 1 },  // South
+                 { dx: -1, dy: 0 }  // West
+             ];
+
+             // Check only the 4 cardinal neighbors
+             for (const n of cardinalNeighbors) {
+                 const nx = x + n.dx;
+                 const ny = y + n.dy;
+
+                 // Check bounds and neighbor type
+                 if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
+                     if (this.tiles[ny][nx].type === 'grass') {
+                         cardinalGrassNeighborCount++;
+                     }
+                 }
+                 // Optional: else if out of bounds, count as grass? Usually no.
+             }
+
+             // If surrounded by enough grass cardinally, mark for conversion
+             if (cardinalGrassNeighborCount >= cardinalCleanupThreshold) {
+                 sandTilesToConvert.push({x, y});
+             }
+         }
+    }
+}
+
+// Convert the marked sand tiles to grass
+sandTilesToConvert.forEach(pos => {
+    const tile = this.tiles[pos.y][pos.x];
+     if (tile && tile.type === 'sand') { // Double check
+        tile.setBaseType('grass', this.tilesets); // Convert to Grass
+        sandCleanupCount++;
+     }
+});
+
+if (sandCleanupCount > 0) {
+    console.log(`Cleaned up ${sandCleanupCount} sand tiles (cardinal check >= ${cardinalCleanupThreshold}) by converting to grass.`);
+}
+// --- End of Sand Cleanup ---
     // --- Step 2: Generate Initial Water Placement ---
     console.log("Generating initial water tiles...");
     const confirmedWaterTiles = [];
@@ -120,8 +174,9 @@ export class WorldGenerator {
     // --- Step 5: Generate decorations ---
     // (Keep existing code)
     console.log("Generating decorations...");
-    // ... (decoration generation code) ...
-
+this.decorations = new DecorationManager(this, this.tilesets);
+    const decorationsContainer = this.decorations.generateDecorations();
+    this.container.addChild(decorationsContainer);
 
     return this.container;
   }
