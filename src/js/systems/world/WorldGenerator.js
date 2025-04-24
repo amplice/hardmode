@@ -21,10 +21,10 @@ export class WorldGenerator {
     // --- Parameters ---
     const terrainNoiseScale = 0.05;
     const waterNoiseScale = 0.08;
-    const waterThreshold = -0.3;
+    const waterThreshold = -0.5;
     const sandDistanceThreshold = 3;
     const cardinalCleanupThreshold = 3; // <-- Convert sand if >= 3 (out of 4) CARDINAL neighbors are grass
-    const waterDistanceThreshold = 3; // Keep this if you want space between lakes
+    const waterCleanupThreshold = 2; // <-- NEW: Convert WATER to GRASS if it has this many or fewer water neighbors (out of 8). Try 1, 2, or 3.
     const sandCleanupThreshold = 5; // <-- NEW: Convert sand if >= 5 (of 8) neighbors are grass. Adjust if needed (3, 4, 5, 6...).
     this.createWorldBoundary();
 
@@ -34,7 +34,7 @@ export class WorldGenerator {
       this.tiles[y] = [];
       for (let x = 0; x < this.width; x++) {
         const noiseValue = this.noise2D(x * terrainNoiseScale, y * terrainNoiseScale);
-        const terrainType = noiseValue < 0 ? 'sand' : 'grass';
+        const terrainType = noiseValue < -0.3 ? 'sand' : 'grass';
         const tile = new Tile(x, y, terrainType, this.tilesets, this.tileSize);
         this.tiles[y][x] = tile;
         this.container.addChild(tile.container);
@@ -155,6 +155,59 @@ if (sandCleanupCount > 0) {
     if (cleanupCount > 0) {
         console.log(`Cleaned up ${cleanupCount} grass peninsula tiles by converting to water.`);
     }
+     // --- Step 2.75: NEW - Cleanup Thin Water Connections/Protrusions ---
+     console.log(`Cleaning up thin water connections (neighbor threshold <= ${waterCleanupThreshold})...`);
+     let waterCleanupCount = 0;
+     const waterTilesToConvert = []; // Store coordinates {x, y} to convert
+ 
+     // First pass: Identify water tiles with few water neighbors
+     for (let y = 0; y < this.height; y++) {
+         for (let x = 0; x < this.width; x++) {
+             const tile = this.tiles[y][x];
+ 
+             // Only consider WATER tiles that might need converting back
+             if (tile.type === 'water') {
+                 let waterNeighborCount = 0;
+                 // Check all 8 neighbors
+                 for (let dy = -1; dy <= 1; dy++) {
+                     for (let dx = -1; dx <= 1; dx++) {
+                         if (dx === 0 && dy === 0) continue; // Skip self
+ 
+                         const nx = x + dx;
+                         const ny = y + dy;
+ 
+                         // Check bounds and if neighbor is water
+                         if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
+                             // Use getTileType which correctly returns 'water' for water tiles
+                             if (this.getTileType(nx, ny) === 'water') {
+                                 waterNeighborCount++;
+                             }
+                         }
+                     }
+                 }
+ 
+                 // If the water tile has too few water neighbors, mark it for conversion back to grass
+                 if (waterNeighborCount <= waterCleanupThreshold) {
+                     waterTilesToConvert.push({x, y});
+                 }
+             }
+         }
+     }
+ 
+     // Second pass: Perform the actual conversions from Water back to Grass
+     waterTilesToConvert.forEach(pos => {
+         const tile = this.tiles[pos.y][pos.x];
+         // Ensure tile exists and is still water (might have been converted by another check?)
+         if (tile && tile.type === 'water') {
+             tile.setBaseType('grass', this.tilesets); // Convert back to Grass
+             waterCleanupCount++;
+         }
+     });
+ 
+     if (waterCleanupCount > 0) {
+         console.log(`Cleaned up ${waterCleanupCount} water tiles (neighbor count <= ${waterCleanupThreshold}) by converting to grass.`);
+     }
+     // --- End of Water Cleanup ---
 
 
     // --- Step 3: Process Grass/Sand transitions ---
