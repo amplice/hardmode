@@ -21,6 +21,7 @@ export class Monster {
         this.attackWindup = 0;
         this.attackDuration = 0;
         this.attackRecovery = 0;
+        this.isPlayingAttackAnimation = false;
         
         // Create sprite container
         this.sprite = new PIXI.Container();
@@ -72,9 +73,12 @@ export class Monster {
         }
     }
     onAnimationComplete() {
-        // If attack animation finished, return to idle
-        if (this.isAttacking && this.animatedSprite && !this.animatedSprite.playing) {
-            this.isAttacking = false;
+        // Only mark the animation as complete
+        if (this.isPlayingAttackAnimation && this.animatedSprite && !this.animatedSprite.playing) {
+            this.isPlayingAttackAnimation = false;
+            
+            // Force an animation update to switch back to idle/walk
+            this.currentAnimation = null; // Reset so updateAnimation will change sprites
             this.updateAnimation();
         }
     }
@@ -83,9 +87,15 @@ export class Monster {
             // Determine animation state based on current monster state
             let animationState = 'idle';
             
-            if (this.isAttacking) {
+            // Check if we should be playing an attack animation
+            if (this.isAttacking && !this.isPlayingAttackAnimation) {
+                animationState = 'attack1';
+                this.isPlayingAttackAnimation = true;
+            } else if (this.isPlayingAttackAnimation) {
+                // Continue playing attack animation if it's in progress
                 animationState = 'attack1';
             } else if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
+                // Otherwise check if we're moving or idle
                 animationState = 'walk';
                 this.isMoving = true;
             } else {
@@ -99,6 +109,7 @@ export class Monster {
             
             // Only update if animation changed
             if (this.currentAnimation !== animationName) {
+                console.log(`Changing monster animation to: ${animationName}`);
                 this.currentAnimation = animationName;
                 
                 // Remove old sprite
@@ -304,6 +315,8 @@ export class Monster {
     }
     
     startAttack() {
+        if (this.isAttacking) return; // Already attacking
+        
         this.isAttacking = true;
         console.log(`Monster ${this.type} preparing to attack!`);
         
@@ -314,7 +327,8 @@ export class Monster {
         // Show attack windup indicator
         this.updateAttackIndicator(true);
         
-        // Update animation to show attack animation
+        // Force animation update to start attack animation
+        this.currentAnimation = null; // Reset so updateAnimation will change sprites
         this.updateAnimation();
         
         // Schedule the actual attack to occur at the appropriate time
@@ -324,11 +338,17 @@ export class Monster {
                 this.updateAttackIndicator(false, true);
                 this.executeAttack();
                 
-                // Schedule indicator removal
+                // Schedule indicator removal and end of attack sequence
                 setTimeout(() => {
                     if (this.attackIndicator) {
                         this.attackIndicator.clear();
                     }
+                    
+                    // End attack state and start cooldown
+                    this.isAttacking = false;
+                    this.attackCooldown = attackDetails.cooldown;
+                    
+                    console.log(`Monster attack complete, cooldown set to ${this.attackCooldown}`);
                 }, attackDetails.duration * 1000);
             }
         }, attackDetails.windup * 1000);
@@ -540,14 +560,19 @@ executeAttack() {
     update(deltaTime, player, world) {
         if (!this.alive) return;
         
-        // Update attack state if attacking
-        if (this.isAttacking) {
-            // Decrease attack cooldown while attacking to ensure proper timing
+        // Decrease attack cooldown
+        if (this.attackCooldown > 0) {
             this.attackCooldown -= deltaTime;
-            
+        }
+        
+        // Don't move while attacking
+        if (this.isAttacking) {
             // Update sprite position
             this.sprite.position.set(this.position.x, this.position.y);
-            return; // Don't move while attacking
+            
+            // Still allow animation updates even when attacking
+            this.updateAnimation();
+            return;
         }
         
         // Reset movement flag
