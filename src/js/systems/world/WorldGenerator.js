@@ -18,64 +18,112 @@ export class WorldGenerator {
   }
 
   generate() {
-    
-    const noiseScale = 0.05;
-    const waterNoiseScale = 0.08;   // ADDED: Tune for lake size
-    const waterThreshold = -0.3;    // ADDED: Tune for water amount
-    const sandDistanceThreshold = 3;// ADDED: Min distance from sand
+    // --- Parameters ---
+    const terrainNoiseScale = 0.05;
+    const waterNoiseScale = 0.08;
+    const waterThreshold = -0.3;
+    const sandDistanceThreshold = 3;
+    const waterDistanceThreshold = 3; // Keep this if you want space between lakes
+
     this.createWorldBoundary();
-    // Create base terrain using noise
+
+    // --- Step 1: Create base terrain (Grass/Sand) ---
+    console.log("Generating base terrain...");
     for (let y = 0; y < this.height; y++) {
       this.tiles[y] = [];
       for (let x = 0; x < this.width; x++) {
-        const noiseValue = this.noise2D(x * noiseScale, y * noiseScale);
+        const noiseValue = this.noise2D(x * terrainNoiseScale, y * terrainNoiseScale);
         const terrainType = noiseValue < 0 ? 'sand' : 'grass';
-        
         const tile = new Tile(x, y, terrainType, this.tilesets, this.tileSize);
         this.tiles[y][x] = tile;
         this.container.addChild(tile.container);
       }
     }
-    // --- Step 2: ADDED - Generate Water ---
-    console.log("Generating water...");
-    const potentialWaterTiles = [];
+    console.log("Base terrain generated.");
+
+
+    // --- Step 2: Generate Initial Water Placement ---
+    console.log("Generating initial water tiles...");
+    const confirmedWaterTiles = [];
     for (let y = 0; y < this.height; y++) {
         for (let x = 0; x < this.width; x++) {
-            // Condition 1: Must be on a grass tile
-            if (this.tiles[y][x].type === 'grass') {
+            const tile = this.tiles[y][x];
+            if (tile.type === 'grass') {
                 const waterNoiseValue = this.waterNoise2D(x * waterNoiseScale, y * waterNoiseScale);
-                // Condition 2: Noise value must be below threshold
                 if (waterNoiseValue < waterThreshold) {
-                    // Condition 3: Must be far enough from sand
                     if (this.isFarEnoughFromSand(x, y, sandDistanceThreshold)) {
-                         potentialWaterTiles.push({x, y});
+                         // Check distance from other water *if* you keep that rule
+                         // if (this.isFarEnoughFromOtherWater(x, y, waterDistanceThreshold, confirmedWaterTiles)) {
+                              confirmedWaterTiles.push({x, y});
+                         // }
                     }
                 }
             }
         }
     }
-
-    // Convert potential water tiles to actual water tiles
-    potentialWaterTiles.forEach(pos => {
+    // Convert the initially selected water tiles
+    confirmedWaterTiles.forEach(pos => {
         const tile = this.tiles[pos.y][pos.x];
-        if (tile && tile.type === 'grass') { // Double-check it's still grass before changing
-             // Use the new helper method to change type and base sprite
+        if (tile && tile.type === 'grass') {
              tile.setBaseType('water', this.tilesets);
         }
     });
-    console.log(`Generated ${potentialWaterTiles.length} water tiles.`);
-    
-    // Add a 9x9 sand area in the center for debugging
-    // this.createDebugSandArea();
-    
-    // Process all transitions
+    console.log(`Generated ${confirmedWaterTiles.length} initial water tiles.`);
+
+
+    // --- Step 2.5: NEW - Cleanup Single Grass Peninsulas ---
+    console.log("Cleaning up single grass peninsulas...");
+    let cleanupCount = 0;
+    for (let y = 0; y < this.height; y++) {
+        for (let x = 0; x < this.width; x++) {
+            const tile = this.tiles[y][x];
+
+            // Look for GRASS tiles to potentially convert
+            if (tile.type === 'grass') {
+                const neighbors = {
+                    n: this.getTileType(x, y - 1) === 'water',
+                    e: this.getTileType(x + 1, y) === 'water',
+                    s: this.getTileType(x, y + 1) === 'water',
+                    w: this.getTileType(x - 1, y) === 'water'
+                };
+
+                // Check for the U-shape water patterns around this grass tile
+                const waterNeighborCount = (neighbors.n ? 1:0) + (neighbors.e ? 1:0) + (neighbors.s ? 1:0) + (neighbors.w ? 1:0);
+
+                // If exactly 3 cardinal neighbors are water, convert this grass tile to water
+                if (waterNeighborCount === 3) {
+                    tile.setBaseType('water', this.tilesets);
+                    cleanupCount++;
+                }
+            }
+        }
+    }
+    if (cleanupCount > 0) {
+        console.log(`Cleaned up ${cleanupCount} grass peninsula tiles by converting to water.`);
+    }
+
+
+    // --- Step 3: Process Grass/Sand transitions ---
+    // (Keep existing code - this runs *after* cleanup)
+    console.log("Processing sand/grass transitions...");
     this.processTransitions();
-    this.processWaterTransitions();
-    this.decorations = new DecorationManager(this, this.tilesets);
-    const decorationsContainer = this.decorations.generateDecorations();
-    this.container.addChild(decorationsContainer);
+    console.log("Sand/grass transitions processed.");
+
+
+    // --- Step 4: Process Water transitions ---
+    // (Keep existing code - this runs *after* cleanup)
+    console.log("Processing water transitions...");
+    this.processWaterTransitions(); // This will now only process edges/corners around the cleaned-up water shape
+    console.log("Water transitions processed.");
+
+
+    // --- Step 5: Generate decorations ---
+    // (Keep existing code)
+    console.log("Generating decorations...");
+    // ... (decoration generation code) ...
+
+
     return this.container;
-    
   }
   createWorldBoundary() {
     // Create a green background just for the world area
@@ -86,55 +134,6 @@ export class WorldGenerator {
     
     // Add it to the container but underneath everything else
     this.container.addChildAt(worldBackground, 0);
-  }
-  // Create a 9x9 sand area in the center
-  createDebugSandArea() {
-    // Calculate center of the world
-    const centerX = Math.floor(this.width / 2);
-    const centerY = Math.floor(this.height / 2);
-    
-    // Create a 9x9 sand area centered at the world center
-    const size = 4; // This will create a 9x9 area (center + 4 tiles in each direction)
-    
-    for (let y = centerY - size; y <= centerY + size; y++) {
-      for (let x = centerX - size; x <= centerX + size; x++) {
-        // Make sure coordinates are within world bounds
-        if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-          // Remove existing tile
-          this.container.removeChild(this.tiles[y][x].container);
-          
-          // Create a new sand tile
-          const tile = new Tile(x, y, 'sand', this.tilesets, this.tileSize);
-          this.tiles[y][x] = tile;
-          this.container.addChild(tile.container);
-        }
-      }
-    }
-    
-    // Ensure there's grass around the sand area
-    const borderSize = size + 1;
-    for (let y = centerY - borderSize; y <= centerY + borderSize; y++) {
-      for (let x = centerX - borderSize; x <= centerX + borderSize; x++) {
-        // Skip the inner sand area
-        if (x >= centerX - size && x <= centerX + size && 
-            y >= centerY - size && y <= centerY + size) {
-          continue;
-        }
-        
-        // Make sure coordinates are within world bounds
-        if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-          // Remove existing tile
-          this.container.removeChild(this.tiles[y][x].container);
-          
-          // Create a new grass tile
-          const tile = new Tile(x, y, 'grass', this.tilesets, this.tileSize);
-          this.tiles[y][x] = tile;
-          this.container.addChild(tile.container);
-        }
-      }
-    }
-    
-    console.log(`Created 9x9 sand area at center (${centerX}, ${centerY}), surrounded by grass`);
   }
   
   // REPLACE YOUR EXISTING processTransitions() WITH THIS NEW ONE
@@ -262,7 +261,6 @@ export class WorldGenerator {
     return true; // No sand found within the threshold
 }
 
-// Replace the existing processWaterTransitions method in js/systems/world/WorldGenerator.js
 processWaterTransitions() {
   for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -282,67 +280,67 @@ processWaterTransitions() {
 
               let edgeType = null;
 
-              // --- Priority 1: 3-Neighbor Inner Corner Match Cases ---
-              // Check ONLY the 3 required neighbors for these specific patterns.
-              if (neighbors.n && neighbors.w) { // Water N, W, NW
-                   edgeType = 'inner-NE-match'; // Grass forms SE point -> Tile Index 3
+              // --- Priority 1: U-Shapes (Water on 3 cardinal sides) ---
+              // *** MODIFICATION START ***
+              // For debugging: Explicitly do NOT assign an edgeType for these cases
+              if (neighbors.n && neighbors.e && neighbors.w && !neighbors.s) { // Water N, E, W (Grass points South)
+                  edgeType = null; // Intentionally skip overlay
               }
-              else if (neighbors.n && neighbors.e) { // Water N, E, NE
-                   edgeType = 'inner-NW-match'; // Grass forms SW point -> Tile Index 4
+              else if (neighbors.s && neighbors.e && neighbors.w && !neighbors.n) { // Water S, E, W (Grass points North)
+                  edgeType = null; // Intentionally skip overlay
               }
-              else if (neighbors.s && neighbors.w) { // Water S, W, SW
-                   edgeType = 'inner-SE-match'; // Grass forms NE point -> Tile Index 8
+               else if (neighbors.n && neighbors.s && neighbors.w && !neighbors.e) { // Water N, S, W (Grass points East)
+                  edgeType = null; // Intentionally skip overlay
               }
-              else if (neighbors.s && neighbors.e) { // Water S, E, SE
-                   edgeType = 'inner-SW-match'; // Grass forms NW point -> Tile Index 9
+               else if (neighbors.n && neighbors.s && neighbors.e && !neighbors.w) { // Water N, S, E (Grass points West)
+                  edgeType = null; // Intentionally skip overlay
+              }
+              // *** MODIFICATION END ***
+
+              // --- Priority 2: 3-Neighbor Inner Corner Match Cases ---
+              // (Keep existing logic)
+              else if (neighbors.n && neighbors.w&& !neighbors.e && !neighbors.s) {
+                   edgeType = 'inner-NE-match';
+              }
+              else if (neighbors.n && neighbors.e && !neighbors.w && !neighbors.s) {
+                   edgeType = 'inner-NW-match';
+              }
+              else if (neighbors.s && neighbors.w && !neighbors.e && !neighbors.n) {
+                   edgeType = 'inner-SE-match';
+              }
+              else if (neighbors.s && neighbors.e && !neighbors.w && !neighbors.n) {
+                   edgeType = 'inner-SW-match';
               }
 
-              // --- Priority 2: Diagonal-Only Outer Corners ---
-              // Check diagonal is water AND adjacent cardinals are NOT water.
-              else if (neighbors.nw && !neighbors.n && !neighbors.w) {
-                  edgeType = 'inner-bottom-right'; // Tile Index 12
-              }
-              else if (neighbors.ne && !neighbors.n && !neighbors.e) {
-                  edgeType = 'inner-bottom-left';  // Tile Index 10
-              }
-              else if (neighbors.sw && !neighbors.s && !neighbors.w) {
-                  edgeType = 'inner-top-right';   // Tile Index 2
-              }
-              else if (neighbors.se && !neighbors.s && !neighbors.e) {
-                  edgeType = 'inner-top-left';    // Tile Index 0
-              }
+              // --- Priority 3: Diagonal-Only Outer Corners ---
+              // (Keep existing logic)
+              else if (neighbors.nw && !neighbors.n && !neighbors.w) { edgeType = 'inner-bottom-right'; }
+              else if (neighbors.ne && !neighbors.n && !neighbors.e) { edgeType = 'inner-bottom-left';  }
+              else if (neighbors.sw && !neighbors.s && !neighbors.w) { edgeType = 'inner-top-right';   }
+              else if (neighbors.se && !neighbors.s && !neighbors.e) { edgeType = 'inner-top-left';    }
 
-              // --- Priority 3: Simple Edge Cases ---
-              // Check ONLY the single relevant cardinal direction.
-              else if (neighbors.n) { // Water N is present (and no corner matched)
-                  edgeType = 'inner-bottom'; // Tile Index 11
-              }
-              else if (neighbors.s) { // Water S is present (and no corner matched)
-                  edgeType = 'inner-top'; // Tile Index 1
-              }
-              else if (neighbors.w) { // Water W is present (and no corner matched)
-                  edgeType = 'inner-right'; // Tile Index 7
-              }
-              else if (neighbors.e) { // Water E is present (and no corner matched)
-                  edgeType = 'inner-left'; // Tile Index 5
-              }
+              // --- Priority 4: Simple Edge Cases ---
+              // (Keep existing logic)
+              else if (neighbors.n && !neighbors.e && !neighbors.w && !neighbors.s) { edgeType = 'inner-bottom'; }
+              else if (neighbors.s && !neighbors.n && !neighbors.e && !neighbors.w) { edgeType = 'inner-top';    }
+              else if (neighbors.w && !neighbors.n && !neighbors.s && !neighbors.e) { edgeType = 'inner-right';  }
+              else if (neighbors.e && !neighbors.n && !neighbors.s && !neighbors.w) { edgeType = 'inner-left';   }
+
 
               // --- Apply or Remove Overlay ---
+              // This logic remains the same. If edgeType is null, it removes any existing overlay.
               if (edgeType) {
-                  // Add/update overlay only if it's different from current or doesn't exist
                   if (!tile.waterOverlaySprite || tile.waterOverlayType !== edgeType) {
                       tile.addWaterOverlay(edgeType, this.tilesets);
                   }
               } else {
-                  // If no condition met, ensure no overlay exists
                   if (tile.waterOverlaySprite) {
-                      tile.removeWaterOverlay(); // Ensure removeWaterOverlay exists in Tile.js
+                      tile.removeWaterOverlay();
                   }
               }
           } else {
-               // If tile is NOT grass, ensure it doesn't have a water overlay
                if (tile.waterOverlaySprite) {
-                   tile.removeWaterOverlay(); // Ensure removeWaterOverlay exists in Tile.js
+                   tile.removeWaterOverlay();
                }
           }
       }
