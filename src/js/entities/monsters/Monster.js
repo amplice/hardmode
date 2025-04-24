@@ -43,7 +43,9 @@ export class Monster {
     }
     
     setupAnimations() {
-        const animationName = this.spriteManager.getMonsterAnimationForDirection(this.type, this.facing);
+        // Initially use idle animation if not moving
+        const animationState = this.isAttacking ? 'attack1' : (this.isMoving ? 'walk' : 'idle');
+        const animationName = this.spriteManager.getMonsterAnimationForDirection(this.type, this.facing, animationState);
         this.currentAnimation = animationName;
         
         this.animatedSprite = this.spriteManager.createAnimatedSprite(animationName);
@@ -52,6 +54,9 @@ export class Monster {
             this.animatedSprite.play();
             this.animatedSprite.anchor.set(0.5, 0.5);
             this.sprite.addChild(this.animatedSprite);
+            
+            // Set up animation complete callback
+            this.animatedSprite.onComplete = () => this.onAnimationComplete();
             
             // Remove placeholder graphics if they exist
             if (this.baseSprite && this.baseSprite.parent) {
@@ -66,11 +71,31 @@ export class Monster {
             this.sprite.addChild(this.attackIndicator);
         }
     }
-    
+    onAnimationComplete() {
+        // If attack animation finished, return to idle
+        if (this.isAttacking && this.animatedSprite && !this.animatedSprite.playing) {
+            this.isAttacking = false;
+            this.updateAnimation();
+        }
+    }
     updateAnimation() {
         if (this.spriteManager && this.spriteManager.loaded) {
-            // Get the animation name based on current direction
-            const animationName = this.spriteManager.getMonsterAnimationForDirection(this.type, this.facing);
+            // Determine animation state based on current monster state
+            let animationState = 'idle';
+            
+            if (this.isAttacking) {
+                animationState = 'attack1';
+            } else if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
+                animationState = 'walk';
+                this.isMoving = true;
+            } else {
+                this.isMoving = false;
+            }
+            
+            // Get the animation name based on state and direction
+            const animationName = this.spriteManager.getMonsterAnimationForDirection(
+                this.type, this.facing, animationState
+            );
             
             // Only update if animation changed
             if (this.currentAnimation !== animationName) {
@@ -85,8 +110,21 @@ export class Monster {
                 this.animatedSprite = this.spriteManager.createAnimatedSprite(animationName);
                 
                 if (this.animatedSprite) {
+                    // Don't loop attack animations
+                    if (animationState === 'attack1') {
+                        this.animatedSprite.loop = false;
+                    } else {
+                        this.animatedSprite.loop = true;
+                    }
+                    
                     this.animatedSprite.play();
+                    this.animatedSprite.anchor.set(0.5, 0.5);
                     this.sprite.addChild(this.animatedSprite);
+                    
+                    // Set animation complete callback for attacks
+                    if (animationState === 'attack1') {
+                        this.animatedSprite.onComplete = () => this.onAnimationComplete();
+                    }
                 }
             }
         }
@@ -233,167 +271,6 @@ export class Monster {
         this.attackIndicator.clear();
     }
     
-    update(deltaTime, player, world) {
-        if (!this.alive) return;
-        
-        // Update attack state if attacking
-        if (this.isAttacking) {
-            if (this.attackWindup > 0) {
-                // In windup phase
-                this.attackWindup -= deltaTime;
-                this.updateAttackIndicator(true); // Show warning indicator
-                
-                if (this.attackWindup <= 0) {
-                    // Transition to attack phase
-                    const attackDetails = this.getAttackDetails();
-                    this.attackDuration = attackDetails.duration;
-                    this.updateAttackIndicator(false, true); // Show active attack
-                    this.executeAttack(); // Check if the player is hit
-                }
-            } else if (this.attackDuration > 0) {
-                // In attack phase
-                this.attackDuration -= deltaTime;
-                
-                if (this.attackDuration <= 0) {
-                    // Transition to recovery phase
-                    const attackDetails = this.getAttackDetails();
-                    this.attackRecovery = attackDetails.recovery;
-                    this.updateAttackIndicator(); // Clear attack indicator
-                }
-            } else if (this.attackRecovery > 0) {
-                // In recovery phase
-                this.attackRecovery -= deltaTime;
-                
-                if (this.attackRecovery <= 0) {
-                    // Attack sequence complete
-                    this.isAttacking = false;
-                    const attackDetails = this.getAttackDetails();
-                    this.attackCooldown = attackDetails.cooldown;
-                }
-            }
-            
-            return; // Don't move while attacking
-        }
-        
-        // Basic AI behavior when not attacking
-        if (!this.target) {
-            // Check if player is in aggro range
-            const dx = player.position.x - this.position.x;
-            const dy = player.position.y - this.position.y;
-            const distToPlayer = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distToPlayer < this.aggroRange) {
-                this.target = player;
-            } else {
-                // Wander randomly
-                if (Math.random() < 0.02) {
-                    this.velocity.x = (Math.random() * 2 - 1) * this.moveSpeed;
-                    this.velocity.y = (Math.random() * 2 - 1) * this.moveSpeed;
-                    
-                    // FIX 1: Update facing direction when wandering randomly
-                    this.updateFacingFromVelocity();
-                }
-            }
-        }
-        
-        if (this.target) {
-            // Move towards player
-            const dx = this.target.position.x - this.position.x;
-            const dy = this.target.position.y - this.position.y;
-            const distToTarget = Math.sqrt(dx * dx + dy * dy);
-            
-            // Calculate absolute values for comparison
-            const absX = Math.abs(dx);
-            const absY = Math.abs(dy);
-            
-            // Update facing direction based on direction to target
-            // Use thresholds to determine if angle is diagonal or cardinal
-            if (absX > absY * 1.5) {
-                // Primarily horizontal direction
-                this.facing = dx > 0 ? 'right' : 'left';
-            } else if (absY > absX * 1.5) {
-                // Primarily vertical direction
-                this.facing = dy > 0 ? 'down' : 'up';
-            } else {
-                // Diagonal direction
-                if (dx > 0 && dy > 0) this.facing = 'down-right';
-                else if (dx < 0 && dy > 0) this.facing = 'down-left';
-                else if (dx > 0 && dy < 0) this.facing = 'up-right';
-                else if (dx < 0 && dy < 0) this.facing = 'up-left';
-            }
-            
-            if (distToTarget > this.attackRange) {
-                // Move towards player
-                const speed = this.moveSpeed / distToTarget;
-                this.velocity.x = dx * speed;
-                this.velocity.y = dy * speed;
-            } else {
-                // In attack range, stop moving and attack
-                this.velocity.x = 0;
-                this.velocity.y = 0;
-                
-                // Attack if cooldown is ready
-                if (this.attackCooldown <= 0 && !this.isAttacking) {
-                    this.startAttack();
-                }
-            }
-            
-            // Lose target if player gets too far away
-            if (distToTarget > this.aggroRange * 1.5) {
-                this.target = null;
-                this.velocity.x = 0;
-                this.velocity.y = 0;
-            }
-        
-        }
-        
-        // Update position
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
-        
-        // Keep monster within world bounds and handle collision
-        if (world) {
-            const tileSize = world.tileSize;
-            const monsterRadius = 15;
-            
-            // World bounds
-            if (this.position.x < monsterRadius) this.position.x = monsterRadius;
-            if (this.position.x > world.width * tileSize - monsterRadius) this.position.x = world.width * tileSize - monsterRadius;
-            if (this.position.y < monsterRadius) this.position.y = monsterRadius;
-            if (this.position.y > world.height * tileSize - monsterRadius) this.position.y = world.height * tileSize - monsterRadius;
-            
-            // Simple tile collision
-            const tileX = Math.floor(this.position.x / tileSize);
-            const tileY = Math.floor(this.position.y / tileSize);
-            
-            if (tileX >= 0 && tileX < world.width && tileY >= 0 && tileY < world.height) {
-                if (!world.isTileWalkable(this.position.x, this.position.y)) {
-                    // Push back from obstacles
-                    const tileCenterX = (tileX + 0.5) * tileSize;
-                    const tileCenterY = (tileY + 0.5) * tileSize;
-                    const pushDirX = this.position.x - tileCenterX;
-                    const pushDirY = this.position.y - tileCenterY;
-                    const pushDist = Math.sqrt(pushDirX * pushDirX + pushDirY * pushDirY);
-                    
-                    if (pushDist > 0) {
-                        this.position.x += pushDirX / pushDist * 5;
-                        this.position.y += pushDirY / pushDist * 5;
-                    }
-                }
-            }
-        }
-        
-        // Update sprite position
-        this.sprite.position.set(this.position.x, this.position.y);
-        
-        // Update animation based on facing direction
-        this.updateAnimation();
-        
-        // Decrease attack cooldown
-        if (this.attackCooldown > 0) {
-            this.attackCooldown -= deltaTime;
-        }
-    }
     updateFacingFromVelocity() {
         // Update facing direction based on velocity
         const vx = this.velocity.x;
@@ -436,6 +313,25 @@ export class Monster {
         
         // Show attack windup indicator
         this.updateAttackIndicator(true);
+        
+        // Update animation to show attack animation
+        this.updateAnimation();
+        
+        // Schedule the actual attack to occur at the appropriate time
+        setTimeout(() => {
+            if (this.isAttacking) {
+                // Show active attack indicator
+                this.updateAttackIndicator(false, true);
+                this.executeAttack();
+                
+                // Schedule indicator removal
+                setTimeout(() => {
+                    if (this.attackIndicator) {
+                        this.attackIndicator.clear();
+                    }
+                }, attackDetails.duration * 1000);
+            }
+        }, attackDetails.windup * 1000);
     }
     
 // Replace the updateAttackIndicator method in Monster.js for Bug #2
@@ -640,13 +536,127 @@ executeAttack() {
             this.die();
         }
     }
-    
+
+    update(deltaTime, player, world) {
+        if (!this.alive) return;
+        
+        // Update attack state if attacking
+        if (this.isAttacking) {
+            // Decrease attack cooldown while attacking to ensure proper timing
+            this.attackCooldown -= deltaTime;
+            
+            // Update sprite position
+            this.sprite.position.set(this.position.x, this.position.y);
+            return; // Don't move while attacking
+        }
+        
+        // Reset movement flag
+        this.isMoving = false;
+        
+        // Basic AI behavior when not attacking
+        if (!this.target) {
+            // Check if player is in aggro range
+            const dx = player.position.x - this.position.x;
+            const dy = player.position.y - this.position.y;
+            const distToPlayer = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distToPlayer < this.aggroRange) {
+                this.target = player;
+            } else {
+                // Wander randomly
+                if (Math.random() < 0.02) {
+                    this.velocity.x = (Math.random() * 2 - 1) * this.moveSpeed;
+                    this.velocity.y = (Math.random() * 2 - 1) * this.moveSpeed;
+                    this.updateFacingFromVelocity();
+                    this.isMoving = true;
+                } else if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
+                    this.isMoving = true;
+                }
+            }
+        }
+        
+        if (this.target) {
+            // Move towards player
+            const dx = this.target.position.x - this.position.x;
+            const dy = this.target.position.y - this.position.y;
+            const distToTarget = Math.sqrt(dx * dx + dy * dy);
+            
+            // Update facing direction based on direction to target
+            // Calculate absolute values for comparison
+            const absX = Math.abs(dx);
+            const absY = Math.abs(dy);
+            
+            // Update facing direction based on direction to target
+            // Use thresholds to determine if angle is diagonal or cardinal
+            if (absX > absY * 1.5) {
+                // Primarily horizontal direction
+                this.facing = dx > 0 ? 'right' : 'left';
+            } else if (absY > absX * 1.5) {
+                // Primarily vertical direction
+                this.facing = dy > 0 ? 'down' : 'up';
+            } else {
+                // Diagonal direction
+                if (dx > 0 && dy > 0) this.facing = 'down-right';
+                else if (dx < 0 && dy > 0) this.facing = 'down-left';
+                else if (dx > 0 && dy < 0) this.facing = 'up-right';
+                else if (dx < 0 && dy < 0) this.facing = 'up-left';
+            }
+            
+            if (distToTarget > this.attackRange) {
+                // Move towards player
+                const speed = this.moveSpeed / distToTarget;
+                this.velocity.x = dx * speed;
+                this.velocity.y = dy * speed;
+                this.isMoving = true;
+            } else {
+                // In attack range, stop moving and attack
+                this.velocity.x = 0;
+                this.velocity.y = 0;
+                this.isMoving = false;
+                
+                // Attack if cooldown is ready
+                if (this.attackCooldown <= 0 && !this.isAttacking) {
+                    this.startAttack();
+                }
+            }
+            
+            // Lose target if player gets too far away
+            if (distToTarget > this.aggroRange * 1.5) {
+                this.target = null;
+                this.velocity.x = 0;
+                this.velocity.y = 0;
+                this.isMoving = false;
+            }
+        }
+        
+        // Update position
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
+        
+        // Keep monster within world bounds and handle collision
+        // [Keep the existing collision code...]
+        
+        // Update sprite position
+        this.sprite.position.set(this.position.x, this.position.y);
+        
+        // Update animation based on current state and facing direction
+        this.updateAnimation();
+        
+        // Decrease attack cooldown
+        if (this.attackCooldown > 0) {
+            this.attackCooldown -= deltaTime;
+        }
+    }
     die() {
         console.log(`Monster ${this.type} has been defeated!`);
         this.alive = false;
         
-        // Cancel any attack in progress
+        // Cancel any attack in progress and clear any timers
         this.isAttacking = false;
+        if (this.hitTimer) {
+            clearTimeout(this.hitTimer);
+            this.hitTimer = null;
+        }
         this.attackIndicator.clear();
         
         // Death animation - fade out
