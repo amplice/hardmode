@@ -192,16 +192,16 @@ export class WorldGenerator {
     
     // Inner corner matches
     else if (!p[0] && p[1] && !p[2]) { // Only NE is grass
-      tile.addInnerCornerMatch('top-right-match', tilesets);
-    }
-    else if (!p[2] && p[3] && !p[4]) { // Only SE is grass
-      tile.addInnerCornerMatch('bottom-right-match', tilesets);
-    }
-    else if (!p[4] && p[5] && !p[6]) { // Only SW is grass
       tile.addInnerCornerMatch('bottom-left-match', tilesets);
     }
-    else if (!p[6] && p[7] && !p[0]) { // Only NW is grass
+    else if (!p[2] && p[3] && !p[4]) { // Only SE is grass
       tile.addInnerCornerMatch('top-left-match', tilesets);
+    }
+    else if (!p[4] && p[5] && !p[6]) { // Only SW is grass
+      tile.addInnerCornerMatch('top-right-match', tilesets);
+    }
+    else if (!p[6] && p[7] && !p[0]) { // Only NW is grass
+      tile.addInnerCornerMatch('bottom-right-match', tilesets);
     }
   }
   

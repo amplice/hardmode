@@ -112,10 +112,10 @@ this.plantTextures = this.slicePlantsTileset(plantsTex.baseTexture);
   getInnerCornerMatch(matchType) {
     // Map match type to index in the grass tileset
     const matchMap = {
-      'top-left-match': 9,     // Row 0, Col 3
-      'top-right-match': 8,    // Row 0, Col 4
-      'bottom-left-match': 4,  // Row 1, Col 3
-      'bottom-right-match': 3  // Row 1, Col 4
+      'top-left-match': 3,     // Row 0, Col 3
+      'top-right-match': 4,    // Row 0, Col 4
+      'bottom-left-match': 8,  // Row 1, Col 3
+      'bottom-right-match': 9  // Row 1, Col 4
     };
     
     const index = matchMap[matchType];
