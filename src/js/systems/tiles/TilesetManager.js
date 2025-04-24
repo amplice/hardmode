@@ -131,6 +131,22 @@ this.plantTextures = this.slicePlantsTileset(plantsTex.baseTexture);
     const index = matchMap[matchType];
     return index !== undefined ? this.grassTextures[index] : null;
   }
+  getWaterInnerCornerMatch(matchType) {
+    const matchMap = {
+      // Type name : index in the 5x3 water spritesheet
+      'inner-NE-match': 3, // Condition: N=W, W=W, NW=W (User's Bottom Case example maps to index 3)
+      'inner-NW-match': 4, // Condition: N=W, E=W, NE=W (Symmetric Case) maps to index 4
+      'inner-SE-match': 8, // Condition: S=W, W=W, SW=W (User's Top Case example maps to index 8)
+      'inner-SW-match': 9, // Condition: S=W, E=W, SE=W (Symmetric Case) maps to index 9
+    };
+    const index = matchMap[matchType];
+    // Basic validation
+    if (index !== undefined && index >= 0 && index < this.waterTextures.length) {
+       return this.waterTextures[index];
+    }
+    console.warn(`Water inner corner match tile for type "${matchType}" not found or index [${index}] out of bounds.`);
+    return null; // Return null if the index is invalid or not found
+}
   // vvv ADDED vvv
   // Add methods for getting water tiles
   getFullWaterTile() {

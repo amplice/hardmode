@@ -86,38 +86,65 @@ convertToTransition(position, tilesets) {
       this.container.addChild(this.cornerMatchSprite);
     }
   }
-  // vvv ADDED vvv
-  // Method to add water edge overlay (called ONLY on GRASS tiles)
-  addWaterOverlay(position, tilesets) {
+  addWaterOverlay(overlayType, tilesets) {
+    // Ensure this is only called on grass tiles
     if (this.type !== 'grass') {
-        // This should only be called on grass tiles adjacent to water
-        console.warn(`Attempted to add water overlay to non-grass tile (${this.x}, ${this.y}) of type ${this.type}`);
-        return;
+        // console.warn(`Attempted to add water overlay to non-grass tile (${this.x}, ${this.y}) of type ${this.type}`);
+        return; // Silently return if not grass
     }
 
-    const overlayTexture = tilesets.getWaterEdgeTile(position);
+    let overlayTexture = null;
+
+    // Determine which getter to use based on the overlayType name
+    if (overlayType.endsWith('-match')) {
+        // It's one of the new inner corner types
+        overlayTexture = tilesets.getWaterInnerCornerMatch(overlayType);
+    } else {
+        // It's one of the standard edge/corner types
+        overlayTexture = tilesets.getWaterEdgeTile(overlayType);
+    }
+
+    // Ensure a valid texture was returned
     if (!overlayTexture) {
-        console.warn(`Failed to get water edge texture "${position}" for overlay at (${this.x}, ${this.y}).`);
-        return; // Don't add if texture is missing
+        // console.warn(`Failed to get water overlay texture for type "${overlayType}" at (${this.x}, ${this.y}).`);
+        // If no texture found, ensure no overlay is present
+        if (this.waterOverlaySprite) {
+            this.removeWaterOverlay(); // Use the existing cleanup method
+        }
+        return; // Stop if texture is invalid
     }
 
-    // Remove existing water overlay if one exists (e.g., if neighbors changed)
-    if (this.waterOverlaySprite && this.waterOverlaySprite.parent) {
-        this.container.removeChild(this.waterOverlaySprite);
+    // If texture is valid, proceed to add or update the sprite
+    // Remove existing sprite ONLY if it's different - minor optimization
+    if (this.waterOverlaySprite && this.waterOverlayType !== overlayType) {
+       if (this.waterOverlaySprite.parent) { // Check parent before removing
+           this.container.removeChild(this.waterOverlaySprite);
+       }
+       this.waterOverlaySprite = null; // Nullify reference
     }
 
-    this.waterOverlaySprite = new PIXI.Sprite(overlayTexture);
-    this.waterOverlaySprite.scale.set(this.tileSize / 16, this.tileSize / 16);
-    this.container.addChild(this.waterOverlaySprite); // Add water edge on top of base grass
-    this.waterOverlayType = position;
+    // Create or update sprite if needed
+    if (!this.waterOverlaySprite) {
+       this.waterOverlaySprite = new PIXI.Sprite(overlayTexture);
+       this.waterOverlaySprite.scale.set(this.tileSize / 16, this.tileSize / 16);
+       this.container.addChild(this.waterOverlaySprite);
+    } else {
+       // If sprite exists and type is the same, just ensure texture is correct (though unlikely needed)
+       this.waterOverlaySprite.texture = overlayTexture;
+    }
+
+    // Update the stored type name
+    this.waterOverlayType = overlayType;
 }
 // Helper to remove water overlay if water neighbor disappears (optional, depends on dynamic updates)
+// Add this method inside the Tile class in js/systems/world/Tile.js
 removeWaterOverlay() {
-     if (this.waterOverlaySprite && this.waterOverlaySprite.parent) {
-        this.container.removeChild(this.waterOverlaySprite);
-        this.waterOverlaySprite = null;
-        this.waterOverlayType = null;
-    }
+  if (this.waterOverlaySprite && this.waterOverlaySprite.parent) {
+      this.container.removeChild(this.waterOverlaySprite);
+  }
+  // Crucially, nullify the references
+  this.waterOverlaySprite = null;
+  this.waterOverlayType = null;
 }
 
 // Helper method to just change type and base sprite - USED BY WorldGenerator for water placement

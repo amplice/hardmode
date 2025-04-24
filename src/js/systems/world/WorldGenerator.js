@@ -262,52 +262,91 @@ export class WorldGenerator {
     return true; // No sand found within the threshold
 }
 
+// Replace the existing processWaterTransitions method in js/systems/world/WorldGenerator.js
 processWaterTransitions() {
-    // Apply water edge overlays onto adjacent GRASS tiles
-    for (let y = 0; y < this.height; y++) {
-        for (let x = 0; x < this.width; x++) {
-            const tile = this.tiles[y][x];
+  for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+          const tile = this.tiles[y][x];
 
-            // Only apply overlays to grass tiles
-            if (tile.type === 'grass') {
-                // Check cardinal neighbors for water
-                 const neighbors = {
-                    n: this.getTileType(x, y - 1) === 'water',
-                    e: this.getTileType(x + 1, y) === 'water',
-                    s: this.getTileType(x, y + 1) === 'water',
-                    w: this.getTileType(x - 1, y) === 'water'
-                };
+          if (tile.type === 'grass') {
+              const neighbors = {
+                  n:  this.getTileType(x, y - 1) === 'water',
+                  ne: this.getTileType(x + 1, y - 1) === 'water',
+                  e:  this.getTileType(x + 1, y) === 'water',
+                  se: this.getTileType(x + 1, y + 1) === 'water',
+                  s:  this.getTileType(x, y + 1) === 'water',
+                  sw: this.getTileType(x - 1, y + 1) === 'water',
+                  w:  this.getTileType(x - 1, y) === 'water',
+                  nw: this.getTileType(x - 1, y - 1) === 'water'
+              };
 
-                // Determine the correct edge overlay based on water neighbors
-                // Using the 'inner-' names matching TilesetManager.getWaterEdgeTile
-                let edgeType = null;
-                if (neighbors.n && neighbors.w && !neighbors.s && !neighbors.e) edgeType = 'inner-bottom-right';
-                else if (neighbors.n && neighbors.e && !neighbors.s && !neighbors.w) edgeType = 'inner-bottom-left';
-                else if (neighbors.s && neighbors.w && !neighbors.n && !neighbors.e) edgeType = 'inner-top-right';
-                else if (neighbors.s && neighbors.e && !neighbors.n && !neighbors.w) edgeType = 'inner-top-left';
-                else if (neighbors.n && !neighbors.s && !neighbors.e && !neighbors.w) edgeType = 'inner-bottom'; // Only N
-                else if (neighbors.s && !neighbors.n && !neighbors.e && !neighbors.w) edgeType = 'inner-top';    // Only S
-                else if (neighbors.w && !neighbors.e && !neighbors.n && !neighbors.s) edgeType = 'inner-right';  // Only W
-                else if (neighbors.e && !neighbors.w && !neighbors.n && !neighbors.s) edgeType = 'inner-left';   // Only E
-                // Add checks for 3 neighbors if needed (e.g., water N, S, W -> edge 'inner-right')
-                else if (neighbors.n && neighbors.s && neighbors.w && !neighbors.e) edgeType = 'inner-right';
-                else if (neighbors.n && neighbors.s && neighbors.e && !neighbors.w) edgeType = 'inner-left';
-                else if (neighbors.n && neighbors.w && neighbors.e && !neighbors.s) edgeType = 'inner-bottom';
-                else if (neighbors.s && neighbors.w && neighbors.e && !neighbors.n) edgeType = 'inner-top';
+              let edgeType = null;
 
-                // Apply the overlay if an edge type was determined
-                if (edgeType) {
-                    tile.addWaterOverlay(edgeType, this.tilesets);
-                } else {
-                    // If no water neighbors, ensure no water overlay exists
-                    tile.removeWaterOverlay(); // Optional: add this method to Tile.js if needed
-                }
-            } else if (tile.waterOverlaySprite) {
-               // If a tile is NOT grass but somehow has a water overlay, remove it
-               tile.removeWaterOverlay();
-            }
-        }
-    }
+              // --- Priority 1: 3-Neighbor Inner Corner Match Cases ---
+              // Check ONLY the 3 required neighbors for these specific patterns.
+              if (neighbors.n && neighbors.w) { // Water N, W, NW
+                   edgeType = 'inner-NE-match'; // Grass forms SE point -> Tile Index 3
+              }
+              else if (neighbors.n && neighbors.e) { // Water N, E, NE
+                   edgeType = 'inner-NW-match'; // Grass forms SW point -> Tile Index 4
+              }
+              else if (neighbors.s && neighbors.w) { // Water S, W, SW
+                   edgeType = 'inner-SE-match'; // Grass forms NE point -> Tile Index 8
+              }
+              else if (neighbors.s && neighbors.e) { // Water S, E, SE
+                   edgeType = 'inner-SW-match'; // Grass forms NW point -> Tile Index 9
+              }
+
+              // --- Priority 2: Diagonal-Only Outer Corners ---
+              // Check diagonal is water AND adjacent cardinals are NOT water.
+              else if (neighbors.nw && !neighbors.n && !neighbors.w) {
+                  edgeType = 'inner-bottom-right'; // Tile Index 12
+              }
+              else if (neighbors.ne && !neighbors.n && !neighbors.e) {
+                  edgeType = 'inner-bottom-left';  // Tile Index 10
+              }
+              else if (neighbors.sw && !neighbors.s && !neighbors.w) {
+                  edgeType = 'inner-top-right';   // Tile Index 2
+              }
+              else if (neighbors.se && !neighbors.s && !neighbors.e) {
+                  edgeType = 'inner-top-left';    // Tile Index 0
+              }
+
+              // --- Priority 3: Simple Edge Cases ---
+              // Check ONLY the single relevant cardinal direction.
+              else if (neighbors.n) { // Water N is present (and no corner matched)
+                  edgeType = 'inner-bottom'; // Tile Index 11
+              }
+              else if (neighbors.s) { // Water S is present (and no corner matched)
+                  edgeType = 'inner-top'; // Tile Index 1
+              }
+              else if (neighbors.w) { // Water W is present (and no corner matched)
+                  edgeType = 'inner-right'; // Tile Index 7
+              }
+              else if (neighbors.e) { // Water E is present (and no corner matched)
+                  edgeType = 'inner-left'; // Tile Index 5
+              }
+
+              // --- Apply or Remove Overlay ---
+              if (edgeType) {
+                  // Add/update overlay only if it's different from current or doesn't exist
+                  if (!tile.waterOverlaySprite || tile.waterOverlayType !== edgeType) {
+                      tile.addWaterOverlay(edgeType, this.tilesets);
+                  }
+              } else {
+                  // If no condition met, ensure no overlay exists
+                  if (tile.waterOverlaySprite) {
+                      tile.removeWaterOverlay(); // Ensure removeWaterOverlay exists in Tile.js
+                  }
+              }
+          } else {
+               // If tile is NOT grass, ensure it doesn't have a water overlay
+               if (tile.waterOverlaySprite) {
+                   tile.removeWaterOverlay(); // Ensure removeWaterOverlay exists in Tile.js
+               }
+          }
+      }
+  }
 }
 
   
