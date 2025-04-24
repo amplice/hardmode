@@ -3,39 +3,30 @@ import { Assets, Texture, Rectangle } from 'pixi.js';
 
 export class TilesetManager {
   constructor() {
-    this.grassTextures = [];
-    this.sandTextures = [];
-    this.waterTextures = []; // <-- ADDED
-    this.plantTextures = [];
+    this.textures = {
+      grass: [],
+      sand: [],
+      water: [],
+      plants: []
+    };
     
     Assets.addBundle('tilesets', {
       grass: 'assets/sprites/tiles/Grass.png',
       sand: 'assets/sprites/tiles/Sand.png',
-      plants: 'assets/sprites/tiles/Plants.png',  // Add this line
-      water: 'assets/sprites/tiles/Water.png', // <-- ADDED Water.png asset
+      plants: 'assets/sprites/tiles/Plants.png',
+      water: 'assets/sprites/tiles/Water.png',
     });
   }
 
   async load() {
     await Assets.loadBundle('tilesets');
     
-    // Load grass tiles
-    const grassTex = Assets.get('grass');
-    this.grassTextures = this.sliceTileset(grassTex.baseTexture);
+    // Load tile textures
+    this.textures.grass = this.sliceTileset(Assets.get('grass').baseTexture);
+    this.textures.sand = this.sliceTileset(Assets.get('sand').baseTexture);
+    this.textures.water = this.sliceTileset(Assets.get('water').baseTexture);
+    this.textures.plants = this.slicePlantsTileset(Assets.get('plants').baseTexture);
     
-    // Load sand tiles
-    const sandTex = Assets.get('sand');
-    this.sandTextures = this.sliceTileset(sandTex.baseTexture);
-
-     // vvv ADDED vvv
-    // Load water tiles
-    const waterTex = Assets.get('water');
-    if (waterTex) this.waterTextures = this.sliceTileset(waterTex.baseTexture, 5, 3); // Slice water tileset (5x3)
-    // ^^^ ADDED ^^^
-    
-    const plantsTex = Assets.get('plants');
-this.plantTextures = this.slicePlantsTileset(plantsTex.baseTexture);
-
     console.log("Tilesets loaded successfully");
   }
   
@@ -57,11 +48,12 @@ this.plantTextures = this.slicePlantsTileset(plantsTex.baseTexture);
     
     return textures;
   }
+  
   slicePlantsTileset(baseTexture) {
     const tileSize = 16;
     const textures = [];
     
-    // Create a 6x3 array of textures (for the entire sheet)
+    // Create a 6x3 array of textures
     for (let row = 0; row < 6; row++) {
       for (let col = 0; col < 3; col++) {
         textures.push(
@@ -75,34 +67,39 @@ this.plantTextures = this.slicePlantsTileset(plantsTex.baseTexture);
     
     return textures;
   }
+  
   getPlantTexture(type) {
-    // Map type names to texture indices
     const textureMap = {
-      'plant': 9,      // row 3, col 0
-      'branches': 10,  // row 3, col 1
-      'twigs': 11,     // row 3, col 2
-      'flower1': 12,   // row 4, col 0
-      'flower2': 13,   // row 4, col 1
-      'flower3': 15,   // row 5, col 0
-      'flower4': 16    // row 5, col 1
+      'plant': 9,
+      'branches': 10,
+      'twigs': 11,
+      'flower1': 12,
+      'flower2': 13,
+      'flower3': 15,
+      'flower4': 16
     };
     
-    return this.plantTextures[textureMap[type]];
+    return this.textures.plants[textureMap[type]];
   }
   
-  // Get full grass tile (row 2, col 4)
+  // Full tile getters
   getFullGrassTile() {
-    return this.grassTextures[14];
+    return this.textures.grass[14]; // Row 2, Col 4
   }
   
-  // Get full sand tile (row 2, col 4)
   getFullSandTile() {
-    return this.sandTextures[14];
+    return this.textures.sand[14]; // Row 2, Col 4
   }
   
-  // Get transition piece from Grass.png
+  getFullWaterTile() {
+    // Choose from one of the full water tiles
+    const options = [6, 13, 14]; // Indices in the 5x3 grid
+    const index = options[Math.floor(Math.random() * options.length)];
+    return this.textures.water[index];
+  }
+  
+  // Transition tile getters
   getGrassTransition(position) {
-    // Map position to index in the grass tileset
     const positionMap = {
       'top-left': 0,     // Row 0, Col 0
       'top': 1,          // Row 0, Col 1
@@ -115,12 +112,10 @@ this.plantTextures = this.slicePlantsTileset(plantsTex.baseTexture);
     };
     
     const index = positionMap[position];
-    return this.grassTextures[index];
+    return index !== undefined ? this.textures.grass[index] : null;
   }
   
-  // Get inner corner match piece from Grass.png
   getInnerCornerMatch(matchType) {
-    // Map match type to index in the grass tileset
     const matchMap = {
       'top-left-match': 3,     // Row 0, Col 3
       'top-right-match': 4,    // Row 0, Col 4
@@ -129,41 +124,11 @@ this.plantTextures = this.slicePlantsTileset(plantsTex.baseTexture);
     };
     
     const index = matchMap[matchType];
-    return index !== undefined ? this.grassTextures[index] : null;
+    return index !== undefined ? this.textures.grass[index] : null;
   }
-  getWaterInnerCornerMatch(matchType) {
-    const matchMap = {
-      // Type name : index in the 5x3 water spritesheet
-      'inner-NE-match': 3, // Condition: N=W, W=W, NW=W (User's Bottom Case example maps to index 3)
-      'inner-NW-match': 4, // Condition: N=W, E=W, NE=W (Symmetric Case) maps to index 4
-      'inner-SE-match': 8, // Condition: S=W, W=W, SW=W (User's Top Case example maps to index 8)
-      'inner-SW-match': 9, // Condition: S=W, E=W, SE=W (Symmetric Case) maps to index 9
-    };
-    const index = matchMap[matchType];
-    // Basic validation
-    if (index !== undefined && index >= 0 && index < this.waterTextures.length) {
-       return this.waterTextures[index];
-    }
-    console.warn(`Water inner corner match tile for type "${matchType}" not found or index [${index}] out of bounds.`);
-    return null; // Return null if the index is invalid or not found
-}
-  // vvv ADDED vvv
-  // Add methods for getting water tiles
-  getFullWaterTile() {
-    // Use one of the full water tiles, e.g., (1, 1), (3, 2), or (4, 2)
-    // Indices based on 5x3 grid: (1,1)=6, (3,2)=13, (4,2)=14
-    const options = [6, 13, 14];
-    const validOptions = options.filter(index => index < this.waterTextures.length);
-    if (validOptions.length === 0) {
-        console.error("No valid full water tiles available!");
-        return Texture.WHITE; // Fallback
-    }
-    const randomIndex = validOptions[Math.floor(Math.random() * validOptions.length)];
-    return this.waterTextures[randomIndex];
-  }
-
+  
+  // Water edge and corner tiles
   getWaterEdgeTile(position) {
-    // Map position to index in the water tileset (Left Section)
     const positionMap = {
       'inner-top-left': 0,     // (0, 0)
       'inner-top': 1,          // (1, 0)
@@ -174,12 +139,26 @@ this.plantTextures = this.slicePlantsTileset(plantsTex.baseTexture);
       'inner-bottom': 11,      // (1, 2)
       'inner-bottom-right': 12 // (2, 2)
     };
+    
     const index = positionMap[position];
-    if (index !== undefined && index < this.waterTextures.length) {
-       return this.waterTextures[index];
+    if (index !== undefined && index < this.textures.water.length) {
+      return this.textures.water[index];
     }
-    console.warn(`Water edge tile for position "${position}" not found or index out of bounds.`);
-    return null; // Indicate texture not found
+    return null;
   }
-  // ^^^ ADDED ^^^
+  
+  getWaterInnerCornerMatch(matchType) {
+    const matchMap = {
+      'inner-NE-match': 3, // (3, 0)
+      'inner-NW-match': 4, // (4, 0)
+      'inner-SE-match': 8, // (3, 1)
+      'inner-SW-match': 9  // (4, 1)
+    };
+    
+    const index = matchMap[matchType];
+    if (index !== undefined && index < this.textures.water.length) {
+      return this.textures.water[index];
+    }
+    return null;
+  }
 }
