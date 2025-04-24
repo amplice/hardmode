@@ -1,3 +1,4 @@
+// src/js/systems/MonsterSystem.js
 import { Monster } from '../entities/monsters/Monster.js';
 
 export class MonsterSystem {
@@ -62,22 +63,8 @@ export class MonsterSystem {
         }
         
         if (validSpawn) {
-            // Choose a monster type based on distance from world center
-            const worldCenterX = this.world.width * this.world.tileSize / 2;
-            const worldCenterY = this.world.height * this.world.tileSize / 2;
-            const dx = spawnX - worldCenterX;
-            const dy = spawnY - worldCenterY;
-            const distanceFromCenter = Math.sqrt(dx * dx + dy * dy);
-            const normalizedDistance = distanceFromCenter / (this.world.width * this.world.tileSize / 2);
-            
-            let monsterType;
-            if (normalizedDistance < 0.3) {
-                monsterType = 'slime'; // Easy monsters near center
-            } else if (normalizedDistance < 0.7) {
-                monsterType = Math.random() < 0.7 ? 'slime' : 'goblin';
-            } else {
-                monsterType = Math.random() < 0.5 ? 'goblin' : 'skeleton';
-            }
+            // For now, only spawn skeletons
+            const monsterType = 'skeleton';
             
             // Create and add monster
             const monster = new Monster({

@@ -1,3 +1,4 @@
+// src/js/systems/animation/SpriteManager.js
 import * as PIXI from 'pixi.js';
 
 export class SpriteManager {
@@ -20,7 +21,10 @@ export class SpriteManager {
             this.loadSpritesheet('knight_strafe_left', 'assets/sprites/characters/Knight/StrafeLeft.png', 15, 8),
             this.loadSpritesheet('knight_strafe_right', 'assets/sprites/characters/Knight/StrafeRight.png', 15, 8),
             this.loadSpritesheet('knight_attack1', 'assets/sprites/characters/Knight/Attack1.png', 15, 8),
-            this.loadSpritesheet('knight_attack2', 'assets/sprites/characters/Knight/Attack2.png', 15, 8)
+            this.loadSpritesheet('knight_attack2', 'assets/sprites/characters/Knight/Attack2.png', 15, 8),
+            
+            // Monster sprites
+            this.loadSpritesheet('skeleton_walk', 'assets/sprites/monsters/Skeleton/Walk.png', 15, 8)
         ]);
 
         this.createAnimations();
@@ -74,6 +78,7 @@ export class SpriteManager {
     createAnimations() {
         // Define animations based on the loaded textures
         this.createKnightAnimations();
+        this.createSkeletonAnimations();
     }
 
     createKnightAnimations() {
@@ -123,6 +128,19 @@ export class SpriteManager {
                 textures: this.textures[`knight_attack2_${direction}`],
                 speed: 0.3,
                 hitFrame: 12
+            };
+        }
+    }
+    
+    createSkeletonAnimations() {
+        const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
+        
+        // Create walk animations for each direction
+        for (const direction of directions) {
+            // Walk animation
+            this.animations[`skeleton_walk_${direction}`] = {
+                textures: this.textures[`skeleton_walk_${direction}`],
+                speed: 0.4
             };
         }
     }
@@ -257,5 +275,29 @@ export class SpriteManager {
                 length: 110
             };
         }
+    }
+    
+    // New method for monster animations
+    getMonsterAnimationForDirection(monsterType, direction) {
+        // Convert 8-way direction to the format used in animations
+        const directionMap = {
+            'right': 'e',
+            'down-right': 'se',
+            'down': 's',
+            'down-left': 'sw',
+            'left': 'w',
+            'up-left': 'nw',
+            'up': 'n',
+            'up-right': 'ne'
+        };
+        
+        const facing = directionMap[direction] || 's'; // Default to south
+        
+        if (monsterType === 'skeleton') {
+            return `skeleton_walk_${facing}`;
+        }
+        
+        // Default fallback
+        return `skeleton_walk_s`;
     }
 }
