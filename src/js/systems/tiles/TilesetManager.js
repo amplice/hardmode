@@ -5,11 +5,14 @@ export class TilesetManager {
   constructor() {
     this.grassTextures = [];
     this.sandTextures = [];
+    this.waterTextures = []; // <-- ADDED
+    this.plantTextures = [];
     
     Assets.addBundle('tilesets', {
       grass: 'assets/sprites/tiles/Grass.png',
       sand: 'assets/sprites/tiles/Sand.png',
-      plants: 'assets/sprites/tiles/Plants.png'  // Add this line
+      plants: 'assets/sprites/tiles/Plants.png',  // Add this line
+      water: 'assets/sprites/tiles/Water.png', // <-- ADDED Water.png asset
     });
   }
 
@@ -23,9 +26,16 @@ export class TilesetManager {
     // Load sand tiles
     const sandTex = Assets.get('sand');
     this.sandTextures = this.sliceTileset(sandTex.baseTexture);
+
+     // vvv ADDED vvv
+    // Load water tiles
+    const waterTex = Assets.get('water');
+    if (waterTex) this.waterTextures = this.sliceTileset(waterTex.baseTexture, 5, 3); // Slice water tileset (5x3)
+    // ^^^ ADDED ^^^
     
     const plantsTex = Assets.get('plants');
 this.plantTextures = this.slicePlantsTileset(plantsTex.baseTexture);
+
     console.log("Tilesets loaded successfully");
   }
   
@@ -121,4 +131,39 @@ this.plantTextures = this.slicePlantsTileset(plantsTex.baseTexture);
     const index = matchMap[matchType];
     return index !== undefined ? this.grassTextures[index] : null;
   }
+  // vvv ADDED vvv
+  // Add methods for getting water tiles
+  getFullWaterTile() {
+    // Use one of the full water tiles, e.g., (1, 1), (3, 2), or (4, 2)
+    // Indices based on 5x3 grid: (1,1)=6, (3,2)=13, (4,2)=14
+    const options = [6, 13, 14];
+    const validOptions = options.filter(index => index < this.waterTextures.length);
+    if (validOptions.length === 0) {
+        console.error("No valid full water tiles available!");
+        return Texture.WHITE; // Fallback
+    }
+    const randomIndex = validOptions[Math.floor(Math.random() * validOptions.length)];
+    return this.waterTextures[randomIndex];
+  }
+
+  getWaterEdgeTile(position) {
+    // Map position to index in the water tileset (Left Section)
+    const positionMap = {
+      'inner-top-left': 0,     // (0, 0)
+      'inner-top': 1,          // (1, 0)
+      'inner-top-right': 2,    // (2, 0)
+      'inner-left': 5,         // (0, 1)
+      'inner-right': 7,        // (2, 1)
+      'inner-bottom-left': 10, // (0, 2)
+      'inner-bottom': 11,      // (1, 2)
+      'inner-bottom-right': 12 // (2, 2)
+    };
+    const index = positionMap[position];
+    if (index !== undefined && index < this.waterTextures.length) {
+       return this.waterTextures[index];
+    }
+    console.warn(`Water edge tile for position "${position}" not found or index out of bounds.`);
+    return null; // Indicate texture not found
+  }
+  // ^^^ ADDED ^^^
 }

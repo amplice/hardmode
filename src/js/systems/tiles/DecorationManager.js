@@ -29,6 +29,12 @@ export class DecorationManager {
       for (let x = 0; x < this.world.width; x++) {
         const tile = this.world.tiles[y][x];
         const tileType = tile.type;
+
+         // vvv ADDED vvv - Skip water tiles entirely
+         if (tileType === 'water') {
+          continue;
+      }
+      // ^^^ ADDED ^^^
         
         // Try to place each decoration type
         for (const decType of decorationTypes) {

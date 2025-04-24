@@ -11,6 +11,7 @@ export class WorldGenerator {
     this.tileSize = options.tileSize || 32;
     this.tilesets = options.tilesets;
     this.noise2D = createNoise2D();
+    this.waterNoise2D = createNoise2D(Math.random); // ADDED: Separate noise for water
     this.decorations = null;
     this.container = new PIXI.Container();
     this.tiles = [];
@@ -19,6 +20,9 @@ export class WorldGenerator {
   generate() {
     
     const noiseScale = 0.05;
+    const waterNoiseScale = 0.08;   // ADDED: Tune for lake size
+    const waterThreshold = -0.3;    // ADDED: Tune for water amount
+    const sandDistanceThreshold = 3;// ADDED: Min distance from sand
     this.createWorldBoundary();
     // Create base terrain using noise
     for (let y = 0; y < this.height; y++) {
@@ -32,12 +36,41 @@ export class WorldGenerator {
         this.container.addChild(tile.container);
       }
     }
+    // --- Step 2: ADDED - Generate Water ---
+    console.log("Generating water...");
+    const potentialWaterTiles = [];
+    for (let y = 0; y < this.height; y++) {
+        for (let x = 0; x < this.width; x++) {
+            // Condition 1: Must be on a grass tile
+            if (this.tiles[y][x].type === 'grass') {
+                const waterNoiseValue = this.waterNoise2D(x * waterNoiseScale, y * waterNoiseScale);
+                // Condition 2: Noise value must be below threshold
+                if (waterNoiseValue < waterThreshold) {
+                    // Condition 3: Must be far enough from sand
+                    if (this.isFarEnoughFromSand(x, y, sandDistanceThreshold)) {
+                         potentialWaterTiles.push({x, y});
+                    }
+                }
+            }
+        }
+    }
+
+    // Convert potential water tiles to actual water tiles
+    potentialWaterTiles.forEach(pos => {
+        const tile = this.tiles[pos.y][pos.x];
+        if (tile && tile.type === 'grass') { // Double-check it's still grass before changing
+             // Use the new helper method to change type and base sprite
+             tile.setBaseType('water', this.tilesets);
+        }
+    });
+    console.log(`Generated ${potentialWaterTiles.length} water tiles.`);
     
     // Add a 9x9 sand area in the center for debugging
     // this.createDebugSandArea();
     
     // Process all transitions
     this.processTransitions();
+    this.processWaterTransitions();
     this.decorations = new DecorationManager(this, this.tilesets);
     const decorationsContainer = this.decorations.generateDecorations();
     this.container.addChild(decorationsContainer);
@@ -204,6 +237,79 @@ export class WorldGenerator {
       tile.addInnerCornerMatch('bottom-right-match', tilesets);
     }
   }
+  // --- ADDED New Methods ---
+  isFarEnoughFromSand(x, y, distance) {
+    for (let dy = -distance; dy <= distance; dy++) {
+        for (let dx = -distance; dx <= distance; dx++) {
+            if (dx === 0 && dy === 0) continue;
+
+            const checkX = x + dx;
+            const checkY = y + dy;
+
+            // Check bounds first
+            if (checkX >= 0 && checkX < this.width && checkY >= 0 && checkY < this.height) {
+                const neighborTileType = this.getTileType(checkX, checkY); // Use the getter that returns actual type
+                // Consider both 'sand' and 'transition' (which has a sand base) as sand proximity triggers
+                if (neighborTileType === 'sand' || neighborTileType === 'transition') {
+                     // Using Manhattan distance check for simplicity
+                     if (Math.abs(dx) + Math.abs(dy) <= distance) {
+                         return false; // Found sand or sand-based transition too close
+                     }
+                }
+            }
+        }
+    }
+    return true; // No sand found within the threshold
+}
+
+processWaterTransitions() {
+    // Apply water edge overlays onto adjacent GRASS tiles
+    for (let y = 0; y < this.height; y++) {
+        for (let x = 0; x < this.width; x++) {
+            const tile = this.tiles[y][x];
+
+            // Only apply overlays to grass tiles
+            if (tile.type === 'grass') {
+                // Check cardinal neighbors for water
+                 const neighbors = {
+                    n: this.getTileType(x, y - 1) === 'water',
+                    e: this.getTileType(x + 1, y) === 'water',
+                    s: this.getTileType(x, y + 1) === 'water',
+                    w: this.getTileType(x - 1, y) === 'water'
+                };
+
+                // Determine the correct edge overlay based on water neighbors
+                // Using the 'inner-' names matching TilesetManager.getWaterEdgeTile
+                let edgeType = null;
+                if (neighbors.n && neighbors.w && !neighbors.s && !neighbors.e) edgeType = 'inner-bottom-right';
+                else if (neighbors.n && neighbors.e && !neighbors.s && !neighbors.w) edgeType = 'inner-bottom-left';
+                else if (neighbors.s && neighbors.w && !neighbors.n && !neighbors.e) edgeType = 'inner-top-right';
+                else if (neighbors.s && neighbors.e && !neighbors.n && !neighbors.w) edgeType = 'inner-top-left';
+                else if (neighbors.n && !neighbors.s && !neighbors.e && !neighbors.w) edgeType = 'inner-bottom'; // Only N
+                else if (neighbors.s && !neighbors.n && !neighbors.e && !neighbors.w) edgeType = 'inner-top';    // Only S
+                else if (neighbors.w && !neighbors.e && !neighbors.n && !neighbors.s) edgeType = 'inner-right';  // Only W
+                else if (neighbors.e && !neighbors.w && !neighbors.n && !neighbors.s) edgeType = 'inner-left';   // Only E
+                // Add checks for 3 neighbors if needed (e.g., water N, S, W -> edge 'inner-right')
+                else if (neighbors.n && neighbors.s && neighbors.w && !neighbors.e) edgeType = 'inner-right';
+                else if (neighbors.n && neighbors.s && neighbors.e && !neighbors.w) edgeType = 'inner-left';
+                else if (neighbors.n && neighbors.w && neighbors.e && !neighbors.s) edgeType = 'inner-bottom';
+                else if (neighbors.s && neighbors.w && neighbors.e && !neighbors.n) edgeType = 'inner-top';
+
+                // Apply the overlay if an edge type was determined
+                if (edgeType) {
+                    tile.addWaterOverlay(edgeType, this.tilesets);
+                } else {
+                    // If no water neighbors, ensure no water overlay exists
+                    tile.removeWaterOverlay(); // Optional: add this method to Tile.js if needed
+                }
+            } else if (tile.waterOverlaySprite) {
+               // If a tile is NOT grass but somehow has a water overlay, remove it
+               tile.removeWaterOverlay();
+            }
+        }
+    }
+}
+
   
   // ADD THIS HELPER METHOD IF YOU DON'T ALREADY HAVE IT
   getTileType(x, y) {
