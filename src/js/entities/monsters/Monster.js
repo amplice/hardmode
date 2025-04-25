@@ -16,19 +16,15 @@ export class Monster {
         this.target = null;
         this.alive = true;
         
-        // Attack state
+        // Attack state - simplify
         this.isAttacking = false;
-        this.attackWindup = 0;
-        this.attackDuration = 0;
-        this.attackRecovery = 0;
-        this.isPlayingAttackAnimation = false;
+        this.attackCooldown = 0;
         
         // Stun state
         this.isStunned = false;
         this.stunDuration = 0.2; // Configurable stun duration in seconds
         this.stunTimer = 0;
         this.isTakingDamage = false;
-        
         // Create sprite container
         this.sprite = new PIXI.Container();
         this.sprite.position.set(this.position.x, this.position.y);
@@ -94,18 +90,17 @@ export class Monster {
         if (!this.alive) return;
         
         if (this.spriteManager && this.spriteManager.loaded) {
-            // Determine animation state based on current monster state
-            let animationState = 'idle';
+            // Determine a single animation state
+            let animationState;
             
             if (this.isStunned && this.isTakingDamage) {
                 animationState = 'hit';
-            } else if (this.shouldPlayAttackAnimation) {
+            } else if (this.isAttacking) {
                 animationState = 'attack1';
             } else if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
                 animationState = 'walk';
-                this.isMoving = true;
             } else {
-                this.isMoving = false;
+                animationState = 'idle';
             }
             
             // Get the animation name based on state and direction
@@ -145,14 +140,13 @@ export class Monster {
                     // Set animation complete callback for non-looping animations
                     if (!this.animatedSprite.loop) {
                         this.animatedSprite.onComplete = () => {
+                            // Don't change animation state until the attack sequence is complete
                             if (animationState === 'hit') {
-                                this.shouldPlayHitAnimation = false;
-                            } else if (animationState === 'attack1') {
-                                this.shouldPlayAttackAnimation = false;
+                                this.isTakingDamage = false;
+                                this.currentAnimation = null;
+                                this.updateAnimation();
                             }
-                            
-                            this.currentAnimation = null; // Force animation change
-                            this.updateAnimation();
+                            // For attack animations, let the attack logic handle completion
                         };
                     }
                 }
@@ -333,46 +327,53 @@ export class Monster {
         }
     }
     
-    startAttack() {
-        if (this.isAttacking) return; // Already attacking
+// In Monster.js - update the startAttack method
+startAttack() {
+    if (this.isAttacking) return; // Already attacking
+    
+    this.isAttacking = true;
+    console.log(`Monster ${this.type} preparing to attack!`);
+    
+    // Set up attack details
+    const attackDetails = this.getAttackDetails();
+    
+    // Force animation update to attack animation immediately
+    this.shouldPlayAttackAnimation = true;
+    this.currentAnimation = null; // Force animation change
+    this.updateAnimation();
+    
+    // Show attack windup indicator
+    this.updateAttackIndicator(true);
+    
+    // Schedule the actual attack to occur at the appropriate time
+    setTimeout(() => {
+        if (!this.isAttacking) return; // Check if attack was interrupted
         
-        this.isAttacking = true;
-        console.log(`Monster ${this.type} preparing to attack!`);
+        // Show active attack indicator
+        this.updateAttackIndicator(false, true);
+        this.executeAttack();
         
-        // Set up windup phase
-        const attackDetails = this.getAttackDetails();
-        this.attackWindup = attackDetails.windup;
-        
-        // Show attack windup indicator
-        this.updateAttackIndicator(true);
-        
-        // Trigger attack animation
-        this.shouldPlayAttackAnimation = true;
-        this.currentAnimation = null; // Force animation change
-        this.updateAnimation();
-        
-        // Schedule the actual attack to occur at the appropriate time
+        // Schedule indicator removal and end of attack sequence
         setTimeout(() => {
-            if (this.isAttacking) {
-                // Show active attack indicator
-                this.updateAttackIndicator(false, true);
-                this.executeAttack();
-                
-                // Schedule indicator removal and end of attack sequence
-                setTimeout(() => {
-                    if (this.attackIndicator) {
-                        this.attackIndicator.clear();
-                    }
-                    
-                    // End attack state and start cooldown
-                    this.isAttacking = false;
-                    this.attackCooldown = attackDetails.cooldown;
-                    
-                    console.log(`Monster attack complete, cooldown set to ${this.attackCooldown}`);
-                }, attackDetails.duration * 1000);
+            if (!this.alive || !this.isAttacking) return;
+            
+            if (this.attackIndicator) {
+                this.attackIndicator.clear();
             }
-        }, attackDetails.windup * 1000);
-    }
+            
+            // End attack state and start cooldown
+            this.isAttacking = false;
+            this.shouldPlayAttackAnimation = false;
+            this.attackCooldown = attackDetails.cooldown;
+            
+            // Force animation update to return to idle/walk
+            this.currentAnimation = null;
+            this.updateAnimation();
+            
+            console.log(`Monster attack complete, cooldown set to ${this.attackCooldown}`);
+        }, attackDetails.duration * 1000);
+    }, attackDetails.windup * 1000);
+}
     
     updateAttackIndicator(isWindup = false, isActive = false) {
         this.attackIndicator.clear();
@@ -576,19 +577,18 @@ export class Monster {
             }
         }
         
-        // Play take damage animation
-        this.shouldPlayHitAnimation = true;
+        // Update animation to hit animation
         this.currentAnimation = null; // Force animation change
         this.updateAnimation();
         
-        // Apply red tint AFTER creating the new sprite in updateAnimation
+        // Apply red tint
         if (this.animatedSprite) {
             this.animatedSprite.tint = 0xFF0000;
         } else if (this.baseSprite) {
             this.baseSprite.tint = 0xFF0000;
         }
         
-        // Reset tint and damage state after a delay
+        // Reset tint after a delay
         setTimeout(() => {
             if (this.alive) {
                 if (this.animatedSprite) {
@@ -596,7 +596,6 @@ export class Monster {
                 } else if (this.baseSprite) {
                     this.baseSprite.tint = 0xFFFFFF;
                 }
-                this.isTakingDamage = false;
             }
         }, 200);
     }
