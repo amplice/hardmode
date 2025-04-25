@@ -19,6 +19,9 @@ export class Player {
         this.lastFacing = this.facing;
         this.isDying = false;
         this.isDead = false;
+        this.isTakingDamage = false;
+    this.damageStunDuration = 0.25; // Configurable stun duration in seconds (default: 0.15s)
+    this.damageStunTimer = 0;
         
         // Create animated sprite container
         this.sprite = new PIXI.Container();
@@ -147,7 +150,7 @@ export class Player {
     getClassHitPoints() {
         // According to class specifications
         switch(this.characterClass) {
-            case 'bladedancer': return 2;
+            case 'bladedancer': return 10;
             case 'guardian': return 3;
             case 'hunter': return 1;
             case 'rogue': return 1;
@@ -167,6 +170,21 @@ export class Player {
     }
     
     update(deltaTime, inputState) {
+            // Process damage stun timer if active
+    if (this.isTakingDamage) {
+        this.damageStunTimer -= deltaTime;
+        if (this.damageStunTimer <= 0) {
+            this.isTakingDamage = false;
+            this.damageStunTimer = 0;
+            // Force animation update to return to normal animations
+            this.currentAnimation = null;
+            this.updateAnimation();
+        }
+        
+        // Only update sprite position during stun
+        this.sprite.position.set(this.position.x, this.position.y);
+        return;
+    }
         if (this.isDying || this.isDead) {
             // Only update sprite position
             this.sprite.position.set(this.position.x, this.position.y);
@@ -308,6 +326,10 @@ export class Player {
         if (this.isDying) {
             return;
         }
+                // If taking damage or dying, don't change animation
+                if (this.isTakingDamage || this.isDying) {
+                    return;
+                }
             
             // If attacking, don't change animation
             if (this.isAttacking) {
@@ -466,19 +488,68 @@ export class Player {
         console.log(`Player took ${amount} damage!`);
         this.hitPoints -= amount;
         
-        // Make player flash red
-        if (this.animatedSprite) {
-            this.animatedSprite.tint = 0xFF0000;
-            setTimeout(() => {
-                this.animatedSprite.tint = 0xFFFFFF;
-            }, 200);
+        // Don't play take damage animation if already dead or dying
+        if (this.hitPoints <= 0 || this.isDying || this.isDead) {
+            if (this.hitPoints <= 0) {
+                this.die();
+            }
+            return;
         }
         
-        if (this.hitPoints <= 0) {
-            this.die();
+        // Start take damage stun and animation
+        this.isTakingDamage = true;
+        this.damageStunTimer = this.damageStunDuration;
+        
+        // Play take damage animation
+        if (this.spriteManager && this.spriteManager.loaded) {
+            // Get take damage animation for current facing direction
+            const damageAnimName = `knight_take_damage_${this.getFacingAnimationKey()}`;
+            this.currentAnimation = damageAnimName;
+            
+            // Remove old sprite and create new take damage animation
+            if (this.animatedSprite && this.animatedSprite.parent) {
+                this.sprite.removeChild(this.animatedSprite);
+            }
+            
+            this.animatedSprite = this.spriteManager.createAnimatedSprite(damageAnimName);
+            if (this.animatedSprite) {
+                // Don't loop the take damage animation
+                this.animatedSprite.loop = false;
+                this.animatedSprite.play();
+                this.sprite.addChild(this.animatedSprite);
+                
+                // Also apply the red tint for visual clarity
+                this.animatedSprite.tint = 0xFF0000;
+                
+                // Set up animation complete callback
+                this.animatedSprite.onComplete = () => {
+                    // Reset tint after animation completes
+                    if (this.animatedSprite) {
+                        this.animatedSprite.tint = 0xFFFFFF;
+                    }
+                    
+                    // If the stun duration is longer than the animation,
+                    // let the stun timer handle the state reset
+                    if (this.damageStunTimer <= 0) {
+                        this.isTakingDamage = false;
+                        // Force animation update
+                        this.currentAnimation = null;
+                        this.updateAnimation();
+                    }
+                };
+            }
+        } else {
+            // Fallback to just the flash effect if no sprite manager
+            if (this.animatedSprite) {
+                this.animatedSprite.tint = 0xFF0000;
+                setTimeout(() => {
+                    if (this.animatedSprite) {
+                        this.animatedSprite.tint = 0xFFFFFF;
+                    }
+                }, 200);
+            }
         }
     }
-    
     die() {
         console.log("Player died!");
         this.isDying = true;
