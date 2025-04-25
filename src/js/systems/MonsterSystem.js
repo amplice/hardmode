@@ -14,9 +14,13 @@ export class MonsterSystem {
         // Update existing monsters
         for (let i = this.monsters.length - 1; i >= 0; i--) {
             const monster = this.monsters[i];
-            monster.update(deltaTime, player, this.world);
             
-            // Remove dead monsters that have faded out
+            // Only update live monsters
+            if (monster.alive) {
+                monster.update(deltaTime, player, this.world);
+            }
+            
+            // Remove completely faded out dead monsters
             if (!monster.alive && monster.sprite.alpha <= 0) {
                 this.monsters.splice(i, 1);
             }

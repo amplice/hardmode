@@ -28,7 +28,8 @@ export class SpriteManager {
             this.loadSpritesheet('skeleton_walk', 'assets/sprites/monsters/Skeleton/Walk.png', 15, 8),
             this.loadSpritesheet('skeleton_idle', 'assets/sprites/monsters/Skeleton/Idle.png', 15, 8),
             this.loadSpritesheet('skeleton_attack1', 'assets/sprites/monsters/Skeleton/Attack1.png', 15, 8),
-            this.loadSpritesheet('skeleton_take_damage', 'assets/sprites/monsters/Skeleton/TakeDamage.png', 15, 8) // Add skeleton take damage
+            this.loadSpritesheet('skeleton_take_damage', 'assets/sprites/monsters/Skeleton/TakeDamage.png', 15, 8),
+            this.loadSpritesheet('skeleton_die', 'assets/sprites/monsters/Skeleton/Die.png', 15, 8) // Add skeleton death animation
         ]);
     
         this.createAnimations();
@@ -174,6 +175,12 @@ export class SpriteManager {
             textures: this.textures[`skeleton_take_damage_${direction}`],
             speed: 0.3
         };
+                // Death animation
+                this.animations[`skeleton_die_${direction}`] = {
+                    textures: this.textures[`skeleton_die_${direction}`],
+                    speed: 0.2
+                };
+        
         }
     }
 
@@ -325,9 +332,11 @@ export class SpriteManager {
         const facing = directionMap[direction] || 's'; // Default to south
         
         if (monsterType === 'skeleton') {
-            // Map 'hit' state to take_damage
+            // Handle special animation states
             if (state === 'hit') {
                 return `skeleton_take_damage_${facing}`;
+            } else if (state === 'die') {
+                return `skeleton_die_${facing}`;
             }
             
             return `skeleton_${state}_${facing}`;

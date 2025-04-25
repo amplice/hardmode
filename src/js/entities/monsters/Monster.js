@@ -16,19 +16,18 @@ export class Monster {
         this.target = null;
         this.alive = true;
         
-        
         // Attack state
         this.isAttacking = false;
         this.attackWindup = 0;
         this.attackDuration = 0;
         this.attackRecovery = 0;
         this.isPlayingAttackAnimation = false;
-
-        // Add hit stun properties
-    this.isStunned = false;
-    this.stunDuration = 0.4; // Configurable stun duration in seconds
-    this.stunTimer = 0;
-    this.damageAnimationPlaying = false;
+        
+        // Stun state
+        this.isStunned = false;
+        this.stunDuration = 0.2; // Configurable stun duration in seconds
+        this.stunTimer = 0;
+        this.isTakingDamage = false;
         
         // Create sprite container
         this.sprite = new PIXI.Container();
@@ -79,6 +78,7 @@ export class Monster {
             this.sprite.addChild(this.attackIndicator);
         }
     }
+    
     onAnimationComplete() {
         if (this.isPlayingAttackAnimation && this.animatedSprite) {
             console.log("Attack animation completed");
@@ -88,12 +88,16 @@ export class Monster {
             // We'll show idle/walk after attack state completes
         }
     }
+    
     updateAnimation() {
+        // Don't update animation if monster is dead
+        if (!this.alive) return;
+        
         if (this.spriteManager && this.spriteManager.loaded) {
             // Determine animation state based on current monster state
             let animationState = 'idle';
             
-            if (this.isStunned && this.shouldPlayHitAnimation) {
+            if (this.isStunned && this.isTakingDamage) {
                 animationState = 'hit';
             } else if (this.shouldPlayAttackAnimation) {
                 animationState = 'attack1';
@@ -370,254 +374,257 @@ export class Monster {
         }, attackDetails.windup * 1000);
     }
     
-// Replace the updateAttackIndicator method in Monster.js for Bug #2
-updateAttackIndicator(isWindup = false, isActive = false) {
-    this.attackIndicator.clear();
-    
-    if (!isWindup && !isActive) return;
-    
-    const attackDetails = this.getAttackDetails();
-    const range = attackDetails.range;
-    
-    // Different visual for windup vs active attack
-    const alpha = isWindup ? 0.3 : 0.7;
-    const color = isActive ? 0x00FF00 : attackDetails.color;
-    
-    // Clear any previous rotation
-    this.attackIndicator.rotation = 0;
-    
-    // Draw based on attack pattern
-    switch (attackDetails.pattern) {
-        case 'circle':
-            // Circle attack (omnidirectional)
-            this.attackIndicator.beginFill(color, alpha);
-            this.attackIndicator.drawCircle(0, 0, range);
-            this.attackIndicator.endFill();
-            break;
-            
-        case 'cone':
-            // Cone attack (in facing direction)
-            this.attackIndicator.beginFill(color, alpha);
-            
-            // Use a consistent approach for all directions
-            // Start with the cone pointing right (0 radians)
-            const coneAngle = Math.PI / 2; // 90 degree cone
-            const startAngle = -coneAngle / 2;
-            const endAngle = coneAngle / 2;
-            
-            // Draw the basic cone shape pointing right
-            this.attackIndicator.moveTo(0, 0);
-            this.attackIndicator.arc(0, 0, range, startAngle, endAngle);
-            this.attackIndicator.lineTo(0, 0);
-            this.attackIndicator.endFill();
-            
-            // Then rotate the entire cone based on facing direction
-            let rotation = 0;
-            switch(this.facing) {
-                case 'right': rotation = 0; break;
-                case 'down-right': rotation = Math.PI / 4; break;
-                case 'down': rotation = Math.PI / 2; break;
-                case 'down-left': rotation = 3 * Math.PI / 4; break;
-                case 'left': rotation = Math.PI; break;
-                case 'up-left': rotation = 5 * Math.PI / 4; break;
-                case 'up': rotation = 3 * Math.PI / 2; break;
-                case 'up-right': rotation = 7 * Math.PI / 4; break;
-            }
-            
-            this.attackIndicator.rotation = rotation;
-            break;
-            
-        case 'line':
-            // Line attack (in facing direction)
-            this.attackIndicator.beginFill(color, alpha);
-            
-            // Create a rectangle pointing right (0 radians)
-            const width = 30; // Width of the line attack
-            this.attackIndicator.drawRect(0, -width / 2, range, width);
-            this.attackIndicator.endFill();
-            
-            // Rotate based on facing direction
-            let lineRotation = 0;
-            switch(this.facing) {
-                case 'right': lineRotation = 0; break;
-                case 'down-right': lineRotation = Math.PI / 4; break;
-                case 'down': lineRotation = Math.PI / 2; break;
-                case 'down-left': lineRotation = 3 * Math.PI / 4; break;
-                case 'left': lineRotation = Math.PI; break;
-                case 'up-left': lineRotation = 5 * Math.PI / 4; break;
-                case 'up': lineRotation = 3 * Math.PI / 2; break;
-                case 'up-right': lineRotation = 7 * Math.PI / 4; break;
-            }
-            
-            this.attackIndicator.rotation = lineRotation;
-            break;
-    }
-}
-    
-executeAttack() {
-    console.log(`Monster ${this.type} attacks!`);
-    
-    if (!this.target) return;
-    
-    const attackDetails = this.getAttackDetails();
-    const dx = this.target.position.x - this.position.x;
-    const dy = this.target.position.y - this.position.y;
-    const distToTarget = Math.sqrt(dx * dx + dy * dy);
-    
-    let hit = false;
-    
-    // Check if player is in range
-    if (distToTarget <= attackDetails.range) {
+    updateAttackIndicator(isWindup = false, isActive = false) {
+        this.attackIndicator.clear();
+        
+        if (!isWindup && !isActive) return;
+        
+        const attackDetails = this.getAttackDetails();
+        const range = attackDetails.range;
+        
+        // Different visual for windup vs active attack
+        const alpha = isWindup ? 0.3 : 0.7;
+        const color = isActive ? 0xFF0000 : attackDetails.color;
+        
+        // Clear any previous rotation
+        this.attackIndicator.rotation = 0;
+        
+        // Draw based on attack pattern
         switch (attackDetails.pattern) {
             case 'circle':
-                // Circle hits in all directions within range
-                hit = true;
+                // Circle attack (omnidirectional)
+                this.attackIndicator.beginFill(color, alpha);
+                this.attackIndicator.drawCircle(0, 0, range);
+                this.attackIndicator.endFill();
                 break;
                 
             case 'cone':
-                // Get angle to target (in standard form, 0 = right, increases counterclockwise)
-                let angle = Math.atan2(dy, dx);
+                // Cone attack (in facing direction)
+                this.attackIndicator.beginFill(color, alpha);
                 
-                // Get facing angle in the same format
-                let facingAngle = 0;
+                // Use a consistent approach for all directions
+                // Start with the cone pointing right (0 radians)
+                const coneAngle = Math.PI / 2; // 90 degree cone
+                const startAngle = -coneAngle / 2;
+                const endAngle = coneAngle / 2;
+                
+                // Draw the basic cone shape pointing right
+                this.attackIndicator.moveTo(0, 0);
+                this.attackIndicator.arc(0, 0, range, startAngle, endAngle);
+                this.attackIndicator.lineTo(0, 0);
+                this.attackIndicator.endFill();
+                
+                // Then rotate the entire cone based on facing direction
+                let rotation = 0;
                 switch(this.facing) {
-                    case 'right': facingAngle = 0; break;
-                    case 'down-right': facingAngle = Math.PI / 4; break;
-                    case 'down': facingAngle = Math.PI / 2; break;
-                    case 'down-left': facingAngle = 3 * Math.PI / 4; break;
-                    case 'left': facingAngle = Math.PI; break;
-                    case 'up-left': facingAngle = 5 * Math.PI / 4; break;
-                    case 'up': facingAngle = 3 * Math.PI / 2; break;
-                    case 'up-right': facingAngle = 7 * Math.PI / 4; break;
+                    case 'right': rotation = 0; break;
+                    case 'down-right': rotation = Math.PI / 4; break;
+                    case 'down': rotation = Math.PI / 2; break;
+                    case 'down-left': rotation = 3 * Math.PI / 4; break;
+                    case 'left': rotation = Math.PI; break;
+                    case 'up-left': rotation = 5 * Math.PI / 4; break;
+                    case 'up': rotation = 3 * Math.PI / 2; break;
+                    case 'up-right': rotation = 7 * Math.PI / 4; break;
                 }
                 
-                // Calculate the angle difference
-                let angleDiff = Math.abs(angle - facingAngle);
-                // Normalize to [0, 2π)
-                while (angleDiff < 0) angleDiff += 2 * Math.PI;
-                while (angleDiff >= 2 * Math.PI) angleDiff -= 2 * Math.PI;
-                // Convert to smallest angle difference
-                if (angleDiff > Math.PI) angleDiff = 2 * Math.PI - angleDiff;
-                
-                // Check if target is within the cone angle (90 degrees = π/2 radians)
-                const coneHalfAngle = Math.PI / 4; // 45 degrees on each side
-                hit = (angleDiff <= coneHalfAngle);
-                
+                this.attackIndicator.rotation = rotation;
                 break;
                 
             case 'line':
-                // Calculate the angle to the player from the monster's position
-                let targetAngle = Math.atan2(dy, dx);
+                // Line attack (in facing direction)
+                this.attackIndicator.beginFill(color, alpha);
                 
-                // Get monster's facing angle in the same radians format
-                let monsterFacingAngle = 0;
+                // Create a rectangle pointing right (0 radians)
+                const width = 30; // Width of the line attack
+                this.attackIndicator.drawRect(0, -width / 2, range, width);
+                this.attackIndicator.endFill();
+                
+                // Rotate based on facing direction
+                let lineRotation = 0;
                 switch(this.facing) {
-                    case 'right': monsterFacingAngle = 0; break;
-                    case 'down-right': monsterFacingAngle = Math.PI / 4; break;
-                    case 'down': monsterFacingAngle = Math.PI / 2; break;
-                    case 'down-left': monsterFacingAngle = 3 * Math.PI / 4; break;
-                    case 'left': monsterFacingAngle = Math.PI; break;
-                    case 'up-left': monsterFacingAngle = 5 * Math.PI / 4; break;
-                    case 'up': monsterFacingAngle = 3 * Math.PI / 2; break;
-                    case 'up-right': monsterFacingAngle = 7 * Math.PI / 4; break;
+                    case 'right': lineRotation = 0; break;
+                    case 'down-right': lineRotation = Math.PI / 4; break;
+                    case 'down': lineRotation = Math.PI / 2; break;
+                    case 'down-left': lineRotation = 3 * Math.PI / 4; break;
+                    case 'left': lineRotation = Math.PI; break;
+                    case 'up-left': lineRotation = 5 * Math.PI / 4; break;
+                    case 'up': lineRotation = 3 * Math.PI / 2; break;
+                    case 'up-right': lineRotation = 7 * Math.PI / 4; break;
                 }
                 
-                // Calculate angle difference
-                let lineAngleDiff = Math.abs(targetAngle - monsterFacingAngle);
-                // Normalize to smallest angle difference
-                while (lineAngleDiff < 0) lineAngleDiff += 2 * Math.PI;
-                while (lineAngleDiff >= 2 * Math.PI) lineAngleDiff -= 2 * Math.PI;
-                if (lineAngleDiff > Math.PI) lineAngleDiff = 2 * Math.PI - lineAngleDiff;
-                
-                // Line attack has narrow angle tolerance and checks distance
-                const angleThreshold = Math.PI / 12; // 15 degrees tolerance
-                const lineWidth = 30;
-                
-                // Calculate lateral distance from the line
-                const perpendicularDist = Math.abs(distToTarget * Math.sin(lineAngleDiff));
-                
-                // Hit if the angle is small enough and perpendicular distance is within line width
-                hit = (lineAngleDiff <= angleThreshold && perpendicularDist <= lineWidth / 2);
-                
+                this.attackIndicator.rotation = lineRotation;
                 break;
         }
     }
     
-    if (hit && this.target.takeDamage) {
-        this.target.takeDamage(this.attackDamage);
-    }
-}
-    
-takeDamage(amount) {
-    this.hitPoints -= amount;
-    
-    // Don't play stun animation if already dead
-    if (this.hitPoints <= 0) {
-        this.die();
-        return;
-    }
-    
-    // Apply stun
-    this.isStunned = true;
-    this.stunTimer = this.stunDuration;
-    this.isTakingDamage = true; // New flag to track damage state
-    
-    // Cancel any attack in progress
-    if (this.isAttacking) {
-        this.isAttacking = false;
-        if (this.attackIndicator) {
-            this.attackIndicator.clear();
-        }
-    }
-    
-    // Play take damage animation
-    this.shouldPlayHitAnimation = true;
-    this.currentAnimation = null; // Force animation change
-    this.updateAnimation();
-    
-    // Apply red tint AFTER creating the new sprite in updateAnimation
-    if (this.animatedSprite) {
-        this.animatedSprite.tint = 0xFF0000;
-    } else if (this.baseSprite) {
-        this.baseSprite.tint = 0xFF0000;
-    }
-    
-    // Reset tint after a delay
-    setTimeout(() => {
-        if (this.alive) {
-            if (this.animatedSprite) {
-                this.animatedSprite.tint = 0xFFFFFF;
-            } else if (this.baseSprite) {
-                this.baseSprite.tint = 0xFFFFFF;
-            }
-            this.isTakingDamage = false;
-        }
-    }, 200);
-}
-
-    update(deltaTime, player, world) {
-        if (!this.alive) return;
-
-            // Process stun timer if active
-    if (this.isStunned) {
-        this.stunTimer -= deltaTime;
-        if (this.stunTimer <= 0) {
-            this.isStunned = false;
-            this.stunTimer = 0;
-            
-            // If attack was interrupted by damage, cancel it
-            if (this.isAttacking) {
-                this.isAttacking = false;
-                if (this.attackIndicator) {
-                    this.attackIndicator.clear();
-                }
+    executeAttack() {
+        console.log(`Monster ${this.type} attacks!`);
+        
+        if (!this.target) return;
+        
+        const attackDetails = this.getAttackDetails();
+        const dx = this.target.position.x - this.position.x;
+        const dy = this.target.position.y - this.position.y;
+        const distToTarget = Math.sqrt(dx * dx + dy * dy);
+        
+        let hit = false;
+        
+        // Check if player is in range
+        if (distToTarget <= attackDetails.range) {
+            switch (attackDetails.pattern) {
+                case 'circle':
+                    // Circle hits in all directions within range
+                    hit = true;
+                    break;
+                    
+                case 'cone':
+                    // Get angle to target (in standard form, 0 = right, increases counterclockwise)
+                    let angle = Math.atan2(dy, dx);
+                    
+                    // Get facing angle in the same format
+                    let facingAngle = 0;
+                    switch(this.facing) {
+                        case 'right': facingAngle = 0; break;
+                        case 'down-right': facingAngle = Math.PI / 4; break;
+                        case 'down': facingAngle = Math.PI / 2; break;
+                        case 'down-left': facingAngle = 3 * Math.PI / 4; break;
+                        case 'left': facingAngle = Math.PI; break;
+                        case 'up-left': facingAngle = 5 * Math.PI / 4; break;
+                        case 'up': facingAngle = 3 * Math.PI / 2; break;
+                        case 'up-right': facingAngle = 7 * Math.PI / 4; break;
+                    }
+                    
+                    // Calculate the angle difference
+                    let angleDiff = Math.abs(angle - facingAngle);
+                    // Normalize to [0, 2π)
+                    while (angleDiff < 0) angleDiff += 2 * Math.PI;
+                    while (angleDiff >= 2 * Math.PI) angleDiff -= 2 * Math.PI;
+                    // Convert to smallest angle difference
+                    if (angleDiff > Math.PI) angleDiff = 2 * Math.PI - angleDiff;
+                    
+                    // Check if target is within the cone angle (90 degrees = π/2 radians)
+                    const coneHalfAngle = Math.PI / 4; // 45 degrees on each side
+                    hit = (angleDiff <= coneHalfAngle);
+                    
+                    break;
+                    
+                case 'line':
+                    // Calculate the angle to the player from the monster's position
+                    let targetAngle = Math.atan2(dy, dx);
+                    
+                    // Get monster's facing angle in the same radians format
+                    let monsterFacingAngle = 0;
+                    switch(this.facing) {
+                        case 'right': monsterFacingAngle = 0; break;
+                        case 'down-right': monsterFacingAngle = Math.PI / 4; break;
+                        case 'down': monsterFacingAngle = Math.PI / 2; break;
+                        case 'down-left': monsterFacingAngle = 3 * Math.PI / 4; break;
+                        case 'left': monsterFacingAngle = Math.PI; break;
+                        case 'up-left': monsterFacingAngle = 5 * Math.PI / 4; break;
+                        case 'up': monsterFacingAngle = 3 * Math.PI / 2; break;
+                        case 'up-right': monsterFacingAngle = 7 * Math.PI / 4; break;
+                    }
+                    
+                    // Calculate angle difference
+                    let lineAngleDiff = Math.abs(targetAngle - monsterFacingAngle);
+                    // Normalize to smallest angle difference
+                    while (lineAngleDiff < 0) lineAngleDiff += 2 * Math.PI;
+                    while (lineAngleDiff >= 2 * Math.PI) lineAngleDiff -= 2 * Math.PI;
+                    if (lineAngleDiff > Math.PI) lineAngleDiff = 2 * Math.PI - lineAngleDiff;
+                    
+                    // Line attack has narrow angle tolerance and checks distance
+                    const angleThreshold = Math.PI / 12; // 15 degrees tolerance
+                    const lineWidth = 30;
+                    
+                    // Calculate lateral distance from the line
+                    const perpendicularDist = Math.abs(distToTarget * Math.sin(lineAngleDiff));
+                    
+                    // Hit if the angle is small enough and perpendicular distance is within line width
+                    hit = (lineAngleDiff <= angleThreshold && perpendicularDist <= lineWidth / 2);
+                    
+                    break;
             }
         }
         
-        // Only update sprite position during stun
-        this.sprite.position.set(this.position.x, this.position.y);
-        return;
+        if (hit && this.target.takeDamage) {
+            this.target.takeDamage(this.attackDamage);
+        }
     }
+    
+    takeDamage(amount) {
+        // Don't process damage if already dead
+        if (!this.alive) return;
+        
+        this.hitPoints -= amount;
+        
+        // Check for death first
+        if (this.hitPoints <= 0) {
+            this.die();
+            return;
+        }
+        
+        // Apply stun
+        this.isStunned = true;
+        this.stunTimer = this.stunDuration;
+        this.isTakingDamage = true;
+        
+        // Cancel any attack in progress
+        if (this.isAttacking) {
+            this.isAttacking = false;
+            if (this.attackIndicator) {
+                this.attackIndicator.clear();
+            }
+        }
+        
+        // Play take damage animation
+        this.shouldPlayHitAnimation = true;
+        this.currentAnimation = null; // Force animation change
+        this.updateAnimation();
+        
+        // Apply red tint AFTER creating the new sprite in updateAnimation
+        if (this.animatedSprite) {
+            this.animatedSprite.tint = 0xFF0000;
+        } else if (this.baseSprite) {
+            this.baseSprite.tint = 0xFF0000;
+        }
+        
+        // Reset tint and damage state after a delay
+        setTimeout(() => {
+            if (this.alive) {
+                if (this.animatedSprite) {
+                    this.animatedSprite.tint = 0xFFFFFF;
+                } else if (this.baseSprite) {
+                    this.baseSprite.tint = 0xFFFFFF;
+                }
+                this.isTakingDamage = false;
+            }
+        }, 200);
+    }
+    
+    update(deltaTime, player, world) {
+        // Don't do any updates if dead
+        if (!this.alive) return;
+        
+        // Process stun timer if active
+        if (this.isStunned) {
+            this.stunTimer -= deltaTime;
+            if (this.stunTimer <= 0) {
+                this.isStunned = false;
+                this.stunTimer = 0;
+                
+                // If attack was interrupted by damage, cancel it
+                if (this.isAttacking) {
+                    this.isAttacking = false;
+                    if (this.attackIndicator) {
+                        this.attackIndicator.clear();
+                    }
+                }
+            }
+            
+            // Only update sprite position during stun
+            this.sprite.position.set(this.position.x, this.position.y);
+            return;
+        }
         
         // Decrease attack cooldown
         if (this.attackCooldown > 0) {
@@ -731,31 +738,72 @@ takeDamage(amount) {
             this.attackCooldown -= deltaTime;
         }
     }
+    
     die() {
+        // If already dead, don't do anything
+        if (!this.alive) return;
+        
         console.log(`Monster ${this.type} has been defeated!`);
+        
+        // Immediately mark as not alive to prevent any other systems from updating it
         this.alive = false;
         
-        // Cancel any attack in progress and clear any timers
+        // Cancel any attack in progress and clear indicators
         this.isAttacking = false;
-        if (this.hitTimer) {
-            clearTimeout(this.hitTimer);
-            this.hitTimer = null;
+        if (this.attackIndicator) {
+            this.attackIndicator.clear();
         }
-        this.attackIndicator.clear();
         
-        // Death animation - fade out
-        const fadeOut = () => {
-            this.sprite.alpha -= 0.1;
-            if (this.sprite.alpha > 0) {
-                requestAnimationFrame(fadeOut);
-            } else {
-                // Remove from game
-                if (this.sprite.parent) {
-                    this.sprite.parent.removeChild(this.sprite);
-                }
+        // Play death animation
+        if (this.spriteManager && this.spriteManager.loaded) {
+            const deathAnimName = this.spriteManager.getMonsterAnimationForDirection(
+                this.type, this.facing, 'die'
+            );
+            
+            // Remove old sprite
+            if (this.animatedSprite && this.animatedSprite.parent) {
+                this.sprite.removeChild(this.animatedSprite);
             }
-        };
-        
-        fadeOut();
-    }
+            
+            // Create death animation sprite
+            this.animatedSprite = this.spriteManager.createAnimatedSprite(deathAnimName);
+            if (this.animatedSprite) {
+                this.animatedSprite.loop = false;
+                this.animatedSprite.play();
+                this.sprite.addChild(this.animatedSprite);
+                
+                // When animation completes, fade out
+// When animation completes, fade out
+this.animatedSprite.onComplete = () => {
+    // Fade out
+    const fadeOut = () => {
+        this.sprite.alpha -= 0.1;
+        if (this.sprite.alpha > 0) {
+            requestAnimationFrame(fadeOut);
+        } else {
+            // Remove from game
+            if (this.sprite.parent) {
+                this.sprite.parent.removeChild(this.sprite);
+            }
+        }
+    };
+    fadeOut();
+};
+return;
+}
+}
+
+// Fallback: just fade out if no animation
+const fadeOut = () => {
+this.sprite.alpha -= 0.1;
+if (this.sprite.alpha > 0) {
+requestAnimationFrame(fadeOut);
+} else {
+if (this.sprite.parent) {
+    this.sprite.parent.removeChild(this.sprite);
+}
+}
+};
+fadeOut();
+}
 }
