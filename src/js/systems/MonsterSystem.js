@@ -7,7 +7,7 @@ export class MonsterSystem {
         this.monsters = [];
         this.spawnTimer = 0;
         this.spawnRate = 5; // New monster every 5 seconds
-        this.maxMonsters = 10; // Maximum number of monsters at once
+        this.maxMonsters = 300; // Maximum number of monsters at once
     }
     
     update(deltaTime, player) {
@@ -67,8 +67,17 @@ export class MonsterSystem {
         }
         
         if (validSpawn) {
-            // For now, only spawn skeletons
-            const monsterType = 'skeleton';
+            // Choose monster type with weighted probabilities
+            const roll = Math.random();
+            let monsterType;
+            
+            if (roll < 0.1) {
+                monsterType = 'skeleton'; 
+            } else if (roll < 0.1) {
+                monsterType = 'elemental'; 
+            } else {
+                monsterType = 'ogre'; 
+            }
             
             // Create and add monster
             const monster = new Monster({

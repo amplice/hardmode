@@ -157,8 +157,9 @@ export class Monster {
     getMonsterHitPoints() {
         switch(this.type) {
             case 'slime': return 1;
-            case 'goblin': return 1;
+            case 'ogre': return 4; // Ogres are tough
             case 'skeleton': return 2;
+            case 'elemental': return 3;
             default: return 1;
         }
     }
@@ -166,8 +167,9 @@ export class Monster {
     getMonsterMoveSpeed() {
         switch(this.type) {
             case 'slime': return 1.5;
-            case 'goblin': return 3;
+            case 'ogre': return 1.5; // Ogres are slow but hit hard
             case 'skeleton': return 2;
+            case 'elemental': return 1.8;
             default: return 2;
         }
     }
@@ -175,8 +177,9 @@ export class Monster {
     getMonsterAttackRange() {
         switch(this.type) {
             case 'slime': return 80;
-            case 'goblin': return 100;
+            case 'ogre': return 90; // Ogres have a decent reach
             case 'skeleton': return 70;
+            case 'elemental': return 120;
             default: return 100;
         }
     }
@@ -185,7 +188,7 @@ export class Monster {
         switch(this.type) {
             case 'slime':
                 return {
-                    windup: 0.8, // Seconds
+                    windup: 0.8,
                     duration: 0.3,
                     recovery: 0.5,
                     cooldown: 2.0,
@@ -193,14 +196,14 @@ export class Monster {
                     color: 0x00FF00,
                     range: this.attackRange
                 };
-            case 'goblin':
+            case 'ogre':
                 return {
-                    windup: 0.6,
-                    duration: 0.3,
-                    recovery: 0.4,
-                    cooldown: 1.5,
+                    windup: 0.9, // Longer windup for a big swing
+                    duration: 0.4,
+                    recovery: 0.8, // Longer recovery
+                    cooldown: 3.0, // Longer cooldown
                     pattern: 'cone',
-                    color: 0x8B4513,
+                    color: 0x885500, // Brown/orange for ogre
                     range: this.attackRange
                 };
             case 'skeleton':
@@ -211,6 +214,16 @@ export class Monster {
                     cooldown: 1.5,
                     pattern: 'cone',
                     color: 0xEEEEEE,
+                    range: this.attackRange
+                };
+            case 'elemental':
+                return {
+                    windup: 0.4,
+                    duration: 0.6,
+                    recovery: 0.5,
+                    cooldown: 2.5,
+                    pattern: 'circle',
+                    color: 0x42C0FB,
                     range: this.attackRange
                 };
             default:
@@ -233,8 +246,9 @@ export class Monster {
         let color;
         switch(this.type) {
             case 'slime': color = 0x00FF00; break; // Green
-            case 'goblin': color = 0x8B4513; break; // Brown
+            case 'ogre': color = 0x885500; break; // Brown/orange
             case 'skeleton': color = 0xEEEEEE; break; // White
+            case 'elemental': color = 0x42C0FB; break; // Blue
             default: color = 0xFF00FF; // Magenta for unknown types
         }
         
@@ -244,13 +258,9 @@ export class Monster {
         if (this.type === 'slime') {
             // Slime shape (rounded rectangle)
             this.baseSprite.drawRoundedRect(-15, -10, 30, 25, 10);
-        } else if (this.type === 'goblin') {
-            // Goblin shape (triangle)
-            this.baseSprite.drawPolygon([
-                -15, 15,
-                15, 15,
-                0, -15
-            ]);
+        } else if (this.type === 'ogre') {
+            // Ogre shape (beefy rectangle)
+            this.baseSprite.drawRoundedRect(-18, -18, 36, 36, 5);
         } else if (this.type === 'skeleton') {
             // Skeleton shape (diamond)
             this.baseSprite.drawPolygon([
@@ -259,6 +269,9 @@ export class Monster {
                 0, 15,
                 -15, 0
             ]);
+        } else if (this.type === 'elemental') {
+            // Elemental shape (star)
+            this.baseSprite.drawStar(0, 0, 5, 15, 8);
         } else {
             // Default shape (circle)
             this.baseSprite.drawCircle(0, 0, 15);
@@ -275,14 +288,23 @@ export class Monster {
                 this.baseSprite.drawCircle(-7, -5, 3);
                 this.baseSprite.drawCircle(7, -5, 3);
                 break;
-            case 'goblin':
-                // Single eye
-                this.baseSprite.drawCircle(0, 0, 5);
+            case 'ogre':
+                // Angry ogre eyes
+                this.baseSprite.drawCircle(-8, -8, 4);
+                this.baseSprite.drawCircle(8, -8, 4);
+                // Add a mouth
+                this.baseSprite.endFill();
+                this.baseSprite.beginFill(0xFF0000);
+                this.baseSprite.drawRoundedRect(-10, 5, 20, 6, 2);
                 break;
             case 'skeleton':
                 // Two eye sockets
                 this.baseSprite.drawCircle(-5, -5, 3);
                 this.baseSprite.drawCircle(5, -5, 3);
+                break;
+            case 'elemental':
+                // Glowing core
+                this.baseSprite.drawCircle(0, 0, 6);
                 break;
             default:
                 // Default eyes

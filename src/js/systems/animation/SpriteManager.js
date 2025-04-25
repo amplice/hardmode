@@ -13,6 +13,9 @@ export class SpriteManager {
     }
 
     async loadSprites() {
+        // Custom frame size for ogre
+        const ogreFrameSize = { width: 192, height: 192 };
+        
         // Load knight spritesheets
         await Promise.all([
             this.loadSpritesheet('knight_idle', 'assets/sprites/characters/Knight/Idle.png', 15, 8),
@@ -22,14 +25,26 @@ export class SpriteManager {
             this.loadSpritesheet('knight_strafe_right', 'assets/sprites/characters/Knight/StrafeRight.png', 15, 8),
             this.loadSpritesheet('knight_attack1', 'assets/sprites/characters/Knight/Attack1.png', 15, 8),
             this.loadSpritesheet('knight_attack2', 'assets/sprites/characters/Knight/Attack2.png', 15, 8),
-            this.loadSpritesheet('knight_die', 'assets/sprites/characters/Knight/Die.png', 15, 8), // Add death animation
-            this.loadSpritesheet('knight_take_damage', 'assets/sprites/characters/Knight/TakeDamage.png', 15, 8), // Add take damage animation
+            this.loadSpritesheet('knight_die', 'assets/sprites/characters/Knight/Die.png', 15, 8),
+            this.loadSpritesheet('knight_take_damage', 'assets/sprites/characters/Knight/TakeDamage.png', 15, 8),
             // Monster sprites
             this.loadSpritesheet('skeleton_walk', 'assets/sprites/monsters/Skeleton/Walk.png', 15, 8),
             this.loadSpritesheet('skeleton_idle', 'assets/sprites/monsters/Skeleton/Idle.png', 15, 8),
             this.loadSpritesheet('skeleton_attack1', 'assets/sprites/monsters/Skeleton/Attack1.png', 15, 8),
             this.loadSpritesheet('skeleton_take_damage', 'assets/sprites/monsters/Skeleton/TakeDamage.png', 15, 8),
-            this.loadSpritesheet('skeleton_die', 'assets/sprites/monsters/Skeleton/Die.png', 15, 8) // Add skeleton death animation
+            this.loadSpritesheet('skeleton_die', 'assets/sprites/monsters/Skeleton/Die.png', 15, 8),
+            // Elemental sprites
+            this.loadSpritesheet('elemental_walk', 'assets/sprites/monsters/Elemental/Walk.png', 15, 8),
+            this.loadSpritesheet('elemental_idle', 'assets/sprites/monsters/Elemental/Idle.png', 15, 8),
+            this.loadSpritesheet('elemental_attack1', 'assets/sprites/monsters/Elemental/Attack1.png', 15, 8),
+            this.loadSpritesheet('elemental_take_damage', 'assets/sprites/monsters/Elemental/TakeDamage.png', 15, 8),
+            this.loadSpritesheet('elemental_die', 'assets/sprites/monsters/Elemental/Die.png', 15, 8),
+            // Ogre sprites with custom frame size
+            this.loadSpritesheet('ogre_walk', 'assets/sprites/monsters/Ogre/Walk.png', 15, 8, ogreFrameSize),
+            this.loadSpritesheet('ogre_idle', 'assets/sprites/monsters/Ogre/Idle.png', 15, 8, ogreFrameSize),
+            this.loadSpritesheet('ogre_attack1', 'assets/sprites/monsters/Ogre/Attack1.png', 15, 8, ogreFrameSize),
+            this.loadSpritesheet('ogre_take_damage', 'assets/sprites/monsters/Ogre/TakeDamage.png', 15, 8, ogreFrameSize),
+            this.loadSpritesheet('ogre_die', 'assets/sprites/monsters/Ogre/Die.png', 15, 8, ogreFrameSize)
         ]);
     
         this.createAnimations();
@@ -37,13 +52,13 @@ export class SpriteManager {
         console.log("Sprites loaded successfully");
     }
 
-    async loadSpritesheet(name, path, columns, rows) {
+    async loadSpritesheet(name, path, columns, rows, customFrameSize = null) {
         return new Promise((resolve, reject) => {
             // Load the spritesheet image
             PIXI.Assets.load(path).then(texture => {
-                // Using the fixed frame dimensions for 128x128 sprites
-                const frameWidth = this.frameWidth;
-                const frameHeight = this.frameHeight;
+                // Use custom frame dimensions if provided, otherwise use default
+                const frameWidth = customFrameSize ? customFrameSize.width : this.frameWidth;
+                const frameHeight = customFrameSize ? customFrameSize.height : this.frameHeight;
                 
                 // Extract frames for each row
                 const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
@@ -64,7 +79,7 @@ export class SpriteManager {
                             )
                         );
                         frameTexture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-
+    
                         frames.push(frameTexture);
                     }
                     
@@ -84,6 +99,8 @@ export class SpriteManager {
         // Define animations based on the loaded textures
         this.createKnightAnimations();
         this.createSkeletonAnimations();
+        this.createElementalAnimations();
+        this.createOgreAnimations(); // Add this line
     }
 
     createKnightAnimations() {
@@ -146,6 +163,45 @@ export class SpriteManager {
         };
         }
     }
+
+    // Add this new method
+createOgreAnimations() {
+    const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
+    
+    // Create animations for each direction
+    for (const direction of directions) {
+        // Walk animation
+        this.animations[`ogre_walk_${direction}`] = {
+            textures: this.textures[`ogre_walk_${direction}`],
+            speed: 0.3 // Slower animation for a lumbering ogre
+        };
+        
+        // Idle animation
+        this.animations[`ogre_idle_${direction}`] = {
+            textures: this.textures[`ogre_idle_${direction}`],
+            speed: 0.2
+        };
+        
+        // Attack animation
+        this.animations[`ogre_attack1_${direction}`] = {
+            textures: this.textures[`ogre_attack1_${direction}`],
+            speed: 0.25,
+            hitFrame: 9  // Adjust as needed for the ogre's attack animation
+        };
+        
+        // Take damage animation
+        this.animations[`ogre_take_damage_${direction}`] = {
+            textures: this.textures[`ogre_take_damage_${direction}`],
+            speed: 0.3
+        };
+        
+        // Death animation
+        this.animations[`ogre_die_${direction}`] = {
+            textures: this.textures[`ogre_die_${direction}`],
+            speed: 0.2
+        };
+    }
+}
     
     createSkeletonAnimations() {
         const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
@@ -184,6 +240,44 @@ export class SpriteManager {
         }
     }
 
+    createElementalAnimations() {
+        const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
+        
+        // Create animations for each direction
+        for (const direction of directions) {
+            // Walk animation
+            this.animations[`elemental_walk_${direction}`] = {
+                textures: this.textures[`elemental_walk_${direction}`],
+                speed: 0.4
+            };
+            
+            // Idle animation
+            this.animations[`elemental_idle_${direction}`] = {
+                textures: this.textures[`elemental_idle_${direction}`],
+                speed: 0.2
+            };
+            
+            // Attack animation
+            this.animations[`elemental_attack1_${direction}`] = {
+                textures: this.textures[`elemental_attack1_${direction}`],
+                speed: 0.3,
+                hitFrame: 8
+            };
+            
+            // Take damage animation
+            this.animations[`elemental_take_damage_${direction}`] = {
+                textures: this.textures[`elemental_take_damage_${direction}`],
+                speed: 0.3
+            };
+            
+            // Death animation
+            this.animations[`elemental_die_${direction}`] = {
+                textures: this.textures[`elemental_die_${direction}`],
+                speed: 0.2
+            };
+        }
+    }
+
     createAnimatedSprite(animationName) {
         if (!this.animations[animationName]) {
             console.error(`Animation ${animationName} not found`);
@@ -194,8 +288,16 @@ export class SpriteManager {
         sprite.animationSpeed = this.animations[animationName].speed;
         sprite.anchor.set(0.5, 0.5);
         
-        // Apply scale (now 1x for HD sprites)
-        sprite.scale.set(this.spriteScale, this.spriteScale);
+        // Apply scale (default 1x for HD sprites)
+        let scale = this.spriteScale;
+        
+        // If this is an ogre sprite, adjust the scale to compensate for the larger frames
+        if (animationName.startsWith('ogre_')) {
+            // Ogre sprites are 192x192 but we want them to appear about 1.5x larger than regular sprites
+            scale = (this.frameWidth / 192) * 1.5;
+        }
+        
+        sprite.scale.set(scale, scale);
         
         return sprite;
     }
@@ -331,15 +433,15 @@ export class SpriteManager {
         
         const facing = directionMap[direction] || 's'; // Default to south
         
-        if (monsterType === 'skeleton') {
+        if (monsterType === 'skeleton' || monsterType === 'elemental' || monsterType === 'ogre') {
             // Handle special animation states
             if (state === 'hit') {
-                return `skeleton_take_damage_${facing}`;
+                return `${monsterType}_take_damage_${facing}`;
             } else if (state === 'die') {
-                return `skeleton_die_${facing}`;
+                return `${monsterType}_die_${facing}`;
             }
             
-            return `skeleton_${state}_${facing}`;
+            return `${monsterType}_${state}_${facing}`;
         }
         
         // Default fallback
