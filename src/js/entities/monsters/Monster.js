@@ -15,6 +15,7 @@ export class Monster {
         this.aggroRange = 250;
         this.target = null;
         this.alive = true;
+        this.collisionRadius = this.getMonsterCollisionRadius();
         
         // Attack state - simplify
         this.isAttacking = false;
@@ -25,6 +26,7 @@ export class Monster {
         this.stunDuration = 0.2; // Configurable stun duration in seconds
         this.stunTimer = 0;
         this.isTakingDamage = false;
+        
         // Create sprite container
         this.sprite = new PIXI.Container();
         this.sprite.position.set(this.position.x, this.position.y);
@@ -32,16 +34,13 @@ export class Monster {
         // Get the sprite manager
         this.spriteManager = window.game.systems.sprites;
         
-        // Try to use animated sprites if the sprite manager is loaded
+        // Create attack indicator
+        this.attackIndicator = new PIXI.Graphics();
+        this.sprite.addChild(this.attackIndicator);
+        
+        // Set up animations immediately
         if (this.spriteManager && this.spriteManager.loaded) {
             this.setupAnimations();
-        } else {
-            // Fallback to placeholder graphics
-            this.baseSprite = new PIXI.Graphics();
-            this.attackIndicator = new PIXI.Graphics();
-            this.drawMonster();
-            this.sprite.addChild(this.baseSprite);
-            this.sprite.addChild(this.attackIndicator);
         }
     }
     
@@ -60,18 +59,6 @@ export class Monster {
             
             // Set up animation complete callback
             this.animatedSprite.onComplete = () => this.onAnimationComplete();
-            
-            // Remove placeholder graphics if they exist
-            if (this.baseSprite && this.baseSprite.parent) {
-                this.sprite.removeChild(this.baseSprite);
-                this.baseSprite = null;
-            }
-        }
-        
-        // Keep the attack indicator
-        if (!this.attackIndicator) {
-            this.attackIndicator = new PIXI.Graphics();
-            this.sprite.addChild(this.attackIndicator);
         }
     }
     
@@ -198,10 +185,10 @@ export class Monster {
                 };
             case 'ogre':
                 return {
-                    windup: 0.9, // Longer windup for a big swing
+                    windup: 0.5, // Longer windup for a big swing
                     duration: 0.4,
                     recovery: 0.8, // Longer recovery
-                    cooldown: 3.0, // Longer cooldown
+                    cooldown: 2.0, // Longer cooldown
                     pattern: 'cone',
                     color: 0x885500, // Brown/orange for ogre
                     range: this.attackRange
@@ -238,84 +225,15 @@ export class Monster {
                 };
         }
     }
-    
-    drawMonster() {
-        this.baseSprite.clear();
-        
-        // Different colors for monster types
-        let color;
-        switch(this.type) {
-            case 'slime': color = 0x00FF00; break; // Green
-            case 'ogre': color = 0x885500; break; // Brown/orange
-            case 'skeleton': color = 0xEEEEEE; break; // White
-            case 'elemental': color = 0x42C0FB; break; // Blue
-            default: color = 0xFF00FF; // Magenta for unknown types
-        }
-        
-        // Draw monster body
-        this.baseSprite.beginFill(color);
-        
-        if (this.type === 'slime') {
-            // Slime shape (rounded rectangle)
-            this.baseSprite.drawRoundedRect(-15, -10, 30, 25, 10);
-        } else if (this.type === 'ogre') {
-            // Ogre shape (beefy rectangle)
-            this.baseSprite.drawRoundedRect(-18, -18, 36, 36, 5);
-        } else if (this.type === 'skeleton') {
-            // Skeleton shape (diamond)
-            this.baseSprite.drawPolygon([
-                0, -15,
-                15, 0,
-                0, 15,
-                -15, 0
-            ]);
-        } else if (this.type === 'elemental') {
-            // Elemental shape (star)
-            this.baseSprite.drawStar(0, 0, 5, 15, 8);
-        } else {
-            // Default shape (circle)
-            this.baseSprite.drawCircle(0, 0, 15);
-        }
-        
-        this.baseSprite.endFill();
-        
-        // Draw facing indicator (eyes)
-        this.baseSprite.beginFill(0x000000);
-        
-        switch(this.type) {
-            case 'slime':
-                // Two small eyes
-                this.baseSprite.drawCircle(-7, -5, 3);
-                this.baseSprite.drawCircle(7, -5, 3);
-                break;
-            case 'ogre':
-                // Angry ogre eyes
-                this.baseSprite.drawCircle(-8, -8, 4);
-                this.baseSprite.drawCircle(8, -8, 4);
-                // Add a mouth
-                this.baseSprite.endFill();
-                this.baseSprite.beginFill(0xFF0000);
-                this.baseSprite.drawRoundedRect(-10, 5, 20, 6, 2);
-                break;
-            case 'skeleton':
-                // Two eye sockets
-                this.baseSprite.drawCircle(-5, -5, 3);
-                this.baseSprite.drawCircle(5, -5, 3);
-                break;
-            case 'elemental':
-                // Glowing core
-                this.baseSprite.drawCircle(0, 0, 6);
-                break;
-            default:
-                // Default eyes
-                this.baseSprite.drawCircle(0, 0, 5);
-        }
-        
-        this.baseSprite.endFill();
-        
-        // Clear attack indicator initially
-        this.attackIndicator.clear();
+    // Add this new method to Monster class
+getMonsterCollisionRadius() {
+    switch(this.type) {
+        case 'ogre': return 35; // Larger radius for ogre
+        case 'skeleton': return 20;
+        case 'elemental': return 25;
+        default: return 20;
     }
+}
     
     updateFacingFromVelocity() {
         // Update facing direction based on velocity

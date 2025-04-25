@@ -164,8 +164,12 @@ export class CombatSystem {
                 const dy = monster.position.y - attackPosition.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 
+                // Adjust check by subtracting monster collision radius
+                // This makes attacks hit when they reach the edge of the monster
+                const adjustedDistance = distance - (monster.collisionRadius || 0);
+                
                 // Check if monster is within range
-                if (distance <= hitArea.range) {
+                if (adjustedDistance <= hitArea.range) {
                     // Calculate angle to monster
                     let angle = Math.atan2(dy, dx) * 180 / Math.PI;
                     if (angle < 0) angle += 360; // Convert to 0-360 range
@@ -220,9 +224,15 @@ export class CombatSystem {
                 const rotX = dx * Math.cos(-facingRadians) - dy * Math.sin(-facingRadians);
                 const rotY = dx * Math.sin(-facingRadians) + dy * Math.cos(-facingRadians);
                 
+                // Get the monster's collision radius (or 0 if not defined)
+                const monsterRadius = monster.collisionRadius || 0;
+                
                 // Check if point is inside rectangle (adjusted to match our visualization)
-                if (rotX >= -hitArea.width / 2 && rotX <= hitArea.width / 2 && 
-                    rotY >= -hitArea.length && rotY <= 0) {
+                // Add collision radius to the rectangle size check
+                if (rotX >= -hitArea.width / 2 - monsterRadius && 
+                    rotX <= hitArea.width / 2 + monsterRadius && 
+                    rotY >= -hitArea.length - monsterRadius && 
+                    rotY <= 0 + monsterRadius) {
                     // Hit!
                     monster.takeDamage(2); // Smash attack does more damage
                 }

@@ -71,9 +71,9 @@ export class MonsterSystem {
             const roll = Math.random();
             let monsterType;
             
-            if (roll < 0.1) {
+            if (roll < 0.3) {
                 monsterType = 'skeleton'; 
-            } else if (roll < 0.1) {
+            } else if (roll < 0.2) {
                 monsterType = 'elemental'; 
             } else {
                 monsterType = 'ogre'; 
