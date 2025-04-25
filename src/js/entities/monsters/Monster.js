@@ -16,12 +16,19 @@ export class Monster {
         this.target = null;
         this.alive = true;
         
+        
         // Attack state
         this.isAttacking = false;
         this.attackWindup = 0;
         this.attackDuration = 0;
         this.attackRecovery = 0;
         this.isPlayingAttackAnimation = false;
+
+        // Add hit stun properties
+    this.isStunned = false;
+    this.stunDuration = 0.4; // Configurable stun duration in seconds
+    this.stunTimer = 0;
+    this.damageAnimationPlaying = false;
         
         // Create sprite container
         this.sprite = new PIXI.Container();
@@ -86,7 +93,9 @@ export class Monster {
             // Determine animation state based on current monster state
             let animationState = 'idle';
             
-            if (this.shouldPlayAttackAnimation) {
+            if (this.isStunned && this.shouldPlayHitAnimation) {
+                animationState = 'hit';
+            } else if (this.shouldPlayAttackAnimation) {
                 animationState = 'attack1';
             } else if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
                 animationState = 'walk';
@@ -113,10 +122,9 @@ export class Monster {
                 this.animatedSprite = this.spriteManager.createAnimatedSprite(animationName);
                 
                 if (this.animatedSprite) {
-                    // Don't loop attack animations
-                    if (animationState === 'attack1') {
+                    // Don't loop attack or hit animations
+                    if (animationState === 'attack1' || animationState === 'hit') {
                         this.animatedSprite.loop = false;
-                        console.log("Starting non-looping attack animation");
                     } else {
                         this.animatedSprite.loop = true;
                     }
@@ -125,11 +133,20 @@ export class Monster {
                     this.animatedSprite.anchor.set(0.5, 0.5);
                     this.sprite.addChild(this.animatedSprite);
                     
-                    // Set animation complete callback for attacks
-                    if (animationState === 'attack1') {
+                    // Maintain red tint if taking damage
+                    if (this.isTakingDamage) {
+                        this.animatedSprite.tint = 0xFF0000;
+                    }
+                    
+                    // Set animation complete callback for non-looping animations
+                    if (!this.animatedSprite.loop) {
                         this.animatedSprite.onComplete = () => {
-                            console.log("Attack animation completed");
-                            this.shouldPlayAttackAnimation = false;
+                            if (animationState === 'hit') {
+                                this.shouldPlayHitAnimation = false;
+                            } else if (animationState === 'attack1') {
+                                this.shouldPlayAttackAnimation = false;
+                            }
+                            
                             this.currentAnimation = null; // Force animation change
                             this.updateAnimation();
                         };
@@ -364,7 +381,7 @@ updateAttackIndicator(isWindup = false, isActive = false) {
     
     // Different visual for windup vs active attack
     const alpha = isWindup ? 0.3 : 0.7;
-    const color = isActive ? 0xFF0000 : attackDetails.color;
+    const color = isActive ? 0x00FF00 : attackDetails.color;
     
     // Clear any previous rotation
     this.attackIndicator.rotation = 0;
@@ -531,33 +548,76 @@ executeAttack() {
     }
 }
     
-    takeDamage(amount) {
-        this.hitPoints -= amount;
-        
-        // Visual feedback
-        if (this.animatedSprite) {
-            this.animatedSprite.tint = 0xFF0000;
-            setTimeout(() => {
-                if (this.alive && this.animatedSprite) {
-                    this.animatedSprite.tint = 0xFFFFFF;
-                }
-            }, 200);
-        } else if (this.baseSprite) {
-            this.baseSprite.tint = 0xFF0000;
-            setTimeout(() => {
-                if (this.alive && this.baseSprite) {
-                    this.baseSprite.tint = 0xFFFFFF;
-                }
-            }, 200);
-        }
-        
-        if (this.hitPoints <= 0 && this.alive) {
-            this.die();
+takeDamage(amount) {
+    this.hitPoints -= amount;
+    
+    // Don't play stun animation if already dead
+    if (this.hitPoints <= 0) {
+        this.die();
+        return;
+    }
+    
+    // Apply stun
+    this.isStunned = true;
+    this.stunTimer = this.stunDuration;
+    this.isTakingDamage = true; // New flag to track damage state
+    
+    // Cancel any attack in progress
+    if (this.isAttacking) {
+        this.isAttacking = false;
+        if (this.attackIndicator) {
+            this.attackIndicator.clear();
         }
     }
+    
+    // Play take damage animation
+    this.shouldPlayHitAnimation = true;
+    this.currentAnimation = null; // Force animation change
+    this.updateAnimation();
+    
+    // Apply red tint AFTER creating the new sprite in updateAnimation
+    if (this.animatedSprite) {
+        this.animatedSprite.tint = 0xFF0000;
+    } else if (this.baseSprite) {
+        this.baseSprite.tint = 0xFF0000;
+    }
+    
+    // Reset tint after a delay
+    setTimeout(() => {
+        if (this.alive) {
+            if (this.animatedSprite) {
+                this.animatedSprite.tint = 0xFFFFFF;
+            } else if (this.baseSprite) {
+                this.baseSprite.tint = 0xFFFFFF;
+            }
+            this.isTakingDamage = false;
+        }
+    }, 200);
+}
 
     update(deltaTime, player, world) {
         if (!this.alive) return;
+
+            // Process stun timer if active
+    if (this.isStunned) {
+        this.stunTimer -= deltaTime;
+        if (this.stunTimer <= 0) {
+            this.isStunned = false;
+            this.stunTimer = 0;
+            
+            // If attack was interrupted by damage, cancel it
+            if (this.isAttacking) {
+                this.isAttacking = false;
+                if (this.attackIndicator) {
+                    this.attackIndicator.clear();
+                }
+            }
+        }
+        
+        // Only update sprite position during stun
+        this.sprite.position.set(this.position.x, this.position.y);
+        return;
+    }
         
         // Decrease attack cooldown
         if (this.attackCooldown > 0) {

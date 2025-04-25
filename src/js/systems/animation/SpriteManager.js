@@ -27,7 +27,8 @@ export class SpriteManager {
             // Monster sprites
             this.loadSpritesheet('skeleton_walk', 'assets/sprites/monsters/Skeleton/Walk.png', 15, 8),
             this.loadSpritesheet('skeleton_idle', 'assets/sprites/monsters/Skeleton/Idle.png', 15, 8),
-            this.loadSpritesheet('skeleton_attack1', 'assets/sprites/monsters/Skeleton/Attack1.png', 15, 8)
+            this.loadSpritesheet('skeleton_attack1', 'assets/sprites/monsters/Skeleton/Attack1.png', 15, 8),
+            this.loadSpritesheet('skeleton_take_damage', 'assets/sprites/monsters/Skeleton/TakeDamage.png', 15, 8) // Add skeleton take damage
         ]);
     
         this.createAnimations();
@@ -168,6 +169,11 @@ export class SpriteManager {
                 speed: 0.3,
                 hitFrame: 8  // Assuming hit happens around frame 8, adjust as needed
             };
+            // Take damage animation
+        this.animations[`skeleton_take_damage_${direction}`] = {
+            textures: this.textures[`skeleton_take_damage_${direction}`],
+            speed: 0.3
+        };
         }
     }
 
@@ -319,6 +325,11 @@ export class SpriteManager {
         const facing = directionMap[direction] || 's'; // Default to south
         
         if (monsterType === 'skeleton') {
+            // Map 'hit' state to take_damage
+            if (state === 'hit') {
+                return `skeleton_take_damage_${facing}`;
+            }
+            
             return `skeleton_${state}_${facing}`;
         }
         
