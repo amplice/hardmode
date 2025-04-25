@@ -135,7 +135,7 @@ export class SpriteManager {
                     // Take damage animation
         this.animations[`knight_take_damage_${direction}`] = {
             textures: this.textures[`knight_take_damage_${direction}`],
-            speed: 0.3 // Slightly faster than normal animations
+            speed: 0.5 // Slightly faster than normal animations
         };
              // Death animation
         this.animations[`knight_die_${direction}`] = {

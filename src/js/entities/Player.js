@@ -20,7 +20,7 @@ export class Player {
         this.isDying = false;
         this.isDead = false;
         this.isTakingDamage = false;
-    this.damageStunDuration = 0.25; // Configurable stun duration in seconds (default: 0.15s)
+    this.damageStunDuration = 0.3; // Configurable stun duration in seconds (default: 0.15s)
     this.damageStunTimer = 0;
         
         // Create animated sprite container
