@@ -44,8 +44,42 @@ export class SpriteManager {
             this.loadSpritesheet('ogre_idle', 'assets/sprites/monsters/Ogre/Idle.png', 15, 8, ogreFrameSize),
             this.loadSpritesheet('ogre_attack1', 'assets/sprites/monsters/Ogre/Attack1.png', 15, 8, ogreFrameSize),
             this.loadSpritesheet('ogre_take_damage', 'assets/sprites/monsters/Ogre/TakeDamage.png', 15, 8, ogreFrameSize),
-            this.loadSpritesheet('ogre_die', 'assets/sprites/monsters/Ogre/Die.png', 15, 8, ogreFrameSize)
+            this.loadSpritesheet('ogre_die', 'assets/sprites/monsters/Ogre/Die.png', 15, 8, ogreFrameSize),
+            // Ghoul sprites
+        this.loadSpritesheet('ghoul_walk', 'assets/sprites/monsters/Ghoul/Walk.png', 15, 8),
+        this.loadSpritesheet('ghoul_idle', 'assets/sprites/monsters/Ghoul/Idle.png', 15, 8),
+        this.loadSpritesheet('ghoul_attack1', 'assets/sprites/monsters/Ghoul/Attack1.png', 15, 8),
+        this.loadSpritesheet('ghoul_take_damage', 'assets/sprites/monsters/Ghoul/TakeDamage.png', 15, 8),
+        this.loadSpritesheet('ghoul_die', 'assets/sprites/monsters/Ghoul/Die.png', 15, 8)
         ]);
+
+    // Load effect sprites separately
+    await Promise.all([
+        this.loadEffectSpritesheet(
+            'slash_effect',
+            'assets/sprites/effects/Slash.png',
+            8,  // columns
+            9,  // rows
+            2,  // row index (3rd row)
+            { width: 64, height: 64 }  // frame size
+        ),
+        this.loadEffectSpritesheet(
+            'strike_windup',
+            'assets/sprites/effects/KnightStrikeWindup.png',
+            6,  // columns (adjust if needed)
+            1,  // rows (adjust if needed)
+            0,  // row index
+            { width: 64, height: 64 }  // frame size (adjust if needed)
+        ),
+        this.loadEffectSpritesheet(
+            'strike_cast',
+            'assets/sprites/effects/KnightStrikeCast.png',
+            7,  // columns (adjust if needed)
+            1,  // rows (adjust if needed)
+            2,  // row index
+            { width: 64, height: 64 }  // frame size (adjust if needed)
+        )
+    ]);
     
         this.createAnimations();
         this.loaded = true;
@@ -95,12 +129,51 @@ export class SpriteManager {
         });
     }
 
+    async loadEffectSpritesheet(name, path, columns, rows, rowIndex, frameSize) {
+        return new Promise((resolve, reject) => {
+            PIXI.Assets.load(path).then(texture => {
+                const frameWidth = frameSize.width;
+                const frameHeight = frameSize.height;
+                const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
+                
+                // Get the specific row we want
+                const row = rowIndex;
+                const frames = [];
+                
+                for (let col = 0; col < columns; col++) {
+                    const frameTexture = new PIXI.Texture(
+                        texture.baseTexture,
+                        new PIXI.Rectangle(
+                            col * frameWidth,
+                            row * frameHeight,
+                            frameWidth,
+                            frameHeight
+                        )
+                    );
+                    frameTexture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+                    frames.push(frameTexture);
+                }
+                
+                // Store all frames under a single animation name
+                this.textures[`${name}`] = frames;
+                
+                resolve();
+            }).catch(error => {
+                console.error(`Failed to load effect spritesheet ${path}:`, error);
+                reject(error);
+            });
+        });
+    }
+
     createAnimations() {
-        // Define animations based on the loaded textures
         this.createKnightAnimations();
         this.createSkeletonAnimations();
         this.createElementalAnimations();
-        this.createOgreAnimations(); // Add this line
+        this.createOgreAnimations();
+        this.createGhoulAnimations();
+        this.createSlashEffectAnimation(); 
+        this.createStrikeEffectAnimations(); // Add this new line
+
     }
 
     createKnightAnimations() {
@@ -202,6 +275,44 @@ createOgreAnimations() {
         };
     }
 }
+
+createGhoulAnimations() {
+    const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
+    
+    // Create animations for each direction
+    for (const direction of directions) {
+        // Walk animation
+        this.animations[`ghoul_walk_${direction}`] = {
+            textures: this.textures[`ghoul_walk_${direction}`],
+            speed: 0.45 // Faster than most - ghouls move in jerky motions
+        };
+        
+        // Idle animation
+        this.animations[`ghoul_idle_${direction}`] = {
+            textures: this.textures[`ghoul_idle_${direction}`],
+            speed: 0.25
+        };
+        
+        // Attack animation
+        this.animations[`ghoul_attack1_${direction}`] = {
+            textures: this.textures[`ghoul_attack1_${direction}`],
+            speed: 0.4,
+            hitFrame: 7  // Adjust as needed for the ghoul's attack animation
+        };
+        
+        // Take damage animation
+        this.animations[`ghoul_take_damage_${direction}`] = {
+            textures: this.textures[`ghoul_take_damage_${direction}`],
+            speed: 0.35
+        };
+        
+        // Death animation
+        this.animations[`ghoul_die_${direction}`] = {
+            textures: this.textures[`ghoul_die_${direction}`],
+            speed: 0.25
+        };
+    }
+}
     
     createSkeletonAnimations() {
         const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
@@ -279,28 +390,28 @@ createOgreAnimations() {
     }
 
     createAnimatedSprite(animationName) {
-        if (!this.animations[animationName]) {
-            console.error(`Animation ${animationName} not found`);
-            return null;
-        }
-        
-        const sprite = new PIXI.AnimatedSprite(this.animations[animationName].textures);
-        sprite.animationSpeed = this.animations[animationName].speed;
-        sprite.anchor.set(0.5, 0.5);
-        
-        // Apply scale (default 1x for HD sprites)
-        let scale = this.spriteScale;
-        
-        // If this is an ogre sprite, adjust the scale to compensate for the larger frames
-        if (animationName.startsWith('ogre_')) {
-            // Ogre sprites are 192x192 but we want them to appear about 1.5x larger than regular sprites
-            scale = (this.frameWidth / 192) * 1.5;
-        }
-        
-        sprite.scale.set(scale, scale);
-        
-        return sprite;
+    if (!this.animations[animationName]) {
+        console.error(`Animation ${animationName} not found`);
+        return null;
     }
+    
+    const sprite = new PIXI.AnimatedSprite(this.animations[animationName].textures);
+    sprite.animationSpeed = this.animations[animationName].speed;
+    sprite.anchor.set(0.5, 0.5);
+    
+    // Apply scale (default 1x for HD sprites)
+    let scale = this.spriteScale;
+    
+    // If this is an ogre sprite, adjust the scale to compensate for the larger frames
+    if (animationName.startsWith('ogre_')) {
+        // Ogre sprites are 192x192 but we want them to appear about 1.5x larger than regular sprites
+        scale = (this.frameWidth / 192) * 1.5;
+    }
+    
+    sprite.scale.set(scale, scale);
+    
+    return sprite;
+}
 
     getAnimationForMovement(facingDirection, movementDirection) {
         // Convert 8-way direction to the format used in our animations (e, se, s, etc.)
@@ -433,7 +544,8 @@ createOgreAnimations() {
         
         const facing = directionMap[direction] || 's'; // Default to south
         
-        if (monsterType === 'skeleton' || monsterType === 'elemental' || monsterType === 'ogre') {
+        if (monsterType === 'skeleton' || monsterType === 'elemental' || 
+            monsterType === 'ogre' || monsterType === 'ghoul') {
             // Handle special animation states
             if (state === 'hit') {
                 return `${monsterType}_take_damage_${facing}`;
@@ -447,4 +559,25 @@ createOgreAnimations() {
         // Default fallback
         return `skeleton_walk_s`;
     }
+    createSlashEffectAnimation() {
+        // Just use a single animation for the slash effect
+        this.animations['slash_effect'] = {
+            textures: this.textures['slash_effect'],
+            speed: 0.5
+        };
+    }
+
+    // Add this new method to SpriteManager.js
+createStrikeEffectAnimations() {
+    // Create animations for the strike effects
+    this.animations['strike_windup'] = {
+        textures: this.textures['strike_windup'],
+        speed: 0.8
+    };
+    
+    this.animations['strike_cast'] = {
+        textures: this.textures['strike_cast'],
+        speed: 0.2
+    };
+}
 }

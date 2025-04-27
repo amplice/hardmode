@@ -7,7 +7,15 @@ export class MonsterSystem {
         this.monsters = [];
         this.spawnTimer = 0;
         this.spawnRate = 5; // New monster every 5 seconds
-        this.maxMonsters = 300; // Maximum number of monsters at once
+        this.maxMonsters = 10; // Maximum number of monsters at once
+        
+        // Test spawning flag - set to true to enable test spawns on startup
+        this.enableTestSpawns = true; // <-- Set this to false to disable
+        
+        // Perform test spawns if enabled
+        if (this.enableTestSpawns) {
+            this.spawnTestMonsters();
+        }
     }
     
     update(deltaTime, player) {
@@ -71,12 +79,14 @@ export class MonsterSystem {
             const roll = Math.random();
             let monsterType;
             
-            if (roll < 0.3) {
-                monsterType = 'skeleton'; 
-            } else if (roll < 0.2) {
-                monsterType = 'elemental'; 
+            if (roll < 0.01) {
+                monsterType = 'skeleton'; // 40% chance of skeleton
+            } else if (roll < 0.02) {
+                monsterType = 'elemental'; // 25% chance of elemental
+            } else if (roll < .999) {
+                monsterType = 'ghoul'; // 20% chance of ghoul
             } else {
-                monsterType = 'ogre'; 
+                monsterType = 'ogre'; // 15% chance of ogre
             }
             
             // Create and add monster
@@ -89,5 +99,42 @@ export class MonsterSystem {
             this.monsters.push(monster);
             window.game.entityContainer.addChild(monster.sprite);
         }
+    }
+
+     // Add this method for test spawning
+     spawnTestMonsters() {
+        console.log("Spawning test monsters...");
+        
+        // Get the center of the map for reference
+        const centerX = this.world.width / 2 * this.world.tileSize;
+        const centerY = this.world.height / 2 * this.world.tileSize;
+        
+        // Spawn each monster type
+        const testSpawns = [
+            { type: 'skeleton', count: 5, x: centerX - 200, y: centerY - 200 },
+            { type: 'elemental', count: 0, x: centerX + 200, y: centerY - 200 },
+            { type: 'ogre', count: 0, x: centerX - 200, y: centerY + 200 },
+            { type: 'ghoul', count: 4, x: centerX + 200, y: centerY + 200 }
+        ];
+        
+        for (const spawn of testSpawns) {
+            for (let i = 0; i < spawn.count; i++) {
+                // Create a small random offset for each monster
+                const offsetX = (Math.random() - 0.5) * 100;
+                const offsetY = (Math.random() - 0.5) * 100;
+                
+                // Create monster
+                const monster = new Monster({
+                    x: spawn.x + offsetX,
+                    y: spawn.y + offsetY,
+                    type: spawn.type
+                });
+                
+                this.monsters.push(monster);
+                window.game.entityContainer.addChild(monster.sprite);
+            }
+        }
+        
+        console.log(`Spawned ${this.monsters.length} test monsters`);
     }
 }

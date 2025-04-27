@@ -29,52 +29,65 @@ export class PhysicsSystem {
                     entity.position.y = this.worldBounds.height - 20;
                 }
                 
-                // Check collision with non-walkable tiles
-                const tileSize = world.tileSize;
-                const characterRadius = 20; // Character collision radius
+// Check collision with non-walkable tiles
+const tileSize = world.tileSize;
+const characterRadius = 20; // Character collision radius
+
+// Check if the player's position is inside a non-walkable tile
+const centerTileX = Math.floor(entity.position.x / tileSize);
+const centerTileY = Math.floor(entity.position.y / tileSize);
+
+// Check surrounding tiles for collision
+const checkRadius = 1; // Check 1 tile in each direction
+
+for (let y = centerTileY - checkRadius; y <= centerTileY + checkRadius; y++) {
+    for (let x = centerTileX - checkRadius; x <= centerTileX + checkRadius; x++) {
+        if (y >= 0 && y < world.height && x >= 0 && x < world.width) {
+            const tile = world.tiles[y][x];
+            
+            if (!tile.isWalkable()) {
+                // Calculate distance to tile center
+                const tileCenter = {
+                    x: x * tileSize + tileSize / 2,
+                    y: y * tileSize + tileSize / 2
+                };
                 
-                // Check if the player's position is inside a non-walkable tile
-                const centerTileX = Math.floor(entity.position.x / tileSize);
-                const centerTileY = Math.floor(entity.position.y / tileSize);
+                const dx = entity.position.x - tileCenter.x;
+                const dy = entity.position.y - tileCenter.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
                 
-                // Check surrounding tiles for collision
-                const checkRadius = 1; // Check 1 tile in each direction
+                // Determine which direction the player is approaching from
+                // Calculate buffer multiplier based on direction
+                let bufferMultiplier = 0.85; // Default buffer
                 
-                for (let y = centerTileY - checkRadius; y <= centerTileY + checkRadius; y++) {
-                    for (let x = centerTileX - checkRadius; x <= centerTileX + checkRadius; x++) {
-                        if (y >= 0 && y < world.height && x >= 0 && x < world.width) {
-                            const tile = world.tiles[y][x];
-                            
-                            if (!tile.isWalkable()) {
-                                // Calculate distance to tile center
-                                const tileCenter = {
-                                    x: x * tileSize + tileSize / 2,
-                                    y: y * tileSize + tileSize / 2
-                                };
-                                
-                                const dx = entity.position.x - tileCenter.x;
-                                const dy = entity.position.y - tileCenter.y;
-                                const distance = Math.sqrt(dx * dx + dy * dy);
-                                
-                                // Simple collision: push player away if too close
-                                const minDistance = characterRadius + tileSize * 0.5;
-                                
-                                if (distance < minDistance) {
-                                    // Push player away along the collision normal
-                                    const pushFactor = (minDistance - distance) / minDistance;
-                                    
-                                    // Normalize direction vector
-                                    const length = Math.max(0.01, Math.sqrt(dx * dx + dy * dy));
-                                    const nx = dx / length;
-                                    const ny = dy / length;
-                                    
-                                    entity.position.x += nx * pushFactor * 5;
-                                    entity.position.y += ny * pushFactor * 5;
-                                }
-                            }
-                        }
-                    }
+                // If approaching from north (player is above the tile)
+                if (dy < 0 && Math.abs(dy) > Math.abs(dx)) {
+                    bufferMultiplier = 1.1; // Larger buffer for northern approach
                 }
+                // If approaching from south (player is below the tile)
+                else if (dy > 0 && Math.abs(dy) > Math.abs(dx)) {
+                    bufferMultiplier = 0.5; // Smaller buffer for southern approach
+                }
+                
+                // Simple collision: push player away if too close
+                const minDistance = characterRadius + tileSize * bufferMultiplier;
+                
+                if (distance < minDistance) {
+                    // Push player away along the collision normal
+                    const pushFactor = (minDistance - distance) / minDistance;
+                    
+                    // Normalize direction vector
+                    const length = Math.max(0.01, Math.sqrt(dx * dx + dy * dy));
+                    const nx = dx / length;
+                    const ny = dy / length;
+                    
+                    entity.position.x += nx * pushFactor * 50;
+                    entity.position.y += ny * pushFactor * 50;
+                }
+            }
+        }
+    }
+}
                 
                 // Update sprite position to match entity position
                 if (entity.sprite) {

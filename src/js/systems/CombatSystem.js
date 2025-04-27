@@ -31,18 +31,31 @@ export class CombatSystem {
         let attackAnimation;
         
         if (attackType === 'primary') {
-            // Forehand slash - cone attack
+            // Create slash effect animation
+            this.createSlashEffect(position, facing);
+            
+            // Also create the cone attack visualization for hit detection
             attackAnimation = this.createConeAttackAnimation(position, facing, hitArea.angle, hitArea.range, 0.3, 0xFF5555);
         } else {
-            // Overhead smash - rectangle attack
+            // For attack2 (secondary)
+            // Create windup effect first
+            this.createStrikeWindupEffect(position);
+            
+            // Create the rectangle attack visualization for hit detection
             attackAnimation = this.createRectangleAttackAnimation(position, facing, hitArea.width, hitArea.length, 0.3, 0x00FFFF);
+            
+            // Calculate where the cast effect should appear
+            const aoeCenter = this.calculateAoECenter(position, facing, hitArea.length * 0.5);
+            
+            // Schedule the cast effect to play after a delay
+            setTimeout(() => {
+                this.createStrikeCastEffect(aoeCenter, facing);
+            }, 200); // Adjust timing as needed
         }
         
         if (attackAnimation) {
             this.activeAttacks.push(attackAnimation);
             window.game.entityContainer.addChild(attackAnimation.graphics);
-            
-            // We'll check for hits in the Player class when the appropriate animation frame is reached
         }
     }
     
@@ -70,14 +83,14 @@ export class CombatSystem {
         graphics.position.set(position.x, position.y);
         
         // Draw the attack arc - semi-transparent fill
-        graphics.beginFill(color, 0.3);
+        graphics.beginFill(color, 0.01);
         graphics.moveTo(0, 0);
         graphics.arc(0, 0, range, startAngle, endAngle);
         graphics.lineTo(0, 0);
         graphics.endFill();
         
         // Draw outline
-        graphics.lineStyle(3, color, 0.7);
+        graphics.lineStyle(3, color, 0.0);
         graphics.arc(0, 0, range, startAngle, endAngle);
         graphics.moveTo(0, 0);
         graphics.lineTo(Math.cos(startAngle) * range, Math.sin(startAngle) * range);
@@ -100,8 +113,8 @@ export class CombatSystem {
         graphics.position.set(position.x, position.y);
         
         // Draw a rectangle in front of the player
-        graphics.beginFill(color, 0.3);
-        graphics.lineStyle(3, color, 0.7);
+        graphics.beginFill(color, 0.05);
+        graphics.lineStyle(3, color, 0.0);
         
         // Always draw the rectangle pointing upward first (along negative Y axis)
         // We'll rotate it to match the facing direction
@@ -145,6 +158,177 @@ export class CombatSystem {
             length,
             facing,
             type: 'rectangle'
+        };
+    }
+
+    // Add this new method
+    createSlashEffect(position, facing) {
+        const spriteManager = window.game.systems.sprites;
+        
+        // Create the animated sprite for the effect
+        const sprite = spriteManager.createAnimatedSprite('slash_effect');
+        
+        if (!sprite) {
+            console.error('Failed to create slash effect');
+            return null;
+        }
+        
+        // Position the effect in front of the player based on facing direction
+        const offsetDistance = 65; // Distance from player center
+        let offsetX = 0;
+        let offsetY = 0;
+        
+        // Calculate offset based on facing direction
+        switch(facing) {
+            case 'right': offsetX = offsetDistance; break;
+            case 'down-right': offsetX = offsetDistance * 0.7; offsetY = offsetDistance * 0.7; break;
+            case 'down': offsetY = offsetDistance; break;
+            case 'down-left': offsetX = -offsetDistance * 0.7; offsetY = offsetDistance * 0.7; break;
+            case 'left': offsetX = -offsetDistance; break;
+            case 'up-left': offsetX = -offsetDistance * 0.7; offsetY = -offsetDistance * 0.7; break;
+            case 'up': offsetY = -offsetDistance; break;
+            case 'up-right': offsetX = offsetDistance * 0.7; offsetY = -offsetDistance * 0.7; break;
+        }
+        
+        // Set sprite properties
+        sprite.position.set(position.x + offsetX, position.y + offsetY);
+        sprite.loop = false;
+        sprite.animationSpeed = 0.5;
+        
+        // Set the scale of the effect (adjust these values to change the size)
+        const effectScale = 1.5; // Increase this value to make the effect larger
+        sprite.scale.set(effectScale, effectScale);
+        
+        // Set rotation based on facing direction (with 90 degree offset)
+        let rotation = -Math.PI / 4;
+        switch(facing) {
+            case 'right': rotation += 0; break;
+            case 'down-right': rotation += Math.PI / 4; break;
+            case 'down': rotation += Math.PI / 2; break;
+            case 'down-left': rotation += 3 * Math.PI / 4; break;
+            case 'left': rotation += Math.PI; break;
+            case 'up-left': rotation += 5 * Math.PI / 4; break;
+            case 'up': rotation += 3 * Math.PI / 2; break;
+            case 'up-right': rotation += 7 * Math.PI / 4; break;
+        }
+        sprite.rotation = rotation;
+        
+        sprite.play();
+        
+        // Add to entity container
+        window.game.entityContainer.addChild(sprite);
+        
+        // Remove sprite when animation completes
+        sprite.onComplete = () => {
+            if (sprite.parent) {
+                sprite.parent.removeChild(sprite);
+            }
+        };
+        
+        // We won't track this in activeAttacks since it handles its own cleanup
+        return null;
+    }
+
+    createStrikeWindupEffect(position) {
+        const spriteManager = window.game.systems.sprites;
+        
+        // Create the animated sprite for the windup effect
+        const sprite = spriteManager.createAnimatedSprite('strike_windup');
+        
+        if (!sprite) {
+            console.error('Failed to create strike windup effect');
+            return null;
+        }
+        
+        // Center on the player
+        sprite.position.set(position.x, position.y);
+        sprite.loop = false;
+        sprite.animationSpeed = 0.8;
+        
+        // Scale as needed
+        const effectScale = 1; // Adjust as needed
+        sprite.scale.set(effectScale, effectScale);
+        
+        sprite.play();
+        
+        // Add to entity container
+        window.game.entityContainer.addChild(sprite);
+        
+        // Remove sprite when animation completes
+        sprite.onComplete = () => {
+            if (sprite.parent) {
+                sprite.parent.removeChild(sprite);
+            }
+        };
+    }
+    
+    createStrikeCastEffect(position, facing) {
+        const spriteManager = window.game.systems.sprites;
+        
+        // Create the animated sprite for the cast effect
+        const sprite = spriteManager.createAnimatedSprite('strike_cast');
+        
+        if (!sprite) {
+            console.error('Failed to create strike cast effect');
+            return null;
+        }
+        
+        // Position at the center of the AoE
+        sprite.position.set(position.x, position.y);
+        sprite.loop = false;
+        sprite.animationSpeed = 0.4;
+        
+        // Scale as needed
+        const effectScale = 1; // Adjust as needed
+        sprite.scale.set(effectScale, effectScale);
+        
+        // Set rotation based on facing direction
+        let rotation =  Math.PI / 2;
+        switch(facing) {
+            case 'right': rotation += 0; break;
+            case 'down-right': rotation += Math.PI / 4; break;
+            case 'down': rotation += Math.PI / 2; break;
+            case 'down-left': rotation += 3 * Math.PI / 4; break;
+            case 'left': rotation += Math.PI; break;
+            case 'up-left': rotation += 5 * Math.PI / 4; break;
+            case 'up': rotation += 3 * Math.PI / 2; break;
+            case 'up-right': rotation += 7 * Math.PI / 4; break;
+        }
+        sprite.rotation = rotation;
+        
+        sprite.play();
+        
+        // Add to entity container
+        window.game.entityContainer.addChild(sprite);
+        
+        // Remove sprite when animation completes
+        sprite.onComplete = () => {
+            if (sprite.parent) {
+                sprite.parent.removeChild(sprite);
+            }
+        };
+    }
+    
+    // Helper method to calculate AoE center point
+    calculateAoECenter(playerPosition, facing, distance) {
+        let offsetX = 0;
+        let offsetY = 0;
+        
+        // Calculate offset based on facing direction
+        switch(facing) {
+            case 'right': offsetX = distance; break;
+            case 'down-right': offsetX = distance * 0.7; offsetY = distance * 0.7; break;
+            case 'down': offsetY = distance; break;
+            case 'down-left': offsetX = -distance * 0.7; offsetY = distance * 0.7; break;
+            case 'left': offsetX = -distance; break;
+            case 'up-left': offsetX = -distance * 0.7; offsetY = -distance * 0.7; break;
+            case 'up': offsetY = -distance; break;
+            case 'up-right': offsetX = distance * 0.7; offsetY = -distance * 0.7; break;
+        }
+        
+        return {
+            x: playerPosition.x + offsetX,
+            y: playerPosition.y + offsetY
         };
     }
     

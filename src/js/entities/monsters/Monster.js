@@ -143,54 +143,44 @@ export class Monster {
     
     getMonsterHitPoints() {
         switch(this.type) {
-            case 'slime': return 1;
-            case 'ogre': return 4; // Ogres are tough
+            case 'ogre': return 4;
             case 'skeleton': return 2;
             case 'elemental': return 3;
-            default: return 1;
+            case 'ghoul': return 2; // Similar to skeleton
+            default: return 2;
         }
     }
     
     getMonsterMoveSpeed() {
         switch(this.type) {
-            case 'slime': return 1.5;
-            case 'ogre': return 1.5; // Ogres are slow but hit hard
-            case 'skeleton': return 2;
+            case 'ogre': return 1.5;
+            case 'skeleton': return 0;
             case 'elemental': return 1.8;
+            case 'ghoul': return 0; // Faster than other monsters
             default: return 2;
         }
     }
     
     getMonsterAttackRange() {
         switch(this.type) {
-            case 'slime': return 80;
-            case 'ogre': return 90; // Ogres have a decent reach
+            case 'ogre': return 90;
             case 'skeleton': return 70;
             case 'elemental': return 120;
+            case 'ghoul': return 60; // Short range but fast
             default: return 100;
         }
     }
     
     getAttackDetails() {
         switch(this.type) {
-            case 'slime':
-                return {
-                    windup: 0.8,
-                    duration: 0.3,
-                    recovery: 0.5,
-                    cooldown: 2.0,
-                    pattern: 'circle',
-                    color: 0x00FF00,
-                    range: this.attackRange
-                };
             case 'ogre':
                 return {
-                    windup: 0.5, // Longer windup for a big swing
+                    windup: 0.9,
                     duration: 0.4,
-                    recovery: 0.8, // Longer recovery
-                    cooldown: 2.0, // Longer cooldown
+                    recovery: 0.8,
+                    cooldown: 3.0,
                     pattern: 'cone',
-                    color: 0x885500, // Brown/orange for ogre
+                    color: 0x885500,
                     range: this.attackRange
                 };
             case 'skeleton':
@@ -213,6 +203,16 @@ export class Monster {
                     color: 0x42C0FB,
                     range: this.attackRange
                 };
+            case 'ghoul':
+                return {
+                    windup: 0.15, // Very fast attack
+                    duration: 0.25,
+                    recovery: 0.3,
+                    cooldown: 1.0, // Quick recovery, can attack often
+                    pattern: 'cone',
+                    color: 0x7CFC00, // Bright green
+                    range: this.attackRange
+                };
             default:
                 return {
                     windup: 0.5,
@@ -228,9 +228,10 @@ export class Monster {
     // Add this new method to Monster class
 getMonsterCollisionRadius() {
     switch(this.type) {
-        case 'ogre': return 35; // Larger radius for ogre
+        case 'ogre': return 30; // Larger radius for ogre
         case 'skeleton': return 20;
         case 'elemental': return 25;
+        case 'ghoul': return 20;
         default: return 20;
     }
 }
