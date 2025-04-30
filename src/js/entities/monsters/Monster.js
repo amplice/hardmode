@@ -153,10 +153,10 @@ export class Monster {
     
     getMonsterMoveSpeed() {
         switch(this.type) {
-            case 'ogre': return 1.5;
-            case 'skeleton': return 0;
-            case 'elemental': return 1.8;
-            case 'ghoul': return 0; // Faster than other monsters
+            case 'ogre': return 1;
+            case 'skeleton': return 2;
+            case 'elemental': return 1.5;
+            case 'ghoul': return 2.5; // Faster than other monsters
             default: return 2;
         }
     }
@@ -168,6 +168,15 @@ export class Monster {
             case 'elemental': return 120;
             case 'ghoul': return 60; // Short range but fast
             default: return 100;
+        }
+    }
+    getMonsterCollisionRadius() {
+        switch(this.type) {
+            case 'ogre': return 25; // Larger radius for ogre
+            case 'skeleton': return 15;
+            case 'elemental': return 15;
+            case 'ghoul': return 10;
+            default: return 15;
         }
     }
     
@@ -225,16 +234,6 @@ export class Monster {
                 };
         }
     }
-    // Add this new method to Monster class
-getMonsterCollisionRadius() {
-    switch(this.type) {
-        case 'ogre': return 30; // Larger radius for ogre
-        case 'skeleton': return 5;
-        case 'elemental': return 5;
-        case 'ghoul': return 5;
-        default: return 5;
-    }
-}
     
     updateFacingFromVelocity() {
         // Update facing direction based on velocity
@@ -710,40 +709,48 @@ startAttack() {
             if (this.animatedSprite) {
                 this.animatedSprite.loop = false;
                 this.animatedSprite.play();
+                
+                // Add red tint to death animation
+                this.animatedSprite.tint = 0xFF0000;
+                
                 this.sprite.addChild(this.animatedSprite);
                 
                 // When animation completes, fade out
-// When animation completes, fade out
-this.animatedSprite.onComplete = () => {
-    // Fade out
-    const fadeOut = () => {
-        this.sprite.alpha -= 0.1;
-        if (this.sprite.alpha > 0) {
-            requestAnimationFrame(fadeOut);
-        } else {
-            // Remove from game
-            if (this.sprite.parent) {
-                this.sprite.parent.removeChild(this.sprite);
+                this.animatedSprite.onComplete = () => {
+                    // Start fading out but keep the red tint during fade
+                    const fadeOut = () => {
+                        this.sprite.alpha -= 0.1;
+                        if (this.sprite.alpha > 0) {
+                            requestAnimationFrame(fadeOut);
+                        } else {
+                            // Remove from game
+                            if (this.sprite.parent) {
+                                this.sprite.parent.removeChild(this.sprite);
+                            }
+                        }
+                    };
+                    fadeOut();
+                };
+                return;
             }
         }
-    };
-    fadeOut();
-};
-return;
-}
-}
-
-// Fallback: just fade out if no animation
-const fadeOut = () => {
-this.sprite.alpha -= 0.1;
-if (this.sprite.alpha > 0) {
-requestAnimationFrame(fadeOut);
-} else {
-if (this.sprite.parent) {
-    this.sprite.parent.removeChild(this.sprite);
-}
-}
-};
-fadeOut();
-}
+        
+        // Fallback: just fade out with red tint if no animation
+        // Add red tint to the monster sprite
+        if (this.sprite) {
+            this.sprite.tint = 0xFF0000;
+        }
+        
+        const fadeOut = () => {
+            this.sprite.alpha -= 0.1;
+            if (this.sprite.alpha > 0) {
+                requestAnimationFrame(fadeOut);
+            } else {
+                if (this.sprite.parent) {
+                    this.sprite.parent.removeChild(this.sprite);
+                }
+            }
+        };
+        fadeOut();
+    }
 }

@@ -10,26 +10,32 @@ export class CombatSystem {
             // Slash effect configuration
             slash_effect: {
                 scale: 1.5,
-                offsetDistance: 65,
-                rotationOffset: -Math.PI / 4, // -45 degrees base rotation
-                animationSpeed: 0.6,
-                followDuration: 0 // 0 means the effect doesn't follow the player
+                offsetDistance: 60,
+                rotationOffset: 2 * Math.PI, // -45 degrees base rotation
+                animationSpeed: 0.5,
+                followDuration: 0, // 0 means the effect doesn't follow the player
+                flipX: false,
+                flipY: true 
             },
             // Strike windup effect configuration
             strike_windup: {
                 scale: 1.5,
-                offsetDistance: 35, // Centered on player
+                offsetDistance: 10, // Centered on player
                 rotationOffset: 0,
-                animationSpeed: 0.8,
-                followDuration: 0
+                animationSpeed: 0.4,
+                followDuration: 0,
+                flipX: false,
+                flipY: false 
             },
             // Strike cast effect configuration
             strike_cast: {
-                scale: 1,
+                scale: 1.3,
                 offsetDistance: 70, // Further out from player
                 rotationOffset: Math.PI / 2,
                 animationSpeed: 0.4,
-                followDuration: 0
+                followDuration: 0,
+                flipX: false,
+                flipY: false 
             }
         };
         
@@ -42,21 +48,21 @@ this.attackConfigs = {
         windupTime: 0,       // No windup for primary
         hitTime: 133,        // ~8 frames at 60fps (in ms)
         recoveryTime: 200,   // Recovery time after hit (in ms)
-        cooldown: 500,       // Total cooldown before next attack (in ms)
-        hitboxType: 'cone',
+        cooldown: 100,       // Total cooldown before next attack (in ms)
+        hitboxType: 'rectangle',
         hitboxParams: {
-            range: 70,
-            angle: 75        // 75 degree cone
+            width: 45,
+            length: 85
         },
         hitboxVisual: {
             color: 0xFF5555,
-            fillAlpha: 0.01, // Fill transparency
+            fillAlpha: 0.0, // Fill transparency
             lineAlpha: 0.0,  // Outline transparency
             lineWidth: 3,    // Outline width
-            duration: 0.3    // How long the visualization lasts (seconds)
+            duration: 1    // How long the visualization lasts (seconds)
         },
         effectSequence: [
-            { type: 'slash_effect', timing: 0 }  // Play immediately
+            { type: 'slash_effect', timing: 250 } 
         ]
     },
     secondary: {
@@ -68,18 +74,18 @@ this.attackConfigs = {
         cooldown: 800,
         hitboxType: 'rectangle',
         hitboxParams: {
-            width: 80,
+            width: 70,
             length: 110
         },
         hitboxVisual: {
             color: 0x00FFFF,
-            fillAlpha: 0.0, // More visible fill for rectangle
+            fillAlpha: 0.01, // More visible fill for rectangle
             lineAlpha: 0.0,
             lineWidth: 3,
             duration: 0.3
         },
         effectSequence: [
-            { type: 'strike_windup', timing: 0 },      // Play immediately
+            { type: 'strike_windup', timing: 100 },      // Play immediately
             { type: 'strike_cast', timing: 500 }       // Play after windupTime
         ]
     }
@@ -241,8 +247,19 @@ const hitboxAnimation = this.createHitboxVisualization(
         sprite.loop = false;
         sprite.animationSpeed = config.animationSpeed;
         
-        // Set the scale of the effect
-        sprite.scale.set(config.scale, config.scale);
+// Set the scale of the effect
+let scaleX = config.scale;
+let scaleY = config.scale;
+
+// Apply flipping if configured
+if (config.flipX) {
+    scaleX = -scaleX;
+}
+if (config.flipY) {
+    scaleY = -scaleY;
+}
+
+sprite.scale.set(scaleX, scaleY);
         
         // Set rotation based on facing direction and config rotation offset
         sprite.rotation = this.calculateEffectRotation(facing, config.rotationOffset);

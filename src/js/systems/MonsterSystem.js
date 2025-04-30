@@ -79,14 +79,14 @@ export class MonsterSystem {
             const roll = Math.random();
             let monsterType;
             
-            if (roll < 0.01) {
-                monsterType = 'skeleton'; // 40% chance of skeleton
-            } else if (roll < 0.02) {
+            if (roll < 0.25) {
+                monsterType = 'skeleton'; // 25% chance of skeleton
+            } else if (roll < 0.25) {
                 monsterType = 'elemental'; // 25% chance of elemental
-            } else if (roll < .999) {
-                monsterType = 'ghoul'; // 20% chance of ghoul
+            } else if (roll < 0.25) {
+                monsterType = 'ghoul'; // 25% chance of ghoul
             } else {
-                monsterType = 'ogre'; // 15% chance of ogre
+                monsterType = 'ogre'; // 25% chance of ogre
             }
             
             // Create and add monster
@@ -111,10 +111,10 @@ export class MonsterSystem {
         
         // Spawn each monster type
         const testSpawns = [
-            { type: 'skeleton', count: 5, x: centerX - 200, y: centerY - 200 },
-            { type: 'elemental', count: 0, x: centerX + 200, y: centerY - 200 },
-            { type: 'ogre', count: 0, x: centerX - 200, y: centerY + 200 },
-            { type: 'ghoul', count: 4, x: centerX + 200, y: centerY + 200 }
+            { type: 'skeleton', count: 3, x: centerX - 200, y: centerY - 200 },
+            { type: 'elemental', count: 3, x: centerX + 200, y: centerY - 200 },
+            { type: 'ogre', count: 3, x: centerX - 200, y: centerY + 200 },
+            { type: 'ghoul', count: 3, x: centerX + 200, y: centerY + 200 }
         ];
         
         for (const spawn of testSpawns) {

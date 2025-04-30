@@ -214,7 +214,7 @@ export class SpriteManager {
             // Attack 1 (forehand slash) animation
             this.animations[`knight_attack1_${direction}`] = {
                 textures: this.textures[`knight_attack1_${direction}`],
-                speed: 0.3,
+                speed: 0.4,
                 hitFrame: 8
             };
             
