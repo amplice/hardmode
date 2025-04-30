@@ -4,6 +4,86 @@ export class CombatSystem {
     constructor(app) {
         this.app = app;
         this.activeAttacks = [];
+        
+        // Effect configuration data
+        this.effectConfigs = {
+            // Slash effect configuration
+            slash_effect: {
+                scale: 1.5,
+                offsetDistance: 65,
+                rotationOffset: -Math.PI / 4, // -45 degrees base rotation
+                animationSpeed: 0.6,
+                followDuration: 0 // 0 means the effect doesn't follow the player
+            },
+            // Strike windup effect configuration
+            strike_windup: {
+                scale: 1.5,
+                offsetDistance: 35, // Centered on player
+                rotationOffset: 0,
+                animationSpeed: 0.8,
+                followDuration: 0
+            },
+            // Strike cast effect configuration
+            strike_cast: {
+                scale: 1,
+                offsetDistance: 70, // Further out from player
+                rotationOffset: Math.PI / 2,
+                animationSpeed: 0.4,
+                followDuration: 0
+            }
+        };
+        
+        // Attack configuration data
+// Attack configuration data
+this.attackConfigs = {
+    primary: {
+        name: "Slash Attack",
+        damage: 1,
+        windupTime: 0,       // No windup for primary
+        hitTime: 133,        // ~8 frames at 60fps (in ms)
+        recoveryTime: 200,   // Recovery time after hit (in ms)
+        cooldown: 500,       // Total cooldown before next attack (in ms)
+        hitboxType: 'cone',
+        hitboxParams: {
+            range: 70,
+            angle: 75        // 75 degree cone
+        },
+        hitboxVisual: {
+            color: 0xFF5555,
+            fillAlpha: 0.01, // Fill transparency
+            lineAlpha: 0.0,  // Outline transparency
+            lineWidth: 3,    // Outline width
+            duration: 0.3    // How long the visualization lasts (seconds)
+        },
+        effectSequence: [
+            { type: 'slash_effect', timing: 0 }  // Play immediately
+        ]
+    },
+    secondary: {
+        name: "Smash Attack",
+        damage: 2,
+        windupTime: 250,     // ~15 frames
+        hitTime: 500,        // ~30 frames
+        recoveryTime: 300,
+        cooldown: 800,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 80,
+            length: 110
+        },
+        hitboxVisual: {
+            color: 0x00FFFF,
+            fillAlpha: 0.0, // More visible fill for rectangle
+            lineAlpha: 0.0,
+            lineWidth: 3,
+            duration: 0.3
+        },
+        effectSequence: [
+            { type: 'strike_windup', timing: 0 },      // Play immediately
+            { type: 'strike_cast', timing: 500 }       // Play after windupTime
+        ]
+    }
+};
     }
     
     update(deltaTime) {
@@ -19,47 +99,242 @@ export class CombatSystem {
         }
     }
     
-    createAttackAnimation(attacker, attackType) {
-        const position = { x: attacker.position.x, y: attacker.position.y };
-        const facing = attacker.facing;
-        
-        // Get sprite manager to determine hit area
-        const spriteManager = window.game.systems.sprites;
-        const hitArea = spriteManager.getAttackHitArea(facing, attackType);
-        
-        // Create visual indicator based on attack type
-        let attackAnimation;
-        
-        if (attackType === 'primary') {
-            // Create slash effect animation
-            this.createSlashEffect(position, facing);
-            
-            // Also create the cone attack visualization for hit detection
-            attackAnimation = this.createConeAttackAnimation(position, facing, hitArea.angle, hitArea.range, 0.3, 0xFF5555);
-        } else {
-            // For attack2 (secondary)
-            // Create windup effect first
-            this.createStrikeWindupEffect(position);
-            
-            // Create the rectangle attack visualization for hit detection
-            attackAnimation = this.createRectangleAttackAnimation(position, facing, hitArea.width, hitArea.length, 0.3, 0x00FFFF);
-            
-            // Calculate where the cast effect should appear
-            const aoeCenter = this.calculateAoECenter(position, facing, hitArea.length * 0.5);
-            
-            // Schedule the cast effect to play after a delay
-            setTimeout(() => {
-                this.createStrikeCastEffect(aoeCenter, facing);
-            }, 200); // Adjust timing as needed
+    executeAttack(entity, attackType) {
+        // Get attack config
+        const attackConfig = this.attackConfigs[attackType];
+        if (!attackConfig) {
+            console.error(`Attack type ${attackType} not configured`);
+            return false;
         }
         
-        if (attackAnimation) {
-            this.activeAttacks.push(attackAnimation);
-            window.game.entityContainer.addChild(attackAnimation.graphics);
+        // Start attack sequence
+        console.log(`${entity.constructor.name} executing ${attackConfig.name}`);
+        
+        // Store original position and facing for timing functions
+        const position = { x: entity.position.x, y: entity.position.y };
+        const facing = entity.facing;
+        
+        // Play first effects immediately
+        this.playEffectSequence(entity, attackConfig, 0);
+        
+// Create hitbox visualization based on attack type
+const hitboxAnimation = this.createHitboxVisualization(
+    position, 
+    facing, 
+    attackConfig.hitboxType, 
+    attackConfig.hitboxParams,
+    attackConfig.hitboxVisual
+);
+        
+        if (hitboxAnimation) {
+            this.activeAttacks.push(hitboxAnimation);
+            window.game.entityContainer.addChild(hitboxAnimation.graphics);
         }
+        
+        // Play effects at their specified timing
+        attackConfig.effectSequence.forEach(effect => {
+            if (effect.timing > 0) {
+                setTimeout(() => {
+                    // Check if entity is still in attack state
+                    if (entity.isAttacking && entity.currentAttackType === attackType) {
+                        // For strike_cast, we need to calculate a new position in front of entity
+                        if (effect.type === 'strike_cast') {
+                            const effectConfig = this.effectConfigs[effect.type];
+                            const aoePosition = this.calculateEffectPosition(
+                                entity.position, 
+                                entity.facing, 
+                                effectConfig.offsetDistance
+                            );
+                            this.createEffect(effect.type, aoePosition, entity.facing, null, true);
+                        } else {
+                            this.createEffect(effect.type, entity.position, entity.facing, entity);
+                        }
+                    }
+                }, effect.timing);
+            }
+        });
+        
+        // Schedule hit detection
+        setTimeout(() => {
+            if (entity.isAttacking && entity.currentAttackType === attackType) {
+                console.log(`${attackConfig.name} hit effect triggered`);
+                
+                // Apply hit effect
+                this.applyHitEffect(entity, attackType, attackConfig.damage);
+            }
+        }, attackConfig.hitTime);
+        
+        // Return attack cooldown time to entity
+        return attackConfig.cooldown;
     }
     
-    createConeAttackAnimation(position, facing, arcAngle, range, duration, color) {
+    playEffectSequence(entity, attackConfig, startTime) {
+        // Play any effects scheduled at the given time
+        attackConfig.effectSequence.forEach(effect => {
+            if (effect.timing === startTime) {
+                this.createEffect(effect.type, entity.position, entity.facing, entity);
+            }
+        });
+    }
+    
+    applyHitEffect(attacker, attackType, damage) {
+        const monsters = window.game.systems.monsters.monsters;
+        this.checkAttackHits(attacker, attacker.position, attackType, monsters, damage);
+    }
+    
+    createHitboxVisualization(position, facing, hitboxType, params, visualConfig) {
+        if (hitboxType === 'cone') {
+            return this.createConeAttackAnimation(
+                position, 
+                facing, 
+                params.angle, 
+                params.range, 
+                visualConfig.duration,
+                visualConfig.color,
+                visualConfig.fillAlpha,
+                visualConfig.lineAlpha,
+                visualConfig.lineWidth
+            );
+        } else if (hitboxType === 'rectangle') {
+            return this.createRectangleAttackAnimation(
+                position, 
+                facing, 
+                params.width, 
+                params.length, 
+                visualConfig.duration,
+                visualConfig.color,
+                visualConfig.fillAlpha,
+                visualConfig.lineAlpha,
+                visualConfig.lineWidth
+            );
+        }
+        return null;
+    }
+    
+    createEffect(effectType, position, facing, attacker = null, useRawPosition = false) {
+        const spriteManager = window.game.systems.sprites;
+        const config = this.effectConfigs[effectType];
+        
+        if (!config) {
+            console.error(`Effect configuration not found for ${effectType}`);
+            return null;
+        }
+        
+        // Create the animated sprite for the effect
+        const sprite = spriteManager.createAnimatedSprite(effectType);
+        
+        if (!sprite) {
+            console.error(`Failed to create effect ${effectType}`);
+            return null;
+        }
+        
+        // Calculate position based on facing direction (unless we're using raw position)
+        let finalPosition;
+        if (useRawPosition) {
+            finalPosition = { ...position };
+        } else {
+            finalPosition = this.calculateEffectPosition(position, facing, config.offsetDistance);
+        }
+        
+        // Set sprite properties
+        sprite.position.set(finalPosition.x, finalPosition.y);
+        sprite.loop = false;
+        sprite.animationSpeed = config.animationSpeed;
+        
+        // Set the scale of the effect
+        sprite.scale.set(config.scale, config.scale);
+        
+        // Set rotation based on facing direction and config rotation offset
+        sprite.rotation = this.calculateEffectRotation(facing, config.rotationOffset);
+        
+        sprite.play();
+        
+        // Add to entity container
+        window.game.entityContainer.addChild(sprite);
+        
+        // Set up the follow behavior if needed
+        if (config.followDuration > 0 && attacker) {
+            this.setupEffectFollowBehavior(sprite, attacker, config.followDuration);
+        }
+        
+        // Remove sprite when animation completes
+        sprite.onComplete = () => {
+            if (sprite.parent) {
+                sprite.parent.removeChild(sprite);
+            }
+        };
+        
+        return sprite;
+    }
+    
+    setupEffectFollowBehavior(sprite, target, duration) {
+        let elapsedTime = 0;
+        const initialPosition = { x: sprite.position.x, y: sprite.position.y };
+        const initialOffset = {
+            x: initialPosition.x - target.position.x,
+            y: initialPosition.y - target.position.y
+        };
+        
+        const updatePosition = (delta) => {
+            elapsedTime += delta;
+            
+            if (elapsedTime < duration) {
+                sprite.position.set(
+                    target.position.x + initialOffset.x,
+                    target.position.y + initialOffset.y
+                );
+                requestAnimationFrame(() => updatePosition(1/60));
+            }
+        };
+        
+        requestAnimationFrame(() => updatePosition(1/60));
+    }
+    
+    calculateEffectPosition(basePosition, facing, distance) {
+        if (distance === 0) {
+            return { ...basePosition };
+        }
+        
+        let offsetX = 0;
+        let offsetY = 0;
+        
+        // Calculate offset based on facing direction
+        switch(facing) {
+            case 'right': offsetX = distance; break;
+            case 'down-right': offsetX = distance * 0.7; offsetY = distance * 0.7; break;
+            case 'down': offsetY = distance; break;
+            case 'down-left': offsetX = -distance * 0.7; offsetY = distance * 0.7; break;
+            case 'left': offsetX = -distance; break;
+            case 'up-left': offsetX = -distance * 0.7; offsetY = -distance * 0.7; break;
+            case 'up': offsetY = -distance; break;
+            case 'up-right': offsetX = distance * 0.7; offsetY = -distance * 0.7; break;
+        }
+        
+        return {
+            x: basePosition.x + offsetX,
+            y: basePosition.y + offsetY
+        };
+    }
+    
+    calculateEffectRotation(facing, baseRotation) {
+        // Convert facing direction to radians
+        let rotation = baseRotation;
+        
+        switch(facing) {
+            case 'right': rotation += 0; break;
+            case 'down-right': rotation += Math.PI / 4; break;
+            case 'down': rotation += Math.PI / 2; break;
+            case 'down-left': rotation += 3 * Math.PI / 4; break;
+            case 'left': rotation += Math.PI; break;
+            case 'up-left': rotation += 5 * Math.PI / 4; break;
+            case 'up': rotation += 3 * Math.PI / 2; break;
+            case 'up-right': rotation += 7 * Math.PI / 4; break;
+        }
+        
+        return rotation;
+    }
+    
+    createConeAttackAnimation(position, facing, arcAngle, range, duration, color, fillAlpha = 0.01, lineAlpha = 0.0, lineWidth = 3) {
         const graphics = new PIXI.Graphics();
         
         // Convert direction to radians - use the center of the arc as the facing direction
@@ -83,14 +358,14 @@ export class CombatSystem {
         graphics.position.set(position.x, position.y);
         
         // Draw the attack arc - semi-transparent fill
-        graphics.beginFill(color, 0.01);
+        graphics.beginFill(color, fillAlpha);
         graphics.moveTo(0, 0);
         graphics.arc(0, 0, range, startAngle, endAngle);
         graphics.lineTo(0, 0);
         graphics.endFill();
         
         // Draw outline
-        graphics.lineStyle(3, color, 0.0);
+        graphics.lineStyle(lineWidth, color, lineAlpha);
         graphics.arc(0, 0, range, startAngle, endAngle);
         graphics.moveTo(0, 0);
         graphics.lineTo(Math.cos(startAngle) * range, Math.sin(startAngle) * range);
@@ -107,14 +382,14 @@ export class CombatSystem {
         };
     }
     
-    createRectangleAttackAnimation(position, facing, width, length, duration, color) {
+    createRectangleAttackAnimation(position, facing, width, length, duration, color, fillAlpha = 0.05, lineAlpha = 0.0, lineWidth = 3) {
         const graphics = new PIXI.Graphics();
         
         graphics.position.set(position.x, position.y);
         
         // Draw a rectangle in front of the player
-        graphics.beginFill(color, 0.05);
-        graphics.lineStyle(3, color, 0.0);
+        graphics.beginFill(color, fillAlpha);
+        graphics.lineStyle(lineWidth, color, lineAlpha);
         
         // Always draw the rectangle pointing upward first (along negative Y axis)
         // We'll rotate it to match the facing direction
@@ -160,187 +435,16 @@ export class CombatSystem {
             type: 'rectangle'
         };
     }
-
-    // Add this new method
-    createSlashEffect(position, facing) {
-        const spriteManager = window.game.systems.sprites;
-        
-        // Create the animated sprite for the effect
-        const sprite = spriteManager.createAnimatedSprite('slash_effect');
-        
-        if (!sprite) {
-            console.error('Failed to create slash effect');
-            return null;
-        }
-        
-        // Position the effect in front of the player based on facing direction
-        const offsetDistance = 65; // Distance from player center
-        let offsetX = 0;
-        let offsetY = 0;
-        
-        // Calculate offset based on facing direction
-        switch(facing) {
-            case 'right': offsetX = offsetDistance; break;
-            case 'down-right': offsetX = offsetDistance * 0.7; offsetY = offsetDistance * 0.7; break;
-            case 'down': offsetY = offsetDistance; break;
-            case 'down-left': offsetX = -offsetDistance * 0.7; offsetY = offsetDistance * 0.7; break;
-            case 'left': offsetX = -offsetDistance; break;
-            case 'up-left': offsetX = -offsetDistance * 0.7; offsetY = -offsetDistance * 0.7; break;
-            case 'up': offsetY = -offsetDistance; break;
-            case 'up-right': offsetX = offsetDistance * 0.7; offsetY = -offsetDistance * 0.7; break;
-        }
-        
-        // Set sprite properties
-        sprite.position.set(position.x + offsetX, position.y + offsetY);
-        sprite.loop = false;
-        sprite.animationSpeed = 0.5;
-        
-        // Set the scale of the effect (adjust these values to change the size)
-        const effectScale = 1.5; // Increase this value to make the effect larger
-        sprite.scale.set(effectScale, effectScale);
-        
-        // Set rotation based on facing direction (with 90 degree offset)
-        let rotation = -Math.PI / 4;
-        switch(facing) {
-            case 'right': rotation += 0; break;
-            case 'down-right': rotation += Math.PI / 4; break;
-            case 'down': rotation += Math.PI / 2; break;
-            case 'down-left': rotation += 3 * Math.PI / 4; break;
-            case 'left': rotation += Math.PI; break;
-            case 'up-left': rotation += 5 * Math.PI / 4; break;
-            case 'up': rotation += 3 * Math.PI / 2; break;
-            case 'up-right': rotation += 7 * Math.PI / 4; break;
-        }
-        sprite.rotation = rotation;
-        
-        sprite.play();
-        
-        // Add to entity container
-        window.game.entityContainer.addChild(sprite);
-        
-        // Remove sprite when animation completes
-        sprite.onComplete = () => {
-            if (sprite.parent) {
-                sprite.parent.removeChild(sprite);
-            }
-        };
-        
-        // We won't track this in activeAttacks since it handles its own cleanup
-        return null;
-    }
-
-    createStrikeWindupEffect(position) {
-        const spriteManager = window.game.systems.sprites;
-        
-        // Create the animated sprite for the windup effect
-        const sprite = spriteManager.createAnimatedSprite('strike_windup');
-        
-        if (!sprite) {
-            console.error('Failed to create strike windup effect');
-            return null;
-        }
-        
-        // Center on the player
-        sprite.position.set(position.x, position.y);
-        sprite.loop = false;
-        sprite.animationSpeed = 0.8;
-        
-        // Scale as needed
-        const effectScale = 1; // Adjust as needed
-        sprite.scale.set(effectScale, effectScale);
-        
-        sprite.play();
-        
-        // Add to entity container
-        window.game.entityContainer.addChild(sprite);
-        
-        // Remove sprite when animation completes
-        sprite.onComplete = () => {
-            if (sprite.parent) {
-                sprite.parent.removeChild(sprite);
-            }
-        };
-    }
     
-    createStrikeCastEffect(position, facing) {
-        const spriteManager = window.game.systems.sprites;
+    checkAttackHits(attacker, attackPosition, attackType, monsters, damage = 1) {
+        const attackConfig = this.attackConfigs[attackType];
+        if (!attackConfig) return;
         
-        // Create the animated sprite for the cast effect
-        const sprite = spriteManager.createAnimatedSprite('strike_cast');
-        
-        if (!sprite) {
-            console.error('Failed to create strike cast effect');
-            return null;
-        }
-        
-        // Position at the center of the AoE
-        sprite.position.set(position.x, position.y);
-        sprite.loop = false;
-        sprite.animationSpeed = 0.4;
-        
-        // Scale as needed
-        const effectScale = 1; // Adjust as needed
-        sprite.scale.set(effectScale, effectScale);
-        
-        // Set rotation based on facing direction
-        let rotation =  Math.PI / 2;
-        switch(facing) {
-            case 'right': rotation += 0; break;
-            case 'down-right': rotation += Math.PI / 4; break;
-            case 'down': rotation += Math.PI / 2; break;
-            case 'down-left': rotation += 3 * Math.PI / 4; break;
-            case 'left': rotation += Math.PI; break;
-            case 'up-left': rotation += 5 * Math.PI / 4; break;
-            case 'up': rotation += 3 * Math.PI / 2; break;
-            case 'up-right': rotation += 7 * Math.PI / 4; break;
-        }
-        sprite.rotation = rotation;
-        
-        sprite.play();
-        
-        // Add to entity container
-        window.game.entityContainer.addChild(sprite);
-        
-        // Remove sprite when animation completes
-        sprite.onComplete = () => {
-            if (sprite.parent) {
-                sprite.parent.removeChild(sprite);
-            }
-        };
-    }
-    
-    // Helper method to calculate AoE center point
-    calculateAoECenter(playerPosition, facing, distance) {
-        let offsetX = 0;
-        let offsetY = 0;
-        
-        // Calculate offset based on facing direction
-        switch(facing) {
-            case 'right': offsetX = distance; break;
-            case 'down-right': offsetX = distance * 0.7; offsetY = distance * 0.7; break;
-            case 'down': offsetY = distance; break;
-            case 'down-left': offsetX = -distance * 0.7; offsetY = distance * 0.7; break;
-            case 'left': offsetX = -distance; break;
-            case 'up-left': offsetX = -distance * 0.7; offsetY = -distance * 0.7; break;
-            case 'up': offsetY = -distance; break;
-            case 'up-right': offsetX = distance * 0.7; offsetY = -distance * 0.7; break;
-        }
-        
-        return {
-            x: playerPosition.x + offsetX,
-            y: playerPosition.y + offsetY
-        };
-    }
-    
-    checkAttackHits(attacker, attackPosition, attackType, monsters) {
-        // Get sprite manager to determine hit area
-        const spriteManager = window.game.systems.sprites;
-        const hitArea = spriteManager.getAttackHitArea(attacker.facing, attackType);
+        const hitParams = attackConfig.hitboxParams;
         const facing = attacker.facing;
         
-        // Different hit detection based on attack type
-        if (attackType === 'primary') {
-            // Cone attack (Attack 1)
+        if (attackConfig.hitboxType === 'cone') {
+            // Cone attack (primary attack)
             for (const monster of monsters) {
                 if (!monster.alive) continue;
                 
@@ -353,7 +457,7 @@ export class CombatSystem {
                 const adjustedDistance = distance - (monster.collisionRadius || 0);
                 
                 // Check if monster is within range
-                if (adjustedDistance <= hitArea.range) {
+                if (adjustedDistance <= hitParams.range) {
                     // Calculate angle to monster
                     let angle = Math.atan2(dy, dx) * 180 / Math.PI;
                     if (angle < 0) angle += 360; // Convert to 0-360 range
@@ -376,14 +480,14 @@ export class CombatSystem {
                     if (angleDiff > 180) angleDiff = 360 - angleDiff;
                     
                     // Check if monster is within attack cone
-                    if (angleDiff <= hitArea.angle / 2) {
+                    if (angleDiff <= hitParams.angle / 2) {
                         // Hit!
-                        monster.takeDamage(1);
+                        monster.takeDamage(damage);
                     }
                 }
             }
-        } else if (attackType === 'secondary') {
-            // Rectangle attack (Attack 2)
+        } else if (attackConfig.hitboxType === 'rectangle') {
+            // Rectangle attack (secondary attack)
             for (const monster of monsters) {
                 if (!monster.alive) continue;
                 
@@ -413,12 +517,12 @@ export class CombatSystem {
                 
                 // Check if point is inside rectangle (adjusted to match our visualization)
                 // Add collision radius to the rectangle size check
-                if (rotX >= -hitArea.width / 2 - monsterRadius && 
-                    rotX <= hitArea.width / 2 + monsterRadius && 
-                    rotY >= -hitArea.length - monsterRadius && 
+                if (rotX >= -hitParams.width / 2 - monsterRadius && 
+                    rotX <= hitParams.width / 2 + monsterRadius && 
+                    rotY >= -hitParams.length - monsterRadius && 
                     rotY <= 0 + monsterRadius) {
                     // Hit!
-                    monster.takeDamage(2); // Smash attack does more damage
+                    monster.takeDamage(damage);
                 }
             }
         }

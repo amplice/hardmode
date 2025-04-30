@@ -80,20 +80,7 @@ export class Player {
         // Disable the frame-based hit detection entirely
         // We're using the setTimeout approach instead
     }
-    
-    executeAttackHit() {
-        console.log(`Player attack hit on frame: ${this.currentAttackType}`);
-        
-        // Check for hits against monsters
-        if (this.combatSystem) {
-            this.combatSystem.checkAttackHits(
-                this, 
-                this.position, 
-                this.currentAttackType, 
-                window.game.systems.monsters.monsters
-            );
-        }
-    }
+
     
     drawPlaceholder() {
         this.placeholder.clear();
@@ -414,26 +401,15 @@ export class Player {
             this.animatedSprite.onComplete = () => this.onAnimationComplete();
         }
         
-        // Calculate delay for attack hit effect (approximately 8 frames at 60fps)
-        const hitDelay = 20 * (1000 / 60); // ~133ms for primary attack
-        
-        // Schedule the hit effect and damage after the delay
-        setTimeout(() => {
-            if (this.isAttacking && this.currentAttackType === 'primary') {
-                console.log("Primary attack hit effect triggered");
-                
-                // Create attack visualization
-                if (this.combatSystem) {
-                    this.combatSystem.createAttackAnimation(this, 'primary');
-                }
-                
-                // Execute the attack hit
-                this.executeAttackHit();
-            }
-        }, hitDelay);
-        
-        // Set cooldown (will be applied after animation completes)
-        this.attackCooldown = 0.5; // 500ms cooldown
+        // Execute attack using combat system
+        if (this.combatSystem) {
+            // The combat system handles all the attack logic and effects
+            const cooldown = this.combatSystem.executeAttack(this, 'primary');
+            this.attackCooldown = cooldown / 1000; // Convert ms to seconds
+        } else {
+            // Fallback cooldown if no combat system
+            this.attackCooldown = 0.5;
+        }
     }
     
     performSecondaryAttack() {
@@ -462,26 +438,15 @@ export class Player {
             this.animatedSprite.onComplete = () => this.onAnimationComplete();
         }
         
-        // Calculate delay for attack hit effect (approximately 12 frames at 60fps)
-        const hitDelay = 30 * (1000 / 60); // ~200ms for secondary attack
-        
-        // Schedule the hit effect and damage after the delay
-        setTimeout(() => {
-            if (this.isAttacking && this.currentAttackType === 'secondary') {
-                console.log("Secondary attack hit effect triggered");
-                
-                // Create attack visualization
-                if (this.combatSystem) {
-                    this.combatSystem.createAttackAnimation(this, 'secondary');
-                }
-                
-                // Execute the attack hit
-                this.executeAttackHit();
-            }
-        }, hitDelay);
-        
-        // Set cooldown (will be applied after animation completes)
-        this.attackCooldown = 0.8; // 800ms cooldown (longer for the heavier attack)
+        // Execute attack using combat system
+        if (this.combatSystem) {
+            // The combat system handles all the attack logic and effects
+            const cooldown = this.combatSystem.executeAttack(this, 'secondary');
+            this.attackCooldown = cooldown / 1000; // Convert ms to seconds
+        } else {
+            // Fallback cooldown if no combat system
+            this.attackCooldown = 0.8;
+        }
     }
     
     takeDamage(amount) {

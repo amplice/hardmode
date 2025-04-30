@@ -229,10 +229,10 @@ export class Monster {
 getMonsterCollisionRadius() {
     switch(this.type) {
         case 'ogre': return 30; // Larger radius for ogre
-        case 'skeleton': return 20;
-        case 'elemental': return 25;
-        case 'ghoul': return 20;
-        default: return 20;
+        case 'skeleton': return 5;
+        case 'elemental': return 5;
+        case 'ghoul': return 5;
+        default: return 5;
     }
 }
     

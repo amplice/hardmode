@@ -67,15 +67,15 @@ export class SpriteManager {
             'strike_windup',
             'assets/sprites/effects/KnightStrikeWindup.png',
             6,  // columns (adjust if needed)
-            1,  // rows (adjust if needed)
-            0,  // row index
+            9,  // rows (adjust if needed)
+            2,  // row index
             { width: 64, height: 64 }  // frame size (adjust if needed)
         ),
         this.loadEffectSpritesheet(
             'strike_cast',
             'assets/sprites/effects/KnightStrikeCast.png',
             7,  // columns (adjust if needed)
-            1,  // rows (adjust if needed)
+            9,  // rows (adjust if needed)
             2,  // row index
             { width: 64, height: 64 }  // frame size (adjust if needed)
         )
