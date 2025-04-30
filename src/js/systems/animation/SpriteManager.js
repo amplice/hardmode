@@ -36,7 +36,7 @@ export class SpriteManager {
             // Elemental sprites
             this.loadSpritesheet('elemental_walk', 'assets/sprites/monsters/Elemental/Walk.png', 15, 8),
             this.loadSpritesheet('elemental_idle', 'assets/sprites/monsters/Elemental/Idle.png', 15, 8),
-            this.loadSpritesheet('elemental_attack1', 'assets/sprites/monsters/Elemental/Attack1.png', 15, 8),
+            this.loadSpritesheet('elemental_attack1', 'assets/sprites/monsters/Elemental/Attack4.png', 15, 8),
             this.loadSpritesheet('elemental_take_damage', 'assets/sprites/monsters/Elemental/TakeDamage.png', 15, 8),
             this.loadSpritesheet('elemental_die', 'assets/sprites/monsters/Elemental/Die.png', 15, 8),
             // Ogre sprites with custom frame size

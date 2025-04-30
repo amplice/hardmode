@@ -1,16 +1,17 @@
 // src/js/systems/MonsterSystem.js
 import { Monster } from '../entities/monsters/Monster.js';
+import { MONSTER_CONFIG } from '../config/GameConfig.js';
 
 export class MonsterSystem {
     constructor(world) {
         this.world = world;
         this.monsters = [];
         this.spawnTimer = 0;
-        this.spawnRate = 5; // New monster every 5 seconds
-        this.maxMonsters = 10; // Maximum number of monsters at once
+        this.spawnRate = MONSTER_CONFIG.spawn.timer;
+        this.maxMonsters = MONSTER_CONFIG.spawn.maxMonsters;
         
         // Test spawning flag - set to true to enable test spawns on startup
-        this.enableTestSpawns = true; // <-- Set this to false to disable
+        this.enableTestSpawns = true;
         
         // Perform test spawns if enabled
         if (this.enableTestSpawns) {
@@ -44,8 +45,8 @@ export class MonsterSystem {
     
     spawnRandomMonster(player) {
         // Don't spawn too close to the player
-        const minDistanceFromPlayer = 400;
-        const maxDistanceFromPlayer = 800;
+        const minDistance = MONSTER_CONFIG.spawn.minDistanceFromPlayer;
+        const maxDistance = MONSTER_CONFIG.spawn.maxDistanceFromPlayer;
         
         // Find a valid spawn position
         let spawnX, spawnY, distanceToPlayer;
@@ -65,8 +66,8 @@ export class MonsterSystem {
             // Check if position is walkable
             const isWalkable = this.world.isTileWalkable(spawnX, spawnY);
             
-            if (distanceToPlayer >= minDistanceFromPlayer && 
-                distanceToPlayer <= maxDistanceFromPlayer &&
+            if (distanceToPlayer >= minDistance && 
+                distanceToPlayer <= maxDistance &&
                 isWalkable) {
                 validSpawn = true;
             }
@@ -78,15 +79,15 @@ export class MonsterSystem {
             // Choose monster type with weighted probabilities
             const roll = Math.random();
             let monsterType;
+            let totalProbability = 0;
             
-            if (roll < 0.25) {
-                monsterType = 'skeleton'; // 25% chance of skeleton
-            } else if (roll < 0.25) {
-                monsterType = 'elemental'; // 25% chance of elemental
-            } else if (roll < 0.25) {
-                monsterType = 'ghoul'; // 25% chance of ghoul
-            } else {
-                monsterType = 'ogre'; // 25% chance of ogre
+            const distribution = MONSTER_CONFIG.spawn.distribution;
+            for (const [type, probability] of Object.entries(distribution)) {
+                totalProbability += probability;
+                if (roll < totalProbability) {
+                    monsterType = type;
+                    break;
+                }
             }
             
             // Create and add monster
@@ -101,33 +102,25 @@ export class MonsterSystem {
         }
     }
 
-     // Add this method for test spawning
-     spawnTestMonsters() {
+    spawnTestMonsters() {
         console.log("Spawning test monsters...");
         
         // Get the center of the map for reference
         const centerX = this.world.width / 2 * this.world.tileSize;
         const centerY = this.world.height / 2 * this.world.tileSize;
         
-        // Spawn each monster type
-        const testSpawns = [
-            { type: 'skeleton', count: 3, x: centerX - 200, y: centerY - 200 },
-            { type: 'elemental', count: 3, x: centerX + 200, y: centerY - 200 },
-            { type: 'ogre', count: 3, x: centerX - 200, y: centerY + 200 },
-            { type: 'ghoul', count: 3, x: centerX + 200, y: centerY + 200 }
-        ];
-        
-        for (const spawn of testSpawns) {
-            for (let i = 0; i < spawn.count; i++) {
+        // Spawn each monster type based on config
+        for (const spawnData of MONSTER_CONFIG.testSpawns) {
+            for (let i = 0; i < spawnData.count; i++) {
                 // Create a small random offset for each monster
                 const offsetX = (Math.random() - 0.5) * 100;
                 const offsetY = (Math.random() - 0.5) * 100;
                 
                 // Create monster
                 const monster = new Monster({
-                    x: spawn.x + offsetX,
-                    y: spawn.y + offsetY,
-                    type: spawn.type
+                    x: centerX + spawnData.offsetX + offsetX,
+                    y: centerY + spawnData.offsetY + offsetY,
+                    type: spawnData.type
                 });
                 
                 this.monsters.push(monster);

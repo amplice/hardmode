@@ -1,29 +1,32 @@
 // src/js/entities/monsters/Monster.js
 import * as PIXI from 'pixi.js';
+import { MONSTER_CONFIG } from '../../config/GameConfig.js';
 
 export class Monster {
     constructor(options) {
         this.position = { x: options.x, y: options.y };
         this.velocity = { x: 0, y: 0 };
         this.facing = 'down';
-        this.type = options.type || 'skeleton'; // Default to skeleton
-        this.hitPoints = this.getMonsterHitPoints();
-        this.moveSpeed = this.getMonsterMoveSpeed();
-        this.attackRange = this.getMonsterAttackRange();
+        this.type = options.type || 'skeleton';
+        
+        // Get stats from config
+        const stats = MONSTER_CONFIG.stats[this.type];
+        this.hitPoints = stats.hitPoints;
+        this.moveSpeed = stats.moveSpeed;
+        this.attackRange = stats.attackRange;
         this.attackDamage = 1;
         this.attackCooldown = 0;
-        this.aggroRange = 250;
+        this.aggroRange = stats.aggroRange;
         this.target = null;
         this.alive = true;
-        this.collisionRadius = this.getMonsterCollisionRadius();
+        this.collisionRadius = stats.collisionRadius;
         
-        // Attack state - simplify
+        // Attack state
         this.isAttacking = false;
-        this.attackCooldown = 0;
         
         // Stun state
         this.isStunned = false;
-        this.stunDuration = 0.2; // Configurable stun duration in seconds
+        this.stunDuration = 0.2;
         this.stunTimer = 0;
         this.isTakingDamage = false;
         
@@ -68,7 +71,6 @@ export class Monster {
             this.isPlayingAttackAnimation = false;
             
             // Don't immediately update animation - let attack state finish first
-            // We'll show idle/walk after attack state completes
         }
     }
     
@@ -127,13 +129,11 @@ export class Monster {
                     // Set animation complete callback for non-looping animations
                     if (!this.animatedSprite.loop) {
                         this.animatedSprite.onComplete = () => {
-                            // Don't change animation state until the attack sequence is complete
                             if (animationState === 'hit') {
                                 this.isTakingDamage = false;
                                 this.currentAnimation = null;
                                 this.updateAnimation();
                             }
-                            // For attack animations, let the attack logic handle completion
                         };
                     }
                 }
@@ -141,98 +141,8 @@ export class Monster {
         }
     }
     
-    getMonsterHitPoints() {
-        switch(this.type) {
-            case 'ogre': return 4;
-            case 'skeleton': return 2;
-            case 'elemental': return 3;
-            case 'ghoul': return 2; // Similar to skeleton
-            default: return 2;
-        }
-    }
-    
-    getMonsterMoveSpeed() {
-        switch(this.type) {
-            case 'ogre': return 1;
-            case 'skeleton': return 2;
-            case 'elemental': return 1.5;
-            case 'ghoul': return 2.5; // Faster than other monsters
-            default: return 2;
-        }
-    }
-    
-    getMonsterAttackRange() {
-        switch(this.type) {
-            case 'ogre': return 90;
-            case 'skeleton': return 70;
-            case 'elemental': return 120;
-            case 'ghoul': return 60; // Short range but fast
-            default: return 100;
-        }
-    }
-    getMonsterCollisionRadius() {
-        switch(this.type) {
-            case 'ogre': return 25; // Larger radius for ogre
-            case 'skeleton': return 15;
-            case 'elemental': return 15;
-            case 'ghoul': return 10;
-            default: return 15;
-        }
-    }
-    
     getAttackDetails() {
-        switch(this.type) {
-            case 'ogre':
-                return {
-                    windup: 0.9,
-                    duration: 0.4,
-                    recovery: 0.8,
-                    cooldown: 3.0,
-                    pattern: 'cone',
-                    color: 0x885500,
-                    range: this.attackRange
-                };
-            case 'skeleton':
-                return {
-                    windup: 0.2,
-                    duration: 0.4,
-                    recovery: 0.6,
-                    cooldown: 1.5,
-                    pattern: 'cone',
-                    color: 0xEEEEEE,
-                    range: this.attackRange
-                };
-            case 'elemental':
-                return {
-                    windup: 0.4,
-                    duration: 0.6,
-                    recovery: 0.5,
-                    cooldown: 2.5,
-                    pattern: 'circle',
-                    color: 0x42C0FB,
-                    range: this.attackRange
-                };
-            case 'ghoul':
-                return {
-                    windup: 0.15, // Very fast attack
-                    duration: 0.25,
-                    recovery: 0.3,
-                    cooldown: 1.0, // Quick recovery, can attack often
-                    pattern: 'cone',
-                    color: 0x7CFC00, // Bright green
-                    range: this.attackRange
-                };
-            default:
-                return {
-                    windup: 0.5,
-                    duration: 0.3,
-                    recovery: 0.5,
-                    cooldown: 2.0,
-                    pattern: 'circle',
-                    color: 0xFF00FF,
-                    range: this.attackRange
-                };
-        }
+        return MONSTER_CONFIG.attacks[this.type];
     }
     
     updateFacingFromVelocity() {
@@ -249,7 +159,7 @@ export class Monster {
         const absY = Math.abs(vy);
         
         // Use thresholds to determine if movement is diagonal or cardinal
-        const diagonalThreshold = 0.5;  // How close x and y need to be to consider diagonal
+        const diagonalThreshold = 0.5;
         
         // Check if movement is strongly in one direction or diagonal
         if (absX > absY * 1.5) {
@@ -267,53 +177,51 @@ export class Monster {
         }
     }
     
-// In Monster.js - update the startAttack method
-startAttack() {
-    if (this.isAttacking) return; // Already attacking
-    
-    this.isAttacking = true;
-    console.log(`Monster ${this.type} preparing to attack!`);
-    
-    // Set up attack details
-    const attackDetails = this.getAttackDetails();
-    
-    // Force animation update to attack animation immediately
-    this.shouldPlayAttackAnimation = true;
-    this.currentAnimation = null; // Force animation change
-    this.updateAnimation();
-    
-    // Show attack windup indicator
-    this.updateAttackIndicator(true);
-    
-    // Schedule the actual attack to occur at the appropriate time
-    setTimeout(() => {
-        if (!this.isAttacking) return; // Check if attack was interrupted
+    startAttack() {
+        if (this.isAttacking) return; // Already attacking
         
-        // Show active attack indicator
-        this.updateAttackIndicator(false, true);
-        this.executeAttack();
+        this.isAttacking = true;
+        console.log(`Monster ${this.type} preparing to attack!`);
         
-        // Schedule indicator removal and end of attack sequence
+        // Set up attack details
+        const attackDetails = this.getAttackDetails();
+        
+        // Force animation update to attack animation immediately
+        this.shouldPlayAttackAnimation = true;
+        this.currentAnimation = null;
+        this.updateAnimation();
+        
+        // Show attack windup indicator
+        this.updateAttackIndicator(true);
+        
+        // Schedule the attack to happen right after windup
         setTimeout(() => {
-            if (!this.alive || !this.isAttacking) return;
+            if (!this.isAttacking) return; // Check if attack was interrupted
             
-            if (this.attackIndicator) {
-                this.attackIndicator.clear();
-            }
+            // Show active attack indicator and execute attack immediately
+            this.updateAttackIndicator(false, true);
+            this.executeAttack();
             
-            // End attack state and start cooldown
-            this.isAttacking = false;
-            this.shouldPlayAttackAnimation = false;
-            this.attackCooldown = attackDetails.cooldown;
-            
-            // Force animation update to return to idle/walk
-            this.currentAnimation = null;
-            this.updateAnimation();
-            
-            console.log(`Monster attack complete, cooldown set to ${this.attackCooldown}`);
-        }, attackDetails.duration * 1000);
-    }, attackDetails.windup * 1000);
-}
+            // Schedule end of attack sequence after duration
+            setTimeout(() => {
+                if (!this.alive || !this.isAttacking) return;
+                
+                if (this.attackIndicator) {
+                    this.attackIndicator.clear();
+                }
+                
+                // End attack state and start cooldown
+                this.isAttacking = false;
+                this.shouldPlayAttackAnimation = false;
+                this.attackCooldown = attackDetails.cooldown;
+                
+                // Return to idle/walk animation
+                this.currentAnimation = null;
+                this.updateAnimation();
+                
+            }, attackDetails.duration * 1000);
+        }, attackDetails.windup * 1000);
+    }
     
     updateAttackIndicator(isWindup = false, isActive = false) {
         this.attackIndicator.clear();
@@ -321,7 +229,7 @@ startAttack() {
         if (!isWindup && !isActive) return;
         
         const attackDetails = this.getAttackDetails();
-        const range = attackDetails.range;
+        const range = attackDetails.range || this.attackRange;
         
         // Different visual for windup vs active attack
         const alpha = isWindup ? 0.3 : 0.7;
@@ -411,7 +319,7 @@ startAttack() {
         let hit = false;
         
         // Check if player is in range
-        if (distToTarget <= attackDetails.range) {
+        if (distToTarget <= this.attackRange) {
             switch (attackDetails.pattern) {
                 case 'circle':
                     // Circle hits in all directions within range
@@ -663,9 +571,6 @@ startAttack() {
         this.position.x += this.velocity.x;
         this.position.y += this.velocity.y;
         
-        // Keep monster within world bounds and handle collision
-        // [Keep the existing collision code...]
-        
         // Update sprite position
         this.sprite.position.set(this.position.x, this.position.y);
         
@@ -736,7 +641,6 @@ startAttack() {
         }
         
         // Fallback: just fade out with red tint if no animation
-        // Add red tint to the monster sprite
         if (this.sprite) {
             this.sprite.tint = 0xFF0000;
         }

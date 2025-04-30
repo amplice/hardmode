@@ -45,8 +45,7 @@ this.attackConfigs = {
     primary: {
         name: "Slash Attack",
         damage: 1,
-        windupTime: 0,       // No windup for primary
-        hitTime: 133,        // ~8 frames at 60fps (in ms)
+        windupTime: 133,       
         recoveryTime: 200,   // Recovery time after hit (in ms)
         cooldown: 100,       // Total cooldown before next attack (in ms)
         hitboxType: 'rectangle',
@@ -68,8 +67,7 @@ this.attackConfigs = {
     secondary: {
         name: "Smash Attack",
         damage: 2,
-        windupTime: 250,     // ~15 frames
-        hitTime: 500,        // ~30 frames
+        windupTime: 500,     // ~15 frames
         recoveryTime: 300,
         cooldown: 800,
         hitboxType: 'rectangle',
@@ -109,8 +107,8 @@ this.attackConfigs = {
         // Get attack config
         const attackConfig = this.attackConfigs[attackType];
         if (!attackConfig) {
-            console.error(`Attack type ${attackType} not configured`);
-            return false;
+          console.error(`Attack type ${attackType} not configured`);
+          return false;
         }
         
         // Start attack sequence
@@ -123,56 +121,56 @@ this.attackConfigs = {
         // Play first effects immediately
         this.playEffectSequence(entity, attackConfig, 0);
         
-// Create hitbox visualization based on attack type
-const hitboxAnimation = this.createHitboxVisualization(
-    position, 
-    facing, 
-    attackConfig.hitboxType, 
-    attackConfig.hitboxParams,
-    attackConfig.hitboxVisual
-);
+        // Create hitbox visualization based on attack type
+        const hitboxAnimation = this.createHitboxVisualization(
+          position, facing, attackConfig.hitboxType, 
+          attackConfig.hitboxParams, attackConfig.hitboxVisual
+        );
         
         if (hitboxAnimation) {
-            this.activeAttacks.push(hitboxAnimation);
-            window.game.entityContainer.addChild(hitboxAnimation.graphics);
+          this.activeAttacks.push(hitboxAnimation);
+          window.game.entityContainer.addChild(hitboxAnimation.graphics);
         }
         
-        // Play effects at their specified timing
-        attackConfig.effectSequence.forEach(effect => {
-            if (effect.timing > 0) {
-                setTimeout(() => {
-                    // Check if entity is still in attack state
-                    if (entity.isAttacking && entity.currentAttackType === attackType) {
-                        // For strike_cast, we need to calculate a new position in front of entity
-                        if (effect.type === 'strike_cast') {
-                            const effectConfig = this.effectConfigs[effect.type];
-                            const aoePosition = this.calculateEffectPosition(
-                                entity.position, 
-                                entity.facing, 
-                                effectConfig.offsetDistance
-                            );
-                            this.createEffect(effect.type, aoePosition, entity.facing, null, true);
-                        } else {
-                            this.createEffect(effect.type, entity.position, entity.facing, entity);
-                        }
-                    }
-                }, effect.timing);
-            }
-        });
-        
-        // Schedule hit detection
+        // Schedule both hit detection and effects after windup time
         setTimeout(() => {
-            if (entity.isAttacking && entity.currentAttackType === attackType) {
-                console.log(`${attackConfig.name} hit effect triggered`);
-                
-                // Apply hit effect
-                this.applyHitEffect(entity, attackType, attackConfig.damage);
-            }
-        }, attackConfig.hitTime);
+          if (entity.isAttacking && entity.currentAttackType === attackType) {
+            // Apply hit effect immediately after windup
+            console.log(`${attackConfig.name} hit effect triggered`);
+            this.applyHitEffect(entity, attackType, attackConfig.damage);
+            
+            // Play effects scheduled for this timing
+            attackConfig.effectSequence.forEach(effect => {
+              if (effect.timing > 0 && effect.timing <= attackConfig.windupTime) {
+                // For strike_cast, calculate new position in front of entity
+                if (effect.type === 'strike_cast') {
+                  const effectConfig = this.effectConfigs[effect.type];
+                  const aoePosition = this.calculateEffectPosition(
+                    entity.position, entity.facing, effectConfig.offsetDistance
+                  );
+                  this.createEffect(effect.type, aoePosition, entity.facing, null, true);
+                } else {
+                  this.createEffect(effect.type, entity.position, entity.facing, entity);
+                }
+              }
+            });
+          }
+        }, attackConfig.windupTime);
+        
+        // Play effects after windup
+        attackConfig.effectSequence.forEach(effect => {
+          if (effect.timing > attackConfig.windupTime) {
+            setTimeout(() => {
+              if (entity.isAttacking && entity.currentAttackType === attackType) {
+                this.createEffect(effect.type, entity.position, entity.facing, entity);
+              }
+            }, effect.timing);
+          }
+        });
         
         // Return attack cooldown time to entity
         return attackConfig.cooldown;
-    }
+      }
     
     playEffectSequence(entity, attackConfig, startTime) {
         // Play any effects scheduled at the given time
