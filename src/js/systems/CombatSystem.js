@@ -1,93 +1,16 @@
 import * as PIXI from 'pixi.js';
+import { PLAYER_CONFIG } from '../config/GameConfig.js';
 
 export class CombatSystem {
     constructor(app) {
         this.app = app;
         this.activeAttacks = [];
         
-        // Effect configuration data
-        this.effectConfigs = {
-            // Slash effect configuration
-            slash_effect: {
-                scale: 1.5,
-                offsetDistance: 60,
-                rotationOffset: 2 * Math.PI, // -45 degrees base rotation
-                animationSpeed: 0.5,
-                followDuration: 0, // 0 means the effect doesn't follow the player
-                flipX: false,
-                flipY: true 
-            },
-            // Strike windup effect configuration
-            strike_windup: {
-                scale: 1.5,
-                offsetDistance: 10, // Centered on player
-                rotationOffset: 0,
-                animationSpeed: 0.4,
-                followDuration: 0,
-                flipX: false,
-                flipY: false 
-            },
-            // Strike cast effect configuration
-            strike_cast: {
-                scale: 1.3,
-                offsetDistance: 70, // Further out from player
-                rotationOffset: Math.PI / 2,
-                animationSpeed: 0.4,
-                followDuration: 0,
-                flipX: false,
-                flipY: false 
-            }
-        };
+        // Use effect configurations from PLAYER_CONFIG
+        this.effectConfigs = PLAYER_CONFIG.effects;
         
-        // Attack configuration data
-// Attack configuration data
-this.attackConfigs = {
-    primary: {
-        name: "Slash Attack",
-        damage: 1,
-        windupTime: 133,       
-        recoveryTime: 200,   // Recovery time after hit (in ms)
-        cooldown: 100,       // Total cooldown before next attack (in ms)
-        hitboxType: 'rectangle',
-        hitboxParams: {
-            width: 45,
-            length: 85
-        },
-        hitboxVisual: {
-            color: 0xFF5555,
-            fillAlpha: 0.0, // Fill transparency
-            lineAlpha: 0.0,  // Outline transparency
-            lineWidth: 3,    // Outline width
-            duration: 1    // How long the visualization lasts (seconds)
-        },
-        effectSequence: [
-            { type: 'slash_effect', timing: 250 } 
-        ]
-    },
-    secondary: {
-        name: "Smash Attack",
-        damage: 2,
-        windupTime: 500,     // ~15 frames
-        recoveryTime: 300,
-        cooldown: 800,
-        hitboxType: 'rectangle',
-        hitboxParams: {
-            width: 70,
-            length: 110
-        },
-        hitboxVisual: {
-            color: 0x00FFFF,
-            fillAlpha: 0.01, // More visible fill for rectangle
-            lineAlpha: 0.0,
-            lineWidth: 3,
-            duration: 0.3
-        },
-        effectSequence: [
-            { type: 'strike_windup', timing: 100 },      // Play immediately
-            { type: 'strike_cast', timing: 500 }       // Play after windupTime
-        ]
-    }
-};
+        // Use attack configurations from PLAYER_CONFIG
+        this.attackConfigs = PLAYER_CONFIG.attacks;
     }
     
     update(deltaTime) {
@@ -170,7 +93,7 @@ this.attackConfigs = {
         
         // Return attack cooldown time to entity
         return attackConfig.cooldown;
-      }
+    }
     
     playEffectSequence(entity, attackConfig, startTime) {
         // Play any effects scheduled at the given time

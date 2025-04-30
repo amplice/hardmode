@@ -1,13 +1,18 @@
 import * as PIXI from 'pixi.js';
+import { PLAYER_CONFIG } from '../config/GameConfig.js';
 
 export class Player {
     constructor(options) {
         this.position = { x: options.x, y: options.y };
         this.velocity = { x: 0, y: 0 };
-        this.facing = 'down'; // down, up, left, right, down-left, down-right, up-left, up-right
+        this.facing = 'down';
         this.characterClass = options.class || 'bladedancer';
-        this.hitPoints = this.getClassHitPoints();
-        this.moveSpeed = this.getClassMoveSpeed();
+        
+        // Get class stats from config
+        const classConfig = PLAYER_CONFIG.classes[this.characterClass];
+        this.hitPoints = classConfig.hitPoints;
+        this.moveSpeed = classConfig.moveSpeed;
+        
         this.isAttacking = false;
         this.attackCooldown = 0;
         this.currentAttackType = null;
@@ -20,8 +25,8 @@ export class Player {
         this.isDying = false;
         this.isDead = false;
         this.isTakingDamage = false;
-    this.damageStunDuration = 0.25; // Configurable stun duration in seconds (default: 0.15s)
-    this.damageStunTimer = 0;
+        this.damageStunDuration = PLAYER_CONFIG.damage.stunDuration;
+        this.damageStunTimer = 0;
         
         // Create animated sprite container
         this.sprite = new PIXI.Container();
@@ -52,7 +57,7 @@ export class Player {
         this.animatedSprite = this.spriteManager.createAnimatedSprite(animationName);
         if (this.animatedSprite) {
             this.animatedSprite.play();
-            this.animatedSprite.anchor.set(0.5, 0.5); // Make sure this line exists
+            this.animatedSprite.anchor.set(0.5, 0.5);
             this.sprite.addChild(this.animatedSprite);
             
             // Set up animation complete callback
@@ -85,15 +90,9 @@ export class Player {
     drawPlaceholder() {
         this.placeholder.clear();
         
-        // Different colors for different classes
-        let color;
-        switch(this.characterClass) {
-            case 'bladedancer': color = 0x3498db; break; // Blue
-            case 'guardian': color = 0xe74c3c; break; // Red
-            case 'hunter': color = 0x2ecc71; break; // Green
-            case 'rogue': color = 0x9b59b6; break; // Purple
-            default: color = 0xffffff;
-        }
+        // Get color from config
+        const classConfig = PLAYER_CONFIG.classes[this.characterClass];
+        const color = classConfig.placeholderColor;
         
         // Draw character body
         this.placeholder.beginFill(color);
@@ -135,25 +134,11 @@ export class Player {
     }
     
     getClassHitPoints() {
-        // According to class specifications
-        switch(this.characterClass) {
-            case 'bladedancer': return 10;
-            case 'guardian': return 3;
-            case 'hunter': return 1;
-            case 'rogue': return 1;
-            default: return 2;
-        }
+        return PLAYER_CONFIG.classes[this.characterClass]?.hitPoints || 2;
     }
     
     getClassMoveSpeed() {
-        // According to class specifications
-        switch(this.characterClass) {
-            case 'bladedancer': return 5; // Fast
-            case 'guardian': return 3; // Slow
-            case 'hunter': return 4; // Medium
-            case 'rogue': return 6; // Very Fast
-            default: return 4;
-        }
+        return PLAYER_CONFIG.classes[this.characterClass]?.moveSpeed || 4;
     }
     
     update(deltaTime, inputState) {
