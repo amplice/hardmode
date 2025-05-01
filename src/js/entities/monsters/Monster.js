@@ -24,8 +24,6 @@ export class Monster {
         this.previousState = 'idle'; // Used for state transitions
         this.target = null;
         this.attackCooldown = 0;
-        this.stunTimer = 0;
-        this.idleTimer = 0; // Timer for forced idle state after being hit
         
         // Animation state
         this.currentAnimation = null;
@@ -137,8 +135,6 @@ export class Monster {
             case 'stunned':
                 // Always transition to idle first after being stunned
                 this.changeState('idle');
-                // Set a short idle timer before returning to normal behavior
-                this.idleTimer = 0.05; // 50ms idle period
                 break;
                 
             case 'attacking':
@@ -250,7 +246,6 @@ export class Monster {
         
         // Apply stun - always changes to stunned state regardless of current state
         this.changeState('stunned');
-        this.stunTimer = 0.1; // Short stun duration
         this.velocity = { x: 0, y: 0 }; // Stop movement
     }
     
@@ -272,32 +267,10 @@ export class Monster {
         // Don't do any updates if dead
         if (!this.alive) return;
         
-        // Process stun timer if stunned
+        // Only update sprite position during stun
         if (this.state === 'stunned') {
-            this.stunTimer -= deltaTime;
-            if (this.stunTimer <= 0) {
-                // Animation complete will handle the transition to idle
-                if (this.animatedSprite && !this.animatedSprite.playing) {
-                    this.onAnimationComplete();
-                }
-            }
-            
-            // Only update sprite position during stun
             this.sprite.position.set(this.position.x, this.position.y);
             return;
-        }
-        
-        // Process idle timer if in forced idle state after stun
-        if (this.state === 'idle' && this.idleTimer > 0) {
-            this.idleTimer -= deltaTime;
-            if (this.idleTimer <= 0) {
-                // Now we can transition to other states based on AI
-                this.idleTimer = 0;
-            } else {
-                // Stay in idle until timer expires
-                this.sprite.position.set(this.position.x, this.position.y);
-                return;
-            }
         }
         
         // Decrease attack cooldown
@@ -312,10 +285,8 @@ export class Monster {
             return;
         }
         
-        // AI state machine (only if not in forced idle)
-        if (this.idleTimer <= 0) {
-            this.updateAI(deltaTime, player);
-        }
+        // AI state machine
+        this.updateAI(deltaTime, player);
         
         // Apply movement
         this.position.x += this.velocity.x;
