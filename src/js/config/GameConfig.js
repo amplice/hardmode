@@ -89,9 +89,9 @@ export const MONSTER_CONFIG = {
 
   // Test spawn configuration
   testSpawns: [
-    { type: 'skeleton', count: 1, offsetX: -200, offsetY: -200 },
-    { type: 'elemental', count: 1, offsetX: 200, offsetY: -200 },
-    { type: 'ogre', count: 0, offsetX: -200, offsetY: 200 },
+    { type: 'skeleton', count: 0, offsetX: -200, offsetY: -200 },
+    { type: 'elemental', count: 0, offsetX: 200, offsetY: -200 },
+    { type: 'ogre', count: 2, offsetX: -200, offsetY: 200 },
     { type: 'ghoul', count: 0, offsetX: 200, offsetY: 200 }
   ]
 };
@@ -128,7 +128,7 @@ export const PLAYER_CONFIG = {
   // Damage settings
   damage: {
     stunDuration: 0.25, // Stun duration in seconds when taking damage
-    flashDuration: 0.2  // Duration of red tint flash when damaged
+    flashDuration: 0.1  // Duration of red tint flash when damaged
   },
   
   // Attack configurations
@@ -168,7 +168,7 @@ export const PLAYER_CONFIG = {
       },
       hitboxVisual: {
         color: 0x00FFFF,
-        fillAlpha: 0.01,
+        fillAlpha: 0.0,
         lineAlpha: 0.0,
         lineWidth: 3,
         duration: 0.3

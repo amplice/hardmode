@@ -132,7 +132,6 @@ export class Monster {
                             if (animationState === 'hit') {
                                 this.isTakingDamage = false;
                                 this.currentAnimation = null;
-                                this.updateAnimation();
                             }
                         };
                     }
@@ -619,7 +618,7 @@ export class Monster {
                     if (this.animatedSprite) {
                         this.animatedSprite.tint = 0xFFFFFF;
                     }
-                }, 150);
+                }, 50);
                 
                 this.sprite.addChild(this.animatedSprite);
                 
