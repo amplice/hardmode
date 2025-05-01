@@ -265,7 +265,7 @@ createOgreAnimations() {
         // Take damage animation
         this.animations[`ogre_take_damage_${direction}`] = {
             textures: this.textures[`ogre_take_damage_${direction}`],
-            speed: 0.3
+            speed: 0.5
         };
         
         // Death animation
@@ -303,7 +303,7 @@ createGhoulAnimations() {
         // Take damage animation
         this.animations[`ghoul_take_damage_${direction}`] = {
             textures: this.textures[`ghoul_take_damage_${direction}`],
-            speed: 0.35
+            speed: 0.5
         };
         
         // Death animation
@@ -340,12 +340,12 @@ createGhoulAnimations() {
             // Take damage animation
         this.animations[`skeleton_take_damage_${direction}`] = {
             textures: this.textures[`skeleton_take_damage_${direction}`],
-            speed: 0.3
+            speed: 0.5
         };
                 // Death animation
                 this.animations[`skeleton_die_${direction}`] = {
                     textures: this.textures[`skeleton_die_${direction}`],
-                    speed: 0.2
+                    speed: 0.5
                 };
         
         }
@@ -378,7 +378,7 @@ createGhoulAnimations() {
             // Take damage animation
             this.animations[`elemental_take_damage_${direction}`] = {
                 textures: this.textures[`elemental_take_damage_${direction}`],
-                speed: 0.3
+                speed: 0.5
             };
             
             // Death animation
