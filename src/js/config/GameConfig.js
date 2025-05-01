@@ -89,7 +89,7 @@ export const MONSTER_CONFIG = {
 
   // Test spawn configuration
   testSpawns: [
-    { type: 'skeleton', count: 0, offsetX: -200, offsetY: -200 },
+    { type: 'skeleton', count: 1, offsetX: -200, offsetY: -200 },
     { type: 'elemental', count: 1, offsetX: 200, offsetY: -200 },
     { type: 'ogre', count: 0, offsetX: -200, offsetY: 200 },
     { type: 'ghoul', count: 0, offsetX: 200, offsetY: 200 }

@@ -445,7 +445,7 @@ export class Monster {
                     this.baseSprite.tint = 0xFFFFFF;
                 }
             }
-        }, 200);
+        }, 150);
     }
     
     update(deltaTime, player, world) {
@@ -584,21 +584,17 @@ export class Monster {
     }
     
     die() {
-        // If already dead, don't do anything
         if (!this.alive) return;
         
         console.log(`Monster ${this.type} has been defeated!`);
-        
-        // Immediately mark as not alive to prevent any other systems from updating it
         this.alive = false;
         
-        // Cancel any attack in progress and clear indicators
+        // Cancel attack and clear indicators
         this.isAttacking = false;
         if (this.attackIndicator) {
             this.attackIndicator.clear();
         }
         
-        // Play death animation
         if (this.spriteManager && this.spriteManager.loaded) {
             const deathAnimName = this.spriteManager.getMonsterAnimationForDirection(
                 this.type, this.facing, 'die'
@@ -615,23 +611,26 @@ export class Monster {
                 this.animatedSprite.loop = false;
                 this.animatedSprite.play();
                 
-                // Add red tint to death animation
-                this.animatedSprite.tint = 0xFF0000;
+                // Apply red tint for death animation
+                this.animatedSprite.tint = 0xff0000;
+                
+                // Clear tint after specified duration
+                setTimeout(() => {
+                    if (this.animatedSprite) {
+                        this.animatedSprite.tint = 0xFFFFFF;
+                    }
+                }, 150);
                 
                 this.sprite.addChild(this.animatedSprite);
                 
                 // When animation completes, fade out
                 this.animatedSprite.onComplete = () => {
-                    // Start fading out but keep the red tint during fade
                     const fadeOut = () => {
                         this.sprite.alpha -= 0.1;
                         if (this.sprite.alpha > 0) {
                             requestAnimationFrame(fadeOut);
-                        } else {
-                            // Remove from game
-                            if (this.sprite.parent) {
-                                this.sprite.parent.removeChild(this.sprite);
-                            }
+                        } else if (this.sprite.parent) {
+                            this.sprite.parent.removeChild(this.sprite);
                         }
                     };
                     fadeOut();
@@ -640,19 +639,22 @@ export class Monster {
             }
         }
         
-        // Fallback: just fade out with red tint if no animation
+        // Fallback: fade out with temporary red tint
         if (this.sprite) {
-            this.sprite.tint = 0xFF0000;
+            this.sprite.tint = 0xff0000;
+            setTimeout(() => {
+                if (this.sprite) {
+                    this.sprite.tint = 0xFFFFFF;
+                }
+            }, 150);
         }
         
         const fadeOut = () => {
             this.sprite.alpha -= 0.1;
             if (this.sprite.alpha > 0) {
                 requestAnimationFrame(fadeOut);
-            } else {
-                if (this.sprite.parent) {
-                    this.sprite.parent.removeChild(this.sprite);
-                }
+            } else if (this.sprite.parent) {
+                this.sprite.parent.removeChild(this.sprite);
             }
         };
         fadeOut();
