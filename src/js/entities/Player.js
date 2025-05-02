@@ -301,31 +301,61 @@ class AnimationComponent extends Component {
     }
     
     playAttackAnimation(attackType) {
-        // Get the attack animation name based on facing direction
+        // Get the character class prefix
+        const classPrefix = this.owner.characterClass === 'guardian' ? 'guardian' : 'knight';
+        
+        // Handle special case for guardian jump attack
+        if (this.owner.characterClass === 'guardian' && attackType === 'secondary') {
+          // Use attack2 animation for jump attack
+          const attackAnimName = `${classPrefix}_attack2_${this.getFacingAnimationKey()}`;
+          this.owner.currentAnimation = attackAnimName;
+          
+          // Remove old sprite and create new attack animation
+          if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
+            this.owner.sprite.removeChild(this.owner.animatedSprite);
+          }
+          
+          this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(attackAnimName);
+          if (this.owner.animatedSprite) {
+            // Don't loop the jump attack animation
+            this.owner.animatedSprite.loop = false;
+            this.owner.animatedSprite.play();
+            this.owner.sprite.addChild(this.owner.animatedSprite);
+            
+            // Note: We don't set the onComplete callback for the Guardian's jump attack
+            // since the CombatSystem is handling the attack sequence and ending itself
+          }
+          return;
+        }
+        
+        // Regular attack animation handling (for non-Guardian jump attacks)
         const attackAnimName = this.owner.spriteManager.getAttackAnimation(this.owner.facing, attackType);
         this.owner.currentAnimation = attackAnimName;
         
         // Remove old sprite and create new attack animation
         if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
-            this.owner.sprite.removeChild(this.owner.animatedSprite);
+          this.owner.sprite.removeChild(this.owner.animatedSprite);
         }
         
         this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(attackAnimName);
         if (this.owner.animatedSprite) {
-            // Don't loop the attack animation
-            this.owner.animatedSprite.loop = false;
-            this.owner.animatedSprite.play();
-            this.owner.sprite.addChild(this.owner.animatedSprite);
-            
-            // Set up animation complete callback
-            this.owner.animatedSprite.onComplete = () => this.onAnimationComplete();
+          // Don't loop the attack animation
+          this.owner.animatedSprite.loop = false;
+          this.owner.animatedSprite.play();
+          this.owner.sprite.addChild(this.owner.animatedSprite);
+          
+          // Set up animation complete callback
+          this.owner.animatedSprite.onComplete = () => this.onAnimationComplete();
         }
-    }
+      }
     
     playDamageAnimation() {
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
+            // Get the character class prefix
+            const classPrefix = this.owner.characterClass === 'guardian' ? 'guardian' : 'knight';
+            
             // Get take damage animation for current facing direction
-            const damageAnimName = `knight_take_damage_${this.getFacingAnimationKey()}`;
+            const damageAnimName = `${classPrefix}_take_damage_${this.getFacingAnimationKey()}`;
             this.owner.currentAnimation = damageAnimName;
             
             // Remove old sprite and create new take damage animation
@@ -375,8 +405,11 @@ class AnimationComponent extends Component {
     
     playDeathAnimation() {
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
+            // Get the character class prefix
+            const classPrefix = this.owner.characterClass === 'guardian' ? 'guardian' : 'knight';
+            
             // Get death animation for current facing direction
-            const deathAnimName = `knight_die_${this.getFacingAnimationKey()}`;
+            const deathAnimName = `${classPrefix}_die_${this.getFacingAnimationKey()}`;
             this.owner.currentAnimation = deathAnimName;
             
             // Remove old sprite and create new death animation
@@ -419,72 +452,85 @@ class AnimationComponent extends Component {
 // Handles player combat abilities
 class CombatComponent extends Component {
     init() {
-        this.owner.isAttacking = false;
-        this.owner.attackCooldown = 0;
-        this.owner.currentAttackType = null;
-        this.owner.attackHitFrameReached = false;
+      this.owner.isAttacking = false;
+      this.owner.attackCooldown = 0;
+      this.owner.currentAttackType = null;
+      this.owner.attackHitFrameReached = false;
+      this.owner.isInvulnerable = false; // Add invulnerability flag
     }
     
     update(deltaTime, inputState) {
-        // Decrease attack cooldown
-        if (this.owner.attackCooldown > 0) {
-            this.owner.attackCooldown -= deltaTime;
+      // Decrease attack cooldown
+      if (this.owner.attackCooldown > 0) {
+        this.owner.attackCooldown -= deltaTime;
+      }
+      
+      // Don't process attacks if player can't act
+      if (this.owner.isAttacking || this.owner.isTakingDamage || 
+          this.owner.isDying || this.owner.isDead) {
+        return;
+      }
+      
+      // Handle attack input
+      if (this.owner.attackCooldown <= 0) {
+        if (inputState.primaryAttack) {
+          this.performPrimaryAttack();
+        } else if (inputState.secondaryAttack) {
+          this.performSecondaryAttack();
         }
-        
-        // Don't process attacks if player can't act
-        if (this.owner.isAttacking || this.owner.isTakingDamage || 
-            this.owner.isDying || this.owner.isDead) {
-            return;
-        }
-        
-        // Handle attack input
-        if (this.owner.attackCooldown <= 0) {
-            if (inputState.primaryAttack) {
-                this.performPrimaryAttack();
-            } else if (inputState.secondaryAttack) {
-                this.performSecondaryAttack();
-            }
-        }
+      }
     }
     
     performPrimaryAttack() {
-        console.log("Primary attack (forehand slash) started");
-        this.owner.isAttacking = true;
-        this.owner.attackHitFrameReached = false;
-        this.owner.currentAttackType = 'primary';
-        
-        // Play attack animation
-        this.owner.animation.playAttackAnimation('primary');
-        
-        // Execute attack using combat system
-        if (this.owner.combatSystem) {
-            const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'primary');
-            this.owner.attackCooldown = cooldown / 1000; // Convert ms to seconds
-        } else {
-            // Fallback cooldown if no combat system
-            this.owner.attackCooldown = 0.5;
-        }
+      console.log(`Primary attack (${this.owner.characterClass === 'guardian' ? 'sweeping axe' : 'forehand slash'}) started`);
+      this.owner.isAttacking = true;
+      this.owner.attackHitFrameReached = false;
+      this.owner.currentAttackType = 'primary';
+      
+      // Play attack animation
+      this.owner.animation.playAttackAnimation('primary');
+      
+      // Execute attack using combat system
+      if (this.owner.combatSystem) {
+        const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'primary');
+        this.owner.attackCooldown = cooldown / 1000; // Convert ms to seconds
+      } else {
+        // Fallback cooldown if no combat system
+        this.owner.attackCooldown = 0.5;
+      }
     }
     
     performSecondaryAttack() {
-        console.log("Secondary attack (overhead smash) started");
-        this.owner.isAttacking = true;
-        this.owner.attackHitFrameReached = false;
-        this.owner.currentAttackType = 'secondary';
-        
-        // Play attack animation
-        this.owner.animation.playAttackAnimation('secondary');
-        
-        // Execute attack using combat system
-        if (this.owner.combatSystem) {
-            const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'secondary');
-            this.owner.attackCooldown = cooldown / 1000; // Convert ms to seconds
-        } else {
-            // Fallback cooldown if no combat system
-            this.owner.attackCooldown = 0.8;
-        }
+      console.log(`Secondary attack (${this.owner.characterClass === 'guardian' ? 'jump attack' : 'overhead smash'}) started`);
+      this.owner.isAttacking = true;
+      this.owner.attackHitFrameReached = false;
+      this.owner.currentAttackType = 'secondary';
+      
+      // Play attack animation
+      this.owner.animation.playAttackAnimation('secondary');
+      
+      // Execute attack using combat system
+      if (this.owner.combatSystem) {
+        const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'secondary');
+        this.owner.attackCooldown = cooldown / 1000; // Convert ms to seconds
+      } else {
+        // Fallback cooldown if no combat system
+        this.owner.attackCooldown = 0.8;
+      }
     }
-}
+    
+    // Add method to manually end attack state
+    endAttack() {
+      this.owner.isAttacking = false;
+      this.owner.attackHitFrameReached = false;
+      this.owner.currentAttackType = null;
+      this.owner.isInvulnerable = false;
+      
+      // Force animation update to return to idle
+      this.owner.currentAnimation = null;
+      this.owner.animation.update();
+    }
+  }
 
 // Handles player health, damage, and death
 class HealthComponent extends Component {
@@ -515,15 +561,21 @@ class HealthComponent extends Component {
     }
     
     takeDamage(amount) {
+        // Check for invulnerability
+        if (this.owner.isInvulnerable) {
+          console.log("Attack blocked by invulnerability!");
+          return;
+        }
+        
         console.log(`Player took ${amount} damage!`);
         this.owner.hitPoints -= amount;
         
         // Don't play take damage animation if already dead or dying
         if (this.owner.hitPoints <= 0 || this.owner.isDying || this.owner.isDead) {
-            if (this.owner.hitPoints <= 0 && !this.owner.isDying && !this.owner.isDead) {
-                this.die();
-            }
-            return;
+          if (this.owner.hitPoints <= 0 && !this.owner.isDying && !this.owner.isDead) {
+            this.die();
+          }
+          return;
         }
         
         // Start take damage stun and animation
@@ -532,7 +584,7 @@ class HealthComponent extends Component {
         
         // Play take damage animation
         this.owner.animation.playDamageAnimation();
-    }
+      }
     
     die() {
         console.log("Player died!");

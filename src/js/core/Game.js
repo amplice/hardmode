@@ -1,3 +1,4 @@
+// src/js/core/Game.js
 import * as PIXI from 'pixi.js';
 import { Player }         from '../entities/Player.js';
 import { InputSystem }    from '../systems/Input.js';
@@ -8,6 +9,7 @@ import { MonsterSystem }  from '../systems/MonsterSystem.js';
 import { SpriteManager }  from '../systems/animation/SpriteManager.js';
 import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
+import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 
 // 1) turn off antialias & force pixel‐perfect
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -33,10 +35,10 @@ export class Game {
 
     this.worldContainer  = new PIXI.Container();
     this.entityContainer = new PIXI.Container();
-    this.uiContainer = new PIXI.Container(); // Add this line
+    this.uiContainer = new PIXI.Container();
     this.app.stage.addChild(this.worldContainer);
     this.app.stage.addChild(this.entityContainer);
-    this.app.stage.addChild(this.uiContainer); // Add this line
+    this.app.stage.addChild(this.uiContainer);
 
     this.camera = { x: 0, y: 0, zoom: 1 };
 
@@ -53,62 +55,86 @@ export class Game {
 
     this.tilesets = new TilesetManager();
     this.loadAndInit();
+    
+    // Flag to track game state
+    this.gameStarted = false;
   }
 
   async loadAndInit() {
     try {
       await this.tilesets.load();               // load & slice all sheets
       await this.systems.sprites.loadSprites(); // then other art
-      this.init();
+      
+      // Show class selection UI instead of immediately starting the game
+      this.showClassSelection();
     } catch (err) {
       console.error('Failed to load game assets:', err);
     }
   }
-
-  init() {
+  
+  // Add new method to show class selection
+  showClassSelection() {
+    this.classSelectUI = new ClassSelectUI(this.startGame.bind(this));
+    this.uiContainer.addChild(this.classSelectUI.container);
+  }
+  
+  // Modified to accept selectedClass parameter
+  startGame(selectedClass) {
+    // Remove class selection UI
+    if (this.classSelectUI) {
+      this.uiContainer.removeChild(this.classSelectUI.container);
+      this.classSelectUI = null;
+    }
+    
+    // Initialize the game world
     this.systems.world = new WorldGenerator({
       width:    100,
       height:   100,
-      tileSize: 64,        // <-- smaller tiles; tweak as you like
+      tileSize: 64,
       tilesets: this.tilesets
     });
 
     const worldView = this.systems.world.generate();
     this.worldContainer.addChild(worldView);
 
+    // Create player with selected class
     this.entities.player = new Player({
       x: (this.systems.world.width  / 2) * this.systems.world.tileSize,
       y: (this.systems.world.height / 2) * this.systems.world.tileSize,
-      class:         'bladedancer',
+      class:         selectedClass || 'bladedancer', // Use selected or default
       combatSystem:  this.systems.combat,
       spriteManager: this.systems.sprites
     });
     this.entityContainer.addChild(this.entities.player.sprite);
 
-        // Add this code to create the health UI
-        this.healthUI = new HealthUI(this.entities.player);
-        this.uiContainer.addChild(this.healthUI.container);
+    // Add health UI
+    this.healthUI = new HealthUI(this.entities.player);
+    this.uiContainer.addChild(this.healthUI.container);
 
     this.systems.monsters = new MonsterSystem(this.systems.world);
 
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
-    console.log('Game initialized');
+    this.gameStarted = true;
+    console.log(`Game initialized with ${selectedClass} player`);
   }
 
   update(delta) {
+    // Only update game if it has started
+    if (!this.gameStarted) return;
+    
     const inputState = this.systems.input.update();
     this.entities.player.update(delta / 60, inputState);
     this.systems.physics.update(delta / 60, [this.entities.player], this.systems.world);
     this.systems.monsters.update(delta / 60, this.entities.player);
     this.systems.combat.update(delta / 60);
     this.updateCamera();
-        // Add this line to update the health UI
-        this.healthUI.update();
+    this.healthUI.update();
   }
 
-
   updateCamera() {
+    if (!this.gameStarted) return;
+    
     this.camera.x = this.entities.player.position.x;
     this.camera.y = this.entities.player.position.y;
     this.worldContainer.position.set(

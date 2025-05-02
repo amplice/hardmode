@@ -27,6 +27,16 @@ export class SpriteManager {
             this.loadSpritesheet('knight_attack2', 'assets/sprites/characters/Knight/Attack2.png', 15, 8),
             this.loadSpritesheet('knight_die', 'assets/sprites/characters/Knight/Die.png', 15, 8),
             this.loadSpritesheet('knight_take_damage', 'assets/sprites/characters/Knight/TakeDamage.png', 15, 8),
+            // Guardian sprites - using the same animations as Knight for now
+        this.loadSpritesheet('guardian_idle', 'assets/sprites/characters/Guardian/Idle.png', 15, 8),
+        this.loadSpritesheet('guardian_run', 'assets/sprites/characters/Guardian/Run.png', 15, 8),
+        this.loadSpritesheet('guardian_run_backward', 'assets/sprites/characters/Guardian/RunBackwards.png', 15, 8),
+        this.loadSpritesheet('guardian_strafe_left', 'assets/sprites/characters/Guardian/StrafeLeft.png', 15, 8),
+        this.loadSpritesheet('guardian_strafe_right', 'assets/sprites/characters/Guardian/StrafeRight.png', 15, 8),
+        this.loadSpritesheet('guardian_attack1', 'assets/sprites/characters/Guardian/Attack1.png', 15, 8),
+        this.loadSpritesheet('guardian_attack2', 'assets/sprites/characters/Guardian/AttackRun.png', 15, 8),
+        this.loadSpritesheet('guardian_die', 'assets/sprites/characters/Guardian/Die.png', 15, 8),
+        this.loadSpritesheet('guardian_take_damage', 'assets/sprites/characters/Guardian/TakeDamage.png', 15, 8),
             // Monster sprites
             this.loadSpritesheet('skeleton_walk', 'assets/sprites/monsters/Skeleton/Walk.png', 15, 8),
             this.loadSpritesheet('skeleton_idle', 'assets/sprites/monsters/Skeleton/Idle.png', 15, 8),
@@ -78,9 +88,26 @@ export class SpriteManager {
             9,  // rows (adjust if needed)
             2,  // row index
             { width: 64, height: 64 }  // frame size (adjust if needed)
-        )
-    ]);
-    
+        ),
+                // Load Guardian-specific attack effect sprites
+                this.loadEffectSpritesheet(
+                    'guardian_slash_effect',
+                    'assets/sprites/effects/GuardianAttack1.png',
+                    9,  // columns
+                    9,  // rows
+                    8,  // row index (3rd row)
+                    { width: 64, height: 64 }  // frame size
+                ),
+                this.loadEffectSpritesheet(
+                    'guardian_jump_effect',
+                    'assets/sprites/effects/GuardianAttack2.png',
+                    12,  // columns 
+                    9,  // rows
+                    8,  // row index
+                    { width: 64, height: 64 }  // frame size
+                )
+            ]);
+            
         this.createAnimations();
         this.loaded = true;
         console.log("Sprites loaded successfully");
@@ -167,12 +194,14 @@ export class SpriteManager {
 
     createAnimations() {
         this.createKnightAnimations();
+        this.createGuardianAnimations();
         this.createSkeletonAnimations();
         this.createElementalAnimations();
         this.createOgreAnimations();
         this.createGhoulAnimations();
         this.createSlashEffectAnimation(); 
-        this.createStrikeEffectAnimations(); // Add this new line
+        this.createStrikeEffectAnimations();
+        this.createGuardianEffectAnimations(); 
 
     }
 
@@ -235,6 +264,94 @@ export class SpriteManager {
             speed: 0.2
         };
         }
+    }
+
+    createGuardianAnimations() {
+        const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
+        
+        // Create animations for each direction
+        for (const direction of directions) {
+            // Idle animation
+            this.animations[`guardian_idle_${direction}`] = {
+                textures: this.textures[`guardian_idle_${direction}`],
+                speed: 0.15 // Slower for Guardian to emphasize the heavier character
+            };
+    
+            // Standard run animation
+            this.animations[`guardian_run_${direction}`] = {
+                textures: this.textures[`guardian_run_${direction}`],
+                speed: 0.4
+            };
+            
+            // Run backward animation
+            this.animations[`guardian_run_backward_${direction}`] = {
+                textures: this.textures[`guardian_run_backward_${direction}`],
+                speed: 0.4
+            };
+            
+            // Strafe left animation
+            this.animations[`guardian_strafe_left_${direction}`] = {
+                textures: this.textures[`guardian_strafe_left_${direction}`],
+                speed: 0.4
+            };
+            
+            // Strafe right animation
+            this.animations[`guardian_strafe_right_${direction}`] = {
+                textures: this.textures[`guardian_strafe_right_${direction}`],
+                speed: 0.4
+            };
+            
+            // Attack 1 animation
+            this.animations[`guardian_attack1_${direction}`] = {
+                textures: this.textures[`guardian_attack1_${direction}`],
+                speed: 0.35,
+                hitFrame: 8
+            };
+            
+            // Attack 2 animation
+            this.animations[`guardian_attack2_${direction}`] = {
+                textures: this.textures[`guardian_attack2_${direction}`],
+                speed: 0.35,
+                hitFrame: 12
+            };
+            
+            // Take damage animation
+            this.animations[`guardian_take_damage_${direction}`] = {
+                textures: this.textures[`guardian_take_damage_${direction}`],
+                speed: 0.5
+            };
+            
+            // Death animation
+            this.animations[`guardian_die_${direction}`] = {
+                textures: this.textures[`guardian_die_${direction}`],
+                speed: 0.2
+            };
+        }
+    }
+
+    createGuardianEffectAnimations() {
+        // Check if textures exist
+        if (!this.textures['guardian_slash_effect']) {
+            console.error("Missing texture: guardian_slash_effect");
+            return;
+        }
+        if (!this.textures['guardian_jump_effect']) {
+            console.error("Missing texture: guardian_jump_effect");
+            return;
+        }
+    
+        // Create animations for guardian effects
+        this.animations['guardian_slash_effect'] = {
+            textures: this.textures['guardian_slash_effect'],
+            speed: 0.6
+        };
+        
+        this.animations['guardian_jump_effect'] = {
+            textures: this.textures['guardian_jump_effect'],
+            speed: 0.5
+        };
+        
+        console.log("Guardian effect animations created successfully");
     }
 
     // Add this new method
@@ -413,94 +530,125 @@ createGhoulAnimations() {
     return sprite;
 }
 
-    getAnimationForMovement(facingDirection, movementDirection) {
-        // Convert 8-way direction to the format used in our animations (e, se, s, etc.)
-        const directionMap = {
-            'right': 'e',
-            'down-right': 'se',
-            'down': 's',
-            'down-left': 'sw',
-            'left': 'w',
-            'up-left': 'nw',
-            'up': 'n',
-            'up-right': 'ne'
-        };
-        
-        const facing = directionMap[facingDirection];
-        
-        // If not moving, return idle animation
-        if (!movementDirection) {
-            return `knight_idle_${facing}`;
-        }
-        
-        const movement = directionMap[movementDirection];
-        
-        if (!facing || !movement) {
-            return `knight_idle_${facing || 's'}`; // Default to south-facing idle
-        }
-        
-        // Determine which animation to use based on the relationship between facing and movement directions
-        if (facing === movement) {
-            // Running forward
-            return `knight_run_${facing}`;
-        } else {
-            // Check if running backward (opposite direction)
-            const opposites = {
-                'e': 'w', 'w': 'e', 'n': 's', 's': 'n',
-                'ne': 'sw', 'sw': 'ne', 'nw': 'se', 'se': 'nw'
-            };
-            
-            if (movement === opposites[facing]) {
-                return `knight_run_backward_${facing}`;
-            }
-            
-            // Check if strafing left or right relative to facing direction
-            const clockwise = ['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'];
-            const facingIndex = clockwise.indexOf(facing);
-            const movementIndex = clockwise.indexOf(movement);
-            
-            // Determine if movement is to the left or right of facing
-            if (facingIndex !== -1 && movementIndex !== -1) {
-                // Calculate the shortest path around the circle
-                let diff = movementIndex - facingIndex;
-                if (diff < -4) diff += 8;
-                if (diff > 4) diff -= 8;
-                
-                if (diff > 0 && diff < 4) {
-                    // Movement is to the right of facing
-                    return `knight_strafe_right_${facing}`;
-                } else if (diff < 0 && diff > -4) {
-                    // Movement is to the left of facing
-                    return `knight_strafe_left_${facing}`;
-                }
-            }
-            
-            // Default to run forward if we can't determine
-            return `knight_run_${facing}`;
-        }
+// Update getAnimationForMovement to handle different character classes
+getAnimationForMovement(facingDirection, movementDirection) {
+    // Get current character class from the entity this animation is for
+    const characterClass = window.game?.entities?.player?.characterClass || 'bladedancer';
+    let classPrefix;
+    
+    // Map character class to sprite prefix
+    switch(characterClass) {
+        case 'guardian':
+            classPrefix = 'guardian';
+            break;
+        case 'bladedancer':
+        default:
+            classPrefix = 'knight';
+            break;
     }
     
-    getAttackAnimation(facingDirection, attackType) {
-        // Convert 8-way direction to the format used in our animations
-        const directionMap = {
-            'right': 'e',
-            'down-right': 'se',
-            'down': 's',
-            'down-left': 'sw',
-            'left': 'w',
-            'up-left': 'nw',
-            'up': 'n',
-            'up-right': 'ne'
+    // Convert 8-way direction to the format used in our animations (e, se, s, etc.)
+    const directionMap = {
+        'right': 'e',
+        'down-right': 'se',
+        'down': 's',
+        'down-left': 'sw',
+        'left': 'w',
+        'up-left': 'nw',
+        'up': 'n',
+        'up-right': 'ne'
+    };
+    
+    const facing = directionMap[facingDirection];
+    
+    // If not moving, return idle animation
+    if (!movementDirection) {
+        return `${classPrefix}_idle_${facing}`;
+    }
+    
+    const movement = directionMap[movementDirection];
+    
+    if (!facing || !movement) {
+        return `${classPrefix}_idle_${facing || 's'}`; // Default to south-facing idle
+    }
+    
+    // Determine which animation to use based on the relationship between facing and movement directions
+    if (facing === movement) {
+        // Running forward
+        return `${classPrefix}_run_${facing}`;
+    } else {
+        // Check if running backward (opposite direction)
+        const opposites = {
+            'e': 'w', 'w': 'e', 'n': 's', 's': 'n',
+            'ne': 'sw', 'sw': 'ne', 'nw': 'se', 'se': 'nw'
         };
         
-        const facing = directionMap[facingDirection];
-        
-        if (!facing) {
-            return attackType === 'primary' ? 'knight_attack1_s' : 'knight_attack2_s';
+        if (movement === opposites[facing]) {
+            return `${classPrefix}_run_backward_${facing}`;
         }
         
-        return attackType === 'primary' ? `knight_attack1_${facing}` : `knight_attack2_${facing}`;
+        // Check if strafing left or right relative to facing direction
+        const clockwise = ['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'];
+        const facingIndex = clockwise.indexOf(facing);
+        const movementIndex = clockwise.indexOf(movement);
+        
+        // Determine if movement is to the left or right of facing
+        if (facingIndex !== -1 && movementIndex !== -1) {
+            // Calculate the shortest path around the circle
+            let diff = movementIndex - facingIndex;
+            if (diff < -4) diff += 8;
+            if (diff > 4) diff -= 8;
+            
+            if (diff > 0 && diff < 4) {
+                // Movement is to the right of facing
+                return `${classPrefix}_strafe_right_${facing}`;
+            } else if (diff < 0 && diff > -4) {
+                // Movement is to the left of facing
+                return `${classPrefix}_strafe_left_${facing}`;
+            }
+        }
+        
+        // Default to run forward if we can't determine
+        return `${classPrefix}_run_${facing}`;
     }
+}
+    
+getAttackAnimation(facingDirection, attackType) {
+    // Get current character class
+    const characterClass = window.game?.entities?.player?.characterClass || 'bladedancer';
+    let classPrefix;
+    
+    // Map character class to sprite prefix
+    switch(characterClass) {
+        case 'guardian':
+            classPrefix = 'guardian';
+            break;
+        case 'bladedancer':
+        default:
+            classPrefix = 'knight';
+            break;
+    }
+    
+    // Convert 8-way direction to the format used in our animations
+    const directionMap = {
+        'right': 'e',
+        'down-right': 'se',
+        'down': 's',
+        'down-left': 'sw',
+        'left': 'w',
+        'up-left': 'nw',
+        'up': 'n',
+        'up-right': 'ne'
+    };
+    
+    const facing = directionMap[facingDirection];
+    
+    if (!facing) {
+        return attackType === 'primary' ? `${classPrefix}_attack1_s` : `${classPrefix}_attack2_s`;
+    }
+    
+    return attackType === 'primary' ? `${classPrefix}_attack1_${facing}` : `${classPrefix}_attack2_${facing}`;
+}
     
     getAttackHitFrame(animationName) {
         if (!this.animations[animationName]) {

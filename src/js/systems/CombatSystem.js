@@ -149,6 +149,33 @@ class ConeHitbox extends Hitbox {
   }
 }
 
+class CircleHitbox extends Hitbox {
+  draw() {
+    const graphics = new PIXI.Graphics();
+    graphics.position.set(this.position.x, this.position.y);
+    
+    graphics.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
+    graphics.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
+    
+    // Draw circle
+    graphics.drawCircle(0, 0, this.params.radius);
+    
+    graphics.endFill();
+    this.graphics = graphics;
+    return graphics;
+  }
+  
+  testHit(target, targetRadius = 0) {
+    // Get distance between circle center and target
+    const dx = target.position.x - this.position.x;
+    const dy = target.position.y - this.position.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    // Hit if target is within circle (accounting for target size)
+    return distance <= this.params.radius + targetRadius;
+  }
+}
+
 // The refactored CombatSystem
 export class CombatSystem {
   constructor(app) {
@@ -174,8 +201,21 @@ export class CombatSystem {
   }
   
   executeAttack(entity, attackType) {
-    // Get attack config
-    const attackConfig = this.attackConfigs[attackType];
+    // Get attack config based on character class
+    let attackConfig;
+    
+    // Check for class-specific attacks
+    if (entity.characterClass === 'guardian') {
+      if (attackType === 'primary') {
+        attackConfig = PLAYER_CONFIG.attacks.guardian_primary;
+      } else if (attackType === 'secondary') {
+        attackConfig = PLAYER_CONFIG.attacks.guardian_secondary;
+      }
+    } else {
+      // Default to standard attacks for other classes
+      attackConfig = PLAYER_CONFIG.attacks[attackType];
+    }
+    
     if (!attackConfig) {
       console.error(`Attack type ${attackType} not configured`);
       return 0;
@@ -187,6 +227,27 @@ export class CombatSystem {
     // Play immediate effects (timing = 0)
     this.playEffectsForTiming(entity, attackConfig, 0);
     
+    // Special handling for Guardian's jump attack
+    if (entity.characterClass === 'guardian' && attackType === 'secondary') {
+      // Set invulnerability
+      if (attackConfig.invulnerable) {
+        entity.isInvulnerable = true;
+      }
+      
+      // Calculate the jump destination based on facing direction
+      const jumpDestination = this.calculateJumpDestination(
+        entity.position, 
+        entity.facing, 
+        attackConfig.dashDistance
+      );
+      
+      // Execute jump sequence
+      this.executeJumpAttack(entity, jumpDestination, attackConfig);
+      
+      return attackConfig.cooldown;
+    }
+    
+    // Standard attack execution for other attacks
     // Create the appropriate hitbox
     const hitbox = this.createHitbox(
       entity.position,
@@ -241,6 +302,8 @@ export class CombatSystem {
         return new RectangleHitbox(position, facing, params, visualConfig);
       case 'cone':
         return new ConeHitbox(position, facing, params, visualConfig);
+      case 'circle':
+        return new CircleHitbox(position, facing, params, visualConfig);
       default:
         console.error(`Unknown hitbox type: ${type}`);
         return null;
@@ -364,6 +427,128 @@ export class CombatSystem {
       y: basePosition.y + offsetY
     };
   }
+
+  calculateJumpDestination(position, facing, distance) {
+    let dx = 0;
+    let dy = 0;
+    
+    // Calculate offset based on facing direction
+    switch(facing) {
+      case 'right':      dx = distance; break;
+      case 'down-right': dx = distance * 0.7; dy = distance * 0.7; break;
+      case 'down':       dy = distance; break;
+      case 'down-left':  dx = -distance * 0.7; dy = distance * 0.7; break;
+      case 'left':       dx = -distance; break;
+      case 'up-left':    dx = -distance * 0.7; dy = -distance * 0.7; break;
+      case 'up':         dy = -distance; break;
+      case 'up-right':   dx = distance * 0.7; dy = -distance * 0.7; break;
+    }
+    
+    // Return destination coordinates
+    return {
+      x: position.x + dx,
+      y: position.y + dy
+    };
+  }
+
+  executeJumpAttack(entity, destination, attackConfig) {
+    const startPosition = { ...entity.position };
+    
+    // 1. Wind-up phase
+    setTimeout(() => {
+      if (!entity.isAttacking) return; // Cancel if player stopped attacking
+      
+      // 2. Jump phase - animate movement to destination
+      // Set up the animation parameters
+      const jumpStartTime = performance.now();
+      const jumpDuration = attackConfig.jumpDuration;
+      const peakHeight = 80; // Maximum height of the jump arc in pixels
+      
+      // Animation function
+      const animateJumpFrame = (timestamp) => {
+        // Calculate how far through the animation we are (0 to 1)
+        const elapsed = timestamp - jumpStartTime;
+        const progress = Math.min(elapsed / jumpDuration, 1);
+        
+        // If player stopped attacking or animation is complete, exit
+        if (!entity.isAttacking || progress >= 1) {
+          entity.position.x = destination.x;
+          entity.position.y = destination.y;
+          entity.sprite.position.set(destination.x, destination.y);
+          return;
+        }
+        
+        // Linear interpolation for horizontal movement
+        entity.position.x = startPosition.x + (destination.x - startPosition.x) * progress;
+        entity.position.y = startPosition.y + (destination.y - startPosition.y) * progress;
+        
+        // Parabolic arc for vertical jump height
+        // sin(π * progress) creates a nice arc that starts and ends at 0
+        const jumpHeight = Math.sin(Math.PI * progress) * peakHeight;
+        
+        // Apply position with jump height
+        entity.sprite.position.set(entity.position.x, entity.position.y - jumpHeight);
+        
+        // Continue animation
+        requestAnimationFrame(animateJumpFrame);
+      };
+      
+      // Start the animation
+      requestAnimationFrame(animateJumpFrame);
+      
+      // Schedule landing effects and damage
+      setTimeout(() => {
+        if (!entity.isAttacking) return; // Cancel if player stopped attacking
+        
+        // 3. Landing phase
+        console.log("Guardian landed from jump attack!");
+        
+        // Create circular hitbox at landing position
+        const hitbox = this.createHitbox(
+          entity.position,
+          entity.facing,
+          attackConfig.hitboxType,
+          attackConfig.hitboxParams,
+          attackConfig.hitboxVisual
+        );
+        
+        if (hitbox) {
+          // Draw the hitbox and add to the game
+          const graphics = hitbox.draw();
+          window.game.entityContainer.addChild(graphics);
+          
+          // Add to active attacks
+          this.activeAttacks.push({
+            hitbox,
+            lifetime: attackConfig.hitboxVisual.duration,
+            attackType: 'secondary',
+            entity,
+            damage: attackConfig.damage
+          });
+          
+          // Apply AOE damage on landing
+          this.applyHitEffects(entity, hitbox, attackConfig.damage);
+        }
+        
+        // Play landing effect
+        this.playEffectsForTiming(entity, attackConfig, attackConfig.windupTime + attackConfig.jumpDuration);
+        
+        // End invulnerability
+        entity.isInvulnerable = false;
+        
+        // Schedule recovery end
+        setTimeout(() => {
+          if (entity.isAttacking) {
+            // End attack state
+            entity.combat.endAttack();
+          }
+        }, attackConfig.recoveryTime);
+        
+      }, attackConfig.jumpDuration);
+      
+    }, attackConfig.windupTime);
+  }
+
   
   calculateEffectRotation(facing, baseRotation) {
     let rotation = baseRotation;

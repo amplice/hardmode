@@ -133,6 +133,7 @@ export const PLAYER_CONFIG = {
   
   // Attack configurations
   attacks: {
+    // Default attacks used by Bladedancer
     primary: {
       name: "Slash Attack",
       damage: 1,
@@ -177,6 +178,55 @@ export const PLAYER_CONFIG = {
         { type: 'strike_windup', timing: 100 },
         { type: 'strike_cast', timing: 500 }
       ]
+    },
+    
+    // Guardian-specific attacks
+    guardian_primary: {
+      name: "Sweeping Axe",
+      damage: 1,
+      windupTime: 250, // Slower animation
+      recoveryTime: 300,
+      cooldown: 200,
+      hitboxType: 'cone', // Wide arc hitbox
+      hitboxParams: {
+        range: 110,
+        angle: 135 // 180° arc as specified
+      },
+      hitboxVisual: {
+        color: 0xFF0000,
+        fillAlpha: 0.2,
+        lineAlpha: 0.0,
+        lineWidth: 3,
+        duration: 0.3
+      },
+      effectSequence: [
+        { type: 'guardian_slash_effect', timing: 250 } // Use the Guardian-specific effect
+    ]
+    },
+    guardian_secondary: {
+      name: "Jump Attack",
+      damage: 2,
+      windupTime: 150,      // Wind-up before jump
+      jumpDuration: 325,    // Duration of the jump
+      recoveryTime: 200,    // Recovery after landing
+      cooldown: 1250,       // Longer cooldown for this powerful move
+      dashDistance: 225,    // Distance to jump forward
+      invulnerable: true,   // Player is invulnerable during jump
+      hitboxType: 'circle', // AOE circle damage on landing
+      hitboxParams: {
+        radius: 90         // Circle radius for the AOE
+      },
+      hitboxVisual: {
+        color: 0xFFD700,    // Gold color for area effect
+        fillAlpha: 0.2,
+        lineAlpha: 0.7,
+        lineWidth: 3,
+        duration: 0.2
+      },
+      effectSequence: [
+        { type: 'strike_windup', timing: 100 },
+        { type: 'guardian_jump_effect', timing: 450 }
+      ]
     }
   },
   
@@ -209,5 +259,25 @@ export const PLAYER_CONFIG = {
       flipX: false,
       flipY: false 
     }
-  }
-};
+  },
+        // Add these Guardian-specific effects:
+        guardian_slash_effect: {
+          scale: 1.8,
+          offsetDistance: 80,
+          rotationOffset: Math.PI / 2,
+          animationSpeed: 0.6,
+          followDuration: 0,
+          flipX: false,
+          flipY: false
+        },
+        guardian_jump_effect: {
+          scale: 2.0,
+          offsetDistance: 0,
+          rotationOffset: 0,
+          animationSpeed: 0.5,
+          followDuration: 0,
+          flipX: false,
+          flipY: false
+        }
+      }
+    
