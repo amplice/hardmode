@@ -107,7 +107,7 @@ export const PLAYER_CONFIG = {
     },
     guardian: {
       hitPoints: 3,
-      moveSpeed: 3,
+      moveSpeed: 3.5,
       baseColor: 0xe74c3c, // Red
       placeholderColor: 0xe74c3c
     },
@@ -190,11 +190,11 @@ export const PLAYER_CONFIG = {
       hitboxType: 'cone', // Wide arc hitbox
       hitboxParams: {
         range: 110,
-        angle: 135 // 180° arc as specified
+        angle: 110 // 180° arc as specified
       },
       hitboxVisual: {
         color: 0xFF0000,
-        fillAlpha: 0.2,
+        fillAlpha: 0.00,
         lineAlpha: 0.0,
         lineWidth: 3,
         duration: 0.3
@@ -210,26 +210,26 @@ export const PLAYER_CONFIG = {
       jumpDuration: 325,    // Duration of the jump
       recoveryTime: 200,    // Recovery after landing
       cooldown: 1250,       // Longer cooldown for this powerful move
-      dashDistance: 225,    // Distance to jump forward
+      dashDistance: 200,    // Distance to jump forward
       invulnerable: true,   // Player is invulnerable during jump
       hitboxType: 'circle', // AOE circle damage on landing
       hitboxParams: {
-        radius: 90         // Circle radius for the AOE
+        radius: 75         // Circle radius for the AOE
       },
       hitboxVisual: {
         color: 0xFFD700,    // Gold color for area effect
-        fillAlpha: 0.2,
-        lineAlpha: 0.7,
+        fillAlpha: 0.0,
+        lineAlpha: 0.0,
         lineWidth: 3,
         duration: 0.2
       },
       effectSequence: [
-        { type: 'strike_windup', timing: 100 },
-        { type: 'guardian_jump_effect', timing: 450 }
+        { type: 'guardian_jump_effect', timing: 400 }
       ]
     }
   },
   
+  // Effect configurations
   // Effect configurations
   effects: {
     slash_effect: {
@@ -258,26 +258,26 @@ export const PLAYER_CONFIG = {
       followDuration: 0,
       flipX: false,
       flipY: false 
+    },
+    // Add Guardian-specific effects properly inside the effects object
+    guardian_slash_effect: {
+      scale: 2,
+      offsetDistance: 70,
+      rotationOffset: Math.PI /2 ,
+      animationSpeed: 0.6,
+      followDuration: 0,
+      flipX: true,
+      flipY: true
+    },
+    guardian_jump_effect: {
+      scale: 3.5,
+      offsetDistance: 0,
+      rotationOffset: 0,
+      animationSpeed: 0.5,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
     }
-  },
-        // Add these Guardian-specific effects:
-        guardian_slash_effect: {
-          scale: 1.8,
-          offsetDistance: 80,
-          rotationOffset: Math.PI / 2,
-          animationSpeed: 0.6,
-          followDuration: 0,
-          flipX: false,
-          flipY: false
-        },
-        guardian_jump_effect: {
-          scale: 2.0,
-          offsetDistance: 0,
-          rotationOffset: 0,
-          animationSpeed: 0.5,
-          followDuration: 0,
-          flipX: false,
-          flipY: false
-        }
-      }
+  }
+};
     

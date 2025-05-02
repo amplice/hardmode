@@ -530,8 +530,9 @@ export class CombatSystem {
           this.applyHitEffects(entity, hitbox, attackConfig.damage);
         }
         
-        // Play landing effect
-        this.playEffectsForTiming(entity, attackConfig, attackConfig.windupTime + attackConfig.jumpDuration);
+        // Instead of using playEffectsForTiming, directly create the effect
+        // at the landing position - this is the key fix!
+        this.createEffect('guardian_jump_effect', entity.position, entity.facing, null, true);
         
         // End invulnerability
         entity.isInvulnerable = false;

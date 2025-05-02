@@ -95,7 +95,7 @@ export class SpriteManager {
                     'assets/sprites/effects/GuardianAttack1.png',
                     9,  // columns
                     9,  // rows
-                    8,  // row index (3rd row)
+                    0,  // row index (3rd row)
                     { width: 64, height: 64 }  // frame size
                 ),
                 this.loadEffectSpritesheet(
@@ -103,7 +103,7 @@ export class SpriteManager {
                     'assets/sprites/effects/GuardianAttack2.png',
                     12,  // columns 
                     9,  // rows
-                    8,  // row index
+                    0,  // row index
                     { width: 64, height: 64 }  // frame size
                 )
             ]);
