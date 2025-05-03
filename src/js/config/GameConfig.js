@@ -75,10 +75,10 @@ export const MONSTER_CONFIG = {
 
   // Spawn system configuration
   spawn: {
-    timer: 5, // New monster every 5 seconds
-    maxMonsters: 10,
+    timer: 2, // New monster every 5 seconds
+    maxMonsters: 150,
     minDistanceFromPlayer: 400,
-    maxDistanceFromPlayer: 800,
+    maxDistanceFromPlayer: 10000,
     distribution: {
       skeleton: 0.25,
       elemental: 0.25,
@@ -100,13 +100,13 @@ export const PLAYER_CONFIG = {
   // Character class stats
   classes: {
     bladedancer: {
-      hitPoints: 10,
+      hitPoints: 3,
       moveSpeed: 5,
       baseColor: 0x3498db, // Blue
       placeholderColor: 0x3498db
     },
     guardian: {
-      hitPoints: 3,
+      hitPoints: 4,
       moveSpeed: 3.5,
       baseColor: 0xe74c3c, // Red
       placeholderColor: 0xe74c3c
@@ -240,8 +240,8 @@ export const PLAYER_CONFIG = {
       },
       hitboxVisual: {
         color: 0x00ff00,
-        fillAlpha: 0.2,
-        lineAlpha: 0.2,
+        fillAlpha: 0.0,
+        lineAlpha: 0.0,
         lineWidth: 3,
         duration: 0.3
       },
@@ -265,8 +265,8 @@ export const PLAYER_CONFIG = {
       },
       hitboxVisual: {
         color: 0x00ff00,   // Bright purple for dash path
-        fillAlpha: 0.2,
-        lineAlpha: 0.2,
+        fillAlpha: 0.0,
+        lineAlpha: 0.0,
         lineWidth: 3,
         duration: 0.2
       },
