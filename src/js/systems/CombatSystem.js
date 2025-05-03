@@ -210,11 +210,16 @@ export class CombatSystem {
         attackConfig = PLAYER_CONFIG.attacks.guardian_primary;
       } else if (attackType === 'secondary') {
         attackConfig = PLAYER_CONFIG.attacks.guardian_secondary;
+      }} else if (entity.characterClass === 'rogue') {
+        if (attackType === 'primary') {
+          attackConfig = PLAYER_CONFIG.attacks.rogue_primary;
+        } else if (attackType === 'secondary') {
+          attackConfig = PLAYER_CONFIG.attacks.rogue_secondary;
+        }
+      } else {
+        // Default to standard attacks for other classes
+        attackConfig = PLAYER_CONFIG.attacks[attackType];
       }
-    } else {
-      // Default to standard attacks for other classes
-      attackConfig = PLAYER_CONFIG.attacks[attackType];
-    }
     
     if (!attackConfig) {
       console.error(`Attack type ${attackType} not configured`);
@@ -243,6 +248,20 @@ export class CombatSystem {
       
       // Execute jump sequence
       this.executeJumpAttack(entity, jumpDestination, attackConfig);
+      
+      return attackConfig.cooldown;
+    }
+
+    if (entity.characterClass === 'rogue' && attackType === 'secondary') {
+      // Calculate the dash destination based on facing direction
+      const dashDestination = this.calculateJumpDestination(
+        entity.position, 
+        entity.facing, 
+        attackConfig.dashDistance
+      );
+      
+      // Execute dash sequence
+      this.executeDashAttack(entity, dashDestination, attackConfig);
       
       return attackConfig.cooldown;
     }
@@ -451,6 +470,8 @@ export class CombatSystem {
     };
   }
 
+  
+
   executeJumpAttack(entity, destination, attackConfig) {
     const startPosition = { ...entity.position };
     
@@ -549,6 +570,98 @@ export class CombatSystem {
       
     }, attackConfig.windupTime);
   }
+
+  executeDashAttack(entity, destination, attackConfig) {
+    const startPosition = { ...entity.position };
+  
+  // 1. Wind-up phase
+  setTimeout(() => {
+    if (!entity.isAttacking) return; // Cancel if player stopped attacking
+    
+    // 2. Dash phase - animate movement to destination
+    const dashStartTime = performance.now();
+    const dashDuration = attackConfig.dashDuration;
+    
+    // Create rectangular hitbox along the dash path immediately
+    const hitbox = this.createHitbox(
+      startPosition,
+      entity.facing,
+      attackConfig.hitboxType,
+      attackConfig.hitboxParams,
+      attackConfig.hitboxVisual
+    );
+    
+    if (hitbox) {
+      // Draw the hitbox and add to the game
+      const graphics = hitbox.draw();
+      window.game.entityContainer.addChild(graphics);
+      
+      // Add to active attacks
+      this.activeAttacks.push({
+        hitbox,
+        lifetime: attackConfig.hitboxVisual.duration,
+        attackType: 'secondary',
+        entity,
+        damage: attackConfig.damage
+      });
+      
+      // Apply immediate damage to anything in the path
+      this.applyHitEffects(entity, hitbox, attackConfig.damage);
+    }
+    
+    // Set up a variable to track the last effect position
+    let lastEffectTime = 0;
+    const effectInterval = 50; // Spawn an effect every 50ms
+    
+    // Animation function with effect trail
+    const animateDashFrame = (timestamp) => {
+      // Calculate how far through the animation we are (0 to 1)
+      const elapsed = timestamp - dashStartTime;
+      const progress = Math.min(elapsed / dashDuration, 1);
+      
+      // If player stopped attacking or animation is complete, exit
+      if (!entity.isAttacking || progress >= 1) {
+        entity.position.x = destination.x;
+        entity.position.y = destination.y;
+        entity.sprite.position.set(destination.x, destination.y);
+        
+        // Final effect at destination
+        this.createEffect('rogue_dash_effect', entity.position, entity.facing, null, true);
+        return;
+      }
+      
+      // Linear interpolation for movement
+      entity.position.x = startPosition.x + (destination.x - startPosition.x) * progress;
+      entity.position.y = startPosition.y + (destination.y - startPosition.y) * progress;
+      
+      // Apply position
+      entity.sprite.position.set(entity.position.x, entity.position.y);
+      
+      // Add effects along the path at regular intervals
+      if (timestamp - lastEffectTime > effectInterval) {
+        lastEffectTime = timestamp;
+        this.createEffect('rogue_dash_effect', { ...entity.position }, entity.facing, null, true);
+      }
+      
+      // Continue animation
+      requestAnimationFrame(animateDashFrame);
+    };
+    
+    // Start the animation
+    requestAnimationFrame(animateDashFrame);
+    
+    // Create initial effect at start position
+    this.createEffect('rogue_dash_effect', startPosition, entity.facing, null, true);
+    
+    // End attack state after full sequence
+    setTimeout(() => {
+      if (entity.isAttacking) {
+        entity.combat.endAttack();
+      }
+    }, attackConfig.dashDuration + attackConfig.recoveryTime);
+    
+  }, attackConfig.windupTime);
+}
 
   
   calculateEffectRotation(facing, baseRotation) {

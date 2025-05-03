@@ -20,7 +20,7 @@ export class SpriteManager {
         await Promise.all([
             this.loadSpritesheet('knight_idle', 'assets/sprites/characters/Knight/Idle.png', 15, 8),
             this.loadSpritesheet('knight_run', 'assets/sprites/characters/Knight/Run.png', 15, 8),
-            this.loadSpritesheet('knight_run_backward', 'assets/sprites/characters/Knight/RunBackward.png', 15, 8),
+            this.loadSpritesheet('knight_run_backward', 'assets/sprites/characters/Knight/RunBackwards.png', 15, 8),
             this.loadSpritesheet('knight_strafe_left', 'assets/sprites/characters/Knight/StrafeLeft.png', 15, 8),
             this.loadSpritesheet('knight_strafe_right', 'assets/sprites/characters/Knight/StrafeRight.png', 15, 8),
             this.loadSpritesheet('knight_attack1', 'assets/sprites/characters/Knight/Attack1.png', 15, 8),
@@ -37,6 +37,16 @@ export class SpriteManager {
         this.loadSpritesheet('guardian_attack2', 'assets/sprites/characters/Guardian/AttackRun.png', 15, 8),
         this.loadSpritesheet('guardian_die', 'assets/sprites/characters/Guardian/Die.png', 15, 8),
         this.loadSpritesheet('guardian_take_damage', 'assets/sprites/characters/Guardian/TakeDamage.png', 15, 8),
+        // Add Rogue sprites
+        this.loadSpritesheet('rogue_idle', 'assets/sprites/characters/Rogue/Idle.png', 15, 8),
+        this.loadSpritesheet('rogue_run', 'assets/sprites/characters/Rogue/Run.png', 15, 8),
+        this.loadSpritesheet('rogue_run_backward', 'assets/sprites/characters/Rogue/RunBackwards.png', 15, 8),
+        this.loadSpritesheet('rogue_strafe_left', 'assets/sprites/characters/Rogue/StrafeLeft.png', 15, 8),
+        this.loadSpritesheet('rogue_strafe_right', 'assets/sprites/characters/Rogue/StrafeRight.png', 15, 8),
+        this.loadSpritesheet('rogue_attack1', 'assets/sprites/characters/Rogue/Attack1.png', 15, 8),
+        this.loadSpritesheet('rogue_attack2', 'assets/sprites/characters/Rogue/Special2.png', 15, 8),
+        this.loadSpritesheet('rogue_die', 'assets/sprites/characters/Rogue/Die.png', 15, 8),
+        this.loadSpritesheet('rogue_take_damage', 'assets/sprites/characters/Rogue/TakeDamage.png', 15, 8),
             // Monster sprites
             this.loadSpritesheet('skeleton_walk', 'assets/sprites/monsters/Skeleton/Walk.png', 15, 8),
             this.loadSpritesheet('skeleton_idle', 'assets/sprites/monsters/Skeleton/Idle.png', 15, 8),
@@ -105,7 +115,23 @@ export class SpriteManager {
                     9,  // rows
                     0,  // row index
                     { width: 64, height: 64 }  // frame size
-                )
+                ),
+                this.loadEffectSpritesheet(
+                    'rogue_thrust_effect',
+                    'assets/sprites/effects/RogueAttack1.png',
+                    5,   // columns
+                    9,   // rows  
+                    3,   // row index
+                    { width: 64, height: 64 }
+                  ),
+                  this.loadEffectSpritesheet(
+                    'rogue_dash_effect',
+                    'assets/sprites/effects/RogueAttack2.png',
+                    14,   // columns
+                    9,   // rows
+                    3,   // row index
+                    { width: 64, height: 64 }
+                  )
             ]);
             
         this.createAnimations();
@@ -195,6 +221,7 @@ export class SpriteManager {
     createAnimations() {
         this.createKnightAnimations();
         this.createGuardianAnimations();
+        this.createRogueAnimations(); // Add this line
         this.createSkeletonAnimations();
         this.createElementalAnimations();
         this.createOgreAnimations();
@@ -202,6 +229,7 @@ export class SpriteManager {
         this.createSlashEffectAnimation(); 
         this.createStrikeEffectAnimations();
         this.createGuardianEffectAnimations(); 
+        this.createRogueEffectAnimations();
 
     }
 
@@ -329,6 +357,70 @@ export class SpriteManager {
         }
     }
 
+    // Add this new method
+createRogueAnimations() {
+    const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
+    
+    // Create animations for each direction
+    for (const direction of directions) {
+        // Idle animation
+        this.animations[`rogue_idle_${direction}`] = {
+            textures: this.textures[`rogue_idle_${direction}`],
+            speed: 0.25 // Slightly faster than knight
+        };
+
+        // Standard run animation
+        this.animations[`rogue_run_${direction}`] = {
+            textures: this.textures[`rogue_run_${direction}`],
+            speed: 0.6 // Faster run for rogue
+        };
+        
+        // Run backward animation
+        this.animations[`rogue_run_backward_${direction}`] = {
+            textures: this.textures[`rogue_run_backward_${direction}`],
+            speed: 0.6
+        };
+        
+        // Strafe left animation
+        this.animations[`rogue_strafe_left_${direction}`] = {
+            textures: this.textures[`rogue_strafe_left_${direction}`],
+            speed: 0.6
+        };
+        
+        // Strafe right animation
+        this.animations[`rogue_strafe_right_${direction}`] = {
+            textures: this.textures[`rogue_strafe_right_${direction}`],
+            speed: 0.6
+        };
+        
+        // Attack 1 (quick slash) animation
+        this.animations[`rogue_attack1_${direction}`] = {
+            textures: this.textures[`rogue_attack1_${direction}`],
+            speed: 0.5, // Faster attack for rogue
+            hitFrame: 7  // Assuming hit happens slightly earlier than knight
+        };
+        
+        // Attack 2 animation
+        this.animations[`rogue_attack2_${direction}`] = {
+            textures: this.textures[`rogue_attack2_${direction}`],
+            speed: 0.4,
+            hitFrame: 10
+        };
+        
+        // Take damage animation
+        this.animations[`rogue_take_damage_${direction}`] = {
+            textures: this.textures[`rogue_take_damage_${direction}`],
+            speed: 0.6 // Slightly faster than normal animations
+        };
+        
+        // Death animation
+        this.animations[`rogue_die_${direction}`] = {
+            textures: this.textures[`rogue_die_${direction}`],
+            speed: 0.25
+        };
+    }
+}
+
     createGuardianEffectAnimations() {
         // Check if textures exist
         if (!this.textures['guardian_slash_effect']) {
@@ -353,6 +445,18 @@ export class SpriteManager {
         
         console.log("Guardian effect animations created successfully");
     }
+
+    createRogueEffectAnimations() {
+        this.animations['rogue_thrust_effect'] = {
+          textures: this.textures['rogue_thrust_effect'],
+          speed: 0.7
+        };
+        
+        this.animations['rogue_dash_effect'] = {
+          textures: this.textures['rogue_dash_effect'],
+          speed: 0.5
+        };
+      }
 
     // Add this new method
 createOgreAnimations() {
@@ -541,6 +645,12 @@ getAnimationForMovement(facingDirection, movementDirection) {
         case 'guardian':
             classPrefix = 'guardian';
             break;
+        case 'rogue':
+            classPrefix = 'rogue';
+            break;
+        case 'hunter':
+            classPrefix = 'knight'; // Temporarily use knight sprites for hunter
+            break;
         case 'bladedancer':
         default:
             classPrefix = 'knight';
@@ -622,6 +732,12 @@ getAttackAnimation(facingDirection, attackType) {
     switch(characterClass) {
         case 'guardian':
             classPrefix = 'guardian';
+            break;
+        case 'rogue':
+            classPrefix = 'rogue';
+            break;
+        case 'hunter':
+            classPrefix = 'knight'; // Temporarily use knight sprites for hunter
             break;
         case 'bladedancer':
         default:

@@ -302,7 +302,22 @@ class AnimationComponent extends Component {
     
     playAttackAnimation(attackType) {
         // Get the character class prefix
-        const classPrefix = this.owner.characterClass === 'guardian' ? 'guardian' : 'knight';
+        let classPrefix;
+        switch (this.owner.characterClass) {
+            case 'guardian':
+                classPrefix = 'guardian';
+                break;
+            case 'rogue':
+                classPrefix = 'rogue';
+                break;
+            case 'hunter':
+                classPrefix = 'knight'; // Temporary
+                break;
+            case 'bladedancer':
+            default:
+                classPrefix = 'knight';
+                break;
+        }
         
         // Handle special case for guardian jump attack
         if (this.owner.characterClass === 'guardian' && attackType === 'secondary') {
@@ -328,31 +343,46 @@ class AnimationComponent extends Component {
           return;
         }
         
-        // Regular attack animation handling (for non-Guardian jump attacks)
+        // Regular attack animation handling
         const attackAnimName = this.owner.spriteManager.getAttackAnimation(this.owner.facing, attackType);
         this.owner.currentAnimation = attackAnimName;
         
         // Remove old sprite and create new attack animation
         if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
-          this.owner.sprite.removeChild(this.owner.animatedSprite);
+            this.owner.sprite.removeChild(this.owner.animatedSprite);
         }
         
         this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(attackAnimName);
         if (this.owner.animatedSprite) {
-          // Don't loop the attack animation
-          this.owner.animatedSprite.loop = false;
-          this.owner.animatedSprite.play();
-          this.owner.sprite.addChild(this.owner.animatedSprite);
-          
-          // Set up animation complete callback
-          this.owner.animatedSprite.onComplete = () => this.onAnimationComplete();
+            // Don't loop the attack animation
+            this.owner.animatedSprite.loop = false;
+            this.owner.animatedSprite.play();
+            this.owner.sprite.addChild(this.owner.animatedSprite);
+            
+            // Set up animation complete callback
+            this.owner.animatedSprite.onComplete = () => this.onAnimationComplete();
         }
-      }
+    }
     
-    playDamageAnimation() {
+      playDamageAnimation() {
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
             // Get the character class prefix
-            const classPrefix = this.owner.characterClass === 'guardian' ? 'guardian' : 'knight';
+            let classPrefix;
+            switch (this.owner.characterClass) {
+                case 'guardian':
+                    classPrefix = 'guardian';
+                    break;
+                case 'rogue':
+                    classPrefix = 'rogue';
+                    break;
+                case 'hunter':
+                    classPrefix = 'knight'; // Temporary
+                    break;
+                case 'bladedancer':
+                default:
+                    classPrefix = 'knight';
+                    break;
+            }
             
             // Get take damage animation for current facing direction
             const damageAnimName = `${classPrefix}_take_damage_${this.getFacingAnimationKey()}`;
@@ -406,7 +436,22 @@ class AnimationComponent extends Component {
     playDeathAnimation() {
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
             // Get the character class prefix
-            const classPrefix = this.owner.characterClass === 'guardian' ? 'guardian' : 'knight';
+            let classPrefix;
+            switch (this.owner.characterClass) {
+                case 'guardian':
+                    classPrefix = 'guardian';
+                    break;
+                case 'rogue':
+                    classPrefix = 'rogue';
+                    break;
+                case 'hunter':
+                    classPrefix = 'knight'; // Temporary
+                    break;
+                case 'bladedancer':
+                default:
+                    classPrefix = 'knight';
+                    break;
+            }
             
             // Get death animation for current facing direction
             const deathAnimName = `${classPrefix}_die_${this.getFacingAnimationKey()}`;

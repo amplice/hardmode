@@ -118,7 +118,7 @@ export const PLAYER_CONFIG = {
       placeholderColor: 0x2ecc71
     },
     rogue: {
-      hitPoints: 1,
+      hitPoints: 2,
       moveSpeed: 6,
       baseColor: 0x9b59b6, // Purple
       placeholderColor: 0x9b59b6
@@ -226,6 +226,53 @@ export const PLAYER_CONFIG = {
       effectSequence: [
         { type: 'guardian_jump_effect', timing: 400 }
       ]
+    },
+    rogue_primary: {
+      name: "Thrust Attack",
+      damage: 1,
+      windupTime: 133, // Very fast
+      recoveryTime: 200,
+      cooldown: 100,
+      hitboxType: 'rectangle',
+      hitboxParams: {
+        width: 30,    // Narrow
+        length: 95   // Long range
+      },
+      hitboxVisual: {
+        color: 0x00ff00,
+        fillAlpha: 0.2,
+        lineAlpha: 0.2,
+        lineWidth: 3,
+        duration: 0.3
+      },
+      effectSequence: [
+        { type: 'rogue_thrust_effect', timing: 133 }
+      ]
+    },
+    rogue_secondary: {
+      name: "Dash Attack",
+      damage: 1,
+      windupTime: 50,       // Quick windup
+      dashDuration: 200,    // Speed of dash
+      recoveryTime: 150,    // Quick recovery
+      cooldown: 2000,        // Moderate cooldown
+      dashDistance: 200,    // Distance dashed
+      invulnerable: false,  // Not invulnerable during dash
+      hitboxType: 'rectangle',
+      hitboxParams: {
+        width: 50,         // Width of dash hitbox
+        length: 200        // Distance of dash
+      },
+      hitboxVisual: {
+        color: 0x00ff00,   // Bright purple for dash path
+        fillAlpha: 0.2,
+        lineAlpha: 0.2,
+        lineWidth: 3,
+        duration: 0.2
+      },
+      effectSequence: [
+        { type: 'rogue_dash_effect', timing: 0 }
+      ]
     }
   },
   
@@ -235,7 +282,7 @@ export const PLAYER_CONFIG = {
     slash_effect: {
       scale: 1.5,
       offsetDistance: 60,
-      rotationOffset: 2 * Math.PI,
+      rotationOffset: 0 * Math.PI / 4,
       animationSpeed: 0.5,
       followDuration: 0,
       flipX: false,
@@ -253,7 +300,7 @@ export const PLAYER_CONFIG = {
     strike_cast: {
       scale: 1.3,
       offsetDistance: 70,
-      rotationOffset: Math.PI / 2,
+      rotationOffset: 2 * Math.PI / 4,
       animationSpeed: 0.4,
       followDuration: 0,
       flipX: false,
@@ -263,7 +310,7 @@ export const PLAYER_CONFIG = {
     guardian_slash_effect: {
       scale: 2,
       offsetDistance: 70,
-      rotationOffset: Math.PI /2 ,
+      rotationOffset: 2 * Math.PI /4 ,
       animationSpeed: 0.6,
       followDuration: 0,
       flipX: true,
@@ -272,8 +319,26 @@ export const PLAYER_CONFIG = {
     guardian_jump_effect: {
       scale: 3.5,
       offsetDistance: 0,
-      rotationOffset: 0,
+      rotationOffset: 0 * Math.PI / 4,
       animationSpeed: 0.5,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    rogue_thrust_effect: {
+      scale: 1.8,
+      offsetDistance: 50,  // Distance along the thrust line
+      rotationOffset: -1 * Math.PI / 4,
+      animationSpeed: 0.4,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    rogue_dash_effect: {
+      scale: 1.0,
+      offsetDistance: 0,   // Appears at starting position
+      rotationOffset: 1 * Math.PI / 4, //THIS IS 45 DEGREES, 2PI IS 360
+      animationSpeed: 0.8,
       followDuration: 0,
       flipX: false,
       flipY: false
