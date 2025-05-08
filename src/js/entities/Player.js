@@ -497,34 +497,37 @@ class AnimationComponent extends Component {
 // Handles player combat abilities
 class CombatComponent extends Component {
     init() {
-      this.owner.isAttacking = false;
-      this.owner.attackCooldown = 0;
-      this.owner.currentAttackType = null;
-      this.owner.attackHitFrameReached = false;
-      this.owner.isInvulnerable = false; // Add invulnerability flag
-    }
+        this.owner.isAttacking = false;
+        this.owner.primaryAttackCooldown = 0;
+        this.owner.secondaryAttackCooldown = 0;
+        this.owner.currentAttackType = null;
+        this.owner.attackHitFrameReached = false;
+        this.owner.isInvulnerable = false;
+      }
     
-    update(deltaTime, inputState) {
-      // Decrease attack cooldown
-      if (this.owner.attackCooldown > 0) {
-        this.owner.attackCooldown -= deltaTime;
-      }
-      
-      // Don't process attacks if player can't act
-      if (this.owner.isAttacking || this.owner.isTakingDamage || 
-          this.owner.isDying || this.owner.isDead) {
-        return;
-      }
-      
-      // Handle attack input
-      if (this.owner.attackCooldown <= 0) {
-        if (inputState.primaryAttack) {
+      update(deltaTime, inputState) {
+        // Decrease attack cooldowns
+        if (this.owner.primaryAttackCooldown > 0) {
+          this.owner.primaryAttackCooldown -= deltaTime;
+        }
+        if (this.owner.secondaryAttackCooldown > 0) {
+          this.owner.secondaryAttackCooldown -= deltaTime;
+        }
+        
+        // Don't process attacks if player can't act
+        if (this.owner.isAttacking || this.owner.isTakingDamage || 
+            this.owner.isDying || this.owner.isDead) {
+          return;
+        }
+        
+        // Handle attack inputs separately
+        if (this.owner.primaryAttackCooldown <= 0 && inputState.primaryAttack) {
           this.performPrimaryAttack();
-        } else if (inputState.secondaryAttack) {
+        }
+        if (this.owner.secondaryAttackCooldown <= 0 && inputState.secondaryAttack) {
           this.performSecondaryAttack();
         }
       }
-    }
     
     performPrimaryAttack() {
       console.log(`Primary attack (${this.owner.characterClass === 'guardian' ? 'sweeping axe' : 'forehand slash'}) started`);
@@ -538,10 +541,7 @@ class CombatComponent extends Component {
       // Execute attack using combat system
       if (this.owner.combatSystem) {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'primary');
-        this.owner.attackCooldown = cooldown / 1000; // Convert ms to seconds
-      } else {
-        // Fallback cooldown if no combat system
-        this.owner.attackCooldown = 0.5;
+        this.owner.primaryAttackCooldown = cooldown / 1000; // Store in the correct variable
       }
     }
     
@@ -557,10 +557,7 @@ class CombatComponent extends Component {
       // Execute attack using combat system
       if (this.owner.combatSystem) {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'secondary');
-        this.owner.attackCooldown = cooldown / 1000; // Convert ms to seconds
-      } else {
-        // Fallback cooldown if no combat system
-        this.owner.attackCooldown = 0.8;
+        this.owner.secondaryAttackCooldown = cooldown / 1000; // Store in the correct variable
       }
     }
     
