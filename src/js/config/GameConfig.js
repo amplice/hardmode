@@ -273,10 +273,36 @@ export const PLAYER_CONFIG = {
       effectSequence: [
         { type: 'rogue_dash_effect', timing: 0 }
       ]
+    },
+    hunter_primary: {
+      name: "Bow Shot",
+      damage: 1,
+      windupTime: 100,
+      recoveryTime: 100,
+      cooldown: 300,
+      isProjectile: true,
+      projectileSpeed: 700,
+      projectileRange: 400,
+      hitboxType: 'projectile',
+      hitboxParams: {
+        width: 10,
+        length: 30
+      },
+      hitboxVisual: {
+        color: 0xFFFFFF,
+        fillAlpha: 0.0,
+        lineAlpha: 0.0,
+        lineWidth: 3,
+        duration: 0.3
+      },
+      effectSequence: [
+        { type: 'bow_shot_effect', timing: 200 }
+      ]
     }
   },
+
+
   
-  // Effect configurations
   // Effect configurations
   effects: {
     slash_effect: {
@@ -339,6 +365,15 @@ export const PLAYER_CONFIG = {
       offsetDistance: 0,   // Appears at starting position
       rotationOffset: 1 * Math.PI / 4, //THIS IS 45 DEGREES, 2PI IS 360
       animationSpeed: 0.8,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    bow_shot_effect: {
+      scale: 1.0,
+      offsetDistance: 30,
+      rotationOffset: 4 * Math.PI / 4,
+      animationSpeed: 0.3,
       followDuration: 0,
       flipX: false,
       flipY: false

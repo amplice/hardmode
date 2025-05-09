@@ -311,7 +311,7 @@ class AnimationComponent extends Component {
                 classPrefix = 'rogue';
                 break;
             case 'hunter':
-                classPrefix = 'knight'; // Temporary
+                classPrefix = 'hunter'; // Change from 'knight' to 'hunter'
                 break;
             case 'bladedancer':
             default:
@@ -376,7 +376,7 @@ class AnimationComponent extends Component {
                     classPrefix = 'rogue';
                     break;
                 case 'hunter':
-                    classPrefix = 'knight'; // Temporary
+                    classPrefix = 'hunter'; // Change from 'knight' to 'hunter'
                     break;
                 case 'bladedancer':
                 default:
@@ -445,7 +445,7 @@ class AnimationComponent extends Component {
                     classPrefix = 'rogue';
                     break;
                 case 'hunter':
-                    classPrefix = 'knight'; // Temporary
+                    classPrefix = 'hunter'; // Temporary
                     break;
                 case 'bladedancer':
                 default:

@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG } from '../config/GameConfig.js';
+import { Projectile } from '../entities/Projectile.js';
 
 // Base Hitbox class - handles both visualization and hit detection
 class Hitbox {
@@ -181,6 +182,7 @@ export class CombatSystem {
   constructor(app) {
     this.app = app;
     this.activeAttacks = [];
+    this.projectiles = []; // Array to store active projectiles
     this.effectConfigs = PLAYER_CONFIG.effects;
     this.attackConfigs = PLAYER_CONFIG.attacks;
   }
@@ -198,8 +200,117 @@ export class CombatSystem {
         this.activeAttacks.splice(i, 1);
       }
     }
+
+        // Update projectiles
+        this.updateProjectiles(deltaTime);
   }
   
+  updateProjectiles(deltaTime) {
+    // Update and check collisions for all projectiles
+    for (let i = this.projectiles.length - 1; i >= 0; i--) {
+        const projectile = this.projectiles[i];
+        
+        // Skip inactive projectiles
+        if (!projectile.active) {
+            this.projectiles.splice(i, 1);
+            continue;
+        }
+        
+        // Update projectile position
+        projectile.update(deltaTime);
+        
+        // Check for collisions with monsters
+        const monsters = window.game.systems.monsters.monsters;
+        for (const monster of monsters) {
+            if (!monster.alive) continue;
+            
+            if (projectile.checkCollision(monster)) {
+                // Apply damage to monster
+                monster.takeDamage(projectile.damage);
+                
+                // Deactivate projectile after hit
+                projectile.deactivate();
+                break;
+            }
+        }
+    }
+}
+// Add a method to create projectiles
+createProjectile(x, y, angle, owner, options = {}) {
+  console.log(`Creating projectile at (${x}, ${y}) with angle ${angle}`);
+  
+  // Calculate velocity components
+  const velocityX = Math.cos(angle);
+  const velocityY = Math.sin(angle);
+  
+  // Create projectile
+  const projectile = new Projectile({
+    x: x,
+    y: y,
+    velocityX: velocityX,
+    velocityY: velocityY,
+    speed: options.speed || 600,
+    damage: options.damage || 1,
+    range: options.range || 400,
+    owner: owner
+  });
+  
+  // Add projectile to game
+  window.game.entityContainer.addChild(projectile.sprite);
+  
+  // Create visual effect for the arrow
+  const effectType = options.effectType || 'bow_shot_effect'; // Default to rogue thrust effect
+  const effectSprite = this.createProjectileVisualEffect(projectile, effectType, angle);
+  if (effectSprite) {
+    projectile.attachVisualEffect(effectSprite);
+  }
+  
+  // Add to active projectiles list
+  this.projectiles.push(projectile);
+  
+  return projectile;
+}
+
+createProjectileVisualEffect(projectile, effectType, angle) {
+  const spriteManager = window.game.systems.sprites;
+  const sprite = spriteManager.createAnimatedSprite(effectType);
+  
+  if (!sprite) {
+      console.error(`Failed to create effect ${effectType}`);
+      return null;
+  }
+  
+  // Get config if available
+  const config = this.effectConfigs[effectType];
+  
+  // Set scale
+  const scale = config && config.scale ? config.scale : 1.5;
+  sprite.scale.set(scale, scale);
+  
+  // Set animation speed
+  sprite.animationSpeed = config && config.animationSpeed ? config.animationSpeed : 0.5;
+  sprite.loop = true;
+  
+  // Start the animation
+  sprite.play();
+  
+  return sprite;
+}
+
+getFacingAngle(facing) {
+  switch(facing) {
+      case 'right': return 0;
+      case 'down-right': return Math.PI / 4;
+      case 'down': return Math.PI / 2;
+      case 'down-left': return 3 * Math.PI / 4;
+      case 'left': return Math.PI;
+      case 'up-left': return 5 * Math.PI / 4;
+      case 'up': return 3 * Math.PI / 2;
+      case 'up-right': return 7 * Math.PI / 4;
+      default: return 0;
+  }
+}
+
   executeAttack(entity, attackType) {
     // Get attack config based on character class
     let attackConfig;
@@ -216,7 +327,14 @@ export class CombatSystem {
         } else if (attackType === 'secondary') {
           attackConfig = PLAYER_CONFIG.attacks.rogue_secondary;
         }
-      } else {
+      } else if (entity.characterClass === 'hunter') {
+        if (attackType === 'primary') {
+            attackConfig = PLAYER_CONFIG.attacks.hunter_primary;
+        } else {
+            // Default to standard attacks for now
+            attackConfig = PLAYER_CONFIG.attacks[attackType];
+        }
+    } else {
         // Default to standard attacks for other classes
         attackConfig = PLAYER_CONFIG.attacks[attackType];
       }
@@ -266,6 +384,38 @@ export class CombatSystem {
       return attackConfig.cooldown;
     }
     
+    // Special handling for hunter's bow attack
+    if (entity.characterClass === 'hunter' && attackType === 'primary') {
+      // Schedule arrow creation after windup
+      setTimeout(() => {
+          if (entity.isAttacking && entity.currentAttackType === attackType) {
+              // Calculate arrow position 
+              const facingAngle = this.getFacingAngle(entity.facing);
+              const arrowStart = this.calculateEffectPosition(
+                  entity.position, entity.facing, 30 // Offset from player
+              );
+              
+              // Create arrow projectile with visual effect
+              this.createProjectile(
+                  arrowStart.x, 
+                  arrowStart.y, 
+                  facingAngle, 
+                  entity, 
+                  {
+                      damage: attackConfig.damage,
+                      speed: attackConfig.projectileSpeed,
+                      range: attackConfig.projectileRange,
+                      effectType: 'bow_shot_effect'
+                  }
+              );
+              
+              // Play arrow launch effect
+              this.playEffectsForTiming(entity, attackConfig, attackConfig.windupTime);
+          }
+      }, attackConfig.windupTime);
+      
+      return attackConfig.cooldown;
+  }
     // Standard attack execution for other attacks
     // Create the appropriate hitbox
     const hitbox = this.createHitbox(

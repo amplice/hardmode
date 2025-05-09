@@ -70,7 +70,18 @@ export class SpriteManager {
         this.loadSpritesheet('ghoul_idle', 'assets/sprites/monsters/Ghoul/Idle.png', 15, 8),
         this.loadSpritesheet('ghoul_attack1', 'assets/sprites/monsters/Ghoul/Attack1.png', 15, 8),
         this.loadSpritesheet('ghoul_take_damage', 'assets/sprites/monsters/Ghoul/TakeDamage.png', 15, 8),
-        this.loadSpritesheet('ghoul_die', 'assets/sprites/monsters/Ghoul/Die.png', 15, 8)
+        this.loadSpritesheet('ghoul_die', 'assets/sprites/monsters/Ghoul/Die.png', 15, 8),
+            // Add Hunter sprites
+    this.loadSpritesheet('hunter_idle', 'assets/sprites/characters/Hunter/Idle.png', 15, 8),
+    this.loadSpritesheet('hunter_run', 'assets/sprites/characters/Hunter/Run.png', 15, 8),
+    this.loadSpritesheet('hunter_run_backward', 'assets/sprites/characters/Hunter/RunBackwards.png', 15, 8),
+    this.loadSpritesheet('hunter_strafe_left', 'assets/sprites/characters/Hunter/StrafeLeft.png', 15, 8),
+    this.loadSpritesheet('hunter_strafe_right', 'assets/sprites/characters/Hunter/StrafeRight.png', 15, 8),
+    this.loadSpritesheet('hunter_attack1', 'assets/sprites/characters/Hunter/Attack1.png', 15, 8),
+    this.loadSpritesheet('hunter_attack2', 'assets/sprites/characters/Hunter/Attack2.png', 15, 8),
+    this.loadSpritesheet('hunter_die', 'assets/sprites/characters/Hunter/Die.png', 15, 8),
+    this.loadSpritesheet('hunter_take_damage', 'assets/sprites/characters/Hunter/TakeDamage.png', 15, 8),
+        
         ]);
 
     // Load effect sprites separately
@@ -131,7 +142,15 @@ export class SpriteManager {
                     9,   // rows
                     3,   // row index
                     { width: 64, height: 64 }
-                  )
+                  ),
+                  this.loadEffectSpritesheet(
+                    'bow_shot_effect',
+                    'assets/sprites/effects/457.png',
+                    9,   // columns
+                    9,   // rows
+                    1,   // row index
+                    { width: 64, height: 64 }
+                  ),
             ]);
             
         this.createAnimations();
@@ -221,7 +240,8 @@ export class SpriteManager {
     createAnimations() {
         this.createKnightAnimations();
         this.createGuardianAnimations();
-        this.createRogueAnimations(); // Add this line
+        this.createRogueAnimations();
+        this.createHunterAnimations(); 
         this.createSkeletonAnimations();
         this.createElementalAnimations();
         this.createOgreAnimations();
@@ -230,8 +250,11 @@ export class SpriteManager {
         this.createStrikeEffectAnimations();
         this.createGuardianEffectAnimations(); 
         this.createRogueEffectAnimations();
+        this.createHunterEffectAnimations();
+
 
     }
+
 
     createKnightAnimations() {
         const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
@@ -421,6 +444,69 @@ createRogueAnimations() {
     }
 }
 
+createHunterAnimations() {
+    const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
+    
+    // Create animations for each direction
+    for (const direction of directions) {
+        // Idle animation
+        this.animations[`hunter_idle_${direction}`] = {
+            textures: this.textures[`hunter_idle_${direction}`],
+            speed: 0.2
+        };
+
+        // Standard run animation
+        this.animations[`hunter_run_${direction}`] = {
+            textures: this.textures[`hunter_run_${direction}`],
+            speed: 0.5
+        };
+        
+        // Run backward animation
+        this.animations[`hunter_run_backward_${direction}`] = {
+            textures: this.textures[`hunter_run_backward_${direction}`],
+            speed: 0.5
+        };
+        
+        // Strafe left animation
+        this.animations[`hunter_strafe_left_${direction}`] = {
+            textures: this.textures[`hunter_strafe_left_${direction}`],
+            speed: 0.5
+        };
+        
+        // Strafe right animation
+        this.animations[`hunter_strafe_right_${direction}`] = {
+            textures: this.textures[`hunter_strafe_right_${direction}`],
+            speed: 0.5
+        };
+        
+        // Attack 1 animation
+        this.animations[`hunter_attack1_${direction}`] = {
+            textures: this.textures[`hunter_attack1_${direction}`],
+            speed: 0.4,
+            hitFrame: 8
+        };
+        
+        // Attack 2 animation
+        this.animations[`hunter_attack2_${direction}`] = {
+            textures: this.textures[`hunter_attack2_${direction}`],
+            speed: 0.3,
+            hitFrame: 12
+        };
+        
+        // Take damage animation
+        this.animations[`hunter_take_damage_${direction}`] = {
+            textures: this.textures[`hunter_take_damage_${direction}`],
+            speed: 0.5
+        };
+        
+        // Death animation
+        this.animations[`hunter_die_${direction}`] = {
+            textures: this.textures[`hunter_die_${direction}`],
+            speed: 0.2
+        };
+    }
+}
+
     createGuardianEffectAnimations() {
         // Check if textures exist
         if (!this.textures['guardian_slash_effect']) {
@@ -446,6 +532,8 @@ createRogueAnimations() {
         console.log("Guardian effect animations created successfully");
     }
 
+
+
     createRogueEffectAnimations() {
         this.animations['rogue_thrust_effect'] = {
           textures: this.textures['rogue_thrust_effect'],
@@ -456,6 +544,18 @@ createRogueAnimations() {
           textures: this.textures['rogue_dash_effect'],
           speed: 0.5
         };
+      }
+
+      createHunterEffectAnimations() {
+        this.animations['bow_shot_effect'] = {
+          textures: this.textures['bow_shot_effect'],
+          speed: 0.2
+        };
+        
+        // this.animations['rogue_dash_effect'] = {
+        //   textures: this.textures['rogue_dash_effect'],
+        //   speed: 0.5
+        // };
       }
 
     // Add this new method
@@ -649,14 +749,13 @@ getAnimationForMovement(facingDirection, movementDirection) {
             classPrefix = 'rogue';
             break;
         case 'hunter':
-            classPrefix = 'knight'; // Temporarily use knight sprites for hunter
+            classPrefix = 'hunter'; // Change from 'knight' to 'hunter'
             break;
         case 'bladedancer':
         default:
             classPrefix = 'knight';
             break;
     }
-    
     // Convert 8-way direction to the format used in our animations (e, se, s, etc.)
     const directionMap = {
         'right': 'e',
@@ -737,7 +836,7 @@ getAttackAnimation(facingDirection, attackType) {
             classPrefix = 'rogue';
             break;
         case 'hunter':
-            classPrefix = 'knight'; // Temporarily use knight sprites for hunter
+            classPrefix = 'hunter'; // Change from 'knight' to 'hunter'
             break;
         case 'bladedancer':
         default:
