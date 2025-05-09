@@ -311,115 +311,356 @@ getFacingAngle(facing) {
   }
 }
 
-  executeAttack(entity, attackType) {
-    // Get attack config based on character class
-    let attackConfig;
-    
-    // Check for class-specific attacks
-    if (entity.characterClass === 'guardian') {
-      if (attackType === 'primary') {
-        attackConfig = PLAYER_CONFIG.attacks.guardian_primary;
-      } else if (attackType === 'secondary') {
-        attackConfig = PLAYER_CONFIG.attacks.guardian_secondary;
-      }} else if (entity.characterClass === 'rogue') {
-        if (attackType === 'primary') {
-          attackConfig = PLAYER_CONFIG.attacks.rogue_primary;
-        } else if (attackType === 'secondary') {
-          attackConfig = PLAYER_CONFIG.attacks.rogue_secondary;
-        }
-      } else if (entity.characterClass === 'hunter') {
-        if (attackType === 'primary') {
-            attackConfig = PLAYER_CONFIG.attacks.hunter_primary;
-        } else {
-            // Default to standard attacks for now
-            attackConfig = PLAYER_CONFIG.attacks[attackType];
-        }
+executeAttack(entity, attackType) {
+  // Get attack config based on character class
+  let attackConfig;
+  
+  // Check for class-specific attacks
+  if (entity.characterClass === 'guardian') {
+    if (attackType === 'primary') {
+      attackConfig = PLAYER_CONFIG.attacks.guardian_primary;
+    } else if (attackType === 'secondary') {
+      attackConfig = PLAYER_CONFIG.attacks.guardian_secondary;
+    }
+  } else if (entity.characterClass === 'rogue') {
+    if (attackType === 'primary') {
+      attackConfig = PLAYER_CONFIG.attacks.rogue_primary;
+    } else if (attackType === 'secondary') {
+      attackConfig = PLAYER_CONFIG.attacks.rogue_secondary;
+    }
+  } else if (entity.characterClass === 'hunter') {
+    if (attackType === 'primary') {
+      attackConfig = PLAYER_CONFIG.attacks.hunter_primary;
     } else {
-        // Default to standard attacks for other classes
-        attackConfig = PLAYER_CONFIG.attacks[attackType];
-      }
-    
-    if (!attackConfig) {
-      console.error(`Attack type ${attackType} not configured`);
-      return 0;
+      // Default to standard attacks for now
+      attackConfig = PLAYER_CONFIG.attacks[attackType];
     }
-    
-    // Start attack sequence
-    console.log(`${entity.constructor.name} executing ${attackConfig.name}`);
-    
-    // Play immediate effects (timing = 0)
-    this.playEffectsForTiming(entity, attackConfig, 0);
-    
-    // Special handling for Guardian's jump attack
-    if (entity.characterClass === 'guardian' && attackType === 'secondary') {
-      // Set invulnerability
-      if (attackConfig.invulnerable) {
-        entity.isInvulnerable = true;
-      }
-      
-      // Calculate the jump destination based on facing direction
-      const jumpDestination = this.calculateJumpDestination(
-        entity.position, 
-        entity.facing, 
-        attackConfig.dashDistance
-      );
-      
-      // Execute jump sequence
-      this.executeJumpAttack(entity, jumpDestination, attackConfig);
-      
-      return attackConfig.cooldown;
-    }
-
-    if (entity.characterClass === 'rogue' && attackType === 'secondary') {
-      // Calculate the dash destination based on facing direction
-      const dashDestination = this.calculateJumpDestination(
-        entity.position, 
-        entity.facing, 
-        attackConfig.dashDistance
-      );
-      
-      // Execute dash sequence
-      this.executeDashAttack(entity, dashDestination, attackConfig);
-      
-      return attackConfig.cooldown;
-    }
-    
-    // Special handling for hunter's bow attack
-    if (entity.characterClass === 'hunter' && attackType === 'primary') {
-      // Schedule arrow creation after windup
-      setTimeout(() => {
-          if (entity.isAttacking && entity.currentAttackType === attackType) {
-              // Calculate arrow position 
-              const facingAngle = this.getFacingAngle(entity.facing);
-              const arrowStart = this.calculateEffectPosition(
-                  entity.position, entity.facing, 30 // Offset from player
-              );
-              
-              // Create arrow projectile with visual effect
-              this.createProjectile(
-                  arrowStart.x, 
-                  arrowStart.y, 
-                  facingAngle, 
-                  entity, 
-                  {
-                      damage: attackConfig.damage,
-                      speed: attackConfig.projectileSpeed,
-                      range: attackConfig.projectileRange,
-                      effectType: 'bow_shot_effect'
-                  }
-              );
-              
-              // Play arrow launch effect
-              this.playEffectsForTiming(entity, attackConfig, attackConfig.windupTime);
-          }
-      }, attackConfig.windupTime);
-      
-      return attackConfig.cooldown;
+  } else {
+    // Default to standard attacks for other classes
+    attackConfig = PLAYER_CONFIG.attacks[attackType];
   }
-    // Standard attack execution for other attacks
-    // Create the appropriate hitbox
+  
+  if (!attackConfig) {
+    console.error(`Attack type ${attackType} not configured`);
+    return 0;
+  }
+  
+  // Start attack sequence
+  console.log(`${entity.constructor.name} executing ${attackConfig.name}`);
+  
+  // Play immediate effects (timing = 0)
+  this.playEffectsForTiming(entity, attackConfig, 0);
+  
+  // Special handling for Guardian's jump attack
+  if (entity.characterClass === 'guardian' && attackType === 'secondary') {
+    // Calculate the jump destination based on facing direction
+    const jumpDestination = this.calculateJumpDestination(
+      entity.position, 
+      entity.facing, 
+      attackConfig.dashDistance
+    );
+    
+    // Execute jump sequence
+    return this.executeJumpAttack(entity, jumpDestination, attackConfig);
+  }
+
+  // Special handling for Rogue's dash attack
+  if (entity.characterClass === 'rogue' && attackType === 'secondary') {
+    // Calculate the dash destination based on facing direction
+    const dashDestination = this.calculateJumpDestination(
+      entity.position, 
+      entity.facing, 
+      attackConfig.dashDistance
+    );
+    
+    // Execute dash sequence
+    return this.executeDashAttack(entity, dashDestination, attackConfig);
+  }
+  
+  // Special handling for hunter's bow attack
+  if (entity.characterClass === 'hunter' && attackType === 'primary') {
+    // Schedule arrow creation after windup
+    setTimeout(() => {
+      if (entity.isAttacking && entity.currentAttackType === attackType) {
+        // Calculate arrow position 
+        const facingAngle = this.getFacingAngle(entity.facing);
+        const arrowStart = this.calculateEffectPosition(
+          entity.position, entity.facing, 30 // Offset from player
+        );
+        
+        // Create arrow projectile with visual effect
+        this.createProjectile(
+          arrowStart.x, 
+          arrowStart.y, 
+          facingAngle, 
+          entity, 
+          {
+            damage: attackConfig.damage,
+            speed: attackConfig.projectileSpeed,
+            range: attackConfig.projectileRange,
+            effectType: 'bow_shot_effect'
+          }
+        );
+        
+        // Play arrow launch effect
+        this.playEffectsForTiming(entity, attackConfig, attackConfig.windupTime);
+      }
+    }, attackConfig.windupTime);
+    
+    return attackConfig.cooldown;
+  }
+  
+  // Standard attack execution for other attacks
+  // Create the appropriate hitbox
+  const hitbox = this.createHitbox(
+    entity.position,
+    entity.facing,
+    attackConfig.hitboxType,
+    attackConfig.hitboxParams,
+    attackConfig.hitboxVisual
+  );
+  
+  if (hitbox) {
+    // Draw the hitbox and add to the game
+    const graphics = hitbox.draw();
+    window.game.entityContainer.addChild(graphics);
+    
+    // Add to active attacks
+    this.activeAttacks.push({
+      hitbox,
+      lifetime: attackConfig.hitboxVisual.duration,
+      attackType,
+      entity,
+      damage: attackConfig.damage
+    });
+  }
+  
+  // Schedule hit detection and effects for windup time
+  setTimeout(() => {
+    if (entity.isAttacking && entity.currentAttackType === attackType) {
+      // Apply hit effect and play scheduled effects
+      this.applyHitEffects(entity, hitbox, attackConfig.damage);
+      this.playEffectsForTiming(entity, attackConfig, attackConfig.windupTime);
+    }
+  }, attackConfig.windupTime);
+  
+  // Schedule any effects that happen after windup
+  attackConfig.effectSequence.forEach(effect => {
+    if (effect.timing > attackConfig.windupTime) {
+      setTimeout(() => {
+        if (entity.isAttacking && entity.currentAttackType === attackType) {
+          this.createEffect(effect.type, entity.position, entity.facing, entity);
+        }
+      }, effect.timing);
+    }
+  });
+  
+  return attackConfig.cooldown;
+}
+
+// New method for projectile attacks
+executeProjectileAttack(entity, attackConfig, attackType) {
+  // Schedule arrow creation after windup
+  setTimeout(() => {
+    if (entity.isAttacking && entity.currentAttackType === attackType) {
+      // Calculate arrow position 
+      const facingAngle = this.getFacingAngle(entity.facing);
+      const arrowStart = this.calculateEffectPosition(
+        entity.position, entity.facing, 30 // Offset from player
+      );
+      
+      // Create arrow projectile with visual effect
+      this.createProjectile(
+        arrowStart.x, 
+        arrowStart.y, 
+        facingAngle, 
+        entity, 
+        {
+          damage: attackConfig.damage,
+          speed: attackConfig.projectileSpeed,
+          range: attackConfig.projectileRange,
+          effectType: 'bow_shot_effect'
+        }
+      );
+      
+      // Play arrow launch effect
+      this.playEffectsForTiming(entity, attackConfig, attackConfig.windupTime);
+    }
+  }, attackConfig.windupTime);
+  
+  return attackConfig.cooldown;
+}
+
+// New method for standard melee attacks
+executeStandardAttack(entity, attackConfig, attackType) {
+  // Create the appropriate hitbox
+  const hitbox = this.createHitbox(
+    entity.position,
+    entity.facing,
+    attackConfig.hitboxType,
+    attackConfig.hitboxParams,
+    attackConfig.hitboxVisual
+  );
+  
+  if (hitbox) {
+    // Draw the hitbox and add to the game
+    const graphics = hitbox.draw();
+    window.game.entityContainer.addChild(graphics);
+    
+    // Add to active attacks
+    this.activeAttacks.push({
+      hitbox,
+      lifetime: attackConfig.hitboxVisual.duration,
+      attackType,
+      entity,
+      damage: attackConfig.damage
+    });
+  }
+  
+  // Schedule hit detection and effects for windup time
+  setTimeout(() => {
+    if (entity.isAttacking && entity.currentAttackType === attackType) {
+      // Apply hit effect and play scheduled effects
+      this.applyHitEffects(entity, hitbox, attackConfig.damage);
+      this.playEffectsForTiming(entity, attackConfig, attackConfig.windupTime);
+    }
+  }, attackConfig.windupTime);
+  
+  // Schedule any effects that happen after windup
+  attackConfig.effectSequence.forEach(effect => {
+    if (effect.timing > attackConfig.windupTime) {
+      setTimeout(() => {
+        if (entity.isAttacking && entity.currentAttackType === attackType) {
+          this.createEffect(effect.type, entity.position, entity.facing, entity);
+        }
+      }, effect.timing);
+    }
+  });
+  
+  return attackConfig.cooldown;
+}
+
+executeJumpAttack(entity, destination, attackConfig) {
+  const startPosition = { ...entity.position };
+  
+  console.log("Attack Config:", attackConfig);
+
+  // Set invulnerability immediately if configured
+  if (attackConfig.invulnerable) {
+    entity.isInvulnerable = true;
+  }
+  
+  // 1. Wind-up phase
+  setTimeout(() => {
+    if (!entity.isAttacking) return; // Cancel if player stopped attacking
+    
+    // 2. Jump phase - animate movement to destination
+    // Set up the animation parameters
+    const jumpStartTime = performance.now();
+    const jumpDuration = attackConfig.jumpDuration;
+    const peakHeight = 80; // Maximum height of the jump arc in pixels
+    
+    // Animation function
+    const animateJumpFrame = (timestamp) => {
+      // Calculate how far through the animation we are (0 to 1)
+      const elapsed = timestamp - jumpStartTime;
+      const progress = Math.min(elapsed / jumpDuration, 1);
+      
+      // If player stopped attacking or animation is complete, exit
+      if (!entity.isAttacking || progress >= 1) {
+        entity.position.x = destination.x;
+        entity.position.y = destination.y;
+        entity.sprite.position.set(destination.x, destination.y);
+        return;
+      }
+      
+      // Linear interpolation for horizontal movement
+      entity.position.x = startPosition.x + (destination.x - startPosition.x) * progress;
+      entity.position.y = startPosition.y + (destination.y - startPosition.y) * progress;
+      
+      // Parabolic arc for vertical jump height
+      // sin(π * progress) creates a nice arc that starts and ends at 0
+      const jumpHeight = Math.sin(Math.PI * progress) * peakHeight;
+      
+      // Apply position with jump height
+      entity.sprite.position.set(entity.position.x, entity.position.y - jumpHeight);
+      
+      // Continue animation
+      requestAnimationFrame(animateJumpFrame);
+    };
+    
+    // Start the animation
+    requestAnimationFrame(animateJumpFrame);
+    
+    // Schedule landing effects and damage
+    setTimeout(() => {
+      if (!entity.isAttacking) return; // Cancel if player stopped attacking
+      
+      // 3. Landing phase
+      console.log("Guardian landed from jump attack!");
+      
+      // Create circular hitbox at landing position
+      const hitbox = this.createHitbox(
+        entity.position,
+        entity.facing,
+        attackConfig.hitboxType,
+        attackConfig.hitboxParams,
+        attackConfig.hitboxVisual
+      );
+      
+      if (hitbox) {
+        // Draw the hitbox and add to the game
+        const graphics = hitbox.draw();
+        window.game.entityContainer.addChild(graphics);
+        
+        // Add to active attacks
+        this.activeAttacks.push({
+          hitbox,
+          lifetime: attackConfig.hitboxVisual.duration,
+          attackType: 'secondary',
+          entity,
+          damage: attackConfig.damage
+        });
+        
+        // Apply AOE damage on landing
+        this.applyHitEffects(entity, hitbox, attackConfig.damage);
+      }
+      
+      // Create the effect at the landing position
+      this.createEffect('guardian_jump_effect', entity.position, entity.facing, null, true);
+      
+      // End invulnerability
+      entity.isInvulnerable = false;
+      
+      // Schedule recovery end
+      setTimeout(() => {
+        if (entity.isAttacking) {
+          // End attack state
+          entity.combat.endAttack();
+        }
+      }, attackConfig.recoveryTime);
+      
+    }, attackConfig.jumpDuration);
+    
+  }, attackConfig.windupTime);
+  
+  return attackConfig.cooldown;
+}
+
+executeDashAttack(entity, destination, attackConfig) {
+  const startPosition = { ...entity.position };
+
+  // 1. Wind-up phase
+  setTimeout(() => {
+    if (!entity.isAttacking) return; // Cancel if player stopped attacking
+    
+    // 2. Dash phase - animate movement to destination
+    const dashStartTime = performance.now();
+    const dashDuration = attackConfig.dashDuration;
+    
+    // Create rectangular hitbox along the dash path immediately
     const hitbox = this.createHitbox(
-      entity.position,
+      startPosition,
       entity.facing,
       attackConfig.hitboxType,
       attackConfig.hitboxParams,
@@ -435,34 +676,70 @@ getFacingAngle(facing) {
       this.activeAttacks.push({
         hitbox,
         lifetime: attackConfig.hitboxVisual.duration,
-        attackType,
+        attackType: 'secondary',
         entity,
         damage: attackConfig.damage
       });
+      
+      // Apply immediate damage to anything in the path
+      this.applyHitEffects(entity, hitbox, attackConfig.damage);
     }
     
-    // Schedule hit detection and effects for windup time
+    // Set up a variable to track the last effect position
+    let lastEffectTime = 0;
+    const effectInterval = 50; // Spawn an effect every 50ms
+    
+    // Animation function with effect trail
+    const animateDashFrame = (timestamp) => {
+      // Calculate how far through the animation we are (0 to 1)
+      const elapsed = timestamp - dashStartTime;
+      const progress = Math.min(elapsed / dashDuration, 1);
+      
+      // If player stopped attacking or animation is complete, exit
+      if (!entity.isAttacking || progress >= 1) {
+        entity.position.x = destination.x;
+        entity.position.y = destination.y;
+        entity.sprite.position.set(destination.x, destination.y);
+        
+        // Final effect at destination
+        this.createEffect('rogue_dash_effect', entity.position, entity.facing, null, true);
+        return;
+      }
+      
+      // Linear interpolation for movement
+      entity.position.x = startPosition.x + (destination.x - startPosition.x) * progress;
+      entity.position.y = startPosition.y + (destination.y - startPosition.y) * progress;
+      
+      // Apply position
+      entity.sprite.position.set(entity.position.x, entity.position.y);
+      
+      // Add effects along the path at regular intervals
+      if (timestamp - lastEffectTime > effectInterval) {
+        lastEffectTime = timestamp;
+        this.createEffect('rogue_dash_effect', { ...entity.position }, entity.facing, null, true);
+      }
+      
+      // Continue animation
+      requestAnimationFrame(animateDashFrame);
+    };
+    
+    // Start the animation
+    requestAnimationFrame(animateDashFrame);
+    
+    // Create initial effect at start position
+    this.createEffect('rogue_dash_effect', startPosition, entity.facing, null, true);
+    
+    // End attack state after full sequence
     setTimeout(() => {
-      if (entity.isAttacking && entity.currentAttackType === attackType) {
-        // Apply hit effect and play scheduled effects
-        this.applyHitEffects(entity, hitbox, attackConfig.damage);
-        this.playEffectsForTiming(entity, attackConfig, attackConfig.windupTime);
+      if (entity.isAttacking) {
+        entity.combat.endAttack();
       }
-    }, attackConfig.windupTime);
+    }, attackConfig.dashDuration + attackConfig.recoveryTime);
     
-    // Schedule any effects that happen after windup
-    attackConfig.effectSequence.forEach(effect => {
-      if (effect.timing > attackConfig.windupTime) {
-        setTimeout(() => {
-          if (entity.isAttacking && entity.currentAttackType === attackType) {
-            this.createEffect(effect.type, entity.position, entity.facing, entity);
-          }
-        }, effect.timing);
-      }
-    });
-    
-    return attackConfig.cooldown;
-  }
+  }, attackConfig.windupTime);
+  
+  return attackConfig.cooldown;
+}
   
   // Create a hitbox based on attack type
   createHitbox(position, facing, type, params, visualConfig) {
@@ -619,199 +896,6 @@ getFacingAngle(facing) {
       y: position.y + dy
     };
   }
-
-  
-
-  executeJumpAttack(entity, destination, attackConfig) {
-    const startPosition = { ...entity.position };
-    
-    // 1. Wind-up phase
-    setTimeout(() => {
-      if (!entity.isAttacking) return; // Cancel if player stopped attacking
-      
-      // 2. Jump phase - animate movement to destination
-      // Set up the animation parameters
-      const jumpStartTime = performance.now();
-      const jumpDuration = attackConfig.jumpDuration;
-      const peakHeight = 80; // Maximum height of the jump arc in pixels
-      
-      // Animation function
-      const animateJumpFrame = (timestamp) => {
-        // Calculate how far through the animation we are (0 to 1)
-        const elapsed = timestamp - jumpStartTime;
-        const progress = Math.min(elapsed / jumpDuration, 1);
-        
-        // If player stopped attacking or animation is complete, exit
-        if (!entity.isAttacking || progress >= 1) {
-          entity.position.x = destination.x;
-          entity.position.y = destination.y;
-          entity.sprite.position.set(destination.x, destination.y);
-          return;
-        }
-        
-        // Linear interpolation for horizontal movement
-        entity.position.x = startPosition.x + (destination.x - startPosition.x) * progress;
-        entity.position.y = startPosition.y + (destination.y - startPosition.y) * progress;
-        
-        // Parabolic arc for vertical jump height
-        // sin(π * progress) creates a nice arc that starts and ends at 0
-        const jumpHeight = Math.sin(Math.PI * progress) * peakHeight;
-        
-        // Apply position with jump height
-        entity.sprite.position.set(entity.position.x, entity.position.y - jumpHeight);
-        
-        // Continue animation
-        requestAnimationFrame(animateJumpFrame);
-      };
-      
-      // Start the animation
-      requestAnimationFrame(animateJumpFrame);
-      
-      // Schedule landing effects and damage
-      setTimeout(() => {
-        if (!entity.isAttacking) return; // Cancel if player stopped attacking
-        
-        // 3. Landing phase
-        console.log("Guardian landed from jump attack!");
-        
-        // Create circular hitbox at landing position
-        const hitbox = this.createHitbox(
-          entity.position,
-          entity.facing,
-          attackConfig.hitboxType,
-          attackConfig.hitboxParams,
-          attackConfig.hitboxVisual
-        );
-        
-        if (hitbox) {
-          // Draw the hitbox and add to the game
-          const graphics = hitbox.draw();
-          window.game.entityContainer.addChild(graphics);
-          
-          // Add to active attacks
-          this.activeAttacks.push({
-            hitbox,
-            lifetime: attackConfig.hitboxVisual.duration,
-            attackType: 'secondary',
-            entity,
-            damage: attackConfig.damage
-          });
-          
-          // Apply AOE damage on landing
-          this.applyHitEffects(entity, hitbox, attackConfig.damage);
-        }
-        
-        // Instead of using playEffectsForTiming, directly create the effect
-        // at the landing position - this is the key fix!
-        this.createEffect('guardian_jump_effect', entity.position, entity.facing, null, true);
-        
-        // End invulnerability
-        entity.isInvulnerable = false;
-        
-        // Schedule recovery end
-        setTimeout(() => {
-          if (entity.isAttacking) {
-            // End attack state
-            entity.combat.endAttack();
-          }
-        }, attackConfig.recoveryTime);
-        
-      }, attackConfig.jumpDuration);
-      
-    }, attackConfig.windupTime);
-  }
-
-  executeDashAttack(entity, destination, attackConfig) {
-    const startPosition = { ...entity.position };
-  
-  // 1. Wind-up phase
-  setTimeout(() => {
-    if (!entity.isAttacking) return; // Cancel if player stopped attacking
-    
-    // 2. Dash phase - animate movement to destination
-    const dashStartTime = performance.now();
-    const dashDuration = attackConfig.dashDuration;
-    
-    // Create rectangular hitbox along the dash path immediately
-    const hitbox = this.createHitbox(
-      startPosition,
-      entity.facing,
-      attackConfig.hitboxType,
-      attackConfig.hitboxParams,
-      attackConfig.hitboxVisual
-    );
-    
-    if (hitbox) {
-      // Draw the hitbox and add to the game
-      const graphics = hitbox.draw();
-      window.game.entityContainer.addChild(graphics);
-      
-      // Add to active attacks
-      this.activeAttacks.push({
-        hitbox,
-        lifetime: attackConfig.hitboxVisual.duration,
-        attackType: 'secondary',
-        entity,
-        damage: attackConfig.damage
-      });
-      
-      // Apply immediate damage to anything in the path
-      this.applyHitEffects(entity, hitbox, attackConfig.damage);
-    }
-    
-    // Set up a variable to track the last effect position
-    let lastEffectTime = 0;
-    const effectInterval = 50; // Spawn an effect every 50ms
-    
-    // Animation function with effect trail
-    const animateDashFrame = (timestamp) => {
-      // Calculate how far through the animation we are (0 to 1)
-      const elapsed = timestamp - dashStartTime;
-      const progress = Math.min(elapsed / dashDuration, 1);
-      
-      // If player stopped attacking or animation is complete, exit
-      if (!entity.isAttacking || progress >= 1) {
-        entity.position.x = destination.x;
-        entity.position.y = destination.y;
-        entity.sprite.position.set(destination.x, destination.y);
-        
-        // Final effect at destination
-        this.createEffect('rogue_dash_effect', entity.position, entity.facing, null, true);
-        return;
-      }
-      
-      // Linear interpolation for movement
-      entity.position.x = startPosition.x + (destination.x - startPosition.x) * progress;
-      entity.position.y = startPosition.y + (destination.y - startPosition.y) * progress;
-      
-      // Apply position
-      entity.sprite.position.set(entity.position.x, entity.position.y);
-      
-      // Add effects along the path at regular intervals
-      if (timestamp - lastEffectTime > effectInterval) {
-        lastEffectTime = timestamp;
-        this.createEffect('rogue_dash_effect', { ...entity.position }, entity.facing, null, true);
-      }
-      
-      // Continue animation
-      requestAnimationFrame(animateDashFrame);
-    };
-    
-    // Start the animation
-    requestAnimationFrame(animateDashFrame);
-    
-    // Create initial effect at start position
-    this.createEffect('rogue_dash_effect', startPosition, entity.facing, null, true);
-    
-    // End attack state after full sequence
-    setTimeout(() => {
-      if (entity.isAttacking) {
-        entity.combat.endAttack();
-      }
-    }, attackConfig.dashDuration + attackConfig.recoveryTime);
-    
-  }, attackConfig.windupTime);
-}
 
   
   calculateEffectRotation(facing, baseRotation) {

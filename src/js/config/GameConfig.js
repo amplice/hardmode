@@ -277,7 +277,7 @@ export const PLAYER_CONFIG = {
     hunter_primary: {
       name: "Bow Shot",
       damage: 1,
-      windupTime: 100,
+      windupTime: 200,
       recoveryTime: 100,
       cooldown: 300,
       isProjectile: true,
