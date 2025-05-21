@@ -298,7 +298,36 @@ export const PLAYER_CONFIG = {
       effectSequence: [
         { type: 'bow_shot_effect', timing: 200 }
       ]
-    }
+    },
+// Updated Hunter's secondary attack configuration
+hunter_secondary: {
+  name: "Retreat Shot",
+  damage: 2,
+  windupTime: 150,
+  jumpDuration: 300,
+  recoveryTime: 200,
+  cooldown: 800,
+  dashDistance: 150,
+  jumpHeight: 50,
+  backwardJump: true,
+  attackFromStartPosition: true,
+  hitboxType: 'cone',
+  hitboxParams: {
+    range: 150,
+    angle: 90  // Standard cone angle
+  },
+  hitboxVisual: {
+    color: 0x2ECC71,
+    fillAlpha: 0.1,
+    lineAlpha: 0.0,
+    lineWidth: 3,
+    duration: 0.25
+  },
+  effectType: 'hunter_cone_effect',  // Single effect type
+  effectDistance: 0,               // How far to place the effect
+  effectTiming: 50,                 // When to show effect during jump
+  effectSequence: []                 // Empty array to avoid errors
+}
   },
 
 
@@ -374,6 +403,15 @@ export const PLAYER_CONFIG = {
       offsetDistance: 30,
       rotationOffset: 4 * Math.PI / 4,
       animationSpeed: 0.3,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    hunter_cone_effect: {
+      scale: 2,
+      offsetDistance: 0,  // Distance in front
+      rotationOffset: 1 * Math.PI / 4, //THIS IS 45 DEGREES, 2PI IS 360
+      animationSpeed: 0.5,
       followDuration: 0,
       flipX: false,
       flipY: false

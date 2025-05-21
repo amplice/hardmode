@@ -331,9 +331,8 @@ executeAttack(entity, attackType) {
   } else if (entity.characterClass === 'hunter') {
     if (attackType === 'primary') {
       attackConfig = PLAYER_CONFIG.attacks.hunter_primary;
-    } else {
-      // Default to standard attacks for now
-      attackConfig = PLAYER_CONFIG.attacks[attackType];
+    } else if (attackType === 'secondary') {
+      attackConfig = PLAYER_CONFIG.attacks.hunter_secondary;
     }
   } else {
     // Default to standard attacks for other classes
@@ -351,18 +350,10 @@ executeAttack(entity, attackType) {
   // Play immediate effects (timing = 0)
   this.playEffectsForTiming(entity, attackConfig, 0);
   
-  // Special handling for Guardian's jump attack
-  if (entity.characterClass === 'guardian' && attackType === 'secondary') {
-    // Calculate the jump destination based on facing direction
-    const jumpDestination = this.calculateJumpDestination(
-      entity.position, 
-      entity.facing, 
-      attackConfig.dashDistance
-    );
-    
-    // Execute jump sequence
-    return this.executeJumpAttack(entity, jumpDestination, attackConfig);
-  }
+  if ((entity.characterClass === 'guardian' && attackType === 'secondary') ||
+  (entity.characterClass === 'hunter' && attackType === 'secondary')) {
+return this.executeJumpAttack(entity, attackConfig);
+}
 
   // Special handling for Rogue's dash attack
   if (entity.characterClass === 'rogue' && attackType === 'secondary') {
@@ -375,6 +366,11 @@ executeAttack(entity, attackType) {
     
     // Execute dash sequence
     return this.executeDashAttack(entity, dashDestination, attackConfig);
+  }
+  
+  // Special handling for Hunter's backward jump attack
+  if (entity.characterClass === 'hunter' && attackType === 'secondary') {
+    return this.executeBackwardJumpAttack(entity, attackConfig);
   }
   
   // Special handling for hunter's bow attack
@@ -491,6 +487,192 @@ executeProjectileAttack(entity, attackConfig, attackType) {
   return attackConfig.cooldown;
 }
 
+// executeBackwardJumpAttack(entity, attackConfig) {
+//   // Calculate the jump destination (opposite of facing direction)
+//   const facingAngle = this.getFacingAngle(entity.facing);
+//   // Backward means 180 degrees from facing direction
+//   const backwardAngle = facingAngle + Math.PI;
+  
+//   // Calculate backward destination using the backward angle
+//   const dashDistance = attackConfig.dashDistance;
+//   const destination = {
+//     x: entity.position.x + Math.cos(backwardAngle) * dashDistance,
+//     y: entity.position.y + Math.sin(backwardAngle) * dashDistance
+//   };
+  
+//   const startPosition = { ...entity.position };
+  
+//   // 1. Wind-up phase
+//   setTimeout(() => {
+//     if (!entity.isAttacking) return; // Cancel if player stopped attacking
+    
+//     // 2. Jump phase - animate movement to destination
+//     const jumpStartTime = performance.now();
+//     const jumpDuration = attackConfig.jumpDuration;
+//     const peakHeight = 50; // Lower height for the backward jump
+    
+//     // Animation function for the jump
+//     const animateJumpFrame = (timestamp) => {
+//       // Calculate how far through the animation we are (0 to 1)
+//       const elapsed = timestamp - jumpStartTime;
+//       const progress = Math.min(elapsed / jumpDuration, 1);
+      
+//       // If player stopped attacking or animation is complete, exit
+//       if (!entity.isAttacking || progress >= 1) {
+//         entity.position.x = destination.x;
+//         entity.position.y = destination.y;
+//         entity.sprite.position.set(destination.x, destination.y);
+//         return;
+//       }
+      
+//       // Linear interpolation for horizontal movement
+//       entity.position.x = startPosition.x + (destination.x - startPosition.x) * progress;
+//       entity.position.y = startPosition.y + (destination.y - startPosition.y) * progress;
+      
+//       // Parabolic arc for vertical jump height (lower arc)
+//       const jumpHeight = Math.sin(Math.PI * progress) * peakHeight;
+      
+//       // Apply position with jump height
+//       entity.sprite.position.set(entity.position.x, entity.position.y - jumpHeight);
+      
+//       // Continue animation
+//       requestAnimationFrame(animateJumpFrame);
+//     };
+    
+//     // Start the animation
+//     requestAnimationFrame(animateJumpFrame);
+    
+//     // Schedule attack effects during the jump
+//     setTimeout(() => {
+//       if (!entity.isAttacking) return; // Cancel if player stopped attacking
+      
+//       // Create cone hitbox in forward direction (at original position)
+//       const hitbox = this.createHitbox(
+//         startPosition, // Attack comes from original position
+//         entity.facing, // But in facing direction
+//         attackConfig.hitboxType,
+//         attackConfig.hitboxParams,
+//         attackConfig.hitboxVisual
+//       );
+      
+//       if (hitbox) {
+//         // Draw the hitbox and add to the game
+//         const graphics = hitbox.draw();
+//         window.game.entityContainer.addChild(graphics);
+        
+//         // Add to active attacks
+//         this.activeAttacks.push({
+//           hitbox,
+//           lifetime: attackConfig.hitboxVisual.duration,
+//           attackType: 'secondary',
+//           entity,
+//           damage: attackConfig.damage
+//         });
+        
+//         // Apply damage
+//         this.applyHitEffects(entity, hitbox, attackConfig.damage);
+//       }
+      
+//       // Create multiple shot effects
+//       attackConfig.effectSequence.forEach(effect => {
+//         if (effect.timing <= attackConfig.jumpDuration) {
+//           // Calculate effect position and angle
+//           const effectPosition = this.calculateEffectPosition(
+//             startPosition, // Effects start from original position
+//             entity.facing,
+//             effect.offsetDistance || 100
+//           );
+          
+//           // Create the effect with custom angle if specified
+//           if (effect.offsetAngle !== undefined) {
+//             this.createEffectWithAngle(
+//               effect.type,
+//               effectPosition,
+//               entity.facing,
+//               null,
+//               true,
+//               effect.offsetAngle
+//             );
+//           } else {
+//             this.createEffect(effect.type, effectPosition, entity.facing, null, true);
+//           }
+//         }
+//       });
+      
+//       // Schedule recovery end
+//       setTimeout(() => {
+//         if (entity.isAttacking) {
+//           // End attack state
+//           entity.combat.endAttack();
+//         }
+//       }, attackConfig.recoveryTime);
+      
+//     }, attackConfig.jumpDuration / 2); // Play effects midway through the jump
+    
+//   }, attackConfig.windupTime);
+  
+//   return attackConfig.cooldown;
+// }
+
+// Add this helper method to create effects with custom angles
+createEffectWithAngle(effectType, position, facing, attacker = null, useRawPosition = false, offsetAngle = 0) {
+  const spriteManager = window.game.systems.sprites;
+  const config = this.effectConfigs[effectType];
+  
+  if (!config) {
+    console.error(`Effect configuration not found for ${effectType}`);
+    return null;
+  }
+  
+  // Create the animated sprite for the effect
+  const sprite = spriteManager.createAnimatedSprite(effectType);
+  
+  if (!sprite) {
+    console.error(`Failed to create effect ${effectType}`);
+    return null;
+  }
+  
+  // Calculate position
+  let finalPosition;
+  if (useRawPosition) {
+    finalPosition = { ...position };
+  } else {
+    finalPosition = this.calculateEffectPosition(position, facing, config.offsetDistance);
+  }
+  
+  // Set sprite properties
+  sprite.position.set(finalPosition.x, finalPosition.y);
+  sprite.loop = false;
+  sprite.animationSpeed = config.animationSpeed;
+  
+  // Set scale with flipping if needed
+  let scaleX = config.scale;
+  let scaleY = config.scale;
+  
+  if (config.flipX) scaleX = -scaleX;
+  if (config.flipY) scaleY = -scaleY;
+  
+  sprite.scale.set(scaleX, scaleY);
+  
+  // Calculate base rotation based on facing direction, then add the offset angle
+  const baseRotation = this.calculateEffectRotation(facing, config.rotationOffset);
+  sprite.rotation = baseRotation + (offsetAngle * (Math.PI / 180)); // Convert degrees to radians
+  
+  sprite.play();
+  
+  // Add to entity container
+  window.game.entityContainer.addChild(sprite);
+  
+  // Remove sprite when animation completes
+  sprite.onComplete = () => {
+    if (sprite.parent) {
+      sprite.parent.removeChild(sprite);
+    }
+  };
+  
+  return sprite;
+}
+
 // New method for standard melee attacks
 executeStandardAttack(entity, attackConfig, attackType) {
   // Create the appropriate hitbox
@@ -540,13 +722,33 @@ executeStandardAttack(entity, attackConfig, attackType) {
   return attackConfig.cooldown;
 }
 
-executeJumpAttack(entity, destination, attackConfig) {
+executeJumpAttack(entity, attackConfig) {
+  let destination;
   const startPosition = { ...entity.position };
   
-  console.log("Attack Config:", attackConfig);
-
-  // Set invulnerability immediately if configured
-  if (attackConfig.invulnerable) {
+  // Handle backward jump if specified
+  if (attackConfig.backwardJump) {
+    // Calculate backward direction (opposite of facing)
+    const facingAngle = this.getFacingAngle(entity.facing);
+    const backwardAngle = facingAngle + Math.PI;
+    
+    // Calculate destination in backward direction
+    destination = {
+      x: startPosition.x + Math.cos(backwardAngle) * attackConfig.dashDistance,
+      y: startPosition.y + Math.sin(backwardAngle) * attackConfig.dashDistance
+    };
+  } else {
+    // Calculate forward destination based on facing direction
+    destination = this.calculateJumpDestination(
+      startPosition, 
+      entity.facing, 
+      attackConfig.dashDistance
+    );
+  }
+  
+  // Set invulnerability if specified
+  const isInvulnerableDuringJump = attackConfig.invulnerable || false;
+  if (isInvulnerableDuringJump) {
     entity.isInvulnerable = true;
   }
   
@@ -555,10 +757,9 @@ executeJumpAttack(entity, destination, attackConfig) {
     if (!entity.isAttacking) return; // Cancel if player stopped attacking
     
     // 2. Jump phase - animate movement to destination
-    // Set up the animation parameters
     const jumpStartTime = performance.now();
     const jumpDuration = attackConfig.jumpDuration;
-    const peakHeight = 80; // Maximum height of the jump arc in pixels
+    const peakHeight = attackConfig.jumpHeight || 80; // Allow configurable height
     
     // Animation function
     const animateJumpFrame = (timestamp) => {
@@ -579,7 +780,6 @@ executeJumpAttack(entity, destination, attackConfig) {
       entity.position.y = startPosition.y + (destination.y - startPosition.y) * progress;
       
       // Parabolic arc for vertical jump height
-      // sin(π * progress) creates a nice arc that starts and ends at 0
       const jumpHeight = Math.sin(Math.PI * progress) * peakHeight;
       
       // Apply position with jump height
@@ -592,16 +792,17 @@ executeJumpAttack(entity, destination, attackConfig) {
     // Start the animation
     requestAnimationFrame(animateJumpFrame);
     
-    // Schedule landing effects and damage
+    // Schedule attack/landing effects at the appropriate time
     setTimeout(() => {
       if (!entity.isAttacking) return; // Cancel if player stopped attacking
       
-      // 3. Landing phase
-      console.log("Guardian landed from jump attack!");
+      // For backward jumps, the attack still happens in facing direction
+      const attackPosition = attackConfig.attackFromStartPosition ? 
+        startPosition : entity.position;
       
-      // Create circular hitbox at landing position
+      // Create hitbox
       const hitbox = this.createHitbox(
-        entity.position,
+        attackPosition,
         entity.facing,
         attackConfig.hitboxType,
         attackConfig.hitboxParams,
@@ -617,20 +818,38 @@ executeJumpAttack(entity, destination, attackConfig) {
         this.activeAttacks.push({
           hitbox,
           lifetime: attackConfig.hitboxVisual.duration,
-          attackType: 'secondary',
+          attackType: entity.currentAttackType,
           entity,
           damage: attackConfig.damage
         });
         
-        // Apply AOE damage on landing
+        // Apply damage
         this.applyHitEffects(entity, hitbox, attackConfig.damage);
       }
       
-      // Create the effect at the landing position
-      this.createEffect('guardian_jump_effect', entity.position, entity.facing, null, true);
+      // Create a single effect for the attack
+      if (attackConfig.effectType) {
+        // Calculate position in front of the player based on facing direction
+        const effectPosition = this.calculateEffectPosition(
+          attackPosition,
+          entity.facing,
+          attackConfig.effectDistance || 150
+        );
+        
+        // Create the effect
+        this.createEffect(
+          attackConfig.effectType,
+          effectPosition,
+          entity.facing,
+          null,
+          true // Use raw position
+        );
+      }
       
-      // End invulnerability
-      entity.isInvulnerable = false;
+      // End invulnerability if it was enabled
+      if (isInvulnerableDuringJump) {
+        entity.isInvulnerable = false;
+      }
       
       // Schedule recovery end
       setTimeout(() => {
@@ -640,7 +859,7 @@ executeJumpAttack(entity, destination, attackConfig) {
         }
       }, attackConfig.recoveryTime);
       
-    }, attackConfig.jumpDuration);
+    }, attackConfig.effectTiming || attackConfig.jumpDuration); // Allow configuring when effects happen
     
   }, attackConfig.windupTime);
   
@@ -771,8 +990,13 @@ executeDashAttack(entity, destination, attackConfig) {
     }
   }
   
-  // Play effects for specific timing
   playEffectsForTiming(entity, attackConfig, timing) {
+    // Safety check to ensure effectSequence exists and is an array
+    if (!attackConfig || !attackConfig.effectSequence || !Array.isArray(attackConfig.effectSequence)) {
+      console.warn(`No valid effectSequence found for attack config`, attackConfig);
+      return;
+    }
+  
     attackConfig.effectSequence.forEach(effect => {
       if (effect.timing === timing) {
         this.createEffect(effect.type, entity.position, entity.facing, entity);

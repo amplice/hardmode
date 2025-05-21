@@ -78,7 +78,7 @@ export class SpriteManager {
     this.loadSpritesheet('hunter_strafe_left', 'assets/sprites/characters/Hunter/StrafeLeft.png', 15, 8),
     this.loadSpritesheet('hunter_strafe_right', 'assets/sprites/characters/Hunter/StrafeRight.png', 15, 8),
     this.loadSpritesheet('hunter_attack1', 'assets/sprites/characters/Hunter/Attack1.png', 15, 8),
-    this.loadSpritesheet('hunter_attack2', 'assets/sprites/characters/Hunter/Attack2.png', 15, 8),
+    this.loadSpritesheet('hunter_attack2', 'assets/sprites/characters/Hunter/BackRoll.png', 15, 8),
     this.loadSpritesheet('hunter_die', 'assets/sprites/characters/Hunter/Die.png', 15, 8),
     this.loadSpritesheet('hunter_take_damage', 'assets/sprites/characters/Hunter/TakeDamage.png', 15, 8),
         
@@ -151,6 +151,14 @@ export class SpriteManager {
                     1,   // row index
                     { width: 64, height: 64 }
                   ),
+                  this.loadEffectSpritesheet(
+                    'hunter_cone_effect',
+                    'assets/sprites/effects/448.png', // Use existing arrow effect or another suitable one
+                    9,   // columns
+                    9,   // rows
+                    2,   // row index
+                    { width: 64, height: 64 }
+                  )
             ]);
             
         this.createAnimations();
@@ -489,7 +497,7 @@ createHunterAnimations() {
         // Attack 2 animation
         this.animations[`hunter_attack2_${direction}`] = {
             textures: this.textures[`hunter_attack2_${direction}`],
-            speed: 0.3,
+            speed: 0.5,
             hitFrame: 12
         };
         
@@ -551,11 +559,12 @@ createHunterAnimations() {
           textures: this.textures['bow_shot_effect'],
           speed: 0.2
         };
-        
-        // this.animations['rogue_dash_effect'] = {
-        //   textures: this.textures['rogue_dash_effect'],
-        //   speed: 0.5
-        // };
+
+        this.animations['hunter_cone_effect'] = {
+            textures: this.textures['hunter_cone_effect'],
+            speed: 0.5
+          };
+    
       }
 
     // Add this new method
