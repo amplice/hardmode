@@ -4,32 +4,32 @@ export const MONSTER_CONFIG = {
   // Base stats for each monster type
   stats: {
     ogre: {
-      hitPoints: 4,
-      moveSpeed: 2,
-      attackRange: 90,
-      collisionRadius: 35,
-      aggroRange: 250
+      hitPoints: 4, moveSpeed: 2, attackRange: 90, collisionRadius: 35, aggroRange: 250,
+      animations: { // Animation properties
+        walk: { speed: 0.3 }, idle: { speed: 0.2 }, attack1: { speed: 0.25, hitFrame: 9 },
+        take_damage: { speed: 0.7 }, die: { speed: 0.2 }
+      }
     },
     skeleton: {
-      hitPoints: 2,
-      moveSpeed: 2.5,
-      attackRange: 70,
-      collisionRadius: 15,
-      aggroRange: 250
+      hitPoints: 2, moveSpeed: 2.5, attackRange: 70, collisionRadius: 15, aggroRange: 250,
+      animations: { // Animation properties
+        walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3, hitFrame: 8 },
+        take_damage: { speed: 0.7 }, die: { speed: 0.5 }
+      }
     },
     elemental: {
-      hitPoints: 3,
-      moveSpeed: 2,
-      attackRange: 100,
-      collisionRadius: 15,
-      aggroRange: 250
+      hitPoints: 3, moveSpeed: 2, attackRange: 100, collisionRadius: 15, aggroRange: 250,
+      animations: { // Animation properties
+        walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3, hitFrame: 8 },
+        take_damage: { speed: 0.7 }, die: { speed: 0.2 }
+      }
     },
     ghoul: {
-      hitPoints: 2,
-      moveSpeed: 3.5,
-      attackRange: 70,
-      collisionRadius: 10,
-      aggroRange: 1000
+      hitPoints: 2, moveSpeed: 3.5, attackRange: 70, collisionRadius: 10, aggroRange: 1000,
+      animations: { // Animation properties
+        walk: { speed: 0.45 }, idle: { speed: 0.25 }, attack1: { speed: 0.4, hitFrame: 7 },
+        take_damage: { speed: 0.7 }, die: { speed: 0.25 }
+      }
     }
   },
 
@@ -103,25 +103,53 @@ export const PLAYER_CONFIG = {
       hitPoints: 3,
       moveSpeed: 5,
       baseColor: 0x3498db, // Blue
-      placeholderColor: 0x3498db
+      placeholderColor: 0x3498db,
+      spritePrefix: 'knight',
+      animations: { // Animation properties
+        idle: { speed: 0.2 }, run: { speed: 0.5 }, run_backward: { speed: 0.5 },
+        strafe_left: { speed: 0.5 }, strafe_right: { speed: 0.5 },
+        attack1: { speed: 0.4, hitFrame: 8 }, attack2: { speed: 0.3, hitFrame: 12 },
+        die: { speed: 0.2 }, take_damage: { speed: 0.5 }
+      }
     },
     guardian: {
       hitPoints: 4,
       moveSpeed: 3.5,
       baseColor: 0xe74c3c, // Red
-      placeholderColor: 0xe74c3c
+      placeholderColor: 0xe74c3c,
+      spritePrefix: 'guardian',
+      animations: { // Animation properties
+        idle: { speed: 0.15 }, run: { speed: 0.4 }, run_backward: { speed: 0.4 },
+        strafe_left: { speed: 0.4 }, strafe_right: { speed: 0.4 },
+        attack1: { speed: 0.35, hitFrame: 8 }, attack2: { speed: 0.35, hitFrame: 12 },
+        die: { speed: 0.2 }, take_damage: { speed: 0.5 }
+      }
     },
     hunter: {
       hitPoints: 1,
       moveSpeed: 4,
       baseColor: 0x2ecc71, // Green
-      placeholderColor: 0x2ecc71
+      placeholderColor: 0x2ecc71,
+      spritePrefix: 'hunter',
+      animations: { // Animation properties
+        idle: { speed: 0.2 }, run: { speed: 0.5 }, run_backward: { speed: 0.5 },
+        strafe_left: { speed: 0.5 }, strafe_right: { speed: 0.5 },
+        attack1: { speed: 0.4, hitFrame: 8 }, attack2: { speed: 0.5, hitFrame: 12 }, // attack2 is BackRoll
+        die: { speed: 0.2 }, take_damage: { speed: 0.5 }
+      }
     },
     rogue: {
       hitPoints: 2,
       moveSpeed: 6,
       baseColor: 0x9b59b6, // Purple
-      placeholderColor: 0x9b59b6
+      placeholderColor: 0x9b59b6,
+      spritePrefix: 'rogue',
+      animations: { // Animation properties
+        idle: { speed: 0.25 }, run: { speed: 0.6 }, run_backward: { speed: 0.6 },
+        strafe_left: { speed: 0.6 }, strafe_right: { speed: 0.6 },
+        attack1: { speed: 0.5, hitFrame: 7 }, attack2: { speed: 0.4, hitFrame: 10 }, // attack2 is Special2
+        die: { speed: 0.25 }, take_damage: { speed: 0.6 }
+      }
     }
   },
   
@@ -136,6 +164,7 @@ export const PLAYER_CONFIG = {
     // Default attacks used by Bladedancer
     primary: {
       name: "Slash Attack",
+      archetype: 'standard_melee',
       damage: 1,
       windupTime: 133,
       recoveryTime: 200,
@@ -158,6 +187,7 @@ export const PLAYER_CONFIG = {
     },
     secondary: {
       name: "Smash Attack",
+      archetype: 'standard_melee',
       damage: 2,
       windupTime: 500,
       recoveryTime: 300,
@@ -183,6 +213,7 @@ export const PLAYER_CONFIG = {
     // Guardian-specific attacks
     guardian_primary: {
       name: "Sweeping Axe",
+      archetype: 'standard_melee',
       damage: 1,
       windupTime: 250, // Slower animation
       recoveryTime: 300,
@@ -205,6 +236,7 @@ export const PLAYER_CONFIG = {
     },
     guardian_secondary: {
       name: "Jump Attack",
+      archetype: 'jump_attack',
       damage: 2,
       windupTime: 150,      // Wind-up before jump
       jumpDuration: 325,    // Duration of the jump
@@ -229,6 +261,7 @@ export const PLAYER_CONFIG = {
     },
     rogue_primary: {
       name: "Thrust Attack",
+      archetype: 'standard_melee',
       damage: 1,
       windupTime: 133, // Very fast
       recoveryTime: 200,
@@ -251,6 +284,7 @@ export const PLAYER_CONFIG = {
     },
     rogue_secondary: {
       name: "Dash Attack",
+      archetype: 'dash_attack',
       damage: 1,
       windupTime: 50,       // Quick windup
       dashDuration: 200,    // Speed of dash
@@ -276,14 +310,17 @@ export const PLAYER_CONFIG = {
     },
     hunter_primary: {
       name: "Bow Shot",
+      archetype: 'projectile',
       damage: 1,
       windupTime: 200,
       recoveryTime: 100,
       cooldown: 300,
-      isProjectile: true,
+      isProjectile: true, // Retain for clarity or specific projectile logic checks
       projectileSpeed: 700,
       projectileRange: 400,
-      hitboxType: 'projectile',
+      projectileOffset: 30, // Added projectile offset
+      projectileVisualEffectType: 'bow_shot_effect', // Added for visual effect
+      hitboxType: 'projectile', // May not be strictly needed if archetype handles it
       hitboxParams: {
         width: 10,
         length: 30
@@ -302,6 +339,7 @@ export const PLAYER_CONFIG = {
 // Updated Hunter's secondary attack configuration
 hunter_secondary: {
   name: "Retreat Shot",
+  archetype: 'jump_attack',
   damage: 2,
   windupTime: 150,
   jumpDuration: 300,
@@ -411,11 +449,23 @@ hunter_secondary: {
       scale: 2,
       offsetDistance: 0,  // Distance in front
       rotationOffset: 1 * Math.PI / 4, //THIS IS 45 DEGREES, 2PI IS 360
-      animationSpeed: 0.5,
+      animationSpeed: 0.5, // This is a behavioral property
       followDuration: 0,
       flipX: false,
       flipY: false
+    },
+    // Centralized animation speeds for sprites of effects
+    // These keys should match the 'keyPrefix' in SPRITE_SHEET_CONFIG for effects.
+    effectAnimations: {
+        slash_effect: { speed: 0.5 },
+        strike_windup: { speed: 0.8 },
+        strike_cast: { speed: 0.2 },
+        guardian_slash_effect: { speed: 0.6 },
+        guardian_jump_effect: { speed: 0.5 },
+        rogue_thrust_effect: { speed: 0.7 },
+        rogue_dash_effect: { speed: 0.5 },
+        bow_shot_effect: { speed: 0.2 },
+        hunter_cone_effect: { speed: 0.5 }
     }
   }
 };
-    

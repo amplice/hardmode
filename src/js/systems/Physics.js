@@ -29,65 +29,8 @@ export class PhysicsSystem {
                     entity.position.y = this.worldBounds.height - 20;
                 }
                 
-// Check collision with non-walkable tiles
-const tileSize = world.tileSize;
-const characterRadius = 20; // Character collision radius
-
-// Check if the player's position is inside a non-walkable tile
-const centerTileX = Math.floor(entity.position.x / tileSize);
-const centerTileY = Math.floor(entity.position.y / tileSize);
-
-// Check surrounding tiles for collision
-const checkRadius = 1; // Check 1 tile in each direction
-
-for (let y = centerTileY - checkRadius; y <= centerTileY + checkRadius; y++) {
-    for (let x = centerTileX - checkRadius; x <= centerTileX + checkRadius; x++) {
-        if (y >= 0 && y < world.height && x >= 0 && x < world.width) {
-            const tile = world.tiles[y][x];
-            
-            if (!tile.isWalkable()) {
-                // Calculate distance to tile center
-                const tileCenter = {
-                    x: x * tileSize + tileSize / 2,
-                    y: y * tileSize + tileSize / 2
-                };
-                
-                const dx = entity.position.x - tileCenter.x;
-                const dy = entity.position.y - tileCenter.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                // Determine which direction the player is approaching from
-                // Calculate buffer multiplier based on direction
-                let bufferMultiplier = 0.85; // Default buffer
-                
-                // If approaching from north (player is above the tile)
-                if (dy < 0 && Math.abs(dy) > Math.abs(dx)) {
-                    bufferMultiplier = 1.1; // Larger buffer for northern approach
-                }
-                // If approaching from south (player is below the tile)
-                else if (dy > 0 && Math.abs(dy) > Math.abs(dx)) {
-                    bufferMultiplier = 0.5; // Smaller buffer for southern approach
-                }
-                
-                // Simple collision: push player away if too close
-                const minDistance = characterRadius + tileSize * bufferMultiplier;
-                
-                if (distance < minDistance) {
-                    // Push player away along the collision normal
-                    const pushFactor = (minDistance - distance) / minDistance;
-                    
-                    // Normalize direction vector
-                    const length = Math.max(0.01, Math.sqrt(dx * dx + dy * dy));
-                    const nx = dx / length;
-                    const ny = dy / length;
-                    
-                    entity.position.x += nx * pushFactor * 50;
-                    entity.position.y += ny * pushFactor * 50;
-                }
-            }
-        }
-    }
-}
+                // New AABB-based tile collision logic
+                this.handleTileCollisionsAABB(entity, world);
                 
                 // Update sprite position to match entity position
                 if (entity.sprite) {
@@ -120,5 +63,95 @@ for (let y = centerTileY - checkRadius; y <= centerTileY + checkRadius; y++) {
                 }
             });
         }
+    }
+
+    getCollisionBox(entity) {
+        // If entity already has a collisionBox defined (e.g., from config in the future)
+        if (entity.collisionBox) {
+            return entity.collisionBox;
+        }
+        // Derive from collisionRadius if available (typically for monsters)
+        if (entity.collisionRadius) {
+            const size = entity.collisionRadius * 1.8; // Factor to approximate AABB from radius
+            return { width: size, height: size };
+        }
+        // Default for player or other entities if no specific box/radius
+        const defaultRadius = 20; // Based on old characterRadius
+        const defaultSize = defaultRadius * 1.8;
+        return { width: defaultSize, height: defaultSize };
+    }
+
+    handleTileCollisionsAABB(entity, world) {
+        const tileSize = world.tileSize;
+        const entityCollisionBox = this.getCollisionBox(entity);
+
+        // Entity's AABB (center-based position)
+        const entityAABB = {
+            minX: entity.position.x - entityCollisionBox.width / 2,
+            maxX: entity.position.x + entityCollisionBox.width / 2,
+            minY: entity.position.y - entityCollisionBox.height / 2,
+            maxY: entity.position.y + entityCollisionBox.height / 2,
+        };
+
+        // Get the range of tiles to check around the entity
+        const startTileX = Math.floor(entityAABB.minX / tileSize);
+        const endTileX = Math.floor(entityAABB.maxX / tileSize);
+        const startTileY = Math.floor(entityAABB.minY / tileSize);
+        const endTileY = Math.floor(entityAABB.maxY / tileSize);
+
+        for (let tileY = startTileY; tileY <= endTileY; tileY++) {
+            for (let tileX = startTileX; tileX <= endTileX; tileX++) {
+                if (tileX >= 0 && tileX < world.width && tileY >= 0 && tileY < world.height) {
+                    if (!world.isSolid(tileX, tileY)) {
+                        continue; // Skip walkable tiles
+                    }
+
+                    const tileAABB = {
+                        minX: tileX * tileSize,
+                        maxX: (tileX + 1) * tileSize,
+                        minY: tileY * tileSize,
+                        maxY: (tileY + 1) * tileSize,
+                    };
+
+                    // Check for intersection
+                    if (this.intersectsAABB(entityAABB, tileAABB)) {
+                        // Collision detected, calculate penetration depth
+                        const overlapX = Math.min(entityAABB.maxX, tileAABB.maxX) - Math.max(entityAABB.minX, tileAABB.minX);
+                        const overlapY = Math.min(entityAABB.maxY, tileAABB.maxY) - Math.max(entityAABB.minY, tileAABB.minY);
+
+                        // Resolve collision by pushing entity along the axis of minimum penetration
+                        if (overlapX < overlapY) {
+                            // Push in X direction
+                            if (entity.position.x < tileAABB.minX + tileSize / 2) { // Entity is to the left of tile center
+                                entity.position.x -= overlapX;
+                            } else { // Entity is to the right of tile center
+                                entity.position.x += overlapX;
+                            }
+                        } else {
+                            // Push in Y direction
+                            if (entity.position.y < tileAABB.minY + tileSize / 2) { // Entity is above tile center
+                                entity.position.y -= overlapY;
+                            } else { // Entity is below tile center
+                                entity.position.y += overlapY;
+                            }
+                        }
+                        // Re-calculate entityAABB after position adjustment before checking next tile (important for multiple collisions)
+                        entityAABB.minX = entity.position.x - entityCollisionBox.width / 2;
+                        entityAABB.maxX = entity.position.x + entityCollisionBox.width / 2;
+                        entityAABB.minY = entity.position.y - entityCollisionBox.height / 2;
+                        entityAABB.maxY = entity.position.y + entityCollisionBox.height / 2;
+                    }
+                }
+            }
+        }
+    }
+
+    intersectsAABB(aabb1, aabb2) {
+        return (
+            aabb1.minX < aabb2.maxX &&
+            aabb1.maxX > aabb2.minX &&
+            aabb1.minY < aabb2.maxY &&
+            aabb1.maxY > aabb2.minY
+        );
     }
 }

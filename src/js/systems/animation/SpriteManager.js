@@ -1,188 +1,205 @@
 // src/js/systems/animation/SpriteManager.js
 import * as PIXI from 'pixi.js';
+import { PLAYER_CONFIG, MONSTER_CONFIG } from '../../config/GameConfig.js'; // Import configs
+import { directionStringToAnimationSuffix } from '../../utils/DirectionUtils.js';
+
+const SPRITE_SHEET_CONFIG = [
+    // Characters
+    {
+        keyPrefix: 'knight', type: 'character',
+        animations: [
+            { keySuffix: 'idle', path: 'assets/sprites/characters/Knight/Idle.png', columns: 15, rows: 8 },
+            { keySuffix: 'run', path: 'assets/sprites/characters/Knight/Run.png', columns: 15, rows: 8 },
+            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Knight/RunBackwards.png', columns: 15, rows: 8 },
+            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Knight/StrafeLeft.png', columns: 15, rows: 8 },
+            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Knight/StrafeRight.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack1', path: 'assets/sprites/characters/Knight/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack2', path: 'assets/sprites/characters/Knight/Attack2.png', columns: 15, rows: 8 },
+            { keySuffix: 'die', path: 'assets/sprites/characters/Knight/Die.png', columns: 15, rows: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Knight/TakeDamage.png', columns: 15, rows: 8 },
+        ]
+    },
+    {
+        keyPrefix: 'guardian', type: 'character',
+        animations: [
+            { keySuffix: 'idle', path: 'assets/sprites/characters/Guardian/Idle.png', columns: 15, rows: 8 },
+            { keySuffix: 'run', path: 'assets/sprites/characters/Guardian/Run.png', columns: 15, rows: 8 },
+            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Guardian/RunBackwards.png', columns: 15, rows: 8 },
+            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Guardian/StrafeLeft.png', columns: 15, rows: 8 },
+            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Guardian/StrafeRight.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack1', path: 'assets/sprites/characters/Guardian/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack2', path: 'assets/sprites/characters/Guardian/AttackRun.png', columns: 15, rows: 8 },
+            { keySuffix: 'die', path: 'assets/sprites/characters/Guardian/Die.png', columns: 15, rows: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Guardian/TakeDamage.png', columns: 15, rows: 8 },
+        ]
+    },
+    {
+        keyPrefix: 'rogue', type: 'character',
+        animations: [
+            { keySuffix: 'idle', path: 'assets/sprites/characters/Rogue/Idle.png', columns: 15, rows: 8 },
+            { keySuffix: 'run', path: 'assets/sprites/characters/Rogue/Run.png', columns: 15, rows: 8 },
+            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Rogue/RunBackwards.png', columns: 15, rows: 8 },
+            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Rogue/StrafeLeft.png', columns: 15, rows: 8 },
+            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Rogue/StrafeRight.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack1', path: 'assets/sprites/characters/Rogue/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack2', path: 'assets/sprites/characters/Rogue/Special2.png', columns: 15, rows: 8 },
+            { keySuffix: 'die', path: 'assets/sprites/characters/Rogue/Die.png', columns: 15, rows: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Rogue/TakeDamage.png', columns: 15, rows: 8 },
+        ]
+    },
+    {
+        keyPrefix: 'hunter', type: 'character',
+        animations: [
+            { keySuffix: 'idle', path: 'assets/sprites/characters/Hunter/Idle.png', columns: 15, rows: 8 },
+            { keySuffix: 'run', path: 'assets/sprites/characters/Hunter/Run.png', columns: 15, rows: 8 },
+            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Hunter/RunBackwards.png', columns: 15, rows: 8 },
+            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Hunter/StrafeLeft.png', columns: 15, rows: 8 },
+            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Hunter/StrafeRight.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack1', path: 'assets/sprites/characters/Hunter/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack2', path: 'assets/sprites/characters/Hunter/BackRoll.png', columns: 15, rows: 8 },
+            { keySuffix: 'die', path: 'assets/sprites/characters/Hunter/Die.png', columns: 15, rows: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Hunter/TakeDamage.png', columns: 15, rows: 8 },
+        ]
+    },
+    // Monsters
+    {
+        keyPrefix: 'skeleton', type: 'monster',
+        animations: [
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/Skeleton/Walk.png', columns: 15, rows: 8 },
+            { keySuffix: 'idle', path: 'assets/sprites/monsters/Skeleton/Idle.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Skeleton/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Skeleton/TakeDamage.png', columns: 15, rows: 8 },
+            { keySuffix: 'die', path: 'assets/sprites/monsters/Skeleton/Die.png', columns: 15, rows: 8 },
+        ]
+    },
+    {
+        keyPrefix: 'elemental', type: 'monster',
+        animations: [
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/Elemental/Walk.png', columns: 15, rows: 8 },
+            { keySuffix: 'idle', path: 'assets/sprites/monsters/Elemental/Idle.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Elemental/Attack4.png', columns: 15, rows: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Elemental/TakeDamage.png', columns: 15, rows: 8 },
+            { keySuffix: 'die', path: 'assets/sprites/monsters/Elemental/Die.png', columns: 15, rows: 8 },
+        ]
+    },
+    {
+        keyPrefix: 'ogre', type: 'monster',
+        defaultFrameSize: { width: 192, height: 192 },
+        animations: [
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/Ogre/Walk.png', columns: 15, rows: 8 },
+            { keySuffix: 'idle', path: 'assets/sprites/monsters/Ogre/Idle.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Ogre/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Ogre/TakeDamage.png', columns: 15, rows: 8 },
+            { keySuffix: 'die', path: 'assets/sprites/monsters/Ogre/Die.png', columns: 15, rows: 8 },
+        ]
+    },
+    {
+        keyPrefix: 'ghoul', type: 'monster',
+        animations: [
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/Ghoul/Walk.png', columns: 15, rows: 8 },
+            { keySuffix: 'idle', path: 'assets/sprites/monsters/Ghoul/Idle.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Ghoul/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Ghoul/TakeDamage.png', columns: 15, rows: 8 },
+            { keySuffix: 'die', path: 'assets/sprites/monsters/Ghoul/Die.png', columns: 15, rows: 8 },
+        ]
+    },
+    // Effects
+    {
+        keyPrefix: 'slash_effect', type: 'effect', path: 'assets/sprites/effects/Slash.png',
+        columns: 8, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
+    },
+    {
+        keyPrefix: 'strike_windup', type: 'effect', path: 'assets/sprites/effects/KnightStrikeWindup.png',
+        columns: 6, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
+    },
+    {
+        keyPrefix: 'strike_cast', type: 'effect', path: 'assets/sprites/effects/KnightStrikeCast.png',
+        columns: 7, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
+    },
+    {
+        keyPrefix: 'guardian_slash_effect', type: 'effect', path: 'assets/sprites/effects/GuardianAttack1.png',
+        columns: 9, rows: 9, rowIndex: 0, frameSize: { width: 64, height: 64 }
+    },
+    {
+        keyPrefix: 'guardian_jump_effect', type: 'effect', path: 'assets/sprites/effects/GuardianAttack2.png',
+        columns: 12, rows: 9, rowIndex: 0, frameSize: { width: 64, height: 64 }
+    },
+    {
+        keyPrefix: 'rogue_thrust_effect', type: 'effect', path: 'assets/sprites/effects/RogueAttack1.png',
+        columns: 5, rows: 9, rowIndex: 3, frameSize: { width: 64, height: 64 }
+    },
+    {
+        keyPrefix: 'rogue_dash_effect', type: 'effect', path: 'assets/sprites/effects/RogueAttack2.png',
+        columns: 14, rows: 9, rowIndex: 3, frameSize: { width: 64, height: 64 }
+    },
+    {
+        keyPrefix: 'bow_shot_effect', type: 'effect', path: 'assets/sprites/effects/457.png',
+        columns: 9, rows: 9, rowIndex: 1, frameSize: { width: 64, height: 64 }
+    },
+    {
+        keyPrefix: 'hunter_cone_effect', type: 'effect', path: 'assets/sprites/effects/448.png',
+        columns: 9, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
+    }
+];
 
 export class SpriteManager {
     constructor() {
         this.textures = {};
-        this.spritesheets = {};
-        this.animations = {};
+        this.animations = {}; // Removed spritesheets, not used
         this.loaded = false;
-        this.spriteScale = 1; // Set scale to 1x for HD sprites
-        this.frameWidth = 128; // Update frame dimensions for 128x128 sprites
+        this.spriteScale = 1;
+        this.frameWidth = 128;
         this.frameHeight = 128;
     }
 
     async loadSprites() {
-        // Custom frame size for ogre
-        const ogreFrameSize = { width: 192, height: 192 };
-        
-        // Load knight spritesheets
-        await Promise.all([
-            this.loadSpritesheet('knight_idle', 'assets/sprites/characters/Knight/Idle.png', 15, 8),
-            this.loadSpritesheet('knight_run', 'assets/sprites/characters/Knight/Run.png', 15, 8),
-            this.loadSpritesheet('knight_run_backward', 'assets/sprites/characters/Knight/RunBackwards.png', 15, 8),
-            this.loadSpritesheet('knight_strafe_left', 'assets/sprites/characters/Knight/StrafeLeft.png', 15, 8),
-            this.loadSpritesheet('knight_strafe_right', 'assets/sprites/characters/Knight/StrafeRight.png', 15, 8),
-            this.loadSpritesheet('knight_attack1', 'assets/sprites/characters/Knight/Attack1.png', 15, 8),
-            this.loadSpritesheet('knight_attack2', 'assets/sprites/characters/Knight/Attack2.png', 15, 8),
-            this.loadSpritesheet('knight_die', 'assets/sprites/characters/Knight/Die.png', 15, 8),
-            this.loadSpritesheet('knight_take_damage', 'assets/sprites/characters/Knight/TakeDamage.png', 15, 8),
-            // Guardian sprites - using the same animations as Knight for now
-        this.loadSpritesheet('guardian_idle', 'assets/sprites/characters/Guardian/Idle.png', 15, 8),
-        this.loadSpritesheet('guardian_run', 'assets/sprites/characters/Guardian/Run.png', 15, 8),
-        this.loadSpritesheet('guardian_run_backward', 'assets/sprites/characters/Guardian/RunBackwards.png', 15, 8),
-        this.loadSpritesheet('guardian_strafe_left', 'assets/sprites/characters/Guardian/StrafeLeft.png', 15, 8),
-        this.loadSpritesheet('guardian_strafe_right', 'assets/sprites/characters/Guardian/StrafeRight.png', 15, 8),
-        this.loadSpritesheet('guardian_attack1', 'assets/sprites/characters/Guardian/Attack1.png', 15, 8),
-        this.loadSpritesheet('guardian_attack2', 'assets/sprites/characters/Guardian/AttackRun.png', 15, 8),
-        this.loadSpritesheet('guardian_die', 'assets/sprites/characters/Guardian/Die.png', 15, 8),
-        this.loadSpritesheet('guardian_take_damage', 'assets/sprites/characters/Guardian/TakeDamage.png', 15, 8),
-        // Add Rogue sprites
-        this.loadSpritesheet('rogue_idle', 'assets/sprites/characters/Rogue/Idle.png', 15, 8),
-        this.loadSpritesheet('rogue_run', 'assets/sprites/characters/Rogue/Run.png', 15, 8),
-        this.loadSpritesheet('rogue_run_backward', 'assets/sprites/characters/Rogue/RunBackwards.png', 15, 8),
-        this.loadSpritesheet('rogue_strafe_left', 'assets/sprites/characters/Rogue/StrafeLeft.png', 15, 8),
-        this.loadSpritesheet('rogue_strafe_right', 'assets/sprites/characters/Rogue/StrafeRight.png', 15, 8),
-        this.loadSpritesheet('rogue_attack1', 'assets/sprites/characters/Rogue/Attack1.png', 15, 8),
-        this.loadSpritesheet('rogue_attack2', 'assets/sprites/characters/Rogue/Special2.png', 15, 8),
-        this.loadSpritesheet('rogue_die', 'assets/sprites/characters/Rogue/Die.png', 15, 8),
-        this.loadSpritesheet('rogue_take_damage', 'assets/sprites/characters/Rogue/TakeDamage.png', 15, 8),
-            // Monster sprites
-            this.loadSpritesheet('skeleton_walk', 'assets/sprites/monsters/Skeleton/Walk.png', 15, 8),
-            this.loadSpritesheet('skeleton_idle', 'assets/sprites/monsters/Skeleton/Idle.png', 15, 8),
-            this.loadSpritesheet('skeleton_attack1', 'assets/sprites/monsters/Skeleton/Attack1.png', 15, 8),
-            this.loadSpritesheet('skeleton_take_damage', 'assets/sprites/monsters/Skeleton/TakeDamage.png', 15, 8),
-            this.loadSpritesheet('skeleton_die', 'assets/sprites/monsters/Skeleton/Die.png', 15, 8),
-            // Elemental sprites
-            this.loadSpritesheet('elemental_walk', 'assets/sprites/monsters/Elemental/Walk.png', 15, 8),
-            this.loadSpritesheet('elemental_idle', 'assets/sprites/monsters/Elemental/Idle.png', 15, 8),
-            this.loadSpritesheet('elemental_attack1', 'assets/sprites/monsters/Elemental/Attack4.png', 15, 8),
-            this.loadSpritesheet('elemental_take_damage', 'assets/sprites/monsters/Elemental/TakeDamage.png', 15, 8),
-            this.loadSpritesheet('elemental_die', 'assets/sprites/monsters/Elemental/Die.png', 15, 8),
-            // Ogre sprites with custom frame size
-            this.loadSpritesheet('ogre_walk', 'assets/sprites/monsters/Ogre/Walk.png', 15, 8, ogreFrameSize),
-            this.loadSpritesheet('ogre_idle', 'assets/sprites/monsters/Ogre/Idle.png', 15, 8, ogreFrameSize),
-            this.loadSpritesheet('ogre_attack1', 'assets/sprites/monsters/Ogre/Attack1.png', 15, 8, ogreFrameSize),
-            this.loadSpritesheet('ogre_take_damage', 'assets/sprites/monsters/Ogre/TakeDamage.png', 15, 8, ogreFrameSize),
-            this.loadSpritesheet('ogre_die', 'assets/sprites/monsters/Ogre/Die.png', 15, 8, ogreFrameSize),
-            // Ghoul sprites
-        this.loadSpritesheet('ghoul_walk', 'assets/sprites/monsters/Ghoul/Walk.png', 15, 8),
-        this.loadSpritesheet('ghoul_idle', 'assets/sprites/monsters/Ghoul/Idle.png', 15, 8),
-        this.loadSpritesheet('ghoul_attack1', 'assets/sprites/monsters/Ghoul/Attack1.png', 15, 8),
-        this.loadSpritesheet('ghoul_take_damage', 'assets/sprites/monsters/Ghoul/TakeDamage.png', 15, 8),
-        this.loadSpritesheet('ghoul_die', 'assets/sprites/monsters/Ghoul/Die.png', 15, 8),
-            // Add Hunter sprites
-    this.loadSpritesheet('hunter_idle', 'assets/sprites/characters/Hunter/Idle.png', 15, 8),
-    this.loadSpritesheet('hunter_run', 'assets/sprites/characters/Hunter/Run.png', 15, 8),
-    this.loadSpritesheet('hunter_run_backward', 'assets/sprites/characters/Hunter/RunBackwards.png', 15, 8),
-    this.loadSpritesheet('hunter_strafe_left', 'assets/sprites/characters/Hunter/StrafeLeft.png', 15, 8),
-    this.loadSpritesheet('hunter_strafe_right', 'assets/sprites/characters/Hunter/StrafeRight.png', 15, 8),
-    this.loadSpritesheet('hunter_attack1', 'assets/sprites/characters/Hunter/Attack1.png', 15, 8),
-    this.loadSpritesheet('hunter_attack2', 'assets/sprites/characters/Hunter/BackRoll.png', 15, 8),
-    this.loadSpritesheet('hunter_die', 'assets/sprites/characters/Hunter/Die.png', 15, 8),
-    this.loadSpritesheet('hunter_take_damage', 'assets/sprites/characters/Hunter/TakeDamage.png', 15, 8),
-        
-        ]);
+        const promises = [];
 
-    // Load effect sprites separately
-    await Promise.all([
-        this.loadEffectSpritesheet(
-            'slash_effect',
-            'assets/sprites/effects/Slash.png',
-            8,  // columns
-            9,  // rows
-            2,  // row index (3rd row)
-            { width: 64, height: 64 }  // frame size
-        ),
-        this.loadEffectSpritesheet(
-            'strike_windup',
-            'assets/sprites/effects/KnightStrikeWindup.png',
-            6,  // columns (adjust if needed)
-            9,  // rows (adjust if needed)
-            2,  // row index
-            { width: 64, height: 64 }  // frame size (adjust if needed)
-        ),
-        this.loadEffectSpritesheet(
-            'strike_cast',
-            'assets/sprites/effects/KnightStrikeCast.png',
-            7,  // columns (adjust if needed)
-            9,  // rows (adjust if needed)
-            2,  // row index
-            { width: 64, height: 64 }  // frame size (adjust if needed)
-        ),
-                // Load Guardian-specific attack effect sprites
-                this.loadEffectSpritesheet(
-                    'guardian_slash_effect',
-                    'assets/sprites/effects/GuardianAttack1.png',
-                    9,  // columns
-                    9,  // rows
-                    0,  // row index (3rd row)
-                    { width: 64, height: 64 }  // frame size
-                ),
-                this.loadEffectSpritesheet(
-                    'guardian_jump_effect',
-                    'assets/sprites/effects/GuardianAttack2.png',
-                    12,  // columns 
-                    9,  // rows
-                    0,  // row index
-                    { width: 64, height: 64 }  // frame size
-                ),
-                this.loadEffectSpritesheet(
-                    'rogue_thrust_effect',
-                    'assets/sprites/effects/RogueAttack1.png',
-                    5,   // columns
-                    9,   // rows  
-                    3,   // row index
-                    { width: 64, height: 64 }
-                  ),
-                  this.loadEffectSpritesheet(
-                    'rogue_dash_effect',
-                    'assets/sprites/effects/RogueAttack2.png',
-                    14,   // columns
-                    9,   // rows
-                    3,   // row index
-                    { width: 64, height: 64 }
-                  ),
-                  this.loadEffectSpritesheet(
-                    'bow_shot_effect',
-                    'assets/sprites/effects/457.png',
-                    9,   // columns
-                    9,   // rows
-                    1,   // row index
-                    { width: 64, height: 64 }
-                  ),
-                  this.loadEffectSpritesheet(
-                    'hunter_cone_effect',
-                    'assets/sprites/effects/448.png', // Use existing arrow effect or another suitable one
-                    9,   // columns
-                    9,   // rows
-                    2,   // row index
-                    { width: 64, height: 64 }
-                  )
-            ]);
+        for (const config of SPRITE_SHEET_CONFIG) {
+            if (config.type === 'character' || config.type === 'monster') {
+                for (const animConfig of config.animations) {
+                    const key = `${config.keyPrefix}_${animConfig.keySuffix}`;
+                    promises.push(this.loadSpritesheet(
+                        key,
+                        animConfig.path,
+                        animConfig.columns,
+                        animConfig.rows,
+                        config.defaultFrameSize || null // Pass entity-specific frame size or null
+                    ));
+                }
+            } else if (config.type === 'effect') {
+                promises.push(this.loadEffectSpritesheet(
+                    config.keyPrefix, // For effects, keyPrefix is the full key
+                    config.path,
+                    config.columns,
+                    config.rows, // Total rows in the sheet
+                    config.rowIndex, // Specific row to extract
+                    config.frameSize // Effects must have explicit frameSize
+                ));
+            }
+        }
+
+        await Promise.all(promises);
             
-        this.createAnimations();
+        this.createAnimations(); // This will be refactored next
         this.loaded = true;
         console.log("Sprites loaded successfully");
     }
 
     async loadSpritesheet(name, path, columns, rows, customFrameSize = null) {
         return new Promise((resolve, reject) => {
-            // Load the spritesheet image
             PIXI.Assets.load(path).then(texture => {
-                // Use custom frame dimensions if provided, otherwise use default
                 const frameWidth = customFrameSize ? customFrameSize.width : this.frameWidth;
                 const frameHeight = customFrameSize ? customFrameSize.height : this.frameHeight;
                 
-                // Extract frames for each row
                 const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
                 
                 for (let row = 0; row < rows; row++) {
+                    if (row >= directions.length) break; // Ensure we don't exceed directions array
                     const direction = directions[row];
                     const frames = [];
                     
                     for (let col = 0; col < columns; col++) {
-                        // Create a texture for this frame
                         const frameTexture = new PIXI.Texture(
                             texture.baseTexture,
                             new PIXI.Rectangle(
@@ -193,39 +210,31 @@ export class SpriteManager {
                             )
                         );
                         frameTexture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-    
                         frames.push(frameTexture);
                     }
-                    
-                    // Store frames for this direction
                     this.textures[`${name}_${direction}`] = frames;
                 }
-                
                 resolve();
             }).catch(error => {
-                console.error(`Failed to load spritesheet ${path}:`, error);
+                console.error(`Failed to load spritesheet ${path} for key ${name}:`, error);
                 reject(error);
             });
         });
     }
 
-    async loadEffectSpritesheet(name, path, columns, rows, rowIndex, frameSize) {
+    async loadEffectSpritesheet(name, path, columns, totalRows, rowIndex, frameSize) { // totalRows added for clarity
         return new Promise((resolve, reject) => {
             PIXI.Assets.load(path).then(texture => {
-                const frameWidth = frameSize.width;
-                const frameHeight = frameSize.height;
-                const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
-                
-                // Get the specific row we want
-                const row = rowIndex;
+                const { width: frameWidth, height: frameHeight } = frameSize; // Destructure for clarity
                 const frames = [];
                 
+                // rowIndex is the specific row to load frames from
                 for (let col = 0; col < columns; col++) {
                     const frameTexture = new PIXI.Texture(
                         texture.baseTexture,
                         new PIXI.Rectangle(
                             col * frameWidth,
-                            row * frameHeight,
+                            rowIndex * frameHeight, // Use rowIndex here
                             frameWidth,
                             frameHeight
                         )
@@ -233,491 +242,72 @@ export class SpriteManager {
                     frameTexture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
                     frames.push(frameTexture);
                 }
-                
-                // Store all frames under a single animation name
-                this.textures[`${name}`] = frames;
-                
+                this.textures[name] = frames; // Store directly by name
                 resolve();
             }).catch(error => {
-                console.error(`Failed to load effect spritesheet ${path}:`, error);
+                console.error(`Failed to load effect spritesheet ${path} for key ${name}:`, error);
                 reject(error);
             });
         });
     }
 
+    // Helper function to create directional animations
+    _createDirectionalAnimations(entityType, actionName, properties, directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne']) {
+        for (const direction of directions) {
+            const textureKey = `${entityType}_${actionName}_${direction}`;
+            if (!this.textures[textureKey]) {
+                console.warn(`Textures not found for ${textureKey}`);
+                continue;
+            }
+            this.animations[textureKey] = {
+                textures: this.textures[textureKey],
+                speed: properties.speed || 0.2, // Default speed if not specified
+                hitFrame: properties.hitFrame // Will be undefined if not applicable
+            };
+        }
+    }
+
     createAnimations() {
-        this.createKnightAnimations();
-        this.createGuardianAnimations();
-        this.createRogueAnimations();
-        this.createHunterAnimations(); 
-        this.createSkeletonAnimations();
-        this.createElementalAnimations();
-        this.createOgreAnimations();
-        this.createGhoulAnimations();
-        this.createSlashEffectAnimation(); 
-        this.createStrikeEffectAnimations();
-        this.createGuardianEffectAnimations(); 
-        this.createRogueEffectAnimations();
-        this.createHunterEffectAnimations();
+        // Player Animations
+        for (const className in PLAYER_CONFIG.classes) {
+            const classConfig = PLAYER_CONFIG.classes[className];
+            const entityType = classConfig.spritePrefix; // e.g., 'knight', 'guardian'
+            if (classConfig.animations) {
+                for (const animName in classConfig.animations) { // e.g., 'idle', 'run', 'attack1'
+                    this._createDirectionalAnimations(entityType, animName, classConfig.animations[animName]);
+                }
+            }
+        }
 
+        // Monster Animations
+        for (const monsterType in MONSTER_CONFIG.stats) {
+            const monsterStats = MONSTER_CONFIG.stats[monsterType];
+            // Monster sprite prefixes are the monsterType itself (e.g. 'skeleton', 'ogre')
+            if (monsterStats.animations) {
+                for (const animName in monsterStats.animations) { // e.g., 'walk', 'idle', 'attack1'
+                    this._createDirectionalAnimations(monsterType, animName, monsterStats.animations[animName]);
+                }
+            }
+        }
 
-    }
-
-
-    createKnightAnimations() {
-        const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
-        
-        // Create animations for each direction
-        for (const direction of directions) {
-            // Idle animation
-            this.animations[`knight_idle_${direction}`] = {
-                textures: this.textures[`knight_idle_${direction}`],
-                speed: 0.2
-            };
-
-            // Standard run animation
-            this.animations[`knight_run_${direction}`] = {
-                textures: this.textures[`knight_run_${direction}`],
-                speed: 0.5
-            };
-            
-            // Run backward animation
-            this.animations[`knight_run_backward_${direction}`] = {
-                textures: this.textures[`knight_run_backward_${direction}`],
-                speed: 0.5
-            };
-            
-            // Strafe left animation
-            this.animations[`knight_strafe_left_${direction}`] = {
-                textures: this.textures[`knight_strafe_left_${direction}`],
-                speed: 0.5
-            };
-            
-            // Strafe right animation
-            this.animations[`knight_strafe_right_${direction}`] = {
-                textures: this.textures[`knight_strafe_right_${direction}`],
-                speed: 0.5
-            };
-            
-            // Attack 1 (forehand slash) animation
-            this.animations[`knight_attack1_${direction}`] = {
-                textures: this.textures[`knight_attack1_${direction}`],
-                speed: 0.4,
-                hitFrame: 8
-            };
-            
-            // Attack 2 (overhead smash) animation
-            this.animations[`knight_attack2_${direction}`] = {
-                textures: this.textures[`knight_attack2_${direction}`],
-                speed: 0.3,
-                hitFrame: 12
-            };
-                    // Take damage animation
-        this.animations[`knight_take_damage_${direction}`] = {
-            textures: this.textures[`knight_take_damage_${direction}`],
-            speed: 0.5 // Slightly faster than normal animations
-        };
-             // Death animation
-        this.animations[`knight_die_${direction}`] = {
-            textures: this.textures[`knight_die_${direction}`],
-            speed: 0.2
-        };
+        // Effect Animations (non-directional)
+        if (PLAYER_CONFIG.effects && PLAYER_CONFIG.effects.effectAnimations) {
+            for (const effectName in PLAYER_CONFIG.effects.effectAnimations) {
+                const effectAnimConfig = PLAYER_CONFIG.effects.effectAnimations[effectName];
+                if (this.textures[effectName]) {
+                    this.animations[effectName] = {
+                        textures: this.textures[effectName],
+                        speed: effectAnimConfig.speed || 0.2
+                    };
+                } else {
+                    console.warn(`Textures not found for effect: ${effectName}`);
+                }
+            }
         }
     }
 
-    createGuardianAnimations() {
-        const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
-        
-        // Create animations for each direction
-        for (const direction of directions) {
-            // Idle animation
-            this.animations[`guardian_idle_${direction}`] = {
-                textures: this.textures[`guardian_idle_${direction}`],
-                speed: 0.15 // Slower for Guardian to emphasize the heavier character
-            };
-    
-            // Standard run animation
-            this.animations[`guardian_run_${direction}`] = {
-                textures: this.textures[`guardian_run_${direction}`],
-                speed: 0.4
-            };
-            
-            // Run backward animation
-            this.animations[`guardian_run_backward_${direction}`] = {
-                textures: this.textures[`guardian_run_backward_${direction}`],
-                speed: 0.4
-            };
-            
-            // Strafe left animation
-            this.animations[`guardian_strafe_left_${direction}`] = {
-                textures: this.textures[`guardian_strafe_left_${direction}`],
-                speed: 0.4
-            };
-            
-            // Strafe right animation
-            this.animations[`guardian_strafe_right_${direction}`] = {
-                textures: this.textures[`guardian_strafe_right_${direction}`],
-                speed: 0.4
-            };
-            
-            // Attack 1 animation
-            this.animations[`guardian_attack1_${direction}`] = {
-                textures: this.textures[`guardian_attack1_${direction}`],
-                speed: 0.35,
-                hitFrame: 8
-            };
-            
-            // Attack 2 animation
-            this.animations[`guardian_attack2_${direction}`] = {
-                textures: this.textures[`guardian_attack2_${direction}`],
-                speed: 0.35,
-                hitFrame: 12
-            };
-            
-            // Take damage animation
-            this.animations[`guardian_take_damage_${direction}`] = {
-                textures: this.textures[`guardian_take_damage_${direction}`],
-                speed: 0.5
-            };
-            
-            // Death animation
-            this.animations[`guardian_die_${direction}`] = {
-                textures: this.textures[`guardian_die_${direction}`],
-                speed: 0.2
-            };
-        }
-    }
-
-    // Add this new method
-createRogueAnimations() {
-    const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
-    
-    // Create animations for each direction
-    for (const direction of directions) {
-        // Idle animation
-        this.animations[`rogue_idle_${direction}`] = {
-            textures: this.textures[`rogue_idle_${direction}`],
-            speed: 0.25 // Slightly faster than knight
-        };
-
-        // Standard run animation
-        this.animations[`rogue_run_${direction}`] = {
-            textures: this.textures[`rogue_run_${direction}`],
-            speed: 0.6 // Faster run for rogue
-        };
-        
-        // Run backward animation
-        this.animations[`rogue_run_backward_${direction}`] = {
-            textures: this.textures[`rogue_run_backward_${direction}`],
-            speed: 0.6
-        };
-        
-        // Strafe left animation
-        this.animations[`rogue_strafe_left_${direction}`] = {
-            textures: this.textures[`rogue_strafe_left_${direction}`],
-            speed: 0.6
-        };
-        
-        // Strafe right animation
-        this.animations[`rogue_strafe_right_${direction}`] = {
-            textures: this.textures[`rogue_strafe_right_${direction}`],
-            speed: 0.6
-        };
-        
-        // Attack 1 (quick slash) animation
-        this.animations[`rogue_attack1_${direction}`] = {
-            textures: this.textures[`rogue_attack1_${direction}`],
-            speed: 0.5, // Faster attack for rogue
-            hitFrame: 7  // Assuming hit happens slightly earlier than knight
-        };
-        
-        // Attack 2 animation
-        this.animations[`rogue_attack2_${direction}`] = {
-            textures: this.textures[`rogue_attack2_${direction}`],
-            speed: 0.4,
-            hitFrame: 10
-        };
-        
-        // Take damage animation
-        this.animations[`rogue_take_damage_${direction}`] = {
-            textures: this.textures[`rogue_take_damage_${direction}`],
-            speed: 0.6 // Slightly faster than normal animations
-        };
-        
-        // Death animation
-        this.animations[`rogue_die_${direction}`] = {
-            textures: this.textures[`rogue_die_${direction}`],
-            speed: 0.25
-        };
-    }
-}
-
-createHunterAnimations() {
-    const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
-    
-    // Create animations for each direction
-    for (const direction of directions) {
-        // Idle animation
-        this.animations[`hunter_idle_${direction}`] = {
-            textures: this.textures[`hunter_idle_${direction}`],
-            speed: 0.2
-        };
-
-        // Standard run animation
-        this.animations[`hunter_run_${direction}`] = {
-            textures: this.textures[`hunter_run_${direction}`],
-            speed: 0.5
-        };
-        
-        // Run backward animation
-        this.animations[`hunter_run_backward_${direction}`] = {
-            textures: this.textures[`hunter_run_backward_${direction}`],
-            speed: 0.5
-        };
-        
-        // Strafe left animation
-        this.animations[`hunter_strafe_left_${direction}`] = {
-            textures: this.textures[`hunter_strafe_left_${direction}`],
-            speed: 0.5
-        };
-        
-        // Strafe right animation
-        this.animations[`hunter_strafe_right_${direction}`] = {
-            textures: this.textures[`hunter_strafe_right_${direction}`],
-            speed: 0.5
-        };
-        
-        // Attack 1 animation
-        this.animations[`hunter_attack1_${direction}`] = {
-            textures: this.textures[`hunter_attack1_${direction}`],
-            speed: 0.4,
-            hitFrame: 8
-        };
-        
-        // Attack 2 animation
-        this.animations[`hunter_attack2_${direction}`] = {
-            textures: this.textures[`hunter_attack2_${direction}`],
-            speed: 0.5,
-            hitFrame: 12
-        };
-        
-        // Take damage animation
-        this.animations[`hunter_take_damage_${direction}`] = {
-            textures: this.textures[`hunter_take_damage_${direction}`],
-            speed: 0.5
-        };
-        
-        // Death animation
-        this.animations[`hunter_die_${direction}`] = {
-            textures: this.textures[`hunter_die_${direction}`],
-            speed: 0.2
-        };
-    }
-}
-
-    createGuardianEffectAnimations() {
-        // Check if textures exist
-        if (!this.textures['guardian_slash_effect']) {
-            console.error("Missing texture: guardian_slash_effect");
-            return;
-        }
-        if (!this.textures['guardian_jump_effect']) {
-            console.error("Missing texture: guardian_jump_effect");
-            return;
-        }
-    
-        // Create animations for guardian effects
-        this.animations['guardian_slash_effect'] = {
-            textures: this.textures['guardian_slash_effect'],
-            speed: 0.6
-        };
-        
-        this.animations['guardian_jump_effect'] = {
-            textures: this.textures['guardian_jump_effect'],
-            speed: 0.5
-        };
-        
-        console.log("Guardian effect animations created successfully");
-    }
-
-
-
-    createRogueEffectAnimations() {
-        this.animations['rogue_thrust_effect'] = {
-          textures: this.textures['rogue_thrust_effect'],
-          speed: 0.7
-        };
-        
-        this.animations['rogue_dash_effect'] = {
-          textures: this.textures['rogue_dash_effect'],
-          speed: 0.5
-        };
-      }
-
-      createHunterEffectAnimations() {
-        this.animations['bow_shot_effect'] = {
-          textures: this.textures['bow_shot_effect'],
-          speed: 0.2
-        };
-
-        this.animations['hunter_cone_effect'] = {
-            textures: this.textures['hunter_cone_effect'],
-            speed: 0.5
-          };
-    
-      }
-
-    // Add this new method
-createOgreAnimations() {
-    const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
-    
-    // Create animations for each direction
-    for (const direction of directions) {
-        // Walk animation
-        this.animations[`ogre_walk_${direction}`] = {
-            textures: this.textures[`ogre_walk_${direction}`],
-            speed: 0.3 // Slower animation for a lumbering ogre
-        };
-        
-        // Idle animation
-        this.animations[`ogre_idle_${direction}`] = {
-            textures: this.textures[`ogre_idle_${direction}`],
-            speed: 0.2
-        };
-        
-        // Attack animation
-        this.animations[`ogre_attack1_${direction}`] = {
-            textures: this.textures[`ogre_attack1_${direction}`],
-            speed: 0.25,
-            hitFrame: 9  // Adjust as needed for the ogre's attack animation
-        };
-        
-        // Take damage animation
-        this.animations[`ogre_take_damage_${direction}`] = {
-            textures: this.textures[`ogre_take_damage_${direction}`],
-            speed: 0.7
-        };
-        
-        // Death animation
-        this.animations[`ogre_die_${direction}`] = {
-            textures: this.textures[`ogre_die_${direction}`],
-            speed: 0.2
-        };
-    }
-}
-
-createGhoulAnimations() {
-    const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
-    
-    // Create animations for each direction
-    for (const direction of directions) {
-        // Walk animation
-        this.animations[`ghoul_walk_${direction}`] = {
-            textures: this.textures[`ghoul_walk_${direction}`],
-            speed: 0.45 // Faster than most - ghouls move in jerky motions
-        };
-        
-        // Idle animation
-        this.animations[`ghoul_idle_${direction}`] = {
-            textures: this.textures[`ghoul_idle_${direction}`],
-            speed: 0.25
-        };
-        
-        // Attack animation
-        this.animations[`ghoul_attack1_${direction}`] = {
-            textures: this.textures[`ghoul_attack1_${direction}`],
-            speed: 0.4,
-            hitFrame: 7  // Adjust as needed for the ghoul's attack animation
-        };
-        
-        // Take damage animation
-        this.animations[`ghoul_take_damage_${direction}`] = {
-            textures: this.textures[`ghoul_take_damage_${direction}`],
-            speed: 0.7
-        };
-        
-        // Death animation
-        this.animations[`ghoul_die_${direction}`] = {
-            textures: this.textures[`ghoul_die_${direction}`],
-            speed: 0.25
-        };
-    }
-}
-    
-    createSkeletonAnimations() {
-        const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
-        
-        // Create animations for each direction
-        for (const direction of directions) {
-            // Walk animation
-            this.animations[`skeleton_walk_${direction}`] = {
-                textures: this.textures[`skeleton_walk_${direction}`],
-                speed: 0.4
-            };
-            
-            // Idle animation
-            this.animations[`skeleton_idle_${direction}`] = {
-                textures: this.textures[`skeleton_idle_${direction}`],
-                speed: 0.2
-            };
-            
-            // Attack animation
-            this.animations[`skeleton_attack1_${direction}`] = {
-                textures: this.textures[`skeleton_attack1_${direction}`],
-                speed: 0.3,
-                hitFrame: 8  // Assuming hit happens around frame 8, adjust as needed
-            };
-            // Take damage animation
-        this.animations[`skeleton_take_damage_${direction}`] = {
-            textures: this.textures[`skeleton_take_damage_${direction}`],
-            speed: 0.7
-        };
-                // Death animation
-                this.animations[`skeleton_die_${direction}`] = {
-                    textures: this.textures[`skeleton_die_${direction}`],
-                    speed: 0.5
-                };
-        
-        }
-    }
-
-    createElementalAnimations() {
-        const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
-        
-        // Create animations for each direction
-        for (const direction of directions) {
-            // Walk animation
-            this.animations[`elemental_walk_${direction}`] = {
-                textures: this.textures[`elemental_walk_${direction}`],
-                speed: 0.4
-            };
-            
-            // Idle animation
-            this.animations[`elemental_idle_${direction}`] = {
-                textures: this.textures[`elemental_idle_${direction}`],
-                speed: 0.2
-            };
-            
-            // Attack animation
-            this.animations[`elemental_attack1_${direction}`] = {
-                textures: this.textures[`elemental_attack1_${direction}`],
-                speed: 0.3,
-                hitFrame: 8
-            };
-            
-            // Take damage animation
-            this.animations[`elemental_take_damage_${direction}`] = {
-                textures: this.textures[`elemental_take_damage_${direction}`],
-                speed: 0.7
-            };
-            
-            // Death animation
-            this.animations[`elemental_die_${direction}`] = {
-                textures: this.textures[`elemental_die_${direction}`],
-                speed: 0.2
-            };
-        }
-    }
+    // Removed individual create...Animations methods (createKnightAnimations, createGuardianAnimations, etc.)
+    // Removed create...EffectAnimations methods (createSlashEffectAnimation, etc.) as they are now data-driven
 
     createAnimatedSprite(animationName) {
     if (!this.animations[animationName]) {
@@ -746,132 +336,91 @@ createGhoulAnimations() {
 // Update getAnimationForMovement to handle different character classes
 getAnimationForMovement(facingDirection, movementDirection) {
     // Get current character class from the entity this animation is for
-    const characterClass = window.game?.entities?.player?.characterClass || 'bladedancer';
-    let classPrefix;
+    const playerEntity = window.game?.entities?.player;
+    const characterClass = playerEntity?.characterClass || 'bladedancer'; // Default to bladedancer if no player
     
-    // Map character class to sprite prefix
-    switch(characterClass) {
-        case 'guardian':
-            classPrefix = 'guardian';
-            break;
-        case 'rogue':
-            classPrefix = 'rogue';
-            break;
-        case 'hunter':
-            classPrefix = 'hunter'; // Change from 'knight' to 'hunter'
-            break;
-        case 'bladedancer':
-        default:
-            classPrefix = 'knight';
-            break;
-    }
-    // Convert 8-way direction to the format used in our animations (e, se, s, etc.)
-    const directionMap = {
-        'right': 'e',
-        'down-right': 'se',
-        'down': 's',
-        'down-left': 'sw',
-        'left': 'w',
-        'up-left': 'nw',
-        'up': 'n',
-        'up-right': 'ne'
-    };
-    
-    const facing = directionMap[facingDirection];
+    // Fetch spritePrefix from PLAYER_CONFIG
+    const classConfig = PLAYER_CONFIG.classes[characterClass];
+    const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight' if not found
+
+    // Convert 8-way direction to the animation suffix (e, se, s, etc.)
+    const facingSuffix = directionStringToAnimationSuffix(facingDirection);
     
     // If not moving, return idle animation
     if (!movementDirection) {
-        return `${classPrefix}_idle_${facing}`;
+        return `${classPrefix}_idle_${facingSuffix}`;
     }
     
-    const movement = directionMap[movementDirection];
+    const movementSuffix = directionStringToAnimationSuffix(movementDirection);
     
-    if (!facing || !movement) {
-        return `${classPrefix}_idle_${facing || 's'}`; // Default to south-facing idle
+    if (!facingSuffix || !movementSuffix) {
+        // Default to south-facing idle if direction string is invalid
+        return `${classPrefix}_idle_${facingSuffix || 's'}`; 
     }
     
     // Determine which animation to use based on the relationship between facing and movement directions
-    if (facing === movement) {
+    if (facingSuffix === movementSuffix) {
         // Running forward
-        return `${classPrefix}_run_${facing}`;
+        return `${classPrefix}_run_${facingSuffix}`;
     } else {
         // Check if running backward (opposite direction)
+        // For this, we might need a utility to get opposite suffix or compare angles
+        // For now, this logic relies on the suffixes directly:
         const opposites = {
             'e': 'w', 'w': 'e', 'n': 's', 's': 'n',
             'ne': 'sw', 'sw': 'ne', 'nw': 'se', 'se': 'nw'
         };
         
-        if (movement === opposites[facing]) {
-            return `${classPrefix}_run_backward_${facing}`;
+        if (movementSuffix === opposites[facingSuffix]) {
+            return `${classPrefix}_run_backward_${facingSuffix}`;
         }
         
         // Check if strafing left or right relative to facing direction
-        const clockwise = ['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'];
-        const facingIndex = clockwise.indexOf(facing);
-        const movementIndex = clockwise.indexOf(movement);
+        // This logic is complex and relies on the order of suffixes.
+        // It's generally better to work with angles for such comparisons.
+        // However, to minimize changes for now, we keep the existing clockwise logic.
+        const clockwise = ['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']; // Suffixes
+        const facingIndex = clockwise.indexOf(facingSuffix);
+        const movementIndex = clockwise.indexOf(movementSuffix);
         
         // Determine if movement is to the left or right of facing
         if (facingIndex !== -1 && movementIndex !== -1) {
             // Calculate the shortest path around the circle
             let diff = movementIndex - facingIndex;
-            if (diff < -4) diff += 8;
-            if (diff > 4) diff -= 8;
+            if (diff < -4) diff += 8; // e.g. n (0) to sw (5) = 5, but should be -3
+            if (diff > 4) diff -= 8; // e.g. w (6) to ne (1) = -5, but should be 3
             
-            if (diff > 0 && diff < 4) {
+            if (diff > 0 && diff <= 4) { // Adjusted to include 4 for strafe right
                 // Movement is to the right of facing
-                return `${classPrefix}_strafe_right_${facing}`;
-            } else if (diff < 0 && diff > -4) {
+                return `${classPrefix}_strafe_right_${facingSuffix}`;
+            } else if (diff < 0 && diff >= -4) { // Adjusted to include -4 for strafe left
                 // Movement is to the left of facing
-                return `${classPrefix}_strafe_left_${facing}`;
+                return `${classPrefix}_strafe_left_${facingSuffix}`;
             }
         }
         
-        // Default to run forward if we can't determine
-        return `${classPrefix}_run_${facing}`;
+        // Default to run forward if we can't determine (e.g. if suffixes were invalid)
+        return `${classPrefix}_run_${facingSuffix}`;
     }
 }
     
 getAttackAnimation(facingDirection, attackType) {
     // Get current character class
-    const characterClass = window.game?.entities?.player?.characterClass || 'bladedancer';
-    let classPrefix;
+    const playerEntity = window.game?.entities?.player;
+    const characterClass = playerEntity?.characterClass || 'bladedancer'; // Default to bladedancer
     
-    // Map character class to sprite prefix
-    switch(characterClass) {
-        case 'guardian':
-            classPrefix = 'guardian';
-            break;
-        case 'rogue':
-            classPrefix = 'rogue';
-            break;
-        case 'hunter':
-            classPrefix = 'hunter'; // Change from 'knight' to 'hunter'
-            break;
-        case 'bladedancer':
-        default:
-            classPrefix = 'knight';
-            break;
-    }
+    // Fetch spritePrefix from PLAYER_CONFIG
+    const classConfig = PLAYER_CONFIG.classes[characterClass];
+    const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
+
+    // Convert 8-way direction string to animation suffix
+    const facingSuffix = directionStringToAnimationSuffix(facingDirection);
     
-    // Convert 8-way direction to the format used in our animations
-    const directionMap = {
-        'right': 'e',
-        'down-right': 'se',
-        'down': 's',
-        'down-left': 'sw',
-        'left': 'w',
-        'up-left': 'nw',
-        'up': 'n',
-        'up-right': 'ne'
-    };
-    
-    const facing = directionMap[facingDirection];
-    
-    if (!facing) {
+    if (!facingSuffix) { // Should technically not happen due to default in util
         return attackType === 'primary' ? `${classPrefix}_attack1_s` : `${classPrefix}_attack2_s`;
     }
     
-    return attackType === 'primary' ? `${classPrefix}_attack1_${facing}` : `${classPrefix}_attack2_${facing}`;
+    return attackType === 'primary' ? `${classPrefix}_attack1_${facingSuffix}` : `${classPrefix}_attack2_${facingSuffix}`;
 }
     
     getAttackHitFrame(animationName) {
@@ -901,35 +450,25 @@ getAttackAnimation(facingDirection, attackType) {
         }
     }
     
-    getMonsterAnimationForDirection(monsterType, direction, state = 'walk') {
-        // Convert 8-way direction to the format used in animations
-        const directionMap = {
-            'right': 'e',
-            'down-right': 'se',
-            'down': 's',
-            'down-left': 'sw',
-            'left': 'w',
-            'up-left': 'nw',
-            'up': 'n',
-            'up-right': 'ne'
-        };
-        
-        const facing = directionMap[direction] || 's'; // Default to south
+    getMonsterAnimationForDirection(monsterType, directionString, state = 'walk') {
+        // Convert 8-way direction string to animation suffix
+        const facingSuffix = directionStringToAnimationSuffix(directionString);
         
         if (monsterType === 'skeleton' || monsterType === 'elemental' || 
             monsterType === 'ogre' || monsterType === 'ghoul') {
             // Handle special animation states
             if (state === 'hit') {
-                return `${monsterType}_take_damage_${facing}`;
+                return `${monsterType}_take_damage_${facingSuffix}`;
             } else if (state === 'die') {
-                return `${monsterType}_die_${facing}`;
+                return `${monsterType}_die_${facingSuffix}`;
             }
             
-            return `${monsterType}_${state}_${facing}`;
+            return `${monsterType}_${state}_${facingSuffix}`;
         }
         
-        // Default fallback
-        return `skeleton_walk_s`;
+        // Default fallback (should ideally not be reached if monsterType is always valid)
+        console.warn(`Unknown monster type or invalid state for animation: ${monsterType}, ${state}`);
+        return `skeleton_walk_s`; // Fallback to a known animation
     }
     createSlashEffectAnimation() {
         // Just use a single animation for the slash effect

@@ -1,6 +1,10 @@
 // src/js/entities/monsters/Monster.js
 import * as PIXI from 'pixi.js';
 import { MONSTER_CONFIG } from '../../config/GameConfig.js';
+import { 
+    velocityToDirectionString, 
+    directionStringToAngleRadians 
+} from '../../utils/DirectionUtils.js';
 
 export class Monster {
     constructor(options) {
@@ -179,26 +183,9 @@ export class Monster {
     
     updateFacing() {
         // If moving, update facing based on velocity
-        if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
-            return;
-        }
-        
-        // Calculate absolute values and determine primary direction
-        const absX = Math.abs(this.velocity.x);
-        const absY = Math.abs(this.velocity.y);
-        
-        if (absX > absY * 1.5) {
-            // Primarily horizontal
-            this.facing = this.velocity.x > 0 ? 'right' : 'left';
-        } else if (absY > absX * 1.5) {
-            // Primarily vertical
-            this.facing = this.velocity.y > 0 ? 'down' : 'up';
-        } else {
-            // Diagonal movement
-            if (this.velocity.x > 0 && this.velocity.y > 0) this.facing = 'down-right';
-            else if (this.velocity.x < 0 && this.velocity.y > 0) this.facing = 'down-left';
-            else if (this.velocity.x > 0 && this.velocity.y < 0) this.facing = 'up-right';
-            else if (this.velocity.x < 0 && this.velocity.y < 0) this.facing = 'up-left';
+        const newFacing = velocityToDirectionString(this.velocity.x, this.velocity.y);
+        if (newFacing) {
+            this.facing = newFacing;
         }
     }
     
@@ -209,21 +196,9 @@ export class Monster {
         const dx = this.target.position.x - this.position.x;
         const dy = this.target.position.y - this.position.y;
         
-        const absX = Math.abs(dx);
-        const absY = Math.abs(dy);
-        
-        if (absX > absY * 1.5) {
-            // Primarily horizontal
-            this.facing = dx > 0 ? 'right' : 'left';
-        } else if (absY > absX * 1.5) {
-            // Primarily vertical
-            this.facing = dy > 0 ? 'down' : 'up';
-        } else {
-            // Diagonal
-            if (dx > 0 && dy > 0) this.facing = 'down-right';
-            else if (dx < 0 && dy > 0) this.facing = 'down-left';
-            else if (dx > 0 && dy < 0) this.facing = 'up-right';
-            else if (dx < 0 && dy < 0) this.facing = 'up-left';
+        const newFacing = velocityToDirectionString(dx, dy);
+        if (newFacing) {
+            this.facing = newFacing;
         }
     }
     
@@ -434,7 +409,7 @@ export class Monster {
                     case 'up-right': rotation = 7 * Math.PI / 4; break;
                 }
                 
-                this.attackIndicator.rotation = rotation;
+                this.attackIndicator.rotation = directionStringToAngleRadians(this.facing);
                 break;
         }
         
@@ -461,20 +436,10 @@ export class Monster {
                     
                 case 'cone':
                     // Get angle to target
-                    let angle = Math.atan2(dy, dx);
+                    let angle = Math.atan2(dy, dx); // This is radians
                     
-                    // Get facing angle
-                    let facingAngle = 0;
-                    switch(this.facing) {
-                        case 'right': facingAngle = 0; break;
-                        case 'down-right': facingAngle = Math.PI / 4; break;
-                        case 'down': facingAngle = Math.PI / 2; break;
-                        case 'down-left': facingAngle = 3 * Math.PI / 4; break;
-                        case 'left': facingAngle = Math.PI; break;
-                        case 'up-left': facingAngle = 5 * Math.PI / 4; break;
-                        case 'up': facingAngle = 3 * Math.PI / 2; break;
-                        case 'up-right': facingAngle = 7 * Math.PI / 4; break;
-                    }
+                    // Get facing angle in radians using the utility function
+                    let facingAngle = directionStringToAngleRadians(this.facing);
                     
                     // Calculate angle difference (normalized to smallest angle)
                     let angleDiff = Math.abs(angle - facingAngle);

@@ -1,5 +1,11 @@
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG } from '../config/GameConfig.js';
+import { 
+    angleToDirectionString, 
+    directionStringToAngleRadians,
+    velocityToDirectionString,
+    directionStringToAnimationSuffix
+} from '../utils/DirectionUtils.js';
 
 // Base Component class
 class Component {
@@ -113,49 +119,26 @@ class MovementComponent extends Component {
     }
     
     getFacingAngle() {
-        switch (this.owner.facing) {
-            case 'right': return 0;
-            case 'down-right': return Math.PI / 4;
-            case 'down': return Math.PI / 2;
-            case 'down-left': return 3 * Math.PI / 4;
-            case 'left': return Math.PI;
-            case 'up-left': return 5 * Math.PI / 4;
-            case 'up': return 3 * Math.PI / 2;
-            case 'up-right': return 7 * Math.PI / 4;
-            default: return 0;
-        }
+        // Use the utility function to convert facing string to radians
+        return directionStringToAngleRadians(this.owner.facing);
     }
     
     updateMovementDirection() {
         const vx = this.owner.velocity.x;
         const vy = this.owner.velocity.y;
         
-        // Calculate movement direction based on velocity
-        if (vy < 0 && vx === 0) this.owner.movementDirection = 'up';
-        else if (vy > 0 && vx === 0) this.owner.movementDirection = 'down';
-        else if (vx < 0 && vy === 0) this.owner.movementDirection = 'left';
-        else if (vx > 0 && vy === 0) this.owner.movementDirection = 'right';
-        else if (vx < 0 && vy < 0) this.owner.movementDirection = 'up-left';
-        else if (vx > 0 && vy < 0) this.owner.movementDirection = 'up-right';
-        else if (vx < 0 && vy > 0) this.owner.movementDirection = 'down-left';
-        else if (vx > 0 && vy > 0) this.owner.movementDirection = 'down-right';
+        // Use the utility function to convert velocity to direction string
+        this.owner.movementDirection = velocityToDirectionString(vx, vy);
     }
     
     updateFacingFromMouse(mousePosition) {
         // Calculate angle to mouse cursor relative to camera
         const dx = mousePosition.x - window.innerWidth / 2;
         const dy = mousePosition.y - window.innerHeight / 2;
-        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+        const angleInDegrees = Math.atan2(dy, dx) * 180 / Math.PI;
         
-        // Convert angle to 8-direction facing
-        if (angle >= -22.5 && angle < 22.5) this.owner.facing = 'right';
-        else if (angle >= 22.5 && angle < 67.5) this.owner.facing = 'down-right';
-        else if (angle >= 67.5 && angle < 112.5) this.owner.facing = 'down';
-        else if (angle >= 112.5 && angle < 157.5) this.owner.facing = 'down-left';
-        else if (angle >= 157.5 || angle < -157.5) this.owner.facing = 'left';
-        else if (angle >= -157.5 && angle < -112.5) this.owner.facing = 'up-left';
-        else if (angle >= -112.5 && angle < -67.5) this.owner.facing = 'up';
-        else if (angle >= -67.5 && angle < -22.5) this.owner.facing = 'up-right';
+        // Convert angle to 8-direction facing using the utility function
+        this.owner.facing = angleToDirectionString(angleInDegrees);
     }
 }
 
@@ -301,23 +284,9 @@ class AnimationComponent extends Component {
     }
     
     playAttackAnimation(attackType) {
-        // Get the character class prefix
-        let classPrefix;
-        switch (this.owner.characterClass) {
-            case 'guardian':
-                classPrefix = 'guardian';
-                break;
-            case 'rogue':
-                classPrefix = 'rogue';
-                break;
-            case 'hunter':
-                classPrefix = 'hunter'; // Change from 'knight' to 'hunter'
-                break;
-            case 'bladedancer':
-            default:
-                classPrefix = 'knight';
-                break;
-        }
+        // Get the character class prefix from PLAYER_CONFIG
+        const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
+        const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
         
         // Handle special case for guardian jump attack
         if (this.owner.characterClass === 'guardian' && attackType === 'secondary') {
@@ -366,23 +335,9 @@ class AnimationComponent extends Component {
     
       playDamageAnimation() {
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
-            // Get the character class prefix
-            let classPrefix;
-            switch (this.owner.characterClass) {
-                case 'guardian':
-                    classPrefix = 'guardian';
-                    break;
-                case 'rogue':
-                    classPrefix = 'rogue';
-                    break;
-                case 'hunter':
-                    classPrefix = 'hunter'; // Change from 'knight' to 'hunter'
-                    break;
-                case 'bladedancer':
-                default:
-                    classPrefix = 'knight';
-                    break;
-            }
+            // Get the character class prefix from PLAYER_CONFIG
+            const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
+            const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
             
             // Get take damage animation for current facing direction
             const damageAnimName = `${classPrefix}_take_damage_${this.getFacingAnimationKey()}`;
@@ -435,23 +390,9 @@ class AnimationComponent extends Component {
     
     playDeathAnimation() {
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
-            // Get the character class prefix
-            let classPrefix;
-            switch (this.owner.characterClass) {
-                case 'guardian':
-                    classPrefix = 'guardian';
-                    break;
-                case 'rogue':
-                    classPrefix = 'rogue';
-                    break;
-                case 'hunter':
-                    classPrefix = 'hunter'; // Temporary
-                    break;
-                case 'bladedancer':
-                default:
-                    classPrefix = 'knight';
-                    break;
-            }
+            // Get the character class prefix from PLAYER_CONFIG
+            const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
+            const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
             
             // Get death animation for current facing direction
             const deathAnimName = `${classPrefix}_die_${this.getFacingAnimationKey()}`;
@@ -479,18 +420,8 @@ class AnimationComponent extends Component {
     }
     
     getFacingAnimationKey() {
-        const directionMap = {
-            'right': 'e',
-            'down-right': 'se',
-            'down': 's',
-            'down-left': 'sw',
-            'left': 'w',
-            'up-left': 'nw',
-            'up': 'n',
-            'up-right': 'ne'
-        };
-        
-        return directionMap[this.owner.facing] || 's'; // Default to south
+        // Use the utility function to convert facing string to animation suffix
+        return directionStringToAnimationSuffix(this.owner.facing);
     }
 }
 

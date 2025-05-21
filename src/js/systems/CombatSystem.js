@@ -1,12 +1,16 @@
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG } from '../config/GameConfig.js';
 import { Projectile } from '../entities/Projectile.js';
+import { 
+    directionStringToAngleRadians, 
+    directionStringToAngleDegrees 
+} from '../utils/DirectionUtils.js';
 
 // Base Hitbox class - handles both visualization and hit detection
 class Hitbox {
   constructor(position, facing, params, visualConfig) {
     this.position = position;
-    this.facing = facing;
+    this.facing = facing; // Should be a direction string e.g. "right", "up-left"
     this.params = params;
     this.visualConfig = visualConfig;
     this.graphics = null;
@@ -16,34 +20,14 @@ class Hitbox {
   draw() { throw new Error("Method 'draw' must be implemented"); }
   testHit(target, targetRadius = 0) { throw new Error("Method 'testHit' must be implemented"); }
   
-  // Convert facing direction to angle in radians
+  // Convert facing direction string to angle in radians
   getFacingRadians() {
-    switch(this.facing) {
-      case 'right': return 0;
-      case 'down-right': return Math.PI / 4;
-      case 'down': return Math.PI / 2;
-      case 'down-left': return 3 * Math.PI / 4;
-      case 'left': return Math.PI;
-      case 'up-left': return 5 * Math.PI / 4;
-      case 'up': return 3 * Math.PI / 2;
-      case 'up-right': return 7 * Math.PI / 4;
-      default: return 0;
-    }
+    return directionStringToAngleRadians(this.facing);
   }
   
-  // Convert facing direction to angle in degrees
+  // Convert facing direction string to angle in degrees
   getFacingDegrees() {
-    switch(this.facing) {
-      case 'right': return 0;
-      case 'down-right': return 45;
-      case 'down': return 90;
-      case 'down-left': return 135;
-      case 'left': return 180;
-      case 'up-left': return 225;
-      case 'up': return 270;
-      case 'up-right': return 315;
-      default: return 0;
-    }
+    return directionStringToAngleDegrees(this.facing);
   }
 }
 
@@ -297,19 +281,11 @@ createProjectileVisualEffect(projectile, effectType, angle) {
   return sprite;
 }
 
-getFacingAngle(facing) {
-  switch(facing) {
-      case 'right': return 0;
-      case 'down-right': return Math.PI / 4;
-      case 'down': return Math.PI / 2;
-      case 'down-left': return 3 * Math.PI / 4;
-      case 'left': return Math.PI;
-      case 'up-left': return 5 * Math.PI / 4;
-      case 'up': return 3 * Math.PI / 2;
-      case 'up-right': return 7 * Math.PI / 4;
-      default: return 0;
-  }
-}
+// Removed getFacingAngle from CombatSystem, as its functionality is replaced by 
+// directionStringToAngleRadians from DirectionUtils.js
+// Ensure all calls to the old getFacingAngle are updated if they exist outside Hitbox class.
+// (A quick search shows it was primarily used in _executeProjectileAttack and _executeJumpAttack,
+// which now use directionStringToAngleRadians via this.getFacingAngle() or directly if needed)
 
 executeAttack(entity, attackType) {
   // Get attack config based on character class
@@ -349,120 +325,34 @@ executeAttack(entity, attackType) {
   
   // Play immediate effects (timing = 0)
   this.playEffectsForTiming(entity, attackConfig, 0);
-  
-  if ((entity.characterClass === 'guardian' && attackType === 'secondary') ||
-  (entity.characterClass === 'hunter' && attackType === 'secondary')) {
-return this.executeJumpAttack(entity, attackConfig);
+
+  // Dispatch to the appropriate helper method based on archetype
+  switch (attackConfig.archetype) {
+    case 'standard_melee':
+      return this._executeStandardMeleeAttack(entity, attackConfig, attackType);
+    case 'projectile':
+      return this._executeProjectileAttack(entity, attackConfig, attackType);
+    case 'jump_attack':
+      return this._executeJumpAttack(entity, attackConfig, attackType);
+    case 'dash_attack':
+      return this._executeDashAttack(entity, attackConfig, attackType);
+    default:
+      console.error(`Unknown attack archetype: ${attackConfig.archetype} for ${attackConfig.name}`);
+      // Fallback to a generic melee attack or return 0 cooldown to prevent errors
+      return this._executeStandardMeleeAttack(entity, attackConfig, attackType); 
+  }
 }
 
-  // Special handling for Rogue's dash attack
-  if (entity.characterClass === 'rogue' && attackType === 'secondary') {
-    // Calculate the dash destination based on facing direction
-    const dashDestination = this.calculateJumpDestination(
-      entity.position, 
-      entity.facing, 
-      attackConfig.dashDistance
-    );
-    
-    // Execute dash sequence
-    return this.executeDashAttack(entity, dashDestination, attackConfig);
-  }
-  
-  // Special handling for Hunter's backward jump attack
-  if (entity.characterClass === 'hunter' && attackType === 'secondary') {
-    return this.executeBackwardJumpAttack(entity, attackConfig);
-  }
-  
-  // Special handling for hunter's bow attack
-  if (entity.characterClass === 'hunter' && attackType === 'primary') {
-    // Schedule arrow creation after windup
-    setTimeout(() => {
-      if (entity.isAttacking && entity.currentAttackType === attackType) {
-        // Calculate arrow position 
-        const facingAngle = this.getFacingAngle(entity.facing);
-        const arrowStart = this.calculateEffectPosition(
-          entity.position, entity.facing, 30 // Offset from player
-        );
-        
-        // Create arrow projectile with visual effect
-        this.createProjectile(
-          arrowStart.x, 
-          arrowStart.y, 
-          facingAngle, 
-          entity, 
-          {
-            damage: attackConfig.damage,
-            speed: attackConfig.projectileSpeed,
-            range: attackConfig.projectileRange,
-            effectType: 'bow_shot_effect'
-          }
-        );
-        
-        // Play arrow launch effect
-        this.playEffectsForTiming(entity, attackConfig, attackConfig.windupTime);
-      }
-    }, attackConfig.windupTime);
-    
-    return attackConfig.cooldown;
-  }
-  
-  // Standard attack execution for other attacks
-  // Create the appropriate hitbox
-  const hitbox = this.createHitbox(
-    entity.position,
-    entity.facing,
-    attackConfig.hitboxType,
-    attackConfig.hitboxParams,
-    attackConfig.hitboxVisual
-  );
-  
-  if (hitbox) {
-    // Draw the hitbox and add to the game
-    const graphics = hitbox.draw();
-    window.game.entityContainer.addChild(graphics);
-    
-    // Add to active attacks
-    this.activeAttacks.push({
-      hitbox,
-      lifetime: attackConfig.hitboxVisual.duration,
-      attackType,
-      entity,
-      damage: attackConfig.damage
-    });
-  }
-  
-  // Schedule hit detection and effects for windup time
-  setTimeout(() => {
-    if (entity.isAttacking && entity.currentAttackType === attackType) {
-      // Apply hit effect and play scheduled effects
-      this.applyHitEffects(entity, hitbox, attackConfig.damage);
-      this.playEffectsForTiming(entity, attackConfig, attackConfig.windupTime);
-    }
-  }, attackConfig.windupTime);
-  
-  // Schedule any effects that happen after windup
-  attackConfig.effectSequence.forEach(effect => {
-    if (effect.timing > attackConfig.windupTime) {
-      setTimeout(() => {
-        if (entity.isAttacking && entity.currentAttackType === attackType) {
-          this.createEffect(effect.type, entity.position, entity.facing, entity);
-        }
-      }, effect.timing);
-    }
-  });
-  
-  return attackConfig.cooldown;
-}
-
-// New method for projectile attacks
-executeProjectileAttack(entity, attackConfig, attackType) {
+// Renamed from executeProjectileAttack to _executeProjectileAttack
+_executeProjectileAttack(entity, attackConfig, attackType) {
   // Schedule arrow creation after windup
   setTimeout(() => {
     if (entity.isAttacking && entity.currentAttackType === attackType) {
-      // Calculate arrow position 
-      const facingAngle = this.getFacingAngle(entity.facing);
+      const facingAngle = directionStringToAngleRadians(entity.facing); // Use util directly
+      // Use projectileOffset from config, default to 0 if not specified
+      const offset = attackConfig.projectileOffset || 0; 
       const arrowStart = this.calculateEffectPosition(
-        entity.position, entity.facing, 30 // Offset from player
+        entity.position, entity.facing, offset
       );
       
       // Create arrow projectile with visual effect
@@ -475,7 +365,8 @@ executeProjectileAttack(entity, attackConfig, attackType) {
           damage: attackConfig.damage,
           speed: attackConfig.projectileSpeed,
           range: attackConfig.projectileRange,
-          effectType: 'bow_shot_effect'
+          // Use projectileVisualEffectType from config, fallback if not defined
+          effectType: attackConfig.projectileVisualEffectType || 'bow_shot_effect' 
         }
       );
       
@@ -614,7 +505,12 @@ executeProjectileAttack(entity, attackConfig, attackType) {
 //   return attackConfig.cooldown;
 // }
 
+// The executeBackwardJumpAttack method was commented out and its functionality 
+// is covered by _executeJumpAttack with attackConfig.backwardJump.
+// It can be safely removed.
+
 // Add this helper method to create effects with custom angles
+// No changes needed to this specific method for this refactoring step
 createEffectWithAngle(effectType, position, facing, attacker = null, useRawPosition = false, offsetAngle = 0) {
   const spriteManager = window.game.systems.sprites;
   const config = this.effectConfigs[effectType];
@@ -673,8 +569,8 @@ createEffectWithAngle(effectType, position, facing, attacker = null, useRawPosit
   return sprite;
 }
 
-// New method for standard melee attacks
-executeStandardAttack(entity, attackConfig, attackType) {
+// Renamed from executeStandardAttack to _executeStandardMeleeAttack
+_executeStandardMeleeAttack(entity, attackConfig, attackType) {
   // Create the appropriate hitbox
   const hitbox = this.createHitbox(
     entity.position,
@@ -722,14 +618,15 @@ executeStandardAttack(entity, attackConfig, attackType) {
   return attackConfig.cooldown;
 }
 
-executeJumpAttack(entity, attackConfig) {
+// Renamed from executeJumpAttack to _executeJumpAttack
+_executeJumpAttack(entity, attackConfig, attackType) { // Added attackType parameter
   let destination;
   const startPosition = { ...entity.position };
   
   // Handle backward jump if specified
   if (attackConfig.backwardJump) {
     // Calculate backward direction (opposite of facing)
-    const facingAngle = this.getFacingAngle(entity.facing);
+    const facingAngle = directionStringToAngleRadians(entity.facing); // Use util directly
     const backwardAngle = facingAngle + Math.PI;
     
     // Calculate destination in backward direction
@@ -818,7 +715,7 @@ executeJumpAttack(entity, attackConfig) {
         this.activeAttacks.push({
           hitbox,
           lifetime: attackConfig.hitboxVisual.duration,
-          attackType: entity.currentAttackType,
+          attackType: attackType, // Use passed attackType
           entity,
           damage: attackConfig.damage
         });
@@ -866,8 +763,16 @@ executeJumpAttack(entity, attackConfig) {
   return attackConfig.cooldown;
 }
 
-executeDashAttack(entity, destination, attackConfig) {
+// Renamed from executeDashAttack to _executeDashAttack
+_executeDashAttack(entity, attackConfig, attackType) { // Added attackType, destination calculation moved inside
   const startPosition = { ...entity.position };
+  
+  // Calculate the dash destination based on facing direction
+  const destination = this.calculateJumpDestination( // Using calculateJumpDestination for now, can rename later
+    entity.position, 
+    entity.facing, 
+    attackConfig.dashDistance
+  );
 
   // 1. Wind-up phase
   setTimeout(() => {
@@ -895,7 +800,7 @@ executeDashAttack(entity, destination, attackConfig) {
       this.activeAttacks.push({
         hitbox,
         lifetime: attackConfig.hitboxVisual.duration,
-        attackType: 'secondary',
+        attackType: attackType, // Use passed attackType
         entity,
         damage: attackConfig.damage
       });
