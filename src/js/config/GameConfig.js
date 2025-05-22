@@ -353,12 +353,12 @@ export const PLAYER_CONFIG = {
       attackFromStartPosition: true, // For hitbox placement
       hitboxType: 'cone',
       hitboxParams: {
-        range: 150,
-        angle: 90
+        range: 80,
+        angle: 70
       },
       hitboxVisual: {
         color: 0x2ECC71,
-        fillAlpha: 0.1,
+        fillAlpha: 0.5,
         lineAlpha: 0.0,
         lineWidth: 3,
         duration: 0.25
@@ -366,8 +366,8 @@ export const PLAYER_CONFIG = {
       effectSequence: [
         { 
           type: 'hunter_cone_effect', 
-          timing: 200, // Absolute: 150ms windupTime + 50ms (old effectTiming)
-          distance: 0,   // From old effectDistance
+          timing: 250, // Absolute: 150ms windupTime + 50ms (old effectTiming)
+          distance: 50,   // From old effectDistance
           useStartPosition: true // Effect should originate from where the jump started
         }
       ],
@@ -449,10 +449,10 @@ export const PLAYER_CONFIG = {
       flipY: false
     },
     hunter_cone_effect: { // For Retreat Shot
-      scale: 2,
+      scale: 1.5,
       offsetDistance: 0, // To be used with useStartPosition:true and distance:0 in sequence
       rotationOffset: 1 * Math.PI / 4,
-      animationSpeed: 0.5,
+      animationSpeed: 0.4,
       followDuration: 0,
       flipX: false,
       flipY: false
