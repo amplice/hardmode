@@ -102,10 +102,15 @@ export class PhysicsSystem {
         for (let tileY = startTileY; tileY <= endTileY; tileY++) {
             for (let tileX = startTileX; tileX <= endTileX; tileX++) {
                 if (tileX >= 0 && tileX < world.width && tileY >= 0 && tileY < world.height) {
-                    if (!world.isSolid(tileX, tileY)) {
-                        continue; // Skip walkable tiles
+                    // Get the tile object from the world
+                    const tile = world.tiles[tileY][tileX];
+
+                    // If the tile doesn't exist or is walkable, skip collision processing
+                    if (!tile || tile.isWalkable()) {
+                        continue; // Skip if no tile or if tile is walkable
                     }
 
+                    // If we reach here, the tile is solid, so proceed with collision check
                     const tileAABB = {
                         minX: tileX * tileSize,
                         maxX: (tileX + 1) * tileSize,
