@@ -153,15 +153,12 @@ export const PLAYER_CONFIG = {
     }
   },
   
-  // Damage settings
   damage: {
     stunDuration: 0.25, // Stun duration in seconds when taking damage
     flashDuration: 0.1  // Duration of red tint flash when damaged
   },
   
-  // Attack configurations
   attacks: {
-    // Default attacks used by Bladedancer
     primary: {
       name: "Slash Attack",
       archetype: 'standard_melee',
@@ -179,10 +176,10 @@ export const PLAYER_CONFIG = {
         fillAlpha: 0.0,
         lineAlpha: 0.0,
         lineWidth: 3,
-        duration: 1
+        duration: 1 // Duration for the visual hitbox, not the effect itself
       },
       effectSequence: [
-        { type: 'slash_effect', timing: 250 }
+        { type: 'slash_effect', timing: 250 } // Absolute time from attack start
       ]
     },
     secondary: {
@@ -205,23 +202,22 @@ export const PLAYER_CONFIG = {
         duration: 0.3
       },
       effectSequence: [
-        { type: 'strike_windup', timing: 100 },
-        { type: 'strike_cast', timing: 500 }
+        { type: 'strike_windup', timing: 100 }, // Absolute time
+        { type: 'strike_cast', timing: 500 }    // Absolute time
       ]
     },
     
-    // Guardian-specific attacks
     guardian_primary: {
       name: "Sweeping Axe",
       archetype: 'standard_melee',
       damage: 1,
-      windupTime: 250, // Slower animation
+      windupTime: 250,
       recoveryTime: 300,
       cooldown: 200,
-      hitboxType: 'cone', // Wide arc hitbox
+      hitboxType: 'cone',
       hitboxParams: {
         range: 110,
-        angle: 110 // 180° arc as specified
+        angle: 110
       },
       hitboxVisual: {
         color: 0xFF0000,
@@ -231,45 +227,51 @@ export const PLAYER_CONFIG = {
         duration: 0.3
       },
       effectSequence: [
-        { type: 'guardian_slash_effect', timing: 250 } // Use the Guardian-specific effect
-    ]
+        { type: 'guardian_slash_effect', timing: 250 } // Absolute time
+      ]
     },
     guardian_secondary: {
       name: "Jump Attack",
       archetype: 'jump_attack',
       damage: 2,
-      windupTime: 150,      // Wind-up before jump
-      jumpDuration: 325,    // Duration of the jump
-      recoveryTime: 200,    // Recovery after landing
-      cooldown: 1250,       // Longer cooldown for this powerful move
-      dashDistance: 200,    // Distance to jump forward
-      invulnerable: true,   // Player is invulnerable during jump
-      hitboxType: 'circle', // AOE circle damage on landing
+      windupTime: 150,
+      jumpDuration: 325,
+      recoveryTime: 200,
+      cooldown: 1250,
+      dashDistance: 200,
+      invulnerable: true,
+      hitboxType: 'circle',
       hitboxParams: {
-        radius: 75         // Circle radius for the AOE
+        radius: 75
       },
       hitboxVisual: {
-        color: 0xFFD700,    // Gold color for area effect
+        color: 0xFFD700,
         fillAlpha: 0.0,
         lineAlpha: 0.0,
         lineWidth: 3,
         duration: 0.2
       },
       effectSequence: [
-        { type: 'guardian_jump_effect', timing: 400 }
-      ]
+        { 
+          type: 'guardian_jump_effect', 
+          timing: 400,      // Absolute time from attack start
+          distance: 0,      // Use effect's default offsetDistance (which is 0 for guardian_jump_effect)
+          useStartPosition: false // Effect appears at player's current position during jump
+        }
+      ],
+      actionPointDelay: 325 // Delay *after windup* for hitbox/damage application
     },
     rogue_primary: {
       name: "Thrust Attack",
       archetype: 'standard_melee',
       damage: 1,
-      windupTime: 133, // Very fast
+      windupTime: 133,
       recoveryTime: 200,
       cooldown: 100,
       hitboxType: 'rectangle',
       hitboxParams: {
-        width: 30,    // Narrow
-        length: 95   // Long range
+        width: 30,
+        length: 95
       },
       hitboxVisual: {
         color: 0x00ff00,
@@ -279,33 +281,34 @@ export const PLAYER_CONFIG = {
         duration: 0.3
       },
       effectSequence: [
-        { type: 'rogue_thrust_effect', timing: 133 }
+        { type: 'rogue_thrust_effect', timing: 133 } // Absolute time
       ]
     },
     rogue_secondary: {
       name: "Dash Attack",
       archetype: 'dash_attack',
       damage: 1,
-      windupTime: 50,       // Quick windup
-      dashDuration: 200,    // Speed of dash
-      recoveryTime: 150,    // Quick recovery
-      cooldown: 2000,        // Moderate cooldown
-      dashDistance: 200,    // Distance dashed
-      invulnerable: false,  // Not invulnerable during dash
+      windupTime: 50,
+      dashDuration: 200,
+      recoveryTime: 150,
+      cooldown: 2000,
+      dashDistance: 200,
+      invulnerable: false,
       hitboxType: 'rectangle',
       hitboxParams: {
-        width: 50,         // Width of dash hitbox
-        length: 200        // Distance of dash
+        width: 50,
+        length: 200
       },
       hitboxVisual: {
-        color: 0x00ff00,   // Bright purple for dash path
+        color: 0x00ff00,
         fillAlpha: 0.0,
         lineAlpha: 0.0,
         lineWidth: 3,
         duration: 0.2
       },
-      effectSequence: [
-        { type: 'rogue_dash_effect', timing: 0 }
+      effectSequence: [ // This effect is immediate at the start of the dash movement (after windup)
+        { type: 'rogue_dash_effect', timing: 50 } // Absolute time (at end of windup / start of dash)
+        // Trail effects are handled programmatically in _executeDashAttack
       ]
     },
     hunter_primary: {
@@ -315,66 +318,67 @@ export const PLAYER_CONFIG = {
       windupTime: 200,
       recoveryTime: 100,
       cooldown: 300,
-      isProjectile: true, // Retain for clarity or specific projectile logic checks
+      isProjectile: true,
       projectileSpeed: 700,
       projectileRange: 400,
-      projectileOffset: 30, // Added projectile offset
-      projectileVisualEffectType: 'bow_shot_effect', // Added for visual effect
-      hitboxType: 'projectile', // May not be strictly needed if archetype handles it
-      hitboxParams: {
+      projectileOffset: 30,
+      projectileVisualEffectType: 'bow_shot_effect', // Used by Projectile class
+      hitboxType: 'projectile',
+      hitboxParams: { // For projectile itself, used by Projectile class
         width: 10,
         length: 30
       },
-      hitboxVisual: {
+      hitboxVisual: { // Not directly used by projectile, but can be for debug
         color: 0xFFFFFF,
         fillAlpha: 0.0,
         lineAlpha: 0.0,
         lineWidth: 3,
         duration: 0.3
       },
-      effectSequence: [
-        { type: 'bow_shot_effect', timing: 200 }
+      effectSequence: [ // Launch visual effect
+        { type: 'bow_shot_effect', timing: 200 } // Absolute time (at end of windup, when projectile fires)
       ]
     },
-// Updated Hunter's secondary attack configuration
-hunter_secondary: {
-  name: "Retreat Shot",
-  archetype: 'jump_attack',
-  damage: 2,
-  windupTime: 150,
-  jumpDuration: 300,
-  recoveryTime: 200,
-  cooldown: 800,
-  dashDistance: 150,
-  jumpHeight: 50,
-  backwardJump: true,
-  attackFromStartPosition: true,
-  hitboxType: 'cone',
-  hitboxParams: {
-    range: 150,
-    angle: 90  // Standard cone angle
+    hunter_secondary: {
+      name: "Retreat Shot",
+      archetype: 'jump_attack',
+      damage: 2,
+      windupTime: 150,
+      jumpDuration: 300,
+      recoveryTime: 200,
+      cooldown: 800,
+      dashDistance: 150,
+      jumpHeight: 50,
+      backwardJump: true,
+      attackFromStartPosition: true, // For hitbox placement
+      hitboxType: 'cone',
+      hitboxParams: {
+        range: 150,
+        angle: 90
+      },
+      hitboxVisual: {
+        color: 0x2ECC71,
+        fillAlpha: 0.1,
+        lineAlpha: 0.0,
+        lineWidth: 3,
+        duration: 0.25
+      },
+      effectSequence: [
+        { 
+          type: 'hunter_cone_effect', 
+          timing: 200, // Absolute: 150ms windupTime + 50ms (old effectTiming)
+          distance: 0,   // From old effectDistance
+          useStartPosition: true // Effect should originate from where the jump started
+        }
+      ],
+      actionPointDelay: 50 // Delay *after windup* for hitbox/damage application
+    }
   },
-  hitboxVisual: {
-    color: 0x2ECC71,
-    fillAlpha: 0.1,
-    lineAlpha: 0.0,
-    lineWidth: 3,
-    duration: 0.25
-  },
-  effectType: 'hunter_cone_effect',  // Single effect type
-  effectDistance: 0,               // How far to place the effect
-  effectTiming: 50,                 // When to show effect during jump
-  effectSequence: []                 // Empty array to avoid errors
-}
-  },
-
-
   
-  // Effect configurations
   effects: {
     slash_effect: {
       scale: 1.5,
-      offsetDistance: 60,
+      offsetDistance: 60, // Default offset if not overridden in effectSequence
       rotationOffset: 0 * Math.PI / 4,
       animationSpeed: 0.5,
       followDuration: 0,
@@ -390,7 +394,7 @@ hunter_secondary: {
       flipX: false,
       flipY: false 
     },
-    strike_cast: {
+    strike_cast: { // This effect appears at an offset
       scale: 1.3,
       offsetDistance: 70,
       rotationOffset: 2 * Math.PI / 4,
@@ -399,7 +403,6 @@ hunter_secondary: {
       flipX: false,
       flipY: false 
     },
-    // Add Guardian-specific effects properly inside the effects object
     guardian_slash_effect: {
       scale: 2,
       offsetDistance: 70,
@@ -409,9 +412,9 @@ hunter_secondary: {
       flipX: true,
       flipY: true
     },
-    guardian_jump_effect: {
+    guardian_jump_effect: { // Appears at player's current position during jump
       scale: 3.5,
-      offsetDistance: 0,
+      offsetDistance: 0, 
       rotationOffset: 0 * Math.PI / 4,
       animationSpeed: 0.5,
       followDuration: 0,
@@ -420,43 +423,41 @@ hunter_secondary: {
     },
     rogue_thrust_effect: {
       scale: 1.8,
-      offsetDistance: 50,  // Distance along the thrust line
+      offsetDistance: 50,
       rotationOffset: -1 * Math.PI / 4,
       animationSpeed: 0.4,
       followDuration: 0,
       flipX: false,
       flipY: false
     },
-    rogue_dash_effect: {
+    rogue_dash_effect: { // Appears at player's current position during dash
       scale: 1.0,
-      offsetDistance: 0,   // Appears at starting position
-      rotationOffset: 1 * Math.PI / 4, //THIS IS 45 DEGREES, 2PI IS 360
+      offsetDistance: 0,
+      rotationOffset: 1 * Math.PI / 4,
       animationSpeed: 0.8,
       followDuration: 0,
       flipX: false,
       flipY: false
     },
-    bow_shot_effect: {
+    bow_shot_effect: { // Projectile visual / launch effect
       scale: 1.0,
-      offsetDistance: 30,
-      rotationOffset: 4 * Math.PI / 4,
+      offsetDistance: 30, // Offset from player at launch
+      rotationOffset: 4 * Math.PI / 4, // Adjust as needed for sprite orientation
       animationSpeed: 0.3,
       followDuration: 0,
       flipX: false,
       flipY: false
     },
-    hunter_cone_effect: {
+    hunter_cone_effect: { // For Retreat Shot
       scale: 2,
-      offsetDistance: 0,  // Distance in front
-      rotationOffset: 1 * Math.PI / 4, //THIS IS 45 DEGREES, 2PI IS 360
-      animationSpeed: 0.5, // This is a behavioral property
+      offsetDistance: 0, // To be used with useStartPosition:true and distance:0 in sequence
+      rotationOffset: 1 * Math.PI / 4,
+      animationSpeed: 0.5,
       followDuration: 0,
       flipX: false,
       flipY: false
     },
-    // Centralized animation speeds for sprites of effects
-    // These keys should match the 'keyPrefix' in SPRITE_SHEET_CONFIG for effects.
-    effectAnimations: {
+    effectAnimations: { // Centralized animation speeds for sprites of effects
         slash_effect: { speed: 0.5 },
         strike_windup: { speed: 0.8 },
         strike_cast: { speed: 0.2 },
