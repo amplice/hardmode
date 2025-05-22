@@ -254,8 +254,8 @@ export const PLAYER_CONFIG = {
       effectSequence: [
         { 
           type: 'guardian_jump_effect', 
-          timing: 400,      // Absolute time from attack start
-          distance: 0,      // Use effect's default offsetDistance (which is 0 for guardian_jump_effect)
+          timing: 475,      // Absolute time from attack start
+          distance: 20,      // Use effect's default offsetDistance (which is 0 for guardian_jump_effect)
           useStartPosition: false // Effect appears at player's current position during jump
         }
       ],
@@ -335,9 +335,7 @@ export const PLAYER_CONFIG = {
         lineWidth: 3,
         duration: 0.3
       },
-      effectSequence: [ // Launch visual effect
-        { type: 'bow_shot_effect', timing: 200 } // Absolute time (at end of windup, when projectile fires)
-      ]
+      effectSequence: []
     },
     hunter_secondary: {
       name: "Retreat Shot",
