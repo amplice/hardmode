@@ -9,6 +9,7 @@ import { MonsterSystem }  from '../systems/MonsterSystem.js';
 import { SpriteManager }  from '../systems/animation/SpriteManager.js';
 import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
+import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 
 // 1) turn off antialias & force pixel‐perfect
@@ -107,9 +108,11 @@ export class Game {
     });
     this.entityContainer.addChild(this.entities.player.sprite);
 
-    // Add health UI
+    // Add health and stats UI
     this.healthUI = new HealthUI(this.entities.player);
+    this.statsUI = new StatsUI(this.entities.player);
     this.uiContainer.addChild(this.healthUI.container);
+    this.uiContainer.addChild(this.statsUI.container);
 
     this.systems.monsters = new MonsterSystem(this.systems.world);
 
@@ -143,6 +146,7 @@ export class Game {
     this.systems.combat.update(deltaTimeSeconds);
     this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();
+    if (this.statsUI) this.statsUI.update();
   }
 
   updateCamera() {

@@ -143,7 +143,7 @@ export class CombatSystem {
         for (const monster of monsters) {
             if (!monster.alive) continue;
             if (projectile.checkCollision(monster)) {
-                monster.takeDamage(projectile.damage);
+                monster.takeDamage(projectile.damage, projectile.owner);
                 projectile.deactivate();
                 break;
             }
@@ -507,7 +507,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     for (const monster of monsters) {
       if (!monster.alive) continue;
       if (hitbox.testHit(monster, monster.collisionRadius || 0)) {
-        monster.takeDamage(damage);
+        monster.takeDamage(damage, entity);
       }
     }
   }

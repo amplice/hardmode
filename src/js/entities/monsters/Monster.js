@@ -205,7 +205,7 @@ export class Monster {
         }
     }
     
-    takeDamage(amount) {
+    takeDamage(amount, attacker = null) {
         // Don't process damage if already dead
         if (!this.alive) return;
         
@@ -213,7 +213,7 @@ export class Monster {
         
         // Check for death
         if (this.hitPoints <= 0) {
-            this.die();
+            this.die(attacker);
             return;
         }
         
@@ -227,11 +227,14 @@ export class Monster {
         this.velocity = { x: 0, y: 0 }; // Stop movement
     }
     
-    die() {
+    die(attacker = null) {
         if (!this.alive) return;
         
         console.log(`Monster ${this.type} has been defeated!`);
         this.alive = false;
+        if (attacker && attacker.stats && attacker.stats.recordKill) {
+            attacker.stats.recordKill(this.type);
+        }
         this.changeState('dying');
         this.velocity = { x: 0, y: 0 };
         

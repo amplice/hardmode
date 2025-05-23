@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { PLAYER_CONFIG } from '../config/GameConfig.js';
+import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js';
 import { 
     angleToDirectionString, 
     directionStringToAngleRadians,
@@ -596,6 +596,54 @@ class HealthComponent extends Component {
     }
 }
 
+// Tracks player statistics like kills, experience and level
+class StatsComponent extends Component {
+    init() {
+        this.owner.killCount = 0;
+        // Track total experience gained across all levels
+        this.owner.experience = 0;
+        this.owner.level = 1;
+    }
+
+    // Total XP required to reach the specified level
+    getTotalXpForLevel(level) {
+        const growth = PLAYER_CONFIG.levels?.xpGrowth || 20;
+        return growth * (level - 1) * level / 2;
+    }
+
+    // XP remaining until the next level
+    getXpForNextLevel() {
+        const maxLevel = PLAYER_CONFIG.levels?.maxLevel || 10;
+        if (this.owner.level >= maxLevel) return 0;
+        return this.getTotalXpForLevel(this.owner.level + 1) - this.owner.experience;
+    }
+
+    addExperience(amount) {
+        this.owner.experience += amount;
+        this.checkLevelUp();
+    }
+
+    recordKill(monsterType) {
+        this.owner.killCount++;
+        const xpGain = MONSTER_CONFIG.stats[monsterType]?.xp || 0;
+        this.addExperience(xpGain);
+    }
+
+    checkLevelUp() {
+        const maxLevel = PLAYER_CONFIG.levels?.maxLevel || 10;
+        while (this.owner.level < maxLevel &&
+               this.owner.experience >= this.getTotalXpForLevel(this.owner.level + 1)) {
+            this.owner.level++;
+            // Restore health to full on level up
+            this.owner.hitPoints = this.owner.getClassHitPoints();
+            // Play a quick level-up effect
+            if (this.owner.playLevelUpEffect) {
+                this.owner.playLevelUpEffect();
+            }
+        }
+    }
+}
+
 export class Player {
     constructor(options) {
         // Core properties
@@ -621,6 +669,7 @@ export class Player {
         this.addComponent('animation', new AnimationComponent(this));
         this.addComponent('combat', new CombatComponent(this));
         this.addComponent('health', new HealthComponent(this));
+        this.addComponent('stats', new StatsComponent(this));
         
         // Initialize all components
         Object.values(this.components).forEach(component => component.init());
@@ -669,5 +718,17 @@ export class Player {
     
     getClassMoveSpeed() {
         return PLAYER_CONFIG.classes[this.characterClass]?.moveSpeed || 4;
+    }
+
+    // Visual feedback when leveling up - brief golden tint
+    playLevelUpEffect() {
+        if (this.animatedSprite) {
+            this.animatedSprite.tint = 0xFFFF55;
+            setTimeout(() => {
+                if (this.animatedSprite) {
+                    this.animatedSprite.tint = 0xFFFFFF;
+                }
+            }, 300);
+        }
     }
 }
