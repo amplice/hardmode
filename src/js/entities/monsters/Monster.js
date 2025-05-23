@@ -1,10 +1,11 @@
 // src/js/entities/monsters/Monster.js
 import * as PIXI from 'pixi.js';
 import { MONSTER_CONFIG } from '../../config/GameConfig.js';
-import { 
-    velocityToDirectionString, 
-    directionStringToAngleRadians 
+import {
+    velocityToDirectionString,
+    directionStringToAngleRadians
 } from '../../utils/DirectionUtils.js';
+import { bfsPath, hasLineOfSight } from '../../utils/Pathfinding.js';
 
 export class Monster {
     constructor(options) {
@@ -28,6 +29,8 @@ export class Monster {
         this.previousState = 'idle'; // Used for state transitions
         this.target = null;
         this.attackCooldown = 0;
+        this.path = [];
+        this.pathCooldown = 0;
         
         // Animation state
         this.currentAnimation = null;
@@ -261,7 +264,7 @@ export class Monster {
         }
         
         // AI state machine
-        this.updateAI(deltaTime, player);
+        this.updateAI(deltaTime, player, world);
         
         // Apply movement
         this.position.x += this.velocity.x;
@@ -274,7 +277,7 @@ export class Monster {
         this.updateAnimation();
     }
     
-    updateAI(deltaTime, player) {
+    updateAI(deltaTime, player, world) {
         // Check if we need to acquire a target
         if (!this.target) {
             const dx = player.position.x - this.position.x;
@@ -305,38 +308,72 @@ export class Monster {
             const dx = this.target.position.x - this.position.x;
             const dy = this.target.position.y - this.position.y;
             const distToTarget = Math.sqrt(dx * dx + dy * dy);
-            
+
             // Update facing toward target
             this.updateFacingToTarget();
-            
+
+            let moved = false;
+
             if (distToTarget > this.attackRange) {
-                // Move towards target
-                const moveSpeed = this.moveSpeed / distToTarget;
-                this.velocity.x = dx * moveSpeed;
-                this.velocity.y = dy * moveSpeed;
-                
-                // Only change to walking if we're currently idle
-                if (this.state === 'idle') {
-                    this.changeState('walking');
+                // Check if we have direct line of sight to target
+                if (hasLineOfSight(world, this.position, this.target.position)) {
+                    const moveSpeed = this.moveSpeed / distToTarget;
+                    this.velocity.x = dx * moveSpeed;
+                    this.velocity.y = dy * moveSpeed;
+                    moved = true;
+                } else {
+                    // Recalculate path if needed
+                    if (this.pathCooldown > 0) {
+                        this.pathCooldown -= deltaTime;
+                    }
+                    if (this.path.length === 0 || this.pathCooldown <= 0) {
+                        const newPath = bfsPath(world, this.position, this.target.position);
+                        this.path = newPath || [];
+                        this.pathCooldown = 1;
+                    }
+                    if (this.path.length > 0) {
+                        const next = this.path[0];
+                        const pdx = next.x - this.position.x;
+                        const pdy = next.y - this.position.y;
+                        const dist = Math.sqrt(pdx * pdx + pdy * pdy);
+                        if (dist < this.moveSpeed) {
+                            this.path.shift();
+                        }
+                        if (dist > 0) {
+                            const moveSpeed = this.moveSpeed / dist;
+                            this.velocity.x = pdx * moveSpeed;
+                            this.velocity.y = pdy * moveSpeed;
+                            moved = true;
+                        }
+                    }
+                }
+
+                if (moved) {
+                    if (this.state !== 'walking') this.changeState('walking');
+                } else {
+                    this.velocity.x = 0;
+                    this.velocity.y = 0;
                 }
             } else {
-                // In attack range, stop and attack
                 this.velocity.x = 0;
                 this.velocity.y = 0;
-                
-                // Attack if cooldown is ready and not already attacking
+
                 if (this.attackCooldown <= 0 && this.state !== 'attacking') {
                     this.startAttack();
                 }
             }
-            
-            // Lose target if they get too far away
+
             if (distToTarget > this.aggroRange * 1.5) {
                 this.target = null;
+                this.path = [];
                 this.velocity.x = 0;
                 this.velocity.y = 0;
                 this.changeState('idle');
             }
+        }
+
+        if (this.state === 'idle' && (this.velocity.x !== 0 || this.velocity.y !== 0)) {
+            this.changeState('walking');
         }
     }
     
