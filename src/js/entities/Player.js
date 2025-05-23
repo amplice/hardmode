@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { PLAYER_CONFIG } from '../config/GameConfig.js';
+import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js';
 import { 
     angleToDirectionString, 
     directionStringToAngleRadians,
@@ -596,6 +596,60 @@ class HealthComponent extends Component {
     }
 }
 
+// Tracks player statistics like kills, experience and level
+class StatsComponent extends Component {
+    init() {
+        this.owner.killCount = 0;
+        this.owner.experience = 0; // total accumulated XP
+        this.owner.level = 1;
+    }
+
+    // XP needed to go from (level-1) to level
+    getXpForNextLevel() {
+        const growth = PLAYER_CONFIG.levels?.xpGrowth || 20;
+        return this.owner.level * growth;
+    }
+
+    // Total XP required to reach a specific level
+    getTotalXpForLevel(level) {
+        const growth = PLAYER_CONFIG.levels?.xpGrowth || 20;
+        return (level - 1) * level / 2 * growth;
+    }
+
+    getXpUntilNextLevel() {
+        const maxLevel = PLAYER_CONFIG.levels?.maxLevel || 10;
+        if (this.owner.level >= maxLevel) return 0;
+        const nextLevelXp = this.getTotalXpForLevel(this.owner.level + 1);
+        return Math.max(0, nextLevelXp - this.owner.experience);
+    }
+
+    addExperience(amount) {
+        this.owner.experience += amount;
+        this.checkLevelUp();
+    }
+
+    recordKill(monsterType) {
+        this.owner.killCount++;
+        const xpGain = MONSTER_CONFIG.stats[monsterType]?.xp || 0;
+        this.addExperience(xpGain);
+    }
+
+    checkLevelUp() {
+        const maxLevel = PLAYER_CONFIG.levels?.maxLevel || 10;
+        let leveledUp = false;
+        while (this.owner.level < maxLevel && this.owner.experience >= this.getTotalXpForLevel(this.owner.level + 1)) {
+            this.owner.level++;
+            leveledUp = true;
+            // Restore health to full on level up
+            this.owner.hitPoints = this.owner.getClassHitPoints();
+        }
+
+        if (leveledUp && this.owner.playLevelUpEffect) {
+            this.owner.playLevelUpEffect();
+        }
+    }
+}
+
 export class Player {
     constructor(options) {
         // Core properties
@@ -621,6 +675,7 @@ export class Player {
         this.addComponent('animation', new AnimationComponent(this));
         this.addComponent('combat', new CombatComponent(this));
         this.addComponent('health', new HealthComponent(this));
+        this.addComponent('stats', new StatsComponent(this));
         
         // Initialize all components
         Object.values(this.components).forEach(component => component.init());
@@ -669,5 +724,17 @@ export class Player {
     
     getClassMoveSpeed() {
         return PLAYER_CONFIG.classes[this.characterClass]?.moveSpeed || 4;
+    }
+
+    playLevelUpEffect() {
+        if (this.animatedSprite) {
+            const previousTint = this.animatedSprite.tint;
+            this.animatedSprite.tint = 0xFFD700; // gold
+            setTimeout(() => {
+                if (this.animatedSprite) {
+                    this.animatedSprite.tint = previousTint;
+                }
+            }, 300);
+        }
     }
 }
