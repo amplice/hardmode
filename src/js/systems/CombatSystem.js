@@ -287,14 +287,55 @@ export class CombatSystem {
     return attackConfig.cooldown;
   }
 
-  _executeProjectileAttack(entity, attackConfig, attackType) {
+_executeProjectileAttack(entity, attackConfig, attackType) {
     setTimeout(() => {
       if (entity.isAttacking && entity.currentAttackType === attackType) {
-        const facingAngle = directionStringToAngleRadians(entity.facing);
-        const offset = attackConfig.projectileOffset || 0; 
-        const arrowStart = this.calculateEffectPosition(entity.position, entity.facing, offset);
+        let facingAngleRadians; // This will be the angle for the projectile's velocity vector
+        let projectileStartX = entity.position.x;
+        let projectileStartY = entity.position.y;
+        const offset = attackConfig.projectileOffset || 0;
+
+        // Access input system, assuming it's available via window.game.systems.input
+        // This is a common pattern seen in other parts of the provided code.
+        const inputSystem = window.game?.systems?.input;
+
+        if (entity.characterClass === 'hunter' && attackType === 'primary' && inputSystem) {
+            // Hunter's primary attack: Use precise mouse aiming
+            const mousePosition = inputSystem.mouse.position; // Screen coordinates from InputSystem
+
+            // Assuming player is at the center of the screen for aiming purposes.
+            // This aligns with how player facing is determined in MovementComponent.
+            const playerScreenX = window.innerWidth / 2;
+            const playerScreenY = window.innerHeight / 2;
+
+            const dx = mousePosition.x - playerScreenX;
+            const dy = mousePosition.y - playerScreenY;
+            facingAngleRadians = Math.atan2(dy, dx); // Precise angle in radians
+
+            // Calculate projectile start position offset along this precise angle
+            projectileStartX = entity.position.x + Math.cos(facingAngleRadians) * offset;
+            projectileStartY = entity.position.y + Math.sin(facingAngleRadians) * offset;
+
+        } else {
+            // Fallback for other classes, attack types, or if input system is unavailable:
+            // Use entity's 8-directional facing for both offset and projectile angle.
+            facingAngleRadians = directionStringToAngleRadians(entity.facing); // Angle from 8 directions
+
+            // Calculate start position using the 8-directional facing for the offset.
+            // We can use the calculateEffectPosition method or calculate manually:
+            // const tempStartPos = this.calculateEffectPosition(entity.position, entity.facing, offset);
+            // projectileStartX = tempStartPos.x;
+            // projectileStartY = tempStartPos.y;
+            // Or, for consistency with the 'if' block:
+            projectileStartX = entity.position.x + Math.cos(facingAngleRadians) * offset;
+            projectileStartY = entity.position.y + Math.sin(facingAngleRadians) * offset;
+        }
+
         this.createProjectile(
-          arrowStart.x, arrowStart.y, facingAngle, entity, 
+          projectileStartX,
+          projectileStartY,
+          facingAngleRadians, // This angle dictates the projectile's flight direction
+          entity,
           {
             damage: attackConfig.damage,
             speed: attackConfig.projectileSpeed,

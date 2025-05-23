@@ -4,28 +4,28 @@ export const MONSTER_CONFIG = {
   // Base stats for each monster type
   stats: {
     ogre: {
-      hitPoints: 4, moveSpeed: 2, attackRange: 90, collisionRadius: 35, aggroRange: 250,
+      hitPoints: 4, moveSpeed: 2, attackRange: 90, collisionRadius: 35, aggroRange: 800,
       animations: { // Animation properties
         walk: { speed: 0.3 }, idle: { speed: 0.2 }, attack1: { speed: 0.25, hitFrame: 9 },
         take_damage: { speed: 0.7 }, die: { speed: 0.2 }
       }
     },
     skeleton: {
-      hitPoints: 2, moveSpeed: 2.5, attackRange: 70, collisionRadius: 15, aggroRange: 250,
+      hitPoints: 2, moveSpeed: 2.5, attackRange: 70, collisionRadius: 15, aggroRange: 1200,
       animations: { // Animation properties
         walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3, hitFrame: 8 },
         take_damage: { speed: 0.7 }, die: { speed: 0.5 }
       }
     },
     elemental: {
-      hitPoints: 3, moveSpeed: 2, attackRange: 100, collisionRadius: 15, aggroRange: 250,
+      hitPoints: 3, moveSpeed: 2, attackRange: 100, collisionRadius: 15, aggroRange: 800,
       animations: { // Animation properties
         walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3, hitFrame: 8 },
         take_damage: { speed: 0.7 }, die: { speed: 0.2 }
       }
     },
     ghoul: {
-      hitPoints: 2, moveSpeed: 3.5, attackRange: 70, collisionRadius: 10, aggroRange: 1000,
+      hitPoints: 2, moveSpeed: 3.5, attackRange: 70, collisionRadius: 10, aggroRange: 3000,
       animations: { // Animation properties
         walk: { speed: 0.45 }, idle: { speed: 0.25 }, attack1: { speed: 0.4, hitFrame: 7 },
         take_damage: { speed: 0.7 }, die: { speed: 0.25 }
@@ -41,6 +41,7 @@ export const MONSTER_CONFIG = {
       recovery: 0.8,
       cooldown: 1.5,
       pattern: 'cone',
+      coneAngleDegrees: 110, // <<< ADD THIS (e.g., Ogre has a wide 110-degree cone)
       color: 0x885500,
       damage: 1
     },
@@ -50,6 +51,7 @@ export const MONSTER_CONFIG = {
       recovery: 0.6,
       cooldown: .7,
       pattern: 'cone',
+      coneAngleDegrees: 70, // <<< ADD THIS (e.g., Skeleton has a narrower 70-degree cone)
       color: 0xEEEEEE,
       damage: 1
     },
@@ -75,9 +77,9 @@ export const MONSTER_CONFIG = {
 
   // Spawn system configuration
   spawn: {
-    timer: 2, // New monster every 5 seconds
-    maxMonsters: 150,
-    minDistanceFromPlayer: 400,
+    timer: 1,
+    maxMonsters: 300,
+    minDistanceFromPlayer: 700,
     maxDistanceFromPlayer: 10000,
     distribution: {
       skeleton: 0.25,
@@ -127,14 +129,14 @@ export const PLAYER_CONFIG = {
     },
     hunter: {
       hitPoints: 1,
-      moveSpeed: 4,
+      moveSpeed: 5,
       baseColor: 0x2ecc71, // Green
       placeholderColor: 0x2ecc71,
       spritePrefix: 'hunter',
       animations: { // Animation properties
         idle: { speed: 0.2 }, run: { speed: 0.5 }, run_backward: { speed: 0.5 },
         strafe_left: { speed: 0.5 }, strafe_right: { speed: 0.5 },
-        attack1: { speed: 0.4, hitFrame: 8 }, attack2: { speed: 0.5, hitFrame: 12 }, // attack2 is BackRoll
+        attack1: { speed: 0.5, hitFrame: 8 }, attack2: { speed: 0.5, hitFrame: 12 }, // attack2 is BackRoll
         die: { speed: 0.2 }, take_damage: { speed: 0.5 }
       }
     },
@@ -315,12 +317,12 @@ export const PLAYER_CONFIG = {
       name: "Bow Shot",
       archetype: 'projectile',
       damage: 1,
-      windupTime: 200,
+      windupTime: 100,
       recoveryTime: 100,
-      cooldown: 300,
+      cooldown: 100,
       isProjectile: true,
       projectileSpeed: 700,
-      projectileRange: 400,
+      projectileRange: 600,
       projectileOffset: 30,
       projectileVisualEffectType: 'bow_shot_effect', // Used by Projectile class
       hitboxType: 'projectile',
@@ -345,7 +347,7 @@ export const PLAYER_CONFIG = {
       jumpDuration: 300,
       recoveryTime: 200,
       cooldown: 800,
-      dashDistance: 150,
+      dashDistance: 200,
       jumpHeight: 50,
       backwardJump: true,
       attackFromStartPosition: true, // For hitbox placement
@@ -440,7 +442,7 @@ export const PLAYER_CONFIG = {
     bow_shot_effect: { // Projectile visual / launch effect
       scale: 1.0,
       offsetDistance: 30, // Offset from player at launch
-      rotationOffset: 4 * Math.PI / 4, // Adjust as needed for sprite orientation
+      rotationOffset: 0 * Math.PI / 4, // Adjust as needed for sprite orientation
       animationSpeed: 0.3,
       followDuration: 0,
       flipX: false,

@@ -123,12 +123,25 @@ export class Game {
     // Only update game if it has started
     if (!this.gameStarted) return;
     
+    const deltaTimeSeconds = delta / 60;
+
+    // 1. Update player input and intended movement
     const inputState = this.systems.input.update();
-    this.entities.player.update(delta / 60, inputState);
-    this.systems.physics.update(delta / 60, [this.entities.player], this.systems.world);
-    this.systems.monsters.update(delta / 60, this.entities.player);
-    this.systems.combat.update(delta / 60);
-    this.updateCamera();
+    this.entities.player.update(deltaTimeSeconds, inputState);
+    
+    // 2. Update monster AI and intended movement
+    // MonsterSystem.update calls Monster.update, which changes monster.position
+    this.systems.monsters.update(deltaTimeSeconds, this.entities.player);
+
+    // 3. Collect all entities that need physics processing
+    const allEntitiesForPhysics = [this.entities.player, ...this.systems.monsters.monsters];
+    
+    // 4. Apply physics (world boundaries and tile collisions) to all collected entities
+    this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);
+    
+    // 5. Update combat, camera, and UI
+    this.systems.combat.update(deltaTimeSeconds);
+    this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();
   }
 

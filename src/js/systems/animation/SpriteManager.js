@@ -133,7 +133,7 @@ const SPRITE_SHEET_CONFIG = [
         columns: 14, rows: 9, rowIndex: 3, frameSize: { width: 64, height: 64 }
     },
     {
-        keyPrefix: 'bow_shot_effect', type: 'effect', path: 'assets/sprites/effects/457.png',
+        keyPrefix: 'bow_shot_effect', type: 'effect', path: 'assets/sprites/effects/579.png',
         columns: 9, rows: 9, rowIndex: 1, frameSize: { width: 64, height: 64 }
     },
     {
