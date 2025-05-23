@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { PLAYER_CONFIG } from '../config/GameConfig.js';
+import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js';
 import { 
     angleToDirectionString, 
     directionStringToAngleRadians,
@@ -596,6 +596,41 @@ class HealthComponent extends Component {
     }
 }
 
+// Tracks player statistics like kills, experience and level
+class StatsComponent extends Component {
+    init() {
+        this.owner.killCount = 0;
+        this.owner.experience = 0;
+        this.owner.level = 1;
+    }
+
+    getXpForNextLevel() {
+        const growth = PLAYER_CONFIG.levels?.xpGrowth || 20;
+        return this.owner.level * growth;
+    }
+
+    addExperience(amount) {
+        this.owner.experience += amount;
+        this.checkLevelUp();
+    }
+
+    recordKill(monsterType) {
+        this.owner.killCount++;
+        const xpGain = MONSTER_CONFIG.stats[monsterType]?.xp || 0;
+        this.addExperience(xpGain);
+    }
+
+    checkLevelUp() {
+        const maxLevel = PLAYER_CONFIG.levels?.maxLevel || 10;
+        while (this.owner.level < maxLevel && this.owner.experience >= this.getXpForNextLevel()) {
+            this.owner.experience -= this.getXpForNextLevel();
+            this.owner.level++;
+            // Restore health to full on level up
+            this.owner.hitPoints = this.owner.getClassHitPoints();
+        }
+    }
+}
+
 export class Player {
     constructor(options) {
         // Core properties
@@ -621,6 +656,7 @@ export class Player {
         this.addComponent('animation', new AnimationComponent(this));
         this.addComponent('combat', new CombatComponent(this));
         this.addComponent('health', new HealthComponent(this));
+        this.addComponent('stats', new StatsComponent(this));
         
         // Initialize all components
         Object.values(this.components).forEach(component => component.init());
