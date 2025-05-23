@@ -5,6 +5,7 @@ export const MONSTER_CONFIG = {
   stats: {
     ogre: {
       hitPoints: 4, moveSpeed: 2, attackRange: 90, collisionRadius: 35, aggroRange: 800,
+      xp: 20,
       animations: { // Animation properties
         walk: { speed: 0.3 }, idle: { speed: 0.2 }, attack1: { speed: 0.25, hitFrame: 9 },
         take_damage: { speed: 0.7 }, die: { speed: 0.2 }
@@ -12,6 +13,7 @@ export const MONSTER_CONFIG = {
     },
     skeleton: {
       hitPoints: 2, moveSpeed: 2.5, attackRange: 70, collisionRadius: 15, aggroRange: 1200,
+      xp: 5,
       animations: { // Animation properties
         walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3, hitFrame: 8 },
         take_damage: { speed: 0.7 }, die: { speed: 0.5 }
@@ -19,6 +21,7 @@ export const MONSTER_CONFIG = {
     },
     elemental: {
       hitPoints: 3, moveSpeed: 2, attackRange: 100, collisionRadius: 15, aggroRange: 800,
+      xp: 10,
       animations: { // Animation properties
         walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3, hitFrame: 8 },
         take_damage: { speed: 0.7 }, die: { speed: 0.2 }
@@ -26,6 +29,7 @@ export const MONSTER_CONFIG = {
     },
     ghoul: {
       hitPoints: 2, moveSpeed: 3.5, attackRange: 70, collisionRadius: 10, aggroRange: 3000,
+      xp: 15,
       animations: { // Animation properties
         walk: { speed: 0.45 }, idle: { speed: 0.25 }, attack1: { speed: 0.4, hitFrame: 7 },
         take_damage: { speed: 0.7 }, die: { speed: 0.25 }
@@ -158,6 +162,12 @@ export const PLAYER_CONFIG = {
   damage: {
     stunDuration: 0.25, // Stun duration in seconds when taking damage
     flashDuration: 0.1  // Duration of red tint flash when damaged
+  },
+
+  // Leveling configuration
+  levels: {
+    maxLevel: 10,
+    xpGrowth: 20 // XP required to level up = current level * xpGrowth
   },
   
   attacks: {
