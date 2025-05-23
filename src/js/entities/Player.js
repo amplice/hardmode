@@ -726,15 +726,18 @@ export class Player {
         return PLAYER_CONFIG.classes[this.characterClass]?.moveSpeed || 4;
     }
 
-    playLevelUpEffect() {
-        if (this.animatedSprite) {
-            const previousTint = this.animatedSprite.tint;
-            this.animatedSprite.tint = 0xFFD700; // gold
-            setTimeout(() => {
-                if (this.animatedSprite) {
-                    this.animatedSprite.tint = previousTint;
-                }
-            }, 300);
-        }
+playLevelUpEffect() {
+    // Use the combat system to create the level-up effect
+    if (this.combatSystem) {
+        this.combatSystem.createEffect(
+            'level_up_effect',
+            this.position,
+            this.facing,
+            this,
+            true // useRawPosition = true to center on player
+        );
     }
+    
+    console.log("Level up effect played!");
+}
 }

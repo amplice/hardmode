@@ -139,7 +139,11 @@ const SPRITE_SHEET_CONFIG = [
     {
         keyPrefix: 'hunter_cone_effect', type: 'effect', path: 'assets/sprites/effects/448.png',
         columns: 9, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
-    }
+    },
+    {
+    keyPrefix: 'level_up_effect', type: 'effect', path: 'assets/sprites/effects/LevelUp.png',
+    columns: 23, rows: 9, rowIndex: 0, frameSize: { width: 64, height: 64 }
+}
 ];
 
 export class SpriteManager {

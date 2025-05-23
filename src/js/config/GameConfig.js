@@ -467,6 +467,15 @@ export const PLAYER_CONFIG = {
       flipX: false,
       flipY: false
     },
+    level_up_effect: {
+    scale: 1.5,
+    offsetDistance: 0, // Center on player
+    rotationOffset: 0,
+    animationSpeed: 0.2,
+    followDuration: 1000,
+    flipX: false,
+    flipY: false
+},
     effectAnimations: { // Centralized animation speeds for sprites of effects
         slash_effect: { speed: 0.5 },
         strike_windup: { speed: 0.8 },
@@ -476,7 +485,8 @@ export const PLAYER_CONFIG = {
         rogue_thrust_effect: { speed: 0.7 },
         rogue_dash_effect: { speed: 0.5 },
         bow_shot_effect: { speed: 0.2 },
-        hunter_cone_effect: { speed: 0.5 }
+        hunter_cone_effect: { speed: 0.5 },
+          level_up_effect: { speed: 0.4 }
     }
   }
 };
