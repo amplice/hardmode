@@ -294,18 +294,18 @@ export class SpriteManager {
             }
         }
 
-        // Effect Animations (non-directional)
-        if (PLAYER_CONFIG.effects && PLAYER_CONFIG.effects.effectAnimations) {
-            for (const effectName in PLAYER_CONFIG.effects.effectAnimations) {
-                const effectAnimConfig = PLAYER_CONFIG.effects.effectAnimations[effectName];
-                if (this.textures[effectName]) {
-                    this.animations[effectName] = {
-                        textures: this.textures[effectName],
-                        speed: effectAnimConfig.speed || 0.2
-                    };
-                } else {
-                    console.warn(`Textures not found for effect: ${effectName}`);
-                }
+        // Effect Animations (non-directional) - Ensure textures are linked
+        for (const effectName in PLAYER_CONFIG.effects) {
+            // Check if it's an actual effect config
+            if (typeof PLAYER_CONFIG.effects[effectName] === 'object' && 
+                PLAYER_CONFIG.effects[effectName] !== null && 
+                this.textures[effectName] &&
+                effectName !== 'effectAnimations') { // Ensure we skip the old key if it somehow existed
+                 this.animations[effectName] = {
+                     textures: this.textures[effectName],
+                     // Speed can be a default, it will be primarily set by CombatSystem
+                     speed: PLAYER_CONFIG.effects[effectName].animationSpeed || 0.2 
+                 };
             }
         }
     }

@@ -475,18 +475,6 @@ export const PLAYER_CONFIG = {
     followDuration: 1000,
     flipX: false,
     flipY: false
-},
-    effectAnimations: { // Centralized animation speeds for sprites of effects
-        slash_effect: { speed: 0.5 },
-        strike_windup: { speed: 0.8 },
-        strike_cast: { speed: 0.2 },
-        guardian_slash_effect: { speed: 0.6 },
-        guardian_jump_effect: { speed: 0.5 },
-        rogue_thrust_effect: { speed: 0.7 },
-        rogue_dash_effect: { speed: 0.5 },
-        bow_shot_effect: { speed: 0.2 },
-        hunter_cone_effect: { speed: 0.5 },
-          level_up_effect: { speed: 0.4 }
-    }
+}
   }
 };

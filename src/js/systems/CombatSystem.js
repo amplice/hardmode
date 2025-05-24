@@ -528,7 +528,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     let finalPosition = useRawPosition ? { ...position } : this.calculateEffectPosition(position, facing, config.offsetDistance);
     sprite.position.set(finalPosition.x, finalPosition.y);
     sprite.loop = false; // Most effects play once
-    sprite.animationSpeed = config.animationSpeed || (PLAYER_CONFIG.effects.effectAnimations[effectType]?.speed || 0.2); // Fallback
+    sprite.animationSpeed = config.animationSpeed || 0.2;
     
     let scaleX = config.scale || 1.0;
     let scaleY = config.scale || 1.0;
