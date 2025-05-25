@@ -1,149 +1,150 @@
 // src/js/systems/animation/SpriteManager.js
 import * as PIXI from 'pixi.js';
-import { PLAYER_CONFIG, MONSTER_CONFIG } from '../../config/GameConfig.js'; // Import configs
+// PLAYER_CONFIG and MONSTER_CONFIG are no longer directly used in this file after refactoring.
 import { directionStringToAnimationSuffix } from '../../utils/DirectionUtils.js';
 
 const SPRITE_SHEET_CONFIG = [
-    // Characters
+    // Actors (Characters)
     {
-        keyPrefix: 'knight', type: 'character',
+        keyPrefix: 'knight', category: 'actor',
         animations: [
-            { keySuffix: 'idle', path: 'assets/sprites/characters/Knight/Idle.png', columns: 15, rows: 8 },
-            { keySuffix: 'run', path: 'assets/sprites/characters/Knight/Run.png', columns: 15, rows: 8 },
-            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Knight/RunBackwards.png', columns: 15, rows: 8 },
-            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Knight/StrafeLeft.png', columns: 15, rows: 8 },
-            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Knight/StrafeRight.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack1', path: 'assets/sprites/characters/Knight/Attack1.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack2', path: 'assets/sprites/characters/Knight/Attack2.png', columns: 15, rows: 8 },
-            { keySuffix: 'die', path: 'assets/sprites/characters/Knight/Die.png', columns: 15, rows: 8 },
-            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Knight/TakeDamage.png', columns: 15, rows: 8 },
+            { keySuffix: 'idle', path: 'assets/sprites/characters/Knight/Idle.png', columns: 15, rows: 8, speed: 0.2 },
+            { keySuffix: 'run', path: 'assets/sprites/characters/Knight/Run.png', columns: 15, rows: 8, speed: 0.5 },
+            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Knight/RunBackwards.png', columns: 15, rows: 8, speed: 0.5 },
+            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Knight/StrafeLeft.png', columns: 15, rows: 8, speed: 0.5 },
+            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Knight/StrafeRight.png', columns: 15, rows: 8, speed: 0.5 },
+            { keySuffix: 'attack1', path: 'assets/sprites/characters/Knight/Attack1.png', columns: 15, rows: 8, speed: 0.4, hitFrame: 8 },
+            { keySuffix: 'attack2', path: 'assets/sprites/characters/Knight/Attack2.png', columns: 15, rows: 8, speed: 0.3, hitFrame: 12 },
+            { keySuffix: 'die', path: 'assets/sprites/characters/Knight/Die.png', columns: 15, rows: 8, speed: 0.2 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Knight/TakeDamage.png', columns: 15, rows: 8, speed: 0.5 },
         ]
     },
     {
-        keyPrefix: 'guardian', type: 'character',
+        keyPrefix: 'guardian', category: 'actor',
         animations: [
-            { keySuffix: 'idle', path: 'assets/sprites/characters/Guardian/Idle.png', columns: 15, rows: 8 },
-            { keySuffix: 'run', path: 'assets/sprites/characters/Guardian/Run.png', columns: 15, rows: 8 },
-            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Guardian/RunBackwards.png', columns: 15, rows: 8 },
-            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Guardian/StrafeLeft.png', columns: 15, rows: 8 },
-            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Guardian/StrafeRight.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack1', path: 'assets/sprites/characters/Guardian/Attack1.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack2', path: 'assets/sprites/characters/Guardian/AttackRun.png', columns: 15, rows: 8 },
-            { keySuffix: 'die', path: 'assets/sprites/characters/Guardian/Die.png', columns: 15, rows: 8 },
-            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Guardian/TakeDamage.png', columns: 15, rows: 8 },
+            { keySuffix: 'idle', path: 'assets/sprites/characters/Guardian/Idle.png', columns: 15, rows: 8, speed: 0.15 },
+            { keySuffix: 'run', path: 'assets/sprites/characters/Guardian/Run.png', columns: 15, rows: 8, speed: 0.4 },
+            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Guardian/RunBackwards.png', columns: 15, rows: 8, speed: 0.4 },
+            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Guardian/StrafeLeft.png', columns: 15, rows: 8, speed: 0.4 },
+            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Guardian/StrafeRight.png', columns: 15, rows: 8, speed: 0.4 },
+            { keySuffix: 'attack1', path: 'assets/sprites/characters/Guardian/Attack1.png', columns: 15, rows: 8, speed: 0.35, hitFrame: 8 },
+            { keySuffix: 'attack2', path: 'assets/sprites/characters/Guardian/AttackRun.png', columns: 15, rows: 8, speed: 0.35, hitFrame: 12 },
+            { keySuffix: 'die', path: 'assets/sprites/characters/Guardian/Die.png', columns: 15, rows: 8, speed: 0.2 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Guardian/TakeDamage.png', columns: 15, rows: 8, speed: 0.5 },
         ]
     },
     {
-        keyPrefix: 'rogue', type: 'character',
+        keyPrefix: 'rogue', category: 'actor',
         animations: [
-            { keySuffix: 'idle', path: 'assets/sprites/characters/Rogue/Idle.png', columns: 15, rows: 8 },
-            { keySuffix: 'run', path: 'assets/sprites/characters/Rogue/Run.png', columns: 15, rows: 8 },
-            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Rogue/RunBackwards.png', columns: 15, rows: 8 },
-            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Rogue/StrafeLeft.png', columns: 15, rows: 8 },
-            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Rogue/StrafeRight.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack1', path: 'assets/sprites/characters/Rogue/Attack1.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack2', path: 'assets/sprites/characters/Rogue/Special2.png', columns: 15, rows: 8 },
-            { keySuffix: 'die', path: 'assets/sprites/characters/Rogue/Die.png', columns: 15, rows: 8 },
-            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Rogue/TakeDamage.png', columns: 15, rows: 8 },
+            { keySuffix: 'idle', path: 'assets/sprites/characters/Rogue/Idle.png', columns: 15, rows: 8, speed: 0.25 },
+            { keySuffix: 'run', path: 'assets/sprites/characters/Rogue/Run.png', columns: 15, rows: 8, speed: 0.6 },
+            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Rogue/RunBackwards.png', columns: 15, rows: 8, speed: 0.6 },
+            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Rogue/StrafeLeft.png', columns: 15, rows: 8, speed: 0.6 },
+            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Rogue/StrafeRight.png', columns: 15, rows: 8, speed: 0.6 },
+            { keySuffix: 'attack1', path: 'assets/sprites/characters/Rogue/Attack1.png', columns: 15, rows: 8, speed: 0.5, hitFrame: 7 },
+            { keySuffix: 'attack2', path: 'assets/sprites/characters/Rogue/Special2.png', columns: 15, rows: 8, speed: 0.4, hitFrame: 10 },
+            { keySuffix: 'die', path: 'assets/sprites/characters/Rogue/Die.png', columns: 15, rows: 8, speed: 0.25 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Rogue/TakeDamage.png', columns: 15, rows: 8, speed: 0.6 },
         ]
     },
     {
-        keyPrefix: 'hunter', type: 'character',
+        keyPrefix: 'hunter', category: 'actor',
         animations: [
-            { keySuffix: 'idle', path: 'assets/sprites/characters/Hunter/Idle.png', columns: 15, rows: 8 },
-            { keySuffix: 'run', path: 'assets/sprites/characters/Hunter/Run.png', columns: 15, rows: 8 },
-            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Hunter/RunBackwards.png', columns: 15, rows: 8 },
-            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Hunter/StrafeLeft.png', columns: 15, rows: 8 },
-            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Hunter/StrafeRight.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack1', path: 'assets/sprites/characters/Hunter/Attack1.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack2', path: 'assets/sprites/characters/Hunter/BackRoll.png', columns: 15, rows: 8 },
-            { keySuffix: 'die', path: 'assets/sprites/characters/Hunter/Die.png', columns: 15, rows: 8 },
-            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Hunter/TakeDamage.png', columns: 15, rows: 8 },
+            { keySuffix: 'idle', path: 'assets/sprites/characters/Hunter/Idle.png', columns: 15, rows: 8, speed: 0.2 },
+            { keySuffix: 'run', path: 'assets/sprites/characters/Hunter/Run.png', columns: 15, rows: 8, speed: 0.5 },
+            { keySuffix: 'run_backward', path: 'assets/sprites/characters/Hunter/RunBackwards.png', columns: 15, rows: 8, speed: 0.5 },
+            { keySuffix: 'strafe_left', path: 'assets/sprites/characters/Hunter/StrafeLeft.png', columns: 15, rows: 8, speed: 0.5 },
+            { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Hunter/StrafeRight.png', columns: 15, rows: 8, speed: 0.5 },
+            { keySuffix: 'attack1', path: 'assets/sprites/characters/Hunter/Attack1.png', columns: 15, rows: 8, speed: 0.5, hitFrame: 8 },
+            { keySuffix: 'attack2', path: 'assets/sprites/characters/Hunter/BackRoll.png', columns: 15, rows: 8, speed: 0.5, hitFrame: 12 },
+            { keySuffix: 'die', path: 'assets/sprites/characters/Hunter/Die.png', columns: 15, rows: 8, speed: 0.2 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/characters/Hunter/TakeDamage.png', columns: 15, rows: 8, speed: 0.5 },
         ]
     },
-    // Monsters
+    // Actors (Monsters)
     {
-        keyPrefix: 'skeleton', type: 'monster',
+        keyPrefix: 'skeleton', category: 'actor',
         animations: [
-            { keySuffix: 'walk', path: 'assets/sprites/monsters/Skeleton/Walk.png', columns: 15, rows: 8 },
-            { keySuffix: 'idle', path: 'assets/sprites/monsters/Skeleton/Idle.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Skeleton/Attack1.png', columns: 15, rows: 8 },
-            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Skeleton/TakeDamage.png', columns: 15, rows: 8 },
-            { keySuffix: 'die', path: 'assets/sprites/monsters/Skeleton/Die.png', columns: 15, rows: 8 },
-        ]
-    },
-    {
-        keyPrefix: 'elemental', type: 'monster',
-        animations: [
-            { keySuffix: 'walk', path: 'assets/sprites/monsters/Elemental/Walk.png', columns: 15, rows: 8 },
-            { keySuffix: 'idle', path: 'assets/sprites/monsters/Elemental/Idle.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Elemental/Attack4.png', columns: 15, rows: 8 },
-            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Elemental/TakeDamage.png', columns: 15, rows: 8 },
-            { keySuffix: 'die', path: 'assets/sprites/monsters/Elemental/Die.png', columns: 15, rows: 8 },
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/Skeleton/Walk.png', columns: 15, rows: 8, speed: 0.4 },
+            { keySuffix: 'idle', path: 'assets/sprites/monsters/Skeleton/Idle.png', columns: 15, rows: 8, speed: 0.2 },
+            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Skeleton/Attack1.png', columns: 15, rows: 8, speed: 0.3, hitFrame: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Skeleton/TakeDamage.png', columns: 15, rows: 8, speed: 0.7 },
+            { keySuffix: 'die', path: 'assets/sprites/monsters/Skeleton/Die.png', columns: 15, rows: 8, speed: 0.5 },
         ]
     },
     {
-        keyPrefix: 'ogre', type: 'monster',
+        keyPrefix: 'elemental', category: 'actor',
+        animations: [
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/Elemental/Walk.png', columns: 15, rows: 8, speed: 0.4 },
+            { keySuffix: 'idle', path: 'assets/sprites/monsters/Elemental/Idle.png', columns: 15, rows: 8, speed: 0.2 },
+            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Elemental/Attack4.png', columns: 15, rows: 8, speed: 0.3, hitFrame: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Elemental/TakeDamage.png', columns: 15, rows: 8, speed: 0.7 },
+            { keySuffix: 'die', path: 'assets/sprites/monsters/Elemental/Die.png', columns: 15, rows: 8, speed: 0.2 },
+        ]
+    },
+    {
+        keyPrefix: 'ogre', category: 'actor',
         defaultFrameSize: { width: 192, height: 192 },
+        scaleModifier: 1.5, // Make Ogre appear 1.5x larger than its normalized 128px representation
         animations: [
-            { keySuffix: 'walk', path: 'assets/sprites/monsters/Ogre/Walk.png', columns: 15, rows: 8 },
-            { keySuffix: 'idle', path: 'assets/sprites/monsters/Ogre/Idle.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Ogre/Attack1.png', columns: 15, rows: 8 },
-            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Ogre/TakeDamage.png', columns: 15, rows: 8 },
-            { keySuffix: 'die', path: 'assets/sprites/monsters/Ogre/Die.png', columns: 15, rows: 8 },
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/Ogre/Walk.png', columns: 15, rows: 8, speed: 0.3 },
+            { keySuffix: 'idle', path: 'assets/sprites/monsters/Ogre/Idle.png', columns: 15, rows: 8, speed: 0.2 },
+            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Ogre/Attack1.png', columns: 15, rows: 8, speed: 0.25, hitFrame: 9 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Ogre/TakeDamage.png', columns: 15, rows: 8, speed: 0.7 },
+            { keySuffix: 'die', path: 'assets/sprites/monsters/Ogre/Die.png', columns: 15, rows: 8, speed: 0.2 },
         ]
     },
     {
-        keyPrefix: 'ghoul', type: 'monster',
+        keyPrefix: 'ghoul', category: 'actor',
         animations: [
-            { keySuffix: 'walk', path: 'assets/sprites/monsters/Ghoul/Walk.png', columns: 15, rows: 8 },
-            { keySuffix: 'idle', path: 'assets/sprites/monsters/Ghoul/Idle.png', columns: 15, rows: 8 },
-            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Ghoul/Attack1.png', columns: 15, rows: 8 },
-            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Ghoul/TakeDamage.png', columns: 15, rows: 8 },
-            { keySuffix: 'die', path: 'assets/sprites/monsters/Ghoul/Die.png', columns: 15, rows: 8 },
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/Ghoul/Walk.png', columns: 15, rows: 8, speed: 0.45 },
+            { keySuffix: 'idle', path: 'assets/sprites/monsters/Ghoul/Idle.png', columns: 15, rows: 8, speed: 0.25 },
+            { keySuffix: 'attack1', path: 'assets/sprites/monsters/Ghoul/Attack1.png', columns: 15, rows: 8, speed: 0.4, hitFrame: 7 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Ghoul/TakeDamage.png', columns: 15, rows: 8, speed: 0.7 },
+            { keySuffix: 'die', path: 'assets/sprites/monsters/Ghoul/Die.png', columns: 15, rows: 8, speed: 0.25 },
         ]
     },
     // Effects
     {
-        keyPrefix: 'slash_effect', type: 'effect', path: 'assets/sprites/effects/Slash.png',
-        columns: 8, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
+        keyPrefix: 'slash_effect', category: 'effect', path: 'assets/sprites/effects/Slash.png',
+        columns: 8, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }, speed: 0.5
     },
     {
-        keyPrefix: 'strike_windup', type: 'effect', path: 'assets/sprites/effects/KnightStrikeWindup.png',
-        columns: 6, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
+        keyPrefix: 'strike_windup', category: 'effect', path: 'assets/sprites/effects/KnightStrikeWindup.png',
+        columns: 6, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }, speed: 0.8
     },
     {
-        keyPrefix: 'strike_cast', type: 'effect', path: 'assets/sprites/effects/KnightStrikeCast.png',
-        columns: 7, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
+        keyPrefix: 'strike_cast', category: 'effect', path: 'assets/sprites/effects/KnightStrikeCast.png',
+        columns: 7, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }, speed: 0.2
     },
     {
-        keyPrefix: 'guardian_slash_effect', type: 'effect', path: 'assets/sprites/effects/GuardianAttack1.png',
-        columns: 9, rows: 9, rowIndex: 0, frameSize: { width: 64, height: 64 }
+        keyPrefix: 'guardian_slash_effect', category: 'effect', path: 'assets/sprites/effects/GuardianAttack1.png',
+        columns: 9, rows: 9, rowIndex: 0, frameSize: { width: 64, height: 64 }, speed: 0.6
     },
     {
-        keyPrefix: 'guardian_jump_effect', type: 'effect', path: 'assets/sprites/effects/GuardianAttack2.png',
-        columns: 12, rows: 9, rowIndex: 0, frameSize: { width: 64, height: 64 }
+        keyPrefix: 'guardian_jump_effect', category: 'effect', path: 'assets/sprites/effects/GuardianAttack2.png',
+        columns: 12, rows: 9, rowIndex: 0, frameSize: { width: 64, height: 64 }, speed: 0.5
     },
     {
-        keyPrefix: 'rogue_thrust_effect', type: 'effect', path: 'assets/sprites/effects/RogueAttack1.png',
-        columns: 5, rows: 9, rowIndex: 3, frameSize: { width: 64, height: 64 }
+        keyPrefix: 'rogue_thrust_effect', category: 'effect', path: 'assets/sprites/effects/RogueAttack1.png',
+        columns: 5, rows: 9, rowIndex: 3, frameSize: { width: 64, height: 64 }, speed: 0.7
     },
     {
-        keyPrefix: 'rogue_dash_effect', type: 'effect', path: 'assets/sprites/effects/RogueAttack2.png',
-        columns: 14, rows: 9, rowIndex: 3, frameSize: { width: 64, height: 64 }
+        keyPrefix: 'rogue_dash_effect', category: 'effect', path: 'assets/sprites/effects/RogueAttack2.png',
+        columns: 14, rows: 9, rowIndex: 3, frameSize: { width: 64, height: 64 }, speed: 0.5
     },
     {
-        keyPrefix: 'bow_shot_effect', type: 'effect', path: 'assets/sprites/effects/579.png',
-        columns: 9, rows: 9, rowIndex: 1, frameSize: { width: 64, height: 64 }
+        keyPrefix: 'bow_shot_effect', category: 'effect', path: 'assets/sprites/effects/579.png',
+        columns: 9, rows: 9, rowIndex: 1, frameSize: { width: 64, height: 64 }, speed: 0.2
     },
     {
-        keyPrefix: 'hunter_cone_effect', type: 'effect', path: 'assets/sprites/effects/448.png',
-        columns: 9, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
+        keyPrefix: 'hunter_cone_effect', category: 'effect', path: 'assets/sprites/effects/448.png',
+        columns: 9, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }, speed: 0.5
     },
     {
-    keyPrefix: 'level_up_effect', type: 'effect', path: 'assets/sprites/effects/LevelUp.png',
-    columns: 23, rows: 9, rowIndex: 0, frameSize: { width: 64, height: 64 }
-}
+        keyPrefix: 'level_up_effect', category: 'effect', path: 'assets/sprites/effects/LevelUp.png',
+        columns: 23, rows: 9, rowIndex: 0, frameSize: { width: 64, height: 64 }, speed: 0.4
+    }
 ];
 
 export class SpriteManager {
@@ -156,162 +157,142 @@ export class SpriteManager {
         this.frameHeight = 128;
     }
 
-    async loadSprites() {
-        const promises = [];
-
-        for (const config of SPRITE_SHEET_CONFIG) {
-            if (config.type === 'character' || config.type === 'monster') {
-                for (const animConfig of config.animations) {
-                    const key = `${config.keyPrefix}_${animConfig.keySuffix}`;
-                    promises.push(this.loadSpritesheet(
-                        key,
-                        animConfig.path,
-                        animConfig.columns,
-                        animConfig.rows,
-                        config.defaultFrameSize || null // Pass entity-specific frame size or null
-                    ));
-                }
-            } else if (config.type === 'effect') {
-                promises.push(this.loadEffectSpritesheet(
-                    config.keyPrefix, // For effects, keyPrefix is the full key
-                    config.path,
-                    config.columns,
-                    config.rows, // Total rows in the sheet
-                    config.rowIndex, // Specific row to extract
-                    config.frameSize // Effects must have explicit frameSize
-                ));
-            }
-        }
-
-        await Promise.all(promises);
-            
-        this.createAnimations(); // This will be refactored next
-        this.loaded = true;
-        console.log("Sprites loaded successfully");
-    }
-
-    async loadSpritesheet(name, path, columns, rows, customFrameSize = null) {
+    /**
+     * Loads textures from a spritesheet for a given configuration entry.
+     * Handles both directional (multi-row, e.g., actor animations) and 
+     * non-directional (single-row, e.g., effects) spritesheets.
+     * @param {string} textureKeyName - The base name for the texture(s) (e.g., 'knight_idle' or 'slash_effect').
+     * @param {string} path - The path to the spritesheet image.
+     * @param {number} columns - The number of columns in the spritesheet.
+     * @param {number} rowsOrRowIndex - For directional sheets, the total number of rows (directions). 
+     *                                  For non-directional, the specific row index to load frames from.
+     * @param {number} frameWidth - The width of a single frame.
+     * @param {number} frameHeight - The height of a single frame.
+     * @param {boolean} isDirectionalSheet - True if the sheet contains multiple rows for different directions.
+     */
+    async _loadTexturesForConfigEntry(textureKeyName, path, columns, rowsOrRowIndex, frameWidth, frameHeight, isDirectionalSheet) {
         return new Promise((resolve, reject) => {
             PIXI.Assets.load(path).then(texture => {
-                const frameWidth = customFrameSize ? customFrameSize.width : this.frameWidth;
-                const frameHeight = customFrameSize ? customFrameSize.height : this.frameHeight;
-                
-                const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
-                
-                for (let row = 0; row < rows; row++) {
-                    if (row >= directions.length) break; // Ensure we don't exceed directions array
-                    const direction = directions[row];
+                if (isDirectionalSheet) { // For actor sprites with multiple directions
+                    const directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne'];
+                    // rowsOrRowIndex here is the total number of rows (directions)
+                    for (let row = 0; row < rowsOrRowIndex; row++) {
+                        if (row >= directions.length) break; 
+                        const direction = directions[row];
+                        const frames = [];
+                        for (let col = 0; col < columns; col++) {
+                            const frameTexture = new PIXI.Texture(
+                                texture.baseTexture,
+                                new PIXI.Rectangle(col * frameWidth, row * frameHeight, frameWidth, frameHeight)
+                            );
+                            frameTexture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+                            frames.push(frameTexture);
+                        }
+                        this.textures[`${textureKeyName}_${direction}`] = frames;
+                    }
+                } else {
+                    // rowsOrRowIndex here is the specific rowIndex
+                    const rowIndex = rowsOrRowIndex;
                     const frames = [];
-                    
                     for (let col = 0; col < columns; col++) {
                         const frameTexture = new PIXI.Texture(
                             texture.baseTexture,
-                            new PIXI.Rectangle(
-                                col * frameWidth,
-                                row * frameHeight,
-                                frameWidth,
-                                frameHeight
-                            )
+                            new PIXI.Rectangle(col * frameWidth, rowIndex * frameHeight, frameWidth, frameHeight)
                         );
                         frameTexture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
                         frames.push(frameTexture);
                     }
-                    this.textures[`${name}_${direction}`] = frames;
+                    this.textures[textureKeyName] = frames; // Store directly by textureKeyName for single-row effects
                 }
                 resolve();
             }).catch(error => {
-                console.error(`Failed to load spritesheet ${path} for key ${name}:`, error);
+                console.error(`Failed to load spritesheet ${path} for key ${textureKeyName}:`, error);
                 reject(error);
             });
         });
     }
 
-    async loadEffectSpritesheet(name, path, columns, totalRows, rowIndex, frameSize) { // totalRows added for clarity
-        return new Promise((resolve, reject) => {
-            PIXI.Assets.load(path).then(texture => {
-                const { width: frameWidth, height: frameHeight } = frameSize; // Destructure for clarity
-                const frames = [];
-                
-                // rowIndex is the specific row to load frames from
-                for (let col = 0; col < columns; col++) {
-                    const frameTexture = new PIXI.Texture(
-                        texture.baseTexture,
-                        new PIXI.Rectangle(
-                            col * frameWidth,
-                            rowIndex * frameHeight, // Use rowIndex here
-                            frameWidth,
-                            frameHeight
-                        )
-                    );
-                    frameTexture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-                    frames.push(frameTexture);
+    async loadSprites() {
+        const promises = [];
+        for (const config of SPRITE_SHEET_CONFIG) {
+            if (config.category === 'actor') {
+                for (const animConfig of config.animations) {
+                    const textureKeyName = `${config.keyPrefix}_${animConfig.keySuffix}`;
+                    const frameSize = config.defaultFrameSize || { width: this.frameWidth, height: this.frameHeight };
+                    promises.push(this._loadTexturesForConfigEntry(
+                        textureKeyName,
+                        animConfig.path,
+                        animConfig.columns,
+                        animConfig.rows, // These are directional rows
+                        frameSize.width,
+                        frameSize.height,
+                        true // isDirectionalSheet
+                    ));
                 }
-                this.textures[name] = frames; // Store directly by name
-                resolve();
-            }).catch(error => {
-                console.error(`Failed to load effect spritesheet ${path} for key ${name}:`, error);
-                reject(error);
-            });
-        });
+            } else if (config.category === 'effect') {
+                const frameSize = config.frameSize; // Effects must have explicit frameSize
+                promises.push(this._loadTexturesForConfigEntry(
+                    config.keyPrefix, // Effects use keyPrefix as the textureKeyName
+                    config.path,
+                    config.columns,
+                    config.rowIndex, // This is the specific row
+                    frameSize.width,
+                    frameSize.height,
+                    false // isDirectionalSheet
+                ));
+            }
+        }
+        await Promise.all(promises);
+        this.createAnimations(); // createAnimations() is called after this in the original flow
+        this.loaded = true;
+        console.log("Sprite textures loaded successfully via unified loader.");
     }
 
-    // Helper function to create directional animations
-    _createDirectionalAnimations(entityType, actionName, properties, directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne']) {
+    /**
+     * Helper function to create directional animations for an actor.
+     * It assumes textures have already been loaded and stored in this.textures.
+     * @param {object} actorConfig - The configuration object for the actor from SPRITE_SHEET_CONFIG.
+     * @param {object} animConfig - The specific animation configuration (e.g., for 'idle', 'run').
+     * @param {string[]} [directions=['e', ..., 'ne']] - Array of direction suffixes.
+     */
+    _createDirectionalAnimationsFromConfig(actorConfig, animConfig, directions = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne']) {
         for (const direction of directions) {
-            const textureKey = `${entityType}_${actionName}_${direction}`;
+            const textureKey = `${actorConfig.keyPrefix}_${animConfig.keySuffix}_${direction}`;
             if (!this.textures[textureKey]) {
                 console.warn(`Textures not found for ${textureKey}`);
                 continue;
             }
             this.animations[textureKey] = {
                 textures: this.textures[textureKey],
-                speed: properties.speed || 0.2, // Default speed if not specified
-                hitFrame: properties.hitFrame // Will be undefined if not applicable
+                speed: animConfig.speed || 0.2, // Default speed if not specified
+                hitFrame: animConfig.hitFrame // Will be undefined if not applicable
             };
         }
     }
 
+    /**
+     * Creates all animations based on the SPRITE_SHEET_CONFIG.
+     * This method is data-driven and iterates through the config to build animation objects.
+     * It populates this.animations with PIXI.AnimatedSprite compatible data.
+     */
     createAnimations() {
-        // Player Animations
-        for (const className in PLAYER_CONFIG.classes) {
-            const classConfig = PLAYER_CONFIG.classes[className];
-            const entityType = classConfig.spritePrefix; // e.g., 'knight', 'guardian'
-            if (classConfig.animations) {
-                for (const animName in classConfig.animations) { // e.g., 'idle', 'run', 'attack1'
-                    this._createDirectionalAnimations(entityType, animName, classConfig.animations[animName]);
+        for (const config of SPRITE_SHEET_CONFIG) {
+            if (config.category === 'actor') {
+                for (const animConfig of config.animations) {
+                    this._createDirectionalAnimationsFromConfig(config, animConfig);
                 }
-            }
-        }
-
-        // Monster Animations
-        for (const monsterType in MONSTER_CONFIG.stats) {
-            const monsterStats = MONSTER_CONFIG.stats[monsterType];
-            // Monster sprite prefixes are the monsterType itself (e.g. 'skeleton', 'ogre')
-            if (monsterStats.animations) {
-                for (const animName in monsterStats.animations) { // e.g., 'walk', 'idle', 'attack1'
-                    this._createDirectionalAnimations(monsterType, animName, monsterStats.animations[animName]);
-                }
-            }
-        }
-
-        // Effect Animations (non-directional)
-        if (PLAYER_CONFIG.effects && PLAYER_CONFIG.effects.effectAnimations) {
-            for (const effectName in PLAYER_CONFIG.effects.effectAnimations) {
-                const effectAnimConfig = PLAYER_CONFIG.effects.effectAnimations[effectName];
-                if (this.textures[effectName]) {
-                    this.animations[effectName] = {
-                        textures: this.textures[effectName],
-                        speed: effectAnimConfig.speed || 0.2
+            } else if (config.category === 'effect') {
+                if (this.textures[config.keyPrefix]) {
+                    this.animations[config.keyPrefix] = {
+                        textures: this.textures[config.keyPrefix],
+                        speed: config.speed || 0.2 // Default speed if not specified
                     };
                 } else {
-                    console.warn(`Textures not found for effect: ${effectName}`);
+                    console.warn(`Textures not found for effect: ${config.keyPrefix}`);
                 }
             }
         }
     }
-
-    // Removed individual create...Animations methods (createKnightAnimations, createGuardianAnimations, etc.)
-    // Removed create...EffectAnimations methods (createSlashEffectAnimation, etc.) as they are now data-driven
 
     createAnimatedSprite(animationName) {
     if (!this.animations[animationName]) {
@@ -322,32 +303,38 @@ export class SpriteManager {
     const sprite = new PIXI.AnimatedSprite(this.animations[animationName].textures);
     sprite.animationSpeed = this.animations[animationName].speed;
     sprite.anchor.set(0.5, 0.5);
-    
-    // Apply scale (default 1x for HD sprites)
+
+    // Apply scaling: Start with global spriteScale, then adjust based on the sprite's
+    // native frame size (if different from default) and any specific scaleModifier.
     let scale = this.spriteScale;
-    
-    // If this is an ogre sprite, adjust the scale to compensate for the larger frames
-    if (animationName.startsWith('ogre_')) {
-        // Ogre sprites are 192x192 but we want them to appear about 1.5x larger than regular sprites
-        scale = (this.frameWidth / 192) * 1.5;
+    const keyPrefix = animationName.split('_')[0];
+    const configEntry = SPRITE_SHEET_CONFIG.find(entry => entry.keyPrefix === keyPrefix);
+
+    if (configEntry) {
+        if (configEntry.defaultFrameSize) { // Adjust for native size relative to base frame size
+            scale *= (this.frameWidth / configEntry.defaultFrameSize.width);
+        }
+        if (configEntry.scaleModifier) { // Apply additional custom scaling
+            scale *= configEntry.scaleModifier;
+        }
     }
     
-    sprite.scale.set(scale, scale);
+    sprite.scale.set(scale); // Assuming scale is uniform for X and Y.
     
     return sprite;
 }
 
-// Update getAnimationForMovement to handle different character classes
-getAnimationForMovement(facingDirection, movementDirection) {
-    // Get current character class from the entity this animation is for
-    const playerEntity = window.game?.entities?.player;
-    const characterClass = playerEntity?.characterClass || 'bladedancer'; // Default to bladedancer if no player
-    
-    // Fetch spritePrefix from PLAYER_CONFIG
-    const classConfig = PLAYER_CONFIG.classes[characterClass];
-    const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight' if not found
+/**
+ * Determines the correct animation name for an entity's movement.
+ * @param {string} entityType - The prefix for the entity (e.g., 'knight', 'skeleton').
+ * @param {string} facingDirection - The direction the entity is facing (e.g., 'n', 'se').
+ * @param {string|null} movementDirection - The direction the entity is moving, or null if not moving.
+ * @returns {string} The animation name string.
+ */
+getAnimationForMovement(entityType, facingDirection, movementDirection) {
+    const classPrefix = entityType || 'knight'; // Fallback to 'knight' if entityType is not provided.
 
-    // Convert 8-way direction to the animation suffix (e, se, s, etc.)
+    // Convert 8-way direction to the animation suffix (e.g., 'e', 'se', 's')
     const facingSuffix = directionStringToAnimationSuffix(facingDirection);
     
     // If not moving, return idle animation
@@ -408,14 +395,15 @@ getAnimationForMovement(facingDirection, movementDirection) {
     }
 }
     
-getAttackAnimation(facingDirection, attackType) {
-    // Get current character class
-    const playerEntity = window.game?.entities?.player;
-    const characterClass = playerEntity?.characterClass || 'bladedancer'; // Default to bladedancer
-    
-    // Fetch spritePrefix from PLAYER_CONFIG
-    const classConfig = PLAYER_CONFIG.classes[characterClass];
-    const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
+/**
+ * Determines the correct attack animation name for an entity.
+ * @param {string} entityType - The prefix for the entity (e.g., 'knight', 'skeleton').
+ * @param {string} facingDirection - The direction the entity is facing.
+ * @param {string} attackType - The type of attack (e.g., 'primary', 'secondary').
+ * @returns {string} The animation name string.
+ */
+getAttackAnimation(entityType, facingDirection, attackType) {
+    const classPrefix = entityType || 'knight'; // Fallback to 'knight' if entityType is not provided.
 
     // Convert 8-way direction string to animation suffix
     const facingSuffix = directionStringToAnimationSuffix(facingDirection);
@@ -454,45 +442,54 @@ getAttackAnimation(facingDirection, attackType) {
         }
     }
     
-    getMonsterAnimationForDirection(monsterType, directionString, state = 'walk') {
-        // Convert 8-way direction string to animation suffix
-        const facingSuffix = directionStringToAnimationSuffix(directionString);
-        
-        if (monsterType === 'skeleton' || monsterType === 'elemental' || 
-            monsterType === 'ogre' || monsterType === 'ghoul') {
-            // Handle special animation states
-            if (state === 'hit') {
-                return `${monsterType}_take_damage_${facingSuffix}`;
-            } else if (state === 'die') {
-                return `${monsterType}_die_${facingSuffix}`;
-            }
-            
-            return `${monsterType}_${state}_${facingSuffix}`;
+/**
+ * Retrieves a generic animation name for an entity based on its type, direction, and state.
+ * Handles common states like 'walk', 'idle', 'attack1', 'take_damage', 'die'.
+ * Includes fallback logic if a specific animation is not found.
+ * @param {string} entityType - The prefix for the entity (e.g., 'knight', 'skeleton').
+ * @param {string} directionString - The direction the entity is facing.
+ * @param {string} [state='walk'] - The current state of the entity.
+ * @returns {string} The animation name string.
+ */
+getGenericEntityAnimation(entityType, directionString, state = 'walk') {
+    const facingSuffix = directionStringToAnimationSuffix(directionString);
+    const baseEntityType = entityType || 'skeleton'; // Fallback entity type if none provided.
+
+    // Standard animation states that most entities might have.
+    const standardStates = ['walk', 'idle', 'attack1', 'take_damage', 'die', 'run', 'run_backward', 'strafe_left', 'strafe_right', 'attack2'];
+
+    if (standardStates.includes(state)) {
+        // Check if a specific animation exists (e.g., skeleton_attack1_s)
+        const animationKey = `${baseEntityType}_${state}_${facingSuffix}`;
+        if (this.animations[animationKey]) {
+            return animationKey;
         }
-        
-        // Default fallback (should ideally not be reached if monsterType is always valid)
-        console.warn(`Unknown monster type or invalid state for animation: ${monsterType}, ${state}`);
-        return `skeleton_walk_s`; // Fallback to a known animation
     }
-    createSlashEffectAnimation() {
-        // Just use a single animation for the slash effect
-        this.animations['slash_effect'] = {
-            textures: this.textures['slash_effect'],
-            speed: 0.5
-        };
+    
+    // Fallback for specific states if direct key doesn't exist or state is generic like 'hit'
+    if (state === 'hit') { // Map 'hit' to 'take_damage'
+        const takeDamageKey = `${baseEntityType}_take_damage_${facingSuffix}`;
+        if (this.animations[takeDamageKey]) return takeDamageKey;
+    } else if (state === 'die') {
+        const dieKey = `${baseEntityType}_die_${facingSuffix}`;
+        if (this.animations[dieKey]) return dieKey;
     }
 
-    // Add this new method to SpriteManager.js
-createStrikeEffectAnimations() {
-    // Create animations for the strike effects
-    this.animations['strike_windup'] = {
-        textures: this.textures['strike_windup'],
-        speed: 0.8
-    };
+    // Default fallback: try entityType_state_suffix, then entityType_walk_s, then skeleton_walk_s
+    const defaultAnimation = `${baseEntityType}_${state}_${facingSuffix}`;
+    if (this.animations[defaultAnimation]) {
+        return defaultAnimation;
+    }
     
-    this.animations['strike_cast'] = {
-        textures: this.textures['strike_cast'],
-        speed: 0.2
-    };
+    const fallbackWalk = `${baseEntityType}_walk_s`; // Fallback to entity's south walk
+    if (this.animations[fallbackWalk]) {
+        console.warn(`Animation not found for ${baseEntityType}_${state}_${facingSuffix}. Defaulting to ${fallbackWalk}.`);
+        return fallbackWalk;
+    }
+
+    console.warn(`Animation not found for ${baseEntityType}_${state}_${facingSuffix}. Defaulting to skeleton_walk_s.`);
+    return `skeleton_walk_s`; // Absolute fallback if no other animation is found.
 }
+// Note: Methods like createSlashEffectAnimation, createStrikeEffectAnimations were removed
+// as effects are now data-driven from SPRITE_SHEET_CONFIG by the main createAnimations method.
 }

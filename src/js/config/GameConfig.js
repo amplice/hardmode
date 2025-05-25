@@ -7,32 +7,32 @@ export const MONSTER_CONFIG = {
       hitPoints: 4, moveSpeed: 2, attackRange: 90, collisionRadius: 35, aggroRange: 800,
       xp: 20,
       animations: { // Animation properties
-        walk: { speed: 0.3 }, idle: { speed: 0.2 }, attack1: { speed: 0.25, hitFrame: 9 },
-        take_damage: { speed: 0.7 }, die: { speed: 0.2 }
+        walk: {}, idle: {}, attack1: {},
+        take_damage: {}, die: {}
       }
     },
     skeleton: {
       hitPoints: 2, moveSpeed: 2.5, attackRange: 70, collisionRadius: 15, aggroRange: 1200,
       xp: 5,
       animations: { // Animation properties
-        walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3, hitFrame: 8 },
-        take_damage: { speed: 0.7 }, die: { speed: 0.5 }
+        walk: {}, idle: {}, attack1: {},
+        take_damage: {}, die: {}
       }
     },
     elemental: {
       hitPoints: 3, moveSpeed: 2, attackRange: 100, collisionRadius: 15, aggroRange: 800,
       xp: 10,
       animations: { // Animation properties
-        walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3, hitFrame: 8 },
-        take_damage: { speed: 0.7 }, die: { speed: 0.2 }
+        walk: {}, idle: {}, attack1: {},
+        take_damage: {}, die: {}
       }
     },
     ghoul: {
       hitPoints: 2, moveSpeed: 3.5, attackRange: 70, collisionRadius: 10, aggroRange: 3000,
       xp: 15,
       animations: { // Animation properties
-        walk: { speed: 0.45 }, idle: { speed: 0.25 }, attack1: { speed: 0.4, hitFrame: 7 },
-        take_damage: { speed: 0.7 }, die: { speed: 0.25 }
+        walk: {}, idle: {}, attack1: {},
+        take_damage: {}, die: {}
       }
     }
   },
@@ -112,10 +112,10 @@ export const PLAYER_CONFIG = {
       placeholderColor: 0x3498db,
       spritePrefix: 'knight',
       animations: { // Animation properties
-        idle: { speed: 0.2 }, run: { speed: 0.5 }, run_backward: { speed: 0.5 },
-        strafe_left: { speed: 0.5 }, strafe_right: { speed: 0.5 },
-        attack1: { speed: 0.4, hitFrame: 8 }, attack2: { speed: 0.3, hitFrame: 12 },
-        die: { speed: 0.2 }, take_damage: { speed: 0.5 }
+        idle: {}, run: {}, run_backward: {},
+        strafe_left: {}, strafe_right: {},
+        attack1: {}, attack2: {},
+        die: {}, take_damage: {}
       }
     },
     guardian: {
@@ -125,10 +125,10 @@ export const PLAYER_CONFIG = {
       placeholderColor: 0xe74c3c,
       spritePrefix: 'guardian',
       animations: { // Animation properties
-        idle: { speed: 0.15 }, run: { speed: 0.4 }, run_backward: { speed: 0.4 },
-        strafe_left: { speed: 0.4 }, strafe_right: { speed: 0.4 },
-        attack1: { speed: 0.35, hitFrame: 8 }, attack2: { speed: 0.35, hitFrame: 12 },
-        die: { speed: 0.2 }, take_damage: { speed: 0.5 }
+        idle: {}, run: {}, run_backward: {},
+        strafe_left: {}, strafe_right: {},
+        attack1: {}, attack2: {},
+        die: {}, take_damage: {}
       }
     },
     hunter: {
@@ -138,10 +138,10 @@ export const PLAYER_CONFIG = {
       placeholderColor: 0x2ecc71,
       spritePrefix: 'hunter',
       animations: { // Animation properties
-        idle: { speed: 0.2 }, run: { speed: 0.5 }, run_backward: { speed: 0.5 },
-        strafe_left: { speed: 0.5 }, strafe_right: { speed: 0.5 },
-        attack1: { speed: 0.5, hitFrame: 8 }, attack2: { speed: 0.5, hitFrame: 12 }, // attack2 is BackRoll
-        die: { speed: 0.2 }, take_damage: { speed: 0.5 }
+        idle: {}, run: {}, run_backward: {},
+        strafe_left: {}, strafe_right: {},
+        attack1: {}, attack2: {}, // attack2 is BackRoll
+        die: {}, take_damage: {}
       }
     },
     rogue: {
@@ -151,10 +151,10 @@ export const PLAYER_CONFIG = {
       placeholderColor: 0x9b59b6,
       spritePrefix: 'rogue',
       animations: { // Animation properties
-        idle: { speed: 0.25 }, run: { speed: 0.6 }, run_backward: { speed: 0.6 },
-        strafe_left: { speed: 0.6 }, strafe_right: { speed: 0.6 },
-        attack1: { speed: 0.5, hitFrame: 7 }, attack2: { speed: 0.4, hitFrame: 10 }, // attack2 is Special2
-        die: { speed: 0.25 }, take_damage: { speed: 0.6 }
+        idle: {}, run: {}, run_backward: {},
+        strafe_left: {}, strafe_right: {},
+        attack1: {}, attack2: {}, // attack2 is Special2
+        die: {}, take_damage: {}
       }
     }
   },
@@ -390,7 +390,7 @@ export const PLAYER_CONFIG = {
       scale: 1.5,
       offsetDistance: 60, // Default offset if not overridden in effectSequence
       rotationOffset: 0 * Math.PI / 4,
-      animationSpeed: 0.5,
+      // animationSpeed: 0.5, // Moved to SpriteManager
       followDuration: 0,
       flipX: false,
       flipY: true 
@@ -399,7 +399,7 @@ export const PLAYER_CONFIG = {
       scale: 1.5,
       offsetDistance: 10,
       rotationOffset: 0,
-      animationSpeed: 0.4,
+      // animationSpeed: 0.4, // Moved to SpriteManager
       followDuration: 0,
       flipX: false,
       flipY: false 
@@ -408,7 +408,7 @@ export const PLAYER_CONFIG = {
       scale: 1.3,
       offsetDistance: 70,
       rotationOffset: 2 * Math.PI / 4,
-      animationSpeed: 0.4,
+      // animationSpeed: 0.4, // Moved to SpriteManager
       followDuration: 0,
       flipX: false,
       flipY: false 
@@ -417,7 +417,7 @@ export const PLAYER_CONFIG = {
       scale: 2,
       offsetDistance: 70,
       rotationOffset: 2 * Math.PI /4 ,
-      animationSpeed: 0.6,
+      // animationSpeed: 0.6, // Moved to SpriteManager
       followDuration: 0,
       flipX: true,
       flipY: true
@@ -426,7 +426,7 @@ export const PLAYER_CONFIG = {
       scale: 3.5,
       offsetDistance: 0, 
       rotationOffset: 0 * Math.PI / 4,
-      animationSpeed: 0.5,
+      // animationSpeed: 0.5, // Moved to SpriteManager
       followDuration: 0,
       flipX: false,
       flipY: false
@@ -435,7 +435,7 @@ export const PLAYER_CONFIG = {
       scale: 1.8,
       offsetDistance: 50,
       rotationOffset: -1 * Math.PI / 4,
-      animationSpeed: 0.4,
+      // animationSpeed: 0.4, // Moved to SpriteManager
       followDuration: 0,
       flipX: false,
       flipY: false
@@ -444,7 +444,7 @@ export const PLAYER_CONFIG = {
       scale: 1.0,
       offsetDistance: 0,
       rotationOffset: 1 * Math.PI / 4,
-      animationSpeed: 0.8,
+      // animationSpeed: 0.8, // Moved to SpriteManager
       followDuration: 0,
       flipX: false,
       flipY: false
@@ -453,7 +453,7 @@ export const PLAYER_CONFIG = {
       scale: 1.0,
       offsetDistance: 30, // Offset from player at launch
       rotationOffset: 0 * Math.PI / 4, // Adjust as needed for sprite orientation
-      animationSpeed: 0.3,
+      // animationSpeed: 0.3, // Moved to SpriteManager
       followDuration: 0,
       flipX: false,
       flipY: false
@@ -462,7 +462,7 @@ export const PLAYER_CONFIG = {
       scale: 1.5,
       offsetDistance: 0, // To be used with useStartPosition:true and distance:0 in sequence
       rotationOffset: 1 * Math.PI / 4,
-      animationSpeed: 0.4,
+      // animationSpeed: 0.4, // Moved to SpriteManager
       followDuration: 0,
       flipX: false,
       flipY: false
@@ -471,22 +471,11 @@ export const PLAYER_CONFIG = {
     scale: 1.5,
     offsetDistance: 0, // Center on player
     rotationOffset: 0,
-    animationSpeed: 0.2,
+    // animationSpeed: 0.2, // Moved to SpriteManager
     followDuration: 1000,
     flipX: false,
     flipY: false
 },
-    effectAnimations: { // Centralized animation speeds for sprites of effects
-        slash_effect: { speed: 0.5 },
-        strike_windup: { speed: 0.8 },
-        strike_cast: { speed: 0.2 },
-        guardian_slash_effect: { speed: 0.6 },
-        guardian_jump_effect: { speed: 0.5 },
-        rogue_thrust_effect: { speed: 0.7 },
-        rogue_dash_effect: { speed: 0.5 },
-        bow_shot_effect: { speed: 0.2 },
-        hunter_cone_effect: { speed: 0.5 },
-          level_up_effect: { speed: 0.4 }
-    }
+    // effectAnimations object is removed as speeds are now in SpriteManager.js
   }
 };

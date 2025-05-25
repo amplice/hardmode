@@ -175,7 +175,7 @@ class AnimationComponent extends Component {
             
             // Get appropriate animation based on state
             const animationName = this.owner.spriteManager.getAnimationForMovement(
-                this.owner.facing, this.owner.movementDirection
+                this.owner.spritePrefix, this.owner.facing, this.owner.movementDirection
             );
             
             if (animationName && (facingChanged || this.owner.currentAnimation !== animationName)) {
@@ -196,7 +196,7 @@ class AnimationComponent extends Component {
         }
         
         // Create idle animation for current facing direction
-        const animationName = this.owner.spriteManager.getAnimationForMovement(this.owner.facing, null);
+        const animationName = this.owner.spriteManager.getAnimationForMovement(this.owner.spritePrefix, this.owner.facing, null);
         this.owner.currentAnimation = animationName;
         
         this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(animationName);
@@ -284,14 +284,10 @@ class AnimationComponent extends Component {
     }
     
     playAttackAnimation(attackType) {
-        // Get the character class prefix from PLAYER_CONFIG
-        const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
-        const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
-        
         // Handle special case for guardian jump attack
         if (this.owner.characterClass === 'guardian' && attackType === 'secondary') {
           // Use attack2 animation for jump attack
-          const attackAnimName = `${classPrefix}_attack2_${this.getFacingAnimationKey()}`;
+          const attackAnimName = `${this.owner.spritePrefix}_attack2_${this.getFacingAnimationKey()}`;
           this.owner.currentAnimation = attackAnimName;
           
           // Remove old sprite and create new attack animation
@@ -313,7 +309,7 @@ class AnimationComponent extends Component {
         }
         
         // Regular attack animation handling
-        const attackAnimName = this.owner.spriteManager.getAttackAnimation(this.owner.facing, attackType);
+        const attackAnimName = this.owner.spriteManager.getAttackAnimation(this.owner.spritePrefix, this.owner.facing, attackType);
         this.owner.currentAnimation = attackAnimName;
         
         // Remove old sprite and create new attack animation
@@ -335,12 +331,8 @@ class AnimationComponent extends Component {
     
       playDamageAnimation() {
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
-            // Get the character class prefix from PLAYER_CONFIG
-            const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
-            const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
-            
             // Get take damage animation for current facing direction
-            const damageAnimName = `${classPrefix}_take_damage_${this.getFacingAnimationKey()}`;
+            const damageAnimName = this.owner.spriteManager.getGenericEntityAnimation(this.owner.spritePrefix, this.owner.facing, 'take_damage');
             this.owner.currentAnimation = damageAnimName;
             
             // Remove old sprite and create new take damage animation
@@ -390,12 +382,8 @@ class AnimationComponent extends Component {
     
     playDeathAnimation() {
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
-            // Get the character class prefix from PLAYER_CONFIG
-            const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
-            const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
-            
             // Get death animation for current facing direction
-            const deathAnimName = `${classPrefix}_die_${this.getFacingAnimationKey()}`;
+            const deathAnimName = this.owner.spriteManager.getGenericEntityAnimation(this.owner.spritePrefix, this.owner.facing, 'die');
             this.owner.currentAnimation = deathAnimName;
             
             // Remove old sprite and create new death animation
@@ -662,6 +650,7 @@ export class Player {
         // Get class stats from config
         const classConfig = PLAYER_CONFIG.classes[this.characterClass];
         this.moveSpeed = classConfig.moveSpeed;
+        this.spritePrefix = classConfig.spritePrefix; // Add this line
         
         // Create sprite container
         this.sprite = new PIXI.Container();
