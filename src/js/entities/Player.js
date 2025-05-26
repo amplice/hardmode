@@ -510,7 +510,8 @@ class HealthComponent extends Component {
     init() {
         // Get class stats from config
         const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
-        this.owner.hitPoints = classConfig.hitPoints;
+        this.owner.maxHitPoints = classConfig.hitPoints;
+        this.owner.hitPoints = this.owner.maxHitPoints;
         
         this.owner.isDying = false;
         this.owner.isDead = false;
@@ -592,7 +593,8 @@ class HealthComponent extends Component {
     }
     
     getClassHitPoints() {
-        return PLAYER_CONFIG.classes[this.owner.characterClass]?.hitPoints || 2;
+        return this.owner.maxHitPoints ||
+               PLAYER_CONFIG.classes[this.owner.characterClass]?.hitPoints || 2;
     }
 }
 
@@ -640,6 +642,7 @@ class StatsComponent extends Component {
         while (this.owner.level < maxLevel && this.owner.experience >= this.getTotalXpForLevel(this.owner.level + 1)) {
             this.owner.level++;
             leveledUp = true;
+            this.applyLevelBonus(this.owner.level);
             // Restore health to full on level up
             this.owner.hitPoints = this.owner.getClassHitPoints();
         }
@@ -647,6 +650,44 @@ class StatsComponent extends Component {
         if (leveledUp && this.owner.playLevelUpEffect) {
             this.owner.playLevelUpEffect();
         }
+    }
+
+    applyLevelBonus(level) {
+        switch (level) {
+            case 2:
+            case 6:
+                this.owner.moveSpeed += 0.25;
+                break;
+            case 3:
+            case 7:
+                this.modifyAttackRecovery(-25);
+                break;
+            case 4:
+            case 8:
+                this.modifyAttackCooldown(-100);
+                break;
+            case 5:
+            case 9:
+                // Placeholder for new move unlocking in future
+                break;
+            case 10:
+                this.owner.maxHitPoints += 1;
+                break;
+        }
+    }
+
+    modifyAttackRecovery(amount) {
+        const key = PLAYER_CONFIG.attacks[`${this.owner.characterClass}_primary`] ?
+                    `${this.owner.characterClass}_primary` : 'primary';
+        const attack = PLAYER_CONFIG.attacks[key];
+        attack.recoveryTime = Math.max(0, (attack.recoveryTime || 0) + amount);
+    }
+
+    modifyAttackCooldown(amount) {
+        const key = PLAYER_CONFIG.attacks[`${this.owner.characterClass}_secondary`] ?
+                    `${this.owner.characterClass}_secondary` : 'secondary';
+        const attack = PLAYER_CONFIG.attacks[key];
+        attack.cooldown = Math.max(0, (attack.cooldown || 0) + amount);
     }
 }
 
