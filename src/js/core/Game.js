@@ -13,7 +13,7 @@ import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 
 // Toggle display of extra stat information in the Stats UI
-const SHOW_DEBUG_STATS = false;
+const SHOW_DEBUG_STATS = true;
 
 // 1) turn off antialias & force pixel‐perfect
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
