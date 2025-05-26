@@ -12,6 +12,9 @@ import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 
+// Toggle display of extra stat information in the Stats UI
+const SHOW_DEBUG_STATS = false;
+
 // 1) turn off antialias & force pixel‐perfect
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
@@ -111,7 +114,7 @@ export class Game {
 
     // Add health and stats UI
     this.healthUI = new HealthUI(this.entities.player);
-    this.statsUI = new StatsUI(this.entities.player);
+    this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
     this.uiContainer.addChild(this.healthUI.container);
     this.uiContainer.addChild(this.statsUI.container);
 
