@@ -34,6 +34,14 @@ export const MONSTER_CONFIG = {
         walk: { speed: 0.45 }, idle: { speed: 0.25 }, attack1: { speed: 0.4, hitFrame: 7 },
         take_damage: { speed: 0.7 }, die: { speed: 0.25 }
       }
+    },
+    wildarcher: {
+      hitPoints: 1, moveSpeed: 3, attackRange: 500, collisionRadius: 15, aggroRange: 1500,
+      xp: 10,
+      animations: {
+        walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.35, hitFrame: 8 },
+        take_damage: { speed: 0.7 }, die: { speed: 0.3 }
+      }
     }
   },
 
@@ -76,6 +84,18 @@ export const MONSTER_CONFIG = {
       pattern: 'cone',
       color: 0x7CFC00,
       damage: 1
+    },
+    wildarcher: {
+      windup: 0.4,
+      duration: 0.2,
+      recovery: 0.4,
+      cooldown: 1.5,
+      pattern: 'projectile',
+      projectileSpeed: 600,
+      projectileRange: 500,
+      color: 0xAAFFAA,
+      damage: 1,
+      projectileEffect: 'wildarcher_shot_effect'
     }
   },
 
@@ -86,10 +106,11 @@ export const MONSTER_CONFIG = {
     minDistanceFromPlayer: 700,
     maxDistanceFromPlayer: 10000,
     distribution: {
-      skeleton: 0.25,
-      elemental: 0.25,
-      ghoul: 0.25,
-      ogre: 0.25
+      skeleton: 0.2,
+      elemental: 0.2,
+      ghoul: 0.2,
+      ogre: 0.2,
+      wildarcher: 0.2
     }
   },
 
@@ -98,7 +119,8 @@ export const MONSTER_CONFIG = {
     { type: 'skeleton', count: 0, offsetX: -200, offsetY: -200 },
     { type: 'elemental', count: 0, offsetX: 200, offsetY: -200 },
     { type: 'ogre', count: 1, offsetX: -200, offsetY: 200 },
-    { type: 'ghoul', count: 0, offsetX: 200, offsetY: 200 }
+    { type: 'ghoul', count: 0, offsetX: 200, offsetY: 200 },
+    { type: 'wildarcher', count: 1, offsetX: 0, offsetY: -200 }
   ]
 };
 
@@ -472,6 +494,15 @@ export const PLAYER_CONFIG = {
       scale: 1.0,
       offsetDistance: 30, // Offset from player at launch
       rotationOffset: 0 * Math.PI / 4, // Adjust as needed for sprite orientation
+      animationSpeed: 0.3,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    wildarcher_shot_effect: {
+      scale: 1.0,
+      offsetDistance: 30,
+      rotationOffset: 0,
       animationSpeed: 0.3,
       followDuration: 0,
       flipX: false,

@@ -107,6 +107,16 @@ const SPRITE_SHEET_CONFIG = [
             { keySuffix: 'die', path: 'assets/sprites/monsters/Ghoul/Die.png', columns: 15, rows: 8 },
         ]
     },
+    {
+        keyPrefix: 'wildarcher', type: 'monster',
+        animations: [
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/WildArcher/Walk.png', columns: 15, rows: 8 },
+            { keySuffix: 'idle', path: 'assets/sprites/monsters/WildArcher/Idle.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack1', path: 'assets/sprites/monsters/WildArcher/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/WildArcher/TakeDamage.png', columns: 15, rows: 8 },
+            { keySuffix: 'die', path: 'assets/sprites/monsters/WildArcher/Die.png', columns: 15, rows: 8 },
+        ]
+    },
     // Effects
     {
         keyPrefix: 'slash_effect', type: 'effect', path: 'assets/sprites/effects/Slash.png',
@@ -139,6 +149,10 @@ const SPRITE_SHEET_CONFIG = [
     {
         keyPrefix: 'bow_shot_effect', type: 'effect', path: 'assets/sprites/effects/579.png',
         columns: 9, rows: 9, rowIndex: 1, frameSize: { width: 64, height: 64 }
+    },
+    {
+        keyPrefix: 'wildarcher_shot_effect', type: 'effect', path: 'assets/sprites/effects/579.png',
+        columns: 9, rows: 9, rowIndex: 5, frameSize: { width: 64, height: 64 }
     },
     {
         keyPrefix: 'hunter_cone_effect', type: 'effect', path: 'assets/sprites/effects/448.png',
@@ -472,8 +486,8 @@ getAttackAnimation(facingDirection, attackType) {
         // Convert 8-way direction string to animation suffix
         const facingSuffix = directionStringToAnimationSuffix(directionString);
         
-        if (monsterType === 'skeleton' || monsterType === 'elemental' || 
-            monsterType === 'ogre' || monsterType === 'ghoul') {
+        if (monsterType === 'skeleton' || monsterType === 'elemental' ||
+            monsterType === 'ogre' || monsterType === 'ghoul' || monsterType === 'wildarcher') {
             // Handle special animation states
             if (state === 'hit') {
                 return `${monsterType}_take_damage_${facingSuffix}`;
