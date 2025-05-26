@@ -5,12 +5,14 @@ export class InputSystem {
             a: false,
             s: false,
             d: false,
-            space: false
+            space: false,
+            shift: false
         };
         
         this.mouse = {
             position: { x: 0, y: 0 },
-            leftButton: false
+            leftButton: false,
+            rightButton: false
         };
         
         this.setupEventListeners();
@@ -37,6 +39,7 @@ export class InputSystem {
             case 's': this.keys.s = true; break;
             case 'd': this.keys.d = true; break;
             case ' ': this.keys.space = true; break; // Space bar
+            case 'shift': this.keys.shift = true; break;
         }
     }
     
@@ -47,6 +50,7 @@ export class InputSystem {
             case 's': this.keys.s = false; break;
             case 'd': this.keys.d = false; break;
             case ' ': this.keys.space = false; break; // Space bar
+            case 'shift': this.keys.shift = false; break;
         }
     }
     
@@ -58,12 +62,16 @@ export class InputSystem {
     handleMouseDown(event) {
         if (event.button === 0) { // Left mouse button
             this.mouse.leftButton = true;
+        } else if (event.button === 2) { // Right mouse button
+            this.mouse.rightButton = true;
         }
     }
-    
+
     handleMouseUp(event) {
         if (event.button === 0) { // Left mouse button
             this.mouse.leftButton = false;
+        } else if (event.button === 2) { // Right mouse button
+            this.mouse.rightButton = false;
         }
     }
     
@@ -76,6 +84,7 @@ export class InputSystem {
             right: this.keys.d,
             primaryAttack: this.mouse.leftButton,
             secondaryAttack: this.keys.space, // Use space instead of right mouse button
+            roll: this.keys.shift,
             mousePosition: { ...this.mouse.position }
         };
     }
