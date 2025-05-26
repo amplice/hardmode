@@ -30,7 +30,7 @@ const SPRITE_SHEET_CONFIG = [
             { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Guardian/StrafeRight.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/characters/Guardian/Attack1.png', columns: 15, rows: 8 },
             { keySuffix: 'attack2', path: 'assets/sprites/characters/Guardian/AttackRun.png', columns: 15, rows: 8 },
-            { keySuffix: 'roll', path: 'assets/sprites/characters/Guardian/Rolling.png', columns: 15, rows: 8 },
+            { keySuffix: 'roll', path: 'assets/sprites/characters/Guardian/FrontFlip.png', columns: 15, rows: 8 },
             { keySuffix: 'die', path: 'assets/sprites/characters/Guardian/Die.png', columns: 15, rows: 8 },
             { keySuffix: 'take_damage', path: 'assets/sprites/characters/Guardian/TakeDamage.png', columns: 15, rows: 8 },
         ]
@@ -45,7 +45,7 @@ const SPRITE_SHEET_CONFIG = [
             { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Rogue/StrafeRight.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/characters/Rogue/Attack1.png', columns: 15, rows: 8 },
             { keySuffix: 'attack2', path: 'assets/sprites/characters/Rogue/Special2.png', columns: 15, rows: 8 },
-            { keySuffix: 'roll', path: 'assets/sprites/characters/Rogue/Rolling.png', columns: 15, rows: 8 },
+            { keySuffix: 'roll', path: 'assets/sprites/characters/Rogue/QuickSlide.png', columns: 15, rows: 8 },
             { keySuffix: 'die', path: 'assets/sprites/characters/Rogue/Die.png', columns: 15, rows: 8 },
             { keySuffix: 'take_damage', path: 'assets/sprites/characters/Rogue/TakeDamage.png', columns: 15, rows: 8 },
         ]
@@ -60,7 +60,7 @@ const SPRITE_SHEET_CONFIG = [
             { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Hunter/StrafeRight.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/characters/Hunter/Attack1.png', columns: 15, rows: 8 },
             { keySuffix: 'attack2', path: 'assets/sprites/characters/Hunter/BackRoll.png', columns: 15, rows: 8 },
-            { keySuffix: 'roll', path: 'assets/sprites/characters/Hunter/Rolling.png', columns: 15, rows: 8 },
+            { keySuffix: 'roll', path: 'assets/sprites/characters/Hunter/CrouchRun.png', columns: 15, rows: 8 },
             { keySuffix: 'die', path: 'assets/sprites/characters/Hunter/Die.png', columns: 15, rows: 8 },
             { keySuffix: 'take_damage', path: 'assets/sprites/characters/Hunter/TakeDamage.png', columns: 15, rows: 8 },
         ]

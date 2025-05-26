@@ -115,7 +115,7 @@ export const PLAYER_CONFIG = {
         idle: { speed: 0.2 }, run: { speed: 0.5 }, run_backward: { speed: 0.5 },
         strafe_left: { speed: 0.5 }, strafe_right: { speed: 0.5 },
         attack1: { speed: 0.4, hitFrame: 8 }, attack2: { speed: 0.3, hitFrame: 12 },
-        roll: { speed: 0.6 },
+        roll: { speed: 0.5 },
         die: { speed: 0.2 }, take_damage: { speed: 0.5 }
       }
     },
@@ -129,7 +129,7 @@ export const PLAYER_CONFIG = {
         idle: { speed: 0.15 }, run: { speed: 0.4 }, run_backward: { speed: 0.4 },
         strafe_left: { speed: 0.4 }, strafe_right: { speed: 0.4 },
         attack1: { speed: 0.35, hitFrame: 8 }, attack2: { speed: 0.35, hitFrame: 12 },
-        roll: { speed: 0.6 },
+        roll: { speed: 0.5 },
         die: { speed: 0.2 }, take_damage: { speed: 0.5 }
       }
     },
@@ -143,7 +143,7 @@ export const PLAYER_CONFIG = {
         idle: { speed: 0.2 }, run: { speed: 0.5 }, run_backward: { speed: 0.5 },
         strafe_left: { speed: 0.5 }, strafe_right: { speed: 0.5 },
         attack1: { speed: 0.5, hitFrame: 8 }, attack2: { speed: 0.5, hitFrame: 12 }, // attack2 is BackRoll
-        roll: { speed: 0.6 },
+        roll: { speed: 0.5 },
         die: { speed: 0.2 }, take_damage: { speed: 0.5 }
       }
     },
@@ -157,7 +157,7 @@ export const PLAYER_CONFIG = {
         idle: { speed: 0.25 }, run: { speed: 0.6 }, run_backward: { speed: 0.6 },
         strafe_left: { speed: 0.6 }, strafe_right: { speed: 0.6 },
         attack1: { speed: 0.5, hitFrame: 7 }, attack2: { speed: 0.4, hitFrame: 10 }, // attack2 is Special2
-        roll: { speed: 0.6 },
+        roll: { speed: 0.5 },
         die: { speed: 0.25 }, take_damage: { speed: 0.6 }
       }
     }
@@ -392,11 +392,11 @@ export const PLAYER_CONFIG = {
       archetype: 'dash_attack',
       damage: 0,
       windupTime: 50,
-      dashDuration: 250,
+      dashDuration: 300,
       recoveryTime: 150,
-      cooldown: 500,
+      cooldown: 1000,
       dashDistance: 150,
-      invulnerable: true,
+      invulnerable: false,
       hitboxType: null,
       hitboxParams: null,
       hitboxVisual: { color: 0xffffff, fillAlpha: 0.0, lineAlpha: 0.0, lineWidth: 0, duration: 0.1 },
