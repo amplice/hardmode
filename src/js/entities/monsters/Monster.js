@@ -388,15 +388,19 @@ export class Monster {
         // Get attack details
         const attackDetails = MONSTER_CONFIG.attacks[this.type];
         
-        // Show attack windup indicator
-        this.showAttackIndicator(true);
+        // Show attack windup indicator for melee attacks only
+        if (attackDetails.pattern !== 'projectile') {
+            this.showAttackIndicator(true);
+        }
         
         // Schedule actual attack after windup
         setTimeout(() => {
             if (this.state !== 'attacking' || !this.alive) return;
             
-            // Show active attack indicator
-            this.showAttackIndicator(false, true);
+            // Show active indicator for melee attacks
+            if (attackDetails.pattern !== 'projectile') {
+                this.showAttackIndicator(false, true);
+            }
             
             // Execute the attack
             this.executeAttack();
@@ -425,7 +429,7 @@ export class Monster {
             case 'circle':
                 this.attackIndicator.drawCircle(0, 0, range);
                 break;
-                
+
             case 'cone':
                 // Draw cone with 90 degree angle
                 const coneAngle = Math.PI / 2;
@@ -451,6 +455,12 @@ export class Monster {
                 
                 this.attackIndicator.rotation = directionStringToAngleRadians(this.facing);
                 break;
+
+            case 'projectile':
+                // Simple line indicator for ranged attacks
+                this.attackIndicator.drawRect(-2, -range, 4, range);
+                this.attackIndicator.rotation = directionStringToAngleRadians(this.facing) + Math.PI / 2;
+                break;
         }
         
         this.attackIndicator.endFill();
@@ -465,7 +475,7 @@ export class Monster {
         const distToTarget = Math.sqrt(dx * dx + dy * dy);
         
         let hit = false;
-        
+
         // Check if player is in range
         if (distToTarget <= this.attackRange) {
             switch (attackDetails.pattern) {
@@ -473,7 +483,7 @@ export class Monster {
                     // Circle hits in all directions within range
                     hit = true;
                     break;
-                    
+
                 case 'cone':
                     // Get angle to target
                     let angle = Math.atan2(dy, dx); // This is radians
@@ -489,11 +499,28 @@ export class Monster {
                     const coneHalfAngle = Math.PI / 4;
                     hit = (angleDiff <= coneHalfAngle);
                     break;
+
+                case 'projectile':
+                    const angleToTarget = Math.atan2(dy, dx);
+                    window.game.systems.combat.createProjectile(
+                        this.position.x,
+                        this.position.y,
+                        angleToTarget,
+                        this,
+                        {
+                            damage: attackDetails.damage,
+                            speed: attackDetails.projectileSpeed,
+                            range: attackDetails.projectileRange,
+                            effectType: attackDetails.projectileEffect || 'bow_shot_effect'
+                        }
+                    );
+                    hit = true; // Projectile fired
+                    break;
             }
         }
         
-        // Apply damage if hit
-        if (hit && this.target.takeDamage) {
+        // Apply damage immediately only for melee-based attacks
+        if (hit && attackDetails.pattern !== 'projectile' && this.target.takeDamage) {
             this.target.takeDamage(attackDetails.damage);
         }
     }
