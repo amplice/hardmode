@@ -93,7 +93,7 @@ export class Monster {
                 break;
         }
         
-        return this.spriteManager.getMonsterAnimationForDirection(this.type, this.facing, animState);
+        return this.spriteManager.getGenericEntityAnimation(this.type, this.facing, animState);
     }
     
     updateAnimation() {
