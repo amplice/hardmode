@@ -434,6 +434,11 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     const startPosition = entity.startPositionForAttack; // Use stored start position
     const destination = this.calculateJumpDestination(startPosition, entity.facing, attackConfig.dashDistance);
 
+    const invul = attackConfig.invulnerable || false;
+    if (invul) {
+      entity.isInvulnerable = true;
+    }
+
     setTimeout(() => { // After windupTime
       if (!entity.isAttacking || entity.currentAttackType !== attackType) return;
 
@@ -463,7 +468,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
           entity.position.x = destination.x;
           entity.position.y = destination.y;
           entity.sprite.position.set(destination.x, destination.y);
-          // Final trail effect if needed by config (handled by scheduleAllAttackEffects if timing matches end of dash)
+          if (invul) entity.isInvulnerable = false;
           return;
         }
         entity.position.x = startPosition.x + (destination.x - startPosition.x) * progress;
@@ -487,6 +492,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
         if (entity.isAttacking && entity.currentAttackType === attackType) {
           entity.combat.endAttack();
         }
+        if (invul) entity.isInvulnerable = false;
       }, attackConfig.dashDuration + attackConfig.recoveryTime);
     }, attackConfig.windupTime);
     return attackConfig.cooldown;

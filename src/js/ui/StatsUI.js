@@ -23,12 +23,14 @@ export class StatsUI {
         this.attack1CooldownText = new PIXI.Text('', { fontFamily: 'Arial', fontSize: 16, fill: 0xffffff });
         this.attack2RecoveryText = new PIXI.Text('', { fontFamily: 'Arial', fontSize: 16, fill: 0xffffff });
         this.attack2CooldownText = new PIXI.Text('', { fontFamily: 'Arial', fontSize: 16, fill: 0xffffff });
+        this.rollAvailableText = new PIXI.Text('', { fontFamily: 'Arial', fontSize: 16, fill: 0xffffff });
 
         this.moveSpeedText.position.set(0, 80);
         this.attack1RecoveryText.position.set(0, 100);
         this.attack1CooldownText.position.set(0, 120);
         this.attack2RecoveryText.position.set(0, 140);
         this.attack2CooldownText.position.set(0, 160);
+        this.rollAvailableText.position.set(0, 180);
 
         this.container.addChild(this.killText, this.xpText, this.xpToNextText, this.levelText);
         if (this.showDebug) {
@@ -37,7 +39,8 @@ export class StatsUI {
                 this.attack1RecoveryText,
                 this.attack1CooldownText,
                 this.attack2RecoveryText,
-                this.attack2CooldownText
+                this.attack2CooldownText,
+                this.rollAvailableText
             );
         }
         this.update();
@@ -65,6 +68,7 @@ export class StatsUI {
             this.attack1CooldownText.text = `A1 Cooldown: ${attack1.cooldown}`;
             this.attack2RecoveryText.text = `A2 Recovery: ${attack2.recoveryTime}`;
             this.attack2CooldownText.text = `A2 Cooldown: ${attack2.cooldown}`;
+            this.rollAvailableText.text = `Roll Available: ${this.player.rollUnlocked ? 'Yes' : 'No'}`;
         }
     }
 }
