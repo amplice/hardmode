@@ -5,7 +5,8 @@ export class InputSystem {
             a: false,
             s: false,
             d: false,
-            space: false
+            space: false,
+            shift: false
         };
         
         this.mouse = {
@@ -37,6 +38,7 @@ export class InputSystem {
             case 's': this.keys.s = true; break;
             case 'd': this.keys.d = true; break;
             case ' ': this.keys.space = true; break; // Space bar
+            case 'shift': this.keys.shift = true; break;
         }
     }
     
@@ -47,6 +49,7 @@ export class InputSystem {
             case 's': this.keys.s = false; break;
             case 'd': this.keys.d = false; break;
             case ' ': this.keys.space = false; break; // Space bar
+            case 'shift': this.keys.shift = false; break;
         }
     }
     
@@ -60,7 +63,7 @@ export class InputSystem {
             this.mouse.leftButton = true;
         }
     }
-    
+
     handleMouseUp(event) {
         if (event.button === 0) { // Left mouse button
             this.mouse.leftButton = false;
@@ -75,7 +78,8 @@ export class InputSystem {
             down: this.keys.s,
             right: this.keys.d,
             primaryAttack: this.mouse.leftButton,
-            secondaryAttack: this.keys.space, // Use space instead of right mouse button
+            secondaryAttack: this.keys.space, // Space bar
+            roll: this.keys.shift,
             mousePosition: { ...this.mouse.position }
         };
     }

@@ -15,6 +15,7 @@ const SPRITE_SHEET_CONFIG = [
             { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Knight/StrafeRight.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/characters/Knight/Attack1.png', columns: 15, rows: 8 },
             { keySuffix: 'attack2', path: 'assets/sprites/characters/Knight/Attack2.png', columns: 15, rows: 8 },
+            { keySuffix: 'roll', path: 'assets/sprites/characters/Knight/Rolling.png', columns: 15, rows: 8 },
             { keySuffix: 'die', path: 'assets/sprites/characters/Knight/Die.png', columns: 15, rows: 8 },
             { keySuffix: 'take_damage', path: 'assets/sprites/characters/Knight/TakeDamage.png', columns: 15, rows: 8 },
         ]
@@ -29,6 +30,7 @@ const SPRITE_SHEET_CONFIG = [
             { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Guardian/StrafeRight.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/characters/Guardian/Attack1.png', columns: 15, rows: 8 },
             { keySuffix: 'attack2', path: 'assets/sprites/characters/Guardian/AttackRun.png', columns: 15, rows: 8 },
+            { keySuffix: 'roll', path: 'assets/sprites/characters/Guardian/Rolling.png', columns: 15, rows: 8 },
             { keySuffix: 'die', path: 'assets/sprites/characters/Guardian/Die.png', columns: 15, rows: 8 },
             { keySuffix: 'take_damage', path: 'assets/sprites/characters/Guardian/TakeDamage.png', columns: 15, rows: 8 },
         ]
@@ -43,6 +45,7 @@ const SPRITE_SHEET_CONFIG = [
             { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Rogue/StrafeRight.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/characters/Rogue/Attack1.png', columns: 15, rows: 8 },
             { keySuffix: 'attack2', path: 'assets/sprites/characters/Rogue/Special2.png', columns: 15, rows: 8 },
+            { keySuffix: 'roll', path: 'assets/sprites/characters/Rogue/Rolling.png', columns: 15, rows: 8 },
             { keySuffix: 'die', path: 'assets/sprites/characters/Rogue/Die.png', columns: 15, rows: 8 },
             { keySuffix: 'take_damage', path: 'assets/sprites/characters/Rogue/TakeDamage.png', columns: 15, rows: 8 },
         ]
@@ -57,6 +60,7 @@ const SPRITE_SHEET_CONFIG = [
             { keySuffix: 'strafe_right', path: 'assets/sprites/characters/Hunter/StrafeRight.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/characters/Hunter/Attack1.png', columns: 15, rows: 8 },
             { keySuffix: 'attack2', path: 'assets/sprites/characters/Hunter/BackRoll.png', columns: 15, rows: 8 },
+            { keySuffix: 'roll', path: 'assets/sprites/characters/Hunter/Rolling.png', columns: 15, rows: 8 },
             { keySuffix: 'die', path: 'assets/sprites/characters/Hunter/Die.png', columns: 15, rows: 8 },
             { keySuffix: 'take_damage', path: 'assets/sprites/characters/Hunter/TakeDamage.png', columns: 15, rows: 8 },
         ]
@@ -420,11 +424,21 @@ getAttackAnimation(facingDirection, attackType) {
     // Convert 8-way direction string to animation suffix
     const facingSuffix = directionStringToAnimationSuffix(facingDirection);
     
-    if (!facingSuffix) { // Should technically not happen due to default in util
-        return attackType === 'primary' ? `${classPrefix}_attack1_s` : `${classPrefix}_attack2_s`;
+    if (!facingSuffix) {
+        return attackType === 'roll'
+            ? `${classPrefix}_roll_s`
+            : (attackType === 'primary'
+                ? `${classPrefix}_attack1_s`
+                : `${classPrefix}_attack2_s`);
     }
-    
-    return attackType === 'primary' ? `${classPrefix}_attack1_${facingSuffix}` : `${classPrefix}_attack2_${facingSuffix}`;
+
+    if (attackType === 'roll') {
+        return `${classPrefix}_roll_${facingSuffix}`;
+    }
+
+    return attackType === 'primary'
+        ? `${classPrefix}_attack1_${facingSuffix}`
+        : `${classPrefix}_attack2_${facingSuffix}`;
 }
     
     getAttackHitFrame(animationName) {

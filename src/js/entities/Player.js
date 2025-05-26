@@ -288,6 +288,25 @@ class AnimationComponent extends Component {
         const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
         const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
         
+        if (attackType === 'roll') {
+          const rollAnimName = `${classPrefix}_roll_${this.getFacingAnimationKey()}`;
+          this.owner.currentAnimation = rollAnimName;
+
+          if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
+            this.owner.sprite.removeChild(this.owner.animatedSprite);
+          }
+
+          this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(rollAnimName);
+          if (this.owner.animatedSprite) {
+            this.owner.animatedSprite.loop = false;
+            this.owner.animatedSprite.play();
+            this.owner.sprite.addChild(this.owner.animatedSprite);
+
+            this.owner.animatedSprite.onComplete = () => this.onAnimationComplete();
+          }
+          return;
+        }
+
         // Handle special case for guardian jump attack
         if (this.owner.characterClass === 'guardian' && attackType === 'secondary') {
           // Use attack2 animation for jump attack
@@ -431,6 +450,7 @@ class CombatComponent extends Component {
         this.owner.isAttacking = false;
         this.owner.primaryAttackCooldown = 0;
         this.owner.secondaryAttackCooldown = 0;
+        this.owner.rollCooldown = 0;
         this.owner.currentAttackType = null;
         this.owner.attackHitFrameReached = false;
         this.owner.isInvulnerable = false;
@@ -443,6 +463,9 @@ class CombatComponent extends Component {
         }
         if (this.owner.secondaryAttackCooldown > 0) {
           this.owner.secondaryAttackCooldown -= deltaTime;
+        }
+        if (this.owner.rollCooldown > 0) {
+          this.owner.rollCooldown -= deltaTime;
         }
         
         // Don't process attacks if player can't act
@@ -457,6 +480,9 @@ class CombatComponent extends Component {
         }
         if (this.owner.secondaryAttackCooldown <= 0 && inputState.secondaryAttack) {
           this.performSecondaryAttack();
+        }
+        if (this.owner.rollUnlocked && this.owner.rollCooldown <= 0 && inputState.roll) {
+          this.performRoll();
         }
       }
     
@@ -489,6 +515,20 @@ class CombatComponent extends Component {
       if (this.owner.combatSystem) {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'secondary');
         this.owner.secondaryAttackCooldown = cooldown / 1000; // Store in the correct variable
+      }
+    }
+
+    performRoll() {
+      console.log('Roll started');
+      this.owner.isAttacking = true;
+      this.owner.attackHitFrameReached = false;
+      this.owner.currentAttackType = 'roll';
+
+      this.owner.animation.playAttackAnimation('roll');
+
+      if (this.owner.combatSystem) {
+        const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'roll');
+        this.owner.rollCooldown = cooldown / 1000;
       }
     }
     
@@ -604,6 +644,7 @@ class StatsComponent extends Component {
         this.owner.killCount = 0;
         this.owner.experience = 0; // total accumulated XP
         this.owner.level = 1;
+        this.owner.rollUnlocked = false;
     }
 
     // XP needed to go from (level-1) to level
@@ -667,8 +708,10 @@ class StatsComponent extends Component {
                 this.modifyAttackCooldown(-100);
                 break;
             case 5:
+                this.owner.rollUnlocked = true;
+                break;
             case 9:
-                // Placeholder for new move unlocking in future
+                // Future move unlock placeholder
                 break;
             case 10:
                 this.owner.maxHitPoints += 1;
@@ -703,6 +746,7 @@ export class Player {
         // Get class stats from config
         const classConfig = PLAYER_CONFIG.classes[this.characterClass];
         this.moveSpeed = classConfig.moveSpeed;
+        this.rollUnlocked = false;
         
         // Create sprite container
         this.sprite = new PIXI.Container();
