@@ -179,7 +179,7 @@ export class CombatSystem {
     }
     const config = this.effectConfigs[effectType];
     sprite.scale.set(config?.scale || 1.5, config?.scale || 1.5);
-    sprite.animationSpeed = config?.animationSpeed || 0.5;
+    // sprite.animationSpeed is now set by SpriteManager.createAnimatedSprite
     sprite.loop = true;
     sprite.play();
     return sprite;
@@ -528,7 +528,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     let finalPosition = useRawPosition ? { ...position } : this.calculateEffectPosition(position, facing, config.offsetDistance);
     sprite.position.set(finalPosition.x, finalPosition.y);
     sprite.loop = false; // Most effects play once
-    sprite.animationSpeed = config.animationSpeed || (PLAYER_CONFIG.effects.effectAnimations[effectType]?.speed || 0.2); // Fallback
+    // The animation speed is now set by SpriteManager.createAnimatedSprite
     
     let scaleX = config.scale || 1.0;
     let scaleY = config.scale || 1.0;
