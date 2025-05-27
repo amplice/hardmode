@@ -1,10 +1,12 @@
 {
   "name": "hardmode",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "vite src"
+    "dev": "vite src",
+    "server": "node src/server/server.js"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +16,9 @@
     "express": "^5.1.0",
     "pixi.js": "^7.4.3",
     "simplex-noise": "^4.0.3",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "seedrandom": "^3.0.5"
   },
   "devDependencies": {
     "vite": "^6.3.2"
