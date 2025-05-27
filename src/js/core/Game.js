@@ -11,6 +11,7 @@ import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
+import { NetworkClient } from '../network/NetworkClient.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
@@ -56,6 +57,8 @@ export class Game {
     };
 
     this.entities = { player: null };
+    this.otherPlayers = {};
+    this.network = null;
     window.game = this;
 
     this.tilesets = new TilesetManager();
@@ -112,6 +115,13 @@ export class Game {
     });
     this.entityContainer.addChild(this.entities.player.sprite);
 
+    // Initialize networking
+    this.network = new NetworkClient();
+    this.network.join(selectedClass);
+    this.network.on('playerJoined', (d) => this.handlePlayerJoined(d));
+    this.network.on('playerLeft', (id) => this.handlePlayerLeft(id));
+    this.network.on('worldState', (s) => this.handleWorldState(s));
+
     // Add health and stats UI
     this.healthUI = new HealthUI(this.entities.player);
     this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
@@ -151,6 +161,14 @@ export class Game {
     this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
+
+    if (this.network) {
+      this.network.sendState({
+        x: this.entities.player.position.x,
+        y: this.entities.player.position.y,
+        facing: this.entities.player.facing
+      });
+    }
   }
 
   updateCamera() {
@@ -166,5 +184,52 @@ export class Game {
       Math.floor(this.app.screen.width / 2 - this.camera.x),
       Math.floor(this.app.screen.height / 2 - this.camera.y)
     );
+  }
+
+  handlePlayerJoined(data) {
+    if (data.id === this.network.socket.id) return;
+    if (this.otherPlayers[data.id]) return;
+    const p = new Player({
+      x: data.x,
+      y: data.y,
+      class: data.class,
+      combatSystem: this.systems.combat,
+      spriteManager: this.systems.sprites
+    });
+    this.entityContainer.addChild(p.sprite);
+    this.otherPlayers[data.id] = p;
+  }
+
+  handlePlayerLeft(id) {
+    const p = this.otherPlayers[id];
+    if (p) {
+      this.entityContainer.removeChild(p.sprite);
+      delete this.otherPlayers[id];
+    }
+  }
+
+  handleWorldState(state) {
+    for (const id in state) {
+      if (id === this.network.socket.id) continue;
+      const info = state[id];
+      let p = this.otherPlayers[id];
+      if (!p) {
+        p = new Player({
+          x: info.x,
+          y: info.y,
+          class: info.class,
+          combatSystem: this.systems.combat,
+          spriteManager: this.systems.sprites
+        });
+        this.entityContainer.addChild(p.sprite);
+        this.otherPlayers[id] = p;
+      } else {
+        p.position.x = info.x;
+        p.position.y = info.y;
+        p.facing = info.facing;
+        p.sprite.position.set(info.x, info.y);
+        p.animation.update();
+      }
+    }
   }
 }
