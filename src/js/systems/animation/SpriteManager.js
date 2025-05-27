@@ -356,14 +356,14 @@ export class SpriteManager {
 }
 
 // Update getAnimationForMovement to handle different character classes
-getAnimationForMovement(facingDirection, movementDirection) {
-    // Get current character class from the entity this animation is for
+getAnimationForMovement(facingDirection, movementDirection, characterClass) {
+    // Determine character class for this animation
     const playerEntity = window.game?.entities?.player;
-    const characterClass = playerEntity?.characterClass || 'bladedancer'; // Default to bladedancer if no player
+    const effectiveClass = characterClass || playerEntity?.characterClass || 'bladedancer';
     
     // Fetch spritePrefix from PLAYER_CONFIG
-    const classConfig = PLAYER_CONFIG.classes[characterClass];
-    const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight' if not found
+    const classConfig = PLAYER_CONFIG.classes[effectiveClass];
+    const classPrefix = classConfig?.spritePrefix || 'knight';
 
     // Convert 8-way direction to the animation suffix (e, se, s, etc.)
     const facingSuffix = directionStringToAnimationSuffix(facingDirection);
@@ -426,14 +426,14 @@ getAnimationForMovement(facingDirection, movementDirection) {
     }
 }
     
-getAttackAnimation(facingDirection, attackType) {
-    // Get current character class
+getAttackAnimation(facingDirection, attackType, characterClass) {
+    // Determine character class for this animation
     const playerEntity = window.game?.entities?.player;
-    const characterClass = playerEntity?.characterClass || 'bladedancer'; // Default to bladedancer
+    const effectiveClass = characterClass || playerEntity?.characterClass || 'bladedancer';
     
     // Fetch spritePrefix from PLAYER_CONFIG
-    const classConfig = PLAYER_CONFIG.classes[characterClass];
-    const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
+    const classConfig = PLAYER_CONFIG.classes[effectiveClass];
+    const classPrefix = classConfig?.spritePrefix || 'knight';
 
     // Convert 8-way direction string to animation suffix
     const facingSuffix = directionStringToAnimationSuffix(facingDirection);

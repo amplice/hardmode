@@ -2,6 +2,7 @@
 import * as PIXI from 'pixi.js';
 import { Tile } from './Tile.js';
 import { createNoise2D } from 'simplex-noise';
+import seedrandom from 'seedrandom';
 import { DecorationManager } from '../tiles/DecorationManager.js';
 
 export class WorldGenerator {
@@ -10,8 +11,10 @@ export class WorldGenerator {
     this.height = options.height || 100;
     this.tileSize = options.tileSize || 32;
     this.tilesets = options.tilesets;
-    this.noise2D = createNoise2D();
-    this.waterNoise2D = createNoise2D(Math.random);
+    this.seed = options.seed || Math.floor(Math.random() * 1e8).toString();
+    const rng = seedrandom(this.seed);
+    this.noise2D = createNoise2D(rng);
+    this.waterNoise2D = createNoise2D(seedrandom(this.seed + '_water'));
     this.decorations = null;
     this.container = new PIXI.Container();
     this.tiles = [];
