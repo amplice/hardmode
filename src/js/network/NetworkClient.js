@@ -9,6 +9,7 @@ export class NetworkClient {
         this.socket.on('playerLeft', id => this.emit('playerLeft', id));
         this.socket.on('worldState', state => this.emit('worldState', state));
         this.socket.on('worldInit', data => this.emit('worldInit', data));
+        this.socket.on('playerAction', data => this.emit('playerAction', data));
     }
 
     join(characterClass) {
@@ -17,6 +18,10 @@ export class NetworkClient {
 
     sendState(state) {
         this.socket.emit('state', state);
+    }
+
+    sendAction(action) {
+        this.socket.emit('playerAction', action);
     }
 
     on(event, fn) {

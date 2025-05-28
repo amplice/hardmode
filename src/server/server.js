@@ -2,6 +2,7 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import seedrandom from 'seedrandom';
+import { MonsterSystem } from './game/MonsterSystem.js';
 
 const app = express();
 const httpServer = createServer(app);
@@ -13,12 +14,13 @@ const io = new Server(httpServer, {
 const worldSeed = Math.floor(seedrandom()() * 1e8).toString();
 
 const players = {};
+const monsterSystem = new MonsterSystem(worldSeed);
 
 io.on('connection', socket => {
     console.log('Client connected', socket.id);
 
     // Send world seed and existing players to the newly connected client
-    socket.emit('worldInit', { seed: worldSeed, players });
+    socket.emit('worldInit', { seed: worldSeed, players, monsters: monsterSystem.getState() });
 
     socket.on('join', data => {
         players[socket.id] = {
@@ -39,6 +41,12 @@ io.on('connection', socket => {
         }
     });
 
+    socket.on('playerAction', action => {
+        action.id = socket.id;
+        socket.broadcast.emit('playerAction', action);
+    });
+
+
     socket.on('disconnect', () => {
         console.log('Client disconnected', socket.id);
         delete players[socket.id];
@@ -47,7 +55,8 @@ io.on('connection', socket => {
 });
 
 setInterval(() => {
-    io.emit('worldState', players);
+    monsterSystem.update(0.1, players);
+    io.emit('worldState', { players, monsters: monsterSystem.getState() });
 }, 100);
 
 const PORT = process.env.PORT || 3000;
