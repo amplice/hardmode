@@ -496,7 +496,7 @@ class CombatComponent extends Component {
         }
       }
     
-    performPrimaryAttack() {
+    performPrimaryAttack(skipNetwork = false) {
       console.log(`Primary attack (${this.owner.characterClass === 'guardian' ? 'sweeping axe' : 'forehand slash'}) started`);
       this.owner.isAttacking = true;
       this.owner.attackHitFrameReached = false;
@@ -505,14 +505,16 @@ class CombatComponent extends Component {
       // Play attack animation
       this.owner.animation.playAttackAnimation('primary');
       
-      // Execute attack using combat system
+      if (!skipNetwork && window.game && window.game.network) {
+        window.game.network.sendAction({ type: 'attack' });
+      }
       if (this.owner.combatSystem) {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'primary');
-        this.owner.primaryAttackCooldown = cooldown / 1000; // Store in the correct variable
+        this.owner.primaryAttackCooldown = cooldown / 1000;
       }
     }
     
-    performSecondaryAttack() {
+    performSecondaryAttack(skipNetwork = false) {
       console.log(`Secondary attack (${this.owner.characterClass === 'guardian' ? 'jump attack' : 'overhead smash'}) started`);
       this.owner.isAttacking = true;
       this.owner.attackHitFrameReached = false;
@@ -521,14 +523,16 @@ class CombatComponent extends Component {
       // Play attack animation
       this.owner.animation.playAttackAnimation('secondary');
       
-      // Execute attack using combat system
+      if (!skipNetwork && window.game && window.game.network) {
+        window.game.network.sendAction({ type: 'secondary' });
+      }
       if (this.owner.combatSystem) {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'secondary');
-        this.owner.secondaryAttackCooldown = cooldown / 1000; // Store in the correct variable
+        this.owner.secondaryAttackCooldown = cooldown / 1000;
       }
     }
 
-    performRoll() {
+    performRoll(skipNetwork = false) {
       console.log('Roll started');
       this.owner.isAttacking = true;
       this.owner.attackHitFrameReached = false;
@@ -536,6 +540,9 @@ class CombatComponent extends Component {
 
       this.owner.animation.playAttackAnimation('roll');
 
+      if (!skipNetwork && window.game && window.game.network) {
+        window.game.network.sendAction({ type: 'roll' });
+      }
       if (this.owner.combatSystem) {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'roll');
         this.owner.rollCooldown = cooldown / 1000;

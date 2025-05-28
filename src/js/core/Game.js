@@ -6,6 +6,7 @@ import { PhysicsSystem }  from '../systems/Physics.js';
 import { WorldGenerator } from '../systems/world/WorldGenerator.js';
 import { CombatSystem }   from '../systems/CombatSystem.js';
 import { MonsterSystem }  from '../systems/MonsterSystem.js';
+import { Monster } from '../entities/monsters/Monster.js';
 import { SpriteManager }  from '../systems/animation/SpriteManager.js';
 import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
@@ -103,6 +104,8 @@ export class Game {
     this.network.on('playerJoined', (d) => this.handlePlayerJoined(d));
     this.network.on('playerLeft', (id) => this.handlePlayerLeft(id));
     this.network.on('worldState', (s) => this.handleWorldState(s));
+    this.network.on('playerAction', a => this.handlePlayerAction(a));
+    this.network.on('spawnProjectile', p => this.handleSpawnProjectile(p));
   }
 
   handleWorldInit(data) {
@@ -137,13 +140,24 @@ export class Game {
       }
     }
 
+    // Create monsters from server state
+    const monsterSystem = new MonsterSystem(this.systems.world);
+    this.systems.monsters = monsterSystem;
+    for (const mid in data.monsters || {}) {
+      const m = data.monsters[mid];
+      const monster = new Monster({ x: m.x, y: m.y, type: m.type });
+      monster.id = Number(mid);
+      monster.state = m.state;
+      monster.facing = m.facing;
+      monsterSystem.monsters.push(monster);
+      this.entityContainer.addChild(monster.sprite);
+    }
+
     // Add health and stats UI
     this.healthUI = new HealthUI(this.entities.player);
     this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
     this.uiContainer.addChild(this.healthUI.container);
     this.uiContainer.addChild(this.statsUI.container);
-
-    this.systems.monsters = new MonsterSystem(this.systems.world);
 
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
@@ -224,9 +238,10 @@ export class Game {
   }
 
   handleWorldState(state) {
-    for (const id in state) {
+    const players = state.players || {};
+    for (const id in players) {
       if (id === this.network.socket.id) continue;
-      const info = state[id];
+      const info = players[id];
       let p = this.otherPlayers[id];
       if (!p) {
         p = new Player({
@@ -246,5 +261,56 @@ export class Game {
         p.animation.update();
       }
     }
+
+    if (this.systems.monsters) {
+      const monstersInfo = state.monsters || {};
+      const localMonsters = this.systems.monsters.monsters;
+      for (const id in monstersInfo) {
+        const mInfo = monstersInfo[id];
+        let m = localMonsters.find(mon => mon.id === Number(id));
+        if (!m) {
+          m = new Monster({ x: mInfo.x, y: mInfo.y, type: mInfo.type });
+          m.id = Number(id);
+          m.state = mInfo.state;
+          m.facing = mInfo.facing;
+          localMonsters.push(m);
+          this.entityContainer.addChild(m.sprite);
+        } else {
+          m.position.x = mInfo.x;
+          m.position.y = mInfo.y;
+          m.facing = mInfo.facing;
+          m.state = mInfo.state;
+          m.sprite.position.set(mInfo.x, mInfo.y);
+          m.updateAnimation();
+        }
+      }
+    }
+  }
+
+  handlePlayerAction(action) {
+    const p = this.otherPlayers[action.id];
+    if (!p) return;
+    if (action.type === 'attack') {
+      p.combat.performPrimaryAttack(true);
+    }
+    if (action.type === 'secondary') {
+      p.combat.performSecondaryAttack(true);
+    }
+    if (action.type === 'roll') {
+      p.combat.performRoll(true);
+    }
+  }
+
+  handleSpawnProjectile(data) {
+    if (!this.systems.combat) return;
+    if (data.ownerId === this.network.socket.id) return;
+    this.systems.combat.createProjectile(
+      data.x,
+      data.y,
+      data.angle,
+      null,
+      { damage: data.damage, speed: data.speed, range: data.range,
+        effectType: data.effectType }
+    );
   }
 }

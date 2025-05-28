@@ -167,6 +167,15 @@ export class CombatSystem {
       projectile.attachVisualEffect(effectSprite);
     }
     this.projectiles.push(projectile);
+    if (window.game && window.game.network) {
+      window.game.network.sendProjectile({
+        x, y, angle,
+        damage: options.damage || 1,
+        speed: options.speed || 600,
+        range: options.range || 400,
+        effectType: options.effectType || 'bow_shot_effect'
+      });
+    }
     return projectile;
   }
 
