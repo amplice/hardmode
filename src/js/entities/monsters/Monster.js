@@ -6,9 +6,11 @@ import {
     directionStringToAngleRadians
 } from '../../utils/DirectionUtils.js';
 import { bfsPath, hasLineOfSight } from '../../utils/Pathfinding.js';
+import { generateId } from '../../utils/IdGenerator.js';
 
 export class Monster {
     constructor(options) {
+        this.id = options.id || generateId('monster');
         // Basic properties
         this.position = { x: options.x, y: options.y };
         this.velocity = { x: 0, y: 0 };
