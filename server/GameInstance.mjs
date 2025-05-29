@@ -9,10 +9,12 @@ export class GameInstance {
 
     addPlayer(player) {
         this.players.set(player.id, player);
+        this.broadcast('player_joined', { playerId: player.id });
     }
 
     removePlayer(playerId) {
         this.players.delete(playerId);
+        this.broadcast('player_left', { playerId });
     }
 
     handlePlayerInput(playerId, input) {
@@ -25,5 +27,12 @@ export class GameInstance {
     update(deltaTime) {
         // Placeholder for future server-side game loop
         this.lastUpdate = Date.now();
+    }
+
+    broadcast(event, data, excludeId = null) {
+        for (const p of this.players.values()) {
+            if (p.id === excludeId) continue;
+            p.socket.emit(event, data);
+        }
     }
 }
