@@ -11,6 +11,9 @@ import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
+import { LocalServer } from '../net/LocalServer.js';
+import { LocalClient } from '../net/LocalClient.js';
+import { ClientMessages, ServerMessages } from '../net/MessageTypes.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
@@ -46,6 +49,13 @@ export class Game {
     this.app.stage.addChild(this.uiContainer);
 
     this.camera = { x: 0, y: 0, zoom: 1 };
+
+    // Local client-server setup for single-player mode
+    this.server = new LocalServer();
+    this.client = new LocalClient(this.server, 'client1');
+    this.client.onMessage(this.handleServerMessage.bind(this));
+    this.client.connect();
+    this.inputSequence = 0;
 
     this.systems = {
       input:   new InputSystem(),
@@ -102,28 +112,22 @@ export class Game {
     const worldView = this.systems.world.generate();
     this.worldContainer.addChild(worldView);
 
-    // Create player with selected class
-    this.entities.player = new Player({
-      x: (this.systems.world.width  / 2) * this.systems.world.tileSize,
-      y: (this.systems.world.height / 2) * this.systems.world.tileSize,
-      class:         selectedClass || 'bladedancer', // Use selected or default
-      combatSystem:  this.systems.combat,
-      spriteManager: this.systems.sprites
-    });
-    this.entityContainer.addChild(this.entities.player.sprite);
+    const spawnX = (this.systems.world.width / 2) * this.systems.world.tileSize;
+    const spawnY = (this.systems.world.height / 2) * this.systems.world.tileSize;
 
-    // Add health and stats UI
-    this.healthUI = new HealthUI(this.entities.player);
-    this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
-    this.uiContainer.addChild(this.healthUI.container);
-    this.uiContainer.addChild(this.statsUI.container);
+    this.client.send({
+      type: ClientMessages.CLASS_SELECT,
+      class: selectedClass || 'bladedancer',
+      x: spawnX,
+      y: spawnY
+    });
 
     this.systems.monsters = new MonsterSystem(this.systems.world);
 
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
     this.gameStarted = true;
-    console.log(`Game initialized with ${selectedClass} player`);
+    console.log('Game world initialized');
   }
 
   update(delta) {
@@ -134,6 +138,16 @@ export class Game {
 
     // 1. Update player input and intended movement
     const inputState = this.systems.input.update();
+    this.client.send({
+      type: ClientMessages.INPUT,
+      playerId: this.entities.player?.id,
+      input: inputState,
+      timestamp: Date.now(),
+      sequenceNumber: this.inputSequence++
+    });
+
+    if (!this.entities.player) return;
+
     this.entities.player.update(deltaTimeSeconds, inputState);
     
     // 2. Update monster AI and intended movement
@@ -142,9 +156,11 @@ export class Game {
 
     // 3. Collect all entities that need physics processing
     const allEntitiesForPhysics = [this.entities.player, ...this.systems.monsters.monsters];
-    
+
     // 4. Apply physics (world boundaries and tile collisions) to all collected entities
     this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);
+
+    this.server.update(deltaTimeSeconds);
     
     // 5. Update combat, camera, and UI
     this.systems.combat.update(deltaTimeSeconds);
@@ -154,8 +170,8 @@ export class Game {
   }
 
   updateCamera() {
-    if (!this.gameStarted) return;
-    
+    if (!this.gameStarted || !this.entities.player) return;
+
     this.camera.x = this.entities.player.position.x;
     this.camera.y = this.entities.player.position.y;
     this.worldContainer.position.set(
@@ -166,5 +182,32 @@ export class Game {
       Math.floor(this.app.screen.width / 2 - this.camera.x),
       Math.floor(this.app.screen.height / 2 - this.camera.y)
     );
+  }
+
+  handleServerMessage(message) {
+    switch (message.type) {
+      case ServerMessages.PLAYER_JOINED:
+        this.spawnPlayer(message.playerData);
+        break;
+      default:
+        break;
+    }
+  }
+
+  spawnPlayer(data) {
+    this.entities.player = new Player({
+      id: data.id,
+      x: data.position.x,
+      y: data.position.y,
+      class: data.class,
+      combatSystem: this.systems.combat,
+      spriteManager: this.systems.sprites
+    });
+    this.entityContainer.addChild(this.entities.player.sprite);
+
+    this.healthUI = new HealthUI(this.entities.player);
+    this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
+    this.uiContainer.addChild(this.healthUI.container);
+    this.uiContainer.addChild(this.statsUI.container);
   }
 }
