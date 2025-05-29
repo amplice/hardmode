@@ -1,7 +1,9 @@
 import * as PIXI from 'pixi.js';
+import { generateId } from '../utils/IdGenerator.js';
 
 export class Projectile {
     constructor(options) {
+        this.id = options.id || generateId('projectile');
         this.position = { x: options.x, y: options.y };
         this.velocity = { x: options.velocityX, y: options.velocityY };
         this.speed = options.speed || 600;
@@ -91,7 +93,13 @@ export class Projectile {
     }
     
     checkCollision(entity) {
-        if (!this.active || !entity.alive || entity === this.owner) return false;
+        if (!this.active || entity === this.owner) return false;
+
+        if (entity.hasOwnProperty('alive')) {
+            if (!entity.alive) return false;
+        } else if (entity.isDead) {
+            return false;
+        }
         
         // Simple circular collision
         const dx = entity.position.x - this.position.x;

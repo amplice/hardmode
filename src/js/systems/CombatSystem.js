@@ -138,8 +138,31 @@ export class CombatSystem {
             this.projectiles.splice(i, 1);
             continue;
         }
+
         projectile.update(deltaTime);
-        const monsters = window.game.systems.monsters.monsters; // Consider passing monsters or using an event system
+
+        const monsters = window.game.systems.monsters.monsters;
+        const players = window.game.server?.gameState?.players
+                        ? Array.from(window.game.server.gameState.players.values())
+                        : [window.game.entities.player];
+
+        const ownerIsMonster = projectile.owner && projectile.owner.type;
+
+        if (ownerIsMonster) {
+            for (const player of players) {
+                if (!player || player.isDead) continue;
+                if (projectile.checkCollision(player)) {
+                    if (player.takeDamage) {
+                        player.takeDamage(projectile.damage, projectile.owner);
+                    }
+                    projectile.deactivate();
+                    break;
+                }
+            }
+        }
+
+        if (!projectile.active) continue;
+
         for (const monster of monsters) {
             if (!monster.alive) continue;
             if (projectile.checkCollision(monster)) {

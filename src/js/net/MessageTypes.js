@@ -1,0 +1,16 @@
+export const ClientMessages = {
+    LOGIN: 'LOGIN',
+    INPUT: 'INPUT',
+    ATTACK: 'ATTACK',
+    CLASS_SELECT: 'CLASS_SELECT'
+};
+
+export const ServerMessages = {
+    GAME_STATE: 'GAME_STATE',
+    PLAYER_JOINED: 'PLAYER_JOINED',
+    PLAYER_LEFT: 'PLAYER_LEFT',
+    ENTITY_SPAWN: 'ENTITY_SPAWN',
+    ENTITY_DESPAWN: 'ENTITY_DESPAWN',
+    DAMAGE_EVENT: 'DAMAGE_EVENT',
+    EFFECT_SPAWN: 'EFFECT_SPAWN'
+};
