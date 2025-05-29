@@ -12,10 +12,12 @@ import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 import { LocalServer } from '../net/LocalServer.js';
+import { NetworkManager } from '../net/NetworkManager.js';
 import { ClientMessages, ServerMessages } from '../net/MessageTypes.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
+const USE_NETWORK = false;
 
 // 1) turn off antialias & force pixel‐perfect
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -124,11 +126,15 @@ export class Game {
 
     this.systems.monsters = new MonsterSystem(this.systems.world);
 
-    // Create local server and register this client
-    this.server = new LocalServer(this);
-    this.clientId = 'client_1';
-    this.server.connectClient(this.clientId, this);
-    this.server.addPlayer(this.clientId, this.entities.player);
+    if (USE_NETWORK) {
+      this.network = new NetworkManager(this);
+      this.network.connect('http://localhost:3000');
+    } else {
+      this.server = new LocalServer(this);
+      this.clientId = 'client_1';
+      this.server.connectClient(this.clientId, this);
+      this.server.addPlayer(this.clientId, this.entities.player);
+    }
 
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
@@ -142,15 +148,19 @@ export class Game {
 
     const deltaTimeSeconds = delta / 60;
 
-    // Send input state to the local server
     const inputState = this.systems.input.update();
-    this.server.handleMessage(this.clientId, {
-      type: ClientMessages.INPUT,
-      data: inputState
-    });
 
-    // Let the server process game logic
-    this.server.update(deltaTimeSeconds);
+    if (USE_NETWORK) {
+      if (this.network && this.network.isConnected()) {
+        this.network.sendInput(inputState);
+      }
+    } else {
+      this.server.handleMessage(this.clientId, {
+        type: ClientMessages.INPUT,
+        data: inputState
+      });
+      this.server.update(deltaTimeSeconds);
+    }
 
     // Camera and UI depend on updated positions
     this.updateCamera();
