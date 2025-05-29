@@ -18,7 +18,7 @@ import { ClientMessages, ServerMessages } from '../net/MessageTypes.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
-const USE_NETWORK = false;
+const USE_NETWORK = true;
 
 // 1) turn off antialias & force pixel‐perfect
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -214,9 +214,14 @@ export class Game {
 
   onServerMessage(message) {
     // Stage 1 uses a local server so state is already updated.
-    // This method prepares the client for future networked stages.
+    // This method now handles basic state updates from the network server.
     if (message.type === ServerMessages.GAME_STATE) {
-      // In a real networked setup we would reconcile state here.
+      const myState = message.data.players.find(p => p.id === this.clientId);
+      if (myState && this.entities.player) {
+        this.entities.player.position.x = myState.position.x;
+        this.entities.player.position.y = myState.position.y;
+        this.entities.player.sprite.position.set(myState.position.x, myState.position.y);
+      }
     }
   }
 }

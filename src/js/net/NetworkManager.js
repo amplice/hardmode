@@ -12,6 +12,7 @@ export class NetworkManager {
         this.socket = io(serverUrl);
         this.socket.on('connect', () => {
             console.log('Connected to server');
+            this.game.clientId = this.socket.id;
         });
 
         this.socket.on('game_state', (state) => {
