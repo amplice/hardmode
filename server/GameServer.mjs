@@ -21,13 +21,17 @@ export class GameServer {
 
     handleConnection(socket) {
         console.log('Client connected:', socket.id);
-        this.players.set(socket.id, { id: socket.id, socket, game: null });
+        this.players.set(socket.id, { id: socket.id, socket, game: null, ready: false, class: null });
 
         socket.on('disconnect', () => {
             console.log('Client disconnected:', socket.id);
             const player = this.players.get(socket.id);
             if (player && player.game) {
-                player.game.removePlayer(player.id);
+                const game = player.game;
+                game.removePlayer(player.id);
+                if (game.players.size === 0) {
+                    this.games.delete(game.id);
+                }
             }
             this.players.delete(socket.id);
         });
@@ -36,6 +40,34 @@ export class GameServer {
             const player = this.players.get(socket.id);
             if (player && player.game) {
                 player.game.handlePlayerInput(player.id, data);
+            }
+        });
+
+        socket.on('create_game', () => {
+            const player = this.players.get(socket.id);
+            const gameId = this.createGame(player);
+            socket.emit('game_created', { gameId });
+        });
+
+        socket.on('join_game', ({ gameId }) => {
+            const player = this.players.get(socket.id);
+            const success = this.joinGame(gameId, player);
+            socket.emit('join_result', { success, gameId });
+        });
+
+        socket.on('class_select', ({ className }) => {
+            const player = this.players.get(socket.id);
+            if (player && player.game) {
+                player.class = className;
+                player.game.broadcast('player_class_selected', { playerId: player.id, className });
+            }
+        });
+
+        socket.on('player_ready', () => {
+            const player = this.players.get(socket.id);
+            if (player && player.game) {
+                player.ready = true;
+                player.game.broadcast('player_ready', { playerId: player.id });
             }
         });
     }

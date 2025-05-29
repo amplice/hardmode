@@ -11,6 +11,7 @@ import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
+import { LobbyUI } from '../ui/LobbyUI.js';
 import { LocalServer } from '../net/LocalServer.js';
 import { NetworkManager } from '../net/NetworkManager.js';
 import { ClientMessages, ServerMessages } from '../net/MessageTypes.js';
@@ -62,6 +63,7 @@ export class Game {
     this.entities = { player: null };
     this.server = null;
     this.clientId = null;
+    this.network = null;
     window.game = this;
 
     this.tilesets = new TilesetManager();
@@ -75,9 +77,14 @@ export class Game {
     try {
       await this.tilesets.load();               // load & slice all sheets
       await this.systems.sprites.loadSprites(); // then other art
-      
-      // Show class selection UI instead of immediately starting the game
-      this.showClassSelection();
+
+      if (USE_NETWORK) {
+        this.network = new NetworkManager(this);
+        this.network.connect('http://localhost:3000');
+        this.showLobby();
+      } else {
+        this.showClassSelection();
+      }
     } catch (err) {
       console.error('Failed to load game assets:', err);
     }
@@ -87,6 +94,26 @@ export class Game {
   showClassSelection() {
     this.classSelectUI = new ClassSelectUI(this.startGame.bind(this));
     this.uiContainer.addChild(this.classSelectUI.container);
+  }
+
+  showLobby() {
+    this.lobbyUI = new LobbyUI(
+      () => {
+        if (this.network) {
+          this.network.createGame();
+        }
+        this.uiContainer.removeChild(this.lobbyUI.container);
+        this.showClassSelection();
+      },
+      (gameId) => {
+        if (this.network) {
+          this.network.joinGame(gameId);
+        }
+        this.uiContainer.removeChild(this.lobbyUI.container);
+        this.showClassSelection();
+      }
+    );
+    this.uiContainer.addChild(this.lobbyUI.container);
   }
   
   // Modified to accept selectedClass parameter
@@ -118,6 +145,11 @@ export class Game {
     });
     this.entityContainer.addChild(this.entities.player.sprite);
 
+    if (USE_NETWORK && this.network) {
+      this.network.selectClass(selectedClass || 'bladedancer');
+      this.network.setReady();
+    }
+
     // Add health and stats UI
     this.healthUI = new HealthUI(this.entities.player);
     this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
@@ -126,10 +158,7 @@ export class Game {
 
     this.systems.monsters = new MonsterSystem(this.systems.world);
 
-    if (USE_NETWORK) {
-      this.network = new NetworkManager(this);
-      this.network.connect('http://localhost:3000');
-    } else {
+    if (!USE_NETWORK) {
       this.server = new LocalServer(this);
       this.clientId = 'client_1';
       this.server.connectClient(this.clientId, this);
