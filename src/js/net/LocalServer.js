@@ -1,4 +1,5 @@
 import { ClientMessages, ServerMessages } from './MessageTypes.js';
+import { computeDelta, buildFullState, getRelevantEntities } from './StateSync.js';
 
 // Simple local server used in Stage 1 of the multiplayer transition. It keeps
 // authoritative game state and processes input from connected clients.
@@ -20,6 +21,8 @@ export class LocalServer {
         this.messageHandlers = new Map();
         this.clients = new Map();
         this.pendingInputs = new Map();
+        this.lastStates = new Map();
+        this.viewDistance = 800; // pixels
 
         this.registerHandlers();
     }
@@ -34,10 +37,27 @@ export class LocalServer {
     connectClient(clientId, client) {
         this.clients.set(clientId, client);
         this.pendingInputs.set(clientId, null);
+        this.lastStates.set(clientId, null);
     }
 
     addPlayer(clientId, player) {
         this.gameState.players.set(clientId, player);
+        const entities = [
+            {
+                id: player.id,
+                type: 'player',
+                position: { x: player.position.x, y: player.position.y },
+                facing: player.facing,
+                hp: player.health ? player.health.hitPoints : 0,
+                class: player.characterClass
+            }
+        ];
+        const snapshot = { entities, timestamp: Date.now() };
+        this.lastStates.set(clientId, snapshot);
+        const client = this.clients.get(clientId);
+        if (client && client.onServerMessage) {
+            client.onServerMessage({ type: ServerMessages.GAME_STATE, data: buildFullState(entities, snapshot.timestamp) });
+        }
     }
 
     handleInput(clientId, message) {
@@ -89,26 +109,49 @@ export class LocalServer {
 
         this.gameState.timestamp = Date.now();
 
-        const state = {
-            players: players.map((p) => ({
+        const entityList = [
+            ...players.map((p) => ({
                 id: p.id,
+                type: 'player',
                 position: { x: p.position.x, y: p.position.y },
                 facing: p.facing,
-                hitPoints: p.health ? p.health.hitPoints : 0
+                hp: p.health ? p.health.hitPoints : 0,
+                class: p.characterClass
             })),
-            monsters: this.game.systems.monsters.monsters.map((m) => ({
+            ...this.game.systems.monsters.monsters.map((m) => ({
                 id: m.id,
+                type: 'monster',
                 position: { x: m.position.x, y: m.position.y },
                 facing: m.facing,
                 alive: m.alive
             })),
-            projectiles: this.game.systems.combat.projectiles.map((proj) => ({
+            ...this.game.systems.combat.projectiles.map((proj) => ({
                 id: proj.id,
+                type: 'projectile',
                 position: { x: proj.position.x, y: proj.position.y }
-            })),
-            timestamp: this.gameState.timestamp
-        };
+            }))
+        ];
 
-        this.broadcast({ type: ServerMessages.GAME_STATE, data: state });
+        for (const [clientId, client] of this.clients) {
+            const playerObj = this.gameState.players.get(clientId);
+            const relevant = getRelevantEntities(
+                playerObj,
+                entityList,
+                this.viewDistance
+            );
+            const snapshot = { entities: relevant, timestamp: this.gameState.timestamp };
+            const last = this.lastStates.get(clientId);
+            let payload;
+            if (!last) {
+                payload = buildFullState(snapshot.entities, snapshot.timestamp);
+            } else {
+                payload = computeDelta(last, snapshot);
+            }
+            this.lastStates.set(clientId, snapshot);
+            if (client.onServerMessage) {
+                client.onServerMessage({ type: ServerMessages.GAME_STATE, data: payload });
+            }
+        }
     }
 }
+
