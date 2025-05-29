@@ -93,7 +93,13 @@ export class Projectile {
     }
     
     checkCollision(entity) {
-        if (!this.active || !entity.alive || entity === this.owner) return false;
+        if (!this.active || entity === this.owner) return false;
+
+        if (entity.hasOwnProperty('alive')) {
+            if (!entity.alive) return false;
+        } else if (entity.isDead) {
+            return false;
+        }
         
         // Simple circular collision
         const dx = entity.position.x - this.position.x;
