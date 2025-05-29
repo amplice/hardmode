@@ -15,7 +15,8 @@
     "express": "^5.1.0",
     "pixi.js": "^7.4.3",
     "simplex-noise": "^4.0.3",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "vite": "^6.3.2"
