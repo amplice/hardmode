@@ -138,17 +138,29 @@ export class Game {
 
     // 1. Update player input and intended movement
     const inputState = this.systems.input.update();
+    const mouseWorld = this.entities.player ? {
+      x: inputState.mousePosition.x - window.innerWidth / 2 + this.entities.player.position.x,
+      y: inputState.mousePosition.y - window.innerHeight / 2 + this.entities.player.position.y
+    } : null;
     this.client.send({
       type: ClientMessages.INPUT,
       playerId: this.entities.player?.id,
       input: inputState,
+      mouseWorld,
       timestamp: Date.now(),
       sequenceNumber: this.inputSequence++
     });
 
     if (!this.entities.player) return;
 
-    this.entities.player.update(deltaTimeSeconds, inputState);
+    const sanitizedInput = {
+      ...inputState,
+      up: false,
+      down: false,
+      left: false,
+      right: false
+    };
+    this.entities.player.update(deltaTimeSeconds, sanitizedInput);
     
     // 2. Update monster AI and intended movement
     // MonsterSystem.update calls Monster.update, which changes monster.position
@@ -189,8 +201,22 @@ export class Game {
       case ServerMessages.PLAYER_JOINED:
         this.spawnPlayer(message.playerData);
         break;
+      case ServerMessages.GAME_STATE:
+        this.syncGameState(message);
+        break;
       default:
         break;
+    }
+  }
+
+  syncGameState(state) {
+    if (!this.entities.player) return;
+    const serverPlayer = state.players.find(p => p.id === this.entities.player.id);
+    if (serverPlayer) {
+      this.entities.player.position.x = serverPlayer.position.x;
+      this.entities.player.position.y = serverPlayer.position.y;
+      this.entities.player.facing = serverPlayer.facing;
+      this.entities.player.sprite.position.set(serverPlayer.position.x, serverPlayer.position.y);
     }
   }
 
