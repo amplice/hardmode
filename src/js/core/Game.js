@@ -1,16 +1,13 @@
 // src/js/core/Game.js
 import * as PIXI from 'pixi.js';
-import { Player }         from '../entities/Player.js';
 import { InputSystem }    from '../systems/Input.js';
-import { PhysicsSystem }  from '../systems/Physics.js';
-import { WorldGenerator } from '../systems/world/WorldGenerator.js';
-import { CombatSystem }   from '../systems/CombatSystem.js';
-import { MonsterSystem }  from '../systems/MonsterSystem.js';
-import { SpriteManager }  from '../systems/animation/SpriteManager.js';
 import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
+import { LocalServer } from '../net/LocalServer.js';
+import { LocalClient } from '../net/LocalClient.js';
+import { ClientMessages } from '../net/MessageTypes.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
@@ -48,17 +45,15 @@ export class Game {
     this.camera = { x: 0, y: 0, zoom: 1 };
 
     this.systems = {
-      input:   new InputSystem(),
-      physics: new PhysicsSystem(),
-      world:   null,               // will init after tilesets
-      combat:  new CombatSystem(this.app),
-      sprites: new SpriteManager()
+      input: new InputSystem()
     };
 
     this.entities = { player: null };
     window.game = this;
 
     this.tilesets = new TilesetManager();
+    this.server = new LocalServer(this);
+    this.client = new LocalClient(this.server, 'player1');
     this.loadAndInit();
     
     // Flag to track game state
@@ -68,7 +63,6 @@ export class Game {
   async loadAndInit() {
     try {
       await this.tilesets.load();               // load & slice all sheets
-      await this.systems.sprites.loadSprites(); // then other art
       
       // Show class selection UI instead of immediately starting the game
       this.showClassSelection();
@@ -91,34 +85,13 @@ export class Game {
       this.classSelectUI = null;
     }
     
-    // Initialize the game world
-    this.systems.world = new WorldGenerator({
-      width:    100,
-      height:   100,
-      tileSize: 64,
-      tilesets: this.tilesets
-    });
+    this.server.startGame('player1', selectedClass, this.tilesets);
 
-    const worldView = this.systems.world.generate();
-    this.worldContainer.addChild(worldView);
-
-    // Create player with selected class
-    this.entities.player = new Player({
-      x: (this.systems.world.width  / 2) * this.systems.world.tileSize,
-      y: (this.systems.world.height / 2) * this.systems.world.tileSize,
-      class:         selectedClass || 'bladedancer', // Use selected or default
-      combatSystem:  this.systems.combat,
-      spriteManager: this.systems.sprites
-    });
-    this.entityContainer.addChild(this.entities.player.sprite);
-
-    // Add health and stats UI
+    this.entities.player = this.server.gameState.players.get('player1');
     this.healthUI = new HealthUI(this.entities.player);
     this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
     this.uiContainer.addChild(this.healthUI.container);
     this.uiContainer.addChild(this.statsUI.container);
-
-    this.systems.monsters = new MonsterSystem(this.systems.world);
 
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
@@ -134,20 +107,11 @@ export class Game {
 
     // 1. Update player input and intended movement
     const inputState = this.systems.input.update();
-    this.entities.player.update(deltaTimeSeconds, inputState);
-    
-    // 2. Update monster AI and intended movement
-    // MonsterSystem.update calls Monster.update, which changes monster.position
-    this.systems.monsters.update(deltaTimeSeconds, this.entities.player);
+    this.client.send({ type: ClientMessages.INPUT, data: inputState });
 
-    // 3. Collect all entities that need physics processing
-    const allEntitiesForPhysics = [this.entities.player, ...this.systems.monsters.monsters];
-    
-    // 4. Apply physics (world boundaries and tile collisions) to all collected entities
-    this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);
-    
-    // 5. Update combat, camera, and UI
-    this.systems.combat.update(deltaTimeSeconds);
+    this.server.update(deltaTimeSeconds);
+
+    // Update camera and UI after server simulation
     this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();

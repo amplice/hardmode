@@ -6,6 +6,7 @@ import {
     velocityToDirectionString,
     directionStringToAnimationSuffix
 } from '../utils/DirectionUtils.js';
+import { generateId } from '../utils/IdGenerator.js';
 
 // Base Component class
 class Component {
@@ -736,6 +737,7 @@ class StatsComponent extends Component {
 
 export class Player {
     constructor(options) {
+        this.id = options.id || generateId('player');
         // Core properties
         this.position = { x: options.x, y: options.y };
         this.facing = 'down';
