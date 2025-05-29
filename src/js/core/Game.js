@@ -64,6 +64,7 @@ export class Game {
     this.server = null;
     this.clientId = null;
     this.network = null;
+    this.remoteState = new Map();
     window.game = this;
 
     this.tilesets = new TilesetManager();
@@ -213,10 +214,25 @@ export class Game {
   }
 
   onServerMessage(message) {
-    // Stage 1 uses a local server so state is already updated.
-    // This method prepares the client for future networked stages.
     if (message.type === ServerMessages.GAME_STATE) {
-      // In a real networked setup we would reconcile state here.
+      const data = message.data;
+      if (data.fullState) {
+        this.remoteState.clear();
+        for (const entity of data.entities) {
+          this.remoteState.set(entity.id, { ...entity });
+        }
+      } else {
+        for (const spawn of data.spawns || []) {
+          this.remoteState.set(spawn.id, { ...spawn });
+        }
+        for (const update of data.updates || []) {
+          const existing = this.remoteState.get(update.id);
+          if (existing) Object.assign(existing, update);
+        }
+        for (const despawn of data.despawns || []) {
+          this.remoteState.delete(despawn.id);
+        }
+      }
     }
   }
 }
