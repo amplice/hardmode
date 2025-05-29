@@ -11,6 +11,8 @@ import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
+import { LocalServer } from '../net/LocalServer.js';
+import { ClientMessages, ServerMessages } from '../net/MessageTypes.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
@@ -56,6 +58,8 @@ export class Game {
     };
 
     this.entities = { player: null };
+    this.server = null;
+    this.clientId = null;
     window.game = this;
 
     this.tilesets = new TilesetManager();
@@ -120,6 +124,12 @@ export class Game {
 
     this.systems.monsters = new MonsterSystem(this.systems.world);
 
+    // Create local server and register this client
+    this.server = new LocalServer(this);
+    this.clientId = 'client_1';
+    this.server.connectClient(this.clientId, this);
+    this.server.addPlayer(this.clientId, this.entities.player);
+
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
     this.gameStarted = true;
@@ -129,26 +139,21 @@ export class Game {
   update(delta) {
     // Only update game if it has started
     if (!this.gameStarted) return;
-    
+
     const deltaTimeSeconds = delta / 60;
 
-    // 1. Update player input and intended movement
+    // Send input state to the local server
     const inputState = this.systems.input.update();
-    this.entities.player.update(deltaTimeSeconds, inputState);
-    
-    // 2. Update monster AI and intended movement
-    // MonsterSystem.update calls Monster.update, which changes monster.position
-    this.systems.monsters.update(deltaTimeSeconds, this.entities.player);
+    this.server.handleMessage(this.clientId, {
+      type: ClientMessages.INPUT,
+      data: inputState
+    });
 
-    // 3. Collect all entities that need physics processing
-    const allEntitiesForPhysics = [this.entities.player, ...this.systems.monsters.monsters];
-    
-    // 4. Apply physics (world boundaries and tile collisions) to all collected entities
-    this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);
-    
-    // 5. Update combat, camera, and UI
-    this.systems.combat.update(deltaTimeSeconds);
-    this.updateCamera(); // Depends on player's final position after physics
+    // Let the server process game logic
+    this.server.update(deltaTimeSeconds);
+
+    // Camera and UI depend on updated positions
+    this.updateCamera();
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
   }
@@ -166,5 +171,13 @@ export class Game {
       Math.floor(this.app.screen.width / 2 - this.camera.x),
       Math.floor(this.app.screen.height / 2 - this.camera.y)
     );
+  }
+
+  onServerMessage(message) {
+    // Stage 1 uses a local server so state is already updated.
+    // This method prepares the client for future networked stages.
+    if (message.type === ServerMessages.GAME_STATE) {
+      // In a real networked setup we would reconcile state here.
+    }
   }
 }
