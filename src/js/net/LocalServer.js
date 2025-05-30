@@ -1,5 +1,6 @@
 import { ClientMessages, ServerMessages } from './MessageTypes.js';
 import { computeDelta, buildFullState, getRelevantEntities } from './StateSync.js';
+import { LagCompensation } from '../../../server/LagCompensation.mjs';
 
 // Simple local server used in Stage 1 of the multiplayer transition. It keeps
 // authoritative game state and processes input from connected clients.
@@ -22,7 +23,9 @@ export class LocalServer {
         this.clients = new Map();
         this.pendingInputs = new Map();
         this.lastStates = new Map();
+        this.lastProcessedInput = new Map();
         this.viewDistance = 800; // pixels
+        this.lagComp = new LagCompensation();
 
         this.registerHandlers();
     }
@@ -38,6 +41,7 @@ export class LocalServer {
         this.clients.set(clientId, client);
         this.pendingInputs.set(clientId, null);
         this.lastStates.set(clientId, null);
+        this.lastProcessedInput.set(clientId, -1);
     }
 
     addPlayer(clientId, player) {
@@ -84,10 +88,21 @@ export class LocalServer {
 
     update(deltaTime) {
         const players = Array.from(this.gameState.players.values());
+        const timestamp = Date.now();
+        for (const p of players) {
+            this.lagComp.record(p.id, p.position, timestamp);
+        }
+        for (const m of this.game.systems.monsters.monsters) {
+            this.lagComp.record(m.id, m.position, timestamp);
+        }
 
         for (const [clientId, player] of this.gameState.players) {
-            const inputState = this.pendingInputs.get(clientId) || {};
+            const inputObj = this.pendingInputs.get(clientId) || {};
+            const inputState = inputObj.input || inputObj;
             player.update(deltaTime, inputState);
+            if (typeof inputObj.sequenceNumber === 'number') {
+                this.lastProcessedInput.set(clientId, inputObj.sequenceNumber);
+            }
         }
 
         const mainPlayer = players[0];
@@ -148,6 +163,7 @@ export class LocalServer {
             } else {
                 payload = computeDelta(last, snapshot);
             }
+            payload.lastProcessedInput = this.lastProcessedInput.get(clientId) ?? -1;
             this.lastStates.set(clientId, snapshot);
             if (client.onServerMessage) {
                 client.onServerMessage({ type: ServerMessages.GAME_STATE, data: payload });
