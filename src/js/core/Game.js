@@ -15,6 +15,7 @@ import { LobbyUI } from '../ui/LobbyUI.js';
 import { LocalServer } from '../net/LocalServer.js';
 import { NetworkManager } from '../net/NetworkManager.js';
 import { ClientMessages, ServerMessages } from '../net/MessageTypes.js';
+import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
@@ -64,6 +65,8 @@ export class Game {
     this.server = null;
     this.clientId = null;
     this.network = null;
+    this.remoteState = new Map();
+    this.remoteSprites = new Map();
     window.game = this;
 
     this.tilesets = new TilesetManager();
@@ -195,6 +198,7 @@ export class Game {
     this.updateCamera();
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
+    this.syncRemoteSprites();
   }
 
   updateCamera() {
@@ -213,10 +217,72 @@ export class Game {
   }
 
   onServerMessage(message) {
-    // Stage 1 uses a local server so state is already updated.
-    // This method prepares the client for future networked stages.
     if (message.type === ServerMessages.GAME_STATE) {
-      // In a real networked setup we would reconcile state here.
+      const data = message.data;
+      if (data.fullState) {
+        this.remoteState.clear();
+        for (const entity of data.entities) {
+          this.remoteState.set(entity.id, { ...entity });
+        }
+      } else {
+        for (const spawn of data.spawns || []) {
+          this.remoteState.set(spawn.id, { ...spawn });
+        }
+        for (const update of data.updates || []) {
+          const existing = this.remoteState.get(update.id);
+          if (existing) Object.assign(existing, update);
+        }
+        for (const despawn of data.despawns || []) {
+          this.remoteState.delete(despawn.id);
+        }
+      }
     }
+  }
+
+  syncRemoteSprites() {
+    for (const [id, data] of this.remoteState) {
+      if (this.entities.player && id === this.entities.player.id) continue;
+      let sprite = this.remoteSprites.get(id);
+      if (!sprite) {
+        sprite = this.spawnRemoteSprite(data);
+        if (!sprite) continue;
+        this.remoteSprites.set(id, sprite);
+        this.entityContainer.addChild(sprite);
+      }
+      sprite.position.set(data.position.x, data.position.y);
+    }
+
+    for (const [id, sprite] of this.remoteSprites) {
+      if (!this.remoteState.has(id)) {
+        this.entityContainer.removeChild(sprite);
+        if (sprite.destroy) sprite.destroy();
+        this.remoteSprites.delete(id);
+      }
+    }
+  }
+
+  spawnRemoteSprite(data) {
+    if (data.type === 'player') {
+      const classCfg = PLAYER_CONFIG.classes[data.class] || PLAYER_CONFIG.classes.bladedancer;
+      const anim = `${classCfg.spritePrefix}_idle_s`;
+      const sprite = this.systems.sprites.createAnimatedSprite(anim);
+      if (sprite) sprite.play();
+      return sprite;
+    }
+    if (data.type === 'monster') {
+      const prefix = data.monsterType || 'skeleton';
+      const anim = `${prefix}_idle_s`;
+      const sprite = this.systems.sprites.createAnimatedSprite(anim);
+      if (sprite) sprite.play();
+      return sprite;
+    }
+    if (data.type === 'projectile') {
+      const gfx = new PIXI.Graphics();
+      gfx.beginFill(0xff8800);
+      gfx.drawCircle(0, 0, 4);
+      gfx.endFill();
+      return gfx;
+    }
+    return null;
   }
 }
