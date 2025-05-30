@@ -3,6 +3,8 @@ import {
     buildFullState,
     getRelevantEntities
 } from '../src/js/net/StateSync.js';
+import { PhysicsSystem } from './Physics.mjs';
+import { SimpleWorld } from './SimpleWorld.mjs';
 
 export class GameInstance {
     constructor(id) {
@@ -20,6 +22,9 @@ export class GameInstance {
         this.viewDistance = 800;
         this.updateRate = 20;
         this.lastUpdate = Date.now();
+
+        this.world = new SimpleWorld();
+        this.physics = new PhysicsSystem(this.world);
 
         // Spawn a few simple monsters so clients have entities to see
         this.spawnInitialMonsters();
@@ -120,13 +125,16 @@ export class GameInstance {
 
         this.updateMonsters(deltaTime);
 
-        this.state.timestamp = Date.now();
-
-        const entityList = [
+        const physicsEntities = [
             ...Array.from(this.state.players.values()),
             ...Array.from(this.state.monsters.values()),
             ...Array.from(this.state.projectiles.values())
         ];
+        this.physics.update(deltaTime, physicsEntities);
+
+        this.state.timestamp = Date.now();
+
+        const entityList = physicsEntities;
 
         for (const player of this.players.values()) {
             const playerEntity = this.state.players.get(player.id);
