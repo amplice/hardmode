@@ -1,5 +1,6 @@
 import { io } from 'socket.io-client';
 import { ClientMessages } from './MessageTypes.js';
+import { ReliableClientEvents } from './EventReliability.js';
 
 export class NetworkManager {
     constructor(game) {
@@ -65,23 +66,31 @@ export class NetworkManager {
         }
     }
 
+    send(event, data) {
+        if (ReliableClientEvents.has(event)) {
+            this.sendReliable(event, data);
+        } else {
+            this.sendUnreliable(event, data);
+        }
+    }
+
     sendInput(input) {
-        this.sendUnreliable('input', { type: ClientMessages.INPUT, data: input });
+        this.send('input', { type: ClientMessages.INPUT, data: input });
     }
 
     createGame() {
-        this.sendReliable('create_game');
+        this.send('create_game');
     }
 
     joinGame(gameId) {
-        this.sendReliable('join_game', { gameId });
+        this.send('join_game', { gameId });
     }
 
     selectClass(className) {
-        this.sendReliable('class_select', { className });
+        this.send('class_select', { className });
     }
 
     setReady() {
-        this.sendReliable('player_ready');
+        this.send('player_ready');
     }
 }
