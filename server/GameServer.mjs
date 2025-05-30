@@ -1,5 +1,6 @@
 import { Server } from 'socket.io';
 import { GameInstance } from './GameInstance.mjs';
+import { emitWithReliability } from './NetUtils.mjs';
 
 export class GameServer {
     constructor(httpServer) {
@@ -46,13 +47,13 @@ export class GameServer {
         socket.on('create_game', () => {
             const player = this.players.get(socket.id);
             const gameId = this.createGame(player);
-            socket.emit('game_created', { gameId });
+            emitWithReliability(socket, 'game_created', { gameId });
         });
 
         socket.on('join_game', ({ gameId }) => {
             const player = this.players.get(socket.id);
             const success = this.joinGame(gameId, player);
-            socket.emit('join_result', { success, gameId });
+            emitWithReliability(socket, 'join_result', { success, gameId });
         });
 
         socket.on('class_select', ({ className }) => {

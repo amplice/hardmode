@@ -5,6 +5,7 @@ import {
 } from '../src/js/net/StateSync.js';
 import { PhysicsSystem } from './Physics.mjs';
 import { SimpleWorld } from './SimpleWorld.mjs';
+import { emitWithReliability } from './NetUtils.mjs';
 
 export class GameInstance {
     constructor(id) {
@@ -93,7 +94,7 @@ export class GameInstance {
         ];
         const relevant = getRelevantEntities(entity, allEntities, this.viewDistance);
         const snapshot = buildFullState(relevant, this.state.timestamp);
-        player.socket.emit('game_state', snapshot);
+        emitWithReliability(player.socket, 'game_state', snapshot);
         this.lastStates.set(player.id, { entities: relevant, timestamp: this.state.timestamp });
         this.broadcast('player_joined', { playerId: player.id }, player.id);
     }
@@ -152,7 +153,7 @@ export class GameInstance {
                 payload = computeDelta(last, snapshot);
             }
             this.lastStates.set(player.id, snapshot);
-            player.socket.emit('game_state', payload);
+            emitWithReliability(player.socket, 'game_state', payload);
         }
 
         this.lastUpdate = Date.now();
@@ -161,7 +162,7 @@ export class GameInstance {
     broadcast(event, data, excludeId = null) {
         for (const p of this.players.values()) {
             if (p.id === excludeId) continue;
-            p.socket.emit(event, data);
+            emitWithReliability(p.socket, event, data);
         }
     }
 }
