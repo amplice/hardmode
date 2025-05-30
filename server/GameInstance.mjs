@@ -20,6 +20,52 @@ export class GameInstance {
         this.viewDistance = 800;
         this.updateRate = 20;
         this.lastUpdate = Date.now();
+
+        // Spawn a few simple monsters so clients have entities to see
+        this.spawnInitialMonsters();
+    }
+
+    spawnInitialMonsters() {
+        for (let i = 0; i < 5; i++) {
+            const id = `monster_${this.state.nextEntityId++}`;
+            this.state.monsters.set(id, {
+                id,
+                type: 'monster',
+                monsterType: 'skeleton',
+                position: { x: 200 + i * 50, y: 200 + i * 50 },
+                facing: 'down',
+                alive: true
+            });
+        }
+    }
+
+    findNearestPlayer(monster) {
+        let closest = null;
+        let minDist = Infinity;
+        for (const p of this.state.players.values()) {
+            const dx = p.position.x - monster.position.x;
+            const dy = p.position.y - monster.position.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < minDist) {
+                minDist = dist;
+                closest = p;
+            }
+        }
+        return closest;
+    }
+
+    updateMonsters(deltaTime) {
+        // Simple chase AI that moves monsters toward the nearest player
+        for (const monster of this.state.monsters.values()) {
+            const target = this.findNearestPlayer(monster);
+            if (!target) continue;
+            const dx = target.position.x - monster.position.x;
+            const dy = target.position.y - monster.position.y;
+            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+            const speed = 60 * deltaTime;
+            monster.position.x += (dx / dist) * speed;
+            monster.position.y += (dy / dist) * speed;
+        }
     }
 
     addPlayer(player) {
@@ -72,7 +118,7 @@ export class GameInstance {
             this.pendingInputs.set(id, null);
         }
 
-        // Monsters and projectiles would be updated here
+        this.updateMonsters(deltaTime);
 
         this.state.timestamp = Date.now();
 
