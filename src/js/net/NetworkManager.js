@@ -53,33 +53,35 @@ export class NetworkManager {
         return this.socket && this.socket.connected;
     }
 
-    sendInput(input) {
+    sendReliable(event, data) {
         if (this.isConnected()) {
-            this.socket.emit('input', { type: ClientMessages.INPUT, data: input });
+            this.socket.emit(event, data);
         }
+    }
+
+    sendUnreliable(event, data) {
+        if (this.isConnected()) {
+            this.socket.emit(event, data);
+        }
+    }
+
+    sendInput(input) {
+        this.sendUnreliable('input', { type: ClientMessages.INPUT, data: input });
     }
 
     createGame() {
-        if (this.isConnected()) {
-            this.socket.emit('create_game');
-        }
+        this.sendReliable('create_game');
     }
 
     joinGame(gameId) {
-        if (this.isConnected()) {
-            this.socket.emit('join_game', { gameId });
-        }
+        this.sendReliable('join_game', { gameId });
     }
 
     selectClass(className) {
-        if (this.isConnected()) {
-            this.socket.emit('class_select', { className });
-        }
+        this.sendReliable('class_select', { className });
     }
 
     setReady() {
-        if (this.isConnected()) {
-            this.socket.emit('player_ready');
-        }
+        this.sendReliable('player_ready');
     }
 }

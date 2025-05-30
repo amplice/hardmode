@@ -1,31 +1,106 @@
+import {
+    computeDelta,
+    buildFullState,
+    getRelevantEntities
+} from '../src/js/net/StateSync.js';
+
 export class GameInstance {
     constructor(id) {
         this.id = id;
         this.players = new Map();
-        this.state = {};
+        this.state = {
+            players: new Map(),
+            monsters: new Map(),
+            projectiles: new Map(),
+            nextEntityId: 1,
+            timestamp: Date.now()
+        };
+        this.pendingInputs = new Map();
+        this.lastStates = new Map();
+        this.viewDistance = 800;
         this.updateRate = 20;
         this.lastUpdate = Date.now();
     }
 
     addPlayer(player) {
         this.players.set(player.id, player);
-        this.broadcast('player_joined', { playerId: player.id });
+        const entity = {
+            id: player.id,
+            type: 'player',
+            position: { x: 100, y: 100 },
+            facing: 'down',
+            hp: 3,
+            class: player.class || 'bladedancer'
+        };
+        this.state.players.set(player.id, entity);
+        this.pendingInputs.set(player.id, null);
+        this.lastStates.set(player.id, null);
+        const allEntities = [
+            ...Array.from(this.state.players.values()),
+            ...Array.from(this.state.monsters.values()),
+            ...Array.from(this.state.projectiles.values())
+        ];
+        const relevant = getRelevantEntities(entity, allEntities, this.viewDistance);
+        const snapshot = buildFullState(relevant, this.state.timestamp);
+        player.socket.emit('game_state', snapshot);
+        this.lastStates.set(player.id, { entities: relevant, timestamp: this.state.timestamp });
+        this.broadcast('player_joined', { playerId: player.id }, player.id);
     }
 
     removePlayer(playerId) {
         this.players.delete(playerId);
+        this.state.players.delete(playerId);
+        this.pendingInputs.delete(playerId);
+        this.lastStates.delete(playerId);
         this.broadcast('player_left', { playerId });
     }
 
     handlePlayerInput(playerId, input) {
-        const player = this.players.get(playerId);
-        if (player) {
-            player.pendingInput = input;
+        if (this.players.has(playerId)) {
+            this.pendingInputs.set(playerId, input.data || input);
         }
     }
 
     update(deltaTime) {
-        // Placeholder for future server-side game loop
+        for (const [id, entity] of this.state.players) {
+            const input = this.pendingInputs.get(id) || {};
+            const speed = 100 * deltaTime;
+            if (input.up) entity.position.y -= speed;
+            if (input.down) entity.position.y += speed;
+            if (input.left) entity.position.x -= speed;
+            if (input.right) entity.position.x += speed;
+            this.pendingInputs.set(id, null);
+        }
+
+        // Monsters and projectiles would be updated here
+
+        this.state.timestamp = Date.now();
+
+        const entityList = [
+            ...Array.from(this.state.players.values()),
+            ...Array.from(this.state.monsters.values()),
+            ...Array.from(this.state.projectiles.values())
+        ];
+
+        for (const player of this.players.values()) {
+            const playerEntity = this.state.players.get(player.id);
+            const relevant = getRelevantEntities(
+                playerEntity,
+                entityList,
+                this.viewDistance
+            );
+            const snapshot = { entities: relevant, timestamp: this.state.timestamp };
+            const last = this.lastStates.get(player.id);
+            let payload;
+            if (!last) {
+                payload = buildFullState(snapshot.entities, snapshot.timestamp);
+            } else {
+                payload = computeDelta(last, snapshot);
+            }
+            this.lastStates.set(player.id, snapshot);
+            player.socket.emit('game_state', payload);
+        }
+
         this.lastUpdate = Date.now();
     }
 
