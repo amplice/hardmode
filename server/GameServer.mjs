@@ -30,6 +30,8 @@ export class GameServer {
                 const game = player.game;
                 game.removePlayer(player.id);
                 if (game.players.size === 0) {
+                    console.log(`GameInstance ${game.id} is empty, stopping and deleting.`);
+                    game.stop(); // Call stop before deleting
                     this.games.delete(game.id);
                 }
             }
@@ -59,15 +61,21 @@ export class GameServer {
             const player = this.players.get(socket.id);
             if (player && player.game) {
                 player.class = className;
-                player.game.broadcast('player_class_selected', { playerId: player.id, className });
+                const updatedPlayerState = player.game.getPlayerState(player.id);
+                if (updatedPlayerState) {
+                    player.game.broadcast('player_updated', updatedPlayerState);
+                }
             }
         });
 
         socket.on('player_ready', () => {
             const player = this.players.get(socket.id);
             if (player && player.game) {
-                player.ready = true;
-                player.game.broadcast('player_ready', { playerId: player.id });
+                player.ready = true; // As per plan, set to true. Could be player.ready = !player.ready for toggle
+                const updatedPlayerState = player.game.getPlayerState(player.id);
+                if (updatedPlayerState) {
+                    player.game.broadcast('player_updated', updatedPlayerState);
+                }
             }
         });
     }
@@ -78,6 +86,7 @@ export class GameServer {
         this.games.set(gameId, game);
         hostPlayer.game = game;
         game.addPlayer(hostPlayer);
+        game.start();
         return gameId;
     }
 
@@ -86,6 +95,9 @@ export class GameServer {
         if (!game) return false;
         player.game = game;
         game.addPlayer(player);
+        // Send the full lobby state to the player who just joined.
+        const lobbyState = game.getLobbyState();
+        player.socket.emit('LOBBY_STATE_UPDATE', lobbyState);
         return true;
     }
 

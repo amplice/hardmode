@@ -73,14 +73,14 @@ export class InputSystem {
     update() {
         // Return the current input state
         return {
-            up: this.keys.w,
-            left: this.keys.a,
-            down: this.keys.s,
-            right: this.keys.d,
-            primaryAttack: this.mouse.leftButton,
-            secondaryAttack: this.keys.space, // Space bar
-            roll: this.keys.shift,
-            mousePosition: { ...this.mouse.position }
+            keys: { ...this.keys }, // Send a copy of the raw keys state
+            mouse: {
+                x: this.mouse.position.x,
+                y: this.mouse.position.y,
+                leftButton: this.mouse.leftButton
+            },
+            timestamp: Date.now()
+            // sequenceNumber will be added by NetworkManager
         };
     }
 }

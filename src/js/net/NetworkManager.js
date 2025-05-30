@@ -6,6 +6,25 @@ export class NetworkManager {
         this.game = game;
         this.socket = null;
         this.gameId = null;
+        this.sequenceNumber = 0;
+        this.serverTimeOffset = 0;
+        this.latency = 0;
+        this.lobbyState = { players: new Map() }; // playerId -> {id, ready, class}
+        this.onLobbyUpdate = null; // Callback to be set by the Game/UI manager
+    }
+
+    getLobbyState() {
+        return { players: Array.from(this.lobbyState.players.values()) };
+    }
+
+    setLobbyUpdateCallback(callback) {
+        this.onLobbyUpdate = callback;
+    }
+
+    _notifyLobbyUpdate() {
+        if (this.onLobbyUpdate) {
+            this.onLobbyUpdate(this.getLobbyState());
+        }
     }
 
     connect(serverUrl) {
@@ -32,30 +51,64 @@ export class NetworkManager {
             }
         });
 
-        this.socket.on('player_joined', ({ playerId }) => {
-            console.log('Player joined', playerId);
+        // New handlers for lobby state
+        this.socket.on('LOBBY_STATE_UPDATE', (fullLobbyState) => {
+            this.lobbyState.players.clear();
+            for (const player of fullLobbyState) {
+                this.lobbyState.players.set(player.id, player);
+            }
+            console.log('LOBBY_STATE_UPDATE received:', this.getLobbyState());
+            this._notifyLobbyUpdate();
+        });
+
+        this.socket.on('player_joined', (playerData) => {
+            this.lobbyState.players.set(playerData.id, playerData);
+            console.log('player_joined:', playerData, 'New lobby state:', this.getLobbyState());
+            this._notifyLobbyUpdate();
         });
 
         this.socket.on('player_left', ({ playerId }) => {
-            console.log('Player left', playerId);
+            this.lobbyState.players.delete(playerId);
+            console.log('player_left:', playerId, 'New lobby state:', this.getLobbyState());
+            this._notifyLobbyUpdate();
         });
 
-        this.socket.on('player_class_selected', ({ playerId, className }) => {
-            console.log('Player', playerId, 'selected class', className);
+        this.socket.on('player_updated', (playerData) => {
+            if (this.lobbyState.players.has(playerData.id)) {
+                this.lobbyState.players.set(playerData.id, playerData);
+            } else { // Should ideally not happen if player_joined was processed
+                this.lobbyState.players.set(playerData.id, playerData);
+            }
+            console.log('player_updated:', playerData, 'New lobby state:', this.getLobbyState());
+            this._notifyLobbyUpdate();
         });
 
-        this.socket.on('player_ready', ({ playerId }) => {
-            console.log('Player ready', playerId);
-        });
+        // Old handlers commented out or removed:
+        // this.socket.on('player_joined', ({ playerId }) => {
+        //     console.log('Player joined', playerId);
+        // });
+        // this.socket.on('player_left', ({ playerId }) => {
+        //     console.log('Player left', playerId);
+        // });
+        // this.socket.on('player_class_selected', ({ playerId, className }) => {
+        //     console.log('Player', playerId, 'selected class', className);
+        // });
+        // this.socket.on('player_ready', ({ playerId }) => {
+        //     console.log('Player ready', playerId);
+        // });
     }
 
     isConnected() {
         return this.socket && this.socket.connected;
     }
 
-    sendInput(input) {
+    sendInput(inputData) {
         if (this.isConnected()) {
-            this.socket.emit('input', { type: ClientMessages.INPUT, data: input });
+            const payload = {
+                ...inputData, // Contains keys, mouse, timestamp
+                sequenceNumber: this.sequenceNumber++
+            };
+            this.socket.emit('input', payload); // Send the raw payload, server will know it's input
         }
     }
 
