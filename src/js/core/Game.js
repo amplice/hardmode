@@ -15,6 +15,8 @@ import { LobbyUI } from '../ui/LobbyUI.js';
 import { LocalServer } from '../net/LocalServer.js';
 import { NetworkManager } from '../net/NetworkManager.js';
 import { ClientMessages, ServerMessages } from '../net/MessageTypes.js';
+import { ClientPrediction } from '../net/ClientPrediction.js';
+import { EntityInterpolation } from '../net/EntityInterpolation.js';
 import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js';
 
 // Toggle display of extra stat information in the Stats UI
@@ -65,8 +67,10 @@ export class Game {
     this.server = null;
     this.clientId = null;
     this.network = null;
+    this.clientPrediction = null;
     this.remoteState = new Map();
     this.remoteSprites = new Map();
+    this.entityInterpolations = new Map();
     window.game = this;
 
     this.tilesets = new TilesetManager();
@@ -151,6 +155,7 @@ export class Game {
     if (USE_NETWORK && this.network) {
       this.network.selectClass(selectedClass || 'bladedancer');
       this.network.setReady();
+      this.clientPrediction = new ClientPrediction(this.entities.player, this.network);
     }
 
     // Add health and stats UI
@@ -163,6 +168,7 @@ export class Game {
 
     if (!USE_NETWORK) {
       this.server = new LocalServer(this);
+      this.systems.combat.lagCompensation = this.server.lagComp;
       this.clientId = 'client_1';
       this.server.connectClient(this.clientId, this);
       this.server.addPlayer(this.clientId, this.entities.player);
@@ -183,7 +189,9 @@ export class Game {
     const inputState = this.systems.input.update();
 
     if (USE_NETWORK) {
-      if (this.network && this.network.isConnected()) {
+      if (this.clientPrediction) {
+        this.clientPrediction.applyInput(inputState, deltaTimeSeconds);
+      } else if (this.network && this.network.isConnected()) {
         this.network.sendInput(inputState);
       }
     } else {
@@ -219,27 +227,55 @@ export class Game {
   onServerMessage(message) {
     if (message.type === ServerMessages.GAME_STATE) {
       const data = message.data;
+      const timestamp = data.timestamp || data.tick || Date.now();
       if (data.fullState) {
         this.remoteState.clear();
         for (const entity of data.entities) {
           this.remoteState.set(entity.id, { ...entity });
+          if (!this.entityInterpolations.has(entity.id)) {
+            this.entityInterpolations.set(entity.id, new EntityInterpolation());
+          }
+          this.entityInterpolations
+            .get(entity.id)
+            .addState({ position: { ...entity.position }, facing: entity.facing }, timestamp);
         }
       } else {
         for (const spawn of data.spawns || []) {
           this.remoteState.set(spawn.id, { ...spawn });
+          if (!this.entityInterpolations.has(spawn.id)) {
+            this.entityInterpolations.set(spawn.id, new EntityInterpolation());
+          }
+          this.entityInterpolations
+            .get(spawn.id)
+            .addState({ position: { ...spawn.position }, facing: spawn.facing }, timestamp);
         }
         for (const update of data.updates || []) {
           const existing = this.remoteState.get(update.id);
           if (existing) Object.assign(existing, update);
+          if (!this.entityInterpolations.has(update.id)) {
+            this.entityInterpolations.set(update.id, new EntityInterpolation());
+          }
+          const interp = this.entityInterpolations.get(update.id);
+          const state = {
+            position: { ...(update.position || existing?.position) },
+            facing: update.facing || existing?.facing
+          };
+          interp.addState(state, timestamp);
         }
         for (const despawn of data.despawns || []) {
           this.remoteState.delete(despawn.id);
+          this.entityInterpolations.delete(despawn.id);
         }
+      }
+      if (USE_NETWORK && this.clientPrediction) {
+        const playerState = this.remoteState.get(this.entities.player.id);
+        this.clientPrediction.reconcile(playerState, data.lastProcessedInput);
       }
     }
   }
 
   syncRemoteSprites() {
+    const now = Date.now();
     for (const [id, data] of this.remoteState) {
       if (this.entities.player && id === this.entities.player.id) continue;
       let sprite = this.remoteSprites.get(id);
@@ -249,7 +285,13 @@ export class Game {
         this.remoteSprites.set(id, sprite);
         this.entityContainer.addChild(sprite);
       }
-      sprite.position.set(data.position.x, data.position.y);
+      const interp = this.entityInterpolations.get(id);
+      const state = interp ? interp.getInterpolatedState(now) : data;
+      if (state && state.position) {
+        sprite.position.set(state.position.x, state.position.y);
+      } else {
+        sprite.position.set(data.position.x, data.position.y);
+      }
     }
 
     for (const [id, sprite] of this.remoteSprites) {
@@ -257,6 +299,7 @@ export class Game {
         this.entityContainer.removeChild(sprite);
         if (sprite.destroy) sprite.destroy();
         this.remoteSprites.delete(id);
+        this.entityInterpolations.delete(id);
       }
     }
   }

@@ -109,11 +109,12 @@ class CircleHitbox extends Hitbox {
 }
 
 export class CombatSystem {
-  constructor(app) {
+  constructor(app, lagCompensation = null) {
     this.app = app;
     this.activeAttacks = [];
     this.projectiles = [];
     this.effectConfigs = PLAYER_CONFIG.effects;
+    this.lagCompensation = lagCompensation;
     // this.attackConfigs = PLAYER_CONFIG.attacks; // No longer needed if passed directly
   }
   
@@ -303,7 +304,8 @@ export class CombatSystem {
             hitbox, lifetime: attackConfig.hitboxVisual.duration,
             attackType, entity, damage: attackConfig.damage
           });
-          this.applyHitEffects(entity, hitbox, attackConfig.damage);
+          const ts = Date.now();
+          this.applyHitEffects(entity, hitbox, attackConfig.damage, ts);
         }
       }
     }, attackConfig.windupTime);
@@ -438,7 +440,8 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
                     hitbox, lifetime: attackConfig.hitboxVisual.duration,
                     attackType, entity, damage: attackConfig.damage
                 });
-                this.applyHitEffects(entity, hitbox, attackConfig.damage);
+                const ts = Date.now();
+                this.applyHitEffects(entity, hitbox, attackConfig.damage, ts);
             }
             if (isInvulnerableDuringJump) {
                 entity.isInvulnerable = false;
@@ -478,7 +481,8 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
           hitbox, lifetime: attackConfig.hitboxVisual.duration,
           attackType, entity, damage: attackConfig.damage
         });
-        this.applyHitEffects(entity, hitbox, attackConfig.damage);
+        const ts = Date.now();
+        this.applyHitEffects(entity, hitbox, attackConfig.damage, ts);
       }
       
       // Programmatic trail effects specific to dash
@@ -530,12 +534,21 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     }
   }
   
-  applyHitEffects(entity, hitbox, damage) {
+  applyHitEffects(entity, hitbox, damage, timestamp = Date.now()) {
     if (!hitbox) return;
-    const monsters = window.game.systems.monsters.monsters; // Consider alternative
+    const monsters = window.game.systems.monsters.monsters;
     for (const monster of monsters) {
       if (!monster.alive) continue;
-      if (hitbox.testHit(monster, monster.collisionRadius || 0)) {
+      let checkPos = monster.position;
+      if (this.lagCompensation) {
+        const history = this.lagCompensation.positionHistory.get(monster.id) || [];
+        const rewound = this.lagCompensation.getPositionAtTime(history, timestamp);
+        if (rewound) {
+          checkPos = rewound;
+        }
+      }
+      const proxy = { position: checkPos };
+      if (hitbox.testHit(proxy, monster.collisionRadius || 0)) {
         monster.takeDamage(damage, entity);
       }
     }
