@@ -5,17 +5,21 @@ import { createNoise2D } from 'simplex-noise';
 import { DecorationManager } from '../tiles/DecorationManager.js';
 
 export class WorldGenerator {
-  constructor(options = {}) {
+constructor(options = {}) {
     this.width = options.width || 100;
     this.height = options.height || 100;
     this.tileSize = options.tileSize || 32;
     this.tilesets = options.tilesets;
-    this.noise2D = createNoise2D();
-    this.waterNoise2D = createNoise2D(Math.random);
+    
+    // Accept seed for synchronized world generation
+    const seed = options.seed || Math.random();
+    this.noise2D = createNoise2D(() => seed);
+    this.waterNoise2D = createNoise2D(() => seed * 2);
+    
     this.decorations = null;
     this.container = new PIXI.Container();
     this.tiles = [];
-  }
+}
 
   generate() {
     // Configuration parameters

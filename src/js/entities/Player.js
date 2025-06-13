@@ -457,35 +457,42 @@ class CombatComponent extends Component {
         this.owner.isInvulnerable = false;
       }
     
-      update(deltaTime, inputState) {
-        // Decrease attack cooldowns
-        if (this.owner.primaryAttackCooldown > 0) {
-          this.owner.primaryAttackCooldown -= deltaTime;
-        }
-        if (this.owner.secondaryAttackCooldown > 0) {
-          this.owner.secondaryAttackCooldown -= deltaTime;
-        }
-        if (this.owner.rollCooldown > 0) {
-          this.owner.rollCooldown -= deltaTime;
-        }
-        
-        // Don't process attacks if player can't act
-        if (this.owner.isAttacking || this.owner.isTakingDamage || 
-            this.owner.isDying || this.owner.isDead) {
-          return;
-        }
-        
-        // Handle attack inputs separately
-        if (this.owner.primaryAttackCooldown <= 0 && inputState.primaryAttack) {
-          this.performPrimaryAttack();
-        }
-        if (this.owner.secondaryAttackCooldown <= 0 && inputState.secondaryAttack) {
-          this.performSecondaryAttack();
-        }
-        if (this.owner.rollUnlocked && this.owner.rollCooldown <= 0 && inputState.roll) {
-          this.performRoll();
-        }
-      }
+update(deltaTime, inputState) {
+    // Decrease attack cooldowns
+    if (this.owner.primaryAttackCooldown > 0) {
+        this.owner.primaryAttackCooldown -= deltaTime;
+    }
+    if (this.owner.secondaryAttackCooldown > 0) {
+        this.owner.secondaryAttackCooldown -= deltaTime;
+    }
+    if (this.owner.rollCooldown > 0) {
+        this.owner.rollCooldown -= deltaTime;
+    }
+    
+    // Don't process attacks if player can't act
+    if (this.owner.isAttacking || this.owner.isTakingDamage || 
+        this.owner.isDying || this.owner.isDead) {
+        return;
+    }
+    
+    // Skip attack processing if networked (server handles attacks)
+    const isNetworked = window.game && window.game.network && window.game.network.isConnected();
+    if (isNetworked) {
+        // Server will handle attack state
+        return;
+    }
+    
+    // Handle attack inputs separately (single player only)
+    if (this.owner.primaryAttackCooldown <= 0 && inputState.primaryAttack) {
+        this.performPrimaryAttack();
+    }
+    if (this.owner.secondaryAttackCooldown <= 0 && inputState.secondaryAttack) {
+        this.performSecondaryAttack();
+    }
+    if (this.owner.rollUnlocked && this.owner.rollCooldown <= 0 && inputState.roll) {
+        this.performRoll();
+    }
+}
     
     performPrimaryAttack() {
       console.log(`Primary attack (${this.owner.characterClass === 'guardian' ? 'sweeping axe' : 'forehand slash'}) started`);

@@ -19,22 +19,27 @@ export class MonsterSystem {
         }
     }
     
-    update(deltaTime, player) {
-        // Update existing monsters
-        for (let i = this.monsters.length - 1; i >= 0; i--) {
-            const monster = this.monsters[i];
-            
-            // Only update live monsters
-            if (monster.alive) {
-                monster.update(deltaTime, player, this.world);
-            }
-            
-            // Remove completely faded out dead monsters
-            if (!monster.alive && monster.sprite.alpha <= 0) {
-                this.monsters.splice(i, 1);
-            }
+update(deltaTime, player) {
+    // Skip spawning if networked (server handles spawning)
+    const isNetworked = window.game && window.game.network && window.game.network.isConnected();
+    
+    // Update existing monsters
+    for (let i = this.monsters.length - 1; i >= 0; i--) {
+        const monster = this.monsters[i];
+        
+        // Only update live monsters
+        if (monster.alive) {
+            monster.update(deltaTime, player, this.world);
         }
         
+        // Remove completely faded out dead monsters
+        if (!monster.alive && monster.sprite.alpha <= 0) {
+            this.monsters.splice(i, 1);
+        }
+    }
+    
+    // Only spawn monsters if not networked
+    if (!isNetworked) {
         // Spawn new monsters
         this.spawnTimer += deltaTime;
         if (this.spawnTimer >= this.spawnRate && this.monsters.length < this.maxMonsters) {
@@ -42,6 +47,7 @@ export class MonsterSystem {
             this.spawnTimer = 0;
         }
     }
+}
     
     spawnRandomMonster(player) {
         // Don't spawn too close to the player

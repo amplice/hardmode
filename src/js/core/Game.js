@@ -21,7 +21,7 @@ import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
-const USE_NETWORK = false;
+const USE_NETWORK = true;
 
 // 1) turn off antialias & force pixel‐perfect
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -180,7 +180,8 @@ export class Game {
     console.log(`Game initialized with ${selectedClass} player`);
   }
 
-  update(delta) {
+  // In the update method, change how monsters are updated when using network:
+update(delta) {
     // Only update game if it has started
     if (!this.gameStarted) return;
 
@@ -189,25 +190,29 @@ export class Game {
     const inputState = this.systems.input.update();
 
     if (USE_NETWORK) {
-      if (this.clientPrediction) {
-        this.clientPrediction.applyInput(inputState, deltaTimeSeconds);
-      } else if (this.network && this.network.isConnected()) {
-        this.network.sendInput(inputState);
-      }
+        if (this.network && this.network.isConnected()) {
+            this.network.sendInput(inputState);
+            
+            // Only update local player movement for prediction
+            if (this.entities.player) {
+                this.entities.player.update(deltaTimeSeconds, inputState);
+            }
+            
+            // Don't update monsters locally - server handles them
+        }
     } else {
-      this.server.handleMessage(this.clientId, {
-        type: ClientMessages.INPUT,
-        data: inputState
-      });
-      this.server.update(deltaTimeSeconds);
+        this.server.handleMessage(this.clientId, {
+            type: ClientMessages.INPUT,
+            data: inputState
+        });
+        this.server.update(deltaTimeSeconds);
     }
 
     // Camera and UI depend on updated positions
     this.updateCamera();
-    this.healthUI.update();
-    if (this.statsUI) this.statsUI.update();
-    this.syncRemoteSprites();
-  }
+this.healthUI.update();
+if (this.statsUI) this.statsUI.update();
+}
 
   updateCamera() {
     if (!this.gameStarted) return;

@@ -246,41 +246,58 @@ export class Monster {
         }
     }
     
-    update(deltaTime, player, world) {
-        // Don't do any updates if dead
-        if (!this.alive) return;
-        
+update(deltaTime, player, world) {
+    // Don't do any updates if dead
+    if (!this.alive) return;
+    
+    // Skip AI updates if using network (server handles AI)
+    const isNetworked = window.game && window.game.network && window.game.network.isConnected();
+    if (isNetworked) {
         // Only update sprite position during stun
         if (this.state === 'stunned') {
             this.sprite.position.set(this.position.x, this.position.y);
             return;
         }
         
-        // Decrease attack cooldown
-        if (this.attackCooldown > 0) {
-            this.attackCooldown -= deltaTime;
-        }
-        
-        // Don't move while attacking
-        if (this.state === 'attacking') {
-            // Update sprite position
-            this.sprite.position.set(this.position.x, this.position.y);
-            return;
-        }
-        
-        // AI state machine
-        this.updateAI(deltaTime, player, world);
-        
-        // Apply movement
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
-        
+        // Just update sprite position and animation
+        this.sprite.position.set(this.position.x, this.position.y);
+        this.updateAnimation();
+        return;
+    }
+    
+    // ===== SINGLE PLAYER LOGIC BELOW =====
+    
+    // Only update sprite position during stun
+    if (this.state === 'stunned') {
+        this.sprite.position.set(this.position.x, this.position.y);
+        return;
+    }
+    
+    // Decrease attack cooldown
+    if (this.attackCooldown > 0) {
+        this.attackCooldown -= deltaTime;
+    }
+    
+    // Don't move while attacking
+    if (this.state === 'attacking') {
         // Update sprite position
         this.sprite.position.set(this.position.x, this.position.y);
-        
-        // Update animation based on current state if needed
-        this.updateAnimation();
+        return;
     }
+    
+    // AI state machine
+    this.updateAI(deltaTime, player, world);
+    
+    // Apply movement
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+    
+    // Update sprite position
+    this.sprite.position.set(this.position.x, this.position.y);
+    
+    // Update animation based on current state if needed
+    this.updateAnimation();
+}
     
     updateAI(deltaTime, player, world) {
         // Check if we need to acquire a target
