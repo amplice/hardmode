@@ -7,6 +7,7 @@ export const ClientMessages = {
 
 export const ServerMessages = {
     GAME_STATE: 'GAME_STATE',
+    PLAYER_INFO: 'PLAYER_INFO',
     PLAYER_JOINED: 'PLAYER_JOINED',
     PLAYER_LEFT: 'PLAYER_LEFT',
     ENTITY_SPAWN: 'ENTITY_SPAWN',

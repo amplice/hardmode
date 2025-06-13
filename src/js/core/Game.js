@@ -225,6 +225,18 @@ export class Game {
   }
 
   onServerMessage(message) {
+    if (message.type === ServerMessages.PLAYER_INFO) {
+      const info = message.data || {};
+      if (this.entities.player) {
+        this.entities.player.id = info.playerId || this.entities.player.id;
+        if (info.position) {
+          this.entities.player.position.x = info.position.x;
+          this.entities.player.position.y = info.position.y;
+          this.entities.player.sprite.position.set(info.position.x, info.position.y);
+        }
+      }
+      return;
+    }
     if (message.type === ServerMessages.GAME_STATE) {
       const data = message.data;
       const timestamp = data.timestamp || data.tick || Date.now();

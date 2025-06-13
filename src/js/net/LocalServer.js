@@ -60,6 +60,10 @@ export class LocalServer {
         this.lastStates.set(clientId, snapshot);
         const client = this.clients.get(clientId);
         if (client && client.onServerMessage) {
+            client.onServerMessage({
+                type: ServerMessages.PLAYER_INFO,
+                data: { playerId: player.id, position: { x: player.position.x, y: player.position.y } }
+            });
             client.onServerMessage({ type: ServerMessages.GAME_STATE, data: buildFullState(entities, snapshot.timestamp) });
         }
     }
