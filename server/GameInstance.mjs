@@ -93,6 +93,10 @@ export class GameInstance {
         ];
         const relevant = getRelevantEntities(entity, allEntities, this.viewDistance);
         const snapshot = buildFullState(relevant, this.state.timestamp);
+        player.socket.emit('player_info', {
+            playerId: player.id,
+            position: { ...entity.position }
+        });
         player.socket.emit('game_state', snapshot);
         this.lastStates.set(player.id, { entities: relevant, timestamp: this.state.timestamp });
         this.broadcast('player_joined', { playerId: player.id }, player.id);

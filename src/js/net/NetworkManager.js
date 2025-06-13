@@ -18,6 +18,10 @@ export class NetworkManager {
             this.game.onServerMessage({ type: 'GAME_STATE', data: state });
         });
 
+        this.socket.on('player_info', (info) => {
+            this.game.onServerMessage({ type: 'PLAYER_INFO', data: info });
+        });
+
         this.socket.on('game_created', ({ gameId }) => {
             this.gameId = gameId;
             console.log('Game created', gameId);
