@@ -280,7 +280,8 @@ export class CombatSystem {
             hitbox, lifetime: attackConfig.hitboxVisual.duration,
             attackType, entity, damage: attackConfig.damage
           });
-          this.applyHitEffects(entity, hitbox, attackConfig.damage);
+          // SERVER_AUTH_COMBAT: Hit detection and effects are now server-authoritative
+          // this.applyHitEffects(entity, hitbox, attackConfig.damage);
         }
       }
     }, attackConfig.windupTime);
@@ -415,7 +416,8 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
                     hitbox, lifetime: attackConfig.hitboxVisual.duration,
                     attackType, entity, damage: attackConfig.damage
                 });
-                this.applyHitEffects(entity, hitbox, attackConfig.damage);
+                // SERVER_AUTH_COMBAT: Hit detection and effects are now server-authoritative
+                // this.applyHitEffects(entity, hitbox, attackConfig.damage);
             }
             if (isInvulnerableDuringJump) {
                 entity.isInvulnerable = false;
@@ -455,7 +457,8 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
           hitbox, lifetime: attackConfig.hitboxVisual.duration,
           attackType, entity, damage: attackConfig.damage
         });
-        this.applyHitEffects(entity, hitbox, attackConfig.damage);
+        // SERVER_AUTH_COMBAT: Hit detection and effects are now server-authoritative
+        // this.applyHitEffects(entity, hitbox, attackConfig.damage);
       }
       
       // Programmatic trail effects specific to dash
@@ -508,12 +511,22 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
   }
   
   applyHitEffects(entity, hitbox, damage) {
+    // This method is now OBSOLETE for local player attacks, server handles hits.
+    // It might be repurposed for client-side predicted visual-only hit reactions if desired.
+    // For now, it does nothing if called by local player's attack sequence.
+    if (entity === window.game.entities.player) { // Check if it's the local player
+        // console.log("Client-side applyHitEffects skipped for local player.");
+        return;
+    }
+
+    // Original logic (could be used for non-player entities or debugging)
     if (!hitbox) return;
-    const monsters = window.game.systems.monsters.monsters; // Consider alternative
+    const monsters = window.game.systems.monsters.monsters;
     for (const monster of monsters) {
       if (!monster.alive) continue;
       if (hitbox.testHit(monster, monster.collisionRadius || 0)) {
-        monster.takeDamage(damage, entity);
+        // monster.takeDamage(damage, entity); // Damage is server-authoritative
+        console.log("Client-side visual hit effect could be triggered here if not local player.");
       }
     }
   }

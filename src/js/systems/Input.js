@@ -13,8 +13,13 @@ export class InputSystem {
             position: { x: 0, y: 0 },
             leftButton: false
         };
+        this.chatActive = false; // Flag to indicate if chat input is active
         
         this.setupEventListeners();
+    }
+
+    setChatActive(isActive) {
+        this.chatActive = isActive;
     }
     
     setupEventListeners() {
@@ -32,6 +37,22 @@ export class InputSystem {
     }
     
     handleKeyDown(event) {
+        // If chat is active, only allow specific keys or no game keys
+        if (this.chatActive) {
+            // Allow Escape to be captured by game or other systems for unfocusing chat
+            if (event.key === 'Escape') {
+                // Potentially handle blur chat here or let Game.js handle it
+            }
+            // Prevent game actions if typing in chat, but allow text input keys
+            // This check can be more sophisticated if needed
+            if (event.key.length === 1 || ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'Enter', 'Tab'].includes(event.key) ) {
+                 // Allow typing keys for the input field
+            } else if (event.key !== 'Escape') {
+                 // event.preventDefault(); // Could be too aggressive
+            }
+            return; // Don't process game keys if chat is active
+        }
+
         switch (event.key.toLowerCase()) {
             case 'w': this.keys.w = true; break;
             case 'a': this.keys.a = true; break;
@@ -43,6 +64,13 @@ export class InputSystem {
     }
     
     handleKeyUp(event) {
+        // No need to check chatActive for keyUp for game keys,
+        // as they wouldn't have been set true if chat was active.
+        // However, if a key like 'Enter' was used by chat, we might not want its 'up' state for game.
+        if (this.chatActive && event.key === 'Enter') {
+            return;
+        }
+
         switch (event.key.toLowerCase()) {
             case 'w': this.keys.w = false; break;
             case 'a': this.keys.a = false; break;
@@ -59,12 +87,18 @@ export class InputSystem {
     }
     
     handleMouseDown(event) {
+        if (this.chatActive) return; // Don't process game clicks if chat is active
+
         if (event.button === 0) { // Left mouse button
             this.mouse.leftButton = true;
         }
     }
 
     handleMouseUp(event) {
+        if (this.chatActive && event.button === 0) { // If chat active, ensure leftButton doesn't stick for game
+             this.mouse.leftButton = false;
+             return;
+        }
         if (event.button === 0) { // Left mouse button
             this.mouse.leftButton = false;
         }

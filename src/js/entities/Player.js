@@ -747,6 +747,7 @@ export class Player {
         const classConfig = PLAYER_CONFIG.classes[this.characterClass];
         this.moveSpeed = classConfig.moveSpeed;
         this.rollUnlocked = false;
+        this.lastFacingInput = this.facing; // Initialize with current facing
         
         // Create sprite container
         this.sprite = new PIXI.Container();
@@ -771,31 +772,61 @@ export class Player {
         this[name] = component; // Provide direct access, e.g., player.animation
     }
     
-    update(deltaTime, inputState) {
+    update(deltaTime, inputState, isLocalPlayer = false) {
         // Update health component first
         this.health.update(deltaTime);
         
-        // If taking damage or dying, don't process other components except animation
+        // If taking damage or dying, only animation updates. Position is set by server.
         if (this.isTakingDamage || this.isDying || this.isDead) {
-            // Only update animation and sprite position
-            this.sprite.position.set(this.position.x, this.position.y);
             this.animation.update();
+            // Sprite position is updated by setPosition or during attack animations
             return;
         }
         
-        // Update combat before movement (priority for attack inputs)
-        this.combat.update(deltaTime, inputState);
-        
-        // Don't process movement if attacking
-        if (!this.isAttacking) {
-            this.movement.update(deltaTime, inputState);
-        } else {
-            // Just update sprite position
-            this.sprite.position.set(this.position.x, this.position.y);
+        // Process combat inputs for local player
+        if (isLocalPlayer && inputState) {
+            this.combat.update(deltaTime, inputState);
         }
         
-        // Always update animation last
+        if (!this.isAttacking) {
+            if (isLocalPlayer && inputState) {
+                // Local player: process inputs to determine intended movement and facing
+                this.movement.processMovementInput(inputState); // Sets velocity, isMoving, movementDirection
+                if (inputState.mousePosition) {
+                    this.movement.updateFacingFromMouse(inputState.mousePosition); // Sets facing
+                }
+                // IMPORTANT: Local player does NOT call this.movement.updatePosition() here.
+                // Movement input will be sent to server. Server sends back authoritative position.
+            } else if (!isLocalPlayer) {
+                // Remote player: Ensure velocity is zero if not attacking.
+                // Their state (isMoving, movementDirection, facing) should ideally be updated
+                // from server data alongside position. For now, this keeps them from moving on their own.
+                this.movement.velocity.x = 0;
+                this.movement.velocity.y = 0;
+                this.movement.isMoving = false;
+                // this.movement.movementDirection = null; // Keep last known for animation until server updates it
+            }
+        } else { // Player is attacking
+            // If local player is attacking, their current attack logic might update position
+            // (e.g., Guardian's jump). Sprite position is updated to reflect this.
+            // This is a candidate for server-side attack execution later.
+            if (isLocalPlayer && this.sprite) {
+                 this.sprite.position.set(this.position.x, this.position.y);
+            }
+        }
+        
+        // Always update animation last. It depends on facing, movementDirection, isAttacking etc.
+        // For remote players, facing and movementDirection should be updated by server data.
         this.animation.update();
+    }
+
+    setPosition(x, y) {
+        this.position.x = x;
+        this.position.y = y;
+        // Ensure sprite position is also updated if the sprite exists
+        if (this.sprite) {
+            this.sprite.position.set(this.position.x, this.position.y);
+        }
     }
     
     // Public API methods (accessible to other systems)

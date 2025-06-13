@@ -24,9 +24,34 @@ export class ClassSelectUI {
         this.title.anchor.set(0.5, 0);
         this.title.position.set(window.innerWidth / 2, 50);
         this.container.addChild(this.title);
+
+        // Create HTML Name Input
+        this.nameInput = document.createElement('input');
+        this.nameInput.type = 'text';
+        this.nameInput.placeholder = 'Enter your name';
+        this.nameInput.maxLength = 15;
+        this.nameInput.style.position = 'absolute';
+        this.nameInput.style.top = '120px'; // Adjust as needed
+        this.nameInput.style.left = '50%';
+        this.nameInput.style.transform = 'translateX(-50%)';
+        this.nameInput.style.padding = '10px';
+        this.nameInput.style.fontSize = '18px';
+        this.nameInput.style.border = '2px solid #555';
+        this.nameInput.style.backgroundColor = '#333';
+        this.nameInput.style.color = '#fff';
+        this.nameInput.style.textAlign = 'center';
+        document.body.appendChild(this.nameInput);
         
         // Create class options
         this.createClassOptions();
+    }
+
+    destroy() {
+        // Remove HTML elements when UI is destroyed
+        if (this.nameInput && this.nameInput.parentNode) {
+            this.nameInput.parentNode.removeChild(this.nameInput);
+        }
+        // PIXI container and its children will be handled by parent removing this.container
     }
     
     createClassOptions() {
@@ -173,7 +198,8 @@ export class ClassSelectUI {
         
         this.startButton.on('pointerdown', () => {
             if (this.selectedClass) {
-                this.onClassSelected(this.selectedClass);
+                const playerName = this.nameInput.value.trim() || `Player_${Math.floor(Math.random() * 10000)}`;
+                this.onClassSelected(this.selectedClass, playerName);
             }
         });
         

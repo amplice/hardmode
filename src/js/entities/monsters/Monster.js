@@ -46,8 +46,81 @@ export class Monster {
         this.attackIndicator = new PIXI.Graphics();
         this.sprite.addChild(this.attackIndicator);
         
+        // Health Bar
+        this.maxHealth = stats.hitPoints; // Store maxHealth from stats
+        this.healthBarWidth = 40;
+        this.healthBarHeight = 5;
+
+        this.healthBarBg = new PIXI.Graphics();
+        this.healthBarBg.beginFill(0xFF0000); // Red for background
+        this.healthBarBg.drawRect(-this.healthBarWidth / 2, -this.collisionRadius - 15, this.healthBarWidth, this.healthBarHeight);
+        this.healthBarBg.endFill();
+        this.sprite.addChild(this.healthBarBg);
+
+        this.healthBarFg = new PIXI.Graphics();
+        this.healthBarFg.beginFill(0x00FF00); // Green for foreground
+        this.healthBarFg.drawRect(-this.healthBarWidth / 2, -this.collisionRadius - 15, this.healthBarWidth, this.healthBarHeight);
+        this.healthBarFg.endFill();
+        this.sprite.addChild(this.healthBarFg);
+
+        // Flag to indicate if AI/physics are run client-side
+        this.isServerControlled = options.isServerControlled !== undefined ? options.isServerControlled : false;
+
         // Initialize animation
         this.setupAnimation();
+        this.updateHealthBar(); // Initial health bar draw
+    }
+
+    updateHealthBar() {
+        if (!this.healthBarFg || !this.healthBarBg) return;
+
+        const healthPercentage = Math.max(0, this.hitPoints / this.maxHealth);
+        this.healthBarFg.width = this.healthBarWidth * healthPercentage;
+
+        // Ensure health bar bg is always full width
+        this.healthBarBg.width = this.healthBarWidth;
+
+        // Position above sprite (adjust y-offset as needed)
+        const yOffset = - (this.animatedSprite ? this.animatedSprite.height / 2 : this.collisionRadius) - 15;
+        this.healthBarBg.position.y = yOffset;
+        this.healthBarFg.position.y = yOffset;
+    }
+
+    setPosition(x, y) {
+        this.position.x = x;
+        this.position.y = y;
+        if (this.sprite) {
+            this.sprite.position.set(this.position.x, this.position.y);
+        }
+    }
+
+    // Method to update state based on server data
+    setStateFromServer(data) {
+        this.setPosition(data.x, data.y);
+        if (this.facing !== data.facing) {
+            this.facing = data.facing;
+            // this.updateAnimation(); // Facing change might trigger animation update
+        }
+        // Assuming server sends 'isMoving' or a specific 'state' like 'attacking'
+        // This part needs to map to how Monster.js handles its 'state' for animations
+        const serverState = data.isMoving ? 'walking' : 'idle'; // Simple example
+        if (this.state !== serverState && this.state !== 'attacking' && this.state !== 'stunned' && this.state !== 'dying') {
+            // Don't override active animation states like attack/stun/die unless server explicitly commands it
+             this.changeState(serverState);
+        }
+        if (data.health !== undefined && this.hitPoints !== data.health) {
+            this.hitPoints = data.health;
+            // Potentially trigger takeDamage visual or death if health is 0
+            if (this.hitPoints <= 0 && this.alive) {
+                this.die(); // This will change state to 'dying' and play animation
+            }
+        }
+         if (data.maxHealth !== undefined) {
+            this.maxHealth = data.maxHealth;
+        }
+        this.updateHealthBar(); // Update health bar display
+        // Ensure animation is up-to-date with new state
+        this.updateAnimation();
     }
     
     setupAnimation() {
@@ -242,9 +315,22 @@ export class Monster {
         if (this.attackIndicator) {
             this.attackIndicator.clear();
         }
+        // Hide health bar on death
+        if (this.healthBarBg) this.healthBarBg.visible = false;
+        if (this.healthBarFg) this.healthBarFg.visible = false;
     }
     
     update(deltaTime, player, world) {
+        // If server-controlled, client-side AI and movement are skipped.
+        // Animations and visual updates might still happen based on server-sent state.
+        if (this.isServerControlled) {
+            // Ensure sprite is at the correct position (already handled by setPosition via server update)
+            // this.sprite.position.set(this.position.x, this.position.y); // Redundant if setPosition called
+            this.updateAnimation(); // Keep animations running based on current state
+            return;
+        }
+
+        // --- Original client-side AI logic below ---
         // Don't do any updates if dead
         if (!this.alive) return;
         

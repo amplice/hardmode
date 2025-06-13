@@ -14,58 +14,164 @@ export class WorldGenerator {
     this.waterNoise2D = createNoise2D(Math.random);
     this.decorations = null;
     this.container = new PIXI.Container();
-    this.tiles = [];
+    this.tiles = []; // This will store client-side Tile objects (with Pixi sprites)
+    this.tileData = []; // This will store the raw tile type data from server (or generated)
   }
 
-  generate() {
-    // Configuration parameters
-    const params = {
-      noise: {
-        terrain: 0.05,
-        water: 0.08
-      },
-      thresholds: {
-        sand: -0.3,
-        water: -0.5,
-        sandDistance: 3,
-        cardinalCleanup: 3,
-        waterCleanup: 2,
-        sandCleanup: 5
-      }
+  // Generates world data locally (can be used for offline or if server data not available)
+  _generateTileDataClientSide() {
+    // This is essentially the data generation part of the original generate()
+    // For this refactor, we assume server sends data, so this might be simplified or used as fallback.
+    // For now, let's keep the logic structure but it populates this.tileData.
+    const params = { /* ... same params as original generate ... */
+      noise: { terrain: 0.05, water: 0.08 },
+      thresholds: { sand: -0.3, water: -0.5, sandDistance: 3, cardinalCleanup: 3, waterCleanup: 2 }
     };
+    console.log("Client: Generating base tile data (fallback)...");
+    this._clientSideBaseTerrain(params);
+    this._clientSideCleanupIsolatedSand(params.thresholds.cardinalCleanup);
+    this._clientSideGenerateWater(params);
+    this._clientSideCleanupGrassPeninsulas();
+    this._clientSideCleanupThinWaterConnections(params.thresholds.waterCleanup);
+    console.log("Client: Fallback tile data generation complete.");
+  }
+
+  // Adapted data generation methods to populate this.tileData (char array)
+  // These methods are prefixed with _clientSide to distinguish from original rendering versions
+  _clientSideBaseTerrain(params) {
+    for (let y = 0; y < this.height; y++) {
+      this.tileData[y] = [];
+      for (let x = 0; x < this.width; x++) {
+        const noiseValue = this.noise2D(x * params.noise.terrain, y * params.noise.terrain);
+        this.tileData[y][x] = noiseValue < params.thresholds.sand ? 'sand' : 'grass';
+      }
+    }
+  }
+
+  _clientSideGetTile(x,y) {
+    if (x < 0 || x >= this.width || y < 0 || y >= this.height) return null;
+    return this.tileData[y][x];
+  }
+  _clientSideSetTile(x,y,type) {
+    if (x >= 0 && x < this.width && y >= 0 && y < this.height) this.tileData[y][x] = type;
+  }
+
+  _clientSideCleanupIsolatedSand(threshold) {
+    const toConvert = [];
+    for(let y=0; y<this.height; ++y) for(let x=0; x<this.width; ++x) {
+      if(this._clientSideGetTile(x,y) === 'sand') {
+        let grassNeighbors = 0;
+        if(this._clientSideGetTile(x,y-1) === 'grass') grassNeighbors++;
+        if(this._clientSideGetTile(x+1,y) === 'grass') grassNeighbors++;
+        if(this._clientSideGetTile(x,y+1) === 'grass') grassNeighbors++;
+        if(this._clientSideGetTile(x-1,y) === 'grass') grassNeighbors++;
+        if(grassNeighbors >= threshold) toConvert.push({x,y});
+      }
+    }
+    toConvert.forEach(p => this._clientSideSetTile(p.x,p.y,'grass'));
+  }
+
+  _clientSideIsFarEnoughFromSand(x,y,distance) {
+    for (let dy = -distance; dy <= distance; dy++) {
+      for (let dx = -distance; dx <= distance; dx++) {
+        if (dx === 0 && dy === 0) continue;
+        if (this._clientSideGetTile(x+dx, y+dy) === 'sand' && (Math.abs(dx) + Math.abs(dy) <= distance)) return false;
+      }
+    }
+    return true;
+  }
+
+  _clientSideGenerateWater(params) {
+    const toConvert = [];
+    for(let y=0; y<this.height; ++y) for(let x=0; x<this.width; ++x) {
+      if(this._clientSideGetTile(x,y) === 'grass') {
+        const waterNoise = this.waterNoise2D(x * params.noise.water, y * params.noise.water);
+        if(waterNoise < params.thresholds.water && this._clientSideIsFarEnoughFromSand(x,y,params.thresholds.sandDistance)) {
+          toConvert.push({x,y});
+        }
+      }
+    }
+    toConvert.forEach(p => this._clientSideSetTile(p.x,p.y,'water'));
+  }
+  _clientSideCleanupGrassPeninsulas() {
+    const toConvert = [];
+    for(let y=0; y<this.height; ++y) for(let x=0; x<this.width; ++x) {
+      if(this._clientSideGetTile(x,y) === 'grass') {
+        let waterNeighbors = 0;
+        if(this._clientSideGetTile(x,y-1) === 'water') waterNeighbors++;
+        if(this._clientSideGetTile(x+1,y) === 'water') waterNeighbors++;
+        if(this._clientSideGetTile(x,y+1) === 'water') waterNeighbors++;
+        if(this._clientSideGetTile(x-1,y) === 'water') waterNeighbors++;
+        if(waterNeighbors >= 3) toConvert.push({x,y});
+      }
+    }
+    toConvert.forEach(p => this._clientSideSetTile(p.x,p.y,'water'));
+  }
+  _clientSideCleanupThinWaterConnections(threshold) {
+     const toConvert = [];
+    for(let y=0; y<this.height; ++y) for(let x=0; x<this.width; ++x) {
+      if(this._clientSideGetTile(x,y) === 'water') {
+        let waterNeighbors = 0;
+        for(let dy=-1; dy<=1; ++dy) for(let dx=-1; dx<=1; ++dx) {
+          if(dx===0 && dy===0) continue;
+          if(this._clientSideGetTile(x+dx, y+dy) === 'water') waterNeighbors++;
+        }
+        if(waterNeighbors <= threshold) toConvert.push({x,y});
+      }
+    }
+    toConvert.forEach(p => this._clientSideSetTile(p.x,p.y,'grass'));
+  }
+
+
+  // Renders the world from this.tileData (which should be populated by server or fallback)
+  _renderWorldFromTileData() {
+    console.log("Client: Rendering world from tile data...");
+    this.createWorldBoundary(); // Create background color
+
+    // Create Tile objects based on this.tileData
+    for (let y = 0; y < this.height; y++) {
+      this.tiles[y] = []; // For PIXI Tile objects
+      for (let x = 0; x < this.width; x++) {
+        const terrainType = this.tileData[y][x]; // Use pre-generated type
+        const tile = new Tile(x, y, terrainType, this.tilesets, this.tileSize);
+        this.tiles[y][x] = tile; // Store client-side Tile object
+        this.container.addChild(tile.container);
+      }
+    }
+
+    // Process transitions and decorations (client-side rendering steps)
+    console.log("Client: Processing terrain transitions...");
+    this.processTransitions(); // Uses this.tiles (client Tile objects)
     
-    console.log("Generating world...");
+    console.log("Client: Processing water transitions...");
+    this.processWaterTransitions(); // Uses this.tiles
     
-    // Create world boundary
-    this.createWorldBoundary();
-    
-    // Generate base terrain (grass and sand)
-    this.generateBaseTerrain(params);
-    
-    // Clean up isolated sand tiles
-    this.cleanupIsolatedSand(params.thresholds.cardinalCleanup);
-    
-    // Generate water
-    this.generateWater(params);
-    
-    // Clean up water formations
-    this.cleanupGrassPeninsulas();
-    this.cleanupThinWaterConnections(params.thresholds.waterCleanup);
-    
-    // Process terrain transitions
-    console.log("Processing terrain transitions...");
-    this.processTransitions();
-    
-    // Process water transitions
-    console.log("Processing water transitions...");
-    this.processWaterTransitions();
-    
-    // Generate decorations
-    this.decorations = new DecorationManager(this, this.tilesets);
+    console.log("Client: Generating decorations...");
+    this.decorations = new DecorationManager(this, this.tilesets); // Uses this.tiles
     const decorationsContainer = this.decorations.generateDecorations();
     this.container.addChild(decorationsContainer);
+  }
+
+  // Main method for client when server provides data
+  loadFromData(serverWorldData) {
+    this.width = serverWorldData.width; // Ensure dimensions match server
+    this.height = serverWorldData.height;
+    this.tileSize = serverWorldData.tileSize;
+    this.tileData = serverWorldData.tiles; // Store the raw tile types
+
+    this._renderWorldFromTileData();
+
+    console.log("Client: World loaded from server data and rendered!");
+    return this.container;
+  }
+
+  // Original generate becomes a fallback or for offline mode
+  generate() {
+    console.log("Client: Generating world locally (fallback or offline mode)...");
+    this._generateTileDataClientSide(); // Generate data
+    this._renderWorldFromTileData();    // Then render
     
-    console.log("World generation complete!");
+    console.log("Client: Local world generation complete!");
     return this.container;
   }
   
