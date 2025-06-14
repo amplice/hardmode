@@ -11,6 +11,11 @@ import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
+import { networkManager } from '../../network/NetworkManager.ts';
+import { ConnectionUI } from '../../ui/ConnectionUI.ts';
+import { MultiplayerHUD } from '../../ui/MultiplayerHUD.ts';
+import { RemotePlayer } from '../entities/RemotePlayer.js';
+import { InputManager } from '../systems/InputManager.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
@@ -49,6 +54,7 @@ export class Game {
 
     this.systems = {
       input:   new InputSystem(),
+      inputManager: new InputManager(), // New input manager for multiplayer
       physics: new PhysicsSystem(),
       world:   null,               // will init after tilesets
       combat:  new CombatSystem(this.app),
@@ -56,6 +62,7 @@ export class Game {
     };
 
     this.entities = { player: null };
+    this.remotePlayers = new Map(); // Track other players
     window.game = this;
 
     this.tilesets = new TilesetManager();
@@ -70,11 +77,22 @@ export class Game {
       await this.tilesets.load();               // load & slice all sheets
       await this.systems.sprites.loadSprites(); // then other art
       
-      // Show class selection UI instead of immediately starting the game
-      this.showClassSelection();
+      // Show connection UI first
+      this.showConnectionUI();
     } catch (err) {
       console.error('Failed to load game assets:', err);
     }
+  }
+  
+  // Add new method to show connection UI
+  showConnectionUI() {
+    this.connectionUI = new ConnectionUI();
+    this.connectionUI.on('connected', () => {
+      this.uiContainer.removeChild(this.connectionUI);
+      this.connectionUI.destroy();
+      this.showClassSelection();
+    });
+    this.uiContainer.addChild(this.connectionUI);
   }
   
   // Add new method to show class selection
@@ -117,13 +135,68 @@ export class Game {
     this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
     this.uiContainer.addChild(this.healthUI.container);
     this.uiContainer.addChild(this.statsUI.container);
+    
+    // Add multiplayer HUD
+    this.multiplayerHUD = new MultiplayerHUD();
+    this.multiplayerHUD.position.set(10, 10);
+    this.uiContainer.addChild(this.multiplayerHUD);
 
     this.systems.monsters = new MonsterSystem(this.systems.world);
 
+    // Setup network event handlers
+    this.setupNetworkHandlers();
+    
+    // Enable input manager
+    this.systems.inputManager.enable();
+    
+    // Send class selection to server
+    networkManager.socket.emit('selectClass', selectedClass);
+    
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
     this.gameStarted = true;
     console.log(`Game initialized with ${selectedClass} player`);
+  }
+  
+  setupNetworkHandlers() {
+    // Handle game state updates from server
+    networkManager.on('gameState', (data) => {
+      if (!this.gameStarted) return;
+      
+      // Update remote players
+      data.players.forEach(playerState => {
+        if (playerState.id === networkManager.getPlayerId()) {
+          // This is our player - update authoritative position from server
+          // For now, we'll trust client-side prediction
+          return;
+        }
+        
+        // Update or create remote player
+        let remotePlayer = this.remotePlayers.get(playerState.id);
+        if (!remotePlayer) {
+          remotePlayer = new RemotePlayer(
+            playerState.id,
+            playerState.username,
+            playerState.position.x,
+            playerState.position.y,
+            this.systems.sprites
+          );
+          this.remotePlayers.set(playerState.id, remotePlayer);
+          this.entityContainer.addChild(remotePlayer.sprite);
+        }
+        
+        remotePlayer.updateFromState(playerState);
+      });
+    });
+    
+    // Handle player disconnect
+    networkManager.on('playerLeft', (data) => {
+      const remotePlayer = this.remotePlayers.get(data.playerId);
+      if (remotePlayer) {
+        remotePlayer.destroy();
+        this.remotePlayers.delete(data.playerId);
+      }
+    });
   }
 
   update(delta) {
@@ -136,17 +209,25 @@ export class Game {
     const inputState = this.systems.input.update();
     this.entities.player.update(deltaTimeSeconds, inputState);
     
-    // 2. Update monster AI and intended movement
+    // 2. Send input to server
+    this.systems.inputManager.sendInputToServer(this.camera);
+    
+    // 3. Update remote players
+    this.remotePlayers.forEach(remotePlayer => {
+      remotePlayer.update(deltaTimeSeconds);
+    });
+    
+    // 4. Update monster AI and intended movement
     // MonsterSystem.update calls Monster.update, which changes monster.position
     this.systems.monsters.update(deltaTimeSeconds, this.entities.player);
 
-    // 3. Collect all entities that need physics processing
+    // 5. Collect all entities that need physics processing
     const allEntitiesForPhysics = [this.entities.player, ...this.systems.monsters.monsters];
     
-    // 4. Apply physics (world boundaries and tile collisions) to all collected entities
+    // 6. Apply physics (world boundaries and tile collisions) to all collected entities
     this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);
     
-    // 5. Update combat, camera, and UI
+    // 7. Update combat, camera, and UI
     this.systems.combat.update(deltaTimeSeconds);
     this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();

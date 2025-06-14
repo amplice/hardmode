@@ -1,0 +1,9 @@
+{
+  "watch": ["src", "../shared", "../protocol"],
+  "ext": "ts,json",
+  "ignore": ["src/**/*.test.ts", "dist"],
+  "exec": "ts-node -r dotenv/config src/index.ts",
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

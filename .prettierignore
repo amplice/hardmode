@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Production builds
+dist/
+dist-ssr/
+build/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+
+# Generated files
+*.generated.*
+*.min.js
+*.min.css
+
+# Package files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+docs/_build/
+
+# Public assets
+public/
