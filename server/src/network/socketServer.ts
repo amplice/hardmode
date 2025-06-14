@@ -40,7 +40,7 @@ export function setupSocketServer(io: SocketIOServer): void {
     // Add player to game instance
     const player = gameInstance.addPlayer(playerId, username, socket.id);
 
-    // Send connection success with player info
+    // Send connection success with player info and world data
     socket.emit('connected', {
       playerId,
       username,
@@ -48,6 +48,12 @@ export function setupSocketServer(io: SocketIOServer): void {
       serverConfig: {
         tickRate: config.game.tickRate,
         updateRate: config.game.updateRate,
+      },
+      worldConfig: {
+        seed: config.game.worldSeed,
+        width: config.game.worldSize.width,
+        height: config.game.worldSize.height,
+        tileSize: config.game.worldSize.tileSize,
       },
     });
 

@@ -10,11 +10,26 @@ export class WorldGenerator {
     this.height = options.height || 100;
     this.tileSize = options.tileSize || 32;
     this.tilesets = options.tilesets;
-    this.noise2D = createNoise2D();
-    this.waterNoise2D = createNoise2D(Math.random);
+    
+    // Use seed if provided, otherwise use random
+    const seed = options.seed || Math.random();
+    const seedFunction = typeof seed === 'string' ? this.stringToSeed(seed) : () => seed;
+    
+    this.noise2D = createNoise2D(seedFunction);
+    this.waterNoise2D = createNoise2D(seedFunction);
     this.decorations = null;
     this.container = new PIXI.Container();
     this.tiles = [];
+  }
+  
+  stringToSeed(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return () => Math.abs(hash) / 2147483647; // Normalize to 0-1
   }
 
   generate() {

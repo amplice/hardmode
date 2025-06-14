@@ -19,8 +19,11 @@ export class GameInstance {
     this.tickRate = config.game.tickRate;
     this.updateRate = config.game.updateRate;
     
-    // TODO: Get actual world size from world generator
-    this.worldBounds = { width: 6400, height: 6400 }; // 100 tiles * 64 pixels
+    // Get world size from config
+    this.worldBounds = { 
+      width: config.game.worldSize.width * config.game.worldSize.tileSize, 
+      height: config.game.worldSize.height * config.game.worldSize.tileSize 
+    };
   }
   
   start(): void {
@@ -82,7 +85,10 @@ export class GameInstance {
     if (player) {
       player.setClass(className);
       player.status = PlayerStatus.PLAYING;
-      logger.info(`Player ${player.username} selected class: ${className}`);
+      logger.info(`Player ${player.username} selected class: ${className} - Status: ${player.status}`);
+      logger.info(`Active players: ${Array.from(this.players.values()).filter(p => p.status === PlayerStatus.PLAYING).length}`);
+    } else {
+      logger.error(`Player ${playerId} not found when setting class`);
     }
   }
   
@@ -137,6 +143,10 @@ export class GameInstance {
         playerStates.push(player.getState());
       }
     });
+    
+    if (playerStates.length > 0) {
+      logger.debug(`Sending game state with ${playerStates.length} players`);
+    }
     
     // Send updates to all connected players
     this.connectionManager.broadcast('gameState', {

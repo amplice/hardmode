@@ -86,6 +86,14 @@ export class Game {
   
   // Add new method to show connection UI
   showConnectionUI() {
+    // Listen for server connection data
+    networkManager.once('connected', (data) => {
+      this.worldConfig = data.worldConfig;
+      this.spawnPosition = data.position;
+      console.log('Received world config:', this.worldConfig);
+      console.log('Received spawn position:', this.spawnPosition);
+    });
+    
     this.connectionUI = new ConnectionUI();
     this.connectionUI.on('connected', () => {
       this.uiContainer.removeChild(this.connectionUI);
@@ -109,21 +117,28 @@ export class Game {
       this.classSelectUI = null;
     }
     
-    // Initialize the game world
+    // Initialize the game world with server config
+    const worldConfig = this.worldConfig || { width: 100, height: 100, tileSize: 64 };
     this.systems.world = new WorldGenerator({
-      width:    100,
-      height:   100,
-      tileSize: 64,
+      width:    worldConfig.width,
+      height:   worldConfig.height,
+      tileSize: worldConfig.tileSize,
+      seed:     worldConfig.seed,
       tilesets: this.tilesets
     });
 
     const worldView = this.systems.world.generate();
     this.worldContainer.addChild(worldView);
 
-    // Create player with selected class
-    this.entities.player = new Player({
+    // Create player with selected class and server spawn position
+    const spawnPos = this.spawnPosition || {
       x: (this.systems.world.width  / 2) * this.systems.world.tileSize,
-      y: (this.systems.world.height / 2) * this.systems.world.tileSize,
+      y: (this.systems.world.height / 2) * this.systems.world.tileSize
+    };
+    
+    this.entities.player = new Player({
+      x: spawnPos.x,
+      y: spawnPos.y,
       class:         selectedClass || 'bladedancer', // Use selected or default
       combatSystem:  this.systems.combat,
       spriteManager: this.systems.sprites
@@ -136,9 +151,9 @@ export class Game {
     this.uiContainer.addChild(this.healthUI.container);
     this.uiContainer.addChild(this.statsUI.container);
     
-    // Add multiplayer HUD
+    // Add multiplayer HUD (top-right corner)
     this.multiplayerHUD = new MultiplayerHUD();
-    this.multiplayerHUD.position.set(10, 10);
+    this.multiplayerHUD.position.set(window.innerWidth - 210, 10);
     this.uiContainer.addChild(this.multiplayerHUD);
 
     this.systems.monsters = new MonsterSystem(this.systems.world);
@@ -163,17 +178,23 @@ export class Game {
     networkManager.on('gameState', (data) => {
       if (!this.gameStarted) return;
       
+      console.log('Received game state with', data.players.length, 'players');
+      
       // Update remote players
       data.players.forEach(playerState => {
         if (playerState.id === networkManager.getPlayerId()) {
           // This is our player - update authoritative position from server
           // For now, we'll trust client-side prediction
+          console.log('Our player position:', playerState.position);
           return;
         }
+        
+        console.log('Remote player:', playerState.username, 'at', playerState.position);
         
         // Update or create remote player
         let remotePlayer = this.remotePlayers.get(playerState.id);
         if (!remotePlayer) {
+          console.log('Creating new remote player:', playerState.username);
           remotePlayer = new RemotePlayer(
             playerState.id,
             playerState.username,

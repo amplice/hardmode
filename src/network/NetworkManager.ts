@@ -58,6 +58,8 @@ export class NetworkManager extends EventEmitter {
       playerId: string;
       username: string;
       serverConfig: any;
+      worldConfig: any;
+      position: { x: number; y: number };
     }) => {
       this.playerId = data.playerId;
       this.username = data.username;
