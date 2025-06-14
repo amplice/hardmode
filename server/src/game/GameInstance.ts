@@ -2,7 +2,7 @@ import { Player, PlayerStatus } from '../entities/Player';
 import { ConnectionManager } from '../network/ConnectionManager';
 import { logger } from '../utils/logger';
 import { config } from '../config';
-import { Vector2, InputState, PlayerState } from '../../../shared/types';
+import { InputState, PlayerState } from '../../../shared/types';
 
 export class GameInstance {
   private players: Map<string, Player> = new Map();

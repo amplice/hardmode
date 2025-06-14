@@ -1,0 +1,139 @@
+Game Design Document (GDD)
+Game Concept
+A skill-based, permadeath 2D MMORPG with minimalist combat mechanics. Players explore a procedurally generated world, fighting both monsters and other players. Combat is lethal and skill-based, with 1-2 hit kills being the norm, inspired by games like Nidhogg, Realm of the Mad God, and Bushido Blade. The game emphasizes player skill over grinding, with a low level cap and high-risk encounters.
+Core Gameplay Loop
+
+Create character and select class
+Explore procedurally generated world
+Fight monsters to gain limited progression (up to level 10)
+Find/craft better equipment
+Encounter and duel other players
+Upon death, restart with a new character
+Some progression elements persist between deaths
+
+Combat System
+
+Isometric viewpoint (Diablo 2 style)
+WASD movement controls
+Mouse used for aiming/directing attacks
+Each class has only 2 distinct attacks (primary and secondary)
+No traditional health bars - characters can only take 1-3 hits based on equipment
+Combat based on timing, positioning, and hitbox interaction
+Attacks have distinct animations with clear telegraphing
+Armor provides additional hit protection at the cost of movement speed
+Weapons determine attack range, speed, and hitbox patterns
+
+Character Classes
+
+Bladedancer - Fast, agile fighter with medium-range slashing attacks
+
+Primary: Quick horizontal slash (wide but short range)
+Secondary: Precise thrust (narrow but longer range)
+
+
+Guardian - Slower, armored fighter with heavy attacks
+
+Primary: Sweeping axe attack (wide arc, good coverage)
+Secondary: Shield bash (short range, brief stun effect)
+
+
+Hunter - Precision fighter with ranged capabilities
+
+Primary: Bow shot (very long range, narrow hitbox)
+Secondary: Quick dagger slash (very short range, fast execution)
+
+
+Rogue - Extremely fast, high damage, but fragile
+
+Primary: Quick dual dagger strike (very short range, high speed)
+Secondary: Dash attack (short burst of movement with damage)
+
+
+
+Progression System
+
+Level cap at 10
+Each level provides minor advantages:
+
++5% movement speed per level
++1 hit point at levels 3, 6, and 9
+
+
+Equipment choices affect gameplay more than levels:
+
+Light armor: 1 hit point, 100% speed
+Medium armor: 2 hit points, 85% speed
+Heavy armor: 3 hit points, 70% speed
+
+
+A skilled level 1 player can defeat an unskilled level 10 player
+Experience gained from defeating monsters and players
+
+Permadeath Mechanics
+
+Character death is permanent
+Account-level progression persists:
+
+Unlockable character appearances
+Achievement tracking
+Legacy board (record of past character accomplishments)
+
+
+No direct power inheritance between characters
+Optional "soul gem" rare item that allows one extra hit before death (consumed on use)
+
+World Design
+
+Open, procedurally generated world that refreshes weekly
+Five distinct biomes:
+
+Grasslands (starting area, easier monsters)
+Ancient Forest (medium difficulty, dense vegetation)
+Swamplands (difficult terrain, poisonous creatures)
+Mountain Peaks (high-level monsters, sparse resources)
+Corrupted Lands (endgame area, most dangerous)
+
+
+Resource nodes for crafting materials
+Monster dens with higher spawn rates
+Safe settlements where PvP is disabled
+Mysterious portals leading to instanced challenge areas
+
+Social Systems
+
+Temporary alliances (no formal guild/clan system)
+Simple chat system (proximity-based and global channels)
+Trading possible only in safe settlements
+Leaderboards tracking:
+
+Longest survival time
+Most player kills
+Highest monster kill count
+Deepest exploration into dangerous zones
+
+
+
+Crafting System
+
+Minimalist approach focusing on equipment modification
+Resources gathered throughout the world
+Craftable consumables (temporary buffs, not direct healing)
+Weapon enchantments altering attack patterns
+Armor modifications (tradeoffs between protection and mobility)
+
+Special Mechanics
+
+Day/night cycle affecting monster types and behavior
+Weather effects impacting visibility and movement
+Environmental hazards (lava pools, quicksand, etc.)
+Rare world events drawing players together (boss spawns, treasure hunts)
+"Bounty" system placing temporary targets on highly successful players
+
+Audio-Visual Style
+
+Pixel art aesthetic with fluid animations
+Distinctive silhouettes for each character class
+Minimal UI elements preserving screen space
+Dynamic lighting effects for time of day and spells
+Responsive audio feedback for successful hits and near misses
+Ambient environmental sounds based on biome

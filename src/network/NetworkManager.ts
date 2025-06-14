@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { EventEmitter } from 'events';
+import { EventEmitter } from '../utils/EventEmitter';
 
 export interface PlayerData {
   id: string;
