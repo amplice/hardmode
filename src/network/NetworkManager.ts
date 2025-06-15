@@ -171,6 +171,19 @@ export class NetworkManager extends EventEmitter {
     this.socket.on('playerRespawned', (data: any) => {
       this.emit('playerRespawned', data);
     });
+    
+    // Melee combat events
+    this.socket.on('playerAttack', (data: any) => {
+      this.emit('playerAttack', data);
+    });
+    
+    this.socket.on('meleeHit', (data: any) => {
+      this.emit('meleeHit', data);
+    });
+    
+    this.socket.on('playerRoll', (data: any) => {
+      this.emit('playerRoll', data);
+    });
   }
 
   disconnect(): void {

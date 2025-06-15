@@ -389,6 +389,63 @@ export class Game {
         }
       }
     });
+    
+    // Handle player melee attacks (for animation sync)
+    networkManager.on('playerAttack', (data) => {
+      // Skip our own attacks - they're already animated locally
+      if (data.playerId === networkManager.getPlayerId()) return;
+      
+      const remotePlayer = this.remotePlayers.get(data.playerId);
+      if (remotePlayer) {
+        console.log(`Remote player ${remotePlayer.username} attacking with ${data.attackType}`);
+        // TODO: Trigger attack animation on remote player
+      }
+    });
+    
+    // Handle melee hit results
+    networkManager.on('meleeHit', (data) => {
+      console.log('Melee hit:', data);
+      
+      // Update health for hit players
+      data.hitPlayerIds.forEach(playerId => {
+        if (playerId === networkManager.getPlayerId()) {
+          // Our player was hit
+          this.entities.player.health -= data.damage;
+          console.log('You were hit for', data.damage, 'damage!');
+        } else {
+          // Other player was hit
+          const remotePlayer = this.remotePlayers.get(playerId);
+          if (remotePlayer) {
+            remotePlayer.health -= data.damage;
+            remotePlayer.updateHealthBar();
+          }
+        }
+      });
+    });
+    
+    // Handle player roll
+    networkManager.on('playerRoll', (data) => {
+      console.log('Player rolling:', data);
+      
+      if (data.playerId === networkManager.getPlayerId()) {
+        // Our player rolled - position will be updated by server
+        console.log('You rolled!');
+      } else {
+        // Remote player rolled
+        const remotePlayer = this.remotePlayers.get(data.playerId);
+        if (remotePlayer) {
+          // Animate roll from start to end position
+          remotePlayer.targetPosition = data.endPosition;
+          remotePlayer.isInvulnerable = true;
+          
+          setTimeout(() => {
+            if (remotePlayer) {
+              remotePlayer.isInvulnerable = false;
+            }
+          }, data.duration);
+        }
+      }
+    });
   }
 
   update(delta) {
@@ -402,7 +459,7 @@ export class Game {
     this.entities.player.update(deltaTimeSeconds, inputState);
     
     // 2. Send input to server
-    this.systems.inputManager.sendInputToServer(this.camera);
+    this.systems.inputManager.sendInputToServer(this.camera, this.entities.player);
     
     // 3. Update remote players
     this.remotePlayers.forEach(remotePlayer => {

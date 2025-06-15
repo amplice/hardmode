@@ -23,6 +23,8 @@ export class Player {
   public lastAttackTime: number;
   public connectionId: string;
   public invulnerableUntil: number;
+  public facing: string;
+  public currentAttackType: string | null;
   
   // Movement constants
   private readonly MOVE_SPEED = 300; // pixels per second
@@ -47,6 +49,8 @@ export class Player {
     this.lastUpdateTime = Date.now();
     this.lastAttackTime = 0;
     this.invulnerableUntil = 0;
+    this.facing = 'south'; // Default facing direction
+    this.currentAttackType = null;
   }
   
   setClass(className: string): void {
@@ -80,6 +84,11 @@ export class Player {
     
     this.lastInputTime = Date.now();
     
+    // Update facing direction if provided
+    if (input.facing) {
+      this.facing = input.facing;
+    }
+    
     // Apply movement input
     const moveX = input.movement.x;
     const moveY = input.movement.y;
@@ -91,9 +100,11 @@ export class Player {
       this.velocity.y = (moveY / length) * this.MOVE_SPEED;
     }
     
-    // TODO: Handle attack input
-    if (input.attacking) {
-      // Process attack
+    // Update attack type if provided
+    if (input.attacking && input.attackType) {
+      this.currentAttackType = input.attackType;
+    } else {
+      this.currentAttackType = null;
     }
   }
   
@@ -152,6 +163,7 @@ export class Player {
       health: this.health,
       maxHealth: this.maxHealth,
       class: this.class,
+      facing: this.facing,
       isInvulnerable: this.isInvulnerable(),
       isDead: this.status === PlayerStatus.DEAD,
     };
@@ -179,11 +191,14 @@ export class Player {
   }
   
   private getAttackCooldown(): number {
-    // Only hunter has projectile attacks that need server cooldown
-    // Other classes handle attack timing client-side
-    if (this.class === 'hunter') {
-      return 600; // Original hunter attack rate
-    }
-    return 500; // Default for other classes (not used server-side)
+    // Attack cooldowns by class and type
+    const cooldowns: { [key: string]: number } = {
+      'hunter': 600,      // Bow attacks
+      'bladedancer': 400, // Fast sword attacks
+      'guardian': 600,    // Slower axe attacks
+      'rogue': 300,       // Very fast dagger attacks
+    };
+    
+    return cooldowns[this.class] || 500;
   }
 }

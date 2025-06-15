@@ -13,6 +13,7 @@ export class RemotePlayer {
     this.class = 'warrior';
     this.isDead = false;
     this.isInvulnerable = false;
+    this.facing = 'south';
     
     console.log(`Creating RemotePlayer sprite for ${username} at position:`, x, y);
     
@@ -83,6 +84,7 @@ export class RemotePlayer {
     this.class = state.class || 'warrior';
     this.isDead = state.isDead || false;
     this.isInvulnerable = state.isInvulnerable || false;
+    this.facing = state.facing || 'south';
     
     // If position changed significantly, log it
     const distance = Math.sqrt(

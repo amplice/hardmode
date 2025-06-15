@@ -13,6 +13,7 @@ export interface PlayerState {
   health: number;
   maxHealth: number;
   class: string;
+  facing?: string;
   isInvulnerable?: boolean;
   isDead?: boolean;
 }
@@ -21,6 +22,8 @@ export interface InputState {
   movement: Vector2; // normalized direction
   mousePosition: Vector2; // world position
   attacking: boolean;
+  attackType?: 'primary' | 'secondary' | 'roll'; // Type of attack being performed
+  facing?: string; // Player facing direction
 }
 
 export interface GameConfig {

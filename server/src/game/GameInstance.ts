@@ -112,19 +112,31 @@ export class GameInstance {
     player.processInput(input, deltaTime);
     
     // Handle attacking
-    if (input.attacking && player.canAttack()) {
-      this.handlePlayerAttack(player, input.mousePosition);
+    if (input.attacking && input.attackType && player.canAttack()) {
+      this.handlePlayerAttack(player, input);
     }
   }
   
-  private handlePlayerAttack(player: Player, mousePosition: Vector2): void {
-    // Only hunter class has projectile attacks
-    if (player.class !== 'hunter') {
-      // Other classes have melee/dash attacks handled client-side for now
-      // TODO: Implement server-side melee hit detection in Phase 3
+  private handlePlayerAttack(player: Player, input: InputState): void {
+    const attackType = input.attackType;
+    
+    // Hunter projectile attacks
+    if (player.class === 'hunter' && (attackType === 'primary' || attackType === 'secondary')) {
+      this.handleHunterProjectileAttack(player, input.mousePosition);
       return;
     }
     
+    // Melee attacks for other classes
+    if (attackType === 'primary' || attackType === 'secondary') {
+      this.handleMeleeAttack(player, attackType);
+    } else if (attackType === 'roll') {
+      this.handleRollAbility(player);
+    }
+    
+    player.setLastAttackTime(Date.now());
+  }
+  
+  private handleHunterProjectileAttack(player: Player, mousePosition: Vector2): void {
     // Calculate direction from player to mouse
     const direction = {
       x: mousePosition.x - player.position.x,
@@ -148,7 +160,6 @@ export class GameInstance {
     );
     
     this.projectiles.set(projectile.id, projectile);
-    player.setLastAttackTime(Date.now());
     
     // Broadcast projectile creation to all players
     this.connectionManager.broadcast('projectileSpawned', {
@@ -157,6 +168,188 @@ export class GameInstance {
     });
     
     logger.debug(`Hunter ${player.username} fired arrow ${projectile.id}`);
+  }
+  
+  private handleMeleeAttack(player: Player, attackType: string): void {
+    // Get attack configuration based on class and attack type
+    const attackConfig = this.getMeleeAttackConfig(player.class, attackType);
+    if (!attackConfig) {
+      logger.warn(`No attack config found for ${player.class} ${attackType}`);
+      return;
+    }
+    
+    // Broadcast attack event for client animation
+    this.connectionManager.broadcast('playerAttack', {
+      playerId: player.id,
+      attackType: attackType,
+      position: player.position,
+      facing: player.facing,
+      timestamp: Date.now(),
+    });
+    
+    // Schedule hit detection after windup time
+    setTimeout(() => {
+      this.performMeleeHitDetection(player, attackConfig);
+    }, attackConfig.windupTime);
+  }
+  
+  private handleRollAbility(player: Player): void {
+    // Roll provides temporary invulnerability and movement
+    const rollDuration = 500; // 0.5 seconds
+    const rollDistance = 150;
+    
+    // Calculate roll destination based on facing
+    const angle = this.facingToAngle(player.facing);
+    const rollDestination = {
+      x: player.position.x + Math.cos(angle) * rollDistance,
+      y: player.position.y + Math.sin(angle) * rollDistance,
+    };
+    
+    // Set invulnerability
+    player.setInvulnerable(rollDuration);
+    
+    // Broadcast roll event
+    this.connectionManager.broadcast('playerRoll', {
+      playerId: player.id,
+      startPosition: player.position,
+      endPosition: rollDestination,
+      duration: rollDuration,
+      timestamp: Date.now(),
+    });
+    
+    // Update player position after roll (simplified - should animate)
+    setTimeout(() => {
+      player.position = rollDestination;
+      this.enforceWorldBounds(player);
+    }, rollDuration);
+  }
+  
+  private getMeleeAttackConfig(playerClass: string, attackType: string): any {
+    // Attack configurations based on class
+    const configs: any = {
+      bladedancer: {
+        primary: {
+          windupTime: 200,
+          range: 80,
+          angle: 90,
+          damage: 20,
+        },
+        secondary: {
+          windupTime: 300,
+          range: 100,
+          angle: 180,
+          damage: 30,
+        },
+      },
+      guardian: {
+        primary: {
+          windupTime: 300,
+          range: 100,
+          angle: 180,
+          damage: 25,
+        },
+        secondary: {
+          windupTime: 400,
+          range: 120,
+          angle: 360,
+          damage: 35,
+        },
+      },
+      rogue: {
+        primary: {
+          windupTime: 150,
+          range: 60,
+          angle: 60,
+          damage: 15,
+        },
+        secondary: {
+          windupTime: 200,
+          range: 80,
+          angle: 90,
+          damage: 25,
+        },
+      },
+    };
+    
+    return configs[playerClass]?.[attackType];
+  }
+  
+  private performMeleeHitDetection(attacker: Player, attackConfig: any): void {
+    const hitPlayers: string[] = [];
+    
+    // Check all other players
+    this.players.forEach(target => {
+      // Skip self and dead/invulnerable players
+      if (target.id === attacker.id || 
+          target.status !== PlayerStatus.PLAYING || 
+          target.isInvulnerable()) {
+        return;
+      }
+      
+      // Check if target is in range and angle
+      if (this.isInMeleeRange(attacker, target, attackConfig)) {
+        // Apply damage
+        target.takeDamage(attackConfig.damage);
+        hitPlayers.push(target.id);
+        
+        logger.info(`${attacker.username} hit ${target.username} for ${attackConfig.damage} damage`);
+      }
+    });
+    
+    // Broadcast hit results
+    if (hitPlayers.length > 0) {
+      this.connectionManager.broadcast('meleeHit', {
+        attackerId: attacker.id,
+        hitPlayerIds: hitPlayers,
+        damage: attackConfig.damage,
+        timestamp: Date.now(),
+      });
+    }
+  }
+  
+  private isInMeleeRange(attacker: Player, target: Player, config: any): boolean {
+    // Calculate distance
+    const dx = target.position.x - attacker.position.x;
+    const dy = target.position.y - attacker.position.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    if (distance > config.range) {
+      return false;
+    }
+    
+    // Check angle if not a 360 degree attack
+    if (config.angle < 360) {
+      const targetAngle = Math.atan2(dy, dx);
+      const attackerFacingAngle = this.facingToAngle(attacker.facing);
+      
+      // Calculate angle difference
+      let angleDiff = Math.abs(targetAngle - attackerFacingAngle);
+      if (angleDiff > Math.PI) {
+        angleDiff = 2 * Math.PI - angleDiff;
+      }
+      
+      // Convert to degrees and check
+      const angleDiffDegrees = angleDiff * (180 / Math.PI);
+      if (angleDiffDegrees > config.angle / 2) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+  
+  private facingToAngle(facing: string): number {
+    const angles: { [key: string]: number } = {
+      'east': 0,
+      'southeast': Math.PI / 4,
+      'south': Math.PI / 2,
+      'southwest': 3 * Math.PI / 4,
+      'west': Math.PI,
+      'northwest': 5 * Math.PI / 4,
+      'north': 3 * Math.PI / 2,
+      'northeast': 7 * Math.PI / 4,
+    };
+    return angles[facing] || 0;
   }
   
   private tick(): void {
