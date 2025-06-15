@@ -32,13 +32,23 @@ export function setupMessageHandlers(
   
   // Player class selection
   socket.on('selectClass', (className: string) => {
-    if (!['warrior', 'archer', 'mage', 'bladedancer'].includes(className)) {
+    logger.info(`Player ${playerId} selecting class: ${className}`);
+    if (!['bladedancer', 'guardian', 'hunter', 'rogue'].includes(className)) {
       logger.warn(`Invalid class selection from ${playerId}: ${className}`);
       return;
     }
     
     gameInstance.setPlayerClass(playerId, className);
     socket.emit('classSelected', { class: className });
+    logger.info(`Player ${playerId} class selection complete`);
+    
+    // Send current game state to the player who just selected their class
+    const gameState = gameInstance.getGameState();
+    socket.emit('gameState', {
+      players: gameState.players,
+      timestamp: Date.now(),
+    });
+    logger.info(`Sent game state to ${playerId} with ${gameState.players.length} active players`);
   });
 
   // Chat message (basic implementation)

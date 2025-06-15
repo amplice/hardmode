@@ -87,6 +87,9 @@ export class GameInstance {
       player.status = PlayerStatus.PLAYING;
       logger.info(`Player ${player.username} selected class: ${className} - Status: ${player.status}`);
       logger.info(`Active players: ${Array.from(this.players.values()).filter(p => p.status === PlayerStatus.PLAYING).length}`);
+      
+      // Send immediate update to ensure new player appears to others
+      this.sendUpdates();
     } else {
       logger.error(`Player ${playerId} not found when setting class`);
     }
@@ -139,13 +142,14 @@ export class GameInstance {
     
     // Collect all player states
     this.players.forEach(player => {
+      logger.debug(`Player ${player.username} status: ${player.status}`);
       if (player.status === PlayerStatus.PLAYING || player.status === PlayerStatus.DEAD) {
         playerStates.push(player.getState());
       }
     });
     
     if (playerStates.length > 0) {
-      logger.debug(`Sending game state with ${playerStates.length} players`);
+      logger.info(`Sending game state with ${playerStates.length} active players out of ${this.players.size} total`);
     }
     
     // Send updates to all connected players
@@ -158,7 +162,9 @@ export class GameInstance {
   getGameState() {
     return {
       playerCount: this.players.size,
-      players: Array.from(this.players.values()).map(p => p.getState()),
+      players: Array.from(this.players.values())
+        .filter(p => p.status === PlayerStatus.PLAYING || p.status === PlayerStatus.DEAD)
+        .map(p => p.getState()),
       worldBounds: this.worldBounds,
     };
   }

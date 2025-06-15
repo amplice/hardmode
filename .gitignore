@@ -63,6 +63,8 @@ Desktop.ini
 # Monitoring
 metrics/
 performance-reports/
+claude_feedback/
+
 
 # Backups
 *.backup

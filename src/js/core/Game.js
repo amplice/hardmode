@@ -86,13 +86,16 @@ export class Game {
   
   // Add new method to show connection UI
   showConnectionUI() {
-    // Listen for server connection data
-    networkManager.once('connected', (data) => {
-      this.worldConfig = data.worldConfig;
-      this.spawnPosition = data.position;
-      console.log('Received world config:', this.worldConfig);
-      console.log('Received spawn position:', this.spawnPosition);
-    });
+    // Store handler reference to avoid multiple listeners
+    if (!this.connectedHandler) {
+      this.connectedHandler = (data) => {
+        this.worldConfig = data.worldConfig;
+        this.spawnPosition = data.position;
+        console.log('Received world config:', this.worldConfig);
+        console.log('Received spawn position:', this.spawnPosition);
+      };
+      networkManager.on('connected', this.connectedHandler);
+    }
     
     this.connectionUI = new ConnectionUI();
     this.connectionUI.on('connected', () => {
@@ -181,9 +184,15 @@ export class Game {
       if (!this.gameStarted) return;
       
       console.log('Received game state with', data.players.length, 'players');
+      console.log('My player ID:', networkManager.getPlayerId());
+      
+      // Track which player IDs we've seen
+      const seenPlayerIds = new Set();
       
       // Update remote players
       data.players.forEach(playerState => {
+        seenPlayerIds.add(playerState.id);
+        
         if (playerState.id === networkManager.getPlayerId()) {
           // This is our player - update authoritative position from server
           // For now, we'll trust client-side prediction
@@ -209,6 +218,15 @@ export class Game {
         }
         
         remotePlayer.updateFromState(playerState);
+      });
+      
+      // Remove players who are no longer in the game state
+      this.remotePlayers.forEach((remotePlayer, playerId) => {
+        if (!seenPlayerIds.has(playerId)) {
+          console.log('Removing player who left:', playerId);
+          remotePlayer.destroy();
+          this.remotePlayers.delete(playerId);
+        }
       });
     });
     

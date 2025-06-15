@@ -51,10 +51,23 @@ export class MultiplayerHUD extends Container {
 
     // Set up event listeners
     this.setupEventListeners();
+    
+    // Initial update
+    this.updatePlayerList();
   }
 
   private setupEventListeners(): void {
+    // Check if already connected
+    if (networkManager.isConnected()) {
+      const username = networkManager.getUsername();
+      if (username) {
+        this.statusText.text = `Connected as ${username}`;
+        this.statusText.style.fill = 0x00ff00;
+      }
+    }
+    
     networkManager.on('connected', (data) => {
+      console.log('MultiplayerHUD: Received connected event', data);
       this.statusText.text = `Connected as ${data.username}`;
       this.statusText.style.fill = 0x00ff00;
     });

@@ -38,6 +38,8 @@ export class NetworkManager extends EventEmitter {
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
       reconnectionAttempts: 5,
+      withCredentials: false, // Firefox compatibility
+      autoConnect: true,
     });
 
     this.setupEventHandlers();
