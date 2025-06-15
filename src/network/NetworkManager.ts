@@ -78,6 +78,15 @@ export class NetworkManager extends EventEmitter {
       console.error('Connection error:', error.message);
       this.emit('error', error);
     });
+    
+    this.socket.on('reconnect', (attemptNumber: number) => {
+      console.log('Reconnected after', attemptNumber, 'attempts');
+      this.emit('reconnect');
+    });
+    
+    this.socket.on('reconnect_error', (error: Error) => {
+      console.error('Reconnection error:', error.message);
+    });
 
     // Player events
     this.socket.on('playerJoined', (player: PlayerData) => {

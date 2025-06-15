@@ -66,6 +66,15 @@ export function setupSocketServer(io: SocketIOServer): void {
     // Send current player list to new player
     const players = connectionManager.getPlayerList();
     socket.emit('playerList', players);
+    
+    // Also send current game state so new player sees existing players
+    const gameState = gameInstance.getGameState();
+    if (gameState.players.length > 0) {
+      socket.emit('gameState', {
+        players: gameState.players,
+        timestamp: Date.now(),
+      });
+    }
 
     // Store playerId in socket data for use in handlers
     socket.data.playerId = playerId;

@@ -56,10 +56,10 @@ export class RemotePlayer {
   updateFromState(state) {
     // Update target position for interpolation
     this.targetPosition = { ...state.position };
-    this.velocity = { ...state.velocity };
-    this.health = state.health;
-    this.maxHealth = state.maxHealth;
-    this.class = state.class;
+    this.velocity = state.velocity ? { ...state.velocity } : { x: 0, y: 0 };
+    this.health = state.health || 100;
+    this.maxHealth = state.maxHealth || 100;
+    this.class = state.class || 'warrior';
     
     this.updateHealthBar();
   }

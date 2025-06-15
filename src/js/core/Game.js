@@ -164,12 +164,14 @@ export class Game {
     // Enable input manager
     this.systems.inputManager.enable();
     
+    // Mark game as started before sending class selection
+    this.gameStarted = true;
+    
     // Send class selection to server
     networkManager.socket.emit('selectClass', selectedClass);
     
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
-    this.gameStarted = true;
     console.log(`Game initialized with ${selectedClass} player`);
   }
   
@@ -217,6 +219,22 @@ export class Game {
         remotePlayer.destroy();
         this.remotePlayers.delete(data.playerId);
       }
+    });
+    
+    // Handle initial player list
+    networkManager.on('playerList', (players) => {
+      console.log('Received player list with', players.length, 'players');
+      players.forEach(player => {
+        if (player.id !== networkManager.getPlayerId()) {
+          console.log('Adding existing player:', player.username);
+          // Note: We'll create them when we get their full state in gameState update
+        }
+      });
+    });
+    
+    // Handle new player joining
+    networkManager.on('playerJoined', (player) => {
+      console.log('New player joined:', player.username);
     });
   }
 

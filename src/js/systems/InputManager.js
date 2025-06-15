@@ -9,7 +9,7 @@ export class InputManager {
     
     // Input state for networking
     this.lastSentInput = null;
-    this.inputSendRate = 50; // Send input 20 times per second
+    this.inputSendRate = 50; // Send input 20 times per second (50ms interval)
     this.lastInputTime = 0;
     
     this.setupEventListeners();

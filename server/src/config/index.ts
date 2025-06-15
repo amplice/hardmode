@@ -24,6 +24,13 @@ export interface Config {
     maxPlayers: number;
     tickRate: number;
     updateRate: number;
+    playerTimeout: number;
+    worldSeed: string;
+    worldSize: {
+      width: number;
+      height: number;
+      tileSize: number;
+    };
   };
   database: {
     url: string;
@@ -59,6 +66,13 @@ const developmentConfig: Config = {
     maxPlayers: parseInt(process.env.MAX_PLAYERS || '100', 10),
     tickRate: parseInt(process.env.TICK_RATE || '60', 10),
     updateRate: parseInt(process.env.UPDATE_RATE || '20', 10),
+    playerTimeout: 30000,
+    worldSeed: process.env.WORLD_SEED || 'hardmode-mmo-seed-12345',
+    worldSize: {
+      width: 100,
+      height: 100,
+      tileSize: 64,
+    },
   },
   database: {
     url: process.env.DATABASE_URL || 'postgresql://localhost:5432/hardmode',
