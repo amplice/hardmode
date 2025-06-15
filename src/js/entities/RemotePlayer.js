@@ -100,10 +100,21 @@ export class RemotePlayer {
   }
   
   update(deltaTime) {
-    // Interpolate position
-    const lerpFactor = 0.2;
-    this.position.x += (this.targetPosition.x - this.position.x) * lerpFactor;
-    this.position.y += (this.targetPosition.y - this.position.y) * lerpFactor;
+    // Calculate distance to target
+    const dx = this.targetPosition.x - this.position.x;
+    const dy = this.targetPosition.y - this.position.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    // If very close, snap to target position (prevents sliding)
+    if (distance < 2) {
+      this.position.x = this.targetPosition.x;
+      this.position.y = this.targetPosition.y;
+    } else {
+      // Use higher lerp factor for more responsive movement
+      const lerpFactor = 0.5;
+      this.position.x += dx * lerpFactor;
+      this.position.y += dy * lerpFactor;
+    }
     
     this.sprite.position.set(
       Math.round(this.position.x),

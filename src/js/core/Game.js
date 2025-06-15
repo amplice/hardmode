@@ -184,7 +184,8 @@ export class Game {
     this.multiplayerHUD.position.set(window.innerWidth - 210, 10);
     this.uiContainer.addChild(this.multiplayerHUD);
 
-    this.systems.monsters = new MonsterSystem(this.systems.world);
+    // Monsters disabled for multiplayer testing
+    // this.systems.monsters = new MonsterSystem(this.systems.world);
 
     // Setup network event handlers BEFORE sending class selection
     this.setupNetworkHandlers();
@@ -242,9 +243,18 @@ export class Game {
         seenPlayerIds.add(playerState.id);
         
         if (playerState.id === networkManager.getPlayerId()) {
-          // This is our player - update authoritative position from server
-          // For now, we'll trust client-side prediction
-          console.log('Our player position:', playerState.position);
+          // This is our player - reconcile with server position if too far off
+          const dx = playerState.position.x - this.entities.player.position.x;
+          const dy = playerState.position.y - this.entities.player.position.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          // If position is way off, snap to server position
+          if (distance > 100) {
+            console.log('Position reconciliation: local vs server distance =', distance);
+            this.entities.player.position.x = playerState.position.x;
+            this.entities.player.position.y = playerState.position.y;
+            this.entities.player.sprite.position.set(playerState.position.x, playerState.position.y);
+          }
           return;
         }
         
@@ -474,6 +484,25 @@ export class Game {
         }
       }
     });
+    
+    // Handle guardian jump attack
+    networkManager.on('playerJumpAttack', (data) => {
+      console.log('Player jump attack:', data);
+      
+      if (data.playerId === networkManager.getPlayerId()) {
+        // Our player jumped - position will be updated by server
+        console.log('You performed a jump attack!');
+      } else {
+        // Remote player jumped
+        const remotePlayer = this.remotePlayers.get(data.playerId);
+        if (remotePlayer) {
+          // Animate jump from start to end position
+          remotePlayer.targetPosition = data.endPosition;
+          console.log(`Remote player ${remotePlayer.username} jump attacking to`, data.endPosition);
+          // TODO: Add jump animation
+        }
+      }
+    });
   }
 
   update(delta) {
@@ -513,10 +542,11 @@ export class Game {
     
     // 4. Update monster AI and intended movement
     // MonsterSystem.update calls Monster.update, which changes monster.position
-    this.systems.monsters.update(deltaTimeSeconds, this.entities.player);
+    // Disabled for multiplayer testing
+    // this.systems.monsters.update(deltaTimeSeconds, this.entities.player);
 
     // 5. Collect all entities that need physics processing
-    const allEntitiesForPhysics = [this.entities.player, ...this.systems.monsters.monsters];
+    const allEntitiesForPhysics = [this.entities.player]; // Monsters disabled
     
     // 6. Apply physics (world boundaries and tile collisions) to all collected entities
     this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);

@@ -120,6 +120,8 @@ export class GameInstance {
   private handlePlayerAttack(player: Player, input: InputState): void {
     const attackType = input.attackType;
     
+    logger.debug(`Player ${player.username} (${player.class}) attacking with type: ${attackType}`);
+    
     // Hunter projectile attacks
     if (player.class === 'hunter' && (attackType === 'primary' || attackType === 'secondary')) {
       this.handleHunterProjectileAttack(player, input.mousePosition);
@@ -178,19 +180,59 @@ export class GameInstance {
       return;
     }
     
-    // Broadcast attack event for client animation
-    this.connectionManager.broadcast('playerAttack', {
+    // Check if this attack has movement (only guardian secondary)
+    const hasMovement = player.class === 'guardian' && attackType === 'secondary';
+    
+    if (hasMovement) {
+      // Handle jump attack with movement
+      this.handleJumpAttack(player, attackConfig);
+    } else {
+      // Regular melee attack without movement
+      // Broadcast attack event for client animation
+      this.connectionManager.broadcast('playerAttack', {
+        playerId: player.id,
+        attackType: attackType,
+        position: player.position,
+        facing: player.facing,
+        timestamp: Date.now(),
+      });
+      
+      // Schedule hit detection after windup time
+      setTimeout(() => {
+        this.performMeleeHitDetection(player, attackConfig);
+      }, attackConfig.windupTime);
+    }
+  }
+  
+  private handleJumpAttack(player: Player, attackConfig: any): void {
+    const jumpDistance = 150;
+    const jumpDuration = 300; // 0.3 seconds
+    
+    // Calculate jump destination based on facing
+    const angle = this.facingToAngle(player.facing);
+    const jumpDestination = {
+      x: player.position.x + Math.cos(angle) * jumpDistance,
+      y: player.position.y + Math.sin(angle) * jumpDistance,
+    };
+    
+    // Broadcast jump attack event
+    this.connectionManager.broadcast('playerJumpAttack', {
       playerId: player.id,
-      attackType: attackType,
-      position: player.position,
+      startPosition: player.position,
+      endPosition: jumpDestination,
+      duration: jumpDuration,
       facing: player.facing,
       timestamp: Date.now(),
     });
     
-    // Schedule hit detection after windup time
+    // Update player position after jump
     setTimeout(() => {
+      player.position = jumpDestination;
+      this.enforceWorldBounds(player);
+      
+      // Perform hit detection at landing position
       this.performMeleeHitDetection(player, attackConfig);
-    }, attackConfig.windupTime);
+    }, jumpDuration);
   }
   
   private handleRollAbility(player: Player): void {
@@ -276,6 +318,8 @@ export class GameInstance {
   
   private performMeleeHitDetection(attacker: Player, attackConfig: any): void {
     const hitPlayers: string[] = [];
+    
+    logger.debug(`Performing melee hit detection for ${attacker.username} facing ${attacker.facing}`);
     
     // Check all other players
     this.players.forEach(target => {
