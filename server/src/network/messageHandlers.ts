@@ -80,6 +80,17 @@ export function setupMessageHandlers(
     const players = connectionManager.getPlayerList();
     socket.emit('playerList', players);
   });
+  
+  // Request current game state
+  socket.on('requestGameState', () => {
+    logger.info(`Player ${playerId} requested game state`);
+    const gameState = gameInstance.getGameState();
+    socket.emit('gameState', {
+      players: gameState.players,
+      timestamp: Date.now(),
+    });
+    logger.info(`Sent game state to ${playerId} with ${gameState.players.length} active players`);
+  });
 
   // Error handling for socket
   socket.on('error', (error) => {

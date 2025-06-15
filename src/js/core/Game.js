@@ -46,6 +46,12 @@ export class Game {
     this.entityContainer = new PIXI.Container();
     this.uiContainer = new PIXI.Container();
     this.uiContainer.sortableChildren = true;
+    
+    // Ensure containers are visible
+    this.worldContainer.visible = true;
+    this.entityContainer.visible = true;
+    this.uiContainer.visible = true;
+    
     this.app.stage.addChild(this.worldContainer);
     this.app.stage.addChild(this.entityContainer);
     this.app.stage.addChild(this.uiContainer);
@@ -132,12 +138,26 @@ export class Game {
 
     const worldView = this.systems.world.generate();
     this.worldContainer.addChild(worldView);
+    
+    // Add debug marker at world center
+    const debugMarker = new PIXI.Graphics();
+    debugMarker.beginFill(0xff0000, 0.8);
+    debugMarker.drawRect(-50, -50, 100, 100);
+    debugMarker.endFill();
+    debugMarker.position.set(
+      (this.systems.world.width / 2) * this.systems.world.tileSize,
+      (this.systems.world.height / 2) * this.systems.world.tileSize
+    );
+    this.entityContainer.addChild(debugMarker);
+    console.log('Debug marker added at world center:', debugMarker.position);
 
     // Create player with selected class and server spawn position
     const spawnPos = this.spawnPosition || {
       x: (this.systems.world.width  / 2) * this.systems.world.tileSize,
       y: (this.systems.world.height / 2) * this.systems.world.tileSize
     };
+    
+    console.log('Creating local player at spawn position:', spawnPos);
     
     this.entities.player = new Player({
       x: spawnPos.x,
@@ -147,6 +167,9 @@ export class Game {
       spriteManager: this.systems.sprites
     });
     this.entityContainer.addChild(this.entities.player.sprite);
+    
+    console.log('Local player created at:', this.entities.player.position);
+    console.log('Entity container after adding player:', this.entityContainer.children.length, 'children');
 
     // Add health and stats UI
     this.healthUI = new HealthUI(this.entities.player);
@@ -167,11 +190,17 @@ export class Game {
     // Enable input manager
     this.systems.inputManager.enable();
     
-    // Mark game as started before sending class selection
+    // Send class selection to server first
+    networkManager.socket.emit('selectClass', selectedClass);
+    
+    // Mark game as started after sending class selection
     this.gameStarted = true;
     
-    // Send class selection to server
-    networkManager.socket.emit('selectClass', selectedClass);
+    // Request current game state after we're ready
+    setTimeout(() => {
+      console.log('Requesting current game state...');
+      networkManager.socket.emit('requestGameState');
+    }, 100);
     
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
@@ -181,10 +210,19 @@ export class Game {
   setupNetworkHandlers() {
     // Handle game state updates from server
     networkManager.on('gameState', (data) => {
-      if (!this.gameStarted) return;
+      if (!this.gameStarted) {
+        console.log('Ignoring game state - game not started yet');
+        return;
+      }
       
+      console.log('=== GAME STATE UPDATE ===');
       console.log('Received game state with', data.players.length, 'players');
       console.log('My player ID:', networkManager.getPlayerId());
+      console.log('All players in state:', data.players.map(p => ({
+        id: p.id,
+        username: p.username,
+        position: p.position
+      })));
       
       // Track which player IDs we've seen
       const seenPlayerIds = new Set();
@@ -215,6 +253,15 @@ export class Game {
           );
           this.remotePlayers.set(playerState.id, remotePlayer);
           this.entityContainer.addChild(remotePlayer.sprite);
+          
+          // Debug logging
+          console.log('Entity container children count:', this.entityContainer.children.length);
+          console.log('Remote player sprite parent:', remotePlayer.sprite.parent);
+          console.log('Entity container position:', this.entityContainer.position);
+          console.log('Entity container visible:', this.entityContainer.visible);
+          console.log('Entity container === window.game.entityContainer?', this.entityContainer === window.game.entityContainer);
+          console.log('App stage contains entityContainer?', this.app.stage.children.includes(this.entityContainer));
+          console.log('Remote player sprite world position:', remotePlayer.sprite.toGlobal(new PIXI.Point(0, 0)));
         }
         
         remotePlayer.updateFromState(playerState);
@@ -270,6 +317,9 @@ export class Game {
     this.systems.inputManager.sendInputToServer(this.camera);
     
     // 3. Update remote players
+    if (this.remotePlayers.size > 0) {
+      console.log(`Updating ${this.remotePlayers.size} remote players`);
+    }
     this.remotePlayers.forEach(remotePlayer => {
       remotePlayer.update(deltaTimeSeconds);
     });
@@ -296,13 +346,21 @@ export class Game {
     
     this.camera.x = this.entities.player.position.x;
     this.camera.y = this.entities.player.position.y;
-    this.worldContainer.position.set(
-      Math.floor(this.app.screen.width / 2 - this.camera.x),
-      Math.floor(this.app.screen.height / 2 - this.camera.y)
-    );
-    this.entityContainer.position.set(
-      Math.floor(this.app.screen.width / 2 - this.camera.x),
-      Math.floor(this.app.screen.height / 2 - this.camera.y)
-    );
+    
+    const containerX = Math.floor(this.app.screen.width / 2 - this.camera.x);
+    const containerY = Math.floor(this.app.screen.height / 2 - this.camera.y);
+    
+    this.worldContainer.position.set(containerX, containerY);
+    this.entityContainer.position.set(containerX, containerY);
+    
+    // Debug log occasionally
+    if (Math.random() < 0.01) { // 1% chance each frame
+      console.log('Camera position:', this.camera);
+      console.log('Entity container position:', this.entityContainer.position);
+      console.log('Remote players count:', this.remotePlayers.size);
+      this.remotePlayers.forEach((player, id) => {
+        console.log(`  ${player.username}: sprite pos =`, player.sprite.position, 'visible =', player.sprite.visible);
+      });
+    }
   }
 }

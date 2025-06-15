@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Remote Players</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: monospace;
+            background: #222;
+            color: #fff;
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h3>Remote Player Debug</h3>
+        <button onclick="checkRemotePlayers()">Check Remote Players</button>
+        <button onclick="toggleEntityContainer()">Toggle Entity Container</button>
+        <button onclick="addTestRemotePlayer()">Add Test Remote Player</button>
+        <button onclick="checkRenderOrder()">Check Render Order</button>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function checkRemotePlayers() {
+            if (!window.game) {
+                updateOutput('Game not initialized');
+                return;
+            }
+
+            const output = [];
+            output.push(`Remote players: ${window.game.remotePlayers.size}`);
+            output.push(`Entity container visible: ${window.game.entityContainer.visible}`);
+            output.push(`Entity container children: ${window.game.entityContainer.children.length}`);
+            output.push(`Entity container position: ${JSON.stringify(window.game.entityContainer.position)}`);
+            
+            window.game.remotePlayers.forEach((player, id) => {
+                const bounds = player.sprite.getBounds();
+                output.push(`\n${player.username} (${id}):`);
+                output.push(`  Position: ${JSON.stringify(player.position)}`);
+                output.push(`  Sprite position: ${JSON.stringify(player.sprite.position)}`);
+                output.push(`  Sprite visible: ${player.sprite.visible}`);
+                output.push(`  Sprite parent: ${player.sprite.parent ? 'Yes' : 'No'}`);
+                output.push(`  Sprite bounds: ${JSON.stringify(bounds)}`);
+                output.push(`  Sprite alpha: ${player.sprite.alpha}`);
+                output.push(`  Sprite scale: ${JSON.stringify(player.sprite.scale)}`);
+            });
+
+            updateOutput(output.join('\n'));
+        }
+
+        function toggleEntityContainer() {
+            if (!window.game) {
+                updateOutput('Game not initialized');
+                return;
+            }
+
+            window.game.entityContainer.visible = !window.game.entityContainer.visible;
+            updateOutput(`Entity container visible: ${window.game.entityContainer.visible}`);
+        }
+
+        function addTestRemotePlayer() {
+            if (!window.game) {
+                updateOutput('Game not initialized');
+                return;
+            }
+
+            // Create a test remote player at current player position
+            const testId = 'test-' + Date.now();
+            const playerPos = window.game.entities.player.position;
+            const testPlayer = new window.game.constructor.prototype.constructor.RemotePlayer(
+                testId,
+                'TestPlayer',
+                playerPos.x + 100,
+                playerPos.y,
+                window.game.systems.sprites
+            );
+
+            // Use the RemotePlayer class directly
+            const RemotePlayer = window.game.remotePlayers.values().next().value?.constructor || 
+                                Object.getPrototypeOf(window.game.remotePlayers.values().next().value || {}).constructor;
+            
+            if (!RemotePlayer) {
+                // If no remote players exist, we need to import it
+                updateOutput('Cannot create test player - RemotePlayer class not available');
+                return;
+            }
+
+            const testPlayer2 = new RemotePlayer(
+                testId,
+                'TestPlayer',
+                playerPos.x + 100,
+                playerPos.y,
+                window.game.systems.sprites
+            );
+
+            window.game.remotePlayers.set(testId, testPlayer2);
+            window.game.entityContainer.addChild(testPlayer2.sprite);
+            
+            updateOutput(`Test player added at ${playerPos.x + 100}, ${playerPos.y}`);
+            checkRemotePlayers();
+        }
+
+        function checkRenderOrder() {
+            if (!window.game) {
+                updateOutput('Game not initialized');
+                return;
+            }
+
+            const output = [];
+            output.push('PIXI Stage children:');
+            window.game.app.stage.children.forEach((child, i) => {
+                output.push(`  ${i}: ${child.constructor.name} - visible: ${child.visible}, children: ${child.children.length}`);
+                if (child === window.game.worldContainer) output.push('     ^ World Container');
+                if (child === window.game.entityContainer) output.push('     ^ Entity Container');
+                if (child === window.game.uiContainer) output.push('     ^ UI Container');
+            });
+
+            output.push('\nEntity Container children:');
+            window.game.entityContainer.children.forEach((child, i) => {
+                output.push(`  ${i}: ${child.constructor.name} - pos: ${JSON.stringify(child.position)}, visible: ${child.visible}`);
+            });
+
+            updateOutput(output.join('\n'));
+        }
+
+        function updateOutput(text) {
+            document.getElementById('output').innerHTML = '<pre>' + text + '</pre>';
+        }
+
+        // Auto-check every 2 seconds
+        setInterval(() => {
+            if (window.game && window.game.remotePlayers.size > 0) {
+                checkRemotePlayers();
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

@@ -4,6 +4,7 @@ export class RemotePlayer {
   constructor(id, username, x, y, spriteManager) {
     this.id = id;
     this.username = username;
+    // Set both position and target to same value initially to prevent interpolation jump
     this.position = { x, y };
     this.targetPosition = { x, y };
     this.velocity = { x: 0, y: 0 };
@@ -11,14 +12,22 @@ export class RemotePlayer {
     this.maxHealth = 100;
     this.class = 'warrior';
     
+    console.log(`Creating RemotePlayer sprite for ${username} at position:`, x, y);
+    
     // Create sprite
     this.sprite = new PIXI.Container();
+    this.sprite.visible = true; // Ensure visibility
     
-    // Placeholder graphics for now
+    // Placeholder graphics for now - make it bigger and more visible
     const body = new PIXI.Graphics();
-    body.beginFill(0x4444ff); // Blue for remote players
-    body.drawCircle(0, 0, 16);
+    body.beginFill(0x00ffff, 1); // Bright cyan for remote players
+    body.drawCircle(0, 0, 32); // Larger circle
     body.endFill();
+    
+    // Add a border for better visibility
+    body.lineStyle(3, 0xffffff, 1);
+    body.drawCircle(0, 0, 32);
+    
     this.sprite.addChild(body);
     
     // Username label
@@ -51,15 +60,34 @@ export class RemotePlayer {
     this.sprite.addChild(this.healthBar);
     
     this.sprite.position.set(x, y);
+    console.log(`RemotePlayer sprite created at:`, { x, y });
+    console.log(`RemotePlayer sprite bounds:`, this.sprite.getBounds());
+    
+    // Add a debug marker at spawn position
+    const debugMarker = new PIXI.Graphics();
+    debugMarker.beginFill(0xff00ff, 0.5); // Purple marker
+    debugMarker.drawRect(-50, -50, 100, 100); // Large square
+    debugMarker.position.set(0, 0);
+    this.sprite.addChild(debugMarker);
   }
   
   updateFromState(state) {
     // Update target position for interpolation
+    const prevTarget = { ...this.targetPosition };
     this.targetPosition = { ...state.position };
     this.velocity = state.velocity ? { ...state.velocity } : { x: 0, y: 0 };
     this.health = state.health || 100;
     this.maxHealth = state.maxHealth || 100;
     this.class = state.class || 'warrior';
+    
+    // If position changed significantly, log it
+    const distance = Math.sqrt(
+      Math.pow(this.targetPosition.x - prevTarget.x, 2) + 
+      Math.pow(this.targetPosition.y - prevTarget.y, 2)
+    );
+    if (distance > 5) {
+      console.log(`${this.username} moved from`, prevTarget, 'to', this.targetPosition);
+    }
     
     this.updateHealthBar();
   }
@@ -74,6 +102,11 @@ export class RemotePlayer {
       Math.round(this.position.x),
       Math.round(this.position.y)
     );
+    
+    // Debug visibility
+    if (!this.sprite.visible) {
+      console.warn(`RemotePlayer ${this.username} sprite is not visible!`);
+    }
   }
   
   updateHealthBar() {
