@@ -1,11 +1,13 @@
 import { Player, PlayerStatus } from '../entities/Player';
+import { Projectile, ProjectileState } from '../entities/Projectile';
 import { ConnectionManager } from '../network/ConnectionManager';
 import { logger } from '../utils/logger';
 import { config } from '../config';
-import { InputState, PlayerState } from '../../../shared/types';
+import { InputState, PlayerState, Vector2 } from '../../../shared/types';
 
 export class GameInstance {
   private players: Map<string, Player> = new Map();
+  private projectiles: Map<string, Projectile> = new Map();
   private connectionManager: ConnectionManager;
   private tickRate: number;
   private updateRate: number;
@@ -105,6 +107,53 @@ export class GameInstance {
     
     // Process input
     player.processInput(input, deltaTime);
+    
+    // Handle attacking
+    if (input.attacking && player.canAttack()) {
+      this.handlePlayerAttack(player, input.mousePosition);
+    }
+  }
+  
+  private handlePlayerAttack(player: Player, mousePosition: Vector2): void {
+    // Only hunter class has projectile attacks
+    if (player.class !== 'hunter') {
+      // Other classes have melee/dash attacks handled client-side for now
+      // TODO: Implement server-side melee hit detection in Phase 3
+      return;
+    }
+    
+    // Calculate direction from player to mouse
+    const direction = {
+      x: mousePosition.x - player.position.x,
+      y: mousePosition.y - player.position.y,
+    };
+    
+    // Hunter projectile config (keeping original game values)
+    const projectileConfig = {
+      speed: 800,
+      damage: 15,
+      maxLifetime: 2000,
+      radius: 6,
+    };
+    
+    const projectile = new Projectile(
+      player.id,
+      'arrow',
+      player.position,
+      direction,
+      projectileConfig
+    );
+    
+    this.projectiles.set(projectile.id, projectile);
+    player.setLastAttackTime(Date.now());
+    
+    // Broadcast projectile creation to all players
+    this.connectionManager.broadcast('projectileSpawned', {
+      projectile: projectile.getState(),
+      timestamp: Date.now(),
+    });
+    
+    logger.debug(`Hunter ${player.username} fired arrow ${projectile.id}`);
   }
   
   private tick(): void {
@@ -128,7 +177,10 @@ export class GameInstance {
       }
     });
     
-    // TODO: Update monsters, projectiles, etc.
+    // Update projectiles and check collisions
+    this.updateProjectiles(deltaTime);
+    
+    // TODO: Update monsters, etc.
   }
   
   private enforceWorldBounds(player: Player): void {
@@ -137,24 +189,86 @@ export class GameInstance {
     player.position.y = Math.max(0, Math.min(this.worldBounds.height, player.position.y));
   }
   
+  private updateProjectiles(deltaTime: number): void {
+    const projectilesToRemove: string[] = [];
+    
+    this.projectiles.forEach((projectile, projectileId) => {
+      // Update projectile position
+      projectile.update(deltaTime);
+      
+      // Check if projectile is out of bounds or expired
+      if (!projectile.isAlive || 
+          projectile.position.x < 0 || projectile.position.x > this.worldBounds.width ||
+          projectile.position.y < 0 || projectile.position.y > this.worldBounds.height) {
+        projectilesToRemove.push(projectileId);
+        return;
+      }
+      
+      // Check collision with players
+      this.players.forEach(player => {
+        // Don't hit the owner or dead players
+        if (player.id === projectile.ownerId || player.status !== PlayerStatus.PLAYING) return;
+        
+        // Check collision (assuming player has 16 pixel radius)
+        if (projectile.checkCollision(player.position, 16)) {
+          // Apply damage
+          player.takeDamage(projectile.damage);
+          
+          // Broadcast hit event
+          this.connectionManager.broadcast('projectileHit', {
+            projectileId: projectile.id,
+            targetId: player.id,
+            damage: projectile.damage,
+            targetHealth: player.health,
+            timestamp: Date.now(),
+          });
+          
+          // Mark projectile for removal
+          projectilesToRemove.push(projectileId);
+          
+          logger.info(`Projectile ${projectileId} hit player ${player.username} for ${projectile.damage} damage`);
+        }
+      });
+    });
+    
+    // Remove dead projectiles
+    projectilesToRemove.forEach(id => {
+      this.projectiles.delete(id);
+      
+      // Broadcast projectile removal
+      this.connectionManager.broadcast('projectileRemoved', {
+        projectileId: id,
+        timestamp: Date.now(),
+      });
+    });
+  }
+  
   private sendUpdates(): void {
     const playerStates: PlayerState[] = [];
+    const projectileStates: ProjectileState[] = [];
     
     // Collect all player states
     this.players.forEach(player => {
-      logger.debug(`Player ${player.username} status: ${player.status}`);
       if (player.status === PlayerStatus.PLAYING || player.status === PlayerStatus.DEAD) {
         playerStates.push(player.getState());
       }
     });
     
-    if (playerStates.length > 0) {
-      logger.info(`Sending game state with ${playerStates.length} active players out of ${this.players.size} total`);
+    // Collect all projectile states
+    this.projectiles.forEach(projectile => {
+      if (projectile.isAlive) {
+        projectileStates.push(projectile.getState());
+      }
+    });
+    
+    if (playerStates.length > 0 || projectileStates.length > 0) {
+      logger.debug(`Sending game state with ${playerStates.length} players and ${projectileStates.length} projectiles`);
     }
     
     // Send updates to all connected players
     this.connectionManager.broadcast('gameState', {
       players: playerStates,
+      projectiles: projectileStates,
       timestamp: Date.now(),
     });
   }

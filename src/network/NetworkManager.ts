@@ -33,13 +33,14 @@ export class NetworkManager extends EventEmitter {
       auth: {
         username: config.username,
       },
-      transports: ['websocket', 'polling'],
+      transports: ['polling', 'websocket'], // Try polling first for Firefox
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
       reconnectionAttempts: 5,
-      withCredentials: false, // Firefox compatibility
+      withCredentials: false,
       autoConnect: true,
+      forceBase64: true, // Firefox binary compatibility
     });
 
     this.setupEventHandlers();
@@ -131,6 +132,19 @@ export class NetworkManager extends EventEmitter {
     this.socket.on('classSelected', (data: any) => {
       console.log('NetworkManager: Class selection confirmed:', data);
       this.emit('classSelected', data);
+    });
+    
+    // Projectile events
+    this.socket.on('projectileSpawned', (data: any) => {
+      this.emit('projectileSpawned', data);
+    });
+    
+    this.socket.on('projectileRemoved', (data: any) => {
+      this.emit('projectileRemoved', data);
+    });
+    
+    this.socket.on('projectileHit', (data: any) => {
+      this.emit('projectileHit', data);
     });
 
     // Chat events

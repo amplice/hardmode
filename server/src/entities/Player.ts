@@ -20,6 +20,7 @@ export class Player {
   public class: string;
   public lastInputTime: number;
   public lastUpdateTime: number;
+  public lastAttackTime: number;
   public connectionId: string;
   
   // Movement constants
@@ -43,6 +44,7 @@ export class Player {
     
     this.lastInputTime = Date.now();
     this.lastUpdateTime = Date.now();
+    this.lastAttackTime = 0;
   }
   
   setClass(className: string): void {
@@ -147,5 +149,23 @@ export class Player {
   
   isTimedOut(timeoutMs: number = 30000): boolean {
     return Date.now() - this.lastInputTime > timeoutMs;
+  }
+  
+  canAttack(): boolean {
+    const attackCooldown = this.getAttackCooldown();
+    return Date.now() - this.lastAttackTime >= attackCooldown;
+  }
+  
+  setLastAttackTime(time: number): void {
+    this.lastAttackTime = time;
+  }
+  
+  private getAttackCooldown(): number {
+    // Only hunter has projectile attacks that need server cooldown
+    // Other classes handle attack timing client-side
+    if (this.class === 'hunter') {
+      return 600; // Original hunter attack rate
+    }
+    return 500; // Default for other classes (not used server-side)
   }
 }

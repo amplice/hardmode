@@ -15,6 +15,7 @@ import { networkManager } from '../../network/NetworkManager.ts';
 import { ConnectionUI } from '../../ui/ConnectionUI.ts';
 import { MultiplayerHUD } from '../../ui/MultiplayerHUD.ts';
 import { RemotePlayer } from '../entities/RemotePlayer.js';
+import { RemoteProjectile } from '../entities/RemoteProjectile.js';
 import { InputManager } from '../systems/InputManager.js';
 
 // Toggle display of extra stat information in the Stats UI
@@ -69,6 +70,7 @@ export class Game {
 
     this.entities = { player: null };
     this.remotePlayers = new Map(); // Track other players
+    this.remoteProjectiles = new Map(); // Track projectiles
     window.game = this;
 
     this.tilesets = new TilesetManager();
@@ -313,6 +315,29 @@ export class Game {
     networkManager.on('playerJoined', (player) => {
       console.log('New player joined:', player.username);
     });
+    
+    // Handle projectile spawning
+    networkManager.on('projectileSpawned', (data) => {
+      const projectile = new RemoteProjectile(data.projectile);
+      this.remoteProjectiles.set(projectile.id, projectile);
+      this.entityContainer.addChild(projectile.sprite);
+      console.log('Projectile spawned:', projectile.id);
+    });
+    
+    // Handle projectile removal
+    networkManager.on('projectileRemoved', (data) => {
+      const projectile = this.remoteProjectiles.get(data.projectileId);
+      if (projectile) {
+        projectile.destroy();
+        this.remoteProjectiles.delete(data.projectileId);
+      }
+    });
+    
+    // Handle projectile hit
+    networkManager.on('projectileHit', (data) => {
+      console.log('Projectile hit:', data);
+      // TODO: Add hit effects, update health bars, etc.
+    });
   }
 
   update(delta) {
@@ -329,11 +354,25 @@ export class Game {
     this.systems.inputManager.sendInputToServer(this.camera);
     
     // 3. Update remote players
-    if (this.remotePlayers.size > 0) {
-      console.log(`Updating ${this.remotePlayers.size} remote players`);
-    }
     this.remotePlayers.forEach(remotePlayer => {
       remotePlayer.update(deltaTimeSeconds);
+    });
+    
+    // 4. Update remote projectiles
+    const projectilesToRemove = [];
+    this.remoteProjectiles.forEach((projectile, id) => {
+      if (!projectile.update(deltaTimeSeconds)) {
+        projectilesToRemove.push(id);
+      }
+    });
+    
+    // Remove expired projectiles
+    projectilesToRemove.forEach(id => {
+      const projectile = this.remoteProjectiles.get(id);
+      if (projectile) {
+        projectile.destroy();
+        this.remoteProjectiles.delete(id);
+      }
     });
     
     // 4. Update monster AI and intended movement
