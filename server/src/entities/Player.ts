@@ -27,7 +27,6 @@ export class Player {
   public currentAttackType: string | null;
   
   // Movement constants
-  private readonly MOVE_SPEED = 300; // pixels per second
   private readonly FRICTION = 0.85;
   
   constructor(id: string, username: string, connectionId: string) {
@@ -96,8 +95,10 @@ export class Player {
     // Normalize diagonal movement
     const length = Math.sqrt(moveX * moveX + moveY * moveY);
     if (length > 0) {
-      this.velocity.x = (moveX / length) * this.MOVE_SPEED;
-      this.velocity.y = (moveY / length) * this.MOVE_SPEED;
+      // Get class-specific movement speed and match client calculation
+      const moveSpeed = this.getMoveSpeed();
+      this.velocity.x = (moveX / length) * moveSpeed;
+      this.velocity.y = (moveY / length) * moveSpeed;
     }
     
     // Update attack type if provided
@@ -111,17 +112,17 @@ export class Player {
   update(deltaTime: number): void {
     if (this.status !== PlayerStatus.PLAYING) return;
     
-    // Apply velocity to position
-    this.position.x += this.velocity.x * deltaTime;
-    this.position.y += this.velocity.y * deltaTime;
+    // Apply velocity to position (velocity is already in units per frame)
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
     
     // Apply friction
     this.velocity.x *= this.FRICTION;
     this.velocity.y *= this.FRICTION;
     
     // Stop if velocity is very small
-    if (Math.abs(this.velocity.x) < 1) this.velocity.x = 0;
-    if (Math.abs(this.velocity.y) < 1) this.velocity.y = 0;
+    if (Math.abs(this.velocity.x) < 0.01) this.velocity.x = 0;
+    if (Math.abs(this.velocity.y) < 0.01) this.velocity.y = 0;
     
     this.lastUpdateTime = Date.now();
   }
@@ -200,5 +201,17 @@ export class Player {
     };
     
     return cooldowns[this.class] || 500;
+  }
+  
+  private getMoveSpeed(): number {
+    // Class-specific movement speeds matching client
+    const speeds: { [key: string]: number } = {
+      'bladedancer': 5,
+      'guardian': 3.5,
+      'hunter': 5,
+      'rogue': 6,
+    };
+    
+    return speeds[this.class] || 5;
   }
 }

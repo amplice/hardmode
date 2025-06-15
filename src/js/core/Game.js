@@ -338,7 +338,11 @@ export class Game {
       console.log('Projectile hit:', data);
       // Update health if it's our player
       if (data.targetId === networkManager.getPlayerId()) {
-        this.entities.player.health = data.targetHealth;
+        // Calculate damage from health difference
+        const damage = this.entities.player.hitPoints - data.targetHealth;
+        if (damage > 0) {
+          this.entities.player.health.takeDamage(damage);
+        }
       }
       // TODO: Add hit effects, update health bars for other players
     });
@@ -373,7 +377,7 @@ export class Game {
         // Our player respawned
         this.entities.player.position.x = data.position.x;
         this.entities.player.position.y = data.position.y;
-        this.entities.player.health = this.entities.player.maxHealth;
+        this.entities.player.hitPoints = this.entities.player.maxHitPoints;
         
         // Update sprite position immediately
         this.entities.player.sprite.position.set(
@@ -434,7 +438,7 @@ export class Game {
       data.hitPlayerIds.forEach(playerId => {
         if (playerId === networkManager.getPlayerId()) {
           // Our player was hit
-          this.entities.player.health -= data.damage;
+          this.entities.player.health.takeDamage(data.damage);
           console.log('You were hit for', data.damage, 'damage!');
         } else {
           // Other player was hit
