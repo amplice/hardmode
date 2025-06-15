@@ -11,7 +11,7 @@ export class MonsterSystem {
         this.maxMonsters = MONSTER_CONFIG.spawn.maxMonsters;
         
         // Test spawning flag - set to true to enable test spawns on startup
-        this.enableTestSpawns = true;
+        this.enableTestSpawns = false; // Disabled for multiplayer testing
         
         // Perform test spawns if enabled
         if (this.enableTestSpawns) {

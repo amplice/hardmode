@@ -101,8 +101,8 @@ export const MONSTER_CONFIG = {
 
   // Spawn system configuration
   spawn: {
-    timer: 1,
-    maxMonsters: 300,
+    timer: 10, // Reduced from 1 to 10 seconds between spawns
+    maxMonsters: 10, // Reduced from 300 to 10 max monsters
     minDistanceFromPlayer: 700,
     maxDistanceFromPlayer: 10000,
     distribution: {

@@ -356,6 +356,10 @@ export class Game {
         const remotePlayer = this.remotePlayers.get(data.playerId);
         if (remotePlayer) {
           remotePlayer.isDead = true;
+          remotePlayer.health = 0;
+          remotePlayer.updateHealthBar();
+          remotePlayer.updateVisualState();
+          console.log(`Remote player ${remotePlayer.username} died at`, data.position);
           // TODO: Add death animation
         }
       }
@@ -370,15 +374,35 @@ export class Game {
         this.entities.player.position.x = data.position.x;
         this.entities.player.position.y = data.position.y;
         this.entities.player.health = this.entities.player.maxHealth;
-        console.log('You respawned with invulnerability for', data.invulnerabilityDuration / 1000, 'seconds');
+        
+        // Update sprite position immediately
+        this.entities.player.sprite.position.set(
+          Math.round(data.position.x),
+          Math.round(data.position.y)
+        );
+        
+        console.log('You respawned at', data.position, 'with invulnerability for', data.invulnerabilityDuration / 1000, 'seconds');
       } else {
         // Other player respawned
         const remotePlayer = this.remotePlayers.get(data.playerId);
         if (remotePlayer) {
+          // Update both position and targetPosition to prevent interpolation issues
           remotePlayer.position.x = data.position.x;
           remotePlayer.position.y = data.position.y;
+          remotePlayer.targetPosition.x = data.position.x;
+          remotePlayer.targetPosition.y = data.position.y;
           remotePlayer.isDead = false;
           remotePlayer.isInvulnerable = true;
+          remotePlayer.health = remotePlayer.maxHealth;
+          remotePlayer.updateHealthBar();
+          
+          // Update sprite position immediately
+          remotePlayer.sprite.position.set(
+            Math.round(data.position.x),
+            Math.round(data.position.y)
+          );
+          
+          console.log(`Remote player ${remotePlayer.username} respawned at`, data.position);
           
           // Clear invulnerability after duration
           setTimeout(() => {
