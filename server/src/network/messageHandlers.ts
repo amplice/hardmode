@@ -38,17 +38,27 @@ export function setupMessageHandlers(
       return;
     }
     
+    const player = gameInstance.getPlayer(playerId);
+    logger.info(`Player ${playerId} before class selection - status: ${player?.status}`);
+    
     gameInstance.setPlayerClass(playerId, className);
     socket.emit('classSelected', { class: className });
     logger.info(`Player ${playerId} class selection complete`);
     
+    // Log player status after setting class
+    const playerAfter = gameInstance.getPlayer(playerId);
+    logger.info(`Player ${playerId} after class selection - status: ${playerAfter?.status}`);
+    
     // Send current game state to the player who just selected their class
     const gameState = gameInstance.getGameState();
+    logger.info(`Game state has ${gameState.players.length} active players out of ${gameState.playerCount} total`);
+    logger.info(`Active players: ${gameState.players.map(p => `${p.username}(${p.id})`).join(', ')}`);
+    
     socket.emit('gameState', {
       players: gameState.players,
       timestamp: Date.now(),
     });
-    logger.info(`Sent game state to ${playerId} with ${gameState.players.length} active players`);
+    logger.info(`Emitted gameState event to ${playerId}`);
   });
 
   // Chat message (basic implementation)

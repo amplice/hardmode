@@ -19,10 +19,12 @@ const io = new SocketIOServer(httpServer, {
     origin: config.websocket.corsOrigin,
     methods: ['GET', 'POST'],
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
   },
   pingInterval: 25000,
   pingTimeout: 30000,
   transports: ['websocket', 'polling'],
+  allowEIO3: true, // Allow older Socket.IO clients
 });
 
 // Setup Socket.IO server

@@ -208,10 +208,14 @@ export class Game {
   }
   
   setupNetworkHandlers() {
-    console.log('Setting up network handlers...');
+    console.log('=== SETTING UP NETWORK HANDLERS ===');
+    
+    // Ensure we're not setting up duplicate handlers
+    networkManager.removeAllListeners('gameState');
     
     // Handle game state updates from server
-    networkManager.on('gameState', (data) => {
+    const gameStateHandler = (data) => {
+      console.log('=== GAMESTATE HANDLER TRIGGERED ===');
       console.log('gameState event received, gameStarted:', this.gameStarted);
       
       if (!this.gameStarted) {
@@ -279,7 +283,11 @@ export class Game {
           this.remotePlayers.delete(playerId);
         }
       });
-    });
+    };
+    
+    // Register the handler
+    networkManager.on('gameState', gameStateHandler);
+    console.log('Registered gameState handler');
     
     // Handle player disconnect
     networkManager.on('playerLeft', (data) => {
