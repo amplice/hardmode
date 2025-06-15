@@ -11,6 +11,8 @@ export class RemotePlayer {
     this.health = 100;
     this.maxHealth = 100;
     this.class = 'warrior';
+    this.isDead = false;
+    this.isInvulnerable = false;
     
     console.log(`Creating RemotePlayer sprite for ${username} at position:`, x, y);
     
@@ -79,6 +81,8 @@ export class RemotePlayer {
     this.health = state.health || 100;
     this.maxHealth = state.maxHealth || 100;
     this.class = state.class || 'warrior';
+    this.isDead = state.isDead || false;
+    this.isInvulnerable = state.isInvulnerable || false;
     
     // If position changed significantly, log it
     const distance = Math.sqrt(
@@ -90,6 +94,7 @@ export class RemotePlayer {
     }
     
     this.updateHealthBar();
+    this.updateVisualState();
   }
   
   update(deltaTime) {
@@ -102,6 +107,11 @@ export class RemotePlayer {
       Math.round(this.position.x),
       Math.round(this.position.y)
     );
+    
+    // Update visual effects for invulnerability
+    if (this.isInvulnerable && !this.isDead) {
+      this.updateVisualState();
+    }
     
     // Debug visibility
     if (!this.sprite.visible) {
@@ -123,6 +133,24 @@ export class RemotePlayer {
     this.healthFill.endFill();
   }
   
+  updateVisualState() {
+    // Update opacity based on death state
+    if (this.isDead) {
+      this.sprite.alpha = 0.3; // Ghost-like appearance when dead
+    } else {
+      this.sprite.alpha = 1.0;
+    }
+    
+    // Update tint based on invulnerability
+    if (this.isInvulnerable && !this.isDead) {
+      // Flash effect for invulnerability
+      const flashPhase = Math.sin(Date.now() * 0.01) * 0.5 + 0.5;
+      this.sprite.tint = PIXI.utils.rgb2hex([1, flashPhase, flashPhase]);
+    } else {
+      this.sprite.tint = 0xffffff; // Normal tint
+    }
+  }
+
   destroy() {
     if (this.sprite.parent) {
       this.sprite.parent.removeChild(this.sprite);

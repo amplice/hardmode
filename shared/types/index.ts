@@ -13,6 +13,8 @@ export interface PlayerState {
   health: number;
   maxHealth: number;
   class: string;
+  isInvulnerable?: boolean;
+  isDead?: boolean;
 }
 
 export interface InputState {

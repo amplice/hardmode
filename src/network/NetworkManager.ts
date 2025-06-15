@@ -162,6 +162,15 @@ export class NetworkManager extends EventEmitter {
       this.latency = Date.now() - timestamp;
       this.emit('latencyUpdate', this.latency);
     });
+    
+    // Death and respawn events
+    this.socket.on('playerDied', (data: any) => {
+      this.emit('playerDied', data);
+    });
+    
+    this.socket.on('playerRespawned', (data: any) => {
+      this.emit('playerRespawned', data);
+    });
   }
 
   disconnect(): void {

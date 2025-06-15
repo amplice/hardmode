@@ -22,6 +22,7 @@ export class Player {
   public lastUpdateTime: number;
   public lastAttackTime: number;
   public connectionId: string;
+  public invulnerableUntil: number;
   
   // Movement constants
   private readonly MOVE_SPEED = 300; // pixels per second
@@ -45,6 +46,7 @@ export class Player {
     this.lastInputTime = Date.now();
     this.lastUpdateTime = Date.now();
     this.lastAttackTime = 0;
+    this.invulnerableUntil = 0;
   }
   
   setClass(className: string): void {
@@ -116,6 +118,11 @@ export class Player {
   takeDamage(amount: number): void {
     if (this.status !== PlayerStatus.PLAYING) return;
     
+    // Check invulnerability
+    if (this.invulnerableUntil > Date.now()) {
+      return; // No damage during invulnerability
+    }
+    
     this.health = Math.max(0, this.health - amount);
     
     if (this.health === 0) {
@@ -132,6 +139,7 @@ export class Player {
     this.status = PlayerStatus.PLAYING;
     this.health = this.maxHealth;
     this.velocity = { x: 0, y: 0 };
+    this.lastAttackTime = 0;
     // Position will be set by the game instance
   }
   
@@ -144,11 +152,21 @@ export class Player {
       health: this.health,
       maxHealth: this.maxHealth,
       class: this.class,
+      isInvulnerable: this.isInvulnerable(),
+      isDead: this.status === PlayerStatus.DEAD,
     };
   }
   
   isTimedOut(timeoutMs: number = 30000): boolean {
     return Date.now() - this.lastInputTime > timeoutMs;
+  }
+  
+  isInvulnerable(): boolean {
+    return this.invulnerableUntil > Date.now();
+  }
+  
+  setInvulnerable(durationMs: number): void {
+    this.invulnerableUntil = Date.now() + durationMs;
   }
   
   canAttack(): boolean {

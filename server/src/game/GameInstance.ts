@@ -8,6 +8,7 @@ import { InputState, PlayerState, Vector2 } from '../../../shared/types';
 export class GameInstance {
   private players: Map<string, Player> = new Map();
   private projectiles: Map<string, Projectile> = new Map();
+  private deadPlayers: Map<string, { player: Player; deathTime: number }> = new Map();
   private connectionManager: ConnectionManager;
   private tickRate: number;
   private updateRate: number;
@@ -15,6 +16,8 @@ export class GameInstance {
   private updateInterval: NodeJS.Timeout | null = null;
   private lastTickTime: number = Date.now();
   private worldBounds: { width: number; height: number };
+  private readonly RESPAWN_TIME = 5000; // 5 seconds
+  private readonly INVULNERABILITY_TIME = 3000; // 3 seconds
   
   constructor(connectionManager: ConnectionManager) {
     this.connectionManager = connectionManager;
@@ -174,8 +177,14 @@ export class GameInstance {
           logger.warn(`Player ${player.username} timed out`);
           this.removePlayer(player.id);
         }
+      } else if (player.status === PlayerStatus.DEAD) {
+        // Move dead player to respawn queue
+        this.handlePlayerDeath(player);
       }
     });
+    
+    // Check for players ready to respawn
+    this.checkRespawns();
     
     // Update projectiles and check collisions
     this.updateProjectiles(deltaTime);
@@ -271,6 +280,73 @@ export class GameInstance {
       projectiles: projectileStates,
       timestamp: Date.now(),
     });
+  }
+  
+  private handlePlayerDeath(player: Player): void {
+    // Only process death once
+    if (this.deadPlayers.has(player.id)) return;
+    
+    // Move to dead players map
+    this.deadPlayers.set(player.id, {
+      player: player,
+      deathTime: Date.now()
+    });
+    
+    // Broadcast death event
+    this.connectionManager.broadcast('playerDied', {
+      playerId: player.id,
+      username: player.username,
+      position: player.position,
+      respawnTime: this.RESPAWN_TIME,
+      timestamp: Date.now(),
+    });
+    
+    logger.info(`Player ${player.username} died at position ${player.position.x}, ${player.position.y}`);
+  }
+  
+  private checkRespawns(): void {
+    const now = Date.now();
+    const toRespawn: string[] = [];
+    
+    this.deadPlayers.forEach((deadPlayer, playerId) => {
+      if (now - deadPlayer.deathTime >= this.RESPAWN_TIME) {
+        toRespawn.push(playerId);
+      }
+    });
+    
+    toRespawn.forEach(playerId => {
+      const deadPlayer = this.deadPlayers.get(playerId);
+      if (deadPlayer) {
+        this.respawnPlayer(deadPlayer.player);
+        this.deadPlayers.delete(playerId);
+      }
+    });
+  }
+  
+  private respawnPlayer(player: Player): void {
+    // Select spawn point (for now, use center of world)
+    const spawnX = this.worldBounds.width / 2;
+    const spawnY = this.worldBounds.height / 2;
+    
+    // TODO: Implement better spawn point selection
+    // - Away from enemies
+    // - Near team members (future feature)
+    // - Designated spawn areas
+    
+    player.setSpawnPosition(spawnX, spawnY);
+    player.respawn();
+    player.setInvulnerable(this.INVULNERABILITY_TIME);
+    
+    // Broadcast respawn event
+    this.connectionManager.broadcast('playerRespawned', {
+      playerId: player.id,
+      username: player.username,
+      position: player.position,
+      invulnerabilityDuration: this.INVULNERABILITY_TIME,
+      timestamp: Date.now(),
+    });
+    
+    logger.info(`Player ${player.username} respawned at ${spawnX}, ${spawnY} with ${this.INVULNERABILITY_TIME}ms invulnerability`);
   }
   
   getGameState() {

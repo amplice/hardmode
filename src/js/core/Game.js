@@ -336,7 +336,58 @@ export class Game {
     // Handle projectile hit
     networkManager.on('projectileHit', (data) => {
       console.log('Projectile hit:', data);
-      // TODO: Add hit effects, update health bars, etc.
+      // Update health if it's our player
+      if (data.targetId === networkManager.getPlayerId()) {
+        this.entities.player.health = data.targetHealth;
+      }
+      // TODO: Add hit effects, update health bars for other players
+    });
+    
+    // Handle player death
+    networkManager.on('playerDied', (data) => {
+      console.log('Player died:', data);
+      
+      if (data.playerId === networkManager.getPlayerId()) {
+        // Our player died
+        console.log('You died! Respawning in', data.respawnTime / 1000, 'seconds...');
+        // TODO: Show death screen
+      } else {
+        // Other player died
+        const remotePlayer = this.remotePlayers.get(data.playerId);
+        if (remotePlayer) {
+          remotePlayer.isDead = true;
+          // TODO: Add death animation
+        }
+      }
+    });
+    
+    // Handle player respawn
+    networkManager.on('playerRespawned', (data) => {
+      console.log('Player respawned:', data);
+      
+      if (data.playerId === networkManager.getPlayerId()) {
+        // Our player respawned
+        this.entities.player.position.x = data.position.x;
+        this.entities.player.position.y = data.position.y;
+        this.entities.player.health = this.entities.player.maxHealth;
+        console.log('You respawned with invulnerability for', data.invulnerabilityDuration / 1000, 'seconds');
+      } else {
+        // Other player respawned
+        const remotePlayer = this.remotePlayers.get(data.playerId);
+        if (remotePlayer) {
+          remotePlayer.position.x = data.position.x;
+          remotePlayer.position.y = data.position.y;
+          remotePlayer.isDead = false;
+          remotePlayer.isInvulnerable = true;
+          
+          // Clear invulnerability after duration
+          setTimeout(() => {
+            if (remotePlayer) {
+              remotePlayer.isInvulnerable = false;
+            }
+          }, data.invulnerabilityDuration);
+        }
+      }
     });
   }
 
