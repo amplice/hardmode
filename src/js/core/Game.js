@@ -184,19 +184,19 @@ export class Game {
 
     this.systems.monsters = new MonsterSystem(this.systems.world);
 
-    // Setup network event handlers
+    // Setup network event handlers BEFORE sending class selection
     this.setupNetworkHandlers();
     
     // Enable input manager
     this.systems.inputManager.enable();
     
-    // Send class selection to server first
-    networkManager.socket.emit('selectClass', selectedClass);
-    
-    // Mark game as started after sending class selection
+    // Mark game as started BEFORE sending class selection
     this.gameStarted = true;
     
-    // Request current game state after we're ready
+    // Send class selection to server (server will respond with gameState)
+    networkManager.socket.emit('selectClass', selectedClass);
+    
+    // Request current game state after a delay as backup
     setTimeout(() => {
       console.log('Requesting current game state...');
       networkManager.socket.emit('requestGameState');
@@ -208,8 +208,12 @@ export class Game {
   }
   
   setupNetworkHandlers() {
+    console.log('Setting up network handlers...');
+    
     // Handle game state updates from server
     networkManager.on('gameState', (data) => {
+      console.log('gameState event received, gameStarted:', this.gameStarted);
+      
       if (!this.gameStarted) {
         console.log('Ignoring game state - game not started yet');
         return;

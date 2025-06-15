@@ -113,10 +113,22 @@ export class NetworkManager extends EventEmitter {
       this.emit('playerList', players);
     });
 
-    // Game events (to be implemented)
+    // Game events
     this.socket.on('playerUpdate', (data: any) => {
       // Update player position/state
       this.emit('playerUpdate', data);
+    });
+    
+    // Game state sync
+    this.socket.on('gameState', (data: any) => {
+      console.log('NetworkManager: Received gameState from server');
+      this.emit('gameState', data);
+    });
+    
+    // Class selection confirmed
+    this.socket.on('classSelected', (data: any) => {
+      console.log('NetworkManager: Class selection confirmed:', data);
+      this.emit('classSelected', data);
     });
 
     // Chat events
