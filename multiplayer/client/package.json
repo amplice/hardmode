@@ -1,0 +1,21 @@
+{
+  "name": "@hardmode/client",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hardmode/shared": "file:../shared",
+    "pixi.js": "^8.7.1",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.6",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.6"
+  }
+}
