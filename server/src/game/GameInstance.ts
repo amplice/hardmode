@@ -180,12 +180,22 @@ export class GameInstance {
       return;
     }
     
-    // Check if this attack has movement (only guardian secondary)
-    const hasMovement = player.class === 'guardian' && attackType === 'secondary';
+    // Check if this attack has movement
+    const hasMovement = (
+      (player.class === 'guardian' && attackType === 'secondary') ||
+      (player.class === 'hunter' && attackType === 'secondary') ||
+      (player.class === 'rogue' && attackType === 'secondary')
+    );
     
     if (hasMovement) {
-      // Handle jump attack with movement
-      this.handleJumpAttack(player, attackConfig);
+      // Handle movement-based attacks
+      if (player.class === 'guardian') {
+        this.handleJumpAttack(player, attackConfig);
+      } else if (player.class === 'hunter') {
+        this.handleHunterRetreatShot(player, attackConfig);
+      } else if (player.class === 'rogue') {
+        this.handleRogueDash(player, attackConfig);
+      }
     } else {
       // Regular melee attack without movement
       // Broadcast attack event for client animation
@@ -202,6 +212,146 @@ export class GameInstance {
         this.performMeleeHitDetection(player, attackConfig);
       }, attackConfig.windupTime);
     }
+  }
+  
+  private handleHunterRetreatShot(player: Player, attackConfig: any): void {
+    const retreatDistance = 200;
+    const retreatDuration = 300; // 0.3 seconds
+    
+    // Calculate retreat destination (backward from facing)
+    const angle = this.facingToAngle(player.facing);
+    const retreatAngle = angle + Math.PI; // Opposite direction
+    const retreatDestination = {
+      x: player.position.x + Math.cos(retreatAngle) * retreatDistance,
+      y: player.position.y + Math.sin(retreatAngle) * retreatDistance,
+    };
+    
+    // Fire projectile from starting position
+    const projectileConfig = {
+      speed: 800,
+      damage: 30, // Higher damage for secondary
+      maxLifetime: 2000,
+      radius: 6,
+    };
+    
+    // Calculate projectile direction (where player is facing)
+    const projectileDirection = {
+      x: Math.cos(angle),
+      y: Math.sin(angle),
+    };
+    
+    const projectile = new Projectile(
+      player.id,
+      'arrow',
+      player.position,
+      projectileDirection,
+      projectileConfig
+    );
+    
+    this.projectiles.set(projectile.id, projectile);
+    
+    // Broadcast retreat shot event
+    this.connectionManager.broadcast('playerRetreatShot', {
+      playerId: player.id,
+      startPosition: player.position,
+      endPosition: retreatDestination,
+      duration: retreatDuration,
+      facing: player.facing,
+      projectile: projectile.getState(),
+      timestamp: Date.now(),
+    });
+    
+    // Update player position after retreat
+    setTimeout(() => {
+      player.position = retreatDestination;
+      this.enforceWorldBounds(player);
+    }, retreatDuration);
+  }
+  
+  private handleRogueDash(player: Player, attackConfig: any): void {
+    const dashDistance = 200;
+    const dashDuration = 200; // 0.2 seconds
+    
+    // Calculate dash destination based on facing
+    const angle = this.facingToAngle(player.facing);
+    const dashDestination = {
+      x: player.position.x + Math.cos(angle) * dashDistance,
+      y: player.position.y + Math.sin(angle) * dashDistance,
+    };
+    
+    // Broadcast dash event
+    this.connectionManager.broadcast('playerDash', {
+      playerId: player.id,
+      startPosition: player.position,
+      endPosition: dashDestination,
+      duration: dashDuration,
+      facing: player.facing,
+      timestamp: Date.now(),
+    });
+    
+    // Update player position after dash
+    setTimeout(() => {
+      player.position = dashDestination;
+      this.enforceWorldBounds(player);
+      
+      // Perform hit detection along dash path
+      this.performDashHitDetection(player, attackConfig, player.position, dashDestination);
+    }, dashDuration);
+  }
+  
+  private performDashHitDetection(attacker: Player, attackConfig: any, start: Vector2, end: Vector2): void {
+    const hitPlayers: string[] = [];
+    
+    // Check all other players
+    this.players.forEach(target => {
+      if (target.id === attacker.id || 
+          target.status !== PlayerStatus.PLAYING || 
+          target.isInvulnerable()) {
+        return;
+      }
+      
+      // Check if target is hit by the dash path (simplified - check if near the line)
+      if (this.isNearDashPath(target.position, start, end, 50)) { // 50 pixel width
+        target.takeDamage(attackConfig.damage);
+        hitPlayers.push(target.id);
+        
+        logger.info(`${attacker.username} dashed through ${target.username} for ${attackConfig.damage} damage`);
+      }
+    });
+    
+    // Broadcast hit results
+    if (hitPlayers.length > 0) {
+      this.connectionManager.broadcast('meleeHit', {
+        attackerId: attacker.id,
+        hitPlayerIds: hitPlayers,
+        damage: attackConfig.damage,
+        timestamp: Date.now(),
+      });
+    }
+  }
+  
+  private isNearDashPath(point: Vector2, start: Vector2, end: Vector2, width: number): boolean {
+    // Calculate distance from point to line segment
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const lengthSquared = dx * dx + dy * dy;
+    
+    if (lengthSquared === 0) {
+      // Start and end are the same, check distance to point
+      const dist = Math.sqrt((point.x - start.x) ** 2 + (point.y - start.y) ** 2);
+      return dist <= width / 2;
+    }
+    
+    // Calculate projection of point onto line
+    const t = Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / lengthSquared));
+    const projection = {
+      x: start.x + t * dx,
+      y: start.y + t * dy,
+    };
+    
+    // Check distance from point to projection
+    const distance = Math.sqrt((point.x - projection.x) ** 2 + (point.y - projection.y) ** 2);
+    return distance <= width / 2;
   }
   
   private handleJumpAttack(player: Player, attackConfig: any): void {
@@ -305,10 +455,24 @@ export class GameInstance {
           damage: 15,
         },
         secondary: {
-          windupTime: 200,
-          range: 80,
-          angle: 90,
-          damage: 25,
+          windupTime: 50,
+          range: 200, // Dash distance
+          angle: 360, // Hits all around during dash
+          damage: 10,
+        },
+      },
+      hunter: {
+        primary: {
+          windupTime: 100,
+          range: 0, // Projectile, not melee
+          angle: 0,
+          damage: 15,
+        },
+        secondary: {
+          windupTime: 150,
+          range: 80, // Cone attack during retreat
+          angle: 70,
+          damage: 30,
         },
       },
     };

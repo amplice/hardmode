@@ -188,6 +188,14 @@ export class NetworkManager extends EventEmitter {
     this.socket.on('playerJumpAttack', (data: any) => {
       this.emit('playerJumpAttack', data);
     });
+    
+    this.socket.on('playerRetreatShot', (data: any) => {
+      this.emit('playerRetreatShot', data);
+    });
+    
+    this.socket.on('playerDash', (data: any) => {
+      this.emit('playerDash', data);
+    });
   }
 
   disconnect(): void {

@@ -11,6 +11,7 @@ import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
+import { GAME_SETTINGS } from '../config/GameConfig.js';
 import { networkManager } from '../../network/NetworkManager.ts';
 import { ConnectionUI } from '../../ui/ConnectionUI.ts';
 import { MultiplayerHUD } from '../../ui/MultiplayerHUD.ts';
@@ -184,8 +185,10 @@ export class Game {
     this.multiplayerHUD.position.set(window.innerWidth - 210, 10);
     this.uiContainer.addChild(this.multiplayerHUD);
 
-    // Monsters disabled for multiplayer testing
-    // this.systems.monsters = new MonsterSystem(this.systems.world);
+    // Initialize monster system based on config
+    if (GAME_SETTINGS.enableMonsters) {
+      this.systems.monsters = new MonsterSystem(this.systems.world);
+    }
 
     // Setup network event handlers BEFORE sending class selection
     this.setupNetworkHandlers();
@@ -503,6 +506,48 @@ export class Game {
         }
       }
     });
+    
+    // Handle hunter retreat shot
+    networkManager.on('playerRetreatShot', (data) => {
+      console.log('Player retreat shot:', data);
+      
+      // Add the projectile
+      const projectile = new RemoteProjectile(data.projectile);
+      this.remoteProjectiles.set(projectile.id, projectile);
+      this.entityContainer.addChild(projectile.sprite);
+      
+      if (data.playerId === networkManager.getPlayerId()) {
+        // Our player retreated
+        console.log('You performed a retreat shot!');
+      } else {
+        // Remote player retreated
+        const remotePlayer = this.remotePlayers.get(data.playerId);
+        if (remotePlayer) {
+          // Animate retreat
+          remotePlayer.targetPosition = data.endPosition;
+          console.log(`Remote player ${remotePlayer.username} retreat shot to`, data.endPosition);
+        }
+      }
+    });
+    
+    // Handle rogue dash
+    networkManager.on('playerDash', (data) => {
+      console.log('Player dash:', data);
+      
+      if (data.playerId === networkManager.getPlayerId()) {
+        // Our player dashed
+        console.log('You dashed!');
+      } else {
+        // Remote player dashed
+        const remotePlayer = this.remotePlayers.get(data.playerId);
+        if (remotePlayer) {
+          // Animate dash (very fast movement)
+          remotePlayer.targetPosition = data.endPosition;
+          console.log(`Remote player ${remotePlayer.username} dashed to`, data.endPosition);
+          // TODO: Add dash trail effect
+        }
+      }
+    });
   }
 
   update(delta) {
@@ -541,12 +586,14 @@ export class Game {
     });
     
     // 4. Update monster AI and intended movement
-    // MonsterSystem.update calls Monster.update, which changes monster.position
-    // Disabled for multiplayer testing
-    // this.systems.monsters.update(deltaTimeSeconds, this.entities.player);
-
+    let allEntitiesForPhysics = [this.entities.player];
+    
+    if (GAME_SETTINGS.enableMonsters && this.systems.monsters) {
+      this.systems.monsters.update(deltaTimeSeconds, this.entities.player);
+      allEntitiesForPhysics = [...allEntitiesForPhysics, ...this.systems.monsters.monsters];
+    }
+    
     // 5. Collect all entities that need physics processing
-    const allEntitiesForPhysics = [this.entities.player]; // Monsters disabled
     
     // 6. Apply physics (world boundaries and tile collisions) to all collected entities
     this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);

@@ -1,5 +1,9 @@
 // src/js/config/GameConfig.js
 
+export const GAME_SETTINGS = {
+  enableMonsters: false, // Toggle for monster spawning (false for PvP testing)
+};
+
 export const MONSTER_CONFIG = {
   // Base stats for each monster type
   stats: {
