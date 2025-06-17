@@ -218,8 +218,8 @@ export class MessageHandler {
     
     // Apply diagonal movement factor
     if (moveX !== 0 && moveY !== 0) {
-      moveX *= 0.85; // diagonal modifier
-      moveY *= 0.85;
+      moveX *= 0.707; // diagonal modifier (1/sqrt(2))
+      moveY *= 0.707;
     }
     
     // Calculate facing direction from mouse position

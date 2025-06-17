@@ -42,6 +42,11 @@ export class RenderingSystem {
     // Get all entities with position component
     const entities = this.entityManager.getEntitiesWithComponents(ComponentType.POSITION);
     
+    if (entities.length > 0 && !this.lastLogTime || Date.now() - this.lastLogTime > 1000) {
+      console.log(`Rendering ${entities.length} entities`);
+      this.lastLogTime = Date.now();
+    }
+    
     // Update or create sprites for each entity
     for (const entity of entities) {
       this.updateEntitySprite(entity);
