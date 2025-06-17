@@ -181,71 +181,15 @@ export class GameServer {
     const connection = new Connection(socket);
     this.connections.set(socket.id, connection);
     
-    // Set up connection event handlers
-    connection.on(MessageType.PLAYER_JOIN, (data) => {
-      this.handlePlayerJoin(connection, data as PlayerJoinMessage);
-    });
-    
+    // Set up disconnect handler
     connection.on('disconnect', () => {
       this.handleDisconnect(connection);
     });
     
-    // Set up message forwarding to handler
+    // Set up message forwarding to handler (handles all game messages)
     this.messageHandler.setupConnection(connection);
   }
   
-  /**
-   * Handle player join request.
-   */
-  private handlePlayerJoin(connection: Connection, message: PlayerJoinMessage): void {
-    console.log(`👤 Player joining: ${message.username} as ${message.characterClass}`);
-    
-    // Validate username
-    if (!message.username || message.username.length < 3 || message.username.length > 20) {
-      connection.sendError(
-        ErrorCode.INVALID_INPUT,
-        'Username must be between 3 and 20 characters'
-      );
-      return;
-    }
-    
-    // Create player entity
-    const playerEntity = this.world.createPlayer(
-      message.username,
-      message.characterClass,
-      connection.id
-    );
-    
-    if (!playerEntity) {
-      connection.sendError(
-        ErrorCode.UNKNOWN,
-        'Failed to create player entity'
-      );
-      return;
-    }
-    
-    // Store player associations
-    this.playerEntities.set(playerEntity.id, playerEntity);
-    this.connectionToPlayer.set(connection.id, playerEntity.id);
-    connection.playerId = playerEntity.id;
-    
-    // Send connection accepted message
-    const acceptMessage: ConnectionAcceptedMessage = {
-      type: MessageType.CONNECTION_ACCEPTED,
-      timestamp: Date.now(),
-      playerId: playerEntity.id,
-      worldSeed: this.worldSeed,
-      serverTime: Date.now(),
-      tickRate: this.tickRate,
-    };
-    
-    connection.send(MessageType.CONNECTION_ACCEPTED, acceptMessage);
-    
-    // Add player to state manager
-    this.stateManager.addPlayer(connection, playerEntity);
-    
-    console.log(`✅ Player ${message.username} joined successfully`);
-  }
   
   /**
    * Handle player disconnect.

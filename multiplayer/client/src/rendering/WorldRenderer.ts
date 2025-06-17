@@ -98,7 +98,7 @@ export class WorldRenderer {
           chunkGraphics.endFill();
           
           // Add subtle grid lines
-          chunkGraphics.lineStyle(1, 0x000000, 0.1);
+          chunkGraphics.setStrokeStyle({ width: 1, color: 0x000000, alpha: 0.1 });
           chunkGraphics.drawRect(x, y, tileSize, tileSize);
         }
       }
