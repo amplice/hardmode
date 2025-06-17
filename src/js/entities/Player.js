@@ -500,6 +500,9 @@ class CombatComponent extends Component {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'primary');
         this.owner.primaryAttackCooldown = cooldown / 1000; // Store in the correct variable
       }
+      if (window.game?.network) {
+        window.game.network.sendAttack(this.owner, 'primary');
+      }
     }
     
     performSecondaryAttack() {
@@ -516,6 +519,9 @@ class CombatComponent extends Component {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'secondary');
         this.owner.secondaryAttackCooldown = cooldown / 1000; // Store in the correct variable
       }
+      if (window.game?.network) {
+        window.game.network.sendAttack(this.owner, 'secondary');
+      }
     }
 
     performRoll() {
@@ -529,6 +535,9 @@ class CombatComponent extends Component {
       if (this.owner.combatSystem) {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'roll');
         this.owner.rollCooldown = cooldown / 1000;
+      }
+      if (window.game?.network) {
+        window.game.network.sendAttack(this.owner, 'roll');
       }
     }
     

@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
 
 export class DecorationManager {
-  constructor(world, tilesets) {
+  constructor(world, tilesets, options = {}) {
     this.world = world;
     this.tilesets = tilesets;
+    this.random = options.random || Math.random;
     this.container = new PIXI.Container();
     this.decorations = [];
   }
@@ -47,7 +48,7 @@ export class DecorationManager {
           const density = tileType === 'grass' ? decType.densityOnGrass : decType.densityOnSand;
           
           // Random check based on density
-          if (Math.random() < density) {
+          if (this.random() < density) {
             this.placeDecoration(x, y, decType.type);
             break; // Only place one decoration per tile
           }
@@ -75,8 +76,8 @@ export class DecorationManager {
     sprite.position.set(posX, posY);
     
     // Add small random offset for natural look
-    sprite.position.x += (Math.random() - 0.5) * (this.world.tileSize * 0.5);
-    sprite.position.y += (Math.random() - 0.5) * (this.world.tileSize * 0.5);
+    sprite.position.x += (this.random() - 0.5) * (this.world.tileSize * 0.5);
+    sprite.position.y += (this.random() - 0.5) * (this.world.tileSize * 0.5);
     
     // Add to container
     this.container.addChild(sprite);
