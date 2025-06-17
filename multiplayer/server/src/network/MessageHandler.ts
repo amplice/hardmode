@@ -90,6 +90,8 @@ export class MessageHandler {
    * Process player input from connection.
    */
   processPlayerInput(connection: Connection, data: PlayerInputMessage): void {
+    console.log('Processing player input:', JSON.stringify(data));
+    
     // Basic validation
     if (!this.inputValidator.validateInput(data)) {
       connection.sendError(ErrorCode.INVALID_INPUT, 'Invalid input format');

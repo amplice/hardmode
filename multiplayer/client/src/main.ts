@@ -12,6 +12,10 @@ import { debugLog } from '@hardmode/shared';
 async function main() {
   console.log('🎮 Starting Hardmode Client...');
   
+  // Make debugLog available in console
+  (window as any).debugLog = debugLog;
+  console.log('Debug logger available as window.debugLog');
+  
   // Register all components
   registerComponents();
   
@@ -37,6 +41,23 @@ async function main() {
   window.addEventListener('resize', () => {
     app.renderer.resize(window.innerWidth, window.innerHeight);
   });
+  
+  // Add copy logs button handler
+  const copyLogsBtn = document.getElementById('copy-logs-btn');
+  if (copyLogsBtn) {
+    copyLogsBtn.addEventListener('click', async () => {
+      console.log('Copy logs button clicked');
+      const success = await debugLog.copyLogsToClipboard(500);
+      if (success) {
+        copyLogsBtn.textContent = 'Copied!';
+        copyLogsBtn.style.background = '#2196F3';
+        setTimeout(() => {
+          copyLogsBtn.textContent = 'Copy Logs';
+          copyLogsBtn.style.background = '#4CAF50';
+        }, 2000);
+      }
+    });
+  }
   
   // Add debug keyboard shortcuts
   window.addEventListener('keydown', async (e) => {
