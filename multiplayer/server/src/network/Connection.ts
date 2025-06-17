@@ -8,8 +8,6 @@
 
 import { Socket } from 'socket.io';
 import { 
-  ClientMessage,
-  ServerMessage,
   MessageType,
   PlayerInputMessage,
   ErrorCode,
@@ -89,7 +87,10 @@ export class Connection {
   on(event: string, handler: (data: any) => void): void {
     // Remove any existing listener for this event
     if (this.eventHandlers.has(event)) {
-      this.socket.off(event);
+      const handler = this.eventHandlers.get(event);
+      if (handler) {
+        this.socket.off(event, handler);
+      }
     }
     
     // Store handler
@@ -113,32 +114,7 @@ export class Connection {
     });
   }
   
-  /**
-   * Send a message to the client.
-   */
-  send(type: MessageType, data: ServerMessage): void {
-    if (!this.connected) {
-      console.warn(`Trying to send to disconnected client ${this.id}`);
-      return;
-    }
-    
-    try {
-      this.socket.emit(type, data);
-    } catch (error) {
-      console.error(`Error sending ${type} to ${this.id}:`, error);
-    }
-  }
   
-  /**
-   * Send an error message to the client.
-   */
-  sendError(code: ErrorCode, message: string, fatal: boolean = false): void {
-    this.send(MessageType.ERROR, createErrorMessage(code, message, fatal));
-    
-    if (fatal) {
-      setTimeout(() => this.disconnect(message), 100);
-    }
-  }
   
   /**
    * Queue a player input for processing.
@@ -274,14 +250,18 @@ export class Connection {
   /**
    * Send an error message to the client.
    */
-  sendError(code: ErrorCode, message: string): void {
-    this.sendMessage(createErrorMessage(code, message));
+  sendError(code: ErrorCode, message: string, fatal: boolean = false): void {
+    this.sendMessage(createErrorMessage(code, message, fatal));
+    
+    if (fatal) {
+      setTimeout(() => this.disconnect(message), 100);
+    }
   }
   
   /**
    * Disconnect this connection.
    */
-  disconnect(reason: string = 'Server disconnect'): void {
+  disconnect(_reason: string = 'Server disconnect'): void {
     this.connected = false;
     this.socket.disconnect();
   }

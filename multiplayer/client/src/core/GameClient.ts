@@ -6,16 +6,17 @@
 import { Application } from 'pixi.js';
 import { NetworkManager } from '../network/NetworkManager';
 import { EntityManager } from '../ecs/EntityManager';
+import { RenderingSystem } from '../rendering/RenderingSystem';
+import { WorldRenderer } from '../rendering/WorldRenderer';
+import { InputSystem } from '../input/InputSystem';
 import { 
   MessageType,
-  CharacterClass,
-  Entity,
-  CHARACTER_CLASSES,
   ConnectionAcceptedMessage,
   GameStateMessage,
   EntitySpawnMessage,
   EntityDespawnMessage,
-  EntityUpdateMessage
+  EntityUpdateMessage,
+  PlayerJoinMessage
 } from '@hardmode/shared';
 
 export class GameClient {
@@ -24,14 +25,24 @@ export class GameClient {
   private entityManager: EntityManager;
   private isRunning: boolean = false;
   
+  // Systems
+  private renderingSystem: RenderingSystem;
+  private worldRenderer: WorldRenderer;
+  private inputSystem: InputSystem;
+  
   // Game state
   private localPlayerId: string | null = null;
-  private currentTick: number = 0;
+  private lastProcessedInput: number = 0;
   
   constructor(app: Application, networkManager: NetworkManager) {
     this.app = app;
     this.networkManager = networkManager;
     this.entityManager = new EntityManager();
+    
+    // Initialize systems
+    this.worldRenderer = new WorldRenderer(this.app);
+    this.renderingSystem = new RenderingSystem(this.entityManager, this.app);
+    this.inputSystem = new InputSystem(this.networkManager, this.app.canvas);
     
     // Setup network event handlers
     this.setupNetworkHandlers();
@@ -44,7 +55,7 @@ export class GameClient {
     this.networkManager.setOnServerMessage((message) => {
       switch (message.type) {
         case MessageType.CONNECTION_ACCEPTED:
-          this.handleConnectionAccepted(message.data as ConnectionAcceptedMessage['data']);
+          this.handleConnectionAccepted(message as ConnectionAcceptedMessage);
           break;
           
         case MessageType.GAME_STATE:
@@ -82,14 +93,13 @@ export class GameClient {
     this.isRunning = true;
     
     // Send join request (for testing)
-    this.networkManager.sendMessage({
-      type: MessageType.JOIN_GAME,
+    const joinMessage: PlayerJoinMessage = {
+      type: MessageType.PLAYER_JOIN,
       timestamp: Date.now(),
-      data: {
-        username: 'TestPlayer',
-        characterClass: 'bladedancer',
-      }
-    });
+      username: 'TestPlayer',
+      characterClass: 'guardian'
+    };
+    this.networkManager.sendMessage(joinMessage);
     
     // Start game loop
     this.app.ticker.add(this.update, this);
@@ -113,20 +123,31 @@ export class GameClient {
   private update(time: any): void {
     const deltaTime = time.deltaTime;
     
-    // Update game state
-    // (Implementation will be added)
+    // Get camera position for input system
+    const camera = this.renderingSystem.getCamera();
     
-    // Render
-    // (Implementation will be added)
+    // Update input (processes and sends input to server)
+    this.inputSystem.update(camera.x, camera.y);
+    
+    // Update world rendering
+    this.worldRenderer.updateVisibleChunks(
+      camera.x, 
+      camera.y, 
+      this.app.screen.width, 
+      this.app.screen.height
+    );
+    
+    // Update entity rendering
+    this.renderingSystem.update(deltaTime);
   }
   
   /**
    * Handle connection accepted message.
    */
-  private handleConnectionAccepted(data: ConnectionAcceptedMessage['data']): void {
-    console.log('Connection accepted:', data);
-    this.localPlayerId = data.playerId;
-    this.entityManager.setLocalPlayerId(data.playerId);
+  private handleConnectionAccepted(message: ConnectionAcceptedMessage): void {
+    console.log('Connection accepted:', message);
+    this.localPlayerId = message.playerId;
+    this.entityManager.setLocalPlayerId(message.playerId);
   }
   
   /**
@@ -148,8 +169,11 @@ export class GameClient {
       this.entityManager.createEntity(entityData);
     }
     
-    // Update tick
-    this.currentTick = message.tick;
+    // Update last processed input for reconciliation
+    if (message.lastProcessedInput !== undefined) {
+      this.lastProcessedInput = message.lastProcessedInput;
+      this.inputSystem.acknowledgeInput(this.lastProcessedInput);
+    }
   }
   
   /**

@@ -8,15 +8,14 @@
 
 import { Server as SocketIOServer, Socket } from 'socket.io';
 import { 
-  Entity, 
-  EntityType,
+  Entity,
   MessageType,
   PlayerJoinMessage,
   ConnectionAcceptedMessage,
   ErrorCode,
   createErrorMessage,
-  NETWORK_SETTINGS,
-  SERVER_CONFIG,
+  RECONNECT_CONFIG,
+  CharacterClass
 } from '@hardmode/shared';
 import { GameWorld } from './GameWorld';
 import { GameLoop } from './GameLoop';
@@ -287,7 +286,7 @@ export class GameServer {
       // Process all pending inputs for this player
       const inputs = connection.getQueuedInputs();
       for (const input of inputs) {
-        this.messageHandler.processPlayerInput(playerEntity, input);
+        (this.messageHandler as any).processPlayerInputEntity(playerEntity, input);
       }
     }
   }
@@ -297,9 +296,9 @@ export class GameServer {
    */
   private cleanupDisconnectedPlayers(): void {
     const now = Date.now();
-    const timeout = NETWORK_SETTINGS.STATE_RESTORE_WINDOW;
+    const timeout = RECONNECT_CONFIG.STATE_RESTORE_WINDOW;
     
-    for (const [connectionId, connection] of this.connections) {
+    for (const [, connection] of this.connections) {
       if (!connection.isConnected() && 
           now - connection.getDisconnectTime() > timeout) {
         this.handleDisconnect(connection);
@@ -337,7 +336,7 @@ export class GameServer {
    * Create a new player entity.
    */
   createPlayer(username: string, characterClass: string, connectionId: string): Entity | null {
-    return this.world.createPlayer(username, characterClass, connectionId);
+    return this.world.createPlayer(username, characterClass as CharacterClass, connectionId);
   }
   
   /**
@@ -357,12 +356,6 @@ export class GameServer {
     this.stateManager.addPlayer(connection, entity);
   }
   
-  /**
-   * Get player entity by ID.
-   */
-  getPlayerEntity(playerId: string): Entity | undefined {
-    return this.playerEntities.get(playerId);
-  }
   
   /**
    * Get server tick rate.

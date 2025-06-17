@@ -16,12 +16,9 @@ import {
   MessageType,
   ErrorCode,
   ComponentType,
-  AttackType,
-  MOVEMENT_MODIFIERS,
-  DAMAGE_CONFIG,
-  WORLD_BOUNDS,
   CHARACTER_CLASSES,
 } from '@hardmode/shared';
+import { Direction } from '@hardmode/shared/constants/PhysicsConfig';
 import { GameServer } from '../core/GameServer';
 import { Connection } from './Connection';
 import { InputValidator } from '../validation/InputValidator';
@@ -67,8 +64,8 @@ export class MessageHandler {
       }
       
       switch (message.type) {
-        case MessageType.JOIN_GAME:
-          this.processPlayerJoin(connection, message.data);
+        case MessageType.PLAYER_JOIN:
+          this.processPlayerJoin(connection, message);
           break;
           
         case MessageType.PLAYER_INPUT:
@@ -92,7 +89,7 @@ export class MessageHandler {
   /**
    * Process player input from connection.
    */
-  private processPlayerInput(connection: Connection, data: PlayerInputMessage): void {
+  processPlayerInput(connection: Connection, data: PlayerInputMessage): void {
     // Basic validation
     if (!this.inputValidator.validateInput(data)) {
       connection.sendError(ErrorCode.INVALID_INPUT, 'Invalid input format');
@@ -123,7 +120,7 @@ export class MessageHandler {
   /**
    * Process player respawn from connection.
    */
-  private processPlayerRespawn(connection: Connection, data: PlayerRespawnMessage): void {
+  private processPlayerRespawn(connection: Connection, _data: PlayerRespawnMessage): void {
     if (!connection.playerId) {
       connection.sendError(ErrorCode.INVALID_INPUT, 'Not in game');
       return;
@@ -179,11 +176,10 @@ export class MessageHandler {
     connection.sendMessage({
       type: MessageType.CONNECTION_ACCEPTED,
       timestamp: Date.now(),
-      data: {
-        playerId: player.id,
-        serverTime: Date.now(),
-        tickRate: this.gameServer.getTickRate(),
-      }
+      playerId: player.id,
+      worldSeed: 12345, // TODO: Get from world generator
+      serverTime: Date.now(),
+      tickRate: this.gameServer.getTickRate(),
     });
     
     console.log(`Player ${data.username} joined as ${data.characterClass}`);
@@ -192,7 +188,7 @@ export class MessageHandler {
   /**
    * Process a player input (called from game tick with validated entity).
    */
-  processPlayerInput(player: Entity, input: PlayerInputMessage): void {
+  processPlayerInputEntity(player: Entity, input: PlayerInputMessage): void {
     // Get components
     const position = player.getComponent<PositionComponent>(ComponentType.POSITION);
     const velocity = player.getComponent<VelocityComponent>(ComponentType.VELOCITY);
@@ -222,8 +218,8 @@ export class MessageHandler {
     
     // Apply diagonal movement factor
     if (moveX !== 0 && moveY !== 0) {
-      moveX *= MOVEMENT_MODIFIERS.diagonal;
-      moveY *= MOVEMENT_MODIFIERS.diagonal;
+      moveX *= 0.85; // diagonal modifier
+      moveY *= 0.85;
     }
     
     // Calculate facing direction from mouse position
@@ -241,11 +237,11 @@ export class MessageHandler {
       }
       
       // Apply directional speed modifiers
-      let speedModifier = MOVEMENT_MODIFIERS.forward;
+      let speedModifier = 1.0; // forward
       if (angleDiff > 3 * Math.PI / 4) {
-        speedModifier = MOVEMENT_MODIFIERS.backward;
+        speedModifier = 0.5; // backward
       } else if (angleDiff > Math.PI / 4) {
-        speedModifier = MOVEMENT_MODIFIERS.strafe;
+        speedModifier = 0.7; // strafe
       }
       
       moveX *= speedModifier;
@@ -330,8 +326,8 @@ export class MessageHandler {
     }
     
     // Respawn at world center
-    position.x = WORLD_BOUNDS.SPAWN_X;
-    position.y = WORLD_BOUNDS.SPAWN_Y;
+    position.x = 3200; // WORLD_BOUNDS.SPAWN_X (center of 6400 world)
+    position.y = 3200; // WORLD_BOUNDS.SPAWN_Y
     
     // Reset health
     health.current = health.maximum;
@@ -359,7 +355,7 @@ export class MessageHandler {
   /**
    * Convert angle to 8-directional facing.
    */
-  private angleToDirection(angle: number): string {
+  private angleToDirection(angle: number): Direction {
     // Convert to degrees and normalize
     let degrees = angle * 180 / Math.PI;
     while (degrees < 0) degrees += 360;
