@@ -42,9 +42,35 @@ async function main() {
   window.addEventListener('keydown', async (e) => {
     // Ctrl+Shift+L to copy logs
     if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+      e.preventDefault(); // Prevent default browser behavior
+      console.log('Attempting to copy logs...');
+      
       const success = await debugLog.copyLogsToClipboard(500);
       if (success) {
         console.log('📋 Debug logs copied to clipboard!');
+        
+        // Show visual feedback
+        const notification = document.createElement('div');
+        notification.textContent = '📋 Logs copied to clipboard!';
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #4CAF50;
+          color: white;
+          padding: 10px 20px;
+          border-radius: 5px;
+          font-family: monospace;
+          z-index: 10000;
+          animation: fadeIn 0.3s ease-in;
+        `;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+          notification.remove();
+        }, 3000);
+      } else {
+        console.error('Failed to copy logs to clipboard');
       }
     }
   });

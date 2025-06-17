@@ -17,7 +17,8 @@ import {
   EntitySpawnMessage,
   EntityDespawnMessage,
   EntityUpdateMessage,
-  PlayerJoinMessage
+  PlayerJoinMessage,
+  debugLog
 } from '@hardmode/shared';
 
 export class GameClient {
@@ -147,6 +148,7 @@ export class GameClient {
    */
   private handleConnectionAccepted(message: ConnectionAcceptedMessage): void {
     console.log('Connection accepted:', message);
+    debugLog.info('Connection accepted', { playerId: message.playerId });
     this.localPlayerId = message.playerId;
     this.entityManager.setLocalPlayerId(message.playerId);
     
@@ -154,6 +156,7 @@ export class GameClient {
     const existingPlayer = this.entityManager.getEntity(message.playerId);
     if (existingPlayer) {
       console.log('Found existing player entity after connection accepted');
+      debugLog.info('Found existing player entity', { entityId: existingPlayer.id });
     }
   }
   
@@ -162,6 +165,11 @@ export class GameClient {
    */
   private handleGameState(message: GameStateMessage): void {
     console.log(`Received game state with ${message.entities.length} entities`);
+    debugLog.info('Received game state', { 
+      entityCount: message.entities.length,
+      tick: message.tick,
+      entities: message.entities.map(e => ({ id: e.id, type: e.type }))
+    });
     
     // Track existing entities
     const existingEntities = new Map<string, Entity>();
