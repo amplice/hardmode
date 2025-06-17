@@ -174,6 +174,8 @@ export class MessageHandler {
     
     // Associate player with connection
     connection.playerId = player.id;
+    console.log(`Set connection.playerId = ${player.id} for connection ${connection.id}`);
+    
     this.gameServer.addPlayerConnection(player.id, connection);
     
     // Send connection accepted message
@@ -256,6 +258,8 @@ export class MessageHandler {
     const baseSpeed = playerComp.getMoveSpeed();
     velocity.x = moveX * baseSpeed;
     velocity.y = moveY * baseSpeed;
+    
+    console.log(`Setting velocity for ${playerComp.username}: (${velocity.x}, ${velocity.y}) based on move (${moveX}, ${moveY}) * speed ${baseSpeed}`);
     
     // Validate movement
     if (!this.movementValidator.validateMovement(player, velocity)) {

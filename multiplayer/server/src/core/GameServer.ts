@@ -225,10 +225,16 @@ export class GameServer {
       if (!connection.playerId) continue;
       
       const playerEntity = this.playerEntities.get(connection.playerId);
-      if (!playerEntity) continue;
+      if (!playerEntity) {
+        console.warn(`No player entity found for connection ${connection.id} with playerId ${connection.playerId}`);
+        continue;
+      }
       
       // Process all pending inputs for this player
       const inputs = connection.getQueuedInputs();
+      if (inputs.length > 0) {
+        console.log(`Processing ${inputs.length} inputs for player ${connection.playerId}`);
+      }
       for (const input of inputs) {
         (this.messageHandler as any).processPlayerInputEntity(playerEntity, input);
       }

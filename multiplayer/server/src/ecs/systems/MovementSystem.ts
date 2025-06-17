@@ -39,6 +39,8 @@ export class MovementSystem extends System {
         continue;
       }
       
+      console.log(`MovementSystem: Entity ${entity.id} has velocity (${velocity.x}, ${velocity.y})`);
+      
       // Calculate movement speed modifier
       let speedModifier = 1.0;
       
@@ -71,12 +73,16 @@ export class MovementSystem extends System {
       }
       
       // Apply movement
+      const oldX = position.x;
+      const oldY = position.y;
       const newX = position.x + velocity.x * speedModifier * dt * 60; // 60 for 60fps base
       const newY = position.y + velocity.y * speedModifier * dt * 60;
       
       // Clamp to world bounds (100x100 tiles * 64 pixels/tile = 6400x6400)
       position.x = Math.max(0, Math.min(6400, newX));
       position.y = Math.max(0, Math.min(6400, newY));
+      
+      console.log(`MovementSystem: Updated position from (${oldX}, ${oldY}) to (${position.x}, ${position.y})`);
       
       // Update facing direction based on velocity
       if (velocity.x !== 0 || velocity.y !== 0) {
