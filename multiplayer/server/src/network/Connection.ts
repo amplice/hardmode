@@ -242,8 +242,15 @@ export class Connection {
    */
   sendMessage(message: any): void {
     if (!this.connected) {
+      console.warn(`Trying to send message to disconnected client ${this.id}`);
       return;
     }
+    
+    // Log entity updates for debugging  
+    if (message.type === 'entity:update' && message.updates) {
+      console.log(`>>> Sending ${message.updates.length} entity updates to client ${this.id}`);
+    }
+    
     this.socket.emit('message', message);
   }
   

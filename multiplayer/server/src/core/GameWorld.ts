@@ -221,6 +221,7 @@ export class GameWorld {
       this.addEntity(entity);
       
       console.log(`Created player entity: ${entity.id} for ${username}`);
+      console.log(`Total entities in world: ${this.entities.size}`);
       return entity;
     } catch (error) {
       console.error('Failed to create player entity:', error);
