@@ -93,7 +93,7 @@ export class StateManager {
     }
     
     // Update each player's view
-    for (const [connectionId, view] of this.playerViews) {
+    for (const [, view] of this.playerViews) {
       // Skip disconnected players
       if (!view.connection.isConnected()) {
         continue;
@@ -124,6 +124,8 @@ export class StateManager {
     const world = this.gameServer.getWorld();
     const allEntities = world.getAllEntities();
     
+    console.log(`Sending initial state to player ${view.entity.id}, total entities: ${allEntities.length}`);
+    
     // Get entities in player's view
     const visibleEntities = this.getVisibleEntities(view, allEntities);
     
@@ -132,6 +134,7 @@ export class StateManager {
     for (const entity of visibleEntities) {
       serializedEntities.push(entity.serialize());
       view.knownEntities.add(entity.id);
+      console.log(`  Including entity ${entity.id} of type ${entity.type}`);
     }
     
     // Create game state message
@@ -145,6 +148,7 @@ export class StateManager {
     };
     
     view.connection.sendMessage(stateMessage);
+    console.log(`Sent GAME_STATE with ${serializedEntities.length} entities`);
   }
   
   /**
@@ -279,18 +283,18 @@ export class StateManager {
       const distance = Math.sqrt(dx * dx + dy * dy);
       
       // Check view distance based on entity type
-      let viewDistance = AOI_CONFIG.PLAYER_VIEW_DISTANCE;
+      let viewDistance: number = AOI_CONFIG.PLAYER_VIEW_DISTANCE;
       
       if (entity.hasComponent(ComponentType.MONSTER)) {
-        viewDistance = AOI_CONFIG.MONSTER_SYNC_DISTANCE;
+        viewDistance = 1000; // MONSTER_SYNC_DISTANCE
       } else if (entity.hasComponent(ComponentType.EFFECT)) {
-        viewDistance = AOI_CONFIG.EFFECT_SYNC_DISTANCE;
+        viewDistance = 600; // EFFECT_SYNC_DISTANCE
       }
       
       // Important events can be seen from further away
       const combat = entity.getComponent(ComponentType.COMBAT);
-      if (combat && combat.isAttacking) {
-        viewDistance = AOI_CONFIG.EXTENDED_VIEW_DISTANCE;
+      if (combat && (combat as any).isAttacking) {
+        viewDistance = 1200; // EXTENDED_VIEW_DISTANCE
       }
       
       if (distance <= viewDistance) {
@@ -340,7 +344,7 @@ export class StateManager {
       
       // Combat priority
       const combat = entity.getComponent(ComponentType.COMBAT);
-      if (combat && combat.isAttacking) {
+      if (combat && (combat as any).isAttacking) {
         priority += UPDATE_PRIORITY.PLAYER_COMBAT * 10;
       }
       
@@ -358,18 +362,18 @@ export class StateManager {
   /**
    * Broadcast an event to all players who can see it.
    */
-  broadcastEvent(event: any, position?: { x: number; y: number }): void {
+  broadcastEvent(_event: any, _position?: { x: number; y: number }): void {
     for (const view of this.playerViews.values()) {
       if (!view.connection.isConnected()) {
         continue;
       }
       
       // If position is provided, check if player can see it
-      if (position) {
+      if (_position) {
         const playerPos = view.entity.getComponent<PositionComponent>(ComponentType.POSITION);
         if (playerPos) {
-          const dx = position.x - playerPos.x;
-          const dy = position.y - playerPos.y;
+          const dx = _position.x - playerPos.x;
+          const dy = _position.y - playerPos.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
           if (distance > AOI_CONFIG.EXTENDED_VIEW_DISTANCE) {

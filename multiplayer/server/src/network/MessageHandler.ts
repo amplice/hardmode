@@ -168,6 +168,8 @@ export class MessageHandler {
       return;
     }
     
+    console.log(`Created player entity ${player.id} for ${data.username}`);
+    
     // Associate player with connection
     connection.playerId = player.id;
     this.gameServer.addPlayerConnection(player.id, connection);
@@ -182,7 +184,7 @@ export class MessageHandler {
       tickRate: this.gameServer.getTickRate(),
     });
     
-    console.log(`Player ${data.username} joined as ${data.characterClass}`);
+    console.log(`Sent CONNECTION_ACCEPTED with playerId ${player.id}`);
   }
   
   /**

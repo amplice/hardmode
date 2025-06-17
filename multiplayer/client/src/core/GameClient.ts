@@ -149,6 +149,12 @@ export class GameClient {
     console.log('Connection accepted:', message);
     this.localPlayerId = message.playerId;
     this.entityManager.setLocalPlayerId(message.playerId);
+    
+    // If we already have entities, update the local player reference
+    const existingPlayer = this.entityManager.getEntity(message.playerId);
+    if (existingPlayer) {
+      console.log('Found existing player entity after connection accepted');
+    }
   }
   
   /**
