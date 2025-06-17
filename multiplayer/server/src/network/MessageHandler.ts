@@ -58,6 +58,8 @@ export class MessageHandler {
   setupConnection(connection: Connection): void {
     // Handle all messages through a single channel
     connection.on('message', (message: any) => {
+      console.log('Received message:', JSON.stringify(message));
+      
       if (!message || !message.type) {
         connection.sendError(ErrorCode.INVALID_INPUT, 'Invalid message format');
         return;

@@ -53,6 +53,7 @@ export class InputValidator {
     const inputKeys = Object.keys(input.keys);
     if (inputKeys.length !== validKeys.length || 
         !inputKeys.every(key => validKeys.includes(key))) {
+      console.warn('Input validation failed: invalid keys structure', { expected: validKeys, got: inputKeys });
       return false;
     }
     
