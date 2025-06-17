@@ -10,6 +10,7 @@ import { RenderingSystem } from '../rendering/RenderingSystem';
 import { WorldRenderer } from '../rendering/WorldRenderer';
 import { InputSystem } from '../input/InputSystem';
 import { 
+  Entity,
   MessageType,
   ConnectionAcceptedMessage,
   GameStateMessage,
@@ -156,17 +157,39 @@ export class GameClient {
   private handleGameState(message: GameStateMessage): void {
     console.log(`Received game state with ${message.entities.length} entities`);
     
-    // Clear existing entities
-    this.entityManager.clear();
+    // Track existing entities
+    const existingEntities = new Map<string, Entity>();
+    for (const entity of this.entityManager.getAllEntities()) {
+      existingEntities.set(entity.id, entity);
+    }
+    
+    // Track which entities are in the new state
+    const newEntityIds = new Set<string>();
+    
+    // Update or create entities
+    for (const entityData of message.entities) {
+      newEntityIds.add(entityData.id);
+      const existingEntity = existingEntities.get(entityData.id);
+      
+      if (existingEntity) {
+        // Update existing entity
+        existingEntity.deserialize(entityData);
+      } else {
+        // Create new entity
+        this.entityManager.createEntity(entityData);
+      }
+    }
+    
+    // Remove entities that are no longer in the state
+    for (const [entityId, entity] of existingEntities) {
+      if (!newEntityIds.has(entityId)) {
+        this.entityManager.removeEntity(entityId);
+      }
+    }
     
     // Restore local player ID
     if (this.localPlayerId) {
       this.entityManager.setLocalPlayerId(this.localPlayerId);
-    }
-    
-    // Create all entities
-    for (const entityData of message.entities) {
-      this.entityManager.createEntity(entityData);
     }
     
     // Update last processed input for reconciliation

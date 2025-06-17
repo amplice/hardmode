@@ -125,7 +125,7 @@ export class EntityManager {
    */
   clear(): void {
     this.entities.clear();
-    this.localPlayerId = null;
+    // Don't clear localPlayerId - it should persist
   }
   
   /**

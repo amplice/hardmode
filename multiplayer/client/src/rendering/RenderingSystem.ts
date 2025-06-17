@@ -33,6 +33,12 @@ export class RenderingSystem {
         this.camera.x = posData.x - this.app.screen.width / 2;
         this.camera.y = posData.y - this.app.screen.height / 2;
       }
+    } else {
+      // Log once per second if no local player
+      if (!this.noPlayerLogTime || Date.now() - this.noPlayerLogTime > 1000) {
+        console.log('No local player found for camera');
+        this.noPlayerLogTime = Date.now();
+      }
     }
 
     // Update container position based on camera
