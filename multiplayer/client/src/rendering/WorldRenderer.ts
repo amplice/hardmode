@@ -33,6 +33,10 @@ export class WorldRenderer {
    * Update which chunks are visible based on camera position.
    */
   updateVisibleChunks(cameraX: number, cameraY: number, viewWidth: number, viewHeight: number): void {
+    // Update world container position to follow camera
+    this.worldContainer.x = -cameraX;
+    this.worldContainer.y = -cameraY;
+    
     const tileSize = WORLD_CONFIG.tileSize;
     const chunkSize = 16; // tiles per chunk
     const chunkPixelSize = chunkSize * tileSize;

@@ -15,6 +15,7 @@ export class InputValidator {
   validateInput(input: any): input is PlayerInputMessage {
     // Check basic structure
     if (!input || typeof input !== 'object') {
+      console.warn('Input validation failed: not an object', input);
       return false;
     }
     
@@ -22,6 +23,7 @@ export class InputValidator {
     if (typeof input.sequence !== 'number' || 
         input.sequence < 0 || 
         input.sequence > Number.MAX_SAFE_INTEGER) {
+      console.warn('Input validation failed: invalid sequence', input.sequence);
       return false;
     }
     
@@ -29,11 +31,13 @@ export class InputValidator {
     if (typeof input.timestamp !== 'number' || 
         input.timestamp < 0 || 
         input.timestamp > Date.now() + 10000) { // Allow 10s future for clock drift
+      console.warn('Input validation failed: invalid timestamp', input.timestamp);
       return false;
     }
     
     // Check keys object
     if (!input.keys || typeof input.keys !== 'object') {
+      console.warn('Input validation failed: missing or invalid keys', input.keys);
       return false;
     }
     

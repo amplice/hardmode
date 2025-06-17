@@ -128,7 +128,7 @@ export class GameClient {
     const camera = this.renderingSystem.getCamera();
     
     // Update input (processes and sends input to server)
-    this.inputSystem.update(camera.x, camera.y);
+    this.inputSystem.update(camera.x, camera.y, 1);
     
     // Update world rendering
     this.worldRenderer.updateVisibleChunks(
