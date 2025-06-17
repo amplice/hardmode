@@ -1,14 +1,20 @@
 # Dependencies
 node_modules/
 */node_modules/
+**/node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 # Build outputs
 dist/
+*/dist/
+**/dist/
 build/
 *.tsbuildinfo
+.vite/
+*/.vite/
+**/.vite/
 
 # Environment files
 .env
