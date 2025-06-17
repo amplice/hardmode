@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 // Serve client files
 app.use(express.static(path.join(__dirname, 'src')));
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 
 const TICK_RATE = 30; // updates per second
 const players = new Map(); // id -> player state
