@@ -27,7 +27,7 @@ export class NetworkComponent extends Component implements INetworkComponent {
     return {};
   }
   
-  deserialize(data: any): void {
+  deserialize(_data: any): void {
     // Network component is server-only
   }
   

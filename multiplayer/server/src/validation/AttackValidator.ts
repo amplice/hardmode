@@ -67,7 +67,7 @@ export class AttackValidator {
       if (level.level >= 4) cooldown -= 100; // -100ms at level 4
       if (level.level >= 8) cooldown -= 100; // -100ms at level 8
     }
-    cooldown = Math.max(100, cooldown); // Minimum 100ms cooldown
+    cooldown = Math.max(100, cooldown) as typeof cooldown; // Minimum 100ms cooldown
     
     if (timeSinceLastAttack < cooldown) {
       console.warn(`Attack on cooldown: ${timeSinceLastAttack} < ${cooldown}`);

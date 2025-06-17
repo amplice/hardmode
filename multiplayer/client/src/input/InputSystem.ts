@@ -89,4 +89,11 @@ export class InputSystem {
   reset(): void {
     this.inputManager.reset();
   }
+
+  /**
+   * Get the input manager instance
+   */
+  getInputManager(): InputManager {
+    return this.inputManager;
+  }
 }

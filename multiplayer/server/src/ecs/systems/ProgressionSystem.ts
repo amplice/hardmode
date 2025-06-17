@@ -8,13 +8,13 @@ import { GameWorld } from '../../core/GameWorld';
 
 export class ProgressionSystem extends System {
   readonly requiredComponents = [ComponentType.LEVEL];
-  readonly priority = SystemPriority.PROGRESSION;
+  readonly priority = SystemPriority.EFFECTS;
   
-  constructor(private world: GameWorld) {
+  constructor(world: GameWorld) {
     super();
   }
   
-  update(entities: Entity[], deltaTime: number): void {
+  update(_entities: Entity[], _deltaTime: number): void {
     // Progression logic will be implemented
     // - Track experience gains
     // - Handle level ups

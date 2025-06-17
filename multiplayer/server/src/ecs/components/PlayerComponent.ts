@@ -35,6 +35,7 @@ export class PlayerComponent extends Component implements IPlayerComponent {
       level: this.level,
       kills: this.kills,
       deaths: this.deaths,
+      lastInputSequence: this.lastInputSequence,
     };
   }
   

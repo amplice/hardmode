@@ -9,11 +9,11 @@ export class CombatSystem extends System {
   readonly requiredComponents = [ComponentType.COMBAT];
   readonly priority = SystemPriority.COMBAT;
   
-  constructor(private world: GameWorld) {
+  constructor(world: GameWorld) {
     super();
   }
   
-  update(entities: Entity[], deltaTime: number): void {
+  update(_entities: Entity[], _deltaTime: number): void {
     // Combat logic will be implemented
   }
 }

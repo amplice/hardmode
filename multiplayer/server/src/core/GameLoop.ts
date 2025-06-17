@@ -18,7 +18,7 @@ export class GameLoop {
   
   // State
   private isRunning: boolean = false;
-  private timer: NodeJS.Timeout | null = null;
+  private timer: NodeJS.Immediate | null = null;
   private lastTime: number = 0;
   private accumulator: number = 0;
   

@@ -207,4 +207,11 @@ export class InputManager {
     this.inputHistory = [];
     this.lastInputTime = 0;
   }
+  
+  /**
+   * Get current input sequence number
+   */
+  getCurrentSequence(): number {
+    return this.inputSequence;
+  }
 }

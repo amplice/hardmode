@@ -59,7 +59,7 @@ export class ChunkManager {
    * Create a new chunk.
    */
   private createChunk(chunkX: number, chunkY: number): IChunk {
-    const tiles = [];
+    const tiles: import('@hardmode/shared').ITile[][] = [];
     
     // Calculate world tile coordinates for this chunk
     const startX = chunkX * this.chunkSize;

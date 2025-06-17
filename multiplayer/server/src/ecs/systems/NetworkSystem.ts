@@ -10,11 +10,11 @@ export class NetworkSystem extends System {
   readonly requiredComponents = [ComponentType.NETWORK];
   readonly priority = SystemPriority.NETWORK;
   
-  constructor(private world: GameWorld) {
+  constructor(world: GameWorld) {
     super();
   }
   
-  update(entities: Entity[], deltaTime: number): void {
+  update(_entities: Entity[], _deltaTime: number): void {
     // Network update logic will be implemented
     // - Track dirty entities
     // - Prepare state updates

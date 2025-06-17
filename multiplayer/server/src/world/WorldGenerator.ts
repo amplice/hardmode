@@ -10,12 +10,10 @@ import { WORLD_CONFIG, TileType, ITile } from '@hardmode/shared';
 import { createNoise2D } from 'simplex-noise';
 
 export class WorldGenerator {
-  private seed: number;
   private noise: ReturnType<typeof createNoise2D>;
   private tiles: ITile[][] = [];
   
   constructor(seed: number) {
-    this.seed = seed;
     // Create deterministic noise function with seed
     this.noise = createNoise2D(() => {
       // Simple deterministic random based on seed

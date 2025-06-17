@@ -82,7 +82,6 @@ export class SpatialHash {
    */
   getEntitiesInRadius(centerX: number, centerY: number, radius: number): Entity[] {
     const entities: Entity[] = [];
-    const radiusSquared = radius * radius;
     
     // Calculate which cells to check
     const minCell = this.getCellCoords(centerX - radius, centerY - radius);

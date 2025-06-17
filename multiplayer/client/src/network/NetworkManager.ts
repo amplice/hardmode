@@ -139,10 +139,8 @@ export class NetworkManager {
     switch (message.type) {
       case MessageType.CONNECTION_ACCEPTED:
         console.log('Connection accepted by server');
-        break;
-        
-      case MessageType.CONNECTION_REJECTED:
-        console.error('Connection rejected:', message);
+        this.serverTime = (message as any).serverTime || Date.now();
+        this.serverTimeDelta = this.serverTime - Date.now();
         break;
         
       case MessageType.ERROR:

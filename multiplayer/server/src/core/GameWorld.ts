@@ -11,11 +11,11 @@ import {
   EntityType,
   System,
   SystemGroup,
-  SystemPriority,
   WORLD_CONFIG,
   WORLD_BOUNDS,
   ComponentType,
   CHARACTER_CLASSES,
+  CharacterClass
 } from '@hardmode/shared';
 import { WorldGenerator } from '../world/WorldGenerator';
 import { ChunkManager } from '../world/ChunkManager';
@@ -47,7 +47,6 @@ export class GameWorld {
   
   // Entity management
   private entities: Map<string, Entity> = new Map();
-  private entityIdCounter: number = 0;
   private spatialHash: SpatialHash;
   
   // System management
@@ -204,14 +203,15 @@ export class GameWorld {
   /**
    * Create a new player entity.
    */
-  createPlayer(username: string, characterClass: string, connectionId: string): Entity | null {
+  createPlayer(username: string, characterClass: CharacterClass, connectionId: string): Entity | null {
     try {
       const entity = new Entity(EntityType.PLAYER);
       
       // Add required components
       entity.addComponent(new PositionComponent(WORLD_BOUNDS.SPAWN_X, WORLD_BOUNDS.SPAWN_Y));
       entity.addComponent(new VelocityComponent());
-      entity.addComponent(new HealthComponent(CHARACTER_CLASSES[characterClass]));
+      const classConfig = CHARACTER_CLASSES[characterClass];
+      entity.addComponent(new HealthComponent(classConfig.hitPoints));
       entity.addComponent(new PlayerComponent(username, characterClass, connectionId));
       entity.addComponent(new CombatComponent());
       entity.addComponent(new LevelComponent());

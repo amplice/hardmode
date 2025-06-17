@@ -10,11 +10,11 @@ export class AISystem extends System {
   readonly requiredComponents = [ComponentType.AI];
   readonly priority = SystemPriority.AI;
   
-  constructor(private world: GameWorld) {
+  constructor(world: GameWorld) {
     super();
   }
   
-  update(entities: Entity[], deltaTime: number): void {
+  update(_entities: Entity[], _deltaTime: number): void {
     // AI logic will be implemented
     // - Target acquisition
     // - Pathfinding

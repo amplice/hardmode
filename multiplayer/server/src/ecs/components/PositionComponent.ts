@@ -3,8 +3,8 @@
  * Tracks entity position and facing direction in the game world.
  */
 
-import { Component } from '@hardmode/shared';
-import { ComponentType, IPositionComponent, Direction } from '@hardmode/shared';
+import { Component, ComponentType, IPositionComponent } from '@hardmode/shared';
+import { Direction } from '@hardmode/shared/constants/PhysicsConfig';
 
 export class PositionComponent extends Component implements IPositionComponent {
   readonly type = ComponentType.POSITION;

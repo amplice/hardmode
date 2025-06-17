@@ -254,12 +254,11 @@ export class MessageHandler {
       moveY *= speedModifier;
     }
     
-    // Apply class base speed
-    const baseSpeed = playerComp.getMoveSpeed();
-    velocity.x = moveX * baseSpeed;
-    velocity.y = moveY * baseSpeed;
+    // Set normalized velocity (MovementSystem will apply speed modifiers)
+    velocity.x = moveX;
+    velocity.y = moveY;
     
-    console.log(`Setting velocity for ${playerComp.username}: (${velocity.x}, ${velocity.y}) based on move (${moveX}, ${moveY}) * speed ${baseSpeed}`);
+    console.log(`Setting velocity for ${playerComp.username}: (${velocity.x}, ${velocity.y}) based on move (${moveX}, ${moveY})`);
     
     // Validate movement
     if (!this.movementValidator.validateMovement(player, velocity)) {
