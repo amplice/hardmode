@@ -92,6 +92,9 @@ export class StateManager {
       this.lastFullSync = now;
     }
     
+    // Collect all entities that were updated
+    const updatedEntities = new Set<Entity>();
+    
     // Update each player's view
     for (const [, view] of this.playerViews) {
       // Skip disconnected players
@@ -109,11 +112,17 @@ export class StateManager {
         if (needsFullSync) {
           this.sendFullState(view);
         } else {
-          this.sendIncrementalUpdate(view);
+          const entitiesUpdated = this.sendIncrementalUpdate(view);
+          entitiesUpdated.forEach(e => updatedEntities.add(e));
         }
         
         view.lastUpdateTime = now;
       }
+    }
+    
+    // Clean dirty flags after all players have been updated
+    for (const entity of updatedEntities) {
+      entity.markClean();
     }
   }
   
@@ -150,15 +159,19 @@ export class StateManager {
   /**
    * Send full state sync to a player.
    */
-  private sendFullState(view: PlayerView): void {
+  private sendFullState(view: PlayerView): Set<Entity> {
     // Similar to initial state but may include events
     this.sendInitialState(view);
+    // Return empty set since we don't track individual updates in full sync
+    return new Set<Entity>();
   }
   
   /**
    * Send incremental updates to a player.
+   * Returns the set of entities that had updates sent.
    */
-  private sendIncrementalUpdate(view: PlayerView): void {
+  private sendIncrementalUpdate(view: PlayerView): Set<Entity> {
+    const updatedEntities = new Set<Entity>();
     const world = this.gameServer.getWorld();
     const allEntities = world.getAllEntities();
     
@@ -206,6 +219,7 @@ export class StateManager {
           }
           
           updates.push(update);
+          updatedEntities.add(entity); // Track this entity was updated
         }
       }
     }
@@ -244,10 +258,7 @@ export class StateManager {
       view.connection.sendMessage(updateMessage);
     }
     
-    // Mark entities as clean after sending
-    for (const entity of visibleEntities) {
-      entity.markClean();
-    }
+    return updatedEntities;
   }
   
   /**
