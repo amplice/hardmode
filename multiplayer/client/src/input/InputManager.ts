@@ -112,18 +112,21 @@ export class InputManager {
     const currentTime = Date.now();
     const deltaTime = currentTime - this.lastInputTime;
     
-    // Don't send input too frequently
-    if (deltaTime < 16) { // ~60fps
+    // Send inputs more frequently for testing
+    if (deltaTime < 8) { // ~120fps
       return null;
     }
 
     const inputState = this.getInputState();
     
-    // Only send if there's actual input
+    // Always send input if there's movement (removed attack check)
     const hasMovement = inputState.keys.up || inputState.keys.down || 
                        inputState.keys.left || inputState.keys.right;
     
-    if (!hasMovement && !this.keys.get('primaryAttack') && !this.keys.get('secondaryAttack')) {
+    // Always send if moving
+    if (hasMovement) {
+      console.log(`Sending input: ${JSON.stringify(inputState.keys)}`);
+    } else {
       return null;
     }
 

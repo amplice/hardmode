@@ -138,8 +138,8 @@ export class GameClient {
     // Update input (processes and sends input to server)
     this.inputSystem.update(camera.x, camera.y, 1);
     
-    // Apply client-side prediction for local player
-    this.predictionSystem.update(deltaTime);
+    // DISABLED: Client prediction - just render server state
+    // this.predictionSystem.update(deltaTime);
     
     // Update world rendering
     this.worldRenderer.updateVisibleChunks(
@@ -196,28 +196,12 @@ export class GameClient {
       const existingEntity = existingEntities.get(entityData.id);
       
       if (existingEntity) {
-        // For local player, handle prediction reconciliation
-        if (entityData.id === this.localPlayerId) {
-          // Extract position and velocity from components (components is an object, not array)
-          const positionComp = entityData.components[ComponentType.POSITION];
-          const velocityComp = entityData.components[ComponentType.VELOCITY];
-          const playerComp = entityData.components[ComponentType.PLAYER];
-          
-          if (positionComp && velocityComp && playerComp) {
-            // Reconcile prediction with server state
-            this.predictionSystem.reconcile({
-              position: { x: positionComp.x, y: positionComp.y },
-              velocity: { x: velocityComp.x, y: velocityComp.y },
-              lastProcessedSequence: playerComp.lastInputSequence || 0
-            });
-          }
-        } else {
-          // For other entities, just update normally
-          existingEntity.deserialize(entityData);
-        }
+        // Update existing entity
+        existingEntity.deserialize(entityData);
       } else {
         // Create new entity
         this.entityManager.createEntity(entityData);
+        console.log(`Created new entity ${entityData.id} of type ${entityData.type}`);
       }
     }
     
@@ -260,29 +244,11 @@ export class GameClient {
    * Handle entity update message.
    */
   private handleEntityUpdate(message: EntityUpdateMessage): void {
+    console.log(`Received ${message.updates.length} entity updates`);
+    
     for (const update of message.updates) {
-      // For local player, handle prediction reconciliation
-      if (update.id === this.localPlayerId) {
-        const localPlayer = this.entityManager.getEntity(this.localPlayerId);
-        if (localPlayer) {
-          // Extract position and velocity from components (components is an object)
-          const positionComp = update.components[ComponentType.POSITION];
-          const velocityComp = update.components[ComponentType.VELOCITY];
-          const playerComp = update.components[ComponentType.PLAYER];
-          
-          if (positionComp && velocityComp && playerComp) {
-            // Reconcile prediction with server state
-            this.predictionSystem.reconcile({
-              position: { x: positionComp.x, y: positionComp.y },
-              velocity: { x: velocityComp.x, y: velocityComp.y },
-              lastProcessedSequence: playerComp.lastInputSequence || 0
-            });
-          }
-        }
-      } else {
-        // For other entities, just update normally
-        this.entityManager.updateEntity(update);
-      }
+      // Just update all entities directly from server state
+      this.entityManager.updateEntity(update);
     }
   }
 }

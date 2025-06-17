@@ -130,6 +130,14 @@ export class EntityManager {
       return;
     }
     
+    // Debug log for player updates
+    if (entity.hasComponent(ComponentType.PLAYER)) {
+      const posData = update.components[ComponentType.POSITION];
+      if (posData) {
+        console.log(`Updating player ${update.id} position to (${posData.x}, ${posData.y})`);
+      }
+    }
+    
     // Update only the provided components
     for (const [componentType, componentData] of Object.entries(update.components)) {
       const component = entity.getComponent(componentType as ComponentType);

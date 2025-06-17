@@ -34,7 +34,6 @@ export class InputSystem {
     // Create and send movement input
     const inputMessage = this.inputManager.createInputMessage();
     if (inputMessage) {
-      console.log('Sending input message:', inputMessage);
       this.networkManager.sendMessage(inputMessage);
     }
   }

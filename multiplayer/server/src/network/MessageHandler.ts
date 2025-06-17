@@ -189,6 +189,21 @@ export class MessageHandler {
     });
     
     console.log(`Player ${data.username} joined as ${data.characterClass}`);
+    
+    // Send initial game state with all existing entities
+    const allEntities = this.gameServer.getWorld().getAllEntities();
+    const serializedEntities = allEntities.map(e => e.serialize());
+    
+    connection.sendMessage({
+      type: MessageType.GAME_STATE,
+      timestamp: Date.now(),
+      tick: 0,
+      lastProcessedInput: 0,
+      entities: serializedEntities,
+      events: []
+    });
+    
+    console.log(`Sent initial game state with ${serializedEntities.length} entities to new player`);
   }
   
   /**
@@ -258,7 +273,9 @@ export class MessageHandler {
     velocity.x = moveX;
     velocity.y = moveY;
     
-    console.log(`Setting velocity for ${playerComp.username}: (${velocity.x}, ${velocity.y}) based on move (${moveX}, ${moveY})`);
+    if (moveX !== 0 || moveY !== 0) {
+      console.log(`Player ${playerComp.username} (${player.id}) velocity set to (${velocity.x}, ${velocity.y})`);
+    }
     
     // Validate movement
     if (!this.movementValidator.validateMovement(player, velocity)) {
