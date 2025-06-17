@@ -82,9 +82,8 @@ export class StateManager {
    * Send updates to all connected players.
    * Called from game loop at network update rate.
    */
-  sendUpdates(): void {
+  sendUpdates(deltaTime: number): void {
     const now = Date.now();
-    const deltaTime = this.updateInterval;
     
     // Check if we need a full sync
     const needsFullSync = now - this.lastFullSync > this.fullSyncInterval;
@@ -179,6 +178,12 @@ export class StateManager {
     const visibleEntities = this.getVisibleEntities(view, allEntities);
     const visibleIds = new Set(visibleEntities.map(e => e.id));
     
+    // Debug: Log player count and visible entities
+    const playerCount = allEntities.filter(e => e.hasComponent(ComponentType.PLAYER)).length;
+    if (playerCount > 1) {
+      console.log(`Player ${view.entity.id} can see ${visibleEntities.length}/${allEntities.length} entities (${playerCount} players total)`);
+    }
+    
     // Find entities to spawn (newly visible)
     const toSpawn: Entity[] = [];
     for (const entity of visibleEntities) {
@@ -218,11 +223,17 @@ export class StateManager {
             }
           }
           
+          // Debug specific case
+          if (entity.hasComponent(ComponentType.PLAYER) && Object.keys(update.components).length > 0) {
+            console.log(`Sending update for player ${entity.id} with components: ${Object.keys(update.components).join(', ')}`);
+          }
+          
           updates.push(update);
           updatedEntities.add(entity); // Track this entity was updated
         }
       }
     }
+    
     
     // Send spawn messages
     for (const entity of toSpawn) {

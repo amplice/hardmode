@@ -39,8 +39,6 @@ export class MovementSystem extends System {
         continue;
       }
       
-      console.log(`MovementSystem: Entity ${entity.id} has velocity (${velocity.x}, ${velocity.y})`);
-      
       // Calculate movement speed modifier
       let speedModifier = 1.0;
       
@@ -82,10 +80,12 @@ export class MovementSystem extends System {
       position.x = Math.max(0, Math.min(6400, newX));
       position.y = Math.max(0, Math.min(6400, newY));
       
-      console.log(`MovementSystem: Updated position from (${oldX}, ${oldY}) to (${position.x}, ${position.y})`);
+      // Only log significant movement
+      if (Math.abs(position.x - oldX) > 0.1 || Math.abs(position.y - oldY) > 0.1) {
+        console.log(`MovementSystem: Entity ${entity.id} moved from (${oldX.toFixed(1)}, ${oldY.toFixed(1)}) to (${position.x.toFixed(1)}, ${position.y.toFixed(1)})`);      }
       
       // Update facing direction based on velocity
-      if (velocity.x !== 0 || velocity.y !== 0) {
+      if (velocity.x \!== 0 || velocity.y \!== 0) {
         position.facing = this.calculateDirection(velocity.x, velocity.y);
       }
       

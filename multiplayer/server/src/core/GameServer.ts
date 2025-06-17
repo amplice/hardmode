@@ -145,7 +145,7 @@ export class GameServer {
     this.processPlayerInputs();
     
     // Send state updates to clients
-    this.stateManager.sendUpdates();
+    this.stateManager.sendUpdates(deltaTime);
     
     // Clean up disconnected players
     this.cleanupDisconnectedPlayers();

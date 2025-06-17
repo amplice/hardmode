@@ -198,10 +198,10 @@ export class GameClient {
       if (existingEntity) {
         // For local player, handle prediction reconciliation
         if (entityData.id === this.localPlayerId) {
-          // Extract position and velocity from components
-          const positionComp = entityData.components.find(c => c.type === ComponentType.POSITION);
-          const velocityComp = entityData.components.find(c => c.type === ComponentType.VELOCITY);
-          const playerComp = entityData.components.find(c => c.type === ComponentType.PLAYER);
+          // Extract position and velocity from components (components is an object, not array)
+          const positionComp = entityData.components[ComponentType.POSITION];
+          const velocityComp = entityData.components[ComponentType.VELOCITY];
+          const playerComp = entityData.components[ComponentType.PLAYER];
           
           if (positionComp && velocityComp && playerComp) {
             // Reconcile prediction with server state
@@ -265,10 +265,10 @@ export class GameClient {
       if (update.id === this.localPlayerId) {
         const localPlayer = this.entityManager.getEntity(this.localPlayerId);
         if (localPlayer) {
-          // Extract position and velocity from components
-          const positionComp = update.components.find(c => c.type === ComponentType.POSITION);
-          const velocityComp = update.components.find(c => c.type === ComponentType.VELOCITY);
-          const playerComp = update.components.find(c => c.type === ComponentType.PLAYER);
+          // Extract position and velocity from components (components is an object)
+          const positionComp = update.components[ComponentType.POSITION];
+          const velocityComp = update.components[ComponentType.VELOCITY];
+          const playerComp = update.components[ComponentType.PLAYER];
           
           if (positionComp && velocityComp && playerComp) {
             // Reconcile prediction with server state

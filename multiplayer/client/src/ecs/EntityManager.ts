@@ -121,6 +121,27 @@ export class EntityManager {
   }
   
   /**
+   * Update an existing entity with partial data.
+   */
+  updateEntity(update: EntityUpdate): void {
+    const entity = this.entities.get(update.id);
+    if (!entity) {
+      console.warn(`Trying to update non-existent entity: ${update.id}`);
+      return;
+    }
+    
+    // Update only the provided components
+    for (const [componentType, componentData] of Object.entries(update.components)) {
+      const component = entity.getComponent(componentType as ComponentType);
+      if (component) {
+        component.deserialize(componentData);
+      } else {
+        console.warn(`Entity ${update.id} doesn't have component ${componentType}`);
+      }
+    }
+  }
+  
+  /**
    * Clear all entities.
    */
   clear(): void {
