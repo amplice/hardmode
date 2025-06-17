@@ -124,8 +124,6 @@ export class StateManager {
     const world = this.gameServer.getWorld();
     const allEntities = world.getAllEntities();
     
-    console.log(`Sending initial state to player ${view.entity.id}, total entities: ${allEntities.length}`);
-    
     // Get entities in player's view
     const visibleEntities = this.getVisibleEntities(view, allEntities);
     
@@ -134,7 +132,6 @@ export class StateManager {
     for (const entity of visibleEntities) {
       serializedEntities.push(entity.serialize());
       view.knownEntities.add(entity.id);
-      console.log(`  Including entity ${entity.id} of type ${entity.type}`);
     }
     
     // Create game state message
@@ -148,7 +145,6 @@ export class StateManager {
     };
     
     view.connection.sendMessage(stateMessage);
-    console.log(`Sent GAME_STATE with ${serializedEntities.length} entities`);
   }
   
   /**

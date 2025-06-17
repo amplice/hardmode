@@ -22,7 +22,8 @@ export * from './ecs/Component.js';
 export * from './ecs/Entity.js';
 export * from './ecs/System.js';
 
-// Note: Utils will be added as needed
+// Utils
+export { debugLog, DebugLogger } from './utils/DebugLogger.js';
 
 // Version for compatibility checking
 export const SHARED_VERSION = '0.1.0';

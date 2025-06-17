@@ -36,7 +36,7 @@ export class EntityManager {
    * Create an entity from serialized data.
    */
   createEntity(data: SerializedEntity): Entity {
-    const entity = new Entity(data.type);
+    const entity = new Entity(data.type, data.id);  // Pass the ID from server!
     entity.deserialize(data);
     this.entities.set(entity.id, entity);
     

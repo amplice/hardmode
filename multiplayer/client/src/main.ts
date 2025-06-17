@@ -7,6 +7,7 @@ import { Application } from 'pixi.js';
 import { NetworkManager } from './network/NetworkManager';
 import { GameClient } from './core/GameClient';
 import { registerComponents } from './ecs/components';
+import { debugLog } from '@hardmode/shared';
 
 async function main() {
   console.log('🎮 Starting Hardmode Client...');
@@ -35,6 +36,17 @@ async function main() {
   // Handle window resize
   window.addEventListener('resize', () => {
     app.renderer.resize(window.innerWidth, window.innerHeight);
+  });
+  
+  // Add debug keyboard shortcuts
+  window.addEventListener('keydown', async (e) => {
+    // Ctrl+Shift+L to copy logs
+    if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+      const success = await debugLog.copyLogsToClipboard(500);
+      if (success) {
+        console.log('📋 Debug logs copied to clipboard!');
+      }
+    }
   });
   
   // Create network manager
