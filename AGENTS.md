@@ -31,6 +31,12 @@ The game features a procedurally generated world, four player classes and fast-p
 
 The design documents in the repository provide additional details about mechanics and future plans.
 
+## Terminology
+The "local player" refers to the player character controlled on the current
+game screen. Any other connected players are considered "remote players". When
+making multiplayer changes, keep this distinction in mind so that updates are
+applied to the correct entity.
+
 ## Adding New Content
 1. Add new stats or behaviors to `GameConfig.js`.
 2. Reuse existing systems and components where possible.

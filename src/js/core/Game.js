@@ -13,6 +13,7 @@ import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 import { NetworkClient } from '../net/NetworkClient.js';
+import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
@@ -169,6 +170,9 @@ export class Game {
     if (this.network) {
       this.network.sendPlayerUpdate(this.entities.player);
     }
+
+    // Update remote player animations
+    this.updateRemotePlayers(deltaTimeSeconds);
   }
 
   updateCamera() {
@@ -222,10 +226,35 @@ export class Game {
   updateRemotePlayer(info) {
     if (!this.remotePlayers || !this.remotePlayers.has(info.id)) return;
     const p = this.remotePlayers.get(info.id);
+    if (info.class && info.class !== p.characterClass) {
+      p.characterClass = info.class;
+      p.currentAnimation = null;
+      if (p.animatedSprite && p.animatedSprite.parent) {
+        p.sprite.removeChild(p.animatedSprite);
+        p.animatedSprite = null;
+      }
+      p.animation.setupAnimations();
+    }
+
+    const prevX = p.position.x;
+    const prevY = p.position.y;
+
+    p.lastFacing = p.facing;
     p.position.x = info.x;
     p.position.y = info.y;
     p.facing = info.facing;
     p.sprite.position.set(p.position.x, p.position.y);
+
+    const dx = info.x - prevX;
+    const dy = info.y - prevY;
+    p.isMoving = Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5;
+    if (p.isMoving) {
+      p.movementDirection = velocityToDirectionString(dx, dy);
+    } else {
+      p.movementDirection = null;
+    }
+
+    p.animation.update();
     if (typeof info.hp === 'number') {
       p.hitPoints = info.hp;
       if (info.hp <= 0 && !p.isDead) {
@@ -233,6 +262,13 @@ export class Game {
       } else if (info.hp > 0 && p.isDead) {
         p.health.respawn();
       }
+    }
+  }
+
+  updateRemotePlayers(delta) {
+    if (!this.remotePlayers) return;
+    for (const p of this.remotePlayers.values()) {
+      p.animation.update();
     }
   }
 
