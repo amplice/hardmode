@@ -15,6 +15,9 @@ import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 import { NetworkClient } from '../net/NetworkClient.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 
+// Speed at which remote player positions interpolate toward server state
+const INTERPOLATION_SPEED = 10;
+
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
 
@@ -218,6 +221,12 @@ export class Game {
     });
     p.id = info.id;
     p.hitPoints = info.hp;
+    // Store server-authoritative position for interpolation
+    p.serverPosX = info.x;
+    p.serverPosY = info.y;
+    p.prevServerX = info.x;
+    p.prevServerY = info.y;
+    p.serverFacing = info.facing;
     this.entityContainer.addChild(p.sprite);
     if (!this.remotePlayers) this.remotePlayers = new Map();
     this.remotePlayers.set(info.id, p);
@@ -236,25 +245,22 @@ export class Game {
       p.animation.setupAnimations();
     }
 
-    const prevX = p.position.x;
-    const prevY = p.position.y;
+    p.prevServerX = typeof p.serverPosX === 'number' ? p.serverPosX : info.x;
+    p.prevServerY = typeof p.serverPosY === 'number' ? p.serverPosY : info.y;
+    p.serverPosX = info.x;
+    p.serverPosY = info.y;
+    p.serverFacing = info.facing;
 
+    const dx = p.serverPosX - p.prevServerX;
+    const dy = p.serverPosY - p.prevServerY;
     p.lastFacing = p.facing;
-    p.position.x = info.x;
-    p.position.y = info.y;
-    p.facing = info.facing;
-    p.sprite.position.set(p.position.x, p.position.y);
-
-    const dx = info.x - prevX;
-    const dy = info.y - prevY;
+    p.facing = p.serverFacing;
     p.isMoving = Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5;
     if (p.isMoving) {
       p.movementDirection = velocityToDirectionString(dx, dy);
     } else {
       p.movementDirection = null;
     }
-
-    p.animation.update();
     if (typeof info.hp === 'number') {
       p.hitPoints = info.hp;
       if (info.hp <= 0 && !p.isDead) {
@@ -268,6 +274,14 @@ export class Game {
   updateRemotePlayers(delta) {
     if (!this.remotePlayers) return;
     for (const p of this.remotePlayers.values()) {
+      if (typeof p.serverPosX === 'number') {
+        const lerp = 1 - Math.exp(-INTERPOLATION_SPEED * delta);
+        p.position.x += (p.serverPosX - p.position.x) * lerp;
+        p.position.y += (p.serverPosY - p.position.y) * lerp;
+        p.sprite.position.set(p.position.x, p.position.y);
+        p.lastFacing = p.facing;
+        p.facing = p.serverFacing;
+      }
       p.animation.update();
     }
   }

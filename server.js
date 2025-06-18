@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, 'src')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 
-const TICK_RATE = 30; // updates per second
+const TICK_RATE = 60; // updates per second (raised for smoother state sync)
 const players = new Map(); // id -> player state
 const monsters = new Map(); // id -> monster state
 let nextMonsterId = 1;
