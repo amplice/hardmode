@@ -418,6 +418,11 @@ class AnimationComponent extends Component {
     }
     
     playDeathAnimation() {
+        // Don't restart death animation if already playing
+        if (this.owner.currentAnimation && this.owner.currentAnimation.includes('_die_')) {
+            return;
+        }
+        
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
             // Get the character class prefix from PLAYER_CONFIG
             const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
@@ -439,17 +444,17 @@ class AnimationComponent extends Component {
                 this.owner.animatedSprite.play();
                 this.owner.sprite.addChild(this.owner.animatedSprite);
                 
-                // Set up animation complete callback for respawn
+                // Set up animation complete callback - just stop on last frame
                 this.owner.animatedSprite.onComplete = () => {
-                    // Only respawn if still dead to prevent loops
-                    if (this.owner.isDead) {
-                        this.owner.health.respawn();
+                    // Stay on last frame until server respawns player
+                    if (this.owner.animatedSprite) {
+                        this.owner.animatedSprite.gotoAndStop(this.owner.animatedSprite.totalFrames - 1);
                     }
                 };
             }
         } else {
-            // If no sprite manager, just respawn immediately
-            this.owner.health.respawn();
+            // If no sprite manager, wait for server respawn (don't trigger client respawn)
+            console.log("No sprite manager - waiting for server respawn");
         }
     }
     
@@ -682,8 +687,12 @@ class HealthComponent extends Component {
         this.owner.currentAttackType = null;
         this.owner.attackHitFrameReached = false;
         
-        // Reset animation to idle
+        // Reset animation to idle and clear any death animation
         this.owner.currentAnimation = null;
+        if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
+            this.owner.sprite.removeChild(this.owner.animatedSprite);
+            this.owner.animatedSprite = null;
+        }
         this.owner.animation.update();
     }
     
