@@ -6,11 +6,14 @@ import { PhysicsSystem }  from '../systems/Physics.js';
 import { WorldGenerator } from '../systems/world/WorldGenerator.js';
 import { CombatSystem }   from '../systems/CombatSystem.js';
 import { MonsterSystem }  from '../systems/MonsterSystem.js';
+import { Monster } from '../entities/monsters/Monster.js';
 import { SpriteManager }  from '../systems/animation/SpriteManager.js';
 import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
+import { NetworkClient } from '../net/NetworkClient.js';
+import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
@@ -59,6 +62,7 @@ export class Game {
     window.game = this;
 
     this.tilesets = new TilesetManager();
+    this.network = null;
     this.loadAndInit();
     
     // Flag to track game state
@@ -85,6 +89,9 @@ export class Game {
   
   // Modified to accept selectedClass parameter
   startGame(selectedClass) {
+    if (!this.network) {
+      this.network = new NetworkClient(this);
+    }
     // Remove class selection UI
     if (this.classSelectUI) {
       this.uiContainer.removeChild(this.classSelectUI.container);
@@ -112,13 +119,19 @@ export class Game {
     });
     this.entityContainer.addChild(this.entities.player.sprite);
 
+    if (this.network) {
+      this.network.setClass(this.entities.player.characterClass);
+    }
+
     // Add health and stats UI
     this.healthUI = new HealthUI(this.entities.player);
     this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
     this.uiContainer.addChild(this.healthUI.container);
     this.uiContainer.addChild(this.statsUI.container);
 
-    this.systems.monsters = new MonsterSystem(this.systems.world);
+    if (!this.network) {
+      this.systems.monsters = new MonsterSystem(this.systems.world);
+    }
 
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
@@ -136,12 +149,14 @@ export class Game {
     const inputState = this.systems.input.update();
     this.entities.player.update(deltaTimeSeconds, inputState);
     
-    // 2. Update monster AI and intended movement
-    // MonsterSystem.update calls Monster.update, which changes monster.position
-    this.systems.monsters.update(deltaTimeSeconds, this.entities.player);
+    // 2. Update monster AI only when running locally
+    if (this.systems.monsters) {
+      this.systems.monsters.update(deltaTimeSeconds, this.entities.player);
+    }
 
     // 3. Collect all entities that need physics processing
-    const allEntitiesForPhysics = [this.entities.player, ...this.systems.monsters.monsters];
+    const monstersForPhysics = this.systems.monsters ? this.systems.monsters.monsters : [];
+    const allEntitiesForPhysics = [this.entities.player, ...monstersForPhysics];
     
     // 4. Apply physics (world boundaries and tile collisions) to all collected entities
     this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);
@@ -151,6 +166,13 @@ export class Game {
     this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
+
+    if (this.network) {
+      this.network.sendPlayerUpdate(this.entities.player);
+    }
+
+    // Update remote player animations
+    this.updateRemotePlayers(deltaTimeSeconds);
   }
 
   updateCamera() {
@@ -166,5 +188,140 @@ export class Game {
       Math.floor(this.app.screen.width / 2 - this.camera.x),
       Math.floor(this.app.screen.height / 2 - this.camera.y)
     );
+  }
+
+  // Multiplayer helpers
+  initMultiplayerWorld(data) {
+    // Replace local world with server-defined world using deterministic seed
+    if (this.systems.world) {
+      this.worldContainer.removeChildren();
+    }
+    this.systems.world = new WorldGenerator({
+      width: data.width,
+      height: data.height,
+      tileSize: data.tileSize,
+      tilesets: this.tilesets,
+      seed: data.seed
+    });
+    const worldView = this.systems.world.generate();
+    this.worldContainer.addChild(worldView);
+    console.log('Connected to multiplayer server', data);
+  }
+
+  addRemotePlayer(info) {
+    const p = new Player({
+      x: info.x,
+      y: info.y,
+      class: info.class,
+      combatSystem: this.systems.combat,
+      spriteManager: this.systems.sprites
+    });
+    p.id = info.id;
+    p.hitPoints = info.hp;
+    this.entityContainer.addChild(p.sprite);
+    if (!this.remotePlayers) this.remotePlayers = new Map();
+    this.remotePlayers.set(info.id, p);
+  }
+
+  updateRemotePlayer(info) {
+    if (!this.remotePlayers || !this.remotePlayers.has(info.id)) return;
+    const p = this.remotePlayers.get(info.id);
+    if (info.class && info.class !== p.characterClass) {
+      p.characterClass = info.class;
+      p.currentAnimation = null;
+      if (p.animatedSprite && p.animatedSprite.parent) {
+        p.sprite.removeChild(p.animatedSprite);
+        p.animatedSprite = null;
+      }
+      p.animation.setupAnimations();
+    }
+
+    const prevX = p.position.x;
+    const prevY = p.position.y;
+
+    p.lastFacing = p.facing;
+    p.position.x = info.x;
+    p.position.y = info.y;
+    p.facing = info.facing;
+    p.sprite.position.set(p.position.x, p.position.y);
+
+    const dx = info.x - prevX;
+    const dy = info.y - prevY;
+    p.isMoving = Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5;
+    if (p.isMoving) {
+      p.movementDirection = velocityToDirectionString(dx, dy);
+    } else {
+      p.movementDirection = null;
+    }
+
+    p.animation.update();
+    if (typeof info.hp === 'number') {
+      p.hitPoints = info.hp;
+      if (info.hp <= 0 && !p.isDead) {
+        p.health.die();
+      } else if (info.hp > 0 && p.isDead) {
+        p.health.respawn();
+      }
+    }
+  }
+
+  updateRemotePlayers(delta) {
+    if (!this.remotePlayers) return;
+    for (const p of this.remotePlayers.values()) {
+      p.animation.update();
+    }
+  }
+
+  updateLocalPlayerState(info) {
+    if (!this.entities.player) return;
+    this.entities.player.position.x = info.x;
+    this.entities.player.position.y = info.y;
+    this.entities.player.facing = info.facing;
+    if (typeof info.hp === 'number') {
+      this.entities.player.hitPoints = info.hp;
+      if (info.hp <= 0 && !this.entities.player.isDead) {
+        this.entities.player.health.die();
+      } else if (info.hp > 0 && this.entities.player.isDead) {
+        this.entities.player.health.respawn();
+      }
+    }
+    this.entities.player.sprite.position.set(info.x, info.y);
+  }
+
+  removeRemotePlayer(id) {
+    if (!this.remotePlayers || !this.remotePlayers.has(id)) return;
+    const p = this.remotePlayers.get(id);
+    if (p.sprite.parent) p.sprite.parent.removeChild(p.sprite);
+    this.remotePlayers.delete(id);
+  }
+
+  addOrUpdateMonster(info) {
+    if (!this.remoteMonsters) this.remoteMonsters = new Map();
+    let m = this.remoteMonsters.get(info.id);
+    if (!m) {
+      m = new Monster({ x: info.x, y: info.y, type: info.type });
+      this.entityContainer.addChild(m.sprite);
+      this.remoteMonsters.set(info.id, m);
+    }
+    m.position.x = info.x;
+    m.position.y = info.y;
+    m.hitPoints = info.hp;
+    m.sprite.position.set(m.position.x, m.position.y);
+    if (info.hp <= 0 && m.sprite.parent) {
+      m.sprite.parent.removeChild(m.sprite);
+      this.remoteMonsters.delete(info.id);
+    }
+  }
+
+  remotePlayerAttack(id, type, facing) {
+    if (!this.remotePlayers || !this.remotePlayers.has(id)) return;
+    const p = this.remotePlayers.get(id);
+    p.facing = facing || p.facing;
+    p.isAttacking = true;
+    p.attackHitFrameReached = false;
+    p.currentAttackType = type;
+    if (p.animation) {
+      p.animation.playAttackAnimation(type);
+    }
   }
 }

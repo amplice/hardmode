@@ -356,13 +356,12 @@ export class SpriteManager {
 }
 
 // Update getAnimationForMovement to handle different character classes
-getAnimationForMovement(facingDirection, movementDirection) {
-    // Get current character class from the entity this animation is for
-    const playerEntity = window.game?.entities?.player;
-    const characterClass = playerEntity?.characterClass || 'bladedancer'; // Default to bladedancer if no player
+getAnimationForMovement(facingDirection, movementDirection, characterClass) {
+    // Determine the character class for the animation
+    const cls = characterClass || window.game?.entities?.player?.characterClass || 'bladedancer';
     
     // Fetch spritePrefix from PLAYER_CONFIG
-    const classConfig = PLAYER_CONFIG.classes[characterClass];
+    const classConfig = PLAYER_CONFIG.classes[cls];
     const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight' if not found
 
     // Convert 8-way direction to the animation suffix (e, se, s, etc.)
@@ -426,13 +425,12 @@ getAnimationForMovement(facingDirection, movementDirection) {
     }
 }
     
-getAttackAnimation(facingDirection, attackType) {
-    // Get current character class
-    const playerEntity = window.game?.entities?.player;
-    const characterClass = playerEntity?.characterClass || 'bladedancer'; // Default to bladedancer
+getAttackAnimation(facingDirection, attackType, characterClass) {
+    // Determine the character class
+    const cls = characterClass || window.game?.entities?.player?.characterClass || 'bladedancer';
     
     // Fetch spritePrefix from PLAYER_CONFIG
-    const classConfig = PLAYER_CONFIG.classes[characterClass];
+    const classConfig = PLAYER_CONFIG.classes[cls];
     const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
 
     // Convert 8-way direction string to animation suffix
