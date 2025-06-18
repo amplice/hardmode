@@ -607,9 +607,31 @@ class HealthComponent extends Component {
         this.owner.isTakingDamage = false;
         this.owner.damageStunDuration = PLAYER_CONFIG.damage.stunDuration;
         this.owner.damageStunTimer = 0;
+        
+        // Initial spawn protection
+        this.owner.isInvulnerable = true;
+        this.owner.spawnProtectionTimer = 3.0;
     }
     
     update(deltaTime) {
+        // Process spawn protection timer
+        if (this.owner.spawnProtectionTimer > 0) {
+            this.owner.spawnProtectionTimer -= deltaTime;
+            if (this.owner.spawnProtectionTimer <= 0) {
+                this.owner.isInvulnerable = false;
+                this.owner.spawnProtectionTimer = 0;
+                // Remove yellow tint
+                if (this.owner.animatedSprite) {
+                    this.owner.animatedSprite.tint = 0xFFFFFF;
+                }
+            } else {
+                // Apply yellow tint during protection
+                if (this.owner.animatedSprite) {
+                    this.owner.animatedSprite.tint = 0xFFFF00;
+                }
+            }
+        }
+        
         // Process damage stun timer if active
         if (this.owner.isTakingDamage) {
             this.owner.damageStunTimer -= deltaTime;
@@ -686,6 +708,10 @@ class HealthComponent extends Component {
         this.owner.attackCooldown = 0;
         this.owner.currentAttackType = null;
         this.owner.attackHitFrameReached = false;
+        
+        // Add spawn protection
+        this.owner.isInvulnerable = true;
+        this.owner.spawnProtectionTimer = 3.0; // 3 seconds of protection
         
         // Reset animation to idle and clear any death animation
         this.owner.currentAnimation = null;

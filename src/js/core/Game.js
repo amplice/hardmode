@@ -295,6 +295,16 @@ export class Game {
         p.health.respawn();
       }
     }
+    
+    // Update spawn protection status for remote players
+    if (info.spawnProtectionTimer !== undefined) {
+      p.spawnProtectionTimer = info.spawnProtectionTimer;
+      if (p.spawnProtectionTimer > 0 && p.animatedSprite) {
+        p.animatedSprite.tint = 0xFFFF00; // Yellow tint
+      } else if (p.animatedSprite) {
+        p.animatedSprite.tint = 0xFFFFFF; // Normal tint
+      }
+    }
   }
 
   updateRemotePlayers(delta) {
@@ -377,6 +387,11 @@ export class Game {
     p.currentAttackType = type;
     if (p.animation) {
       p.animation.playAttackAnimation(type);
+    }
+    
+    // Also trigger combat system effects for remote player attacks
+    if (this.systems.combat) {
+      this.systems.combat.executeAttack(p, type);
     }
   }
 }

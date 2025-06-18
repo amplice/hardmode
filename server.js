@@ -56,23 +56,28 @@ const WORLD = {
 const MONSTER_STATS = {
     ogre: { 
         hp: 4, moveSpeed: 2, damage: 1, attackRange: 90, 
-        aggroRange: 800, xp: 20, attackCooldown: 2000, collisionRadius: 35 
+        aggroRange: 800, xp: 20, attackCooldown: 2500, collisionRadius: 35,
+        attackDelay: 300 // ms delay before damage is applied
     },
     skeleton: { 
         hp: 2, moveSpeed: 2.5, damage: 1, attackRange: 70, 
-        aggroRange: 1200, xp: 5, attackCooldown: 1500, collisionRadius: 15 
+        aggroRange: 1200, xp: 5, attackCooldown: 1800, collisionRadius: 15,
+        attackDelay: 250
     },
     elemental: { 
         hp: 3, moveSpeed: 2, damage: 2, attackRange: 100, 
-        aggroRange: 800, xp: 10, attackCooldown: 2000, collisionRadius: 15 
+        aggroRange: 800, xp: 10, attackCooldown: 3000, collisionRadius: 15,
+        attackDelay: 400
     },
     ghoul: { 
         hp: 2, moveSpeed: 3.5, damage: 1, attackRange: 70, 
-        aggroRange: 3000, xp: 15, attackCooldown: 1000, collisionRadius: 10 
+        aggroRange: 3000, xp: 15, attackCooldown: 1200, collisionRadius: 10,
+        attackDelay: 200
     },
     wildarcher: { 
         hp: 1, moveSpeed: 3, damage: 1, attackRange: 500, 
-        aggroRange: 1500, xp: 10, attackCooldown: 2500, collisionRadius: 15 
+        aggroRange: 1500, xp: 10, attackCooldown: 3000, collisionRadius: 15,
+        attackDelay: 350
     }
 };
 
@@ -126,7 +131,9 @@ function createPlayer(id, options = {}) {
         xp: 0,
         level: 1,
         kills: 0,
-        respawnTimer: 0
+        respawnTimer: 0,
+        spawnProtectionTimer: 3.0, // 3 seconds of invulnerability
+        invulnerable: true
     };
 }
 
@@ -307,29 +314,40 @@ function handleAttackingState(monster, stats) {
     // Attack if cooldown ready
     const now = Date.now();
     if (now - monster.lastAttack >= stats.attackCooldown) {
-        // Apply damage to player
-        if (!target.invulnerable) {
-            target.hp = Math.max(0, target.hp - stats.damage);
-            monster.lastAttack = now;
+        monster.lastAttack = now;
+        
+        // Delay damage application to match animation timing
+        setTimeout(() => {
+            // Re-check if target is still valid and in range
+            const currentTarget = players.get(monster.target);
+            if (!currentTarget || currentTarget.hp <= 0) return;
             
-            console.log(`${monster.type} attacks ${target.id} for ${stats.damage} damage (${target.hp}/${target.maxHp} HP)`);
+            const currentDistance = getDistance(monster, currentTarget);
+            if (currentDistance > stats.attackRange * 1.2) return;
             
-            // Notify clients of damage
-            io.emit('playerDamaged', {
-                playerId: monster.target,
-                damage: stats.damage,
-                hp: target.hp,
-                source: `${monster.type}_${monster.id}`
-            });
-            
-            if (target.hp <= 0) {
-                console.log(`Player ${target.id} killed by ${monster.type}`);
-                io.emit('playerKilled', {
+            // Apply damage to player (check invulnerability)
+            if (!currentTarget.invulnerable) {
+                currentTarget.hp = Math.max(0, currentTarget.hp - stats.damage);
+                
+                console.log(`${monster.type} attacks ${currentTarget.id} for ${stats.damage} damage (${currentTarget.hp}/${currentTarget.maxHp} HP)`);
+                
+                // Notify clients of damage
+                io.emit('playerDamaged', {
                     playerId: monster.target,
-                    killedBy: monster.type
+                    damage: stats.damage,
+                    hp: currentTarget.hp,
+                    source: `${monster.type}_${monster.id}`
                 });
+                
+                if (currentTarget.hp <= 0) {
+                    console.log(`Player ${currentTarget.id} killed by ${monster.type}`);
+                    io.emit('playerKilled', {
+                        playerId: monster.target,
+                        killedBy: monster.type
+                    });
+                }
             }
-        }
+        }, stats.attackDelay);
     }
 }
 
@@ -478,6 +496,17 @@ io.on('connection', socket => {
 setInterval(() => {
     updateMonsters(1 / TICK_RATE);
 
+    // Update player spawn protection
+    for (const p of players.values()) {
+        if (p.spawnProtectionTimer > 0) {
+            p.spawnProtectionTimer -= 1 / TICK_RATE;
+            if (p.spawnProtectionTimer <= 0) {
+                p.invulnerable = false;
+                p.spawnProtectionTimer = 0;
+            }
+        }
+    }
+
     // Respawn dead players
     for (const p of players.values()) {
         if (p.hp <= 0) {
@@ -487,7 +516,9 @@ setInterval(() => {
                 p.x = WORLD.width * WORLD.tileSize / 2;
                 p.y = WORLD.height * WORLD.tileSize / 2;
                 p.respawnTimer = 0;
-                console.log(`Player ${p.id} respawned with ${p.hp}/${p.maxHp} HP`);
+                p.spawnProtectionTimer = 3.0; // Reset spawn protection
+                p.invulnerable = true;
+                console.log(`Player ${p.id} respawned with ${p.hp}/${p.maxHp} HP and spawn protection`);
             }
         }
     }
@@ -526,7 +557,10 @@ setInterval(() => {
     }));
     
     const state = {
-        players: Array.from(players.values()),
+        players: Array.from(players.values()).map(p => ({
+            ...p,
+            spawnProtectionTimer: p.spawnProtectionTimer || 0
+        })),
         monsters: monsterData
     };
     io.emit('state', state);
