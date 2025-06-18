@@ -92,10 +92,8 @@ export class TilesetManager {
   }
   
   getFullWaterTile() {
-    // Choose from one of the full water tiles
-    const options = [6, 13, 14]; // Indices in the 5x3 grid
-    const index = options[Math.floor(Math.random() * options.length)];
-    return this.textures.water[index];
+    // Use a consistent tile for determinism in multiplayer
+    return this.textures.water[6];
   }
   
   // Transition tile getters
