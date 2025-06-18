@@ -47,7 +47,7 @@ export class DebugLogger {
                 id: 'local',
                 class: p.characterClass,
                 pos: { x: Math.round(p.position.x), y: Math.round(p.position.y) },
-                hp: `${p.hitPoints}/${p.maxHitPoints}`,
+                hp: `${p.hitPoints || 0}/${p.maxHitPoints || 100}`,
                 state: this.getPlayerState(p),
                 facing: p.facing,
                 velocity: { x: p.velocity?.x || 0, y: p.velocity?.y || 0 }
@@ -61,7 +61,7 @@ export class DebugLogger {
                     id: id,
                     class: p.characterClass,
                     pos: { x: Math.round(p.position.x), y: Math.round(p.position.y) },
-                    hp: `${p.hitPoints}/${p.maxHitPoints}`,
+                    hp: `${p.hitPoints || 0}/${p.maxHitPoints || 100}`,
                     state: this.getPlayerState(p),
                     facing: p.facing,
                     velocity: { x: p.velocity?.x || 0, y: p.velocity?.y || 0 }
@@ -75,29 +75,16 @@ export class DebugLogger {
     captureMonsterStates(game) {
         const monsters = [];
         
-        if (game.systems.monsters?.monsters) {
-            game.systems.monsters.monsters.forEach((m, i) => {
-                if (m.alive) {
-                    monsters.push({
-                        type: m.type,
-                        id: i,
-                        pos: { x: Math.round(m.position.x), y: Math.round(m.position.y) },
-                        hp: `${m.hitPoints}/${m.maxHitPoints}`,
-                        state: m.state || 'idle',
-                        target: m.target ? 'player' : 'none'
-                    });
-                }
-            });
-        }
-        
+        // Only server-controlled monsters now
         if (game.remoteMonsters) {
             for (const [id, m] of game.remoteMonsters) {
                 monsters.push({
                     type: m.type,
                     id: id,
                     pos: { x: Math.round(m.position.x), y: Math.round(m.position.y) },
-                    hp: `${m.hitPoints}/${m.maxHitPoints}`,
-                    state: 'remote'
+                    hp: `${m.hitPoints || 0}/${m.maxHitPoints || 1}`,
+                    state: m.state || 'idle',
+                    target: m.target || 'none'
                 });
             }
         }
@@ -151,20 +138,13 @@ export class DebugLogger {
             }
         };
         
-        // Place monsters
-        if (game.systems.monsters?.monsters) {
-            game.systems.monsters.monsters.forEach(m => {
+        // Place server-controlled monsters
+        if (game.remoteMonsters) {
+            for (const m of game.remoteMonsters.values()) {
                 if (m.alive) {
                     const char = m.type[0].toUpperCase(); // O for Ogre, S for Skeleton, etc
                     placeEntity(m.position.x, m.position.y, char);
                 }
-            });
-        }
-        
-        // Place remote monsters
-        if (game.remoteMonsters) {
-            for (const m of game.remoteMonsters.values()) {
-                placeEntity(m.position.x, m.position.y, m.type[0].toLowerCase());
             }
         }
         

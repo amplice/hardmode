@@ -139,13 +139,18 @@ export class CombatSystem {
             continue;
         }
         projectile.update(deltaTime);
-        // Only check monster collisions if monsters system exists (single-player mode)
-        if (window.game.systems.monsters) {
-            const monsters = window.game.systems.monsters.monsters;
-            for (const monster of monsters) {
+        // Check collision with server-controlled monsters
+        if (window.game.remoteMonsters) {
+            for (const [id, monster] of window.game.remoteMonsters) {
                 if (!monster.alive) continue;
                 if (projectile.checkCollision(monster)) {
-                    monster.takeDamage(projectile.damage, projectile.owner);
+                    // Send damage to server
+                    if (window.game.network) {
+                        window.game.network.sendMonsterDamage(id, projectile.damage, 'projectile');
+                    }
+                    
+                    // Show immediate visual feedback
+                    monster.showDamageEffect();
                     projectile.deactivate();
                     break;
                 }
@@ -532,12 +537,18 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     }
     
     // Check monster collisions (PvE always enabled)
-    if (window.game.systems.monsters) {
-      const monsters = window.game.systems.monsters.monsters;
-      for (const monster of monsters) {
+    // Now using server-controlled monsters
+    if (window.game.remoteMonsters) {
+      for (const [id, monster] of window.game.remoteMonsters) {
         if (!monster.alive) continue;
-        if (hitbox.testHit(monster, monster.collisionRadius || 0)) {
-          monster.takeDamage(damage, entity);
+        if (hitbox.testHit(monster, monster.collisionRadius || 20)) {
+          // Send damage to server instead of applying directly
+          if (window.game.network) {
+            window.game.network.sendMonsterDamage(id, damage, entity.currentAttackType || 'primary');
+          }
+          
+          // Show immediate visual feedback
+          monster.showDamageEffect();
         }
       }
     }

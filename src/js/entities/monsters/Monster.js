@@ -10,27 +10,25 @@ import { bfsPath, hasLineOfSight } from '../../utils/Pathfinding.js';
 export class Monster {
     constructor(options) {
         // Basic properties
+        this.id = options.id;
         this.position = { x: options.x, y: options.y };
-        this.velocity = { x: 0, y: 0 };
         this.type = options.type || 'skeleton';
-        this.facing = 'down';
+        this.facing = options.facing || 'down';
+        this.state = options.state || 'idle';
         this.alive = true;
+        
+        // Network sync properties
+        this.targetPosition = { x: options.x, y: options.y };
+        this.interpolationSpeed = 0.2;
         
         // Get stats from config
         const stats = MONSTER_CONFIG.stats[this.type];
-        this.hitPoints = stats.hitPoints;
+        this.hitPoints = options.hp || stats.hitPoints;
+        this.maxHitPoints = options.maxHp || stats.hitPoints;
         this.moveSpeed = stats.moveSpeed;
         this.attackRange = stats.attackRange;
         this.collisionRadius = stats.collisionRadius;
         this.aggroRange = stats.aggroRange;
-        
-        // State management
-        this.state = 'idle'; // idle, walking, attacking, stunned, dying
-        this.previousState = 'idle'; // Used for state transitions
-        this.target = null;
-        this.attackCooldown = 0;
-        this.path = [];
-        this.pathCooldown = 0;
         
         // Animation state
         this.currentAnimation = null;
@@ -41,10 +39,6 @@ export class Monster {
         
         // Get sprite manager
         this.spriteManager = window.game.systems.sprites;
-        
-        // Create attack indicator
-        this.attackIndicator = new PIXI.Graphics();
-        this.sprite.addChild(this.attackIndicator);
         
         // Initialize animation
         this.setupAnimation();
@@ -76,6 +70,7 @@ export class Monster {
         
         switch (this.state) {
             case 'walking':
+            case 'chasing':
                 animState = 'walk';
                 break;
             case 'attacking':
@@ -244,7 +239,56 @@ export class Monster {
         }
     }
     
-    update(deltaTime, player, world) {
+    update(deltaTime = 0) {
+        // Don't do any updates if dead
+        if (!this.alive) return;
+        
+        // Smooth interpolation to target position (for network sync)
+        this.position.x += (this.targetPosition.x - this.position.x) * this.interpolationSpeed;
+        this.position.y += (this.targetPosition.y - this.position.y) * this.interpolationSpeed;
+        
+        // Update sprite position
+        this.sprite.position.set(this.position.x, this.position.y);
+        
+        // Update animation based on current state if needed
+        this.updateAnimation();
+    }
+    
+    updateFromServer(data) {
+        // Update target position for smooth interpolation
+        this.targetPosition.x = data.x;
+        this.targetPosition.y = data.y;
+        
+        // Update state
+        this.hitPoints = data.hp;
+        this.maxHitPoints = data.maxHp;
+        this.state = data.state;
+        this.facing = data.facing;
+        
+        // Update animation based on new state
+        this.updateAnimation();
+    }
+    
+    showDamageEffect() {
+        // Flash red to indicate damage
+        if (this.animatedSprite) {
+            this.animatedSprite.tint = 0xFF0000;
+            setTimeout(() => {
+                if (this.animatedSprite) {
+                    this.animatedSprite.tint = 0xFFFFFF;
+                }
+            }, 200);
+        }
+    }
+    
+    playDeathAnimation() {
+        // Switch to death animation
+        this.state = 'dying';
+        this.updateAnimation();
+    }
+    
+    // Legacy update method for local AI (no longer used in multiplayer)
+    updateLocal(deltaTime, player, world) {
         // Don't do any updates if dead
         if (!this.alive) return;
         

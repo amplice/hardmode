@@ -440,7 +440,12 @@ class AnimationComponent extends Component {
                 this.owner.sprite.addChild(this.owner.animatedSprite);
                 
                 // Set up animation complete callback for respawn
-                this.owner.animatedSprite.onComplete = () => this.owner.health.respawn();
+                this.owner.animatedSprite.onComplete = () => {
+                    // Only respawn if still dead to prevent loops
+                    if (this.owner.isDead) {
+                        this.owner.health.respawn();
+                    }
+                };
             }
         } else {
             // If no sprite manager, just respawn immediately
@@ -640,6 +645,11 @@ class HealthComponent extends Component {
       }
     
     die() {
+        // Prevent multiple death triggers
+        if (this.owner.isDying || this.owner.isDead) {
+            return;
+        }
+        
         console.log("Player died!");
         this.owner.isDying = true;
         this.owner.isDead = true;
@@ -649,10 +659,16 @@ class HealthComponent extends Component {
     }
     
     respawn() {
+        // Prevent multiple respawn calls
+        if (!this.owner.isDead) {
+            return;
+        }
+        
         console.log("Player respawning!");
         
-        // Reset health
-        this.owner.hitPoints = this.getClassHitPoints();
+        // Reset health to correct values
+        this.owner.maxHitPoints = this.getClassHitPoints();
+        this.owner.hitPoints = this.owner.maxHitPoints;
         
         // Reset position to center of map
         this.owner.position.x = window.game.systems.world.width / 2 * window.game.systems.world.tileSize;
@@ -724,7 +740,7 @@ class StatsComponent extends Component {
             leveledUp = true;
             this.applyLevelBonus(this.owner.level);
             // Restore health to full on level up
-            this.owner.hitPoints = this.owner.getClassHitPoints();
+            this.owner.hitPoints = this.owner.health.getClassHitPoints();
         }
 
         if (leveledUp && this.owner.playLevelUpEffect) {

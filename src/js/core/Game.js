@@ -134,9 +134,10 @@ export class Game {
     this.uiContainer.addChild(this.healthUI.container);
     this.uiContainer.addChild(this.statsUI.container);
 
-    if (!this.network) {
-      this.systems.monsters = new MonsterSystem(this.systems.world);
-    }
+    // Monsters are now always handled by server
+    // if (!this.network) {
+    //   this.systems.monsters = new MonsterSystem(this.systems.world);
+    // }
 
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
@@ -178,14 +179,10 @@ export class Game {
       }
     }
     
-    // 2. Update monster AI only when running locally
-    if (this.systems.monsters) {
-      this.systems.monsters.update(deltaTimeSeconds, this.entities.player);
-    }
-
-    // 3. Collect all entities that need physics processing
-    const monstersForPhysics = this.systems.monsters ? this.systems.monsters.monsters : [];
-    const allEntitiesForPhysics = [this.entities.player, ...monstersForPhysics];
+    // 2. Monsters are now handled by server
+    
+    // 3. Only physics for player now (monsters handled server-side)
+    const allEntitiesForPhysics = [this.entities.player];
     
     // 4. Apply physics (world boundaries and tile collisions) to all collected entities
     this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);
@@ -202,6 +199,9 @@ export class Game {
 
     // Update remote player animations
     this.updateRemotePlayers(deltaTimeSeconds);
+    
+    // Update remote monsters
+    this.updateRemoteMonsters(deltaTimeSeconds);
     
     // Capture debug state every frame
     this.debugLogger.captureGameState(this);
@@ -304,6 +304,13 @@ export class Game {
     }
   }
 
+  updateRemoteMonsters(delta) {
+    if (!this.remoteMonsters) return;
+    for (const monster of this.remoteMonsters.values()) {
+      monster.update(delta);
+    }
+  }
+
   updateLocalPlayerState(info) {
     if (!this.entities.player) return;
     this.entities.player.position.x = info.x;
@@ -329,19 +336,35 @@ export class Game {
 
   addOrUpdateMonster(info) {
     if (!this.remoteMonsters) this.remoteMonsters = new Map();
-    let m = this.remoteMonsters.get(info.id);
-    if (!m) {
-      m = new Monster({ x: info.x, y: info.y, type: info.type });
-      this.entityContainer.addChild(m.sprite);
-      this.remoteMonsters.set(info.id, m);
+    let monster = this.remoteMonsters.get(info.id);
+    
+    if (!monster) {
+      // Create new monster
+      monster = new Monster({
+        id: info.id,
+        x: info.x,
+        y: info.y,
+        type: info.type,
+        hp: info.hp,
+        maxHp: info.maxHp
+      });
+      this.entityContainer.addChild(monster.sprite);
+      this.remoteMonsters.set(info.id, monster);
+      console.log(`Created new ${info.type} monster with ID ${info.id}`);
     }
-    m.position.x = info.x;
-    m.position.y = info.y;
-    m.hitPoints = info.hp;
-    m.sprite.position.set(m.position.x, m.position.y);
-    if (info.hp <= 0 && m.sprite.parent) {
-      m.sprite.parent.removeChild(m.sprite);
-      this.remoteMonsters.delete(info.id);
+    
+    // Update monster state from server
+    monster.updateFromServer(info);
+    
+    // Remove dead/dying monsters after animation
+    if (info.state === 'dying' || info.hp <= 0) {
+      setTimeout(() => {
+        if (monster.sprite.parent) {
+          monster.sprite.parent.removeChild(monster.sprite);
+        }
+        this.remoteMonsters.delete(info.id);
+        console.log(`Removed ${info.type} monster with ID ${info.id}`);
+      }, 1000); // Wait for death animation
     }
   }
 

@@ -55,6 +55,95 @@ export class NetworkClient {
                 this.game.remotePlayerAttack(data.id, data.type, data.facing);
             }
         });
+
+        // Monster events
+        this.socket.on('monsterDamaged', (data) => {
+            const monster = this.game.remoteMonsters?.get(data.monsterId);
+            if (monster) {
+                monster.hp = data.hp;
+                monster.showDamageEffect?.();
+                
+                // Show damage number if we attacked it
+                if (data.attacker === this.socket.id) {
+                    this.game.showDamageNumber?.(monster.position, data.damage);
+                }
+            }
+        });
+
+        this.socket.on('monsterKilled', (data) => {
+            const monster = this.game.remoteMonsters?.get(data.monsterId);
+            if (monster) {
+                monster.playDeathAnimation?.();
+                
+                // Show XP gain if we killed it
+                if (data.killedBy === this.socket.id) {
+                    this.game.showXpGain?.(monster.position, data.xpReward);
+                    // Update local player XP display
+                    if (this.game.entities.player) {
+                        this.game.entities.player.experience = data.killerXp;
+                        this.game.entities.player.level = data.killerLevel;
+                    }
+                }
+            }
+        });
+
+        this.socket.on('playerDamaged', (data) => {
+            if (data.playerId === this.socket.id) {
+                // We took damage - sync HP and show damage effects
+                if (this.game.entities.player) {
+                    this.game.entities.player.hitPoints = data.hp;
+                    // Show damage effects without applying damage again
+                    this.game.entities.player.isTakingDamage = true;
+                    this.game.entities.player.damageStunTimer = this.game.entities.player.damageStunDuration;
+                    this.game.entities.player.animation.playDamageAnimation();
+                }
+            } else {
+                // Another player took damage
+                const remotePlayer = this.game.remotePlayers?.get(data.playerId);
+                if (remotePlayer) {
+                    remotePlayer.hitPoints = data.hp;
+                    remotePlayer.showDamageEffect?.();
+                }
+            }
+        });
+
+        this.socket.on('playerKilled', (data) => {
+            if (data.playerId === this.socket.id) {
+                // We died
+                console.log(`You were killed by ${data.killedBy}!`);
+                if (this.game.entities.player) {
+                    this.game.entities.player.health.die();
+                }
+            } else {
+                // Another player died
+                const remotePlayer = this.game.remotePlayers?.get(data.playerId);
+                if (remotePlayer) {
+                    remotePlayer.health?.die();
+                }
+            }
+        });
+
+        this.socket.on('playerLevelUp', (data) => {
+            if (data.playerId === this.socket.id) {
+                // We leveled up
+                console.log(`Level up! You are now level ${data.level}`);
+                if (this.game.entities.player) {
+                    this.game.entities.player.level = data.level;
+                    this.game.entities.player.hitPoints = data.hp;
+                }
+            }
+        });
+    }
+
+    sendMonsterDamage(monsterId, damage, attackType) {
+        if (this.socket && this.socket.connected) {
+            this.socket.emit('attackMonster', {
+                monsterId,
+                damage,
+                attackType,
+                timestamp: Date.now()
+            });
+        }
     }
 
     sendPlayerUpdate(player) {
