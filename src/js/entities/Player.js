@@ -175,7 +175,9 @@ class AnimationComponent extends Component {
             
             // Get appropriate animation based on state
             const animationName = this.owner.spriteManager.getAnimationForMovement(
-                this.owner.facing, this.owner.movementDirection
+                this.owner.facing,
+                this.owner.movementDirection,
+                this.owner.characterClass
             );
             
             if (animationName && (facingChanged || this.owner.currentAnimation !== animationName)) {
@@ -196,7 +198,11 @@ class AnimationComponent extends Component {
         }
         
         // Create idle animation for current facing direction
-        const animationName = this.owner.spriteManager.getAnimationForMovement(this.owner.facing, null);
+        const animationName = this.owner.spriteManager.getAnimationForMovement(
+            this.owner.facing,
+            null,
+            this.owner.characterClass
+        );
         this.owner.currentAnimation = animationName;
         
         this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(animationName);
@@ -332,7 +338,11 @@ class AnimationComponent extends Component {
         }
         
         // Regular attack animation handling
-        const attackAnimName = this.owner.spriteManager.getAttackAnimation(this.owner.facing, attackType);
+        const attackAnimName = this.owner.spriteManager.getAttackAnimation(
+            this.owner.facing,
+            attackType,
+            this.owner.characterClass
+        );
         this.owner.currentAnimation = attackAnimName;
         
         // Remove old sprite and create new attack animation
