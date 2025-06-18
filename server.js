@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const server = http.createServer(app);
@@ -12,6 +13,28 @@ const PORT = process.env.PORT || 3000;
 // Serve client files
 app.use(express.static(path.join(__dirname, 'src')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
+app.use(express.json({ limit: '10mb' })); // Allow larger debug dumps
+
+// Debug logging endpoint
+app.post('/debug-log', (req, res) => {
+    const { filename, content } = req.body;
+    if (!filename || !content) {
+        return res.status(400).json({ error: 'Missing filename or content' });
+    }
+    
+    // Sanitize filename
+    const safeFilename = filename.replace(/[^a-zA-Z0-9\-_.]/g, '');
+    const filepath = path.join(__dirname, 'debug-logs', safeFilename);
+    
+    fs.writeFile(filepath, content, (err) => {
+        if (err) {
+            console.error('Error saving debug log:', err);
+            return res.status(500).json({ error: 'Failed to save debug log' });
+        }
+        console.log(`Debug log saved: ${safeFilename}`);
+        res.json({ success: true, filename: safeFilename });
+    });
+});
 
 const TICK_RATE = 30; // updates per second
 const players = new Map(); // id -> player state

@@ -139,13 +139,16 @@ export class CombatSystem {
             continue;
         }
         projectile.update(deltaTime);
-        const monsters = window.game.systems.monsters.monsters; // Consider passing monsters or using an event system
-        for (const monster of monsters) {
-            if (!monster.alive) continue;
-            if (projectile.checkCollision(monster)) {
-                monster.takeDamage(projectile.damage, projectile.owner);
-                projectile.deactivate();
-                break;
+        // Only check monster collisions if monsters system exists (single-player mode)
+        if (window.game.systems.monsters) {
+            const monsters = window.game.systems.monsters.monsters;
+            for (const monster of monsters) {
+                if (!monster.alive) continue;
+                if (projectile.checkCollision(monster)) {
+                    monster.takeDamage(projectile.damage, projectile.owner);
+                    projectile.deactivate();
+                    break;
+                }
             }
         }
     }
@@ -380,13 +383,10 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
         const animateJumpFrame = (timestamp) => {
             const elapsed = timestamp - jumpStartTime;
             const progress = Math.min(elapsed / jumpDuration, 1);
-            if (!entity.isAttacking || entity.currentAttackType !== attackType || progress >= 1) {
+            if (progress >= 1) {
                 entity.position.x = destination.x;
                 entity.position.y = destination.y;
                 entity.sprite.position.set(destination.x, destination.y);
-                if ((!entity.isAttacking || entity.currentAttackType !== attackType) && isInvulnerableDuringJump) {
-                    entity.isInvulnerable = false;
-                }
                 return;
             }
             entity.position.x = startPosition.x + (destination.x - startPosition.x) * progress;
@@ -464,7 +464,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
       const animateDashFrame = (timestamp) => {
         const elapsed = timestamp - dashStartTime;
         const progress = Math.min(elapsed / dashDuration, 1);
-        if (!entity.isAttacking || entity.currentAttackType !== attackType || progress >= 1) {
+        if (progress >= 1) {
           entity.position.x = destination.x;
           entity.position.y = destination.y;
           entity.sprite.position.set(destination.x, destination.y);
@@ -509,11 +509,36 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
   
   applyHitEffects(entity, hitbox, damage) {
     if (!hitbox) return;
-    const monsters = window.game.systems.monsters.monsters; // Consider alternative
-    for (const monster of monsters) {
-      if (!monster.alive) continue;
-      if (hitbox.testHit(monster, monster.collisionRadius || 0)) {
-        monster.takeDamage(damage, entity);
+    
+    // Check PvP damage against other players
+    if (PLAYER_CONFIG.pvpEnabled) {
+      // Check local player
+      if (window.game.entities.player && window.game.entities.player !== entity) {
+        const player = window.game.entities.player;
+        if (hitbox.testHit(player, 20)) { // Player collision radius
+          player.takeDamage(damage);
+        }
+      }
+      
+      // Check remote players
+      if (window.game.remotePlayers) {
+        for (const remotePlayer of window.game.remotePlayers.values()) {
+          if (remotePlayer !== entity && hitbox.testHit(remotePlayer, 20)) {
+            // For now, just log it - actual damage will be handled server-side later
+            console.log(`Would damage remote player ${remotePlayer.id} for ${damage} (PvP disabled)`);
+          }
+        }
+      }
+    }
+    
+    // Check monster collisions (PvE always enabled)
+    if (window.game.systems.monsters) {
+      const monsters = window.game.systems.monsters.monsters;
+      for (const monster of monsters) {
+        if (!monster.alive) continue;
+        if (hitbox.testHit(monster, monster.collisionRadius || 0)) {
+          monster.takeDamage(damage, entity);
+        }
       }
     }
   }

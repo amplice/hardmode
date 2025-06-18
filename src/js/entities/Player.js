@@ -331,8 +331,8 @@ class AnimationComponent extends Component {
             this.owner.animatedSprite.play();
             this.owner.sprite.addChild(this.owner.animatedSprite);
             
-            // Note: We don't set the onComplete callback for the Guardian's jump attack
-            // since the CombatSystem is handling the attack sequence and ending itself
+            // Set up animation complete callback
+            this.owner.animatedSprite.onComplete = () => this.onAnimationComplete();
           }
           return;
         }
@@ -502,6 +502,16 @@ class CombatComponent extends Component {
       this.owner.attackHitFrameReached = false;
       this.owner.currentAttackType = 'primary';
       
+      // Log attack event
+      if (window.game?.debugLogger) {
+        window.game.debugLogger.logEvent('playerAttack', {
+          type: 'primary',
+          class: this.owner.characterClass,
+          position: this.owner.position,
+          facing: this.owner.facing
+        });
+      }
+      
       // Play attack animation
       this.owner.animation.playAttackAnimation('primary');
       
@@ -520,6 +530,16 @@ class CombatComponent extends Component {
       this.owner.isAttacking = true;
       this.owner.attackHitFrameReached = false;
       this.owner.currentAttackType = 'secondary';
+      
+      // Log attack event
+      if (window.game?.debugLogger) {
+        window.game.debugLogger.logEvent('playerAttack', {
+          type: 'secondary',
+          class: this.owner.characterClass,
+          position: this.owner.position,
+          facing: this.owner.facing
+        });
+      }
       
       // Play attack animation
       this.owner.animation.playAttackAnimation('secondary');

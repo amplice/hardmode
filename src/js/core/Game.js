@@ -14,6 +14,7 @@ import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 import { NetworkClient } from '../net/NetworkClient.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
+import { DebugLogger } from '../debug/DebugLogger.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
@@ -67,6 +68,10 @@ export class Game {
     
     // Flag to track game state
     this.gameStarted = false;
+    
+    // Initialize debug logger
+    this.debugLogger = new DebugLogger();
+    this.debugLogger.setupConsoleCommands();
   }
 
   async loadAndInit() {
@@ -147,7 +152,31 @@ export class Game {
 
     // 1. Update player input and intended movement
     const inputState = this.systems.input.update();
+    const prevPlayerState = this.entities.player.isAttacking ? 'attacking' : 'idle';
+    const prevPlayerHP = this.entities.player.hitPoints;
     this.entities.player.update(deltaTimeSeconds, inputState);
+    
+    // Log player state changes
+    if (prevPlayerState !== (this.entities.player.isAttacking ? 'attacking' : 'idle')) {
+      this.debugLogger.logEvent('playerStateChange', { 
+        from: prevPlayerState, 
+        to: this.entities.player.isAttacking ? 'attacking' : 'idle',
+        attackType: this.entities.player.currentAttackType
+      });
+    }
+    if (prevPlayerHP !== this.entities.player.hitPoints) {
+      this.debugLogger.logEvent('playerDamage', { 
+        from: prevPlayerHP, 
+        to: this.entities.player.hitPoints,
+        damage: prevPlayerHP - this.entities.player.hitPoints
+      });
+      if (this.entities.player.hitPoints <= 0) {
+        this.debugLogger.logEvent('playerDeath', { 
+          class: this.entities.player.characterClass,
+          position: this.entities.player.position
+        });
+      }
+    }
     
     // 2. Update monster AI only when running locally
     if (this.systems.monsters) {
@@ -173,6 +202,9 @@ export class Game {
 
     // Update remote player animations
     this.updateRemotePlayers(deltaTimeSeconds);
+    
+    // Capture debug state every frame
+    this.debugLogger.captureGameState(this);
   }
 
   updateCamera() {
