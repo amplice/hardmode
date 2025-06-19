@@ -348,6 +348,26 @@ function handleAttackingState(monster, stats) {
                 }
             }
         }, stats.attackDelay);
+        
+        // Transition back to chasing/idle after attack animation completes
+        setTimeout(() => {
+            if (monster.state === 'attacking') {
+                // Check if still in range to continue attacking, otherwise chase
+                const currentTarget = players.get(monster.target);
+                if (currentTarget && currentTarget.hp > 0) {
+                    const currentDistance = getDistance(monster, currentTarget);
+                    if (currentDistance <= stats.attackRange) {
+                        // Still in range but wait for next attack cooldown
+                        monster.state = 'chasing'; // Will check attack range again next frame
+                    } else {
+                        monster.state = 'chasing'; // Target moved away
+                    }
+                } else {
+                    monster.state = 'idle'; // No valid target
+                    monster.target = null;
+                }
+            }
+        }, stats.attackDelay + 100); // Slightly after damage for animation completion
     }
 }
 

@@ -235,6 +235,21 @@ class AnimationComponent extends Component {
             
             // Set up frame change callback
             this.owner.animatedSprite.onFrameChange = () => {};
+            
+            // Reapply current tints
+            this.applyCurrentTints();
+        }
+    }
+    
+    // Helper function to apply tints to the current sprite
+    applyCurrentTints() {
+        if (!this.owner.animatedSprite) return;
+        
+        // Apply spawn protection tint
+        if (this.owner.spawnProtectionTimer > 0) {
+            this.owner.animatedSprite.tint = 0xFFFF00; // Yellow
+        } else {
+            this.owner.animatedSprite.tint = 0xFFFFFF; // Normal
         }
     }
     
@@ -309,6 +324,7 @@ class AnimationComponent extends Component {
             this.owner.sprite.addChild(this.owner.animatedSprite);
 
             this.owner.animatedSprite.onComplete = () => this.onAnimationComplete();
+            this.applyCurrentTints();
           }
           return;
         }
@@ -333,6 +349,7 @@ class AnimationComponent extends Component {
             
             // Set up animation complete callback
             this.owner.animatedSprite.onComplete = () => this.onAnimationComplete();
+            this.applyCurrentTints();
           }
           return;
         }
@@ -359,6 +376,7 @@ class AnimationComponent extends Component {
             
             // Set up animation complete callback
             this.owner.animatedSprite.onComplete = () => this.onAnimationComplete();
+            this.applyCurrentTints();
         }
     }
     
@@ -389,10 +407,8 @@ class AnimationComponent extends Component {
                 
                 // Set up animation complete callback
                 this.owner.animatedSprite.onComplete = () => {
-                    // Reset tint after animation completes
-                    if (this.owner.animatedSprite) {
-                        this.owner.animatedSprite.tint = 0xFFFFFF;
-                    }
+                    // Reapply appropriate tints after damage animation
+                    this.applyCurrentTints();
                     
                     // If the stun duration is longer than the animation,
                     // let the stun timer handle the state reset
@@ -451,6 +467,7 @@ class AnimationComponent extends Component {
                         this.owner.animatedSprite.gotoAndStop(this.owner.animatedSprite.totalFrames - 1);
                     }
                 };
+                this.applyCurrentTints();
             }
         } else {
             // If no sprite manager, wait for server respawn (don't trigger client respawn)
