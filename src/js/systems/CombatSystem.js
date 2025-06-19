@@ -284,7 +284,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     const isLocalPlayer = entity === window.game?.entities?.player;
     console.log(`Executing projectile attack for ${entity.characterClass} ${attackType}, windup: ${attackConfig.windupTime}ms, isLocal: ${isLocalPlayer}`);
     setTimeout(() => {
-      console.log(`Projectile windup complete. isAttacking: ${entity.isAttacking}, currentAttackType: ${entity.currentAttackType}`);
+      console.log(`Projectile windup complete. isAttacking: ${entity.isAttacking}, currentAttackType: ${entity.currentAttackType}, isLocal: ${isLocalPlayer}, entityId: ${entity.id || 'local'}`);
       if (entity.isAttacking && entity.currentAttackType === attackType) {
         let facingAngleRadians; // This will be the angle for the projectile's velocity vector
         let projectileStartX = entity.position.x;
@@ -330,18 +330,24 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
             projectileStartY = entity.position.y + Math.sin(facingAngleRadians) * offset;
         }
 
-        this.createProjectile(
-          projectileStartX,
-          projectileStartY,
-          facingAngleRadians, // This angle dictates the projectile's flight direction
-          entity,
-          {
-            damage: attackConfig.damage,
-            speed: attackConfig.projectileSpeed,
-            range: attackConfig.projectileRange,
-            effectType: attackConfig.projectileVisualEffectType || 'bow_shot_effect'
-          }
-        );
+        // Only create projectiles for the local player
+        // Remote player projectiles are created by the server
+        if (isLocalPlayer) {
+          this.createProjectile(
+            projectileStartX,
+            projectileStartY,
+            facingAngleRadians, // This angle dictates the projectile's flight direction
+            entity,
+            {
+              damage: attackConfig.damage,
+              speed: attackConfig.projectileSpeed,
+              range: attackConfig.projectileRange,
+              effectType: attackConfig.projectileVisualEffectType || 'bow_shot_effect'
+            }
+          );
+        } else {
+          console.log("Skipping projectile creation for remote player - server will handle it");
+        }
         
         // Clear attack state for projectile attacks after firing
         entity.isAttacking = false;
