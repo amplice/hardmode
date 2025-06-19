@@ -248,6 +248,12 @@ class AnimationComponent extends Component {
         // Apply spawn protection tint
         if (this.owner.spawnProtectionTimer > 0) {
             this.owner.animatedSprite.tint = 0xFFFF00; // Yellow
+            // Debug logging
+            if (!this.tintDebugLogged) {
+                console.log(`Applying yellow tint, spawn protection timer: ${this.owner.spawnProtectionTimer}`);
+                this.tintDebugLogged = true;
+                setTimeout(() => { this.tintDebugLogged = false; }, 1000);
+            }
         } else {
             this.owner.animatedSprite.tint = 0xFFFFFF; // Normal
         }
@@ -628,6 +634,7 @@ class HealthComponent extends Component {
         // Initial spawn protection
         this.owner.isInvulnerable = true;
         this.owner.spawnProtectionTimer = 3.0;
+        console.log(`Player spawned with initial protection: ${this.owner.spawnProtectionTimer}s`);
     }
     
     update(deltaTime) {
@@ -637,15 +644,6 @@ class HealthComponent extends Component {
             if (this.owner.spawnProtectionTimer <= 0) {
                 this.owner.isInvulnerable = false;
                 this.owner.spawnProtectionTimer = 0;
-                // Remove yellow tint
-                if (this.owner.animatedSprite) {
-                    this.owner.animatedSprite.tint = 0xFFFFFF;
-                }
-            } else {
-                // Apply yellow tint during protection
-                if (this.owner.animatedSprite) {
-                    this.owner.animatedSprite.tint = 0xFFFF00;
-                }
             }
         }
         
@@ -729,6 +727,7 @@ class HealthComponent extends Component {
         // Add spawn protection
         this.owner.isInvulnerable = true;
         this.owner.spawnProtectionTimer = 3.0; // 3 seconds of protection
+        console.log(`Player respawned with spawn protection: ${this.owner.spawnProtectionTimer}s`);
         
         // Reset animation to idle and clear any death animation
         this.owner.currentAnimation = null;
@@ -903,6 +902,9 @@ export class Player {
         
         // Always update animation last
         this.animation.update();
+        
+        // Apply tints after all updates
+        this.animation.applyCurrentTints();
     }
     
     // Public API methods (accessible to other systems)

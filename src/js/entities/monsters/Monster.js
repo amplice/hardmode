@@ -99,6 +99,7 @@ export class Monster {
         
         // Only update if animation changed
         if (this.currentAnimation !== animName) {
+            console.log(`Monster ${this.type} animation change: ${this.currentAnimation} -> ${animName} (state: ${this.state})`);
             this.currentAnimation = animName;
             
             // Remove old sprite
@@ -259,14 +260,24 @@ export class Monster {
         this.targetPosition.x = data.x;
         this.targetPosition.y = data.y;
         
-        // Update state
+        // Update health
         this.hitPoints = data.hp;
         this.maxHitPoints = data.maxHp;
+        
+        // Prevent facing changes from restarting attack animations
+        const wasAttacking = this.state === 'attacking';
+        const isNowAttacking = data.state === 'attacking';
+        
+        // Update state and facing
+        const oldState = this.state;
+        const oldFacing = this.facing;
         this.state = data.state;
         this.facing = data.facing;
         
-        // Update animation based on new state
-        this.updateAnimation();
+        // Only update animation if state changed, or if facing changed but not during an attack
+        if (oldState !== this.state || (!wasAttacking && !isNowAttacking && oldFacing !== this.facing)) {
+            this.updateAnimation();
+        }
     }
     
     showDamageEffect() {

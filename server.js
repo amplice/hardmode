@@ -57,27 +57,32 @@ const MONSTER_STATS = {
     ogre: { 
         hp: 4, moveSpeed: 2, damage: 1, attackRange: 90, 
         aggroRange: 800, xp: 20, attackCooldown: 2500, collisionRadius: 35,
-        attackDelay: 300 // ms delay before damage is applied
+        attackDelay: 300, // ms delay before damage is applied
+        attackDuration: 1500 // Total animation duration in ms
     },
     skeleton: { 
         hp: 2, moveSpeed: 2.5, damage: 1, attackRange: 70, 
         aggroRange: 1200, xp: 5, attackCooldown: 1800, collisionRadius: 15,
-        attackDelay: 250
+        attackDelay: 250,
+        attackDuration: 1100
     },
     elemental: { 
         hp: 3, moveSpeed: 2, damage: 2, attackRange: 100, 
         aggroRange: 800, xp: 10, attackCooldown: 3000, collisionRadius: 15,
-        attackDelay: 400
+        attackDelay: 400,
+        attackDuration: 1200
     },
     ghoul: { 
         hp: 2, moveSpeed: 3.5, damage: 1, attackRange: 70, 
         aggroRange: 3000, xp: 15, attackCooldown: 1200, collisionRadius: 10,
-        attackDelay: 200
+        attackDelay: 200,
+        attackDuration: 700
     },
     wildarcher: { 
         hp: 1, moveSpeed: 3, damage: 1, attackRange: 500, 
         aggroRange: 1500, xp: 10, attackCooldown: 3000, collisionRadius: 15,
-        attackDelay: 350
+        attackDelay: 350,
+        attackDuration: 1000
     }
 };
 
@@ -358,7 +363,7 @@ function handleAttackingState(monster, stats) {
                     const currentDistance = getDistance(monster, currentTarget);
                     if (currentDistance <= stats.attackRange) {
                         // Still in range but wait for next attack cooldown
-                        monster.state = 'chasing'; // Will check attack range again next frame
+                        monster.state = 'idle'; // Go to idle briefly before next attack check
                     } else {
                         monster.state = 'chasing'; // Target moved away
                     }
@@ -367,7 +372,7 @@ function handleAttackingState(monster, stats) {
                     monster.target = null;
                 }
             }
-        }, stats.attackDelay + 100); // Slightly after damage for animation completion
+        }, stats.attackDuration); // Wait for full attack animation to complete
     }
 }
 
