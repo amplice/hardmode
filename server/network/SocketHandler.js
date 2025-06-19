@@ -104,6 +104,14 @@ export class SocketHandler {
             return;
         }
         
+        // DEBUG: Log player details
+        console.log(`[DEBUG] Player creating projectile:`, {
+            id: player.id,
+            class: player.class,
+            position: { x: Math.round(player.x), y: Math.round(player.y) },
+            hp: `${player.hp}/${player.maxHp}`
+        });
+        
         // Validate the request
         if (data.x === undefined || data.y === undefined || data.angle === undefined) {
             console.log(`Rejected projectile: invalid data - x:${data.x}, y:${data.y}, angle:${data.angle}`);

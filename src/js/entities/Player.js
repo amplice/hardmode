@@ -570,6 +570,7 @@ class CombatComponent extends Component {
       if (this.owner.combatSystem) {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'primary');
         this.owner.primaryAttackCooldown = cooldown / 1000; // Store in the correct variable
+        console.log(`[DEBUG] Primary attack cooldown set to ${this.owner.primaryAttackCooldown}s (${cooldown}ms)`);
       }
       if (window.game?.network) {
         window.game.network.sendAttack(this.owner, 'primary');

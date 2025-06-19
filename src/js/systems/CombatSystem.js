@@ -136,7 +136,15 @@ export class CombatSystem {
   }
 
   createProjectile(x, y, angle, owner, options = {}) {
-    console.log(`Creating projectile at (${Math.round(x)}, ${Math.round(y)}) angle: ${angle.toFixed(2)} rad`);
+    console.log(`[DEBUG] Creating projectile:`, {
+      position: { x: Math.round(x), y: Math.round(y) },
+      angle: angle.toFixed(2) + ' rad',
+      owner: {
+        class: owner.characterClass,
+        id: owner.id || 'local'
+      },
+      options: options
+    });
     
     // Now we just request the server to create the projectile
     if (window.game?.network) {

@@ -358,7 +358,7 @@ export const PLAYER_CONFIG = {
       damage: 1,
       windupTime: 100,
       recoveryTime: 100,
-      cooldown: 100,
+      cooldown: 600,  // Increased from 100ms to 600ms for testing
       isProjectile: true,
       projectileSpeed: 700,
       projectileRange: 600,

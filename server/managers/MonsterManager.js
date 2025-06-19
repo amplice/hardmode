@@ -60,10 +60,17 @@ export class MonsterManager {
             velocity: { x: 0, y: 0 },
             facing: 'down',
             spawnTime: Date.now(),
-            lastUpdate: Date.now()
+            lastUpdate: Date.now(),
+            collisionRadius: stats.collisionRadius || 20  // Add collision radius
         };
 
         this.monsters.set(id, monster);
+        console.log(`[DEBUG] Monster created and added to map:`, {
+            id: monster.id,
+            type: monster.type,
+            position: { x: Math.round(monster.x), y: Math.round(monster.y) },
+            collisionRadius: stats.collisionRadius || 20
+        });
         return monster;
     }
 
@@ -451,8 +458,11 @@ export class MonsterManager {
 
     // Spawn initial monsters
     spawnInitialMonsters(count = 5) {
+        console.log(`[DEBUG] Spawning ${count} initial monsters`);
         for (let i = 0; i < count; i++) {
-            this.createMonster();
+            const monster = this.createMonster();
+            console.log(`[DEBUG] Spawned ${monster.type} at (${Math.round(monster.x)}, ${Math.round(monster.y)})`);
         }
+        console.log(`[DEBUG] Total monsters after initial spawn: ${this.monsters.size}`);
     }
 }
