@@ -530,7 +530,14 @@ class CombatComponent extends Component {
       }
     
     performPrimaryAttack() {
-      console.log(`Primary attack (${this.owner.characterClass === 'guardian' ? 'sweeping axe' : 'forehand slash'}) started`);
+      let attackName = 'primary attack';
+      switch(this.owner.characterClass) {
+        case 'guardian': attackName = 'sweeping axe'; break;
+        case 'hunter': attackName = 'bow shot'; break;
+        case 'rogue': attackName = 'thrust attack'; break;
+        default: attackName = 'forehand slash'; break;
+      }
+      console.log(`Primary attack (${attackName}) started`);
       this.owner.isAttacking = true;
       this.owner.attackHitFrameReached = false;
       this.owner.currentAttackType = 'primary';

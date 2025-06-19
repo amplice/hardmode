@@ -136,6 +136,7 @@ export class CombatSystem {
   }
 
   createProjectile(x, y, angle, owner, options = {}) {
+    console.log(`Creating projectile at (${Math.round(x)}, ${Math.round(y)}) angle: ${angle.toFixed(2)} rad`);
     // Now we just request the server to create the projectile
     if (window.game?.network) {
       window.game.network.createProjectile({
@@ -147,6 +148,8 @@ export class CombatSystem {
         range: options.range || 400,
         effectType: options.effectType || 'bow_shot_effect'
       });
+    } else {
+      console.error('No network connection to create projectile');
     }
     // No local projectile creation anymore
   }
@@ -269,6 +272,7 @@ export class CombatSystem {
   }
 
 _executeProjectileAttack(entity, attackConfig, attackType) {
+    console.log(`Executing projectile attack for ${entity.characterClass} ${attackType}`);
     setTimeout(() => {
       if (entity.isAttacking && entity.currentAttackType === attackType) {
         let facingAngleRadians; // This will be the angle for the projectile's velocity vector

@@ -4,8 +4,10 @@ export class NetworkClient {
         this.socket = io();
         this.players = new Map();
         this.monsters = new Map();
+        this.connected = false; // Initialize connected state
 
         this.setupHandlers();
+        console.log('NetworkClient initialized');
     }
 
     setClass(cls) {
@@ -24,6 +26,8 @@ export class NetworkClient {
     setupHandlers() {
         this.socket.on('init', data => {
             this.id = data.id;
+            this.connected = true; // Mark as connected
+            console.log('Connected to server with id:', this.id);
             this.game.initMultiplayerWorld(data.world);
             data.players.forEach(p => {
                 if (p.id !== this.id) this.game.addRemotePlayer(p);
@@ -190,8 +194,12 @@ export class NetworkClient {
     }
     
     createProjectile(data) {
-        if (!this.connected) return;
+        if (!this.connected) {
+            console.error('Cannot create projectile - not connected');
+            return;
+        }
         
+        console.log('Sending createProjectile to server:', data);
         this.socket.emit('createProjectile', {
             x: data.x,
             y: data.y,
