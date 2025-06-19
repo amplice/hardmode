@@ -1,0 +1,109 @@
+import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
+import { getDistance } from '../../shared/utils/MathUtils.js';
+
+export class SocketHandler {
+    constructor(io, gameState, monsterManager) {
+        this.io = io;
+        this.gameState = gameState;
+        this.monsterManager = monsterManager;
+        this.setupEventHandlers();
+    }
+
+    setupEventHandlers() {
+        this.io.on('connection', socket => this.handleConnection(socket));
+    }
+
+    handleConnection(socket) {
+        console.log(`Player ${socket.id} connected`);
+        
+        // Create new player
+        const player = this.gameState.createPlayer(socket.id);
+        
+        // Send initialization data
+        socket.emit('init', {
+            id: socket.id,
+            world: {
+                width: GAME_CONSTANTS.WORLD.WIDTH,
+                height: GAME_CONSTANTS.WORLD.HEIGHT,
+                tileSize: GAME_CONSTANTS.WORLD.TILE_SIZE,
+                seed: GAME_CONSTANTS.WORLD.SEED
+            },
+            players: this.gameState.getSerializedPlayers(),
+            monsters: this.monsterManager.getSerializedMonsters(this.monsterManager.monsters)
+        });
+        
+        // Notify others
+        socket.broadcast.emit('playerJoined', player);
+        
+        // Set up player-specific handlers
+        this.setupPlayerHandlers(socket);
+    }
+
+    setupPlayerHandlers(socket) {
+        socket.on('playerUpdate', data => this.handlePlayerUpdate(socket, data));
+        socket.on('attack', data => this.handlePlayerAttack(socket, data));
+        socket.on('attackMonster', data => this.handleAttackMonster(socket, data));
+        socket.on('setClass', cls => this.handleSetClass(socket, cls));
+        socket.on('disconnect', () => this.handleDisconnect(socket));
+    }
+
+    handlePlayerUpdate(socket, data) {
+        const player = this.gameState.getPlayer(socket.id);
+        if (!player) return;
+        
+        // Update player position and facing
+        player.x = data.x;
+        player.y = data.y;
+        player.facing = data.facing;
+    }
+
+    handlePlayerAttack(socket, data) {
+        const player = this.gameState.getPlayer(socket.id);
+        if (!player || player.hp <= 0) return;
+        
+        console.log(`Player ${player.id} performs ${data.type} attack`);
+        
+        // Broadcast attack to all clients
+        this.io.emit('playerAttack', {
+            id: socket.id,
+            type: data.type,
+            x: player.x,
+            y: player.y,
+            facing: player.facing
+        });
+    }
+
+    handleAttackMonster(socket, data) {
+        const player = this.gameState.getPlayer(socket.id);
+        if (!player || player.hp <= 0) return;
+        
+        const monster = this.monsterManager.monsters.get(data.monsterId);
+        if (!monster || monster.hp <= 0) return;
+        
+        // Validate attack range
+        const distance = getDistance(player, monster);
+        const attackRange = data.attackType === 'primary' ? 150 : 200;
+        
+        if (distance > attackRange) {
+            console.log(`Attack out of range: ${distance} > ${attackRange}`);
+            return;
+        }
+        
+        // Apply damage
+        const damage = data.damage || 1;
+        this.monsterManager.handleMonsterDamage(data.monsterId, damage, player);
+    }
+
+    handleSetClass(socket, className) {
+        const player = this.gameState.getPlayer(socket.id);
+        if (player) {
+            this.gameState.setPlayerClass(socket.id, className);
+        }
+    }
+
+    handleDisconnect(socket) {
+        console.log(`Player ${socket.id} disconnected`);
+        this.gameState.removePlayer(socket.id);
+        socket.broadcast.emit('playerLeft', socket.id);
+    }
+}

@@ -42,4 +42,4 @@ tmp/
 temp/
 
 # Old single-player server (excluded from multiplayer rewrite)
-server/
+# server/
