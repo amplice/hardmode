@@ -23,7 +23,8 @@ export class ProjectileRenderer {
             velocity: {
                 x: Math.cos(data.angle) * data.speed,
                 y: Math.sin(data.angle) * data.speed
-            }
+            },
+            effectType: data.effectType // Store for later use
         };
         
         // Create visual representation
@@ -32,16 +33,24 @@ export class ProjectileRenderer {
         graphics.drawRect(-5, -15, 10, 30);
         graphics.endFill();
         projectile.sprite.addChild(graphics);
+        projectile.graphics = graphics; // Store reference
         
         // Try to add sprite effect if available
+        console.log(`Creating projectile visual - effectType: ${data.effectType}, sprites loaded: ${this.game.systems.sprites?.loaded}`);
         if (data.effectType && this.game.systems.sprites?.loaded) {
             const effect = this.createEffectSprite(data.effectType);
             if (effect) {
+                console.log(`Successfully created sprite effect for ${data.effectType}`);
                 projectile.sprite.addChild(effect);
                 projectile.effect = effect;
                 // Hide the basic graphics if we have a sprite
                 graphics.visible = false;
+            } else {
+                console.log(`Failed to create sprite effect for ${data.effectType}`);
             }
+        } else if (data.effectType && !this.game.systems.sprites?.loaded) {
+            // Store projectile to update later when sprites are loaded
+            console.log(`Sprites not loaded yet, will retry for ${data.effectType}`);
         }
         
         // Set initial position and rotation
@@ -56,20 +65,14 @@ export class ProjectileRenderer {
         const spriteManager = this.game.systems.sprites;
         if (!spriteManager || !spriteManager.loaded) return null;
         
-        // Map effect types to sprite names
-        const effectMap = {
-            'bow_shot_effect': '579',
-            'wildarcher_shot_effect': '579' // Use same sprite for now
-        };
-        
-        const spriteName = effectMap[effectType];
-        if (!spriteName) return null;
-        
-        const effect = spriteManager.createAnimatedSprite(spriteName);
+        // The effect types should match the sprite names directly
+        const effect = spriteManager.createAnimatedSprite(effectType);
         if (effect) {
             effect.play();
             effect.anchor.set(0.5, 0.5);
-            effect.scale.set(1.0);
+            effect.scale.set(1.5); // Make projectiles more visible
+            effect.animationSpeed = 0.5;
+            effect.loop = true; // Keep looping for projectile lifetime
         }
         
         return effect;
@@ -108,6 +111,20 @@ export class ProjectileRenderer {
         for (const projectile of this.projectiles.values()) {
             if (projectile.effect && projectile.effect.playing) {
                 // Effect is auto-playing
+            }
+            
+            // Check if we need to add sprite effects that weren't loaded earlier
+            if (!projectile.effect && projectile.effectType && this.game.systems.sprites?.loaded) {
+                const effect = this.createEffectSprite(projectile.effectType);
+                if (effect) {
+                    console.log(`Late-loading sprite effect for ${projectile.effectType}`);
+                    projectile.sprite.addChild(effect);
+                    projectile.effect = effect;
+                    // Hide the basic graphics
+                    if (projectile.graphics) {
+                        projectile.graphics.visible = false;
+                    }
+                }
             }
         }
     }

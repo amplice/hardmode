@@ -317,6 +317,18 @@ export class MonsterManager {
         const dy = target.y - monster.y;
         const angle = Math.atan2(dy, dx);
         
+        // Determine effect type based on monster type
+        let effectType = 'wildarcher_shot_effect'; // Default
+        let projectileSpeed = 600;
+        
+        if (monster.type === 'elemental') {
+            effectType = 'elemental_projectile_effect';
+            projectileSpeed = 500;
+        } else if (monster.type === 'wildarcher') {
+            effectType = 'wildarcher_shot_effect';
+            projectileSpeed = 600;
+        }
+        
         // Create projectile through the ProjectileManager
         if (this.io.projectileManager) {
             // Pass monster with type property
@@ -328,10 +340,10 @@ export class MonsterManager {
                 x: monster.x,
                 y: monster.y,
                 angle: angle,
-                speed: 600, // Wildarcher projectile speed
+                speed: projectileSpeed,
                 damage: stats.damage,
                 range: stats.attackRange,
-                effectType: 'wildarcher_shot_effect'
+                effectType: effectType
             });
         }
     }

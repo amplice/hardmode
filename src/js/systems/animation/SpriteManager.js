@@ -155,6 +155,10 @@ const SPRITE_SHEET_CONFIG = [
         columns: 9, rows: 9, rowIndex: 5, frameSize: { width: 64, height: 64 }
     },
     {
+        keyPrefix: 'elemental_projectile_effect', type: 'effect', path: 'assets/sprites/effects/579.png',
+        columns: 9, rows: 9, rowIndex: 3, frameSize: { width: 64, height: 64 }
+    },
+    {
         keyPrefix: 'hunter_cone_effect', type: 'effect', path: 'assets/sprites/effects/448.png',
         columns: 9, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
     },
