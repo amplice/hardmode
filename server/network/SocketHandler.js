@@ -97,11 +97,18 @@ export class SocketHandler {
     }
 
     handleCreateProjectile(socket, data) {
+        console.log(`Received createProjectile request from ${socket.id}:`, data);
         const player = this.gameState.getPlayer(socket.id);
-        if (!player || player.hp <= 0) return;
+        if (!player || player.hp <= 0) {
+            console.log(`Rejected projectile: player ${socket.id} not found or dead`);
+            return;
+        }
         
         // Validate the request
-        if (!data.x || !data.y || data.angle === undefined) return;
+        if (data.x === undefined || data.y === undefined || data.angle === undefined) {
+            console.log(`Rejected projectile: invalid data - x:${data.x}, y:${data.y}, angle:${data.angle}`);
+            return;
+        }
         
         // Create projectile on server
         this.projectileManager.createProjectile(player, {
