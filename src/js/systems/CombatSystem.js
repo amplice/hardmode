@@ -137,9 +137,6 @@ export class CombatSystem {
 
   createProjectile(x, y, angle, owner, options = {}) {
     console.log(`Creating projectile at (${Math.round(x)}, ${Math.round(y)}) angle: ${angle.toFixed(2)} rad`);
-    console.log('window.game:', window.game);
-    console.log('window.game.network:', window.game?.network);
-    console.log('window.game.network.connected:', window.game?.network?.connected);
     
     // Now we just request the server to create the projectile
     if (window.game?.network) {
@@ -154,8 +151,6 @@ export class CombatSystem {
       });
     } else {
       console.error('No network connection to create projectile');
-      console.error('window.game exists?', !!window.game);
-      console.error('window.game.network exists?', !!window.game?.network);
     }
     // No local projectile creation anymore
   }

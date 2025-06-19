@@ -264,11 +264,11 @@ class AnimationComponent extends Component {
         if (this.owner.isAttacking) {
             console.log(`Attack animation completed for ${this.owner.currentAttackType}`);
             
-            // For hunter projectile attacks, let the combat system manage the attack state
+            // For projectile attacks, let the combat system manage the attack state
             // since projectiles have a windup time that may exceed animation duration
-            const isProjectileAttack = this.owner.characterClass === 'hunter' && 
-                                     (this.owner.currentAttackType === 'primary' || 
-                                      this.owner.currentAttackType === 'secondary');
+            const isHunterProjectile = this.owner.characterClass === 'hunter' && 
+                                      this.owner.currentAttackType === 'primary';
+            const isProjectileAttack = isHunterProjectile;
             
             if (!isProjectileAttack) {
                 this.owner.isAttacking = false;
