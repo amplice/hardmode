@@ -262,10 +262,21 @@ class AnimationComponent extends Component {
     onAnimationComplete() {
         // If we just finished an attack animation, return to idle
         if (this.owner.isAttacking) {
-            console.log("Attack animation completed");
-            this.owner.isAttacking = false;
-            this.owner.attackHitFrameReached = false;
-            this.owner.currentAttackType = null;
+            console.log(`Attack animation completed for ${this.owner.currentAttackType}`);
+            
+            // For hunter projectile attacks, let the combat system manage the attack state
+            // since projectiles have a windup time that may exceed animation duration
+            const isProjectileAttack = this.owner.characterClass === 'hunter' && 
+                                     (this.owner.currentAttackType === 'primary' || 
+                                      this.owner.currentAttackType === 'secondary');
+            
+            if (!isProjectileAttack) {
+                this.owner.isAttacking = false;
+                this.owner.attackHitFrameReached = false;
+                this.owner.currentAttackType = null;
+            } else {
+                console.log("Projectile attack - keeping isAttacking true for windup");
+            }
             
             // Return to idle or movement animation
             this.update();

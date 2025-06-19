@@ -335,6 +335,13 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
             effectType: attackConfig.projectileVisualEffectType || 'bow_shot_effect'
           }
         );
+        
+        // Clear attack state for projectile attacks after firing
+        entity.isAttacking = false;
+        entity.attackHitFrameReached = false;
+        entity.currentAttackType = null;
+      } else {
+        console.log("Attack was cancelled before projectile could fire");
       }
     }, attackConfig.windupTime);
     return attackConfig.cooldown;
