@@ -1,7 +1,6 @@
 // src/js/systems/CombatSystem.js
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG } from '../config/GameConfig.js';
-import { Projectile } from '../entities/Projectile.js';
 import { 
     directionStringToAngleRadians, 
     directionStringToAngleDegrees 
