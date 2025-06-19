@@ -41,11 +41,11 @@ export const GAME_CONSTANTS = {
 
 // Monster type weights for spawning
 export const MONSTER_SPAWN_WEIGHTS = {
-    skeleton: 0.25,
-    elemental: 0.25,
-    ghoul: 0.25,
-    ogre: 0.25,
-    wildarcher: 0
+    skeleton: 0.2,
+    elemental: 0.2,
+    ghoul: 0.2,
+    ogre: 0.2,
+    wildarcher: 0.2
 };
 
 // Centralized monster statistics

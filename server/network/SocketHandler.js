@@ -2,10 +2,11 @@ import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 import { getDistance } from '../../shared/utils/MathUtils.js';
 
 export class SocketHandler {
-    constructor(io, gameState, monsterManager) {
+    constructor(io, gameState, monsterManager, projectileManager) {
         this.io = io;
         this.gameState = gameState;
         this.monsterManager = monsterManager;
+        this.projectileManager = projectileManager;
         this.setupEventHandlers();
     }
 
@@ -43,6 +44,7 @@ export class SocketHandler {
         socket.on('playerUpdate', data => this.handlePlayerUpdate(socket, data));
         socket.on('attack', data => this.handlePlayerAttack(socket, data));
         socket.on('attackMonster', data => this.handleAttackMonster(socket, data));
+        socket.on('createProjectile', data => this.handleCreateProjectile(socket, data));
         socket.on('setClass', cls => this.handleSetClass(socket, cls));
         socket.on('disconnect', () => this.handleDisconnect(socket));
     }
@@ -92,6 +94,25 @@ export class SocketHandler {
         // Apply damage
         const damage = data.damage || 1;
         this.monsterManager.handleMonsterDamage(data.monsterId, damage, player);
+    }
+
+    handleCreateProjectile(socket, data) {
+        const player = this.gameState.getPlayer(socket.id);
+        if (!player || player.hp <= 0) return;
+        
+        // Validate the request
+        if (!data.x || !data.y || data.angle === undefined) return;
+        
+        // Create projectile on server
+        this.projectileManager.createProjectile(player, {
+            x: data.x,
+            y: data.y,
+            angle: data.angle,
+            speed: data.speed || 700,
+            damage: data.damage || 1,
+            range: data.range || 600,
+            effectType: data.effectType || 'bow_shot_effect'
+        });
     }
 
     handleSetClass(socket, className) {

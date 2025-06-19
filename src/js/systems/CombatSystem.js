@@ -112,7 +112,7 @@ export class CombatSystem {
   constructor(app) {
     this.app = app;
     this.activeAttacks = [];
-    this.projectiles = [];
+    // Projectiles now handled server-side
     this.effectConfigs = PLAYER_CONFIG.effects;
     // this.attackConfigs = PLAYER_CONFIG.attacks; // No longer needed if passed directly
   }
@@ -132,50 +132,24 @@ export class CombatSystem {
   }
   
   updateProjectiles(deltaTime) {
-    for (let i = this.projectiles.length - 1; i >= 0; i--) {
-        const projectile = this.projectiles[i];
-        if (!projectile.active) {
-            this.projectiles.splice(i, 1);
-            continue;
-        }
-        projectile.update(deltaTime);
-        // Check collision with server-controlled monsters
-        if (window.game.remoteMonsters) {
-            for (const [id, monster] of window.game.remoteMonsters) {
-                if (!monster.alive) continue;
-                if (projectile.checkCollision(monster)) {
-                    // Send damage to server
-                    if (window.game.network) {
-                        window.game.network.sendMonsterDamage(id, projectile.damage, 'projectile');
-                    }
-                    
-                    // Show immediate visual feedback
-                    monster.showDamageEffect();
-                    projectile.deactivate();
-                    break;
-                }
-            }
-        }
-    }
+    // Projectiles are now handled server-side
+    // Client just renders them via ProjectileRenderer
   }
 
   createProjectile(x, y, angle, owner, options = {}) {
-    const velocityX = Math.cos(angle);
-    const velocityY = Math.sin(angle);
-    const projectile = new Projectile({
-      x, y, velocityX, velocityY,
-      speed: options.speed || 600,
-      damage: options.damage || 1,
-      range: options.range || 400,
-      owner
-    });
-    window.game.entityContainer.addChild(projectile.sprite); // Consider alternative to window.game
-    const effectSprite = this.createProjectileVisualEffect(projectile, options.effectType || 'bow_shot_effect', angle);
-    if (effectSprite) {
-      projectile.attachVisualEffect(effectSprite);
+    // Now we just request the server to create the projectile
+    if (window.game?.network) {
+      window.game.network.createProjectile({
+        x,
+        y,
+        angle,
+        speed: options.speed || 600,
+        damage: options.damage || 1,
+        range: options.range || 400,
+        effectType: options.effectType || 'bow_shot_effect'
+      });
     }
-    this.projectiles.push(projectile);
-    return projectile;
+    // No local projectile creation anymore
   }
 
   createProjectileVisualEffect(projectile, effectType, angle) {

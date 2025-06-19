@@ -8,6 +8,7 @@ import { dirname } from 'path';
 import { GAME_CONSTANTS } from '../shared/constants/GameConstants.js';
 import { GameStateManager } from './managers/GameStateManager.js';
 import { MonsterManager } from './managers/MonsterManager.js';
+import { ProjectileManager } from './managers/ProjectileManager.js';
 import { SocketHandler } from './network/SocketHandler.js';
 import { NetworkOptimizer } from './network/NetworkOptimizer.js';
 import { setupDebugEndpoint } from './middleware/debugEndpoint.js';
@@ -33,8 +34,13 @@ setupDebugEndpoint(app);
 // Initialize game systems
 const gameState = new GameStateManager(io);
 const monsterManager = new MonsterManager(io);
-const socketHandler = new SocketHandler(io, gameState, monsterManager);
+const projectileManager = new ProjectileManager(io);
+const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager);
 const networkOptimizer = new NetworkOptimizer();
+
+// Cross-reference managers
+io.monsterManager = monsterManager;
+io.projectileManager = projectileManager;
 
 // Main game loop
 let lastUpdateTime = Date.now();
@@ -47,6 +53,12 @@ setInterval(() => {
     // Update game systems
     gameState.update(deltaTime);
     monsterManager.update(deltaTime, gameState.players);
+    projectileManager.update(deltaTime, gameState.players, monsterManager.monsters);
+    
+    // Clean up old projectiles periodically
+    if (Math.random() < 0.01) { // ~1% chance per tick
+        projectileManager.cleanup();
+    }
     
     // Get visible monsters for all players
     const visibleMonsters = monsterManager.getVisibleMonsters(gameState.players);
@@ -54,7 +66,8 @@ setInterval(() => {
     // Prepare and send optimized state updates
     const state = {
         players: gameState.getSerializedPlayers(),
-        monsters: monsterManager.getSerializedMonsters(visibleMonsters)
+        monsters: monsterManager.getSerializedMonsters(visibleMonsters),
+        projectiles: projectileManager.getSerializedProjectiles()
     };
     
     // TODO: Implement per-client optimization

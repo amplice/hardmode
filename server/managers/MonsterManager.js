@@ -253,10 +253,18 @@ export class MonsterManager {
             monster.attackAnimationStarted = now;
             monster.isAttackAnimating = true;
             
-            // Schedule damage application
-            setTimeout(() => {
-                this.applyMonsterDamage(monster, stats, players);
-            }, stats.attackDelay);
+            // Handle projectile attacks differently
+            if (monster.type === 'wildarcher') {
+                // Schedule projectile creation
+                setTimeout(() => {
+                    this.createMonsterProjectile(monster, target, stats);
+                }, stats.attackDelay);
+            } else {
+                // Schedule melee damage application
+                setTimeout(() => {
+                    this.applyMonsterDamage(monster, stats, players);
+                }, stats.attackDelay);
+            }
         } else {
             // Cooldown not ready, go back to idle
             monster.state = 'idle';
@@ -291,6 +299,33 @@ export class MonsterManager {
                     killedBy: monster.type
                 });
             }
+        }
+    }
+
+    createMonsterProjectile(monster, target, stats) {
+        if (!target || target.hp <= 0) return;
+        
+        // Calculate angle to target
+        const dx = target.x - monster.x;
+        const dy = target.y - monster.y;
+        const angle = Math.atan2(dy, dx);
+        
+        // Create projectile through the ProjectileManager
+        if (this.io.projectileManager) {
+            // Pass monster with type property
+            const projectileOwner = {
+                id: monster.id,
+                type: monster.type
+            };
+            this.io.projectileManager.createProjectile(projectileOwner, {
+                x: monster.x,
+                y: monster.y,
+                angle: angle,
+                speed: 600, // Wildarcher projectile speed
+                damage: stats.damage,
+                range: stats.attackRange,
+                effectType: 'wildarcher_shot_effect'
+            });
         }
     }
 

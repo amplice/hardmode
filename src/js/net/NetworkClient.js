@@ -48,6 +48,13 @@ export class NetworkClient {
                 }
             });
             state.monsters.forEach(m => this.game.addOrUpdateMonster(m));
+            
+            // Update projectiles
+            if (state.projectiles && this.game.projectileRenderer) {
+                state.projectiles.forEach(p => {
+                    this.game.projectileRenderer.updateProjectile(p.id, p.x, p.y);
+                });
+            }
         });
 
         this.socket.on('playerAttack', data => {
@@ -144,6 +151,19 @@ export class NetworkClient {
         this.socket.on('connect_error', (error) => {
             console.error('Connection error:', error.message);
         });
+        
+        // Handle projectile events
+        this.socket.on('projectileCreated', (data) => {
+            if (this.game.projectileRenderer) {
+                this.game.projectileRenderer.createProjectile(data);
+            }
+        });
+        
+        this.socket.on('projectileDestroyed', (data) => {
+            if (this.game.projectileRenderer) {
+                this.game.projectileRenderer.destroyProjectile(data.id, data.reason);
+            }
+        });
     }
 
     sendMonsterDamage(monsterId, damage, attackType) {
@@ -166,6 +186,20 @@ export class NetworkClient {
             x: player.position.x,
             y: player.position.y,
             facing: player.facing
+        });
+    }
+    
+    createProjectile(data) {
+        if (!this.connected) return;
+        
+        this.socket.emit('createProjectile', {
+            x: data.x,
+            y: data.y,
+            angle: data.angle,
+            speed: data.speed,
+            damage: data.damage,
+            range: data.range,
+            effectType: data.effectType
         });
     }
 }

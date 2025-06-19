@@ -13,6 +13,7 @@ import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 import { NetworkClient } from '../net/NetworkClient.js';
+import { ProjectileRenderer } from '../systems/ProjectileRenderer.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 import { DebugLogger } from '../debug/DebugLogger.js';
 
@@ -72,6 +73,9 @@ export class Game {
     // Initialize debug logger
     this.debugLogger = new DebugLogger();
     this.debugLogger.setupConsoleCommands();
+    
+    // Will be initialized when game starts
+    this.projectileRenderer = null;
   }
 
   async loadAndInit() {
@@ -133,6 +137,9 @@ export class Game {
     this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
     this.uiContainer.addChild(this.healthUI.container);
     this.uiContainer.addChild(this.statsUI.container);
+    
+    // Initialize projectile renderer
+    this.projectileRenderer = new ProjectileRenderer(this);
 
     // Monsters are now always handled by server
     // if (!this.network) {
@@ -189,6 +196,9 @@ export class Game {
     
     // 5. Update combat, camera, and UI
     this.systems.combat.update(deltaTimeSeconds);
+    if (this.projectileRenderer) {
+      this.projectileRenderer.update(deltaTimeSeconds);
+    }
     this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
