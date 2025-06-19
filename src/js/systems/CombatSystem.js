@@ -281,7 +281,8 @@ export class CombatSystem {
   }
 
 _executeProjectileAttack(entity, attackConfig, attackType) {
-    console.log(`Executing projectile attack for ${entity.characterClass} ${attackType}, windup: ${attackConfig.windupTime}ms`);
+    const isLocalPlayer = entity === window.game?.entities?.player;
+    console.log(`Executing projectile attack for ${entity.characterClass} ${attackType}, windup: ${attackConfig.windupTime}ms, isLocal: ${isLocalPlayer}`);
     setTimeout(() => {
       console.log(`Projectile windup complete. isAttacking: ${entity.isAttacking}, currentAttackType: ${entity.currentAttackType}`);
       if (entity.isAttacking && entity.currentAttackType === attackType) {
@@ -294,8 +295,11 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
         // This is a common pattern seen in other parts of the provided code.
         const inputSystem = window.game?.systems?.input;
 
-        if (entity.characterClass === 'hunter' && attackType === 'primary' && inputSystem) {
-            // Hunter's primary attack: Use precise mouse aiming
+        // Check if this is the LOCAL player (not a remote player)
+        const isLocalPlayer = entity === window.game?.entities?.player;
+        
+        if (entity.characterClass === 'hunter' && attackType === 'primary' && inputSystem && isLocalPlayer) {
+            // Hunter's primary attack: Use precise mouse aiming ONLY for local player
             const mousePosition = inputSystem.mouse.position; // Screen coordinates from InputSystem
 
             // Assuming player is at the center of the screen for aiming purposes.
