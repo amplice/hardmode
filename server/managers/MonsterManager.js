@@ -317,17 +317,9 @@ export class MonsterManager {
         const dy = target.y - monster.y;
         const angle = Math.atan2(dy, dx);
         
-        // Determine effect type based on monster type
-        let effectType = 'wildarcher_shot_effect'; // Default
+        // Only wildarcher has projectiles currently
+        let effectType = 'wildarcher_shot_effect';
         let projectileSpeed = 600;
-        
-        if (monster.type === 'elemental') {
-            effectType = 'elemental_projectile_effect';
-            projectileSpeed = 500;
-        } else if (monster.type === 'wildarcher') {
-            effectType = 'wildarcher_shot_effect';
-            projectileSpeed = 600;
-        }
         
         // Create projectile through the ProjectileManager
         if (this.io.projectileManager) {

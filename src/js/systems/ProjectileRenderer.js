@@ -55,7 +55,8 @@ export class ProjectileRenderer {
         
         // Set initial position and rotation
         projectile.sprite.position.set(data.x, data.y);
-        projectile.sprite.rotation = data.angle + Math.PI / 2;
+        // The sprite is oriented pointing right (0 degrees), so just use the angle directly
+        projectile.sprite.rotation = data.angle;
         
         this.container.addChild(projectile.sprite);
         this.projectiles.set(data.id, projectile);
