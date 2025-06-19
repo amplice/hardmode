@@ -55,6 +55,8 @@ export class MonsterManager {
             state: 'idle',
             target: null,
             lastAttack: 0,
+            attackAnimationStarted: 0,
+            isAttackAnimating: false,
             velocity: { x: 0, y: 0 },
             facing: 'down',
             spawnTime: Date.now(),
@@ -106,6 +108,7 @@ export class MonsterManager {
 
     updateMonster(monster, deltaTime, players) {
         const stats = MONSTER_STATS[monster.type];
+        const oldState = monster.state;
         
         switch (monster.state) {
             case 'idle':
@@ -122,11 +125,42 @@ export class MonsterManager {
                 break;
         }
         
+        // Log state transitions for debugging
+        if (oldState !== monster.state) {
+            console.log(`Monster ${monster.type}[${monster.id}] state: ${oldState} -> ${monster.state}` + 
+                       (monster.isAttackAnimating ? ' (animating)' : ''));
+        }
+        
         monster.lastUpdate = Date.now();
     }
 
     handleIdleState(monster, stats, players) {
-        // Look for players in aggro range
+        // If we already have a target, check if we should attack again
+        if (monster.target) {
+            const target = players.get(monster.target);
+            if (target && target.hp > 0) {
+                const distance = getDistance(monster, target);
+                
+                // Still in attack range and cooldown is ready
+                if (distance <= stats.attackRange) {
+                    const now = Date.now();
+                    if (now - monster.lastAttack >= stats.attackCooldown) {
+                        monster.state = 'attacking';
+                        return;
+                    }
+                    // Still on cooldown, stay idle
+                    return;
+                } else if (distance <= stats.aggroRange) {
+                    // Out of attack range but still in aggro range
+                    monster.state = 'chasing';
+                    return;
+                }
+            }
+            // Target is invalid, clear it
+            monster.target = null;
+        }
+        
+        // Look for new players in aggro range
         let nearestPlayer = null;
         let nearestDistance = stats.aggroRange;
         
@@ -183,40 +217,49 @@ export class MonsterManager {
         if (!target || target.hp <= 0) {
             monster.state = 'idle';
             monster.target = null;
+            monster.isAttackAnimating = false;
             return;
         }
         
         const distance = getDistance(monster, target);
         
-        // Target moved out of range
-        if (distance > stats.attackRange * 1.2) {
+        // Target moved out of range while we're not animating
+        if (distance > stats.attackRange * 1.2 && !monster.isAttackAnimating) {
             monster.state = 'chasing';
             return;
         }
         
-        // Attack if cooldown ready
         const now = Date.now();
+        
+        // If we're currently animating, don't start a new attack
+        if (monster.isAttackAnimating) {
+            // Check if animation should be finished
+            if (now - monster.attackAnimationStarted >= stats.attackDuration) {
+                monster.isAttackAnimating = false;
+                // After animation completes, check if we should continue attacking or change state
+                const currentDistance = getDistance(monster, target);
+                if (currentDistance > stats.attackRange) {
+                    monster.state = 'chasing';
+                } else {
+                    monster.state = 'idle'; // Go to idle between attacks
+                }
+            }
+            return;
+        }
+        
+        // Start a new attack if cooldown is ready
         if (now - monster.lastAttack >= stats.attackCooldown) {
             monster.lastAttack = now;
+            monster.attackAnimationStarted = now;
+            monster.isAttackAnimating = true;
             
             // Schedule damage application
             setTimeout(() => {
                 this.applyMonsterDamage(monster, stats, players);
             }, stats.attackDelay);
-            
-            // Transition back after animation
-            setTimeout(() => {
-                if (monster.state === 'attacking') {
-                    const currentTarget = players.get(monster.target);
-                    if (currentTarget && currentTarget.hp > 0) {
-                        const currentDistance = getDistance(monster, currentTarget);
-                        monster.state = currentDistance <= stats.attackRange ? 'idle' : 'chasing';
-                    } else {
-                        monster.state = 'idle';
-                        monster.target = null;
-                    }
-                }
-            }, stats.attackDuration);
+        } else {
+            // Cooldown not ready, go back to idle
+            monster.state = 'idle';
         }
     }
 

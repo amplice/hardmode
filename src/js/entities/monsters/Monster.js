@@ -137,18 +137,16 @@ export class Monster {
         // Handle animation completion based on state
         switch (this.state) {
             case 'stunned':
-                // Always transition to idle first after being stunned
+                // For stunned, we can change locally since it's a client effect
                 this.changeState('idle');
                 break;
                 
             case 'attacking':
-                // Return to idle after attack
-                this.changeState('idle');
-                // Clear attack indicator
-                this.attackIndicator.clear();
-                // Set cooldown
-                const attackDetails = MONSTER_CONFIG.attacks[this.type];
-                this.attackCooldown = attackDetails.cooldown;
+                // Don't change state locally - let server control it
+                // Just stop the animation on the last frame
+                if (this.animatedSprite) {
+                    this.animatedSprite.gotoAndStop(this.animatedSprite.totalFrames - 1);
+                }
                 break;
                 
             case 'dying':
@@ -214,10 +212,7 @@ export class Monster {
             return;
         }
         
-        // Cancel any attack in progress
-        if (this.attackIndicator) {
-            this.attackIndicator.clear();
-        }
+        // Cancel any attack in progress (removed attack indicator - server controlled)
         
         // Apply stun - always changes to stunned state regardless of current state
         this.changeState('stunned');
@@ -235,10 +230,7 @@ export class Monster {
         this.changeState('dying');
         this.velocity = { x: 0, y: 0 };
         
-        // Clear attack indicator
-        if (this.attackIndicator) {
-            this.attackIndicator.clear();
-        }
+        // Clear attack indicator (removed - server controlled)
     }
     
     update(deltaTime = 0) {
