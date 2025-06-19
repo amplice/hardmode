@@ -30,7 +30,8 @@
       "Bash(git check-ignore:*)",
       "Bash(true)",
       "Bash(npm run:*)",
-      "Bash(awk:*)"
+      "Bash(awk:*)",
+      "Bash(echo:*)"
     ],
     "deny": []
   }

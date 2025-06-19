@@ -99,18 +99,18 @@ export const MONSTER_CONFIG = {
     }
   },
 
-  // Spawn system configuration
+  // Spawn system configuration - now handled server-side
   spawn: {
     timer: 1,
     maxMonsters: 300,
     minDistanceFromPlayer: 700,
     maxDistanceFromPlayer: 10000,
     distribution: {
-      skeleton: 0.2,
-      elemental: 0.2,
-      ghoul: 0.2,
-      ogre: 0.2,
-      wildarcher: 0.2
+      skeleton: 0.25,
+      elemental: 0.25,
+      ghoul: 0.25,
+      ogre: 0.25,
+      wildarcher: 0
     }
   },
 

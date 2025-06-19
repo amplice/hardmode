@@ -133,6 +133,17 @@ export class NetworkClient {
                 }
             }
         });
+        
+        // Handle disconnection
+        this.socket.on('disconnect', () => {
+            this.connected = false;
+            console.log('Disconnected from server');
+        });
+        
+        // Handle connection errors
+        this.socket.on('connect_error', (error) => {
+            console.error('Connection error:', error.message);
+        });
     }
 
     sendMonsterDamage(monsterId, damage, attackType) {
@@ -141,7 +152,11 @@ export class NetworkClient {
                 monsterId,
                 damage,
                 attackType,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                position: {
+                    x: Math.round(this.game.entities.player.position.x),
+                    y: Math.round(this.game.entities.player.position.y)
+                }
             });
         }
     }

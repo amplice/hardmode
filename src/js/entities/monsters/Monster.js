@@ -1,6 +1,7 @@
 // src/js/entities/monsters/Monster.js
 import * as PIXI from 'pixi.js';
 import { MONSTER_CONFIG } from '../../config/GameConfig.js';
+import { MONSTER_STATS } from '../../../../shared/constants/GameConstants.js';
 import {
     velocityToDirectionString,
     directionStringToAngleRadians
