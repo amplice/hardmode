@@ -194,6 +194,47 @@ export class NetworkClient {
                 }
             }
         });
+
+        this.socket.on('playerRespawned', (data) => {
+            if (data.playerId === this.socket.id) {
+                // We respawned - reset our XP and level
+                console.log(`You respawned! Reset to level ${data.level} with ${data.xp} XP`);
+                if (this.game.entities.player) {
+                    const player = this.game.entities.player;
+                    player.level = data.level;
+                    player.experience = data.xp;
+                    player.hitPoints = data.hp;
+                    
+                    // Reset bonuses
+                    player.moveSpeedBonus = data.moveSpeedBonus || 0;
+                    player.attackRecoveryBonus = data.attackRecoveryBonus || 0;
+                    player.attackCooldownBonus = data.attackCooldownBonus || 0;
+                    player.rollUnlocked = data.rollUnlocked || false;
+                    
+                    // Reset max HP to base class HP (no level 10 bonus after respawn)
+                    if (data.maxHp !== undefined) {
+                        player.maxHitPoints = data.maxHp;
+                    }
+                    
+                    // Reset move speed to base
+                    const baseSpeed = player.getClassMoveSpeed();
+                    player.moveSpeed = baseSpeed + player.moveSpeedBonus;
+                    
+                    // Update stats component
+                    if (player.stats) {
+                        player.stats.owner.level = data.level;
+                        player.stats.owner.experience = data.xp;
+                    }
+                    
+                    // Trigger respawn in the player component
+                    player.health.respawn();
+                    // Force health UI update after respawn
+                    if (this.game.healthUI) {
+                        this.game.healthUI.update();
+                    }
+                }
+            }
+        });
         
         // Handle disconnection
         this.socket.on('disconnect', () => {
