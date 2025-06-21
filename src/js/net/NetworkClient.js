@@ -96,6 +96,11 @@ export class NetworkClient {
                 if (data.attacker === this.socket.id) {
                     this.game.showDamageNumber?.(monster.position, data.damage);
                 }
+                
+                // If monster was stunned, show visual feedback
+                if (data.stunned) {
+                    console.log(`[CONFIRMED] ${monster.type} stunned by hit`);
+                }
             }
         });
 

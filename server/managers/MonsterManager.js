@@ -61,7 +61,9 @@ export class MonsterManager {
             facing: 'down',
             spawnTime: Date.now(),
             lastUpdate: Date.now(),
-            collisionRadius: stats.collisionRadius || 20  // Add collision radius
+            collisionRadius: stats.collisionRadius || 20,  // Add collision radius
+            stunTimer: 0,  // Track stun duration
+            isStunned: false
         };
 
         this.monsters.set(id, monster);
@@ -116,6 +118,27 @@ export class MonsterManager {
     updateMonster(monster, deltaTime, players) {
         const stats = MONSTER_STATS[monster.type];
         const oldState = monster.state;
+        
+        // Update stun timer
+        if (monster.stunTimer > 0) {
+            monster.stunTimer -= deltaTime;
+            if (monster.stunTimer <= 0) {
+                monster.isStunned = false;
+                monster.stunTimer = 0;
+                // Interrupt any ongoing attack when stun ends
+                if (monster.isAttackAnimating) {
+                    monster.isAttackAnimating = false;
+                    monster.state = 'idle';
+                }
+            } else {
+                monster.isStunned = true;
+                // Clear any velocity to stop movement
+                monster.velocity = { x: 0, y: 0 };
+                // Skip AI updates while stunned
+                monster.lastUpdate = Date.now();
+                return; // Exit early, no AI processing
+            }
+        }
         
         switch (monster.state) {
             case 'idle':
@@ -214,8 +237,13 @@ export class MonsterManager {
             return;
         }
         
-        // Chase player
-        this.moveToward(monster, target, stats.moveSpeed);
+        // Chase player (but not if stunned)
+        if (!monster.isStunned) {
+            this.moveToward(monster, target, stats.moveSpeed);
+        } else {
+            // Stop moving while stunned
+            monster.velocity = { x: 0, y: 0 };
+        }
     }
 
     handleAttackingState(monster, stats, players) {
@@ -367,14 +395,28 @@ export class MonsterManager {
         
         monster.hp = Math.max(0, monster.hp - damage);
         
-        console.log(`Monster ${monster.type} takes ${damage} damage (${monster.hp}/${monster.maxHp} HP)`);
+        // Apply stun when taking damage (interrupt attacks)
+        const stunDuration = GAME_CONSTANTS.MONSTER?.DAMAGE_STUN_DURATION || 0.5;
+        if (stunDuration > 0) {
+            monster.stunTimer = stunDuration;
+            monster.isStunned = true;
+            
+            // Interrupt any ongoing attack and force to idle
+            if (monster.isAttackAnimating || monster.state === 'attacking') {
+                monster.isAttackAnimating = false;
+                monster.state = 'idle';
+            }
+        }
+        
+        console.log(`Monster ${monster.type} takes ${damage} damage (${monster.hp}/${monster.maxHp} HP) - stunned for ${stunDuration}s`);
         
         // Broadcast damage
         this.io.emit('monsterDamaged', {
             monsterId: monster.id,
             damage: damage,
             hp: monster.hp,
-            attacker: attacker.id
+            attacker: attacker.id,
+            stunned: true
         });
         
         // Handle death
@@ -528,7 +570,9 @@ export class MonsterManager {
             maxHp: monster.maxHp,
             state: monster.state,
             facing: monster.facing,
-            target: monster.target
+            target: monster.target,
+            isStunned: monster.isStunned || false,
+            stunTimer: monster.stunTimer || 0
         }));
     }
 

@@ -33,6 +33,11 @@ export const GAME_CONSTANTS = {
         DAMAGE_STUN_DURATION: 0.25 // seconds
     },
     
+    // Monster settings
+    MONSTER: {
+        DAMAGE_STUN_DURATION: 0.5 // seconds - longer than player to make combat more manageable
+    },
+    
     // Level progression settings
     LEVELS: {
         MAX_LEVEL: 10,
@@ -67,7 +72,7 @@ export const MONSTER_STATS = {
         xp: 20,
         attackCooldown: 2500,
         collisionRadius: 35,
-        attackDelay: 300, // ms delay before damage
+        attackDelay: 500, // ms delay before damage (windup + attack delay from single player)
         attackDuration: 1500 // Total animation duration
     },
     skeleton: {
@@ -79,7 +84,7 @@ export const MONSTER_STATS = {
         xp: 5,
         attackCooldown: 1800,
         collisionRadius: 15,
-        attackDelay: 250,
+        attackDelay: 550, // ms delay before damage (windup + attack delay from single player)
         attackDuration: 1100
     },
     elemental: {
@@ -91,7 +96,7 @@ export const MONSTER_STATS = {
         xp: 10,
         attackCooldown: 3000,
         collisionRadius: 15,
-        attackDelay: 400,
+        attackDelay: 800, // ms delay before damage (windup + attack delay from single player)
         attackDuration: 1200
     },
     ghoul: {
@@ -103,7 +108,7 @@ export const MONSTER_STATS = {
         xp: 15,
         attackCooldown: 1200,
         collisionRadius: 10,
-        attackDelay: 200,
+        attackDelay: 400, // ms delay before damage (windup + attack delay from single player)
         attackDuration: 700
     },
     wildarcher: {
@@ -115,7 +120,7 @@ export const MONSTER_STATS = {
         xp: 10,
         attackCooldown: 3000,
         collisionRadius: 15,
-        attackDelay: 350,
+        attackDelay: 750, // ms delay before damage (windup + attack delay from single player)
         attackDuration: 1000
     }
 };
