@@ -125,10 +125,11 @@ export class MonsterManager {
             if (monster.stunTimer <= 0) {
                 monster.isStunned = false;
                 monster.stunTimer = 0;
-                // Interrupt any ongoing attack when stun ends
+                // Return to idle state when stun ends
+                monster.state = 'idle';
+                // Clear any attack animation state
                 if (monster.isAttackAnimating) {
                     monster.isAttackAnimating = false;
-                    monster.state = 'idle';
                 }
             } else {
                 monster.isStunned = true;
@@ -401,10 +402,12 @@ export class MonsterManager {
             monster.stunTimer = stunDuration;
             monster.isStunned = true;
             
-            // Interrupt any ongoing attack and force to idle
-            if (monster.isAttackAnimating || monster.state === 'attacking') {
+            // Set state to stunned for visual feedback
+            monster.state = 'stunned';
+            
+            // Interrupt any ongoing attack
+            if (monster.isAttackAnimating) {
                 monster.isAttackAnimating = false;
-                monster.state = 'idle';
             }
         }
         

@@ -100,6 +100,8 @@ export class NetworkClient {
                 // If monster was stunned, show visual feedback
                 if (data.stunned) {
                     console.log(`[CONFIRMED] ${monster.type} stunned by hit`);
+                    // Trigger stun animation
+                    monster.changeState('stunned');
                 }
             }
         });
