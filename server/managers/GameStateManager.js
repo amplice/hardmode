@@ -23,12 +23,7 @@ export class GameStateManager {
             kills: 0,
             respawnTimer: 0,
             spawnProtectionTimer: GAME_CONSTANTS.PLAYER.SPAWN_PROTECTION_DURATION,
-            invulnerable: true,
-            // Level progression bonuses
-            moveSpeedBonus: 0,
-            attackRecoveryBonus: 0,
-            attackCooldownBonus: 0,
-            rollUnlocked: false
+            invulnerable: true
         };
         
         this.players.set(id, player);
@@ -77,41 +72,20 @@ export class GameStateManager {
     }
 
     respawnPlayer(player) {
-        // Reset to level 1 and 0 XP (permadeath mechanics)
-        player.level = 1;
-        player.xp = 0;
-        
-        // Reset max HP to base class HP (no level 10 bonus after respawn)
-        const stats = PLAYER_STATS[player.class];
-        player.maxHp = stats.hp;
         player.hp = player.maxHp;
-        
-        // Reset all level bonuses
-        player.moveSpeedBonus = 0;
-        player.attackRecoveryBonus = 0;
-        player.attackCooldownBonus = 0;
-        player.rollUnlocked = false;
-        
         player.x = GAME_CONSTANTS.WORLD.WIDTH * GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
         player.y = GAME_CONSTANTS.WORLD.HEIGHT * GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
         player.respawnTimer = 0;
         player.spawnProtectionTimer = GAME_CONSTANTS.PLAYER.SPAWN_PROTECTION_DURATION;
         player.invulnerable = true;
         
-        console.log(`Player ${player.id} respawned at level ${player.level} with ${player.xp} XP and ${player.hp}/${player.maxHp} HP`);
+        console.log(`Player ${player.id} respawned with ${player.hp}/${player.maxHp} HP and spawn protection`);
         
         // Notify clients
         this.io.emit('playerRespawned', {
             playerId: player.id,
             position: { x: player.x, y: player.y },
-            level: player.level,
-            xp: player.xp,
             hp: player.hp,
-            maxHp: player.maxHp,
-            moveSpeedBonus: player.moveSpeedBonus,
-            attackRecoveryBonus: player.attackRecoveryBonus,
-            attackCooldownBonus: player.attackCooldownBonus,
-            rollUnlocked: player.rollUnlocked,
             spawnProtectionTimer: player.spawnProtectionTimer
         });
     }
@@ -126,11 +100,7 @@ export class GameStateManager {
             hp: p.hp,
             maxHp: p.maxHp,
             level: p.level,
-            spawnProtectionTimer: p.spawnProtectionTimer,
-            moveSpeedBonus: p.moveSpeedBonus,
-            attackRecoveryBonus: p.attackRecoveryBonus,
-            attackCooldownBonus: p.attackCooldownBonus,
-            rollUnlocked: p.rollUnlocked
+            spawnProtectionTimer: p.spawnProtectionTimer
         }));
     }
 

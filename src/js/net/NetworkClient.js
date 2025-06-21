@@ -47,24 +47,6 @@ export class NetworkClient {
             state.players.forEach(p => {
                 if (p.id === this.id) {
                     this.game.updateLocalPlayerState(p);
-                    // Sync bonuses from server if they're included
-                    if (p.moveSpeedBonus !== undefined && this.game.entities.player) {
-                        const player = this.game.entities.player;
-                        player.moveSpeedBonus = p.moveSpeedBonus;
-                        player.attackRecoveryBonus = p.attackRecoveryBonus;
-                        player.attackCooldownBonus = p.attackCooldownBonus;
-                        player.rollUnlocked = p.rollUnlocked;
-                        // Update move speed if it changed
-                        const baseSpeed = player.getClassMoveSpeed();
-                        player.moveSpeed = baseSpeed + player.moveSpeedBonus;
-                        // Also sync max HP if it changed
-                        if (p.maxHp !== undefined && player.maxHitPoints !== p.maxHp) {
-                            player.maxHitPoints = p.maxHp;
-                            if (this.game.healthUI) {
-                                this.game.healthUI.update();
-                            }
-                        }
-                    }
                 } else {
                     this.game.updateRemotePlayer(p);
                 }
@@ -92,15 +74,9 @@ export class NetworkClient {
                 monster.hp = data.hp;
                 monster.showDamageEffect?.();
                 
-                // Show damage number if we attacked it (only if not predicted)
+                // Show damage number if we attacked it
                 if (data.attacker === this.socket.id) {
-                    this.game.showDamageNumber?.(monster.position, data.damage, false); // false = confirmed
-                    console.log(`[CONFIRMED] Hit ${monster.type} for ${data.damage} damage`);
-                }
-                
-                // If monster was stunned, show visual feedback
-                if (data.stunned) {
-                    console.log(`[CONFIRMED] ${monster.type} stunned by hit`);
+                    this.game.showDamageNumber?.(monster.position, data.damage);
                 }
             }
         });
@@ -113,13 +89,10 @@ export class NetworkClient {
                 // Show XP gain if we killed it
                 if (data.killedBy === this.socket.id) {
                     this.game.showXpGain?.(monster.position, data.xpReward);
-                    // Update local player XP and level through the stats component
-                    if (this.game.entities.player && this.game.entities.player.stats) {
+                    // Update local player XP display
+                    if (this.game.entities.player) {
                         this.game.entities.player.experience = data.killerXp;
                         this.game.entities.player.level = data.killerLevel;
-                        // Force the stats component to update by calling addExperience with 0
-                        this.game.entities.player.stats.owner.experience = data.killerXp;
-                        this.game.entities.player.stats.owner.level = data.killerLevel;
                     }
                 }
             }
@@ -166,81 +139,8 @@ export class NetworkClient {
                 // We leveled up
                 console.log(`Level up! You are now level ${data.level}`);
                 if (this.game.entities.player) {
-                    const player = this.game.entities.player;
-                    player.level = data.level;
-                    player.hitPoints = data.hp;
-                    
-                    // Apply level bonuses from server
-                    player.moveSpeedBonus = data.moveSpeedBonus || 0;
-                    player.attackRecoveryBonus = data.attackRecoveryBonus || 0;
-                    player.attackCooldownBonus = data.attackCooldownBonus || 0;
-                    player.rollUnlocked = data.rollUnlocked || false;
-                    
-                    // Update actual move speed
-                    const baseSpeed = player.getClassMoveSpeed();
-                    player.moveSpeed = baseSpeed + player.moveSpeedBonus;
-                    
-                    // Update stats component
-                    if (player.stats) {
-                        player.stats.owner.level = data.level;
-                    }
-                    
-                    // Update max HP from server (important for level 10 bonus)
-                    if (data.maxHp !== undefined) {
-                        player.maxHitPoints = data.maxHp;
-                        player.hitPoints = data.hp; // Server sends full HP on level up
-                        // Force health UI update
-                        if (this.game.healthUI) {
-                            this.game.healthUI.update();
-                        }
-                    }
-                    
-                    // Trigger green tint effect for 5 seconds
-                    player.levelUpTintTimer = 5.0;
-                    // Play level up effect
-                    player.playLevelUpEffect?.();
-                }
-            }
-        });
-
-        this.socket.on('playerRespawned', (data) => {
-            if (data.playerId === this.socket.id) {
-                // We respawned - reset our XP and level
-                console.log(`You respawned! Reset to level ${data.level} with ${data.xp} XP`);
-                if (this.game.entities.player) {
-                    const player = this.game.entities.player;
-                    player.level = data.level;
-                    player.experience = data.xp;
-                    player.hitPoints = data.hp;
-                    
-                    // Reset bonuses
-                    player.moveSpeedBonus = data.moveSpeedBonus || 0;
-                    player.attackRecoveryBonus = data.attackRecoveryBonus || 0;
-                    player.attackCooldownBonus = data.attackCooldownBonus || 0;
-                    player.rollUnlocked = data.rollUnlocked || false;
-                    
-                    // Reset max HP to base class HP (no level 10 bonus after respawn)
-                    if (data.maxHp !== undefined) {
-                        player.maxHitPoints = data.maxHp;
-                    }
-                    
-                    // Reset move speed to base
-                    const baseSpeed = player.getClassMoveSpeed();
-                    player.moveSpeed = baseSpeed + player.moveSpeedBonus;
-                    
-                    // Update stats component
-                    if (player.stats) {
-                        player.stats.owner.level = data.level;
-                        player.stats.owner.experience = data.xp;
-                    }
-                    // Clear any level up tint
-                    player.levelUpTintTimer = 0;
-                    // Trigger respawn in the player component
-                    player.health.respawn();
-                    // Force health UI update after respawn
-                    if (this.game.healthUI) {
-                        this.game.healthUI.update();
-                    }
+                    this.game.entities.player.level = data.level;
+                    this.game.entities.player.hitPoints = data.hp;
                 }
             }
         });

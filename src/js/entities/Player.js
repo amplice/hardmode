@@ -245,13 +245,15 @@ class AnimationComponent extends Component {
     applyCurrentTints() {
         if (!this.owner.animatedSprite) return;
         
-        // Priority order: level up > spawn protection > damage > normal
-        if (this.owner.levelUpTintTimer > 0) {
-            this.owner.animatedSprite.tint = 0x00FF00; // Green for level up
-        } else if (this.owner.spawnProtectionTimer > 0) {
-            this.owner.animatedSprite.tint = 0xFFFF00; // Yellow for spawn protection
-        } else if (this.owner.isTakingDamage) {
-            this.owner.animatedSprite.tint = 0xFF0000; // Red for damage
+        // Apply spawn protection tint
+        if (this.owner.spawnProtectionTimer > 0) {
+            this.owner.animatedSprite.tint = 0xFFFF00; // Yellow
+            // Debug logging
+            if (!this.tintDebugLogged) {
+                console.log(`Applying yellow tint, spawn protection timer: ${this.owner.spawnProtectionTimer}`);
+                this.tintDebugLogged = true;
+                setTimeout(() => { this.tintDebugLogged = false; }, 1000);
+            }
         } else {
             this.owner.animatedSprite.tint = 0xFFFFFF; // Normal
         }
@@ -675,14 +677,6 @@ class HealthComponent extends Component {
                 this.owner.animation.update();
             }
         }
-        
-        // Process level up tint timer
-        if (this.owner.levelUpTintTimer > 0) {
-            this.owner.levelUpTintTimer -= deltaTime;
-            if (this.owner.levelUpTintTimer <= 0) {
-                this.owner.levelUpTintTimer = 0;
-            }
-        }
     }
     
     takeDamage(amount) {
@@ -776,38 +770,18 @@ class StatsComponent extends Component {
         this.owner.experience = 0; // total accumulated XP
         this.owner.level = 1;
         this.owner.rollUnlocked = false;
-        // Level progression bonuses
-        this.owner.moveSpeedBonus = 0;
-        this.owner.attackRecoveryBonus = 0;
-        this.owner.attackCooldownBonus = 0;
-        // Level up visual effect
-        this.owner.levelUpTintTimer = 0;
     }
 
     // XP needed to go from (level-1) to level
     getXpForNextLevel() {
         const growth = PLAYER_CONFIG.levels?.xpGrowth || 20;
-        const isPlaytestMode = true; // Match server setting
-        const xpPerLevel = 20;
-        
-        if (isPlaytestMode) {
-            return xpPerLevel;
-        } else {
-            return this.owner.level * growth;
-        }
+        return this.owner.level * growth;
     }
 
     // Total XP required to reach a specific level
     getTotalXpForLevel(level) {
         const growth = PLAYER_CONFIG.levels?.xpGrowth || 20;
-        const isPlaytestMode = true; // Match server setting
-        const xpPerLevel = 20;
-        
-        if (isPlaytestMode) {
-            return (level - 1) * xpPerLevel;
-        } else {
-            return (level - 1) * level / 2 * growth;
-        }
+        return (level - 1) * level / 2 * growth;
     }
 
     getXpUntilNextLevel() {
