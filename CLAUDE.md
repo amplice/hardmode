@@ -91,3 +91,42 @@ Then open `http://localhost:3000` in your browser to play.
 ### Change World Size
 1. Modify `WORLD` constant in `server.js`
 2. World uses deterministic seed (42) for consistency
+
+## Key Architecture Insights
+
+### Network Protocol (Simple but Effective)
+- **Event-based messages** via Socket.io (NOT complex ECS as docs might suggest)
+- **30Hz server tick rate** with authoritative state
+- **Trust-client model**: Server validates critical actions but trusts movement
+- Key events: `init`, `playerUpdate`, `attack`, `state`, `monsterDamaged`, `playerLevelUp`
+
+### Combat System Architecture
+- **Client-side execution**: Attacks processed immediately on client
+- **Server validation**: Server confirms hits and applies damage
+- **Hitbox types**: Rectangle, cone, circle for different attack patterns
+- **Visual effects**: Immediate feedback via CombatSystem.js
+
+### Critical Files for Understanding
+- `src/js/entities/Player.js` - Component-based player architecture
+- `server/managers/MonsterManager.js` - AI state machine and combat
+- `shared/constants/GameConstants.js` - Central configuration
+- `src/js/systems/CombatSystem.js` - Attack execution and hitboxes
+- `src/js/net/NetworkClient.js` - All network event handling
+
+### Current Limitations to Remember
+1. **No proper ECS**: Uses component pattern but not full ECS
+2. **No client prediction**: Attacks trust client timing
+3. **Simple AI**: Monsters use basic state machine (idle→chase→attack)
+4. **No persistence**: All progress lost on server restart
+5. **Limited validation**: Server trusts most client actions
+
+### Performance Considerations
+- **Excessive logging causes jerky movement** - be careful with debug spam
+- **Monster updates at 30Hz** - don't add heavy computations in update loops
+- **Projectile cleanup needed** - memory leaks possible without periodic cleanup
+
+## Development Best Practices
+- Always commit changes so I can easily revert to past versions without losing too much work when its neccesary
+- When committing changes you don't need to ask, since I can always revert.
+- Avoid excessive debug logging in production code (causes performance issues)
+- Test multiplayer changes with multiple browser windows

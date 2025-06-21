@@ -18,7 +18,7 @@ Open `http://localhost:3000` in your browser to play. Open multiple browser wind
 - **Mouse** - Aim (character always faces cursor)
 - **Left Click** - Primary attack
 - **Spacebar** - Secondary attack  
-- **Shift** - Roll/dash (unlocked at level 5)
+- **Shift** - Roll/dash (unlocked at level 5, not yet implemented)
 
 ### Character Classes
 1. **Bladedancer** - Balanced melee fighter (3 HP)

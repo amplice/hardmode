@@ -29,13 +29,31 @@ A small-scale MMORPG (max ~100 concurrent players) combining:
 - Browser-based for accessibility
 
 ## Current Implementation Status
-- ✅ 4 unique classes with distinct playstyles
-- ✅ Basic multiplayer synchronization
-- ✅ Permadeath with instant respawn
-- ✅ Level progression (1-10)
-- ⬜ Server-side combat validation
-- ⬜ Multiple server instances
-- ⬜ Persistent player stats/leaderboards
+
+### ✅ Fully Implemented
+- **4 Playable Classes** with unique primary/secondary attacks:
+  - Bladedancer: Melee slash + overhead smash
+  - Guardian: Sweeping axe + jump attack
+  - Hunter: Bow shot + retreat shot
+  - Rogue: Thrust + dash attack
+- **5 Monster Types** with AI: Ogre, Skeleton, Elemental, Ghoul, Wild Archer
+- **Real-time Multiplayer** (30Hz authoritative server)
+- **Combat System** with hitboxes, projectiles, and visual effects
+- **Level Progression** (1-10 with XP from kills)
+- **PvP Combat** (players can damage each other)
+- **Death/Respawn** (3 second timer with spawn protection)
+
+### ⚠️ Partially Implemented
+- **Permadeath**: Has respawn system instead of full character reset
+- **Level Benefits**: Only HP increases, no other progression bonuses
+- **Combat Balance**: Not tuned for "skill > level" principle yet
+
+### ❌ Not Implemented
+- **Roll/Dodge Mechanics** (core defensive ability missing)
+- **Server-side Combat Validation** (trusts client attacks)
+- **Advanced Monster Behaviors** (bosses, complex patterns)
+- **Persistent Stats/Leaderboards**
+- **World Obstacles/Terrain**
 
 ## Design Comparisons
 - **Like Realm of the Mad God**: Permadeath, bullet-hell elements, quick sessions
