@@ -91,3 +91,6 @@ Then open `http://localhost:3000` in your browser to play.
 ### Change World Size
 1. Modify `WORLD` constant in `server.js`
 2. World uses deterministic seed (42) for consistency
+
+## Development Best Practices
+- Always commit changes so I can easily revert to past versions without losing too much work when its neccesary

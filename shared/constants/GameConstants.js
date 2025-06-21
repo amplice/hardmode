@@ -33,6 +33,19 @@ export const GAME_CONSTANTS = {
         DAMAGE_STUN_DURATION: 0.25 // seconds
     },
     
+    // Monster settings
+    MONSTER: {
+        DAMAGE_STUN_DURATION: 0.5 // seconds - longer than player to make combat more manageable
+    },
+    
+    // Level progression settings
+    LEVELS: {
+        MAX_LEVEL: 10,
+        XP_GROWTH: 20, // Used in triangular progression formula
+        PLAYTEST_MODE: true, // Toggle this for easy leveling (20 XP per level)
+        PLAYTEST_XP_PER_LEVEL: 20 // XP needed per level in playtest mode
+    },
+    
     // Debug settings
     DEBUG: {
         LOG_LIMIT: 10 * 1024 * 1024 // 10MB
@@ -59,7 +72,7 @@ export const MONSTER_STATS = {
         xp: 20,
         attackCooldown: 2500,
         collisionRadius: 35,
-        attackDelay: 300, // ms delay before damage
+        attackDelay: 700, // ms delay before damage - increased for better telegraphing
         attackDuration: 1500 // Total animation duration
     },
     skeleton: {
@@ -71,7 +84,7 @@ export const MONSTER_STATS = {
         xp: 5,
         attackCooldown: 1800,
         collisionRadius: 15,
-        attackDelay: 250,
+        attackDelay: 600, // increased for better telegraphing
         attackDuration: 1100
     },
     elemental: {
@@ -83,7 +96,7 @@ export const MONSTER_STATS = {
         xp: 10,
         attackCooldown: 3000,
         collisionRadius: 15,
-        attackDelay: 400,
+        attackDelay: 800, // increased for better telegraphing
         attackDuration: 1200
     },
     ghoul: {
@@ -95,7 +108,7 @@ export const MONSTER_STATS = {
         xp: 15,
         attackCooldown: 1200,
         collisionRadius: 10,
-        attackDelay: 200,
+        attackDelay: 500, // increased for better telegraphing
         attackDuration: 700
     },
     wildarcher: {
@@ -107,7 +120,7 @@ export const MONSTER_STATS = {
         xp: 10,
         attackCooldown: 3000,
         collisionRadius: 15,
-        attackDelay: 350,
+        attackDelay: 750, // increased for better telegraphing
         attackDuration: 1000
     }
 };
