@@ -33,6 +33,14 @@ export const GAME_CONSTANTS = {
         DAMAGE_STUN_DURATION: 0.25 // seconds
     },
     
+    // Level progression settings
+    LEVELS: {
+        MAX_LEVEL: 10,
+        XP_GROWTH: 20, // Used in triangular progression formula
+        PLAYTEST_MODE: true, // Toggle this for easy leveling (20 XP per level)
+        PLAYTEST_XP_PER_LEVEL: 20 // XP needed per level in playtest mode
+    },
+    
     // Debug settings
     DEBUG: {
         LOG_LIMIT: 10 * 1024 * 1024 // 10MB

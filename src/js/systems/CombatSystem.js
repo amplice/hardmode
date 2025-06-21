@@ -238,20 +238,29 @@ export class CombatSystem {
       console.error(`CombatSystem: Attack type ${attackType} (or ${classSpecificAttackKey}) not configured for ${entity.characterClass}`);
       return 0; // No cooldown if attack not found
     }
+    
+    // Apply level bonuses to attack config
+    const modifiedConfig = { ...attackConfig };
+    if (entity.attackRecoveryBonus) {
+      modifiedConfig.recoveryTime = Math.max(0, attackConfig.recoveryTime - entity.attackRecoveryBonus);
+    }
+    if (entity.attackCooldownBonus) {
+      modifiedConfig.cooldown = Math.max(100, attackConfig.cooldown - entity.attackCooldownBonus);
+    }
         
-    console.log(`CombatSystem: ${entity.characterClass || 'Entity'} executing ${attackConfig.name}`);
+    console.log(`CombatSystem: ${entity.characterClass || 'Entity'} executing ${modifiedConfig.name}`);
     entity.startPositionForAttack = { x: entity.position.x, y: entity.position.y };
-    this.scheduleAllAttackEffects(entity, attackConfig, attackType);
+    this.scheduleAllAttackEffects(entity, modifiedConfig, attackType);
 
-    switch (attackConfig.archetype) {
+    switch (modifiedConfig.archetype) {
       case 'standard_melee':
-        return this._executeStandardMeleeAttack(entity, attackConfig, attackType);
+        return this._executeStandardMeleeAttack(entity, modifiedConfig, attackType);
       case 'projectile':
-        return this._executeProjectileAttack(entity, attackConfig, attackType);
+        return this._executeProjectileAttack(entity, modifiedConfig, attackType);
       case 'jump_attack':
-        return this._executeJumpAttack(entity, attackConfig, attackType);
+        return this._executeJumpAttack(entity, modifiedConfig, attackType);
       case 'dash_attack':
-        return this._executeDashAttack(entity, attackConfig, attackType);
+        return this._executeDashAttack(entity, modifiedConfig, attackType);
       default:
         console.error(`CombatSystem: Unknown attack archetype: ${attackConfig.archetype} for ${attackConfig.name}`);
         return this._executeStandardMeleeAttack(entity, attackConfig, attackType); 

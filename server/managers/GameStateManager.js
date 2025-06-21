@@ -23,7 +23,12 @@ export class GameStateManager {
             kills: 0,
             respawnTimer: 0,
             spawnProtectionTimer: GAME_CONSTANTS.PLAYER.SPAWN_PROTECTION_DURATION,
-            invulnerable: true
+            invulnerable: true,
+            // Level progression bonuses
+            moveSpeedBonus: 0,
+            attackRecoveryBonus: 0,
+            attackCooldownBonus: 0,
+            rollUnlocked: false
         };
         
         this.players.set(id, player);
@@ -100,7 +105,11 @@ export class GameStateManager {
             hp: p.hp,
             maxHp: p.maxHp,
             level: p.level,
-            spawnProtectionTimer: p.spawnProtectionTimer
+            spawnProtectionTimer: p.spawnProtectionTimer,
+            moveSpeedBonus: p.moveSpeedBonus,
+            attackRecoveryBonus: p.attackRecoveryBonus,
+            attackCooldownBonus: p.attackCooldownBonus,
+            rollUnlocked: p.rollUnlocked
         }));
     }
 

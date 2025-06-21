@@ -414,20 +414,92 @@ export class MonsterManager {
     }
 
     checkLevelUp(player) {
-        const newLevel = Math.floor(player.xp / 100) + 1;
-        const maxLevel = 10;
+        const maxLevel = GAME_CONSTANTS.LEVELS.MAX_LEVEL;
+        const xpGrowth = GAME_CONSTANTS.LEVELS.XP_GROWTH;
+        const isPlaytestMode = GAME_CONSTANTS.LEVELS.PLAYTEST_MODE;
+        const playtestXpPerLevel = GAME_CONSTANTS.LEVELS.PLAYTEST_XP_PER_LEVEL;
         
-        if (newLevel > player.level && newLevel <= maxLevel) {
+        // Calculate what level the player should be based on current XP
+        let newLevel = player.level;
+        
+        if (isPlaytestMode) {
+            // Playtest mode: simple linear progression (20 XP per level)
+            newLevel = Math.min(maxLevel, Math.floor(player.xp / playtestXpPerLevel) + 1);
+        } else {
+            // Normal mode: triangular progression
+            // Using formula: getTotalXpForLevel(level) = (level - 1) * level / 2 * growth
+            for (let level = player.level + 1; level <= maxLevel; level++) {
+                const requiredXp = (level - 1) * level / 2 * xpGrowth;
+                if (player.xp >= requiredXp) {
+                    newLevel = level;
+                } else {
+                    break;
+                }
+            }
+        }
+        
+        if (newLevel > player.level) {
+            const oldLevel = player.level;
             player.level = newLevel;
             player.hp = player.maxHp;
             
-            console.log(`Player ${player.id} leveled up to ${player.level}!`);
+            // Apply level bonuses for each level gained
+            for (let level = oldLevel + 1; level <= newLevel; level++) {
+                this.applyLevelBonus(player, level);
+            }
+            
+            console.log(`Player ${player.id} leveled up to ${player.level}! (${player.xp} XP)`);
             
             this.io.emit('playerLevelUp', {
                 playerId: player.id,
                 level: player.level,
-                hp: player.hp
+                hp: player.hp,
+                maxHp: player.maxHp,
+                moveSpeedBonus: player.moveSpeedBonus,
+                attackRecoveryBonus: player.attackRecoveryBonus,
+                attackCooldownBonus: player.attackCooldownBonus,
+                rollUnlocked: player.rollUnlocked
             });
+        }
+    }
+
+    applyLevelBonus(player, level) {
+        console.log(`Applying level ${level} bonus for player ${player.id}`);
+        
+        switch (level) {
+            case 2:
+            case 6:
+                // Move speed bonus
+                player.moveSpeedBonus += 0.25;
+                console.log(`  +0.25 move speed bonus (total: +${player.moveSpeedBonus})`);
+                break;
+            case 3:
+            case 7:
+                // Attack recovery reduction
+                player.attackRecoveryBonus += 25; // 25ms reduction
+                console.log(`  -25ms attack recovery bonus (total: -${player.attackRecoveryBonus}ms)`);
+                break;
+            case 4:
+            case 8:
+                // Attack cooldown reduction
+                player.attackCooldownBonus += 100; // 100ms reduction
+                console.log(`  -100ms attack cooldown bonus (total: -${player.attackCooldownBonus}ms)`);
+                break;
+            case 5:
+                // Roll unlock
+                player.rollUnlocked = true;
+                console.log(`  Roll ability unlocked`);
+                break;
+            case 9:
+                // Future move unlock placeholder
+                console.log(`  Future ability unlock`);
+                break;
+            case 10:
+                // Max HP increase
+                player.maxHp += 1;
+                player.hp = player.maxHp; // Heal to full with new max HP
+                console.log(`  +1 max HP bonus (now ${player.maxHp})`);
+                break;
         }
     }
 
