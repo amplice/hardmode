@@ -160,13 +160,19 @@ export class AbilityManager {
         });
 
         // Schedule damage event
-        const damageDelay = config.windupTime + (config.actionPointDelay || config.jumpDuration);
+        let damageDelay, attackPosition;
+        
+        if (config.attackFromStartPosition) {
+            // For attacks like Hunter's Retreat Shot - damage at start position right after windup
+            damageDelay = config.windupTime;
+            attackPosition = { x: startX, y: startY };
+        } else {
+            // For normal jump attacks - damage at landing position
+            damageDelay = config.windupTime + (config.actionPointDelay || config.jumpDuration);
+            attackPosition = { x: endX, y: endY };
+        }
+        
         setTimeout(() => {
-            // For jump attacks, damage happens at the landing position
-            const attackPosition = config.attackFromStartPosition ? 
-                { x: startX, y: startY } : 
-                { x: endX, y: endY };
-                
             this.io.emit('playerAbilityDamage', {
                 playerId: player.id,
                 abilityType: abilityType,
