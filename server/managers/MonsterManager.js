@@ -119,6 +119,12 @@ export class MonsterManager {
         const stats = MONSTER_STATS[monster.type];
         const oldState = monster.state;
         
+        // Don't update stun or AI for dying monsters
+        if (monster.state === 'dying') {
+            monster.lastUpdate = Date.now();
+            return; // Exit early, no updates for dying monsters
+        }
+        
         // Update stun timer
         if (monster.stunTimer > 0) {
             monster.stunTimer -= deltaTime;
