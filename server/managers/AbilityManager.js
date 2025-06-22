@@ -75,7 +75,8 @@ export class AbilityManager {
             endY,
             startTime: Date.now(),
             duration: config.dashDuration,
-            config
+            config,
+            abilityType
         });
 
         // Notify all clients of dash start
@@ -87,8 +88,25 @@ export class AbilityManager {
             startY,
             endX,
             endY,
-            duration: config.dashDuration
+            duration: config.dashDuration,
+            facing: player.facing
         });
+
+        // Schedule damage event (dash damage happens immediately at start)
+        setTimeout(() => {
+            this.io.emit('playerAbilityDamage', {
+                playerId: player.id,
+                abilityType: abilityType,
+                x: startX,
+                y: startY,
+                facing: player.facing,
+                config: {
+                    damage: config.damage,
+                    hitboxType: config.hitboxType,
+                    hitboxParams: config.hitboxParams
+                }
+            });
+        }, config.windupTime);
 
         // Handle dash movement over time
         this.updateDashMovement(player.id);
@@ -123,7 +141,8 @@ export class AbilityManager {
             startTime: Date.now(),
             duration: config.jumpDuration,
             config,
-            backwardJump: config.backwardJump
+            backwardJump: config.backwardJump,
+            abilityType
         });
 
         // Notify all clients of jump start
@@ -136,8 +155,31 @@ export class AbilityManager {
             endX,
             endY,
             duration: config.jumpDuration,
-            backwardJump: config.backwardJump
+            backwardJump: config.backwardJump,
+            facing: player.facing
         });
+
+        // Schedule damage event
+        const damageDelay = config.windupTime + (config.actionPointDelay || config.jumpDuration);
+        setTimeout(() => {
+            // For jump attacks, damage happens at the landing position
+            const attackPosition = config.attackFromStartPosition ? 
+                { x: startX, y: startY } : 
+                { x: endX, y: endY };
+                
+            this.io.emit('playerAbilityDamage', {
+                playerId: player.id,
+                abilityType: abilityType,
+                x: attackPosition.x,
+                y: attackPosition.y,
+                facing: player.facing,
+                config: {
+                    damage: config.damage,
+                    hitboxType: config.hitboxType,
+                    hitboxParams: config.hitboxParams
+                }
+            });
+        }, damageDelay);
 
         // Handle jump movement over time
         this.updateJumpMovement(player.id);
@@ -180,14 +222,23 @@ export class AbilityManager {
         player.y = ability.startY + (ability.endY - ability.startY) * progress;
 
         if (progress >= 1) {
-            // Dash complete
-            this.activeAbilities.delete(playerId);
-            this.io.emit('playerAbilityComplete', {
-                playerId: playerId,
-                type: 'dash'
-            });
+            // Movement complete, but keep ability active during recovery
+            const totalDuration = ability.config.windupTime + ability.duration + ability.config.recoveryTime;
+            const totalElapsed = now - (ability.startTime - ability.config.windupTime);
+            
+            if (totalElapsed >= totalDuration) {
+                // Full ability complete including recovery
+                this.activeAbilities.delete(playerId);
+                this.io.emit('playerAbilityComplete', {
+                    playerId: playerId,
+                    type: 'dash'
+                });
+            } else {
+                // Wait for recovery to finish
+                setTimeout(() => this.updateDashMovement(playerId), 16);
+            }
         } else {
-            // Continue updating
+            // Continue updating movement
             setTimeout(() => this.updateDashMovement(playerId), 16); // ~60fps updates
         }
     }
@@ -211,14 +262,23 @@ export class AbilityManager {
         player.y = ability.startY + (ability.endY - ability.startY) * progress;
 
         if (progress >= 1) {
-            // Jump complete
-            this.activeAbilities.delete(playerId);
-            this.io.emit('playerAbilityComplete', {
-                playerId: playerId,
-                type: 'jump'
-            });
+            // Movement complete, but keep ability active during recovery
+            const totalDuration = ability.config.windupTime + ability.duration + ability.config.recoveryTime;
+            const totalElapsed = now - (ability.startTime - ability.config.windupTime);
+            
+            if (totalElapsed >= totalDuration) {
+                // Full ability complete including recovery
+                this.activeAbilities.delete(playerId);
+                this.io.emit('playerAbilityComplete', {
+                    playerId: playerId,
+                    type: 'jump'
+                });
+            } else {
+                // Wait for recovery to finish
+                setTimeout(() => this.updateJumpMovement(playerId), 16);
+            }
         } else {
-            // Continue updating
+            // Continue updating movement
             setTimeout(() => this.updateJumpMovement(playerId), 16); // ~60fps updates
         }
     }

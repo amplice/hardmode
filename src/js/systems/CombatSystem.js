@@ -290,82 +290,41 @@ export class CombatSystem {
   }
 
 _executeProjectileAttack(entity, attackConfig, attackType) {
-    const isLocalPlayer = entity === window.game?.entities?.player;
-    console.log(`Executing projectile attack for ${entity.characterClass} ${attackType}, windup: ${attackConfig.windupTime}ms, isLocal: ${isLocalPlayer}`);
-    setTimeout(() => {
-      console.log(`Projectile windup complete. isAttacking: ${entity.isAttacking}, currentAttackType: ${entity.currentAttackType}, isLocal: ${isLocalPlayer}, entityId: ${entity.id || 'local'}`);
-      if (entity.isAttacking && entity.currentAttackType === attackType) {
-        let facingAngleRadians; // This will be the angle for the projectile's velocity vector
-        let projectileStartX = entity.position.x;
-        let projectileStartY = entity.position.y;
-        const offset = attackConfig.projectileOffset || 0;
-
-        // Access input system, assuming it's available via window.game.systems.input
-        // This is a common pattern seen in other parts of the provided code.
-        const inputSystem = window.game?.systems?.input;
-
-        // Check if this is the LOCAL player (not a remote player)
-        const isLocalPlayer = entity === window.game?.entities?.player;
-        
-        if (entity.characterClass === 'hunter' && attackType === 'primary' && inputSystem && isLocalPlayer) {
-            // Hunter's primary attack: Use precise mouse aiming ONLY for local player
-            const mousePosition = inputSystem.mouse.position; // Screen coordinates from InputSystem
-
-            // Assuming player is at the center of the screen for aiming purposes.
-            // This aligns with how player facing is determined in MovementComponent.
-            const playerScreenX = window.innerWidth / 2;
-            const playerScreenY = window.innerHeight / 2;
-
-            const dx = mousePosition.x - playerScreenX;
-            const dy = mousePosition.y - playerScreenY;
-            facingAngleRadians = Math.atan2(dy, dx); // Precise angle in radians
-
-            // Calculate projectile start position offset along this precise angle
-            projectileStartX = entity.position.x + Math.cos(facingAngleRadians) * offset;
-            projectileStartY = entity.position.y + Math.sin(facingAngleRadians) * offset;
-
-        } else {
-            // Fallback for other classes, attack types, or if input system is unavailable:
-            // Use entity's 8-directional facing for both offset and projectile angle.
-            facingAngleRadians = directionStringToAngleRadians(entity.facing); // Angle from 8 directions
-
-            // Calculate start position using the 8-directional facing for the offset.
-            // We can use the calculateEffectPosition method or calculate manually:
-            // const tempStartPos = this.calculateEffectPosition(entity.position, entity.facing, offset);
-            // projectileStartX = tempStartPos.x;
-            // projectileStartY = tempStartPos.y;
-            // Or, for consistency with the 'if' block:
-            projectileStartX = entity.position.x + Math.cos(facingAngleRadians) * offset;
-            projectileStartY = entity.position.y + Math.sin(facingAngleRadians) * offset;
-        }
-
-        // Only create projectiles for the local player
-        // Remote player projectiles are created by the server
-        if (isLocalPlayer) {
-          this.createProjectile(
-            projectileStartX,
-            projectileStartY,
-            facingAngleRadians, // This angle dictates the projectile's flight direction
-            entity,
-            {
-              damage: attackConfig.damage,
-              speed: attackConfig.projectileSpeed,
-              range: attackConfig.projectileRange,
-              effectType: attackConfig.projectileVisualEffectType || 'bow_shot_effect'
+    // For local player, send ability request to server
+    if (entity === window.game.entities.player) {
+        // For Hunter, include mouse angle for precise aiming
+        if (entity.characterClass === 'hunter' && attackType === 'primary') {
+            const inputSystem = window.game?.systems?.input;
+            if (inputSystem) {
+                const mousePosition = inputSystem.mouse.position;
+                const playerScreenX = window.innerWidth / 2;
+                const playerScreenY = window.innerHeight / 2;
+                const dx = mousePosition.x - playerScreenX;
+                const dy = mousePosition.y - playerScreenY;
+                const angle = Math.atan2(dy, dx);
+                
+                // Send ability request with precise angle
+                window.game.network.sendAbilityRequest(attackType, { angle });
+            } else {
+                // Fallback to regular ability request
+                window.game.network.sendAbilityRequest(attackType);
             }
-          );
         } else {
-          console.log("Skipping projectile creation for remote player - server will handle it");
+            window.game.network.sendAbilityRequest(attackType);
         }
         
-        // Clear attack state for projectile attacks after firing
-        entity.isAttacking = false;
-        entity.attackHitFrameReached = false;
-        entity.currentAttackType = null;
-      } else {
-        console.log("Attack was cancelled before projectile could fire");
-      }
-    }, attackConfig.windupTime);
+        // Clear attack state immediately for projectile attacks
+        // Since they're instant and server-controlled
+        setTimeout(() => {
+            if (entity.combat && entity.combat.endAttack) {
+                entity.combat.endAttack();
+            }
+        }, attackConfig.windupTime);
+        
+        return attackConfig.cooldown;
+    }
+    
+    // For remote players, projectiles will be created via server events
     return attackConfig.cooldown;
   }
 

@@ -282,7 +282,10 @@ export class NetworkClient {
                     player.isAttacking = true;
                     player.currentAttackType = data.abilityKey;
                     
-                    // For jump attacks, we might want to show a jump arc visually
+                    // Store the start position for effects
+                    player.startPositionForAttack = { x: data.startX, y: data.startY };
+                    
+                    // For jump attacks, we need to show a jump arc visually
                     if (data.type === 'jump' && player.sprite) {
                         // Store the jump data for visual interpolation
                         player.jumpData = {
@@ -294,6 +297,36 @@ export class NetworkClient {
                             duration: data.duration,
                             backwardJump: data.backwardJump
                         };
+                        
+                        // Start the visual jump animation
+                        const jumpHeight = 80; // Default jump height
+                        const animateJump = (timestamp) => {
+                            if (!player.jumpData) return; // Jump was cancelled
+                            
+                            const elapsed = timestamp - player.jumpData.startTime;
+                            const progress = Math.min(elapsed / player.jumpData.duration, 1);
+                            
+                            // Server controls X/Y, we just add visual height
+                            const height = Math.sin(Math.PI * progress) * jumpHeight;
+                            
+                            // Update sprite visual position (not the actual position)
+                            if (player.sprite) {
+                                player.sprite.position.set(
+                                    player.position.x,
+                                    player.position.y - height
+                                );
+                            }
+                            
+                            if (progress < 1) {
+                                requestAnimationFrame(animateJump);
+                            } else {
+                                // Ensure sprite is back at ground level
+                                if (player.sprite) {
+                                    player.sprite.position.set(player.position.x, player.position.y);
+                                }
+                            }
+                        };
+                        requestAnimationFrame(animateJump);
                     }
                 }
             }
@@ -314,6 +347,38 @@ export class NetworkClient {
                 // End the attack state if needed
                 if (player.combat && player.isAttacking) {
                     player.combat.endAttack();
+                }
+            }
+        });
+        
+        // Handle ability damage events from server
+        this.socket.on('playerAbilityDamage', (data) => {
+            const isLocalPlayer = data.playerId === this.socket.id;
+            const player = isLocalPlayer ? 
+                this.game.entities.player : 
+                this.game.remotePlayers?.get(data.playerId);
+                
+            if (player && this.game.systems?.combat) {
+                // Create hitbox and apply damage
+                const hitbox = this.game.systems.combat.createHitbox(
+                    { x: data.x, y: data.y },
+                    data.facing,
+                    data.config.hitboxType,
+                    data.config.hitboxParams,
+                    { 
+                        color: 0xFF0000, 
+                        fillAlpha: 0.0, 
+                        lineAlpha: 0.0, 
+                        lineWidth: 3, 
+                        duration: 0.2 
+                    }
+                );
+                
+                if (hitbox) {
+                    // Only the attacking player applies damage
+                    if (isLocalPlayer) {
+                        this.game.systems.combat.applyHitEffects(player, hitbox, data.config.damage);
+                    }
                 }
             }
         });
@@ -360,15 +425,16 @@ export class NetworkClient {
         });
     }
     
-    sendAbilityRequest(abilityType) {
+    sendAbilityRequest(abilityType, extraData = {}) {
         if (!this.connected) {
             console.error('Cannot send ability request - not connected');
             return;
         }
         
-        console.log('Sending ability request to server:', abilityType);
+        console.log('Sending ability request to server:', abilityType, extraData);
         this.socket.emit('executeAbility', {
-            abilityType: abilityType
+            abilityType: abilityType,
+            ...extraData
         });
     }
 }
