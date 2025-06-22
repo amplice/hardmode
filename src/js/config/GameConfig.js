@@ -7,7 +7,7 @@ export const MONSTER_CONFIG = {
       hitPoints: 4, moveSpeed: 2, attackRange: 90, collisionRadius: 35, aggroRange: 800,
       xp: 20,
       animations: { // Animation properties
-        walk: { speed: 0.3 }, idle: { speed: 0.2 }, attack1: { speed: 0.25, hitFrame: 9 },
+        walk: { speed: 0.3 }, idle: { speed: 0.2 }, attack1: { speed: 0.25 },
         take_damage: { speed: 0.7 }, die: { speed: 0.2 }
       }
     },
@@ -15,7 +15,7 @@ export const MONSTER_CONFIG = {
       hitPoints: 2, moveSpeed: 2.5, attackRange: 70, collisionRadius: 15, aggroRange: 1200,
       xp: 5,
       animations: { // Animation properties
-        walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3, hitFrame: 8 },
+        walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3 },
         take_damage: { speed: 0.7 }, die: { speed: 0.5 }
       }
     },
@@ -23,7 +23,7 @@ export const MONSTER_CONFIG = {
       hitPoints: 3, moveSpeed: 2, attackRange: 100, collisionRadius: 15, aggroRange: 800,
       xp: 10,
       animations: { // Animation properties
-        walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3, hitFrame: 8 },
+        walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.3 },
         take_damage: { speed: 0.7 }, die: { speed: 0.2 }
       }
     },
@@ -31,7 +31,7 @@ export const MONSTER_CONFIG = {
       hitPoints: 2, moveSpeed: 3.5, attackRange: 70, collisionRadius: 10, aggroRange: 3000,
       xp: 15,
       animations: { // Animation properties
-        walk: { speed: 0.45 }, idle: { speed: 0.25 }, attack1: { speed: 0.4, hitFrame: 7 },
+        walk: { speed: 0.45 }, idle: { speed: 0.25 }, attack1: { speed: 0.4 },
         take_damage: { speed: 0.7 }, die: { speed: 0.25 }
       }
     },
@@ -39,7 +39,7 @@ export const MONSTER_CONFIG = {
       hitPoints: 1, moveSpeed: 3, attackRange: 500, collisionRadius: 15, aggroRange: 1500,
       xp: 10,
       animations: {
-        walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.35, hitFrame: 8 },
+        walk: { speed: 0.4 }, idle: { speed: 0.2 }, attack1: { speed: 0.35 },
         take_damage: { speed: 0.7 }, die: { speed: 0.3 }
       }
     }
@@ -139,7 +139,7 @@ export const PLAYER_CONFIG = {
       animations: { // Animation properties
         idle: { speed: 0.2 }, run: { speed: 0.5 }, run_backward: { speed: 0.5 },
         strafe_left: { speed: 0.5 }, strafe_right: { speed: 0.5 },
-        attack1: { speed: 0.4, hitFrame: 8 }, attack2: { speed: 0.3, hitFrame: 12 },
+        attack1: { speed: 0.4 }, attack2: { speed: 0.3 },
         roll: { speed: 0.5 },
         die: { speed: 0.2 }, take_damage: { speed: 0.5 }
       }
@@ -153,7 +153,7 @@ export const PLAYER_CONFIG = {
       animations: { // Animation properties
         idle: { speed: 0.15 }, run: { speed: 0.4 }, run_backward: { speed: 0.4 },
         strafe_left: { speed: 0.4 }, strafe_right: { speed: 0.4 },
-        attack1: { speed: 0.35, hitFrame: 8 }, attack2: { speed: 0.35, hitFrame: 12 },
+        attack1: { speed: 0.35 }, attack2: { speed: 0.35 },
         roll: { speed: 0.5 },
         die: { speed: 0.2 }, take_damage: { speed: 0.5 }
       }
@@ -167,7 +167,7 @@ export const PLAYER_CONFIG = {
       animations: { // Animation properties
         idle: { speed: 0.2 }, run: { speed: 0.5 }, run_backward: { speed: 0.5 },
         strafe_left: { speed: 0.5 }, strafe_right: { speed: 0.5 },
-        attack1: { speed: 0.5, hitFrame: 8 }, attack2: { speed: 0.5, hitFrame: 12 }, // attack2 is BackRoll
+        attack1: { speed: 0.5 }, attack2: { speed: 0.5 }, // attack2 is BackRoll
         roll: { speed: 0.5 },
         die: { speed: 0.2 }, take_damage: { speed: 0.5 }
       }
@@ -181,7 +181,7 @@ export const PLAYER_CONFIG = {
       animations: { // Animation properties
         idle: { speed: 0.25 }, run: { speed: 0.6 }, run_backward: { speed: 0.6 },
         strafe_left: { speed: 0.6 }, strafe_right: { speed: 0.6 },
-        attack1: { speed: 0.5, hitFrame: 7 }, attack2: { speed: 0.4, hitFrame: 10 }, // attack2 is Special2
+        attack1: { speed: 0.5 }, attack2: { speed: 0.4 }, // attack2 is Special2
         roll: { speed: 0.5 },
         die: { speed: 0.25 }, take_damage: { speed: 0.6 }
       }

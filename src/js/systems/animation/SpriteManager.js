@@ -283,8 +283,7 @@ export class SpriteManager {
             }
             this.animations[textureKey] = {
                 textures: this.textures[textureKey],
-                speed: properties.speed || 0.2, // Default speed if not specified
-                hitFrame: properties.hitFrame // Will be undefined if not applicable
+                speed: properties.speed || 0.2 // Default speed if not specified
             };
         }
     }
@@ -453,13 +452,6 @@ getAttackAnimation(facingDirection, attackType, characterClass) {
         : `${classPrefix}_attack2_${facingSuffix}`;
 }
     
-    getAttackHitFrame(animationName) {
-        if (!this.animations[animationName]) {
-            return 0;
-        }
-        
-        return this.animations[animationName].hitFrame || 0;
-    }
     
     getAttackHitArea(facingDirection, attackType) {
         // Define the hit areas for each attack type
