@@ -392,7 +392,7 @@ export const PLAYER_CONFIG = {
       attackFromStartPosition: true, // For hitbox placement
       hitboxType: 'cone',
       hitboxParams: {
-        range: 100,
+        range: 90,
         angle: 70
       },
       hitboxVisual: {
