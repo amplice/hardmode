@@ -73,7 +73,7 @@ setInterval(() => {
     // TODO: Implement per-client optimization
     io.emit('state', state);
     
-}, 1000 / 60); // 60Hz for more responsive networked play
+}, 1000 / GAME_CONSTANTS.TICK_RATE);
 
 // Spawn initial monsters
 monsterManager.spawnInitialMonsters(5);
@@ -81,5 +81,5 @@ monsterManager.spawnInitialMonsters(5);
 // Start server
 server.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
-    console.log(`Game running at 60 ticks per second (increased for networked play)`);
+    console.log(`Game running at ${GAME_CONSTANTS.TICK_RATE} ticks per second`);
 });
