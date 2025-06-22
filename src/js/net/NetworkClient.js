@@ -407,6 +407,19 @@ export class NetworkClient {
         });
     }
     
+    /**
+     * Send input command to server for client-side prediction
+     * @param {Object} inputCommand - Network input command from InputBuffer
+     */
+    sendPlayerInput(inputCommand) {
+        if (!this.connected) {
+            console.warn('Cannot send input - not connected to server');
+            return;
+        }
+        
+        this.socket.emit('playerInput', inputCommand);
+    }
+    
     createProjectile(data) {
         if (!this.connected) {
             console.error('Cannot create projectile - not connected');

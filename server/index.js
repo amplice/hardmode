@@ -10,6 +10,7 @@ import { GameStateManager } from './managers/GameStateManager.js';
 import { MonsterManager } from './managers/MonsterManager.js';
 import { ProjectileManager } from './managers/ProjectileManager.js';
 import { AbilityManager } from './managers/AbilityManager.js';
+import { InputProcessor } from './systems/InputProcessor.js';
 import { SocketHandler } from './network/SocketHandler.js';
 import { NetworkOptimizer } from './network/NetworkOptimizer.js';
 import { setupDebugEndpoint } from './middleware/debugEndpoint.js';
@@ -37,7 +38,8 @@ const gameState = new GameStateManager(io);
 const monsterManager = new MonsterManager(io);
 const projectileManager = new ProjectileManager(io);
 const abilityManager = new AbilityManager(io, gameState, projectileManager);
-const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager);
+const inputProcessor = new InputProcessor(gameState, abilityManager);
+const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor);
 const networkOptimizer = new NetworkOptimizer();
 
 // Cross-reference managers
@@ -54,6 +56,7 @@ setInterval(() => {
     
     // Update game systems
     gameState.update(deltaTime);
+    inputProcessor.processAllInputs(deltaTime); // Process client inputs
     monsterManager.update(deltaTime, gameState.players);
     projectileManager.update(deltaTime, gameState.players, monsterManager.monsters);
     

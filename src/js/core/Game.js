@@ -2,6 +2,7 @@
 import * as PIXI from 'pixi.js';
 import { Player }         from '../entities/Player.js';
 import { InputSystem }    from '../systems/Input.js';
+import { InputBuffer }    from '../systems/InputBuffer.js';
 import { PhysicsSystem }  from '../systems/Physics.js';
 import { WorldGenerator } from '../systems/world/WorldGenerator.js';
 import { CombatSystem }   from '../systems/CombatSystem.js';
@@ -54,6 +55,7 @@ export class Game {
 
     this.systems = {
       input:   new InputSystem(),
+      inputBuffer: new InputBuffer(),
       physics: new PhysicsSystem(),
       world:   null,               // will init after tilesets
       combat:  new CombatSystem(this.app),
@@ -158,10 +160,26 @@ export class Game {
     
     const deltaTimeSeconds = delta / 60;
 
-    // 1. Update player input and intended movement
+    // 1. Capture and process input
     const inputState = this.systems.input.update();
     const prevPlayerState = this.entities.player.isAttacking ? 'attacking' : 'idle';
     const prevPlayerHP = this.entities.player.hitPoints;
+
+    // For Phase 1: Send inputs to server instead of positions
+    if (this.network && this.network.connected) {
+      // Create input command for network
+      const inputData = {
+        keys: this.getActiveKeys(inputState),
+        facing: this.entities.player.facing,
+        deltaTime: deltaTimeSeconds
+      };
+      
+      // Add to buffer and send to server
+      const networkInput = this.systems.inputBuffer.createNetworkInput(inputData);
+      this.network.sendPlayerInput(networkInput);
+    }
+
+    // Continue with local player update for now (will be prediction in Phase 2)
     this.entities.player.update(deltaTimeSeconds, inputState);
     
     // Log player state changes
@@ -203,9 +221,10 @@ export class Game {
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
 
-    if (this.network) {
-      this.network.sendPlayerUpdate(this.entities.player);
-    }
+    // Remove old position sending - now using input commands
+    // if (this.network) {
+    //   this.network.sendPlayerUpdate(this.entities.player);
+    // }
 
     // Update remote player animations
     this.updateRemotePlayers(deltaTimeSeconds);
@@ -215,6 +234,21 @@ export class Game {
     
     // Capture debug state every frame
     this.debugLogger.captureGameState(this);
+  }
+
+  /**
+   * Extract active keys from input state for network transmission
+   */
+  getActiveKeys(inputState) {
+    const keys = [];
+    if (inputState.up) keys.push('w');
+    if (inputState.down) keys.push('s');
+    if (inputState.left) keys.push('a');
+    if (inputState.right) keys.push('d');
+    if (inputState.primaryAttack) keys.push('mouse1');
+    if (inputState.secondaryAttack) keys.push('space');
+    if (inputState.roll) keys.push('shift');
+    return keys;
   }
 
   updateCamera() {

@@ -2,12 +2,13 @@ import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 import { getDistance } from '../../shared/utils/MathUtils.js';
 
 export class SocketHandler {
-    constructor(io, gameState, monsterManager, projectileManager, abilityManager) {
+    constructor(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor) {
         this.io = io;
         this.gameState = gameState;
         this.monsterManager = monsterManager;
         this.projectileManager = projectileManager;
         this.abilityManager = abilityManager;
+        this.inputProcessor = inputProcessor;
         this.setupEventHandlers();
     }
 
@@ -43,6 +44,7 @@ export class SocketHandler {
 
     setupPlayerHandlers(socket) {
         socket.on('playerUpdate', data => this.handlePlayerUpdate(socket, data));
+        socket.on('playerInput', data => this.handlePlayerInput(socket, data)); // New input handler
         socket.on('attack', data => this.handlePlayerAttack(socket, data));
         socket.on('executeAbility', data => this.handleExecuteAbility(socket, data));
         socket.on('attackMonster', data => this.handleAttackMonster(socket, data));
@@ -80,6 +82,11 @@ export class SocketHandler {
             y: player.y,
             facing: player.facing
         });
+    }
+
+    handlePlayerInput(socket, data) {
+        // Queue input command for processing
+        this.inputProcessor.queueInput(socket.id, data);
     }
 
     handleExecuteAbility(socket, data) {
@@ -152,6 +159,7 @@ export class SocketHandler {
     handleDisconnect(socket) {
         console.log(`Player ${socket.id} disconnected`);
         this.abilityManager.removePlayer(socket.id);
+        this.inputProcessor.removePlayer(socket.id);
         this.gameState.removePlayer(socket.id);
         socket.broadcast.emit('playerLeft', socket.id);
     }
