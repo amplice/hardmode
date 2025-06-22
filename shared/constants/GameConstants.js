@@ -35,7 +35,7 @@ export const GAME_CONSTANTS = {
     
     // Monster settings
     MONSTER: {
-        DAMAGE_STUN_DURATION: 0.5 // seconds - longer than player to make combat more manageable
+        DAMAGE_STUN_DURATION: 0.36 // seconds - matches hit animation duration (15 frames at 0.7 speed)
     },
     
     // Level progression settings
