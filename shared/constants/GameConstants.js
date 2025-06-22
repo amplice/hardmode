@@ -72,8 +72,8 @@ export const MONSTER_STATS = {
         xp: 20,
         attackCooldown: 2500,
         collisionRadius: 35,
-        attackDelay: 500, // ms delay before damage (windup + attack delay from single player)
-        attackDuration: 1500 // Total animation duration
+        attackDelay: 750, // ms delay before damage (75% of 1000ms animation)
+        attackDuration: 1000 // Total animation duration (15 frames at 0.25 speed)
     },
     skeleton: {
         hp: 2,
@@ -84,8 +84,8 @@ export const MONSTER_STATS = {
         xp: 5,
         attackCooldown: 1800,
         collisionRadius: 15,
-        attackDelay: 550, // ms delay before damage (windup + attack delay from single player)
-        attackDuration: 1100
+        attackDelay: 625, // ms delay before damage (75% of 833ms animation)
+        attackDuration: 833 // Total animation duration (15 frames at 0.3 speed)
     },
     elemental: {
         hp: 3,
@@ -96,8 +96,8 @@ export const MONSTER_STATS = {
         xp: 10,
         attackCooldown: 3000,
         collisionRadius: 15,
-        attackDelay: 800, // ms delay before damage (windup + attack delay from single player)
-        attackDuration: 1200
+        attackDelay: 625, // ms delay before damage (75% of 833ms animation)
+        attackDuration: 833 // Total animation duration (15 frames at 0.3 speed)
     },
     ghoul: {
         hp: 2,
@@ -108,8 +108,8 @@ export const MONSTER_STATS = {
         xp: 15,
         attackCooldown: 1200,
         collisionRadius: 10,
-        attackDelay: 400, // ms delay before damage (windup + attack delay from single player)
-        attackDuration: 700
+        attackDelay: 469, // ms delay before damage (75% of 625ms animation)
+        attackDuration: 625 // Total animation duration (15 frames at 0.4 speed)
     },
     wildarcher: {
         hp: 1,
@@ -120,8 +120,8 @@ export const MONSTER_STATS = {
         xp: 10,
         attackCooldown: 3000,
         collisionRadius: 15,
-        attackDelay: 750, // ms delay before damage (windup + attack delay from single player)
-        attackDuration: 1000
+        attackDelay: 536, // ms delay before damage (75% of 714ms animation)
+        attackDuration: 714 // Total animation duration (15 frames at 0.35 speed)
     }
 };
 
