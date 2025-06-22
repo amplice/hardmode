@@ -2,11 +2,12 @@ import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 import { getDistance } from '../../shared/utils/MathUtils.js';
 
 export class SocketHandler {
-    constructor(io, gameState, monsterManager, projectileManager) {
+    constructor(io, gameState, monsterManager, projectileManager, abilityManager) {
         this.io = io;
         this.gameState = gameState;
         this.monsterManager = monsterManager;
         this.projectileManager = projectileManager;
+        this.abilityManager = abilityManager;
         this.setupEventHandlers();
     }
 
@@ -43,6 +44,7 @@ export class SocketHandler {
     setupPlayerHandlers(socket) {
         socket.on('playerUpdate', data => this.handlePlayerUpdate(socket, data));
         socket.on('attack', data => this.handlePlayerAttack(socket, data));
+        socket.on('executeAbility', data => this.handleExecuteAbility(socket, data));
         socket.on('attackMonster', data => this.handleAttackMonster(socket, data));
         socket.on('createProjectile', data => this.handleCreateProjectile(socket, data));
         socket.on('setClass', cls => this.handleSetClass(socket, cls));
@@ -52,6 +54,11 @@ export class SocketHandler {
     handlePlayerUpdate(socket, data) {
         const player = this.gameState.getPlayer(socket.id);
         if (!player) return;
+        
+        // Ignore position updates if player is in a server-controlled ability
+        if (this.abilityManager.activeAbilities.has(player.id)) {
+            return; // Server controls position during abilities
+        }
         
         // Update player position and facing
         player.x = data.x;
@@ -73,6 +80,11 @@ export class SocketHandler {
             y: player.y,
             facing: player.facing
         });
+    }
+
+    handleExecuteAbility(socket, data) {
+        // Use the AbilityManager to execute abilities server-side
+        this.abilityManager.executeAbility(socket.id, data.abilityType, data);
     }
 
     handleAttackMonster(socket, data) {
@@ -139,6 +151,7 @@ export class SocketHandler {
 
     handleDisconnect(socket) {
         console.log(`Player ${socket.id} disconnected`);
+        this.abilityManager.removePlayer(socket.id);
         this.gameState.removePlayer(socket.id);
         socket.broadcast.emit('playerLeft', socket.id);
     }

@@ -9,6 +9,7 @@ import { GAME_CONSTANTS } from '../shared/constants/GameConstants.js';
 import { GameStateManager } from './managers/GameStateManager.js';
 import { MonsterManager } from './managers/MonsterManager.js';
 import { ProjectileManager } from './managers/ProjectileManager.js';
+import { AbilityManager } from './managers/AbilityManager.js';
 import { SocketHandler } from './network/SocketHandler.js';
 import { NetworkOptimizer } from './network/NetworkOptimizer.js';
 import { setupDebugEndpoint } from './middleware/debugEndpoint.js';
@@ -35,7 +36,8 @@ setupDebugEndpoint(app);
 const gameState = new GameStateManager(io);
 const monsterManager = new MonsterManager(io);
 const projectileManager = new ProjectileManager(io);
-const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager);
+const abilityManager = new AbilityManager(io, gameState, projectileManager);
+const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager);
 const networkOptimizer = new NetworkOptimizer();
 
 // Cross-reference managers

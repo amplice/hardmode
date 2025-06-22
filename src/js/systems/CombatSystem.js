@@ -370,149 +370,28 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
   }
 
   _executeJumpAttack(entity, attackConfig, attackType) {
-    let destination;
-    const startPosition = entity.startPositionForAttack; // Use stored start position
-
-    if (attackConfig.backwardJump) {
-        const facingAngle = directionStringToAngleRadians(entity.facing);
-        const backwardAngle = facingAngle + Math.PI;
-        destination = {
-            x: startPosition.x + Math.cos(backwardAngle) * attackConfig.dashDistance,
-            y: startPosition.y + Math.sin(backwardAngle) * attackConfig.dashDistance
-        };
-    } else {
-        destination = this.calculateJumpDestination(startPosition, entity.facing, attackConfig.dashDistance);
+    // For local player, send ability request to server
+    if (entity === window.game.entities.player) {
+        window.game.network.sendAbilityRequest(attackType);
+        // Don't execute locally - wait for server response
+        return attackConfig.cooldown;
     }
-
-    const isInvulnerableDuringJump = attackConfig.invulnerable || false;
-    if (isInvulnerableDuringJump) {
-        entity.isInvulnerable = true;
-    }
-
-    setTimeout(() => { // After windupTime
-        if (!entity.isAttacking || entity.currentAttackType !== attackType) {
-            if (isInvulnerableDuringJump) entity.isInvulnerable = false;
-            return;
-        }
-
-        const jumpStartTime = performance.now();
-        const jumpDuration = attackConfig.jumpDuration;
-        const peakHeight = attackConfig.jumpHeight || 80;
-        const animateJumpFrame = (timestamp) => {
-            const elapsed = timestamp - jumpStartTime;
-            const progress = Math.min(elapsed / jumpDuration, 1);
-            if (progress >= 1) {
-                entity.position.x = destination.x;
-                entity.position.y = destination.y;
-                entity.sprite.position.set(destination.x, destination.y);
-                return;
-            }
-            entity.position.x = startPosition.x + (destination.x - startPosition.x) * progress;
-            entity.position.y = startPosition.y + (destination.y - startPosition.y) * progress;
-            const jumpHeight = Math.sin(Math.PI * progress) * peakHeight;
-            entity.sprite.position.set(entity.position.x, entity.position.y - jumpHeight);
-            requestAnimationFrame(animateJumpFrame);
-        };
-        requestAnimationFrame(animateJumpFrame);
-
-        const actionDelay = attackConfig.actionPointDelay !== undefined ? attackConfig.actionPointDelay : attackConfig.jumpDuration;
-        setTimeout(() => {
-            if (!entity.isAttacking || entity.currentAttackType !== attackType) {
-                if (isInvulnerableDuringJump) entity.isInvulnerable = false;
-                return;
-            }
-            const hitboxAttackPosition = attackConfig.attackFromStartPosition ? startPosition : entity.position;
-            const hitbox = this.createHitbox(
-                hitboxAttackPosition, entity.facing, attackConfig.hitboxType,
-                attackConfig.hitboxParams, attackConfig.hitboxVisual
-            );
-            if (hitbox) {
-                const graphics = hitbox.draw();
-                window.game.entityContainer.addChild(graphics); // Consider alternative
-                this.activeAttacks.push({
-                    hitbox, lifetime: attackConfig.hitboxVisual.duration,
-                    attackType, entity, damage: attackConfig.damage
-                });
-                this.applyHitEffects(entity, hitbox, attackConfig.damage);
-            }
-            if (isInvulnerableDuringJump) {
-                entity.isInvulnerable = false;
-            }
-            setTimeout(() => {
-                if (entity.isAttacking && entity.currentAttackType === attackType) {
-                    entity.combat.endAttack();
-                }
-            }, attackConfig.recoveryTime);
-        }, actionDelay);
-    }, attackConfig.windupTime);
+    
+    // For remote players, movement will be handled via server events
+    // This method should only be called for the local player
     return attackConfig.cooldown;
   }
 
   _executeDashAttack(entity, attackConfig, attackType) {
-    const startPosition = entity.startPositionForAttack; // Use stored start position
-    const destination = this.calculateJumpDestination(startPosition, entity.facing, attackConfig.dashDistance);
-
-    const invul = attackConfig.invulnerable || false;
-    if (invul) {
-      entity.isInvulnerable = true;
+    // For local player, send ability request to server
+    if (entity === window.game.entities.player) {
+        window.game.network.sendAbilityRequest(attackType);
+        // Don't execute locally - wait for server response
+        return attackConfig.cooldown;
     }
-
-    setTimeout(() => { // After windupTime
-      if (!entity.isAttacking || entity.currentAttackType !== attackType) return;
-
-      const dashStartTime = performance.now();
-      const dashDuration = attackConfig.dashDuration;
-      const hitbox = this.createHitbox(
-        startPosition, entity.facing, attackConfig.hitboxType,
-        attackConfig.hitboxParams, attackConfig.hitboxVisual
-      );
-      if (hitbox) {
-        const graphics = hitbox.draw();
-        window.game.entityContainer.addChild(graphics); // Consider alternative
-        this.activeAttacks.push({
-          hitbox, lifetime: attackConfig.hitboxVisual.duration,
-          attackType, entity, damage: attackConfig.damage
-        });
-        this.applyHitEffects(entity, hitbox, attackConfig.damage);
-      }
-      
-      // Programmatic trail effects specific to dash
-      let lastEffectTime = 0;
-      const effectInterval = 50; // ms
-      const animateDashFrame = (timestamp) => {
-        const elapsed = timestamp - dashStartTime;
-        const progress = Math.min(elapsed / dashDuration, 1);
-        if (progress >= 1) {
-          entity.position.x = destination.x;
-          entity.position.y = destination.y;
-          entity.sprite.position.set(destination.x, destination.y);
-          if (invul) entity.isInvulnerable = false;
-          return;
-        }
-        entity.position.x = startPosition.x + (destination.x - startPosition.x) * progress;
-        entity.position.y = startPosition.y + (destination.y - startPosition.y) * progress;
-        entity.sprite.position.set(entity.position.x, entity.position.y);
-        
-        // Rogue dash trail is often continuous rather than from sequence item; this specific logic can stay if preferred.
-        // Or, this can be replaced by configuring many effects in effectSequence for the dash trail.
-        // For simplicity, keeping this programmatic trail for now unless specified otherwise.
-        // If 'rogue_dash_effect' is in sequence with timing: windupTime, it will play once.
-        // If more are needed, they'd be in the sequence.
-        if (attackConfig.effectType === 'rogue_dash_effect' && timestamp - lastEffectTime > effectInterval) { // Example: if a specific effect type is for trail
-            lastEffectTime = timestamp;
-            this.createEffect('rogue_dash_effect', { ...entity.position }, entity.facing, entity, true);
-        }
-        requestAnimationFrame(animateDashFrame);
-      };
-      requestAnimationFrame(animateDashFrame);
-      
-      setTimeout(() => {
-        if (entity.isAttacking && entity.currentAttackType === attackType) {
-          entity.combat.endAttack();
-        }
-        if (invul) entity.isInvulnerable = false;
-      }, attackConfig.dashDuration + attackConfig.recoveryTime);
-    }, attackConfig.windupTime);
+    
+    // For remote players, movement will be handled via server events
+    // This method should only be called for the local player
     return attackConfig.cooldown;
   }
   

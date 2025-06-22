@@ -266,6 +266,57 @@ export class NetworkClient {
                 this.game.projectileRenderer.destroyProjectile(data.id, data.reason);
             }
         });
+        
+        // Handle ability events from server
+        this.socket.on('playerAbilityStart', (data) => {
+            // Handle movement abilities that need visual updates
+            if (data.type === 'dash' || data.type === 'jump') {
+                const isLocalPlayer = data.playerId === this.socket.id;
+                const player = isLocalPlayer ? 
+                    this.game.entities.player : 
+                    this.game.remotePlayers?.get(data.playerId);
+                    
+                if (player) {
+                    // The server controls the movement, we just need to handle visual effects
+                    // and animation state
+                    player.isAttacking = true;
+                    player.currentAttackType = data.abilityKey;
+                    
+                    // For jump attacks, we might want to show a jump arc visually
+                    if (data.type === 'jump' && player.sprite) {
+                        // Store the jump data for visual interpolation
+                        player.jumpData = {
+                            startX: data.startX,
+                            startY: data.startY,
+                            endX: data.endX,
+                            endY: data.endY,
+                            startTime: Date.now(),
+                            duration: data.duration,
+                            backwardJump: data.backwardJump
+                        };
+                    }
+                }
+            }
+        });
+        
+        this.socket.on('playerAbilityComplete', (data) => {
+            const isLocalPlayer = data.playerId === this.socket.id;
+            const player = isLocalPlayer ? 
+                this.game.entities.player : 
+                this.game.remotePlayers?.get(data.playerId);
+                
+            if (player) {
+                // Clear ability state
+                if (player.jumpData) {
+                    delete player.jumpData;
+                }
+                
+                // End the attack state if needed
+                if (player.combat && player.isAttacking) {
+                    player.combat.endAttack();
+                }
+            }
+        });
     }
 
     sendMonsterDamage(monsterId, damage, attackType) {
@@ -306,6 +357,18 @@ export class NetworkClient {
             damage: data.damage,
             range: data.range,
             effectType: data.effectType
+        });
+    }
+    
+    sendAbilityRequest(abilityType) {
+        if (!this.connected) {
+            console.error('Cannot send ability request - not connected');
+            return;
+        }
+        
+        console.log('Sending ability request to server:', abilityType);
+        this.socket.emit('executeAbility', {
+            abilityType: abilityType
         });
     }
 }
