@@ -3,8 +3,6 @@ import * as PIXI from 'pixi.js';
 import { Player }         from '../entities/Player.js';
 import { InputSystem }    from '../systems/Input.js';
 import { InputBuffer }    from '../systems/InputBuffer.js';
-import { MovementPredictor } from '../systems/MovementPredictor.js';
-import { Reconciler } from '../systems/Reconciler.js';
 import { PhysicsSystem }  from '../systems/Physics.js';
 import { WorldGenerator } from '../systems/world/WorldGenerator.js';
 import { CombatSystem }   from '../systems/CombatSystem.js';
@@ -58,16 +56,11 @@ export class Game {
     this.systems = {
       input:   new InputSystem(),
       inputBuffer: new InputBuffer(),
-      predictor: new MovementPredictor(),
-      reconciler: null, // Will initialize after predictor and inputBuffer are ready
       physics: new PhysicsSystem(),
       world:   null,               // will init after tilesets
       combat:  new CombatSystem(this.app),
       sprites: new SpriteManager()
     };
-    
-    // Initialize reconciler with dependencies
-    this.systems.reconciler = new Reconciler(this.systems.inputBuffer, this.systems.predictor);
 
     this.entities = { player: null };
     window.game = this;
@@ -172,7 +165,7 @@ export class Game {
     const prevPlayerState = this.entities.player.isAttacking ? 'attacking' : 'idle';
     const prevPlayerHP = this.entities.player.hitPoints;
 
-    // Phase 2: Client-side prediction + input sending
+    // For Phase 1: Send inputs to server instead of positions
     if (this.network && this.network.connected) {
       // Create input command for network
       const inputData = {
@@ -184,47 +177,10 @@ export class Game {
       // Add to buffer and send to server
       const networkInput = this.systems.inputBuffer.createNetworkInput(inputData);
       this.network.sendPlayerInput(networkInput);
-
-      // PHASE 2: Predict movement immediately for responsive feel
-      // Skip prediction during server-controlled abilities (dash/jump)
-      const isServerControlled = this.entities.player.isAttacking && 
-                                  this.entities.player.currentAttackType &&
-                                  ['secondary'].includes(this.entities.player.currentAttackType);
-                                  
-      if (!isServerControlled) {
-        
-        const currentState = {
-          x: this.entities.player.position.x,
-          y: this.entities.player.position.y,
-          facing: this.entities.player.facing,
-          class: this.entities.player.characterClass
-        };
-
-        const predictedState = this.systems.predictor.predictMovement(currentState, networkInput);
-        
-        // Update visual position immediately (client prediction)
-        this.entities.player.position.x = predictedState.x;
-        this.entities.player.position.y = predictedState.y;
-        this.entities.player.facing = predictedState.facing;
-        this.entities.player.sprite.position.set(predictedState.x, predictedState.y);
-      }
-
-      // Store server position separately for reconciliation
-      if (!this.entities.player.serverPosition) {
-        this.entities.player.serverPosition = { 
-          x: this.entities.player.position.x, 
-          y: this.entities.player.position.y 
-        };
-      }
-
-      // Still need to handle non-movement updates (attacks, animations, etc.)
-      // But skip the movement component
-      this.entities.player.handleNonMovementUpdate(deltaTimeSeconds, inputState);
-      
-    } else {
-      // Fallback to local-only movement when not connected
-      this.entities.player.update(deltaTimeSeconds, inputState);
     }
+
+    // Continue with local player update for now (will be prediction in Phase 2)
+    this.entities.player.update(deltaTimeSeconds, inputState);
     
     // Log player state changes
     if (prevPlayerState !== (this.entities.player.isAttacking ? 'attacking' : 'idle')) {
@@ -261,12 +217,6 @@ export class Game {
     if (this.projectileRenderer) {
       this.projectileRenderer.update(deltaTimeSeconds);
     }
-    
-    // PHASE 3: Update reconciliation smoothing if active
-    if (this.network && this.network.connected && this.systems.reconciler) {
-      this.systems.reconciler.updateSmoothing(this.entities.player, deltaTimeSeconds);
-    }
-    
     this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
@@ -299,28 +249,6 @@ export class Game {
     if (inputState.secondaryAttack) keys.push('space');
     if (inputState.roll) keys.push('shift');
     return keys;
-  }
-
-  /**
-   * Handle server state reconciliation for local player
-   * Called when we receive authoritative state from server
-   */
-  handleServerStateReconciliation(serverPlayerState) {
-    if (!this.entities.player || !this.systems.reconciler) {
-      return;
-    }
-
-    // Only reconcile if we should (throttling)
-    if (!this.systems.reconciler.shouldReconcile()) {
-      return;
-    }
-
-    // Perform reconciliation
-    const reconciled = this.systems.reconciler.reconcile(serverPlayerState, this.entities.player);
-    
-    if (reconciled) {
-      console.log('[Game] Reconciliation performed', this.systems.reconciler.getStats());
-    }
   }
 
   updateCamera() {
