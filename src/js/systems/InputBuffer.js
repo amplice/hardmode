@@ -26,7 +26,11 @@ export class InputBuffer {
             sequence: this.sequenceNumber,
             timestamp: timestamp,
             clientTime: performance.now(), // High precision client time
-            ...inputData
+            data: {
+                keys: inputData.keys || [],
+                facing: inputData.facing,
+                deltaTime: inputData.deltaTime || 0.016
+            }
         };
 
         this.inputs.set(this.sequenceNumber, bufferedInput);

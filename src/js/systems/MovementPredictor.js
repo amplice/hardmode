@@ -31,6 +31,12 @@ export class MovementPredictor {
      * @returns {Object} Predicted new state
      */
     predictMovement(currentState, input) {
+        // Safety check for input data
+        if (!input || !input.data) {
+            console.warn('[MovementPredictor] Invalid input data:', input);
+            return currentState;
+        }
+        
         // Create new predicted state
         const newState = {
             x: currentState.x,
@@ -42,7 +48,7 @@ export class MovementPredictor {
         };
 
         // Extract movement from keys (match server logic exactly)
-        const movement = this.extractMovement(input.data.keys);
+        const movement = this.extractMovement(input.data.keys || []);
         
         // Apply movement if we have any
         if (movement.x !== 0 || movement.y !== 0) {
