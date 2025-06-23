@@ -116,22 +116,31 @@ export class GameStateManager {
         });
     }
 
-    getSerializedPlayers() {
-        return Array.from(this.players.values()).map(p => ({
-            id: p.id,
-            x: p.x,
-            y: p.y,
-            facing: p.facing,
-            class: p.class,
-            hp: p.hp,
-            maxHp: p.maxHp,
-            level: p.level,
-            spawnProtectionTimer: p.spawnProtectionTimer,
-            moveSpeedBonus: p.moveSpeedBonus,
-            attackRecoveryBonus: p.attackRecoveryBonus,
-            attackCooldownBonus: p.attackCooldownBonus,
-            rollUnlocked: p.rollUnlocked
-        }));
+    getSerializedPlayers(inputProcessor = null) {
+        return Array.from(this.players.values()).map(p => {
+            const serialized = {
+                id: p.id,
+                x: p.x,
+                y: p.y,
+                facing: p.facing,
+                class: p.class,
+                hp: p.hp,
+                maxHp: p.maxHp,
+                level: p.level,
+                spawnProtectionTimer: p.spawnProtectionTimer,
+                moveSpeedBonus: p.moveSpeedBonus,
+                attackRecoveryBonus: p.attackRecoveryBonus,
+                attackCooldownBonus: p.attackCooldownBonus,
+                rollUnlocked: p.rollUnlocked
+            };
+            
+            // Add last processed sequence for client prediction reconciliation
+            if (inputProcessor) {
+                serialized.lastProcessedSeq = inputProcessor.getLastProcessedSequence(p.id);
+            }
+            
+            return serialized;
+        });
     }
 
     getGameState() {

@@ -959,6 +959,14 @@ export class Player {
             return;
         }
         
+        // Update facing from mouse (prediction doesn't handle this)
+        if (inputState.mousePosition) {
+            this.movement.updateFacingFromMouse(inputState.mousePosition);
+        }
+        
+        // Update movement state for animations (but not position)
+        this.updateMovementStateForAnimation(inputState);
+        
         // Update combat (for attacks, but not movement)
         this.combat.update(deltaTime, inputState);
         
@@ -967,6 +975,32 @@ export class Player {
         
         // Apply tints after all updates
         this.animation.applyCurrentTints();
+    }
+    
+    /**
+     * Update movement state for animation without changing position
+     */
+    updateMovementStateForAnimation(inputState) {
+        // Check if we're moving based on input
+        const isMoving = inputState.up || inputState.down || inputState.left || inputState.right;
+        this.isMoving = isMoving;
+        
+        // Update movement direction for animation
+        if (isMoving && !this.isAttacking) {
+            let vx = 0, vy = 0;
+            if (inputState.up) vy = -1;
+            if (inputState.down) vy = 1;
+            if (inputState.left) vx = -1;
+            if (inputState.right) vx = 1;
+            
+            // Use the same logic as MovementComponent
+            this.movementDirection = velocityToDirectionString(vx, vy);
+        } else {
+            this.movementDirection = null;
+        }
+        
+        // Update lastFacing for animation system
+        this.lastFacing = this.facing;
     }
     
     // Public API methods (accessible to other systems)

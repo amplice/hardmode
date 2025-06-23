@@ -46,11 +46,24 @@ export class NetworkClient {
         this.socket.on('state', state => {
             state.players.forEach(p => {
                 if (p.id === this.id) {
-                    // PHASE 2: Store server position separately for reconciliation
-                    if (this.game.entities.player) {
+                    // PHASE 3: Use reconciler for server state updates
+                    if (this.game.entities.player && this.game.systems.reconciler) {
                         const player = this.game.entities.player;
                         
-                        // Update server position (don't affect visual position during prediction)
+                        // Perform reconciliation if we have sequence number
+                        if (p.lastProcessedSeq !== undefined) {
+                            const reconciled = this.game.systems.reconciler.reconcile(p, player);
+                            if (reconciled) {
+                                console.log('[NetworkClient] Position reconciled by server');
+                            }
+                        } else {
+                            // Fallback to direct position update if no sequence
+                            player.position.x = p.x;
+                            player.position.y = p.y;
+                            player.sprite.position.set(p.x, p.y);
+                        }
+                        
+                        // Update server position tracking
                         if (!player.serverPosition) {
                             player.serverPosition = { x: p.x, y: p.y };
                         } else {
@@ -59,6 +72,7 @@ export class NetworkClient {
                         }
                         
                         // Sync non-position data from server
+                        player.facing = p.facing || player.facing;
                         player.hitPoints = p.hp;
                         player.level = p.level || player.level;
                         player.experience = p.xp || player.experience;

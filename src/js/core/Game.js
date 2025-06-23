@@ -4,6 +4,7 @@ import { Player }         from '../entities/Player.js';
 import { InputSystem }    from '../systems/Input.js';
 import { InputBuffer }    from '../systems/InputBuffer.js';
 import { MovementPredictor } from '../systems/MovementPredictor.js';
+import { Reconciler } from '../systems/Reconciler.js';
 import { PhysicsSystem }  from '../systems/Physics.js';
 import { WorldGenerator } from '../systems/world/WorldGenerator.js';
 import { CombatSystem }   from '../systems/CombatSystem.js';
@@ -58,11 +59,15 @@ export class Game {
       input:   new InputSystem(),
       inputBuffer: new InputBuffer(),
       predictor: new MovementPredictor(),
+      reconciler: null, // will init after predictor
       physics: new PhysicsSystem(),
       world:   null,               // will init after tilesets
       combat:  new CombatSystem(this.app),
       sprites: new SpriteManager()
     };
+    
+    // Initialize reconciler after predictor
+    this.systems.reconciler = new Reconciler(this.systems.inputBuffer, this.systems.predictor);
 
     this.entities = { player: null };
     window.game = this;

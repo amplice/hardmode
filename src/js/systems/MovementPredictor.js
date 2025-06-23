@@ -102,7 +102,7 @@ export class MovementPredictor {
         const speedModifier = this.calculateSpeedModifier(state, movement);
         const finalSpeed = totalSpeed * speedModifier;
 
-        // Calculate new position (match server formula)
+        // Calculate new position (match server formula exactly)
         const velocity = {
             x: movement.x * finalSpeed * deltaTime * 60, // Convert to pixels per frame
             y: movement.y * finalSpeed * deltaTime * 60

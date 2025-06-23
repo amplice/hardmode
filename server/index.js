@@ -70,7 +70,7 @@ setInterval(() => {
     
     // Prepare and send optimized state updates
     const state = {
-        players: gameState.getSerializedPlayers(),
+        players: gameState.getSerializedPlayers(inputProcessor),
         monsters: monsterManager.getSerializedMonsters(visibleMonsters),
         projectiles: projectileManager.getSerializedProjectiles()
     };
