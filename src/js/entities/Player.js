@@ -943,6 +943,31 @@ export class Player {
         // Apply tints after all updates
         this.animation.applyCurrentTints();
     }
+
+    /**
+     * Handle non-movement updates during client prediction
+     * Used when client prediction handles movement but other systems still need updates
+     */
+    handleNonMovementUpdate(deltaTime, inputState) {
+        // Update health component first
+        this.health.update(deltaTime);
+        
+        // If taking damage or dying, don't process other components except animation
+        if (this.isTakingDamage || this.isDying || this.isDead) {
+            // Only update animation - position is handled by prediction
+            this.animation.update();
+            return;
+        }
+        
+        // Update combat (for attacks, but not movement)
+        this.combat.update(deltaTime, inputState);
+        
+        // Always update animation last
+        this.animation.update();
+        
+        // Apply tints after all updates
+        this.animation.applyCurrentTints();
+    }
     
     // Public API methods (accessible to other systems)
     takeDamage(amount) {

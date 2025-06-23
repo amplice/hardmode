@@ -46,17 +46,34 @@ export class NetworkClient {
         this.socket.on('state', state => {
             state.players.forEach(p => {
                 if (p.id === this.id) {
-                    this.game.updateLocalPlayerState(p);
-                    // Sync bonuses from server if they're included
-                    if (p.moveSpeedBonus !== undefined && this.game.entities.player) {
+                    // PHASE 2: Store server position separately for reconciliation
+                    if (this.game.entities.player) {
                         const player = this.game.entities.player;
-                        player.moveSpeedBonus = p.moveSpeedBonus;
-                        player.attackRecoveryBonus = p.attackRecoveryBonus;
-                        player.attackCooldownBonus = p.attackCooldownBonus;
-                        player.rollUnlocked = p.rollUnlocked;
-                        // Update move speed if it changed
-                        const baseSpeed = player.getClassMoveSpeed();
-                        player.moveSpeed = baseSpeed + player.moveSpeedBonus;
+                        
+                        // Update server position (don't affect visual position during prediction)
+                        if (!player.serverPosition) {
+                            player.serverPosition = { x: p.x, y: p.y };
+                        } else {
+                            player.serverPosition.x = p.x;
+                            player.serverPosition.y = p.y;
+                        }
+                        
+                        // Sync non-position data from server
+                        player.hitPoints = p.hp;
+                        player.level = p.level || player.level;
+                        player.experience = p.xp || player.experience;
+                        
+                        // Sync bonuses from server if they're included
+                        if (p.moveSpeedBonus !== undefined) {
+                            player.moveSpeedBonus = p.moveSpeedBonus;
+                            player.attackRecoveryBonus = p.attackRecoveryBonus;
+                            player.attackCooldownBonus = p.attackCooldownBonus;
+                            player.rollUnlocked = p.rollUnlocked;
+                            // Update move speed if it changed
+                            const baseSpeed = player.getClassMoveSpeed();
+                            player.moveSpeed = baseSpeed + player.moveSpeedBonus;
+                        }
+                        
                         // Also sync max HP if it changed
                         if (p.maxHp !== undefined && player.maxHitPoints !== p.maxHp) {
                             player.maxHitPoints = p.maxHp;
