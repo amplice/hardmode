@@ -180,7 +180,8 @@ export class MovementPredictor {
         console.log(`[MovementPredictor] Confirming states up to sequence ${confirmedSequence}`);
         let deletedCount = 0;
         for (const [sequence, state] of this.predictedStates) {
-            if (sequence <= confirmedSequence) {
+            // Keep the confirmed sequence for reconciliation, only delete older ones
+            if (sequence < confirmedSequence) {
                 this.predictedStates.delete(sequence);
                 deletedCount++;
             }

@@ -130,3 +130,6 @@ Then open `http://localhost:3000` in your browser to play.
 - When committing changes you don't need to ask, since I can always revert.
 - Avoid excessive debug logging in production code (causes performance issues)
 - Test multiplayer changes with multiple browser windows
+
+## Secrets and Tokens
+- **Railway Token**: `2100e401-081d-404b-8731-10544307a4da`

@@ -27,12 +27,14 @@ export class Reconciler {
      * @returns {boolean} True if reconciliation was performed
      */
     reconcile(serverState, localPlayer) {
-        // Debug: Log reconcile attempts
-        if (Math.random() < 0.05) {
+        // Debug: Log reconcile attempts more frequently during testing
+        if (Math.random() < 0.1) {
             console.log('[Reconciler] Reconcile called with:', {
                 serverPos: { x: serverState.x, y: serverState.y },
                 localPos: { x: localPlayer.position.x, y: localPlayer.position.y },
-                lastProcessedSeq: serverState.lastProcessedSeq
+                lastProcessedSeq: serverState.lastProcessedSeq,
+                predictorRange: `${this.predictor.getStats().oldestSequence}-${this.predictor.getStats().newestSequence}`,
+                sequenceGap: serverState.lastProcessedSeq - this.predictor.getStats().newestSequence
             });
         }
         

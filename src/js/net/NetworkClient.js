@@ -62,6 +62,15 @@ export class NetworkClient {
                         
                         // Perform reconciliation if we have sequence number
                         if (p.lastProcessedSeq !== undefined) {
+                            // Debug: Log positions before reconciliation
+                            if (Math.random() < 0.05) {
+                                console.log('[NetworkClient] Before reconciliation:', {
+                                    serverPos: { x: p.x, y: p.y },
+                                    clientPos: { x: player.position.x, y: player.position.y },
+                                    sequence: p.lastProcessedSeq
+                                });
+                            }
+                            
                             const reconciled = this.game.systems.reconciler.reconcile(p, player);
                             if (reconciled) {
                                 console.log('[NetworkClient] Position reconciled by server');
