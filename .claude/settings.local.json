@@ -32,7 +32,12 @@
       "Bash(npm run:*)",
       "Bash(awk:*)",
       "Bash(echo:*)",
-      "Bash(npm start)"
+      "Bash(npm start)",
+      "Bash(railway logs:*)",
+      "Bash(railway status:*)",
+      "Bash(npm install:*)",
+      "Bash(railway --version)",
+      "Bash(railway login:*)"
     ],
     "deny": []
   }

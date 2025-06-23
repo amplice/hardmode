@@ -55,8 +55,10 @@ export class MovementPredictor {
             clientTimestamp: performance.now()
         });
 
-        // Clean up old states
-        this.cleanup();
+        // Clean up old states less aggressively
+        if (this.predictedStates.size > this.maxHistorySize * 2) {
+            this.cleanup();
+        }
 
         return newState;
     }
@@ -170,11 +172,15 @@ export class MovementPredictor {
      * @param {number} confirmedSequence - Last confirmed sequence
      */
     confirmStatesUpTo(confirmedSequence) {
+        console.log(`[MovementPredictor] Confirming states up to sequence ${confirmedSequence}`);
+        let deletedCount = 0;
         for (const [sequence, state] of this.predictedStates) {
             if (sequence <= confirmedSequence) {
                 this.predictedStates.delete(sequence);
+                deletedCount++;
             }
         }
+        console.log(`[MovementPredictor] Deleted ${deletedCount} confirmed predictions, ${this.predictedStates.size} remaining`);
     }
 
     /**

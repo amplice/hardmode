@@ -174,9 +174,16 @@ export class Game {
 
     // Phase 2: Client-side prediction + input sending
     if (this.network && this.network.connected) {
+      // Filter movement keys during attacks
+      const isAttacking = this.entities.player.isAttacking;
+      const allKeys = this.getActiveKeys(inputState);
+      const keys = isAttacking ? 
+        allKeys.filter(key => !['w', 's', 'a', 'd'].includes(key)) : // Remove movement keys during attack
+        allKeys; // Keep all keys when not attacking
+      
       // Create input command for network
       const inputData = {
-        keys: this.getActiveKeys(inputState),
+        keys: keys,
         facing: this.entities.player.facing,
         deltaTime: deltaTimeSeconds
       };
