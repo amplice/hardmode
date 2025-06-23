@@ -154,4 +154,233 @@ export class HitDetectionRollback {
         this.rollbackStats.maxRollbackTime = Math.max(this.rollbackStats.maxRollbackTime, rollbackTime);
         
         // Log significant rollbacks
-        if (rollbackTime > 100) {\n            console.log(`[HitDetectionRollback] Large rollback: ${rollbackTime}ms for ${attackerId} -> ${targetId}`);\n        }\n        \n        return {\n            valid: hitResult.valid,\n            reason: hitResult.reason,\n            rollbackTime: rollbackTime,\n            historicalAttacker: attacker,\n            historicalTarget: target,\n            compensatedTime: compensatedTime\n        };\n    }\n    \n    /**\n     * Find target in historical state (player or monster)\n     * @param {Object} historicalState - Historical world state\n     * @param {string} targetId - Target ID to find\n     * @returns {Object|null} Target entity or null\n     */\n    findTarget(historicalState, targetId) {\n        // Check players first\n        let target = historicalState.players.find(p => p.id === targetId);\n        if (target) {\n            return { ...target, type: 'player' };\n        }\n        \n        // Check monsters\n        target = historicalState.monsters.find(m => m.id === targetId);\n        if (target) {\n            return { ...target, type: 'monster' };\n        }\n        \n        return null;\n    }\n    \n    /**\n     * Validate if attack hit target at specific positions\n     * @param {Object} attacker - Attacker position and data\n     * @param {Object} target - Target position and data\n     * @param {Object} attackData - Attack configuration\n     * @returns {Object} Validation result\n     */\n    validateHitAtPositions(attacker, target, attackData) {\n        // Calculate distance between attacker and target\n        const dx = target.x - attacker.x;\n        const dy = target.y - attacker.y;\n        const distance = Math.sqrt(dx * dx + dy * dy);\n        \n        // Get attack range based on attack type\n        const range = this.getAttackRange(attackData.type, attacker.class);\n        const effectiveRange = range + target.radius;\n        \n        // Basic range check\n        if (distance > effectiveRange) {\n            return {\n                valid: false,\n                reason: 'out_of_range',\n                distance: distance,\n                maxRange: effectiveRange\n            };\n        }\n        \n        // For directional attacks, check facing\n        if (this.isDirectionalAttack(attackData.type)) {\n            const attackAngle = Math.atan2(dy, dx);\n            const facingAngle = this.facingToRadians(attacker.facing);\n            const angleDiff = Math.abs(attackAngle - facingAngle);\n            const normalizedDiff = Math.min(angleDiff, 2 * Math.PI - angleDiff);\n            \n            const maxAngle = this.getAttackAngle(attackData.type) / 2;\n            \n            if (normalizedDiff > maxAngle) {\n                return {\n                    valid: false,\n                    reason: 'wrong_direction',\n                    angleDiff: normalizedDiff,\n                    maxAngle: maxAngle\n                };\n            }\n        }\n        \n        return {\n            valid: true,\n            distance: distance,\n            maxRange: effectiveRange\n        };\n    }\n    \n    /**\n     * Get world state at specific timestamp\n     * @param {number} timestamp - Target timestamp\n     * @returns {Object|null} Historical world state or null\n     */\n    getWorldStateAt(timestamp) {\n        // Find the closest state before or at the target timestamp\n        let bestState = null;\n        let smallestDiff = Infinity;\n        \n        for (const state of this.worldHistory) {\n            const diff = timestamp - state.timestamp;\n            if (diff >= 0 && diff < smallestDiff) {\n                smallestDiff = diff;\n                bestState = state;\n            }\n        }\n        \n        return bestState;\n    }\n    \n    /**\n     * Get attack range for specific attack type and class\n     * @param {string} attackType - Type of attack\n     * @param {string} playerClass - Player class\n     * @returns {number} Attack range in pixels\n     */\n    getAttackRange(attackType, playerClass) {\n        // Base ranges by attack type\n        const baseRanges = {\n            'primary': 120,\n            'secondary': 150,\n            'melee': 100,\n            'ranged': 400\n        };\n        \n        // Class modifiers\n        const classModifiers = {\n            'hunter': 1.2, // Longer range\n            'guardian': 0.9, // Shorter range\n            'rogue': 1.0,\n            'bladedancer': 1.1\n        };\n        \n        const baseRange = baseRanges[attackType] || 120;\n        const modifier = classModifiers[playerClass] || 1.0;\n        \n        return baseRange * modifier;\n    }\n    \n    /**\n     * Get collision radius for player class\n     * @param {string} playerClass - Player class\n     * @returns {number} Collision radius in pixels\n     */\n    getPlayerCollisionRadius(playerClass) {\n        return 20; // Standard player collision radius\n    }\n    \n    /**\n     * Check if attack is directional (requires facing validation)\n     * @param {string} attackType - Attack type\n     * @returns {boolean} True if directional\n     */\n    isDirectionalAttack(attackType) {\n        const directionalAttacks = ['primary', 'secondary', 'melee'];\n        return directionalAttacks.includes(attackType);\n    }\n    \n    /**\n     * Get attack angle for directional attacks\n     * @param {string} attackType - Attack type\n     * @returns {number} Attack angle in radians\n     */\n    getAttackAngle(attackType) {\n        const angles = {\n            'primary': Math.PI / 3, // 60 degrees\n            'secondary': Math.PI / 2, // 90 degrees\n            'melee': Math.PI / 4 // 45 degrees\n        };\n        \n        return angles[attackType] || Math.PI / 3;\n    }\n    \n    /**\n     * Convert facing string to radians\n     * @param {string} facing - Facing direction\n     * @returns {number} Angle in radians\n     */\n    facingToRadians(facing) {\n        const directions = {\n            'e': 0,\n            'ne': Math.PI / 4,\n            'n': Math.PI / 2,\n            'nw': 3 * Math.PI / 4,\n            'w': Math.PI,\n            'sw': 5 * Math.PI / 4,\n            's': 3 * Math.PI / 2,\n            'se': 7 * Math.PI / 4\n        };\n        \n        return directions[facing] || 0;\n    }\n    \n    /**\n     * Get rollback statistics\n     * @returns {Object} Rollback statistics\n     */\n    getStats() {\n        return {\n            ...this.rollbackStats,\n            worldHistorySize: this.worldHistory.length,\n            maxHistoryTime: this.maxHistoryTime,\n            historyInterval: this.historyInterval,\n            hitValidationRate: this.rollbackStats.hitValidations > 0 ? \n                ((this.rollbackStats.hitValidations - this.rollbackStats.invalidHits) / this.rollbackStats.hitValidations * 100).toFixed(1) + '%' : '0%'\n        };\n    }\n    \n    /**\n     * Reset all rollback statistics\n     */\n    resetStats() {\n        this.rollbackStats = {\n            totalRollbacks: 0,\n            averageRollbackTime: 0,\n            maxRollbackTime: 0,\n            hitValidations: 0,\n            invalidHits: 0\n        };\n    }\n    \n    /**\n     * Clear world history (for reset/cleanup)\n     */\n    clearHistory() {\n        this.worldHistory = [];\n        this.lastHistoryStore = 0;\n        console.log('[HitDetectionRollback] Cleared world history');\n    }\n}"
+        if (rollbackTime > 100) {
+            console.log(`[HitDetectionRollback] Large rollback: ${rollbackTime}ms for ${attackerId} -> ${targetId}`);
+        }
+        
+        return {
+            valid: hitResult.valid,
+            reason: hitResult.reason,
+            rollbackTime: rollbackTime,
+            historicalAttacker: attacker,
+            historicalTarget: target,
+            compensatedTime: compensatedTime
+        };
+    }
+    
+    /**
+     * Find target in historical state (player or monster)
+     * @param {Object} historicalState - Historical world state
+     * @param {string} targetId - Target ID to find
+     * @returns {Object|null} Target entity or null
+     */
+    findTarget(historicalState, targetId) {
+        // Check players first
+        let target = historicalState.players.find(p => p.id === targetId);
+        if (target) {
+            return { ...target, type: 'player' };
+        }
+        
+        // Check monsters
+        target = historicalState.monsters.find(m => m.id === targetId);
+        if (target) {
+            return { ...target, type: 'monster' };
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Validate if attack hit target at specific positions
+     * @param {Object} attacker - Attacker position and data
+     * @param {Object} target - Target position and data
+     * @param {Object} attackData - Attack configuration
+     * @returns {Object} Validation result
+     */
+    validateHitAtPositions(attacker, target, attackData) {
+        // Calculate distance between attacker and target
+        const dx = target.x - attacker.x;
+        const dy = target.y - attacker.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // Get attack range based on attack type
+        const range = this.getAttackRange(attackData.type, attacker.class);
+        const effectiveRange = range + target.radius;
+        
+        // Basic range check
+        if (distance > effectiveRange) {
+            return {
+                valid: false,
+                reason: 'out_of_range',
+                distance: distance,
+                maxRange: effectiveRange
+            };
+        }
+        
+        // For directional attacks, check facing
+        if (this.isDirectionalAttack(attackData.type)) {
+            const attackAngle = Math.atan2(dy, dx);
+            const facingAngle = this.facingToRadians(attacker.facing);
+            const angleDiff = Math.abs(attackAngle - facingAngle);
+            const normalizedDiff = Math.min(angleDiff, 2 * Math.PI - angleDiff);
+            
+            const maxAngle = this.getAttackAngle(attackData.type) / 2;
+            
+            if (normalizedDiff > maxAngle) {
+                return {
+                    valid: false,
+                    reason: 'wrong_direction',
+                    angleDiff: normalizedDiff,
+                    maxAngle: maxAngle
+                };
+            }
+        }
+        
+        return {
+            valid: true,
+            distance: distance,
+            maxRange: effectiveRange
+        };
+    }
+    
+    /**
+     * Get world state at specific timestamp
+     * @param {number} timestamp - Target timestamp
+     * @returns {Object|null} Historical world state or null
+     */
+    getWorldStateAt(timestamp) {
+        // Find the closest state before or at the target timestamp
+        let bestState = null;
+        let smallestDiff = Infinity;
+        
+        for (const state of this.worldHistory) {
+            const diff = timestamp - state.timestamp;
+            if (diff >= 0 && diff < smallestDiff) {
+                smallestDiff = diff;
+                bestState = state;
+            }
+        }
+        
+        return bestState;
+    }
+    
+    /**
+     * Get attack range for specific attack type and class
+     * @param {string} attackType - Type of attack
+     * @param {string} playerClass - Player class
+     * @returns {number} Attack range in pixels
+     */
+    getAttackRange(attackType, playerClass) {
+        // Base ranges by attack type
+        const baseRanges = {
+            'primary': 120,
+            'secondary': 150,
+            'melee': 100,
+            'ranged': 400
+        };
+        
+        // Class modifiers
+        const classModifiers = {
+            'hunter': 1.2, // Longer range
+            'guardian': 0.9, // Shorter range
+            'rogue': 1.0,
+            'bladedancer': 1.1
+        };
+        
+        const baseRange = baseRanges[attackType] || 120;
+        const modifier = classModifiers[playerClass] || 1.0;
+        
+        return baseRange * modifier;
+    }
+    
+    /**
+     * Get collision radius for player class
+     * @param {string} playerClass - Player class
+     * @returns {number} Collision radius in pixels
+     */
+    getPlayerCollisionRadius(playerClass) {
+        return 20; // Standard player collision radius
+    }
+    
+    /**
+     * Check if attack is directional (requires facing validation)
+     * @param {string} attackType - Attack type
+     * @returns {boolean} True if directional
+     */
+    isDirectionalAttack(attackType) {
+        const directionalAttacks = ['primary', 'secondary', 'melee'];
+        return directionalAttacks.includes(attackType);
+    }
+    
+    /**
+     * Get attack angle for directional attacks
+     * @param {string} attackType - Attack type
+     * @returns {number} Attack angle in radians
+     */
+    getAttackAngle(attackType) {
+        const angles = {
+            'primary': Math.PI / 3, // 60 degrees
+            'secondary': Math.PI / 2, // 90 degrees
+            'melee': Math.PI / 4 // 45 degrees
+        };
+        
+        return angles[attackType] || Math.PI / 3;
+    }
+    
+    /**
+     * Convert facing string to radians
+     * @param {string} facing - Facing direction
+     * @returns {number} Angle in radians
+     */
+    facingToRadians(facing) {
+        const directions = {
+            'e': 0,
+            'ne': Math.PI / 4,
+            'n': Math.PI / 2,
+            'nw': 3 * Math.PI / 4,
+            'w': Math.PI,
+            'sw': 5 * Math.PI / 4,
+            's': 3 * Math.PI / 2,
+            'se': 7 * Math.PI / 4
+        };
+        
+        return directions[facing] || 0;
+    }
+    
+    /**
+     * Get rollback statistics
+     * @returns {Object} Rollback statistics
+     */
+    getStats() {
+        return {
+            ...this.rollbackStats,
+            worldHistorySize: this.worldHistory.length,
+            maxHistoryTime: this.maxHistoryTime,
+            historyInterval: this.historyInterval,
+            hitValidationRate: this.rollbackStats.hitValidations > 0 ? 
+                ((this.rollbackStats.hitValidations - this.rollbackStats.invalidHits) / this.rollbackStats.hitValidations * 100).toFixed(1) + '%' : '0%'
+        };
+    }
+    
+    /**
+     * Reset all rollback statistics
+     */
+    resetStats() {
+        this.rollbackStats = {
+            totalRollbacks: 0,
+            averageRollbackTime: 0,
+            maxRollbackTime: 0,
+            hitValidations: 0,
+            invalidHits: 0
+        };
+    }
+    
+    /**
+     * Clear world history (for reset/cleanup)
+     */
+    clearHistory() {
+        this.worldHistory = [];
+        this.lastHistoryStore = 0;
+        console.log('[HitDetectionRollback] Cleared world history');
+    }
+}
