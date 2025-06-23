@@ -194,7 +194,6 @@ export class Game {
 
       // PHASE 2: Predict movement immediately for responsive feel
       // Skip prediction during any attack (attacks should lock movement)
-      const isAttacking = this.entities.player.isAttacking;
       const isServerControlled = isAttacking && 
                                   this.entities.player.currentAttackType &&
                                   ['secondary'].includes(this.entities.player.currentAttackType);
