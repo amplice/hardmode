@@ -75,6 +75,11 @@ setInterval(() => {
         projectiles: projectileManager.getSerializedProjectiles()
     };
     
+    // PHASE 3: Include last processed sequence for each player
+    state.players.forEach(player => {
+        player.lastProcessedSeq = inputProcessor.getLastProcessedSequence(player.id);
+    });
+    
     // TODO: Implement per-client optimization
     io.emit('state', state);
     
