@@ -53,7 +53,14 @@ export class Game {
     this.app.stage.addChild(this.entityContainer);
     this.app.stage.addChild(this.uiContainer);
 
-    this.camera = { x: 0, y: 0, zoom: 1 };
+    this.camera = { 
+      x: 0, 
+      y: 0, 
+      targetX: 0, 
+      targetY: 0, 
+      zoom: 1,
+      smoothing: 0.15 // Lower = smoother but more lag, Higher = more responsive but less smooth
+    };
 
     this.systems = {
       input:   new InputSystem(),
@@ -71,6 +78,12 @@ export class Game {
 
     this.entities = { player: null };
     window.game = this;
+    
+    // Add camera smoothing controls for testing
+    window.setCameraSmoothing = (value) => {
+      this.camera.smoothing = Math.max(0.01, Math.min(1.0, value));
+      console.log(`Camera smoothing set to ${this.camera.smoothing}`);
+    };
 
     this.tilesets = new TilesetManager();
     this.network = null;
@@ -155,6 +168,12 @@ export class Game {
     //   this.systems.monsters = new MonsterSystem(this.systems.world);
     // }
 
+    // Initialize camera position to player position (prevents initial camera jump)
+    this.camera.x = this.entities.player.position.x;
+    this.camera.y = this.entities.player.position.y;
+    this.camera.targetX = this.entities.player.position.x;
+    this.camera.targetY = this.entities.player.position.y;
+    
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
     this.gameStarted = true;
@@ -305,16 +324,20 @@ export class Game {
   updateCamera() {
     if (!this.gameStarted) return;
     
-    this.camera.x = this.entities.player.position.x;
-    this.camera.y = this.entities.player.position.y;
-    this.worldContainer.position.set(
-      Math.floor(this.app.screen.width / 2 - this.camera.x),
-      Math.floor(this.app.screen.height / 2 - this.camera.y)
-    );
-    this.entityContainer.position.set(
-      Math.floor(this.app.screen.width / 2 - this.camera.x),
-      Math.floor(this.app.screen.height / 2 - this.camera.y)
-    );
+    // Set target position to current player position
+    this.camera.targetX = this.entities.player.position.x;
+    this.camera.targetY = this.entities.player.position.y;
+    
+    // Smoothly interpolate camera towards target
+    this.camera.x += (this.camera.targetX - this.camera.x) * this.camera.smoothing;
+    this.camera.y += (this.camera.targetY - this.camera.y) * this.camera.smoothing;
+    
+    // Apply camera position to containers
+    const camX = Math.floor(this.app.screen.width / 2 - this.camera.x);
+    const camY = Math.floor(this.app.screen.height / 2 - this.camera.y);
+    
+    this.worldContainer.position.set(camX, camY);
+    this.entityContainer.position.set(camX, camY);
   }
 
   // Multiplayer helpers
