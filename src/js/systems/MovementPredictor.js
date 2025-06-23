@@ -49,11 +49,16 @@ export class MovementPredictor {
             this.applyMovement(newState, movement, input.data.deltaTime || (1/60));
         }
 
-        // Store predicted state for reconciliation
+        // ALWAYS store predicted state for reconciliation (even when not moving)
         this.predictedStates.set(input.sequence, {
             ...newState,
             clientTimestamp: performance.now()
         });
+        
+        // Debug: Log sequence gaps
+        if (Math.random() < 0.01) {
+            console.log(`[MovementPredictor] Storing prediction for sequence ${input.sequence}`);
+        }
 
         // Clean up old states less aggressively
         if (this.predictedStates.size > this.maxHistorySize * 2) {

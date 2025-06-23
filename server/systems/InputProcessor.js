@@ -226,7 +226,12 @@ export class InputProcessor {
      * @returns {number} Last processed sequence number
      */
     getLastProcessedSequence(playerId) {
-        return this.lastProcessedSequence.get(playerId) || 0;
+        const seq = this.lastProcessedSequence.get(playerId) || 0;
+        // Debug: Log sequence requests
+        if (Math.random() < 0.05) {
+            console.log(`[InputProcessor] Getting sequence for player ${playerId}: ${seq}`);
+        }
+        return seq;
     }
 
     /**

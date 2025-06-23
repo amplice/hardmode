@@ -31,7 +31,7 @@ export class SocketHandler {
                 tileSize: GAME_CONSTANTS.WORLD.TILE_SIZE,
                 seed: GAME_CONSTANTS.WORLD.SEED
             },
-            players: this.gameState.getSerializedPlayers(),
+            players: this.gameState.getSerializedPlayers(this.inputProcessor),
             monsters: this.monsterManager.getSerializedMonsters(this.monsterManager.monsters)
         });
         

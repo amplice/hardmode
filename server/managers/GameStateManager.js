@@ -136,7 +136,15 @@ export class GameStateManager {
             
             // Add last processed sequence for client prediction reconciliation
             if (inputProcessor) {
-                serialized.lastProcessedSeq = inputProcessor.getLastProcessedSequence(p.id);
+                const lastSeq = inputProcessor.getLastProcessedSequence(p.id);
+                serialized.lastProcessedSeq = lastSeq;
+                
+                // Debug log
+                if (Math.random() < 0.02) {
+                    console.log(`[GameState] Player ${p.id} state: lastProcessedSeq=${lastSeq}`);
+                }
+            } else {
+                console.warn(`[GameState] No inputProcessor provided for player ${p.id}`);
             }
             
             return serialized;
