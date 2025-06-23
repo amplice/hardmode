@@ -45,26 +45,8 @@ export class NetworkClient {
         });
 
         this.socket.on('state', state => {
-            // Use jitter buffer if available to smooth out network jitter
-            if (this.jitterBuffer) {
-                // Buffer the updates instead of applying immediately
-                if (state.players && state.players.length > 0) {
-                    state.players.forEach(playerState => {
-                        this.jitterBuffer.bufferPlayerUpdate(playerState);
-                    });
-                }
-                
-                if (state.monsters) {
-                    this.jitterBuffer.bufferMonsterUpdates(state.monsters);
-                }
-                
-                if (state.projectiles) {
-                    this.jitterBuffer.bufferProjectileUpdates(state.projectiles);
-                }
-            } else {
-                // Fallback to direct processing if no jitter buffer
-                this.processStateUpdate(state);
-            }
+            // Process state updates directly - no jitter buffer buffering
+            this.processStateUpdate(state);
         });
 
         this.socket.on('playerAttack', data => {

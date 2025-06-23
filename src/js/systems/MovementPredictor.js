@@ -138,7 +138,7 @@ export class MovementPredictor {
     }
     
     /**
-     * Adjust delta time based on measured latency for better prediction accuracy
+     * Minimal latency adjustment for prediction (simplified)
      * @param {number} deltaTime - Original delta time
      * @returns {number} Adjusted delta time
      */
@@ -149,10 +149,9 @@ export class MovementPredictor {
         
         const latency = this.latencyTracker.getOneWayLatency();
         
-        // For high latency, slightly increase delta time to predict further ahead
-        // This helps compensate for the delay in server processing
-        if (latency > 50) {
-            const adjustment = Math.min(latency * 0.001, this.maxPredictionAdjustment * 0.001);
+        // Only adjust for very high latency (>100ms) and very conservatively
+        if (latency > 100) {
+            const adjustment = Math.min((latency - 100) * 0.0005, 0.01); // Max 10ms adjustment
             return deltaTime + adjustment;
         }
         

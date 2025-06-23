@@ -96,9 +96,9 @@ export class InputProcessor {
             const compensation = this.lagCompensation.compensateMovementInput(player, input, deltaTime);
             compensatedDelta = compensation.compensatedDelta;
             
-            // Log compensation occasionally for debugging
-            if (compensation.compensation > 5 && Math.random() < 0.05) {
-                console.log(`[InputProcessor] Lag compensation for ${player.id}: +${compensation.compensation.toFixed(1)}ms`);
+            // Log compensation only for significant adjustments
+            if (compensation.compensation > 25 && Math.random() < 0.01) {
+                console.log(`[InputProcessor] High latency compensation for ${player.id}: +${compensation.compensation.toFixed(1)}ms`);
             }
         }
         

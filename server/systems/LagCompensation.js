@@ -166,7 +166,7 @@ export class LagCompensation {
     }
     
     /**
-     * Apply lag compensation to movement input
+     * Apply minimal lag compensation to movement input (simplified)
      * @param {Object} player - Player object
      * @param {Object} input - Input command
      * @param {number} deltaTime - Frame delta time
@@ -176,28 +176,20 @@ export class LagCompensation {
         const playerId = player.id;
         const latency = this.getPlayerLatency(playerId);
         
-        // If we have low latency, no compensation needed
-        if (latency < 10) {
+        // Only apply compensation for very high latency (>150ms)
+        if (latency < 150) {
             return {
                 compensatedDelta: deltaTime,
                 compensation: 0
             };
         }
         
-        // Estimate the actual time this input should be processed for
-        const clientInputTime = input.timestamp;
-        const serverReceiveTime = input.serverTimestamp;
-        const estimatedLatency = serverReceiveTime - clientInputTime;
-        
-        // Use the smaller of measured latency or calculated latency
-        const actualLatency = Math.min(latency, Math.max(0, estimatedLatency));
-        
-        // Adjust delta time based on when input actually happened
-        const compensation = Math.min(actualLatency, this.maxCompensationTime);
-        const compensatedDelta = deltaTime + (compensation / 1000); // Convert to seconds
+        // Very conservative compensation - max 50ms
+        const compensation = Math.min(latency - 150, 50);
+        const compensatedDelta = deltaTime + (compensation / 1000);
         
         return {
-            compensatedDelta: Math.max(deltaTime, compensatedDelta), // Don't go backwards
+            compensatedDelta: compensatedDelta,
             compensation: compensation
         };
     }

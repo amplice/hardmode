@@ -150,8 +150,7 @@ export class Game {
       // Initialize latency tracker after network client
       this.latencyTracker = new LatencyTracker(this.network);
       
-      // Initialize jitter buffer with latency tracker
-      this.network.initializeJitterBuffer(this.latencyTracker);
+      // Jitter buffer disabled - caused laggy behavior
       
       // Initialize predictor with latency tracker
       this.systems.predictor = new MovementPredictor(this.latencyTracker);
@@ -318,10 +317,7 @@ export class Game {
     // 4. Apply physics (world boundaries and tile collisions) to all collected entities
     this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);
     
-    // 5. Process buffered network updates (jitter buffer)
-    if (this.network) {
-      this.network.processBufferedUpdates();
-    }
+    // 5. Jitter buffer disabled for better responsiveness
     
     // 6. Update combat, camera, and UI
     this.systems.combat.update(deltaTimeSeconds);
