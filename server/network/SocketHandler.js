@@ -2,13 +2,14 @@ import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 import { getDistance } from '../../shared/utils/MathUtils.js';
 
 export class SocketHandler {
-    constructor(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor) {
+    constructor(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation) {
         this.io = io;
         this.gameState = gameState;
         this.monsterManager = monsterManager;
         this.projectileManager = projectileManager;
         this.abilityManager = abilityManager;
         this.inputProcessor = inputProcessor;
+        this.lagCompensation = lagCompensation;
         this.setupEventHandlers();
     }
 
@@ -50,6 +51,7 @@ export class SocketHandler {
         socket.on('attackMonster', data => this.handleAttackMonster(socket, data));
         socket.on('createProjectile', data => this.handleCreateProjectile(socket, data));
         socket.on('setClass', cls => this.handleSetClass(socket, cls));
+        socket.on('ping', data => this.handlePing(socket, data)); // Latency measurement
         socket.on('disconnect', () => this.handleDisconnect(socket));
     }
 
@@ -156,10 +158,37 @@ export class SocketHandler {
         }
     }
 
+    /**
+     * Handle ping request for latency measurement
+     * @param {Object} socket - Socket connection
+     * @param {Object} data - Ping data {sequence, clientTime}
+     */
+    handlePing(socket, data) {
+        const serverTime = Date.now();
+        
+        // Calculate RTT if we have client time
+        if (data.clientTime) {
+            const rtt = serverTime - data.clientTime;
+            
+            // Update lag compensation with this latency measurement
+            if (this.lagCompensation && rtt > 0 && rtt < 2000) { // Sanity check
+                this.lagCompensation.updatePlayerLatency(socket.id, rtt);
+            }
+        }
+        
+        // Respond immediately with pong containing server time
+        socket.emit('pong', {
+            sequence: data.sequence,
+            clientTime: data.clientTime,
+            serverTime: serverTime
+        });
+    }
+
     handleDisconnect(socket) {
         console.log(`Player ${socket.id} disconnected`);
         this.abilityManager.removePlayer(socket.id);
         this.inputProcessor.removePlayer(socket.id);
+        this.lagCompensation.removePlayer(socket.id);
         this.gameState.removePlayer(socket.id);
         socket.broadcast.emit('playerLeft', socket.id);
     }

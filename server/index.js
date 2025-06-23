@@ -11,6 +11,8 @@ import { MonsterManager } from './managers/MonsterManager.js';
 import { ProjectileManager } from './managers/ProjectileManager.js';
 import { AbilityManager } from './managers/AbilityManager.js';
 import { InputProcessor } from './systems/InputProcessor.js';
+import { LagCompensation } from './systems/LagCompensation.js';
+import { HitDetectionRollback } from './systems/HitDetectionRollback.js';
 import { SocketHandler } from './network/SocketHandler.js';
 import { NetworkOptimizer } from './network/NetworkOptimizer.js';
 import { setupDebugEndpoint } from './middleware/debugEndpoint.js';
@@ -38,8 +40,10 @@ const gameState = new GameStateManager(io);
 const monsterManager = new MonsterManager(io);
 const projectileManager = new ProjectileManager(io);
 const abilityManager = new AbilityManager(io, gameState, projectileManager);
-const inputProcessor = new InputProcessor(gameState, abilityManager);
-const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor);
+const lagCompensation = new LagCompensation();
+const hitDetectionRollback = new HitDetectionRollback(lagCompensation);
+const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation);
+const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation);
 const networkOptimizer = new NetworkOptimizer();
 
 // Cross-reference managers
@@ -59,6 +63,9 @@ setInterval(() => {
     inputProcessor.processAllInputs(deltaTime); // Process client inputs
     monsterManager.update(deltaTime, gameState.players);
     projectileManager.update(deltaTime, gameState.players, monsterManager.monsters);
+    
+    // Store world state for rollback hit detection
+    hitDetectionRollback.storeWorldState(gameState, gameState.players, monsterManager.monsters);
     
     // Clean up old projectiles periodically
     if (Math.random() < 0.01) { // ~1% chance per tick

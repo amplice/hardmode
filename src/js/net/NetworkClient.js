@@ -5,6 +5,7 @@ export class NetworkClient {
         this.players = new Map();
         this.monsters = new Map();
         this.connected = false; // Initialize connected state
+        this.jitterBuffer = null; // Will be initialized with latency tracker
 
         this.setupHandlers();
         console.log('NetworkClient initialized');
@@ -44,89 +45,25 @@ export class NetworkClient {
         });
 
         this.socket.on('state', state => {
-            state.players.forEach(p => {
-                if (p.id === this.id) {
-                    // PHASE 3: Use reconciler for server state updates
-                    if (this.game.entities.player && this.game.systems.reconciler) {
-                        const player = this.game.entities.player;
-                        
-                        // Debug: Log server state format occasionally
-                        if (Math.random() < 0.01) {
-                            console.log('[DEBUG] Server state sample:', {
-                                hasLastProcessedSeq: p.lastProcessedSeq !== undefined,
-                                lastProcessedSeq: p.lastProcessedSeq,
-                                position: { x: p.x, y: p.y },
-                                clientPos: { x: player.position.x, y: player.position.y }
-                            });
-                        }
-                        
-                        // Perform reconciliation if we have sequence number
-                        if (p.lastProcessedSeq !== undefined) {
-                            // Debug: Log positions before reconciliation
-                            if (Math.random() < 0.05) {
-                                console.log('[NetworkClient] Before reconciliation:', {
-                                    serverPos: { x: p.x, y: p.y },
-                                    clientPos: { x: player.position.x, y: player.position.y },
-                                    sequence: p.lastProcessedSeq
-                                });
-                            }
-                            
-                            const reconciled = this.game.systems.reconciler.reconcile(p, player);
-                            if (reconciled) {
-                                console.log('[NetworkClient] Position reconciled by server');
-                            }
-                        } else {
-                            console.warn('[NetworkClient] Server state missing lastProcessedSeq - using fallback');
-                            // Fallback to direct position update if no sequence
-                            player.position.x = p.x;
-                            player.position.y = p.y;
-                            player.sprite.position.set(p.x, p.y);
-                        }
-                        
-                        // Update server position tracking
-                        if (!player.serverPosition) {
-                            player.serverPosition = { x: p.x, y: p.y };
-                        } else {
-                            player.serverPosition.x = p.x;
-                            player.serverPosition.y = p.y;
-                        }
-                        
-                        // Sync non-position data from server
-                        player.facing = p.facing || player.facing;
-                        player.hitPoints = p.hp;
-                        player.level = p.level || player.level;
-                        player.experience = p.xp || player.experience;
-                        
-                        // Sync bonuses from server if they're included
-                        if (p.moveSpeedBonus !== undefined) {
-                            player.moveSpeedBonus = p.moveSpeedBonus;
-                            player.attackRecoveryBonus = p.attackRecoveryBonus;
-                            player.attackCooldownBonus = p.attackCooldownBonus;
-                            player.rollUnlocked = p.rollUnlocked;
-                            // Update move speed if it changed
-                            const baseSpeed = player.getClassMoveSpeed();
-                            player.moveSpeed = baseSpeed + player.moveSpeedBonus;
-                        }
-                        
-                        // Also sync max HP if it changed
-                        if (p.maxHp !== undefined && player.maxHitPoints !== p.maxHp) {
-                            player.maxHitPoints = p.maxHp;
-                            if (this.game.healthUI) {
-                                this.game.healthUI.update();
-                            }
-                        }
-                    }
-                } else {
-                    this.game.updateRemotePlayer(p);
+            // Use jitter buffer if available to smooth out network jitter
+            if (this.jitterBuffer) {
+                // Buffer the updates instead of applying immediately
+                if (state.players && state.players.length > 0) {
+                    state.players.forEach(playerState => {
+                        this.jitterBuffer.bufferPlayerUpdate(playerState);
+                    });
                 }
-            });
-            state.monsters.forEach(m => this.game.addOrUpdateMonster(m));
-            
-            // Update projectiles
-            if (state.projectiles && this.game.projectileRenderer) {
-                state.projectiles.forEach(p => {
-                    this.game.projectileRenderer.updateProjectile(p.id, p.x, p.y);
-                });
+                
+                if (state.monsters) {
+                    this.jitterBuffer.bufferMonsterUpdates(state.monsters);
+                }
+                
+                if (state.projectiles) {
+                    this.jitterBuffer.bufferProjectileUpdates(state.projectiles);
+                }
+            } else {
+                // Fallback to direct processing if no jitter buffer
+                this.processStateUpdate(state);
             }
         });
 
@@ -500,5 +437,129 @@ export class NetworkClient {
             abilityType: abilityType,
             ...extraData
         });
+    }
+    
+    /**
+     * Initialize jitter buffer with latency tracker
+     * @param {Object} latencyTracker - LatencyTracker instance
+     */
+    initializeJitterBuffer(latencyTracker) {
+        if (!this.jitterBuffer) {
+            // Import JitterBuffer dynamically to avoid circular imports
+            import('../systems/JitterBuffer.js').then(({ JitterBuffer }) => {
+                this.jitterBuffer = new JitterBuffer(latencyTracker);
+                console.log('[NetworkClient] Jitter buffer initialized');
+            });
+        }
+    }
+    
+    /**
+     * Process buffered updates from jitter buffer
+     * Called regularly from game loop
+     */
+    processBufferedUpdates() {
+        if (!this.jitterBuffer) return;
+        
+        const updates = this.jitterBuffer.releaseUpdates();
+        if (!updates) return;
+        
+        // Process released player updates
+        if (updates.players && updates.players.length > 0) {
+            updates.players.forEach(playerState => {
+                this.processPlayerUpdate(playerState);
+            });
+        }
+        
+        // Process released monster updates
+        if (updates.monsters) {
+            updates.monsters.forEach(m => this.game.addOrUpdateMonster(m));
+        }
+        
+        // Process released projectile updates
+        if (updates.projectiles && this.game.projectileRenderer) {
+            updates.projectiles.forEach(p => {
+                this.game.projectileRenderer.updateProjectile(p.id, p.x, p.y);
+            });
+        }
+    }
+    
+    /**
+     * Process a single player state update (extracted from original state handler)
+     * @param {Object} playerState - Player state from server
+     */
+    processPlayerUpdate(playerState) {
+        if (playerState.id === this.id) {
+            // PHASE 3: Use reconciler for server state updates
+            if (this.game.entities.player && this.game.systems.reconciler) {
+                const player = this.game.entities.player;
+                
+                // Perform reconciliation if we have sequence number
+                if (playerState.lastProcessedSeq !== undefined) {
+                    const reconciled = this.game.systems.reconciler.reconcile(playerState, player);
+                    if (reconciled && Math.random() < 0.01) { // Reduced logging
+                        console.log('[NetworkClient] Position reconciled by server');
+                    }
+                } else {
+                    console.warn('[NetworkClient] Server state missing lastProcessedSeq - using fallback');
+                    // Fallback to direct position update if no sequence
+                    player.position.x = playerState.x;
+                    player.position.y = playerState.y;
+                    player.sprite.position.set(playerState.x, playerState.y);
+                }
+                
+                // Update server position tracking
+                if (!player.serverPosition) {
+                    player.serverPosition = { x: playerState.x, y: playerState.y };
+                } else {
+                    player.serverPosition.x = playerState.x;
+                    player.serverPosition.y = playerState.y;
+                }
+                
+                // Sync non-position data from server
+                player.facing = playerState.facing || player.facing;
+                player.hitPoints = playerState.hp;
+                player.level = playerState.level || player.level;
+                player.experience = playerState.xp || player.experience;
+                
+                // Sync bonuses from server if they're included
+                if (playerState.moveSpeedBonus !== undefined) {
+                    player.moveSpeedBonus = playerState.moveSpeedBonus;
+                    player.attackRecoveryBonus = playerState.attackRecoveryBonus;
+                    player.attackCooldownBonus = playerState.attackCooldownBonus;
+                    player.rollUnlocked = playerState.rollUnlocked;
+                    // Update move speed if it changed
+                    const baseSpeed = player.getClassMoveSpeed();
+                    player.moveSpeed = baseSpeed + player.moveSpeedBonus;
+                }
+                
+                // Also sync max HP if it changed
+                if (playerState.maxHp !== undefined && player.maxHitPoints !== playerState.maxHp) {
+                    player.maxHitPoints = playerState.maxHp;
+                    if (this.game.healthUI) {
+                        this.game.healthUI.update();
+                    }
+                }
+            }
+        } else {
+            this.game.updateRemotePlayer(playerState);
+        }
+    }
+    
+    /**
+     * Process complete state update (fallback for when jitter buffer not available)
+     * @param {Object} state - Complete state from server
+     */
+    processStateUpdate(state) {
+        state.players.forEach(p => {
+            this.processPlayerUpdate(p);
+        });
+        state.monsters.forEach(m => this.game.addOrUpdateMonster(m));
+        
+        // Update projectiles
+        if (state.projectiles && this.game.projectileRenderer) {
+            state.projectiles.forEach(p => {
+                this.game.projectileRenderer.updateProjectile(p.id, p.x, p.y);
+            });
+        }
     }
 }

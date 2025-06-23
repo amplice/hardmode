@@ -6,9 +6,10 @@
  * while maintaining server authority for anti-cheat.
  */
 export class MovementPredictor {
-    constructor() {
+    constructor(latencyTracker = null) {
         this.predictedStates = new Map(); // sequence -> predicted state
         this.maxHistorySize = 1000;
+        this.latencyTracker = latencyTracker;
         
         // Movement constants that must match server exactly
         this.classSpeeds = {
@@ -22,6 +23,10 @@ export class MovementPredictor {
             width: 100 * 64,  // 100 tiles * 64 pixels
             height: 100 * 64
         };
+        
+        // Prediction timing adjustment
+        this.predictionAdjustment = 0; // ms to adjust prediction timing
+        this.maxPredictionAdjustment = 100; // Max 100ms adjustment
     }
 
     /**
@@ -100,7 +105,7 @@ export class MovementPredictor {
     }
 
     /**
-     * Apply movement to state
+     * Apply movement to state with latency-adjusted timing
      * Must match server movement logic exactly
      * @param {Object} state - State to modify
      * @param {Object} movement - Movement vector {x, y}
@@ -115,10 +120,13 @@ export class MovementPredictor {
         const speedModifier = this.calculateSpeedModifier(state, movement);
         const finalSpeed = totalSpeed * speedModifier;
 
+        // Adjust delta time based on latency for more accurate prediction
+        const adjustedDeltaTime = this.getLatencyAdjustedDeltaTime(deltaTime);
+
         // Calculate new position (match server formula exactly)
         const velocity = {
-            x: movement.x * finalSpeed * deltaTime * 60, // Convert to pixels per frame
-            y: movement.y * finalSpeed * deltaTime * 60
+            x: movement.x * finalSpeed * adjustedDeltaTime * 60, // Convert to pixels per frame
+            y: movement.y * finalSpeed * adjustedDeltaTime * 60
         };
 
         // Update position
@@ -127,6 +135,28 @@ export class MovementPredictor {
 
         // Apply world boundaries (match server)
         this.applyWorldBounds(state);
+    }
+    
+    /**
+     * Adjust delta time based on measured latency for better prediction accuracy
+     * @param {number} deltaTime - Original delta time
+     * @returns {number} Adjusted delta time
+     */
+    getLatencyAdjustedDeltaTime(deltaTime) {
+        if (!this.latencyTracker) {
+            return deltaTime;
+        }
+        
+        const latency = this.latencyTracker.getOneWayLatency();
+        
+        // For high latency, slightly increase delta time to predict further ahead
+        // This helps compensate for the delay in server processing
+        if (latency > 50) {
+            const adjustment = Math.min(latency * 0.001, this.maxPredictionAdjustment * 0.001);
+            return deltaTime + adjustment;
+        }
+        
+        return deltaTime;
     }
 
     /**

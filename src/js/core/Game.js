@@ -16,6 +16,7 @@ import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 import { NetworkClient } from '../net/NetworkClient.js';
+import { LatencyTracker } from '../systems/LatencyTracker.js';
 import { ProjectileRenderer } from '../systems/ProjectileRenderer.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 import { DebugLogger } from '../debug/DebugLogger.js';
@@ -65,16 +66,13 @@ export class Game {
     this.systems = {
       input:   new InputSystem(),
       inputBuffer: new InputBuffer(),
-      predictor: new MovementPredictor(),
+      predictor: null, // will init after latency tracker
       reconciler: null, // will init after predictor
       physics: new PhysicsSystem(),
       world:   null,               // will init after tilesets
       combat:  new CombatSystem(this.app),
       sprites: new SpriteManager()
     };
-    
-    // Initialize reconciler after predictor
-    this.systems.reconciler = new Reconciler(this.systems.inputBuffer, this.systems.predictor);
 
     this.entities = { player: null };
     window.game = this;
@@ -83,6 +81,33 @@ export class Game {
     window.setCameraSmoothing = (value) => {
       this.camera.smoothing = Math.max(0.01, Math.min(1.0, value));
       console.log(`Camera smoothing set to ${this.camera.smoothing}`);
+    };
+    
+    // Add latency debugging commands (will be available after game starts)
+    window.getLatencyStats = () => {
+      if (this.latencyTracker) {
+        return this.latencyTracker.getStats();
+      } else {
+        console.log('Latency tracker not initialized - start game first');
+        return null;
+      }
+    };
+    
+    window.getJitterBufferStats = () => {
+      if (this.network && this.network.jitterBuffer) {
+        return this.network.jitterBuffer.getStats();
+      } else {
+        console.log('Jitter buffer not initialized - start game first');
+        return null;
+      }
+    };
+    
+    window.setJitterBufferSize = (size) => {
+      if (this.network && this.network.jitterBuffer) {
+        this.network.jitterBuffer.setTargetBufferSize(size);
+      } else {
+        console.log('Jitter buffer not initialized - start game first');
+      }
     };
 
     this.tilesets = new TilesetManager();
@@ -122,6 +147,17 @@ export class Game {
   startGame(selectedClass) {
     if (!this.network) {
       this.network = new NetworkClient(this);
+      // Initialize latency tracker after network client
+      this.latencyTracker = new LatencyTracker(this.network);
+      
+      // Initialize jitter buffer with latency tracker
+      this.network.initializeJitterBuffer(this.latencyTracker);
+      
+      // Initialize predictor with latency tracker
+      this.systems.predictor = new MovementPredictor(this.latencyTracker);
+      
+      // Initialize reconciler after predictor
+      this.systems.reconciler = new Reconciler(this.systems.inputBuffer, this.systems.predictor);
     }
     // Remove class selection UI
     if (this.classSelectUI) {
@@ -282,7 +318,12 @@ export class Game {
     // 4. Apply physics (world boundaries and tile collisions) to all collected entities
     this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);
     
-    // 5. Update combat, camera, and UI
+    // 5. Process buffered network updates (jitter buffer)
+    if (this.network) {
+      this.network.processBufferedUpdates();
+    }
+    
+    // 6. Update combat, camera, and UI
     this.systems.combat.update(deltaTimeSeconds);
     if (this.projectileRenderer) {
       this.projectileRenderer.update(deltaTimeSeconds);

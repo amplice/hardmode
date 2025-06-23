@@ -6,9 +6,10 @@
  * while preparing for client-side prediction in later phases.
  */
 export class InputProcessor {
-    constructor(gameState, abilityManager = null) {
+    constructor(gameState, abilityManager = null, lagCompensation = null) {
         this.gameState = gameState;
         this.abilityManager = abilityManager;
+        this.lagCompensation = lagCompensation;
         this.inputQueues = new Map(); // playerId -> array of input commands
         this.lastProcessedSequence = new Map(); // playerId -> last sequence processed
         this.playerPhysics = new Map(); // playerId -> physics state
@@ -81,13 +82,25 @@ export class InputProcessor {
     }
 
     /**
-     * Process a single input command
+     * Process a single input command with lag compensation
      * @param {Object} player - The player object
      * @param {Object} input - The input command
      * @param {number} deltaTime - Frame delta time
      */
     processInput(player, input, deltaTime) {
         const inputData = input.data;
+        
+        // Apply lag compensation if available
+        let compensatedDelta = deltaTime;
+        if (this.lagCompensation) {
+            const compensation = this.lagCompensation.compensateMovementInput(player, input, deltaTime);
+            compensatedDelta = compensation.compensatedDelta;
+            
+            // Log compensation occasionally for debugging
+            if (compensation.compensation > 5 && Math.random() < 0.05) {
+                console.log(`[InputProcessor] Lag compensation for ${player.id}: +${compensation.compensation.toFixed(1)}ms`);
+            }
+        }
         
         // Extract movement from keys
         const movement = this.extractMovement(inputData.keys);
@@ -99,7 +112,7 @@ export class InputProcessor {
 
         // Apply movement if player isn't restricted
         if (!player.damageStunned && player.hp > 0) {
-            this.applyMovement(player, movement, inputData.deltaTime || deltaTime);
+            this.applyMovement(player, movement, inputData.deltaTime || compensatedDelta);
         }
 
         // Handle attacks
