@@ -86,14 +86,17 @@ export class Game {
     // Add latency debugging commands (will be available after game starts)
     window.getLatencyStats = () => {
       if (this.latencyTracker) {
-        return this.latencyTracker.getStats();
+        const stats = this.latencyTracker.getStats();
+        console.log('=== Connection Quality ===');
+        console.log(`RTT: ${stats.currentRTT.toFixed(1)}ms (avg: ${stats.averageRTT.toFixed(1)}ms)`);
+        console.log(`Jitter: ${stats.jitter.toFixed(1)}ms`);
+        console.log(`Quality: ${stats.connectionQuality.quality} - ${stats.connectionQuality.description}`);
+        return stats;
       } else {
         console.log('Latency tracker not initialized - start game first');
         return null;
       }
     };
-    
-    // Jitter buffer commands removed - feature disabled for better performance
 
     this.tilesets = new TilesetManager();
     this.network = null;
