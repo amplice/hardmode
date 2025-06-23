@@ -146,9 +146,9 @@ export class LatencyTracker {
             this.updateServerTimeOffset(data.clientTime, data.serverTime, rtt);
         }
         
-        // Debug logging (occasionally)
-        if (Math.random() < 0.1) {
-            console.log(`[LatencyTracker] RTT: ${rtt.toFixed(1)}ms, Avg: ${this.averageRTT.toFixed(1)}ms, Jitter: ${this.jitter.toFixed(1)}ms`);
+        // Debug logging for high latency only
+        if (this.averageRTT > 100 && Math.random() < 0.05) {
+            console.log(`[LatencyTracker] High RTT: ${rtt.toFixed(1)}ms, Avg: ${this.averageRTT.toFixed(1)}ms`);
         }
     }
     

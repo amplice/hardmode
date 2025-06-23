@@ -24,9 +24,8 @@ export class MovementPredictor {
             height: 100 * 64
         };
         
-        // Prediction timing adjustment
-        this.predictionAdjustment = 0; // ms to adjust prediction timing
-        this.maxPredictionAdjustment = 100; // Max 100ms adjustment
+        // Minimal prediction adjustment for high latency
+        this.maxPredictionAdjustment = 10; // Conservative max 10ms adjustment
     }
 
     /**

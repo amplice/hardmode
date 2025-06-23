@@ -5,7 +5,6 @@ export class NetworkClient {
         this.players = new Map();
         this.monsters = new Map();
         this.connected = false; // Initialize connected state
-        this.jitterBuffer = null; // Will be initialized with latency tracker
 
         this.setupHandlers();
         console.log('NetworkClient initialized');
@@ -45,8 +44,18 @@ export class NetworkClient {
         });
 
         this.socket.on('state', state => {
-            // Process state updates directly - no jitter buffer buffering
-            this.processStateUpdate(state);
+            // Process state updates directly for immediate responsiveness
+            state.players.forEach(p => {
+                this.processPlayerUpdate(p);
+            });
+            state.monsters.forEach(m => this.game.addOrUpdateMonster(m));
+            
+            // Update projectiles
+            if (state.projectiles && this.game.projectileRenderer) {
+                state.projectiles.forEach(p => {
+                    this.game.projectileRenderer.updateProjectile(p.id, p.x, p.y);
+                });
+            }
         });
 
         this.socket.on('playerAttack', data => {
@@ -421,49 +430,7 @@ export class NetworkClient {
         });
     }
     
-    /**
-     * Initialize jitter buffer with latency tracker
-     * @param {Object} latencyTracker - LatencyTracker instance
-     */
-    initializeJitterBuffer(latencyTracker) {
-        if (!this.jitterBuffer) {
-            // Import JitterBuffer dynamically to avoid circular imports
-            import('../systems/JitterBuffer.js').then(({ JitterBuffer }) => {
-                this.jitterBuffer = new JitterBuffer(latencyTracker);
-                console.log('[NetworkClient] Jitter buffer initialized');
-            });
-        }
-    }
-    
-    /**
-     * Process buffered updates from jitter buffer
-     * Called regularly from game loop
-     */
-    processBufferedUpdates() {
-        if (!this.jitterBuffer) return;
-        
-        const updates = this.jitterBuffer.releaseUpdates();
-        if (!updates) return;
-        
-        // Process released player updates
-        if (updates.players && updates.players.length > 0) {
-            updates.players.forEach(playerState => {
-                this.processPlayerUpdate(playerState);
-            });
-        }
-        
-        // Process released monster updates
-        if (updates.monsters) {
-            updates.monsters.forEach(m => this.game.addOrUpdateMonster(m));
-        }
-        
-        // Process released projectile updates
-        if (updates.projectiles && this.game.projectileRenderer) {
-            updates.projectiles.forEach(p => {
-                this.game.projectileRenderer.updateProjectile(p.id, p.x, p.y);
-            });
-        }
-    }
+    // Jitter buffer methods removed - feature disabled for better performance
     
     /**
      * Process a single player state update (extracted from original state handler)
@@ -527,21 +494,5 @@ export class NetworkClient {
         }
     }
     
-    /**
-     * Process complete state update (fallback for when jitter buffer not available)
-     * @param {Object} state - Complete state from server
-     */
-    processStateUpdate(state) {
-        state.players.forEach(p => {
-            this.processPlayerUpdate(p);
-        });
-        state.monsters.forEach(m => this.game.addOrUpdateMonster(m));
-        
-        // Update projectiles
-        if (state.projectiles && this.game.projectileRenderer) {
-            state.projectiles.forEach(p => {
-                this.game.projectileRenderer.updateProjectile(p.id, p.x, p.y);
-            });
-        }
-    }
+    // processStateUpdate method removed - now handled directly in state handler
 }

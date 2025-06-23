@@ -93,22 +93,7 @@ export class Game {
       }
     };
     
-    window.getJitterBufferStats = () => {
-      if (this.network && this.network.jitterBuffer) {
-        return this.network.jitterBuffer.getStats();
-      } else {
-        console.log('Jitter buffer not initialized - start game first');
-        return null;
-      }
-    };
-    
-    window.setJitterBufferSize = (size) => {
-      if (this.network && this.network.jitterBuffer) {
-        this.network.jitterBuffer.setTargetBufferSize(size);
-      } else {
-        console.log('Jitter buffer not initialized - start game first');
-      }
-    };
+    // Jitter buffer commands removed - feature disabled for better performance
 
     this.tilesets = new TilesetManager();
     this.network = null;
