@@ -4,7 +4,6 @@ import { Player }         from '../entities/Player.js';
 import { InputSystem }    from '../systems/Input.js';
 import { InputBuffer }    from '../systems/InputBuffer.js';
 import { MovementPredictor } from '../systems/MovementPredictor.js';
-import { Reconciler } from '../systems/Reconciler.js';
 import { PhysicsSystem }  from '../systems/Physics.js';
 import { WorldGenerator } from '../systems/world/WorldGenerator.js';
 import { CombatSystem }   from '../systems/CombatSystem.js';
@@ -59,15 +58,11 @@ export class Game {
       input:   new InputSystem(),
       inputBuffer: new InputBuffer(),
       predictor: new MovementPredictor(),
-      reconciler: null, // Will initialize after predictor and inputBuffer are ready
       physics: new PhysicsSystem(),
       world:   null,               // will init after tilesets
       combat:  new CombatSystem(this.app),
       sprites: new SpriteManager()
     };
-    
-    // Initialize reconciler with dependencies
-    this.systems.reconciler = new Reconciler(this.systems.inputBuffer, this.systems.predictor);
 
     this.entities = { player: null };
     window.game = this;
@@ -261,12 +256,6 @@ export class Game {
     if (this.projectileRenderer) {
       this.projectileRenderer.update(deltaTimeSeconds);
     }
-    
-    // PHASE 3: Update reconciliation smoothing if active
-    if (this.network && this.network.connected && this.systems.reconciler) {
-      this.systems.reconciler.updateSmoothing(this.entities.player, deltaTimeSeconds);
-    }
-    
     this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
@@ -299,28 +288,6 @@ export class Game {
     if (inputState.secondaryAttack) keys.push('space');
     if (inputState.roll) keys.push('shift');
     return keys;
-  }
-
-  /**
-   * Handle server state reconciliation for local player
-   * Called when we receive authoritative state from server
-   */
-  handleServerStateReconciliation(serverPlayerState) {
-    if (!this.entities.player || !this.systems.reconciler) {
-      return;
-    }
-
-    // Only reconcile if we should (throttling)
-    if (!this.systems.reconciler.shouldReconcile()) {
-      return;
-    }
-
-    // Perform reconciliation
-    const reconciled = this.systems.reconciler.reconcile(serverPlayerState, this.entities.player);
-    
-    if (reconciled) {
-      console.log('[Game] Reconciliation performed', this.systems.reconciler.getStats());
-    }
   }
 
   updateCamera() {

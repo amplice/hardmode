@@ -81,9 +81,6 @@ export class NetworkClient {
                                 this.game.healthUI.update();
                             }
                         }
-                        
-                        // PHASE 3: Trigger reconciliation with server state
-                        this.game.handleServerStateReconciliation(p);
                     }
                 } else {
                     this.game.updateRemotePlayer(p);
