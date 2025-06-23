@@ -50,6 +50,16 @@ export class NetworkClient {
                     if (this.game.entities.player && this.game.systems.reconciler) {
                         const player = this.game.entities.player;
                         
+                        // Debug: Log server state format occasionally
+                        if (Math.random() < 0.01) {
+                            console.log('[DEBUG] Server state sample:', {
+                                hasLastProcessedSeq: p.lastProcessedSeq !== undefined,
+                                lastProcessedSeq: p.lastProcessedSeq,
+                                position: { x: p.x, y: p.y },
+                                clientPos: { x: player.position.x, y: player.position.y }
+                            });
+                        }
+                        
                         // Perform reconciliation if we have sequence number
                         if (p.lastProcessedSeq !== undefined) {
                             const reconciled = this.game.systems.reconciler.reconcile(p, player);
@@ -57,6 +67,7 @@ export class NetworkClient {
                                 console.log('[NetworkClient] Position reconciled by server');
                             }
                         } else {
+                            console.warn('[NetworkClient] Server state missing lastProcessedSeq - using fallback');
                             // Fallback to direct position update if no sequence
                             player.position.x = p.x;
                             player.position.y = p.y;

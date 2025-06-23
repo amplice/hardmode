@@ -27,6 +27,15 @@ export class Reconciler {
      * @returns {boolean} True if reconciliation was performed
      */
     reconcile(serverState, localPlayer) {
+        // Debug: Log reconcile attempts
+        if (Math.random() < 0.05) {
+            console.log('[Reconciler] Reconcile called with:', {
+                serverPos: { x: serverState.x, y: serverState.y },
+                localPos: { x: localPlayer.position.x, y: localPlayer.position.y },
+                lastProcessedSeq: serverState.lastProcessedSeq
+            });
+        }
+        
         // Must have lastProcessedSeq for reconciliation
         if (!serverState.lastProcessedSeq) {
             console.warn('[Reconciler] Server state missing lastProcessedSeq');

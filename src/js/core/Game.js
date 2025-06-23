@@ -186,12 +186,13 @@ export class Game {
       this.network.sendPlayerInput(networkInput);
 
       // PHASE 2: Predict movement immediately for responsive feel
-      // Skip prediction during server-controlled abilities (dash/jump)
-      const isServerControlled = this.entities.player.isAttacking && 
+      // Skip prediction during any attack (attacks should lock movement)
+      const isAttacking = this.entities.player.isAttacking;
+      const isServerControlled = isAttacking && 
                                   this.entities.player.currentAttackType &&
                                   ['secondary'].includes(this.entities.player.currentAttackType);
                                   
-      if (!isServerControlled) {
+      if (!isAttacking) {
         
         const currentState = {
           x: this.entities.player.position.x,
