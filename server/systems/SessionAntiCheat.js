@@ -12,9 +12,9 @@ export class SessionAntiCheat {
         this.playerViolations = new Map(); // playerId -> { strikes, violations, lastInputTime, lastPosition }
         
         // Configuration - MORE LENIENT
-        this.maxStrikes = 5; // More strikes before kick
-        this.maxInputsPerSecond = 28; // Allow up to 28 inputs/second (client sends at 25fps)
-        this.inputGracePeriod = 500; // Grace period at start (ms)
+        this.maxStrikes = 10; // Even more strikes before kick
+        this.maxInputsPerSecond = 65; // Allow up to 65 inputs/second (client sends at 60fps)
+        this.inputGracePeriod = 1000; // Longer grace period at start (ms)
         this.maxTeleportDistance = 300; // Generous teleport distance
         
         // Class-based speed limits with generous buffers
