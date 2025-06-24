@@ -12,11 +12,11 @@ export class SessionAntiCheat {
         this.playerViolations = new Map(); // playerId -> { strikes, violations, lastInputTime, lastPosition }
         
         // Configuration - VERY LENIENT
-        this.maxStrikes = 20; // Many strikes before kick
-        this.maxInputsPerSecond = 80; // Allow bursts up to 80 inputs/second
-        this.inputGracePeriod = 2000; // Long grace period at start (ms)
-        this.maxTeleportDistance = 300; // Generous teleport distance
-        this.minInputInterval = 10; // Minimum 10ms between inputs (100 inputs/sec theoretical max)
+        this.maxStrikes = 30; // Increased from 20 - more strikes before kick
+        this.maxInputsPerSecond = 100; // Allow bursts up to 100 inputs/second
+        this.inputGracePeriod = 3000; // Increased grace period at start (ms)
+        this.maxTeleportDistance = 400; // More generous teleport distance
+        this.minInputInterval = 8; // Minimum 8ms between inputs (125 inputs/sec theoretical max)
         
         // Class-based speed limits with generous buffers
         this.maxSpeedsPerFrame = {
@@ -26,10 +26,10 @@ export class SessionAntiCheat {
             'rogue': 12        // 6 * 2x buffer
         };
         
-        // Movement ability distances (pixels)
+        // Movement ability distances (pixels) - very generous to avoid false positives
         this.abilityDistances = {
-            'dash': 200,    // Rogue dash distance + buffer
-            'jump': 150     // Guardian/Hunter jump distance + buffer
+            'dash': 300,    // Increased from 200 - covers all dash abilities with buffer
+            'jump': 250     // Increased from 150 - covers all jump abilities with buffer
         };
         
         console.log('[SessionAntiCheat] Initialized lenient anti-cheat system');
@@ -118,13 +118,15 @@ export class SessionAntiCheat {
         } else {
             // Normal movement - use class speed limits
             const maxSpeed = this.maxSpeedsPerFrame[playerClass] || 10;
-            // Be generous with deltaTime calculations
+            // Be very generous with deltaTime calculations to account for lag spikes
             const frames = Math.max(deltaTime * 30, 1);
-            maxDistance = maxSpeed * frames * 1.2; // 20% extra buffer
+            // Add minimum frame count to handle very small deltas
+            const adjustedFrames = Math.max(frames, 0.5); // At least half a frame
+            maxDistance = maxSpeed * adjustedFrames * 1.5; // 50% extra buffer
         }
         
-        // Only flag egregious violations
-        if (distance > maxDistance * 1.5) { // 50% over limit
+        // Only flag very egregious violations - 2x over limit
+        if (distance > maxDistance * 2.0) { // 100% over limit
             const violationType = isInAbility ? 'ability_teleport' : 'speed_hack';
             const context = isInAbility ? `during ${abilityType} ability` : 'normal movement';
             
@@ -152,15 +154,30 @@ export class SessionAntiCheat {
         
         const ability = this.abilityManager.activeAbilities.get(playerId);
         
-        // Map ability keys to types
-        if (ability.abilityKey === 'secondary' || ability.type === 'jump') {
+        // Log ability details for debugging
+        console.log(`[SessionAntiCheat] Checking ability for ${playerId}:`, {
+            type: ability.type,
+            abilityKey: ability.abilityKey,
+            abilityType: ability.abilityType
+        });
+        
+        // Check multiple possible fields for ability type
+        if (ability.type === 'dash' || ability.abilityType === 'dash' || 
+            (ability.config && ability.config.archetype === 'dash_attack')) {
+            return 'dash';
+        }
+        if (ability.type === 'jump' || ability.abilityType === 'jump' || 
+            ability.abilityKey === 'secondary' || 
+            (ability.config && ability.config.archetype === 'jump_attack')) {
             return 'jump';
         }
-        if (ability.type === 'dash') {
+        
+        // Default to 'dash' for any movement ability to be safe
+        if (ability.config && (ability.config.dashDistance || ability.config.jumpDistance)) {
             return 'dash';
         }
         
-        return ability.type || null;
+        return ability.type || ability.abilityType || null;
     }
     
     /**

@@ -124,13 +124,16 @@ export class InputProcessor {
 
         // Apply movement if player isn't restricted
         if (!player.damageStunned && player.hp > 0) {
+            // Check if player is in a server-controlled ability
+            const isInAbility = this.abilityManager && this.abilityManager.activeAbilities.has(player.id);
+            
             // Store old position for anti-cheat validation
             const oldPos = { x: player.x, y: player.y };
             
             this.applyMovement(player, movement, inputData.deltaTime || compensatedDelta);
             
-            // Validate movement with anti-cheat
-            if (this.sessionAntiCheat) {
+            // Validate movement with anti-cheat - but skip during abilities
+            if (this.sessionAntiCheat && !isInAbility) {
                 const newPos = { x: player.x, y: player.y };
                 const isValid = this.sessionAntiCheat.validateMovement(
                     player.id, oldPos, newPos, player.class, compensatedDelta
