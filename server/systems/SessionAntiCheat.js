@@ -18,12 +18,12 @@ export class SessionAntiCheat {
         this.maxTeleportDistance = 400; // More generous teleport distance
         this.minInputInterval = 8; // Minimum 8ms between inputs (125 inputs/sec theoretical max)
         
-        // Class-based speed limits with generous buffers
+        // Class-based speed limits with very generous buffers
         this.maxSpeedsPerFrame = {
-            'bladedancer': 10,  // 5 * 2x buffer
-            'guardian': 8,      // 3.5 * 2.3x buffer  
-            'hunter': 10,       // 5 * 2x buffer
-            'rogue': 12        // 6 * 2x buffer
+            'bladedancer': 15,  // 5 * 3x buffer
+            'guardian': 12,     // 3.5 * 3.4x buffer  
+            'hunter': 15,       // 5 * 3x buffer
+            'rogue': 18        // 6 * 3x buffer
         };
         
         // Movement ability distances (pixels) - very generous to avoid false positives
@@ -125,10 +125,13 @@ export class SessionAntiCheat {
             maxDistance = maxSpeed * adjustedFrames * 1.5; // 50% extra buffer
         }
         
-        // Only flag very egregious violations - 2x over limit
-        if (distance > maxDistance * 2.0) { // 100% over limit
+        // Only flag extremely egregious violations - 3x over limit
+        if (distance > maxDistance * 3.0) { // 200% over limit
             const violationType = isInAbility ? 'ability_teleport' : 'speed_hack';
             const context = isInAbility ? `during ${abilityType} ability` : 'normal movement';
+            
+            // Log details for debugging
+            console.log(`[AntiCheat] Movement violation: Player ${playerId} (${playerClass}) moved ${distance.toFixed(1)}px in ${deltaTime.toFixed(3)}s (max: ${maxDistance.toFixed(1)}px) ${context}`);
             
             this.addViolation(playerId, violationType, 
                 `Moved ${distance.toFixed(1)}px in ${deltaTime.toFixed(3)}s (max: ${maxDistance.toFixed(1)}px) ${context}`);

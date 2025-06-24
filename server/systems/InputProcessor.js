@@ -130,13 +130,15 @@ export class InputProcessor {
             // Store old position for anti-cheat validation
             const oldPos = { x: player.x, y: player.y };
             
-            this.applyMovement(player, movement, inputData.deltaTime || compensatedDelta);
+            // Use the same deltaTime for both movement and validation
+            const movementDelta = inputData.deltaTime || compensatedDelta;
+            this.applyMovement(player, movement, movementDelta);
             
             // Validate movement with anti-cheat - but skip during abilities
             if (this.sessionAntiCheat && !isInAbility) {
                 const newPos = { x: player.x, y: player.y };
                 const isValid = this.sessionAntiCheat.validateMovement(
-                    player.id, oldPos, newPos, player.class, compensatedDelta
+                    player.id, oldPos, newPos, player.class, movementDelta
                 );
                 
                 if (!isValid) {
