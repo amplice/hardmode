@@ -111,6 +111,10 @@ export class Game {
     
     // Will be initialized when game starts
     this.projectileRenderer = null;
+    
+    // Input throttling to prevent overwhelming the server
+    this.lastInputSent = 0;
+    this.inputThrottleMs = 40; // 25fps for network updates (safer than 30fps)
   }
 
   async loadAndInit() {
@@ -230,9 +234,15 @@ export class Game {
         deltaTime: deltaTimeSeconds
       };
       
-      // Add to buffer and send to server
+      // Add to buffer
       const networkInput = this.systems.inputBuffer.createNetworkInput(inputData);
-      this.network.sendPlayerInput(networkInput);
+      
+      // Throttle network sends to prevent anti-cheat violations
+      const now = Date.now();
+      if (now - this.lastInputSent >= this.inputThrottleMs) {
+        this.network.sendPlayerInput(networkInput);
+        this.lastInputSent = now;
+      }
 
       // PHASE 2: Predict movement immediately for responsive feel
       // Skip prediction during any attack (attacks should lock movement)

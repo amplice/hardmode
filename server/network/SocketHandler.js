@@ -2,7 +2,7 @@ import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 import { getDistance } from '../../shared/utils/MathUtils.js';
 
 export class SocketHandler {
-    constructor(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation) {
+    constructor(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat) {
         this.io = io;
         this.gameState = gameState;
         this.monsterManager = monsterManager;
@@ -10,6 +10,7 @@ export class SocketHandler {
         this.abilityManager = abilityManager;
         this.inputProcessor = inputProcessor;
         this.lagCompensation = lagCompensation;
+        this.sessionAntiCheat = sessionAntiCheat;
         this.setupEventHandlers();
     }
 
@@ -87,8 +88,15 @@ export class SocketHandler {
     }
 
     handlePlayerInput(socket, data) {
-        // Queue input command for processing
-        this.inputProcessor.queueInput(socket.id, data);
+        // Queue input command for processing (with anti-cheat validation)
+        const accepted = this.inputProcessor.queueInput(socket.id, data);
+        
+        // Check if player should be kicked for violations
+        if (this.sessionAntiCheat && this.sessionAntiCheat.shouldKickPlayer(socket.id)) {
+            console.error(`[SocketHandler] Kicking player ${socket.id} for anti-cheat violations`);
+            socket.emit('kicked', { reason: 'Anti-cheat violation detected' });
+            socket.disconnect(true);
+        }
     }
 
     handleExecuteAbility(socket, data) {
@@ -187,7 +195,7 @@ export class SocketHandler {
     handleDisconnect(socket) {
         console.log(`Player ${socket.id} disconnected`);
         this.abilityManager.removePlayer(socket.id);
-        this.inputProcessor.removePlayer(socket.id);
+        this.inputProcessor.removePlayer(socket.id); // This also cleans up anti-cheat data
         this.lagCompensation.removePlayer(socket.id);
         this.gameState.removePlayer(socket.id);
         socket.broadcast.emit('playerLeft', socket.id);

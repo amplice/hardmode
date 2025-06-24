@@ -12,6 +12,7 @@ import { ProjectileManager } from './managers/ProjectileManager.js';
 import { AbilityManager } from './managers/AbilityManager.js';
 import { InputProcessor } from './systems/InputProcessor.js';
 import { LagCompensation } from './systems/LagCompensation.js';
+import { SessionAntiCheat } from './systems/SessionAntiCheat.js';
 // Hit detection rollback removed - caused visual issues
 import { SocketHandler } from './network/SocketHandler.js';
 import { NetworkOptimizer } from './network/NetworkOptimizer.js';
@@ -41,8 +42,9 @@ const monsterManager = new MonsterManager(io);
 const projectileManager = new ProjectileManager(io);
 const abilityManager = new AbilityManager(io, gameState, projectileManager);
 const lagCompensation = new LagCompensation();
-const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation);
-const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation);
+const sessionAntiCheat = new SessionAntiCheat(abilityManager);
+const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation, sessionAntiCheat);
+const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat);
 const networkOptimizer = new NetworkOptimizer();
 
 // Cross-reference managers

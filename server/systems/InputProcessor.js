@@ -6,21 +6,29 @@
  * while preparing for client-side prediction in later phases.
  */
 export class InputProcessor {
-    constructor(gameState, abilityManager = null, lagCompensation = null) {
+    constructor(gameState, abilityManager = null, lagCompensation = null, sessionAntiCheat = null) {
         this.gameState = gameState;
         this.abilityManager = abilityManager;
         this.lagCompensation = lagCompensation;
+        this.sessionAntiCheat = sessionAntiCheat;
         this.inputQueues = new Map(); // playerId -> array of input commands
         this.lastProcessedSequence = new Map(); // playerId -> last sequence processed
         this.playerPhysics = new Map(); // playerId -> physics state
     }
 
     /**
-     * Queue an input command from a client
+     * Queue an input command from a client (with anti-cheat validation)
      * @param {string} playerId - The player ID
      * @param {Object} inputCommand - The input command
+     * @returns {boolean} True if input was accepted, false if rejected
      */
     queueInput(playerId, inputCommand) {
+        // Validate input with anti-cheat system
+        if (this.sessionAntiCheat && !this.sessionAntiCheat.validateInput(playerId, inputCommand)) {
+            console.warn(`[InputProcessor] Rejected invalid input from player ${playerId}`);
+            return false;
+        }
+
         if (!this.inputQueues.has(playerId)) {
             this.inputQueues.set(playerId, []);
         }
@@ -36,7 +44,11 @@ export class InputProcessor {
             queue.shift(); // Remove oldest
         }
 
-        console.log(`[InputProcessor] Queued input for player ${playerId}, sequence ${inputCommand.sequence}, keys: ${inputCommand.data.keys.join(',')}`);
+        if (Math.random() < 0.01) { // Reduced logging
+            console.log(`[InputProcessor] Queued input for player ${playerId}, sequence ${inputCommand.sequence}, keys: ${inputCommand.data.keys.join(',')}`);
+        }
+        
+        return true;
     }
 
     /**
@@ -112,7 +124,25 @@ export class InputProcessor {
 
         // Apply movement if player isn't restricted
         if (!player.damageStunned && player.hp > 0) {
+            // Store old position for anti-cheat validation
+            const oldPos = { x: player.x, y: player.y };
+            
             this.applyMovement(player, movement, inputData.deltaTime || compensatedDelta);
+            
+            // Validate movement with anti-cheat
+            if (this.sessionAntiCheat) {
+                const newPos = { x: player.x, y: player.y };
+                const isValid = this.sessionAntiCheat.validateMovement(
+                    player.id, oldPos, newPos, player.class, compensatedDelta
+                );
+                
+                if (!isValid) {
+                    // Movement failed validation - revert to old position
+                    player.x = oldPos.x;
+                    player.y = oldPos.y;
+                    console.warn(`[InputProcessor] Reverted invalid movement for player ${player.id}`);
+                }
+            }
         }
 
         // Handle attacks
@@ -255,6 +285,13 @@ export class InputProcessor {
         this.inputQueues.delete(playerId);
         this.lastProcessedSequence.delete(playerId);
         this.playerPhysics.delete(playerId);
+        
+        // Clean up anti-cheat data
+        if (this.sessionAntiCheat) {
+            this.sessionAntiCheat.removePlayer(playerId);
+        }
+        
+        console.log(`[InputProcessor] Removed player ${playerId} from input processing`);
     }
 
     /**
