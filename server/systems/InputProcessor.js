@@ -44,7 +44,7 @@ export class InputProcessor {
             queue.shift(); // Remove oldest
         }
 
-        if (Math.random() < 0.01) { // Reduced logging
+        if (Math.random() < 0.001) { // Very reduced logging (0.1% chance)
             console.log(`[InputProcessor] Queued input for player ${playerId}, sequence ${inputCommand.sequence}, keys: ${inputCommand.data.keys.join(',')}`);
         }
         

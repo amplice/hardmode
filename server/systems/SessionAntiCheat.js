@@ -11,11 +11,12 @@ export class SessionAntiCheat {
         // Player violation tracking (session-based)
         this.playerViolations = new Map(); // playerId -> { strikes, violations, lastInputTime, lastPosition }
         
-        // Configuration - MORE LENIENT
-        this.maxStrikes = 10; // Even more strikes before kick
-        this.maxInputsPerSecond = 65; // Allow up to 65 inputs/second (client sends at 60fps)
-        this.inputGracePeriod = 1000; // Longer grace period at start (ms)
+        // Configuration - VERY LENIENT
+        this.maxStrikes = 20; // Many strikes before kick
+        this.maxInputsPerSecond = 80; // Allow bursts up to 80 inputs/second
+        this.inputGracePeriod = 2000; // Long grace period at start (ms)
         this.maxTeleportDistance = 300; // Generous teleport distance
+        this.minInputInterval = 10; // Minimum 10ms between inputs (100 inputs/sec theoretical max)
         
         // Class-based speed limits with generous buffers
         this.maxSpeedsPerFrame = {
@@ -56,15 +57,15 @@ export class SessionAntiCheat {
             return true;
         }
         
-        // Check input frequency
+        // Check input frequency - only catch extreme spam
         if (playerData.lastInputTime) {
             const timeDiff = now - playerData.lastInputTime;
-            const minInterval = 1000 / this.maxInputsPerSecond;
             
-            if (timeDiff < minInterval - 5) { // 5ms tolerance
-                // Too many inputs per second
+            // Only flag if less than 10ms between inputs (>100 inputs/sec)
+            if (timeDiff < this.minInputInterval) {
+                // Extreme input spam detected
                 this.addViolation(playerId, 'input_spam', 
-                    `Input frequency too high: ${timeDiff.toFixed(1)}ms between inputs (min: ${minInterval.toFixed(1)}ms)`);
+                    `Extreme input frequency: ${timeDiff.toFixed(1)}ms between inputs`);
                 return false;
             }
         }
