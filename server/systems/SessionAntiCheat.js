@@ -11,26 +11,13 @@ export class SessionAntiCheat {
         // Player violation tracking (session-based)
         this.playerViolations = new Map(); // playerId -> { strikes, violations, lastInputTime, lastPosition }
         
-        // Configuration - VERY LENIENT
-        this.maxStrikes = 30; // Increased from 20 - more strikes before kick
-        this.maxInputsPerSecond = 100; // Allow bursts up to 100 inputs/second
-        this.inputGracePeriod = 3000; // Increased grace period at start (ms)
-        this.maxTeleportDistance = 400; // More generous teleport distance
-        this.minInputInterval = 8; // Minimum 8ms between inputs (125 inputs/sec theoretical max)
+        // Configuration - Simple and effective
+        this.maxStrikes = 10; // Strikes before kick
+        this.minInputInterval = 8; // Minimum 8ms between inputs (125 inputs/sec max)
+        this.inputGracePeriod = 2000; // Grace period at start (ms)
         
-        // Class-based speed limits with very generous buffers
-        this.maxSpeedsPerFrame = {
-            'bladedancer': 15,  // 5 * 3x buffer
-            'guardian': 12,     // 3.5 * 3.4x buffer  
-            'hunter': 15,       // 5 * 3x buffer
-            'rogue': 18        // 6 * 3x buffer
-        };
-        
-        // Movement ability distances (pixels) - very generous to avoid false positives
-        this.abilityDistances = {
-            'dash': 300,    // Increased from 200 - covers all dash abilities with buffer
-            'jump': 250     // Increased from 150 - covers all jump abilities with buffer
-        };
+        // Movement validation disabled - it was causing false positives due to
+        // server processing multiple inputs per frame
         
         console.log('[SessionAntiCheat] Initialized lenient anti-cheat system');
     }
@@ -84,64 +71,21 @@ export class SessionAntiCheat {
     }
     
     /**
-     * Validate player movement for speed hacking and teleportation
-     * @param {string} playerId - Player ID
-     * @param {Object} oldPos - Previous position {x, y}
-     * @param {Object} newPos - New position {x, y}
-     * @param {string} playerClass - Player class
-     * @param {number} deltaTime - Time since last update
-     * @returns {boolean} True if movement is valid
+     * Validate player movement - DISABLED due to false positives
+     * 
+     * Movement validation is fundamentally flawed because:
+     * - Server processes multiple inputs per frame (up to 5)
+     * - Each input moves the player legitimately
+     * - Anti-cheat sees cumulative movement as speed hacking
+     * 
+     * We rely on input frequency validation to catch actual cheaters.
+     * Real speed hackers modify game speed, which increases input frequency.
+     * 
+     * @returns {boolean} Always returns true
      */
     validateMovement(playerId, oldPos, newPos, playerClass, deltaTime) {
-        let playerData = this.getPlayerData(playerId);
-        
-        // Skip validation for first movement
-        if (!playerData.lastPosition) {
-            playerData.lastPosition = { x: newPos.x, y: newPos.y };
-            return true;
-        }
-        
-        // Calculate movement distance
-        const dx = newPos.x - oldPos.x;
-        const dy = newPos.y - oldPos.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        // Check if player is currently in a movement ability
-        const isInAbility = this.abilityManager && this.abilityManager.activeAbilities.has(playerId);
-        const abilityType = isInAbility ? this.getPlayerAbilityType(playerId) : null;
-        
-        // Determine max allowed distance
-        let maxDistance;
-        if (isInAbility && this.abilityDistances[abilityType]) {
-            // Player is using movement ability - allow larger distance
-            maxDistance = this.abilityDistances[abilityType];
-        } else {
-            // Normal movement - use class speed limits
-            const maxSpeed = this.maxSpeedsPerFrame[playerClass] || 10;
-            // Be very generous with deltaTime calculations to account for lag spikes
-            const frames = Math.max(deltaTime * 30, 1);
-            // Add minimum frame count to handle very small deltas
-            const adjustedFrames = Math.max(frames, 0.5); // At least half a frame
-            maxDistance = maxSpeed * adjustedFrames * 1.5; // 50% extra buffer
-        }
-        
-        // Only flag extremely egregious violations - 3x over limit
-        if (distance > maxDistance * 3.0) { // 200% over limit
-            const violationType = isInAbility ? 'ability_teleport' : 'speed_hack';
-            const context = isInAbility ? `during ${abilityType} ability` : 'normal movement';
-            
-            // Log details for debugging
-            console.log(`[AntiCheat] Movement violation: Player ${playerId} (${playerClass}) moved ${distance.toFixed(1)}px in ${deltaTime.toFixed(3)}s (max: ${maxDistance.toFixed(1)}px) ${context}`);
-            
-            this.addViolation(playerId, violationType, 
-                `Moved ${distance.toFixed(1)}px in ${deltaTime.toFixed(3)}s (max: ${maxDistance.toFixed(1)}px) ${context}`);
-            
-            return false;
-        }
-        
-        // Update tracking
-        playerData.lastPosition = { x: newPos.x, y: newPos.y };
-        
+        // Movement validation disabled - too many false positives
+        // Input frequency validation is sufficient to catch cheaters
         return true;
     }
     

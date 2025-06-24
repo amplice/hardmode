@@ -7,8 +7,16 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export function setupDebugEndpoint(app) {
+export function setupDebugEndpoint(app, systems = {}) {
     app.use(express.json({ limit: '10mb' }));
+    
+    // Anti-cheat stats endpoint
+    if (systems.sessionAntiCheat) {
+        app.get('/anticheat-stats', (req, res) => {
+            const stats = systems.sessionAntiCheat.getStats();
+            res.json(stats);
+        });
+    }
     
     app.post('/debug-log', (req, res) => {
         const { filename, content } = req.body;

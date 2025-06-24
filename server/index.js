@@ -33,9 +33,6 @@ app.use(express.static(path.join(__dirname, '..', 'src')));
 app.use('/node_modules', express.static(path.join(__dirname, '..', 'node_modules')));
 app.use('/shared', express.static(path.join(__dirname, '..', 'shared')));
 
-// Setup debug endpoint
-setupDebugEndpoint(app);
-
 // Initialize game systems
 const gameState = new GameStateManager(io);
 const monsterManager = new MonsterManager(io);
@@ -46,6 +43,9 @@ const sessionAntiCheat = new SessionAntiCheat(abilityManager);
 const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation, sessionAntiCheat);
 const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat);
 const networkOptimizer = new NetworkOptimizer();
+
+// Setup debug endpoint with access to systems
+setupDebugEndpoint(app, { sessionAntiCheat });
 
 // Cross-reference managers
 io.monsterManager = monsterManager;

@@ -97,6 +97,23 @@ export class Game {
         return null;
       }
     };
+    
+    // Add anti-cheat debugging command
+    window.getAntiCheatStats = async () => {
+      try {
+        const response = await fetch('/anticheat-stats');
+        const stats = await response.json();
+        console.log('=== Anti-Cheat Stats ===');
+        console.log(`Tracked players: ${stats.trackedPlayers}`);
+        console.log(`Total violations: ${stats.totalViolations}`);
+        console.log('Players by strikes:', stats.playersByStrikes);
+        console.log('Violation types:', stats.violationTypes);
+        return stats;
+      } catch (error) {
+        console.error('Failed to get anti-cheat stats:', error);
+        return null;
+      }
+    };
 
     this.tilesets = new TilesetManager();
     this.network = null;
