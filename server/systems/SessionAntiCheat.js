@@ -16,8 +16,9 @@ export class SessionAntiCheat {
         
         // Configuration - Simple and effective
         this.maxStrikes = 10; // Strikes before kick
-        this.minInputInterval = 8; // Minimum 8ms between inputs (125 inputs/sec max)
-        this.inputGracePeriod = 2000; // Grace period at start (ms)
+        this.minInputInterval = 5; // Minimum 5ms between inputs (200 inputs/sec max)
+        this.inputGracePeriod = 3000; // Grace period at start (ms)
+        this.inputBurstTolerance = 3; // Allow 3 fast inputs in a row before flagging
         
         // Movement validation over time windows
         this.movementCheckInterval = 1000; // Check movement every 1 second
@@ -44,6 +45,7 @@ export class SessionAntiCheat {
         // Grace period for new connections
         if (!playerData.firstInputTime) {
             playerData.firstInputTime = now;
+            playerData.fastInputCount = 0;
         }
         
         const timeSinceFirstInput = now - playerData.firstInputTime;
@@ -53,16 +55,24 @@ export class SessionAntiCheat {
             return true;
         }
         
-        // Check input frequency - only catch extreme spam
+        // Check input frequency with burst tolerance
         if (playerData.lastInputTime) {
             const timeDiff = now - playerData.lastInputTime;
             
-            // Only flag if less than 10ms between inputs (>100 inputs/sec)
+            // Track fast inputs
             if (timeDiff < this.minInputInterval) {
-                // Extreme input spam detected
-                this.addViolation(playerId, 'input_spam', 
-                    `Extreme input frequency: ${timeDiff.toFixed(1)}ms between inputs`);
-                return false;
+                playerData.fastInputCount = (playerData.fastInputCount || 0) + 1;
+                
+                // Only flag if we've seen multiple fast inputs in a row
+                if (playerData.fastInputCount > this.inputBurstTolerance) {
+                    this.addViolation(playerId, 'input_spam', 
+                        `Sustained input spam: ${timeDiff.toFixed(1)}ms between inputs (${playerData.fastInputCount} fast inputs)`);
+                    playerData.fastInputCount = 0; // Reset after violation
+                    return false;
+                }
+            } else {
+                // Reset fast input counter if this input came at normal speed
+                playerData.fastInputCount = 0;
             }
         }
         
@@ -214,11 +224,12 @@ export class SessionAntiCheat {
             timestamp: Date.now()
         });
         
-        // Only log warnings for first few strikes
-        if (playerData.strikes <= 3) {
-            console.log(`[SessionAntiCheat] WARNING: Player ${playerId} - ${violationType}: ${details} (Strike ${playerData.strikes}/${this.maxStrikes})`);
-        } else {
-            console.warn(`[SessionAntiCheat] VIOLATION: Player ${playerId} - ${violationType}: ${details} (Strike ${playerData.strikes}/${this.maxStrikes})`);
+        // Always log violations for debugging
+        console.warn(`[SessionAntiCheat] VIOLATION: Player ${playerId} - ${violationType}: ${details} (Strike ${playerData.strikes}/${this.maxStrikes})`);
+        
+        // Log input frequency stats if it's an input spam violation
+        if (violationType === 'input_spam' && playerData.lastInputTime) {
+            console.log(`[SessionAntiCheat] Input stats for ${playerId}: fastInputCount=${playerData.fastInputCount}, minInterval=${this.minInputInterval}ms`);
         }
         
         // Check if player should be kicked
