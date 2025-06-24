@@ -11,13 +11,22 @@ export class SessionAntiCheat {
         // Player violation tracking (session-based)
         this.playerViolations = new Map(); // playerId -> { strikes, violations, lastInputTime, lastPosition }
         
+        // Player movement tracking over time
+        this.playerMovementHistory = new Map(); // playerId -> { positions: [{x, y, timestamp}], lastCheck }
+        
         // Configuration - Simple and effective
         this.maxStrikes = 10; // Strikes before kick
         this.minInputInterval = 8; // Minimum 8ms between inputs (125 inputs/sec max)
         this.inputGracePeriod = 2000; // Grace period at start (ms)
         
-        // Movement validation disabled - it was causing false positives due to
-        // server processing multiple inputs per frame
+        // Movement validation over time windows
+        this.movementCheckInterval = 1000; // Check movement every 1 second
+        this.maxDistancePerSecond = {
+            'bladedancer': 300,  // 5 pixels/frame * 60fps
+            'guardian': 210,     // 3.5 pixels/frame * 60fps
+            'hunter': 300,       // 5 pixels/frame * 60fps
+            'rogue': 360        // 6 pixels/frame * 60fps
+        };
         
         console.log('[SessionAntiCheat] Initialized lenient anti-cheat system');
     }
@@ -71,21 +80,83 @@ export class SessionAntiCheat {
     }
     
     /**
-     * Validate player movement - DISABLED due to false positives
+     * Validate player movement over time windows
      * 
-     * Movement validation is fundamentally flawed because:
-     * - Server processes multiple inputs per frame (up to 5)
-     * - Each input moves the player legitimately
-     * - Anti-cheat sees cumulative movement as speed hacking
+     * Instead of checking per-input, we track movement over 1-second windows.
+     * This avoids false positives from batch processing while catching speed hacks.
      * 
-     * We rely on input frequency validation to catch actual cheaters.
-     * Real speed hackers modify game speed, which increases input frequency.
-     * 
-     * @returns {boolean} Always returns true
+     * @param {string} playerId - Player ID
+     * @param {Object} oldPos - Previous position {x, y}
+     * @param {Object} newPos - New position {x, y}
+     * @param {string} playerClass - Player class
+     * @param {number} deltaTime - Time since last update (unused in new approach)
+     * @returns {boolean} True if movement is valid
      */
     validateMovement(playerId, oldPos, newPos, playerClass, deltaTime) {
-        // Movement validation disabled - too many false positives
-        // Input frequency validation is sufficient to catch cheaters
+        const now = Date.now();
+        
+        // Get or create movement history
+        if (!this.playerMovementHistory.has(playerId)) {
+            this.playerMovementHistory.set(playerId, {
+                positions: [],
+                lastCheck: now
+            });
+        }
+        
+        const history = this.playerMovementHistory.get(playerId);
+        
+        // Add current position to history
+        history.positions.push({
+            x: newPos.x,
+            y: newPos.y,
+            timestamp: now
+        });
+        
+        // Clean up old positions (keep last 2 seconds)
+        history.positions = history.positions.filter(pos => now - pos.timestamp < 2000);
+        
+        // Only check if enough time has passed
+        if (now - history.lastCheck < this.movementCheckInterval) {
+            return true; // Not time to check yet
+        }
+        
+        // Perform time-based movement check
+        history.lastCheck = now;
+        
+        // Find positions from ~1 second ago
+        const oneSecondAgo = now - 1000;
+        const oldPositions = history.positions.filter(pos => 
+            pos.timestamp >= oneSecondAgo - 100 && pos.timestamp <= oneSecondAgo + 100
+        );
+        
+        if (oldPositions.length === 0) {
+            return true; // Not enough history yet
+        }
+        
+        // Calculate distance traveled in the last second
+        const oldPosition = oldPositions[0];
+        const dx = newPos.x - oldPosition.x;
+        const dy = newPos.y - oldPosition.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // Get max allowed distance per second for this class
+        const maxDistance = this.maxDistancePerSecond[playerClass] || 300;
+        
+        // Add buffer for abilities and network latency
+        const bufferMultiplier = 1.5;
+        const allowedDistance = maxDistance * bufferMultiplier;
+        
+        // Check if player is in an ability (gets extra allowance)
+        const isInAbility = this.abilityManager && this.abilityManager.activeAbilities.has(playerId);
+        const finalAllowedDistance = isInAbility ? allowedDistance * 2 : allowedDistance;
+        
+        // Only flag if significantly over the limit
+        if (distance > finalAllowedDistance) {
+            this.addViolation(playerId, 'speed_hack', 
+                `Moved ${distance.toFixed(1)}px in 1 second (max: ${finalAllowedDistance.toFixed(1)}px for ${playerClass})`);
+            return false;
+        }
+        
         return true;
     }
     
@@ -193,6 +264,7 @@ export class SessionAntiCheat {
      */
     removePlayer(playerId) {
         this.playerViolations.delete(playerId);
+        this.playerMovementHistory.delete(playerId);
         console.log(`[SessionAntiCheat] Removed player ${playerId} from anti-cheat tracking`);
     }
     

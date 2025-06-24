@@ -124,12 +124,27 @@ export class InputProcessor {
 
         // Apply movement if player isn't restricted
         if (!player.damageStunned && player.hp > 0) {
+            // Store old position for anti-cheat validation
+            const oldPos = { x: player.x, y: player.y };
+            
             // Apply movement using client's deltaTime for consistency
             const movementDelta = inputData.deltaTime || compensatedDelta;
             this.applyMovement(player, movement, movementDelta);
             
-            // Movement validation removed - was causing false positives
-            // due to server processing multiple inputs per frame
+            // Validate movement with time-based anti-cheat
+            if (this.sessionAntiCheat) {
+                const newPos = { x: player.x, y: player.y };
+                const isValid = this.sessionAntiCheat.validateMovement(
+                    player.id, oldPos, newPos, player.class, movementDelta
+                );
+                
+                if (!isValid) {
+                    // Movement failed validation - revert to old position
+                    player.x = oldPos.x;
+                    player.y = oldPos.y;
+                    console.warn(`[InputProcessor] Reverted invalid movement for player ${player.id}`);
+                }
+            }
         }
 
         // Handle attacks
