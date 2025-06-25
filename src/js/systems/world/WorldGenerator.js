@@ -78,7 +78,8 @@ export class WorldGenerator {
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         // Create a border that's 5 tiles wide around the edges
-        if (x < 5 || x >= this.width - 5 || y < 5 || y >= this.height - 5) {
+        // Move bottom edge up by 1 to leave room for cliff extensions
+        if (x < 5 || x >= this.width - 5 || y < 5 || y >= this.height - 6) {
           this.elevationData[y][x] = 1; // Elevated border
         }
       }
@@ -162,8 +163,8 @@ export class WorldGenerator {
           extensionSprite.y = (y + 1) * this.tileSize;
           extensionSprite.scale.set(this.tileSize / 32);
           
-          // Add a debug tint to make extensions visible
-          extensionSprite.tint = 0xffcccc; // Light red tint for debugging
+          // Remove debug tint now that extensions are working
+          // extensionSprite.tint = 0xffcccc;
           
           // Add to the world container, not at index 0
           this.container.addChild(extensionSprite);
