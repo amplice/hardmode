@@ -145,6 +145,8 @@ export class WorldGenerator {
   addCliffExtensions() {
     console.log("Adding cliff extensions using bitmasking...");
     
+    let extensionCount = 0;
+    
     // Add the second layer tiles for cliff height using CliffAutotiler
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -161,9 +163,13 @@ export class WorldGenerator {
           extensionSprite.scale.set(this.tileSize / 32);
           // Add to container at lower layer so entities appear on top
           this.container.addChildAt(extensionSprite, 0);
+          extensionCount++;
+          console.log(`[DEBUG] Added cliff extension at (${x}, ${y+1}) for elevated tile (${x}, ${y})`);
         }
       }
     }
+    
+    console.log(`[DEBUG] Total cliff extensions added: ${extensionCount}`);
   }
   
   // Helper methods

@@ -180,18 +180,22 @@ export class CliffAutotiler {
       const belowElevation = elevationData[y + 1][x];
       if (belowElevation < currentElevation) {
         // This needs a cliff extension
+        console.log(`[DEBUG] Cliff extension needed at (${x}, ${y}): current=${currentElevation}, below=${belowElevation}`);
         
         // Check neighboring elevations for corner extensions
         const w = x > 0 ? elevationData[y][x - 1] : 0;
         const e = x < width - 1 ? elevationData[y][x + 1] : 0;
         
         if (w < currentElevation && e >= currentElevation) {
+          console.log(`[DEBUG] SW corner extension at (${x}, ${y})`);
           return this.tilesets.textures.terrain[5][0]; // SW extension
         } else if (e < currentElevation && w >= currentElevation) {
+          console.log(`[DEBUG] SE corner extension at (${x}, ${y})`);
           return this.tilesets.textures.terrain[5][6]; // SE extension
         } else {
           // Regular bottom extension
           const col = 1 + Math.floor(Math.random() * 5);
+          console.log(`[DEBUG] Regular bottom extension at (${x}, ${y}), col=${col}`);
           return this.tilesets.textures.terrain[5][col];
         }
       }
