@@ -4,6 +4,7 @@ import { Tile } from './Tile.js';
 import { createNoise2D } from 'simplex-noise';
 import { DecorationManager } from '../tiles/DecorationManager.js';
 import { createSeededRandom } from '../../utils/Random.js';
+import { CliffAutotiler } from '../tiles/CliffAutotiler.js';
 
 export class WorldGenerator {
   constructor(options = {}) {
@@ -17,6 +18,7 @@ export class WorldGenerator {
     this.container = new PIXI.Container();
     this.tiles = [];
     this.elevationData = []; // Track elevated areas
+    this.cliffAutotiler = new CliffAutotiler(this.tilesets);
   }
 
   generate() {
@@ -92,117 +94,50 @@ export class WorldGenerator {
   }
   
   createTileSprites() {
-    console.log("Creating tile sprites...");
+    console.log("Creating tile sprites with bitmasking...");
     
-    // First pass: Create base terrain sprites
+    // First pass: Create base terrain sprites using bitmasking
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         const tile = this.tiles[y][x];
-        const elevation = this.elevationData[y][x];
         
-        if (elevation === 0) {
-          // Flat terrain - use random pure grass
-          const sprite = new PIXI.Sprite(this.tilesets.getRandomPureGrass());
-          sprite.x = x * this.tileSize;
-          sprite.y = y * this.tileSize;
-          sprite.scale.set(this.tileSize / 32); // Scale from 32x32 to display size
-          tile.sprite = sprite;
-          tile.container.addChild(sprite);
-        } else {
-          // Elevated terrain - determine cliff edges
-          const tileTexture = this.getElevatedTileTexture(x, y);
-          const sprite = new PIXI.Sprite(tileTexture);
-          sprite.x = x * this.tileSize;
-          sprite.y = y * this.tileSize;
-          sprite.scale.set(this.tileSize / 32);
-          tile.sprite = sprite;
-          tile.container.addChild(sprite);
-        }
+        // Use CliffAutotiler to determine the correct texture
+        const tileTexture = this.cliffAutotiler.getTileTexture(x, y, this.elevationData);
+        
+        const sprite = new PIXI.Sprite(tileTexture);
+        sprite.position.set(0, 0); // Position at (0,0) within the tile container
+        sprite.scale.set(this.tileSize / 32); // Scale from 32x32 to display size
+        tile.sprite = sprite;
+        tile.container.addChild(sprite);
         
         this.container.addChild(tile.container);
       }
     }
     
-    // Second pass: Add cliff extensions for height
+    // Second pass: Add cliff extensions for 2-tile height effect
     this.addCliffExtensions();
   }
   
-  getElevatedTileTexture(x, y) {
-    const width = this.width;
-    const height = this.height;
-    
-    // Check neighboring elevations
-    const n = y > 0 ? this.elevationData[y-1][x] : 0;
-    const s = y < height-1 ? this.elevationData[y+1][x] : 0;
-    const e = x < width-1 ? this.elevationData[y][x+1] : 0;
-    const w = x > 0 ? this.elevationData[y][x-1] : 0;
-    
-    const elevation = this.elevationData[y][x];
-    
-    // Determine which cliff tile to use
-    const isTopEdge = n < elevation;
-    const isBottomEdge = s < elevation;
-    const isLeftEdge = w < elevation;
-    const isRightEdge = e < elevation;
-    
-    if (!isTopEdge && !isBottomEdge && !isLeftEdge && !isRightEdge) {
-      // Pure elevated grass
-      return this.tilesets.getRandomPureGrass();
-    } else if (isTopEdge && isLeftEdge) {
-      return this.tilesets.getCliffTile('nw-corner');
-    } else if (isTopEdge && isRightEdge) {
-      return this.tilesets.getCliffTile('ne-corner');
-    } else if (isBottomEdge && isLeftEdge) {
-      return this.tilesets.getCliffTile('sw-corner');
-    } else if (isBottomEdge && isRightEdge) {
-      return this.tilesets.getCliffTile('se-corner');
-    } else if (isTopEdge) {
-      // Use varied top edge tiles
-      const variations = ['n-edge'];
-      return this.tilesets.getCliffTile(variations[0]);
-    } else if (isBottomEdge) {
-      return this.tilesets.getCliffTile('s-edge');
-    } else if (isLeftEdge) {
-      return this.tilesets.getCliffTile('w-edge');
-    } else if (isRightEdge) {
-      return this.tilesets.getCliffTile('e-edge');
-    }
-    
-    // Fallback
-    return this.tilesets.getRandomPureGrass();
-  }
   
   addCliffExtensions() {
-    // Add the second layer tiles for cliff height
+    console.log("Adding cliff extensions using bitmasking...");
+    
+    // Add the second layer tiles for cliff height using CliffAutotiler
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         const elevation = this.elevationData[y][x];
         if (elevation === 0) continue;
         
-        // Check if this is a bottom edge that needs extension
-        const s = y < this.height-1 ? this.elevationData[y+1][x] : 0;
-        if (s < elevation) {
-          // This is a cliff edge that drops down
-          const w = x > 0 ? this.elevationData[y][x-1] : 0;
-          const e = x < this.width-1 ? this.elevationData[y][x+1] : 0;
-          
-          let extensionTexture;
-          if (w < elevation && e >= elevation) {
-            extensionTexture = this.tilesets.getCliffTile('sw-corner-ext');
-          } else if (e < elevation && w >= elevation) {
-            extensionTexture = this.tilesets.getCliffTile('se-corner-ext');
-          } else {
-            extensionTexture = this.tilesets.getCliffTile('s-edge-ext');
-          }
-          
-          if (extensionTexture && y + 1 < this.height) {
-            const extensionSprite = new PIXI.Sprite(extensionTexture);
-            extensionSprite.x = x * this.tileSize;
-            extensionSprite.y = (y + 1) * this.tileSize;
-            extensionSprite.scale.set(this.tileSize / 32);
-            // Add to container at lower layer so entities appear on top
-            this.container.addChildAt(extensionSprite, 0);
-          }
+        // Use CliffAutotiler to determine if we need an extension
+        const extensionTexture = this.cliffAutotiler.getCliffExtensionTexture(x, y, this.elevationData);
+        
+        if (extensionTexture && y + 1 < this.height) {
+          const extensionSprite = new PIXI.Sprite(extensionTexture);
+          extensionSprite.x = x * this.tileSize;
+          extensionSprite.y = (y + 1) * this.tileSize;
+          extensionSprite.scale.set(this.tileSize / 32);
+          // Add to container at lower layer so entities appear on top
+          this.container.addChildAt(extensionSprite, 0);
         }
       }
     }
