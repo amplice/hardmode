@@ -42,22 +42,22 @@ export class CliffAutotiler {
     
     // Single edges (one direction has elevation drop)
     map.set(this.NEIGHBORS.NORTH, { row: 0, col: 1 });     // Top edge
-    map.set(this.NEIGHBORS.SOUTH, { row: 4, col: 1 });     // Bottom edge  
+    map.set(this.NEIGHBORS.SOUTH, { row: 5, col: 1 });     // Bottom edge  
     map.set(this.NEIGHBORS.WEST, { row: 1, col: 0 });      // Left edge
     map.set(this.NEIGHBORS.EAST, { row: 1, col: 6 });      // Right edge
     
     // Corner edges (two adjacent directions have elevation drops)
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.WEST, { row: 0, col: 0 });  // NW corner
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.EAST, { row: 0, col: 6 });  // NE corner
-    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.WEST, { row: 4, col: 0 });  // SW corner
-    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.EAST, { row: 4, col: 6 });  // SE corner
+    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.WEST, { row: 5, col: 0 });  // SW corner
+    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.EAST, { row: 5, col: 6 });  // SE corner
     
     // Edge variations for more complex patterns
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHEAST, { row: 0, col: 2 }); // Top edge with NE
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHWEST, { row: 0, col: 3 }); // Top edge with NW
     
-    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.SOUTHEAST, { row: 4, col: 2 }); // Bottom edge with SE
-    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.SOUTHWEST, { row: 4, col: 3 }); // Bottom edge with SW
+    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.SOUTHEAST, { row: 5, col: 2 }); // Bottom edge with SE
+    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.SOUTHWEST, { row: 5, col: 3 }); // Bottom edge with SW
     
     map.set(this.NEIGHBORS.WEST | this.NEIGHBORS.NORTHWEST, { row: 2, col: 0 });  // Left edge with NW
     map.set(this.NEIGHBORS.WEST | this.NEIGHBORS.SOUTHWEST, { row: 3, col: 0 });  // Left edge with SW
@@ -68,8 +68,8 @@ export class CliffAutotiler {
     // Complex corners with multiple edges
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.WEST | this.NEIGHBORS.NORTHWEST, { row: 0, col: 0 }); // NW complex
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.EAST | this.NEIGHBORS.NORTHEAST, { row: 0, col: 6 }); // NE complex
-    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.WEST | this.NEIGHBORS.SOUTHWEST, { row: 4, col: 0 }); // SW complex
-    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.EAST | this.NEIGHBORS.SOUTHEAST, { row: 4, col: 6 }); // SE complex
+    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.WEST | this.NEIGHBORS.SOUTHWEST, { row: 5, col: 0 }); // SW complex
+    map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.EAST | this.NEIGHBORS.SOUTHEAST, { row: 5, col: 6 }); // SE complex
     
     return map;
   }
@@ -151,13 +151,13 @@ export class CliffAutotiler {
     } else if (hasNorth && hasEast) {
       return this.tilesets.textures.terrain[0][6]; // NE corner
     } else if (hasSouth && hasWest) {
-      return this.tilesets.textures.terrain[4][0]; // SW corner
+      return this.tilesets.textures.terrain[5][0]; // SW corner
     } else if (hasSouth && hasEast) {
-      return this.tilesets.textures.terrain[4][6]; // SE corner
+      return this.tilesets.textures.terrain[5][6]; // SE corner
     } else if (hasNorth) {
       return this.tilesets.textures.terrain[0][1]; // Top edge
     } else if (hasSouth) {
-      return this.tilesets.textures.terrain[4][1]; // Bottom edge
+      return this.tilesets.textures.terrain[5][1]; // Bottom edge
     } else if (hasWest) {
       return this.tilesets.textures.terrain[1][0]; // Left edge
     } else if (hasEast) {
@@ -188,15 +188,15 @@ export class CliffAutotiler {
         
         if (w < currentElevation && e >= currentElevation) {
           console.log(`[DEBUG] SW corner extension at (${x}, ${y})`);
-          return this.tilesets.textures.terrain[5][0]; // SW extension
+          return this.tilesets.textures.terrain[6][0]; // SW extension
         } else if (e < currentElevation && w >= currentElevation) {
           console.log(`[DEBUG] SE corner extension at (${x}, ${y})`);
-          return this.tilesets.textures.terrain[5][6]; // SE extension
+          return this.tilesets.textures.terrain[6][6]; // SE extension
         } else {
           // Regular bottom extension
           const col = 1 + Math.floor(Math.random() * 5);
           console.log(`[DEBUG] Regular bottom extension at (${x}, ${y}), col=${col}`);
-          return this.tilesets.textures.terrain[5][col];
+          return this.tilesets.textures.terrain[6][col];
         }
       }
     }

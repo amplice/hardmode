@@ -39,8 +39,8 @@ export class TilesetManager {
     // Store as 2D array for easier access
     this.textures.terrain = [];
     
-    // For now, we only need rows 0-5 for basic terrain
-    for (let row = 0; row < 6; row++) {
+    // For now, we only need rows 0-6 for basic terrain including cliff extensions
+    for (let row = 0; row < 7; row++) {
       this.textures.terrain[row] = [];
       for (let col = 0; col < 11; col++) { // Only green grass zone (first 11 columns)
         this.textures.terrain[row][col] = new Texture(
@@ -125,27 +125,27 @@ export class TilesetManager {
       // Square corners
       'nw-corner': [0, 0],      // Northwest corner
       'ne-corner': [0, 6],      // Northeast corner  
-      'sw-corner': [4, 0],      // Southwest corner
-      'se-corner': [4, 6],      // Southeast corner
+      'sw-corner': [5, 0],      // Southwest corner
+      'se-corner': [5, 6],      // Southeast corner
       
       // Edges
       'n-edge': [0, 1],         // North edge (can use 0,1 through 0,5)
-      's-edge': [4, 1],         // South edge (can use 4,1 through 4,5)
+      's-edge': [5, 1],         // South edge (can use 5,1 through 5,5)
       'w-edge': [1, 0],         // West edge
       'e-edge': [1, 6],         // East edge
       
       // Height extensions (second layer)
-      'sw-corner-ext': [5, 0],  // Goes below sw-corner
-      'se-corner-ext': [5, 6],  // Goes below se-corner
-      's-edge-ext': [5, 1],     // Goes below s-edge
+      'sw-corner-ext': [6, 0],  // Goes below sw-corner
+      'se-corner-ext': [6, 6],  // Goes below se-corner
+      's-edge-ext': [6, 1],     // Goes below s-edge
       'w-edge-ext': [2, 0],     // Alternative west edge
       'e-edge-ext': [2, 6],     // Alternative east edge
       
       // Diagonal corners
       'nw-diagonal': [0, 8],    // Northwest diagonal
       'ne-diagonal': [0, 9],    // Northeast diagonal
-      'sw-diagonal': [4, 8],    // Southwest diagonal  
-      'se-diagonal': [4, 9]     // Southeast diagonal
+      'sw-diagonal': [5, 8],    // Southwest diagonal  
+      'se-diagonal': [5, 9]     // Southeast diagonal
     };
     
     const coords = tileMap[type];

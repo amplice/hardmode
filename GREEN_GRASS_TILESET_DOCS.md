@@ -56,34 +56,44 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (3,9): Inner diagonal always west of (3,10)
 - (3,10): Southeast diagonal start
 
-#### Row 4 - Bottom Edges & Height Layer 1
-- (4,0): Southwest corner of cliff edge
-- (4,1): Bottom cliff edge tile 1
-- (4,2): Bottom cliff edge tile 2
-- (4,3): Bottom cliff edge tile 3
-- (4,4): Bottom cliff edge tile 4
-- (4,5): Bottom cliff edge tile 5
-- (4,6): Southeast corner of cliff edge
+#### Row 4 - Continued side variations
+- (4,0): West edge variation 4
+- (4,1): Pure green grass tile (variation)
+- (4,2): Pure green grass tile (variation)
+- (4,3): Pure green grass tile (variation)
+- (4,4): Pure green grass tile (variation)
+- (4,5): Pure green grass tile (variation)
+- (4,6): East edge variation 4
 - (4,7): Height depth tile (always below (3,7))
 - (4,8): Second southwest diagonal (below (3,8))
 - (4,9): Second southeast diagonal (below (3,9))
 - (4,10): Height depth tile (below (3,10))
 
-#### Row 5 - Height Layer 2 (Vertical Depth)
-- (5,0): Second vertical layer (always below (4,0))
-- (5,1): Second vertical layer (always below (4,1))
-- (5,2): Second vertical layer (always below (4,2))
-- (5,3): Second vertical layer (always below (4,3))
-- (5,4): Second vertical layer (always below (4,4))
-- (5,5): Second vertical layer (always below (4,5))
-- (5,6): Second vertical layer (always below (4,6))
+#### Row 5 - Bottom Edges & Height Layer 1
+- (5,0): Southwest corner of cliff edge
+- (5,1): Bottom cliff edge tile 1
+- (5,2): Bottom cliff edge tile 2
+- (5,3): Bottom cliff edge tile 3
+- (5,4): Bottom cliff edge tile 4
+- (5,5): Bottom cliff edge tile 5
+- (5,6): Southeast corner of cliff edge
 - (5,7): Empty
 - (5,8): Always goes below (4,8)
 - (5,9): Always goes below (4,9)
 - (5,10): Empty
 
-#### Row 6 - Additional Transition Helpers
-- (6,0-6,10): Extra transition tiles and variations for complex terrain configurations
+#### Row 6 - Height Layer 2 (Vertical Depth)
+- (6,0): Second vertical layer (always below (5,0))
+- (6,1): Second vertical layer (always below (5,1))
+- (6,2): Second vertical layer (always below (5,2))
+- (6,3): Second vertical layer (always below (5,3))
+- (6,4): Second vertical layer (always below (5,4))
+- (6,5): Second vertical layer (always below (5,5))
+- (6,6): Second vertical layer (always below (5,6))
+- (6,7): Empty
+- (6,8): Always goes below (5,8)
+- (6,9): Always goes below (5,9)
+- (6,10): Empty
 
 ### Height Feature Section (Rows 7-27)
 These tiles create the illusion of elevation and depth in the 2D world.
@@ -168,7 +178,7 @@ Green grass transitioning to transparency (for overlays or special effects).
    - Pure grass tiles are found at (1,1) through (1,5) and variations in rows 2-3
 2. **Height System**: 
    - Cliffs have a height of 2 tiles
-   - Row 4 tiles must be followed by row 5 tiles below them to show proper depth
+   - Row 5 tiles must be followed by row 6 tiles below them to show proper depth
    - Diagonal corners also follow this 2-tile height system
 3. **Elevation**: Use rows 7-27 to create additional height variation
 4. **Variety**: Substitute row 28-29 tiles randomly for visual interest
