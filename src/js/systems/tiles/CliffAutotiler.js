@@ -119,11 +119,18 @@ export class CliffAutotiler {
     const tileCoords = this.bitmaskToTile.get(bitmask);
     
     if (tileCoords) {
+      console.log(`[DEBUG] Cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
       return this.tilesets.textures.terrain[tileCoords.row][tileCoords.col];
     }
     
     // Fallback: try to find a close match or use pure grass
-    return this.findClosestMatch(bitmask) || this.tilesets.getRandomPureGrass();
+    const fallback = this.findClosestMatch(bitmask);
+    if (fallback) {
+      console.log(`[DEBUG] Fallback cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}`);
+      return fallback;
+    }
+    
+    return this.tilesets.getRandomPureGrass();
   }
   
   /**

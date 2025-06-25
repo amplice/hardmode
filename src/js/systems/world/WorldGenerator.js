@@ -75,12 +75,15 @@ export class WorldGenerator {
     
     // Create a few elevated plateaus
     const plateauCount = 2 + Math.floor(this.random() * 3);
+    console.log(`[DEBUG] Creating ${plateauCount} elevated plateaus`);
     
     for (let i = 0; i < plateauCount; i++) {
       const width = 5 + Math.floor(this.random() * 8);
       const height = 5 + Math.floor(this.random() * 8);
       const x = Math.floor(this.random() * (this.width - width - 10)) + 5;
       const y = Math.floor(this.random() * (this.height - height - 10)) + 5;
+      
+      console.log(`[DEBUG] Plateau ${i}: ${width}x${height} at (${x}, ${y})`);
       
       // Mark the elevated area
       for (let dy = 0; dy < height; dy++) {
@@ -91,6 +94,15 @@ export class WorldGenerator {
         }
       }
     }
+    
+    // Count elevated tiles for debugging
+    let elevatedCount = 0;
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        if (this.elevationData[y][x] > 0) elevatedCount++;
+      }
+    }
+    console.log(`[DEBUG] Total elevated tiles: ${elevatedCount}`)
   }
   
   createTileSprites() {
