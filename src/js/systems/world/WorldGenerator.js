@@ -9,64 +9,36 @@ export class WorldGenerator {
   constructor(options = {}) {
     this.width = options.width || 100;
     this.height = options.height || 100;
-    this.tileSize = options.tileSize || 32;
+    this.tileSize = options.tileSize || 64; // Display size (scaled from 32x32)
     this.tilesets = options.tilesets;
     this.seed = options.seed || 1;
     this.random = createSeededRandom(this.seed);
     this.noise2D = createNoise2D(this.random);
-    this.waterNoise2D = createNoise2D(this.random);
-    this.decorations = null;
     this.container = new PIXI.Container();
     this.tiles = [];
+    this.elevationData = []; // Track elevated areas
   }
 
   generate() {
-    // Configuration parameters
-    const params = {
-      noise: {
-        terrain: 0.05,
-        water: 0.08
-      },
-      thresholds: {
-        sand: -0.3,
-        water: -0.5,
-        sandDistance: 3,
-        cardinalCleanup: 3,
-        waterCleanup: 2,
-        sandCleanup: 5
-      }
-    };
-    
-    console.log("Generating world...");
+    console.log("Generating world with new MainLev2.0 tileset...");
     
     // Create world boundary
     this.createWorldBoundary();
     
-    // Generate base terrain (grass and sand)
-    this.generateBaseTerrain(params);
+    // Generate base terrain
+    this.generateBaseTerrain();
     
-    // Clean up isolated sand tiles
-    this.cleanupIsolatedSand(params.thresholds.cardinalCleanup);
+    // Generate some elevated areas
+    this.generateElevatedAreas();
     
-    // Generate water
-    this.generateWater(params);
+    // Create visual tiles
+    this.createTileSprites();
     
-    // Clean up water formations
-    this.cleanupGrassPeninsulas();
-    this.cleanupThinWaterConnections(params.thresholds.waterCleanup);
-    
-    // Process terrain transitions
-    console.log("Processing terrain transitions...");
-    this.processTransitions();
-    
-    // Process water transitions
-    console.log("Processing water transitions...");
-    this.processWaterTransitions();
-    
-    // Generate decorations
-    this.decorations = new DecorationManager(this, this.tilesets, { random: this.random });
-    const decorationsContainer = this.decorations.generateDecorations();
-    this.container.addChild(decorationsContainer);
+    // Skip decorations for now - will update later for new tileset
+    // TODO: Update decorations for 32x32 tileset
+    // this.decorations = new DecorationManager(this, this.tilesets, { random: this.random });
+    // const decorationsContainer = this.decorations.generateDecorations();
+    // this.container.addChild(decorationsContainer);
     
     console.log("World generation complete!");
     return this.container;
@@ -80,322 +52,160 @@ export class WorldGenerator {
     this.container.addChildAt(worldBackground, 0);
   }
   
-  generateBaseTerrain(params) {
+  generateBaseTerrain() {
     console.log("Generating base terrain...");
     
+    // Initialize arrays
     for (let y = 0; y < this.height; y++) {
       this.tiles[y] = [];
+      this.elevationData[y] = [];
       for (let x = 0; x < this.width; x++) {
-        const noiseValue = this.noise2D(x * params.noise.terrain, y * params.noise.terrain);
-        const terrainType = noiseValue < params.thresholds.sand ? 'sand' : 'grass';
-        const tile = new Tile(x, y, terrainType, this.tilesets, this.tileSize);
+        // For now, just create grass tiles
+        const tile = new Tile(x, y, 'grass', this.tilesets, this.tileSize);
         this.tiles[y][x] = tile;
+        this.elevationData[y][x] = 0; // Flat terrain by default
+      }
+    }
+  }
+  
+  generateElevatedAreas() {
+    console.log("Generating elevated areas...");
+    
+    // Create a few elevated plateaus
+    const plateauCount = 2 + Math.floor(this.random() * 3);
+    
+    for (let i = 0; i < plateauCount; i++) {
+      const width = 5 + Math.floor(this.random() * 8);
+      const height = 5 + Math.floor(this.random() * 8);
+      const x = Math.floor(this.random() * (this.width - width - 10)) + 5;
+      const y = Math.floor(this.random() * (this.height - height - 10)) + 5;
+      
+      // Mark the elevated area
+      for (let dy = 0; dy < height; dy++) {
+        for (let dx = 0; dx < width; dx++) {
+          if (x + dx < this.width && y + dy < this.height) {
+            this.elevationData[y + dy][x + dx] = 1; // Elevated
+          }
+        }
+      }
+    }
+  }
+  
+  createTileSprites() {
+    console.log("Creating tile sprites...");
+    
+    // First pass: Create base terrain sprites
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        const tile = this.tiles[y][x];
+        const elevation = this.elevationData[y][x];
+        
+        if (elevation === 0) {
+          // Flat terrain - use random pure grass
+          const sprite = new PIXI.Sprite(this.tilesets.getRandomPureGrass());
+          sprite.x = x * this.tileSize;
+          sprite.y = y * this.tileSize;
+          sprite.scale.set(this.tileSize / 32); // Scale from 32x32 to display size
+          tile.sprite = sprite;
+          tile.container.addChild(sprite);
+        } else {
+          // Elevated terrain - determine cliff edges
+          const tileTexture = this.getElevatedTileTexture(x, y);
+          const sprite = new PIXI.Sprite(tileTexture);
+          sprite.x = x * this.tileSize;
+          sprite.y = y * this.tileSize;
+          sprite.scale.set(this.tileSize / 32);
+          tile.sprite = sprite;
+          tile.container.addChild(sprite);
+        }
+        
         this.container.addChild(tile.container);
       }
     }
+    
+    // Second pass: Add cliff extensions for height
+    this.addCliffExtensions();
   }
   
-  cleanupIsolatedSand(threshold) {
-    console.log("Cleaning up isolated sand tiles...");
+  getElevatedTileTexture(x, y) {
+    const width = this.width;
+    const height = this.height;
     
-    const tilesToConvert = [];
+    // Check neighboring elevations
+    const n = y > 0 ? this.elevationData[y-1][x] : 0;
+    const s = y < height-1 ? this.elevationData[y+1][x] : 0;
+    const e = x < width-1 ? this.elevationData[y][x+1] : 0;
+    const w = x > 0 ? this.elevationData[y][x-1] : 0;
     
-    // Check each sand tile
+    const elevation = this.elevationData[y][x];
+    
+    // Determine which cliff tile to use
+    const isTopEdge = n < elevation;
+    const isBottomEdge = s < elevation;
+    const isLeftEdge = w < elevation;
+    const isRightEdge = e < elevation;
+    
+    if (!isTopEdge && !isBottomEdge && !isLeftEdge && !isRightEdge) {
+      // Pure elevated grass
+      return this.tilesets.getRandomPureGrass();
+    } else if (isTopEdge && isLeftEdge) {
+      return this.tilesets.getCliffTile('nw-corner');
+    } else if (isTopEdge && isRightEdge) {
+      return this.tilesets.getCliffTile('ne-corner');
+    } else if (isBottomEdge && isLeftEdge) {
+      return this.tilesets.getCliffTile('sw-corner');
+    } else if (isBottomEdge && isRightEdge) {
+      return this.tilesets.getCliffTile('se-corner');
+    } else if (isTopEdge) {
+      // Use varied top edge tiles
+      const variations = ['n-edge'];
+      return this.tilesets.getCliffTile(variations[0]);
+    } else if (isBottomEdge) {
+      return this.tilesets.getCliffTile('s-edge');
+    } else if (isLeftEdge) {
+      return this.tilesets.getCliffTile('w-edge');
+    } else if (isRightEdge) {
+      return this.tilesets.getCliffTile('e-edge');
+    }
+    
+    // Fallback
+    return this.tilesets.getRandomPureGrass();
+  }
+  
+  addCliffExtensions() {
+    // Add the second layer tiles for cliff height
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
-        const tile = this.tiles[y][x];
+        const elevation = this.elevationData[y][x];
+        if (elevation === 0) continue;
         
-        if (tile.type === 'sand') {
-          // Count grass neighbors in cardinal directions
-          const cardinalNeighbors = [
-            { dx: 0, dy: -1 }, // North
-            { dx: 1, dy: 0 },  // East
-            { dx: 0, dy: 1 },  // South
-            { dx: -1, dy: 0 }  // West
-          ];
+        // Check if this is a bottom edge that needs extension
+        const s = y < this.height-1 ? this.elevationData[y+1][x] : 0;
+        if (s < elevation) {
+          // This is a cliff edge that drops down
+          const w = x > 0 ? this.elevationData[y][x-1] : 0;
+          const e = x < this.width-1 ? this.elevationData[y][x+1] : 0;
           
-          let grassCount = 0;
-          for (const dir of cardinalNeighbors) {
-            const nx = x + dir.dx;
-            const ny = y + dir.dy;
-            
-            if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
-              if (this.tiles[ny][nx].type === 'grass') {
-                grassCount++;
-              }
-            }
-          }
-          
-          // If enough grass neighbors, convert to grass
-          if (grassCount >= threshold) {
-            tilesToConvert.push({ x, y });
-          }
-        }
-      }
-    }
-    
-    // Convert tiles
-    for (const pos of tilesToConvert) {
-      this.tiles[pos.y][pos.x].setType('grass', this.tilesets);
-    }
-    
-    console.log(`Converted ${tilesToConvert.length} isolated sand tiles to grass.`);
-  }
-  
-  generateWater(params) {
-    console.log("Generating water tiles...");
-    
-    const waterTiles = [];
-    
-    // Find potential water tiles
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        const tile = this.tiles[y][x];
-        
-        if (tile.type === 'grass') {
-          const waterNoise = this.waterNoise2D(x * params.noise.water, y * params.noise.water);
-          
-          if (waterNoise < params.thresholds.water && 
-              this.isFarEnoughFromSand(x, y, params.thresholds.sandDistance)) {
-            waterTiles.push({ x, y });
-          }
-        }
-      }
-    }
-    
-    // Convert to water
-    for (const pos of waterTiles) {
-      this.tiles[pos.y][pos.x].setType('water', this.tilesets);
-    }
-    
-    console.log(`Created ${waterTiles.length} water tiles.`);
-  }
-  
-  cleanupGrassPeninsulas() {
-    console.log("Cleaning up grass peninsulas...");
-    
-    let count = 0;
-    
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        const tile = this.tiles[y][x];
-        
-        if (tile.type === 'grass') {
-          // Check if this grass tile is surrounded by water on 3 sides
-          const neighbors = {
-            n: this.getTileType(x, y - 1) === 'water',
-            e: this.getTileType(x + 1, y) === 'water',
-            s: this.getTileType(x, y + 1) === 'water',
-            w: this.getTileType(x - 1, y) === 'water'
-          };
-          
-          const waterCount = Object.values(neighbors).filter(v => v).length;
-          
-          if (waterCount === 3) {
-            tile.setType('water', this.tilesets);
-            count++;
-          }
-        }
-      }
-    }
-    
-    console.log(`Converted ${count} grass peninsula tiles to water.`);
-  }
-  
-  cleanupThinWaterConnections(threshold) {
-    console.log("Cleaning up thin water connections...");
-    
-    const tilesToConvert = [];
-    
-    // Find water tiles with few water neighbors
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        const tile = this.tiles[y][x];
-        
-        if (tile.type === 'water') {
-          let waterNeighborCount = 0;
-          
-          // Check all 8 surrounding tiles
-          for (let dy = -1; dy <= 1; dy++) {
-            for (let dx = -1; dx <= 1; dx++) {
-              if (dx === 0 && dy === 0) continue;
-              
-              const nx = x + dx;
-              const ny = y + dy;
-              
-              if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
-                if (this.tiles[ny][nx].type === 'water') {
-                  waterNeighborCount++;
-                }
-              }
-            }
-          }
-          
-          // If too few water neighbors, convert back to grass
-          if (waterNeighborCount <= threshold) {
-            tilesToConvert.push({ x, y });
-          }
-        }
-      }
-    }
-    
-    // Convert tiles
-    for (const pos of tilesToConvert) {
-      this.tiles[pos.y][pos.x].setType('grass', this.tilesets);
-    }
-    
-    console.log(`Converted ${tilesToConvert.length} thin water tiles to grass.`);
-  }
-  
-  processTransitions() {
-    // Process grass-sand transitions
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        const tile = this.tiles[y][x];
-        
-        if (tile.type !== 'sand') continue;
-        
-        // Get neighboring tile types
-        const neighbors = {
-          n:  this.getTileType(x, y - 1),
-          ne: this.getTileType(x + 1, y - 1),
-          e:  this.getTileType(x + 1, y),
-          se: this.getTileType(x + 1, y + 1),
-          s:  this.getTileType(x, y + 1),
-          sw: this.getTileType(x - 1, y + 1),
-          w:  this.getTileType(x - 1, y),
-          nw: this.getTileType(x - 1, y - 1)
-        };
-        
-        // Create a pattern string
-        let pattern = '';
-        for (const dir of ['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw']) {
-          pattern += neighbors[dir] === 'grass' ? '1' : '0';
-        }
-        
-        this.applyTransitionForPattern(tile, pattern);
-      }
-    }
-  }
-  
-  applyTransitionForPattern(tile, pattern) {
-    // Convert pattern to array of booleans
-    const p = pattern.split('').map(bit => bit === '1');
-    
-    // Check for specific transition cases
-    
-    // Cardinal directions
-    if (p[0] && !p[2] && !p[4] && !p[6]) { // Only North is grass
-      tile.convertToTransition('top', this.tilesets);
-    }
-    else if (!p[0] && p[2] && !p[4] && !p[6]) { // Only East is grass
-      tile.convertToTransition('right', this.tilesets);
-    }
-    else if (!p[0] && !p[2] && p[4] && !p[6]) { // Only South is grass
-      tile.convertToTransition('bottom', this.tilesets);
-    }
-    else if (!p[0] && !p[2] && !p[4] && p[6]) { // Only West is grass
-      tile.convertToTransition('left', this.tilesets);
-    }
-    
-    // Corner transitions
-    else if (p[0] && !p[2] && !p[4] && p[6]) { // North and West are grass
-      tile.convertToTransition('top-left', this.tilesets);
-    }
-    else if (p[0] && p[2] && !p[4] && !p[6]) { // North and East are grass
-      tile.convertToTransition('top-right', this.tilesets);
-    }
-    else if (!p[0] && !p[2] && p[4] && p[6]) { // South and West are grass
-      tile.convertToTransition('bottom-left', this.tilesets);
-    }
-    else if (!p[0] && p[2] && p[4] && !p[6]) { // South and East are grass
-      tile.convertToTransition('bottom-right', this.tilesets);
-    }
-    
-    // Inner corner matches
-    else if (!p[0] && p[1] && !p[2]) { // Only NE is grass
-      tile.addInnerCornerMatch('bottom-left-match', this.tilesets);
-    }
-    else if (!p[2] && p[3] && !p[4]) { // Only SE is grass
-      tile.addInnerCornerMatch('top-left-match', this.tilesets);
-    }
-    else if (!p[4] && p[5] && !p[6]) { // Only SW is grass
-      tile.addInnerCornerMatch('top-right-match', this.tilesets);
-    }
-    else if (!p[6] && p[7] && !p[0]) { // Only NW is grass
-      tile.addInnerCornerMatch('bottom-right-match', this.tilesets);
-    }
-  }
-  
-  processWaterTransitions() {
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        const tile = this.tiles[y][x];
-        
-        if (tile.type === 'grass') {
-          // Check if this grass tile needs a water overlay
-          const neighbors = {
-            n:  this.getTileType(x, y - 1) === 'water',
-            ne: this.getTileType(x + 1, y - 1) === 'water',
-            e:  this.getTileType(x + 1, y) === 'water',
-            se: this.getTileType(x + 1, y + 1) === 'water',
-            s:  this.getTileType(x, y + 1) === 'water',
-            sw: this.getTileType(x - 1, y + 1) === 'water',
-            w:  this.getTileType(x - 1, y) === 'water',
-            nw: this.getTileType(x - 1, y - 1) === 'water'
-          };
-          
-          const edgeType = this.determineWaterEdgeType(neighbors);
-          
-          if (edgeType) {
-            tile.addWaterOverlay(edgeType, this.tilesets);
+          let extensionTexture;
+          if (w < elevation && e >= elevation) {
+            extensionTexture = this.tilesets.getCliffTile('sw-corner-ext');
+          } else if (e < elevation && w >= elevation) {
+            extensionTexture = this.tilesets.getCliffTile('se-corner-ext');
           } else {
-            tile.removeWaterOverlay();
+            extensionTexture = this.tilesets.getCliffTile('s-edge-ext');
           }
-        } else {
-          // Non-grass tiles should not have water overlays
-          if (tile.waterOverlaySprite) {
-            tile.removeWaterOverlay();
+          
+          if (extensionTexture && y + 1 < this.height) {
+            const extensionSprite = new PIXI.Sprite(extensionTexture);
+            extensionSprite.x = x * this.tileSize;
+            extensionSprite.y = (y + 1) * this.tileSize;
+            extensionSprite.scale.set(this.tileSize / 32);
+            // Add to container at lower layer so entities appear on top
+            this.container.addChildAt(extensionSprite, 0);
           }
         }
       }
     }
-  }
-  
-  determineWaterEdgeType(neighbors) {
-    // Skip U-shaped water patterns
-    if (neighbors.n && neighbors.e && neighbors.w && !neighbors.s) return null;
-    if (neighbors.s && neighbors.e && neighbors.w && !neighbors.n) return null;
-    if (neighbors.n && neighbors.s && neighbors.w && !neighbors.e) return null;
-    if (neighbors.n && neighbors.s && neighbors.e && !neighbors.w) return null;
-    
-    // 3-Neighbor inner corner match cases
-    if (neighbors.n && neighbors.w && !neighbors.e && !neighbors.s) {
-      return 'inner-NE-match';
-    }
-    else if (neighbors.n && neighbors.e && !neighbors.w && !neighbors.s) {
-      return 'inner-NW-match';
-    }
-    else if (neighbors.s && neighbors.w && !neighbors.e && !neighbors.n) {
-      return 'inner-SE-match';
-    }
-    else if (neighbors.s && neighbors.e && !neighbors.w && !neighbors.n) {
-      return 'inner-SW-match';
-    }
-    
-    // Diagonal-only outer corners
-    else if (neighbors.nw && !neighbors.n && !neighbors.w) return 'inner-bottom-right';
-    else if (neighbors.ne && !neighbors.n && !neighbors.e) return 'inner-bottom-left';
-    else if (neighbors.sw && !neighbors.s && !neighbors.w) return 'inner-top-right';
-    else if (neighbors.se && !neighbors.s && !neighbors.e) return 'inner-top-left';
-    
-    // Simple edge cases
-    else if (neighbors.n && !neighbors.e && !neighbors.w && !neighbors.s) return 'inner-bottom';
-    else if (neighbors.s && !neighbors.n && !neighbors.e && !neighbors.w) return 'inner-top';
-    else if (neighbors.w && !neighbors.n && !neighbors.s && !neighbors.e) return 'inner-right';
-    else if (neighbors.e && !neighbors.n && !neighbors.s && !neighbors.w) return 'inner-left';
-    
-    return null;
   }
   
   // Helper methods

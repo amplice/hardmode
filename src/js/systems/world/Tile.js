@@ -17,6 +17,7 @@ export class Tile {
     
     // Base sprite
     this.baseSprite = new PIXI.Sprite();
+    this.sprite = this.baseSprite; // Alias for compatibility
     this.transitionSprite = null;
     this.cornerMatchSprite = null;
     this.waterOverlaySprite = null;
@@ -33,7 +34,8 @@ export class Tile {
       this.baseSprite.texture = PIXI.Texture.WHITE;
     }
     
-    this.baseSprite.scale.set(tileSize / 16, tileSize / 16);
+    // The new tileset is 32x32, so scale appropriately
+    this.baseSprite.scale.set(tileSize / 32, tileSize / 32);
     this.container.addChild(this.baseSprite);
   }
   

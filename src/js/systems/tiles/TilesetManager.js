@@ -4,49 +4,70 @@ import { Assets, Texture, Rectangle } from 'pixi.js';
 export class TilesetManager {
   constructor() {
     this.textures = {
-      grass: [],
-      sand: [],
-      water: [],
-      plants: []
+      terrain: [],      // All terrain tiles from MainLev2.0
+      plants: []        // Keep plants for decorations
     };
     
+    this.tileSize = 32; // New tileset uses 32x32 tiles
+    
     Assets.addBundle('tilesets', {
-      grass: 'assets/sprites/tiles/Grass.png',
-      sand: 'assets/sprites/tiles/Sand.png',
-      plants: 'assets/sprites/tiles/Plants.png',
-      water: 'assets/sprites/tiles/Water.png',
+      terrain: 'assets/sprites/tiles/grass/MainLev2.0.png',
+      plants: 'assets/sprites/tiles/Plants.png'
     });
   }
 
   async load() {
     await Assets.loadBundle('tilesets');
     
-    // Load tile textures
-    this.textures.grass = this.sliceTileset(Assets.get('grass').baseTexture);
-    this.textures.sand = this.sliceTileset(Assets.get('sand').baseTexture);
-    this.textures.water = this.sliceTileset(Assets.get('water').baseTexture);
+    // Load the new terrain tileset
+    const terrainTexture = Assets.get('terrain');
+    if (!terrainTexture) {
+      throw new Error("Failed to load terrain texture");
+    }
+    this.sliceTerrainTileset(terrainTexture.baseTexture);
+    
+    // Keep plants for decorations
     this.textures.plants = this.slicePlantsTileset(Assets.get('plants').baseTexture);
     
     console.log("Tilesets loaded successfully");
   }
   
-  sliceTileset(baseTexture) {
-    const tileSize = 16;
-    const textures = [];
+  sliceTerrainTileset(baseTexture) {
+    const tileSize = this.tileSize;
     
-    // Create a 3x5 array of textures
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 5; col++) {
-        textures.push(
-          new Texture(
-            baseTexture,
-            new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-          )
+    // MainLev2.0 is 64x44 tiles (2048x1408 pixels)
+    // Store as 2D array for easier access
+    this.textures.terrain = [];
+    
+    // For now, we only need rows 0-5 for basic terrain
+    for (let row = 0; row < 6; row++) {
+      this.textures.terrain[row] = [];
+      for (let col = 0; col < 11; col++) { // Only green grass zone (first 11 columns)
+        this.textures.terrain[row][col] = new Texture(
+          baseTexture,
+          new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
         );
       }
     }
     
-    return textures;
+    // Store easy references to pure grass tiles
+    this.pureGrassTiles = [
+      this.textures.terrain[1][1],
+      this.textures.terrain[1][2],
+      this.textures.terrain[1][3],
+      this.textures.terrain[1][4],
+      this.textures.terrain[1][5],
+      this.textures.terrain[2][1],
+      this.textures.terrain[2][2],
+      this.textures.terrain[2][3],
+      this.textures.terrain[2][4],
+      this.textures.terrain[2][5],
+      this.textures.terrain[3][1],
+      this.textures.terrain[3][2],
+      this.textures.terrain[3][3],
+      this.textures.terrain[3][4],
+      this.textures.terrain[3][5]
+    ];
   }
   
   slicePlantsTileset(baseTexture) {
@@ -82,81 +103,60 @@ export class TilesetManager {
     return this.textures.plants[textureMap[type]];
   }
   
-  // Full tile getters
+  // Full tile getters - updated for new tileset
   getFullGrassTile() {
-    return this.textures.grass[14]; // Row 2, Col 4
+    // Return a random pure grass tile for variety
+    return this.pureGrassTiles[Math.floor(Math.random() * this.pureGrassTiles.length)];
   }
   
   getFullSandTile() {
-    return this.textures.sand[14]; // Row 2, Col 4
+    // For now, return grass (we'll add other zones later)
+    return this.getFullGrassTile();
   }
   
   getFullWaterTile() {
-    // Use a consistent tile for determinism in multiplayer
-    return this.textures.water[6];
+    // For now, return grass (we'll add water later)
+    return this.getFullGrassTile();
   }
   
-  // Transition tile getters
-  getGrassTransition(position) {
-    const positionMap = {
-      'top-left': 0,     // Row 0, Col 0
-      'top': 1,          // Row 0, Col 1
-      'top-right': 2,    // Row 0, Col 2
-      'left': 5,         // Row 1, Col 0
-      'right': 7,        // Row 1, Col 2
-      'bottom-left': 10, // Row 2, Col 0
-      'bottom': 11,      // Row 2, Col 1
-      'bottom-right': 12 // Row 2, Col 2
+  // Get cliff edge tiles from the new tileset
+  getCliffTile(type) {
+    const tileMap = {
+      // Square corners
+      'nw-corner': [0, 0],      // Northwest corner
+      'ne-corner': [0, 6],      // Northeast corner  
+      'sw-corner': [4, 0],      // Southwest corner
+      'se-corner': [4, 6],      // Southeast corner
+      
+      // Edges
+      'n-edge': [0, 1],         // North edge (can use 0,1 through 0,5)
+      's-edge': [4, 1],         // South edge (can use 4,1 through 4,5)
+      'w-edge': [1, 0],         // West edge
+      'e-edge': [1, 6],         // East edge
+      
+      // Height extensions (second layer)
+      'sw-corner-ext': [5, 0],  // Goes below sw-corner
+      'se-corner-ext': [5, 6],  // Goes below se-corner
+      's-edge-ext': [5, 1],     // Goes below s-edge
+      'w-edge-ext': [2, 0],     // Alternative west edge
+      'e-edge-ext': [2, 6],     // Alternative east edge
+      
+      // Diagonal corners
+      'nw-diagonal': [0, 8],    // Northwest diagonal
+      'ne-diagonal': [0, 9],    // Northeast diagonal
+      'sw-diagonal': [4, 8],    // Southwest diagonal  
+      'se-diagonal': [4, 9]     // Southeast diagonal
     };
     
-    const index = positionMap[position];
-    return index !== undefined ? this.textures.grass[index] : null;
-  }
-  
-  getInnerCornerMatch(matchType) {
-    const matchMap = {
-      'top-left-match': 3,     // Row 0, Col 3
-      'top-right-match': 4,    // Row 0, Col 4
-      'bottom-left-match': 8,  // Row 1, Col 3
-      'bottom-right-match': 9  // Row 1, Col 4
-    };
-    
-    const index = matchMap[matchType];
-    return index !== undefined ? this.textures.grass[index] : null;
-  }
-  
-  // Water edge and corner tiles
-  getWaterEdgeTile(position) {
-    const positionMap = {
-      'inner-top-left': 0,     // (0, 0)
-      'inner-top': 1,          // (1, 0)
-      'inner-top-right': 2,    // (2, 0)
-      'inner-left': 5,         // (0, 1)
-      'inner-right': 7,        // (2, 1)
-      'inner-bottom-left': 10, // (0, 2)
-      'inner-bottom': 11,      // (1, 2)
-      'inner-bottom-right': 12 // (2, 2)
-    };
-    
-    const index = positionMap[position];
-    if (index !== undefined && index < this.textures.water.length) {
-      return this.textures.water[index];
+    const coords = tileMap[type];
+    if (coords) {
+      return this.textures.terrain[coords[0]][coords[1]];
     }
     return null;
   }
   
-  getWaterInnerCornerMatch(matchType) {
-    const matchMap = {
-      'inner-NE-match': 3, // (3, 0)
-      'inner-NW-match': 4, // (4, 0)
-      'inner-SE-match': 8, // (3, 1)
-      'inner-SW-match': 9  // (4, 1)
-    };
-    
-    const index = matchMap[matchType];
-    if (index !== undefined && index < this.textures.water.length) {
-      return this.textures.water[index];
-    }
-    return null;
+  // Get a random pure grass tile
+  getRandomPureGrass() {
+    return this.pureGrassTiles[Math.floor(Math.random() * this.pureGrassTiles.length)];
   }
 }
