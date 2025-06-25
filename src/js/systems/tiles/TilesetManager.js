@@ -30,6 +30,7 @@ export class TilesetManager {
     this.textures.plants = this.slicePlantsTileset(Assets.get('plants').baseTexture);
     
     console.log("Tilesets loaded successfully");
+    console.log(`[DEBUG] Loaded terrain texture rows: ${this.textures.terrain.length}`);
   }
   
   sliceTerrainTileset(baseTexture) {

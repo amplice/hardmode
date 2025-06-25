@@ -263,8 +263,9 @@ export class CliffAutotiler {
         } else {
           // Regular bottom extension
           const col = 1 + Math.floor(Math.random() * 5);
-          console.log(`[DEBUG] Regular bottom extension at (${x}, ${y}), col=${col}`);
-          return this.tilesets.textures.terrain[6][col];
+          const texture = this.tilesets.textures.terrain[6][col];
+          console.log(`[DEBUG] Regular bottom extension at (${x}, ${y}), col=${col}, texture exists: ${!!texture}`);
+          return texture;
         }
       }
     }

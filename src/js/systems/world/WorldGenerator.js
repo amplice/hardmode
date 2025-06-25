@@ -161,10 +161,18 @@ export class WorldGenerator {
           extensionSprite.x = x * this.tileSize;
           extensionSprite.y = (y + 1) * this.tileSize;
           extensionSprite.scale.set(this.tileSize / 32);
-          // Add to container at lower layer so entities appear on top
-          this.container.addChildAt(extensionSprite, 0);
+          
+          // Add a debug tint to make extensions visible
+          extensionSprite.tint = 0xffcccc; // Light red tint for debugging
+          
+          // Add to the world container, not at index 0
+          this.container.addChild(extensionSprite);
           extensionCount++;
-          console.log(`[DEBUG] Added cliff extension at (${x}, ${y+1}) for elevated tile (${x}, ${y})`);
+          
+          // Check if the texture is valid
+          if (!extensionTexture.valid) {
+            console.error(`[ERROR] Invalid texture for extension at (${x}, ${y+1})`);
+          }
         }
       }
     }
