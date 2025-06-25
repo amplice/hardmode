@@ -52,6 +52,12 @@ export class CliffAutotiler {
     map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.WEST, { row: 5, col: 0 });  // SW corner
     map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.EAST, { row: 5, col: 6 });  // SE corner
     
+    // Inner corners (diagonal neighbors have higher elevation)
+    map.set(this.NEIGHBORS.NORTHWEST, { row: 1, col: 7 });    // NW inner corner
+    map.set(this.NEIGHBORS.NORTHEAST, { row: 1, col: 10 });   // NE inner corner  
+    map.set(this.NEIGHBORS.SOUTHWEST, { row: 3, col: 7 });    // SW inner corner
+    map.set(this.NEIGHBORS.SOUTHEAST, { row: 3, col: 10 });   // SE inner corner
+    
     // Edge variations for more complex patterns
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHEAST, { row: 0, col: 2 }); // Top edge with NE
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHWEST, { row: 0, col: 3 }); // Top edge with NW
@@ -104,13 +110,75 @@ export class CliffAutotiler {
   }
   
   /**
+   * Check for inner corners (when diagonal neighbor is lower but cardinals are same)
+   */
+  hasInnerCorner(x, y, elevationData) {
+    const width = elevationData[0].length;
+    const height = elevationData.length;
+    const currentElevation = elevationData[y][x];
+    
+    // Check each diagonal for inner corners
+    const corners = [
+      { dx: -1, dy: -1, bit: this.NEIGHBORS.NORTHWEST, name: 'NW' },  // NW
+      { dx: 1, dy: -1, bit: this.NEIGHBORS.NORTHEAST, name: 'NE' },   // NE  
+      { dx: -1, dy: 1, bit: this.NEIGHBORS.SOUTHWEST, name: 'SW' },   // SW
+      { dx: 1, dy: 1, bit: this.NEIGHBORS.SOUTHEAST, name: 'SE' }     // SE
+    ];
+    
+    for (const corner of corners) {
+      const dx = corner.dx;
+      const dy = corner.dy;
+      const nx = x + dx;
+      const ny = y + dy;
+      
+      // Check if diagonal neighbor exists and is lower
+      if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+        const diagonalElevation = elevationData[ny][nx];
+        
+        if (diagonalElevation < currentElevation) {
+          // Check if the two adjacent cardinal neighbors are same elevation
+          const cardX = x + dx;
+          const cardY = y;
+          const cardX2 = x;
+          const cardY2 = y + dy;
+          
+          let card1Same = false;
+          let card2Same = false;
+          
+          if (cardX >= 0 && cardX < width) {
+            card1Same = elevationData[cardY][cardX] === currentElevation;
+          }
+          if (cardY2 >= 0 && cardY2 < height) {
+            card2Same = elevationData[cardY2][cardX2] === currentElevation;
+          }
+          
+          // If both cardinals are same elevation, this is an inner corner
+          if (card1Same && card2Same) {
+            return corner.bit;
+          }
+        }
+      }
+    }
+    
+    return 0; // No inner corner
+  }
+  
+  /**
    * Get the appropriate tile texture for a position based on elevation data
    */
   getTileTexture(x, y, elevationData) {
     const currentElevation = elevationData[y][x];
     
-    // For ground level tiles, just use pure grass
+    // For ground level tiles, check for inner corners first
     if (currentElevation === 0) {
+      const innerCorner = this.hasInnerCorner(x, y, elevationData);
+      if (innerCorner) {
+        const tileCoords = this.bitmaskToTile.get(innerCorner);
+        if (tileCoords) {
+          console.log(`[DEBUG] Inner corner at (${x}, ${y}): bit=${innerCorner}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
+          return this.tilesets.textures.terrain[tileCoords.row][tileCoords.col];
+        }
+      }
       return this.tilesets.getRandomPureGrass();
     }
     
@@ -119,14 +187,14 @@ export class CliffAutotiler {
     const tileCoords = this.bitmaskToTile.get(bitmask);
     
     if (tileCoords) {
-      console.log(`[DEBUG] Cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
+      // console.log(`[DEBUG] Cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
       return this.tilesets.textures.terrain[tileCoords.row][tileCoords.col];
     }
     
     // Fallback: try to find a close match or use pure grass
     const fallback = this.findClosestMatch(bitmask);
     if (fallback) {
-      console.log(`[DEBUG] Fallback cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}`);
+      // console.log(`[DEBUG] Fallback cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}`);
       return fallback;
     }
     
