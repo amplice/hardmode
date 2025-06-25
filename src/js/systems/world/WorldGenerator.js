@@ -73,15 +73,26 @@ export class WorldGenerator {
   generateElevatedAreas() {
     console.log("Generating elevated areas...");
     
-    // Create a few elevated plateaus
+    // Add cliff border around the entire world for testing
+    console.log("[DEBUG] Adding world border cliffs for testing");
+    for (let x = 0; x < this.width; x++) {
+      for (let y = 0; y < this.height; y++) {
+        // Create a border that's 5 tiles wide around the edges
+        if (x < 5 || x >= this.width - 5 || y < 5 || y >= this.height - 5) {
+          this.elevationData[y][x] = 1; // Elevated border
+        }
+      }
+    }
+    
+    // Create a few elevated plateaus in the center
     const plateauCount = 2 + Math.floor(this.random() * 3);
     console.log(`[DEBUG] Creating ${plateauCount} elevated plateaus`);
     
     for (let i = 0; i < plateauCount; i++) {
       const width = 5 + Math.floor(this.random() * 8);
       const height = 5 + Math.floor(this.random() * 8);
-      const x = Math.floor(this.random() * (this.width - width - 10)) + 5;
-      const y = Math.floor(this.random() * (this.height - height - 10)) + 5;
+      const x = Math.floor(this.random() * (this.width - width - 20)) + 10;
+      const y = Math.floor(this.random() * (this.height - height - 20)) + 10;
       
       console.log(`[DEBUG] Plateau ${i}: ${width}x${height} at (${x}, ${y})`);
       
