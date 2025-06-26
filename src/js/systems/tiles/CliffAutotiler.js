@@ -53,10 +53,11 @@ export class CliffAutotiler {
     map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.EAST, { row: 5, col: 6 });  // SE corner
     
     // Inner corners (diagonal neighbors have higher elevation)
-    map.set(this.NEIGHBORS.NORTHWEST, { row: 7, col: 0 });    // NW inner corner
-    map.set(this.NEIGHBORS.NORTHEAST, { row: 7, col: 6 });   // NE inner corner  
-    map.set(this.NEIGHBORS.SOUTHWEST, { row: 7, col: 8 });    // SW inner corner
-    map.set(this.NEIGHBORS.SOUTHEAST, { row: 7, col: 7 });   // SE inner corner
+    // TEMPORARILY DISABLED - these are being incorrectly placed for elevated tiles
+    // map.set(this.NEIGHBORS.NORTHWEST, { row: 7, col: 0 });    // NW inner corner
+    // map.set(this.NEIGHBORS.NORTHEAST, { row: 7, col: 6 });   // NE inner corner  
+    // map.set(this.NEIGHBORS.SOUTHWEST, { row: 7, col: 8 });    // SW inner corner
+    // map.set(this.NEIGHBORS.SOUTHEAST, { row: 7, col: 7 });   // SE inner corner
     
     // Diagonal tiles - using string keys for specific tile coordinates
     map.set('0,8', { row: 0, col: 8 });    // NW diagonal corner
@@ -330,7 +331,7 @@ export class CliffAutotiler {
     const tileCoords = this.bitmaskToTile.get(bitmask);
     
     if (tileCoords) {
-      // console.log(`[DEBUG] Cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
+      console.log(`[DEBUG] Cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
       return {
         texture: this.tilesets.textures.terrain[tileCoords.row][tileCoords.col],
         type: `${tileCoords.row},${tileCoords.col}`
@@ -408,9 +409,16 @@ export class CliffAutotiler {
     // Check if tile below has lower elevation (cliff drop)
     if (y + 1 < height) {
       const belowElevation = elevationData[y + 1][x];
+      const belowType = processedTiles && processedTiles[y + 1] ? processedTiles[y + 1][x] : null;
+      
+      // Don't place extension if the tile below is a cliff edge or diagonal
+      if (belowType && belowType !== 'grass' && belowType !== 'fallback') {
+        return null; // Tile below is already a cliff/diagonal tile
+      }
+      
       if (belowElevation < currentElevation) {
         // This needs a cliff extension
-        // console.log(`[DEBUG] Cliff extension needed at (${x}, ${y}): current=${currentElevation}, below=${belowElevation}`);
+        console.log(`[DEBUG] Cliff extension needed at (${x}, ${y}): current=${currentElevation}, below=${belowElevation}, currentType=${currentType}, belowType=${belowType}`);
         
         // Check neighboring elevations for corner extensions
         const w = x > 0 ? elevationData[y][x - 1] : 0;
