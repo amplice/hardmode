@@ -46,7 +46,7 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (2,10): East-side diagonal connector - connects diagonal tiles on the east side
   - Used when diagonal tile is above AND diagonal tile is to the east
 
-#### Row 3 - Side Edge Variations
+#### Row 3 - Side Edge Variations & Bottom Diagonal Connectors
 - (3,0): West edge variation 3
 - (3,1): Pure green grass tile (variation)
 - (3,2): Pure green grass tile (variation)
@@ -54,7 +54,10 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (3,4): Pure green grass tile (variation)
 - (3,5): Pure green grass tile (variation)
 - (3,6): East edge variation 3
-- (3,7-3,10): Additional terrain variations
+- (3,7): Southwest diagonal connector (replaces inner corner 7,8)
+- (3,8): Additional terrain variation
+- (3,9): Additional terrain variation
+- (3,10): Southeast diagonal connector (replaces inner corner 7,7)
 
 #### Row 4 - Side Edge Variations
 - (4,0): West edge variation 4
@@ -86,12 +89,12 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (6,6): Second vertical layer (always below (5,6))
 - (6,7-6,10): Additional terrain variations
 
-#### Row 7 - Inner Corners and Additional Tiles
+#### Row 7 - Inner Corners (Not Used) and Additional Tiles
 - (7,0): Not used - use (2,7) instead for all cases
 - (7,1-7,5): Additional terrain variations
 - (7,6): Not used - use (2,10) instead for all cases
-- (7,7): Southeast inner corner (grass surrounded by cliffs except SE)
-- (7,8): Southwest inner corner (grass surrounded by cliffs except SW)
+- (7,7): Not used - use (3,10) instead for all cases
+- (7,8): Not used - use (3,7) instead for all cases
 - (7,9-7,10): Additional terrain variations
 
 ### Height Feature Section (Rows 8-27)
