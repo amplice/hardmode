@@ -18,6 +18,7 @@ import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 import { NetworkClient } from '../net/NetworkClient.js';
 import { LatencyTracker } from '../systems/LatencyTracker.js';
 import { ProjectileRenderer } from '../systems/ProjectileRenderer.js';
+import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 import { DebugLogger } from '../debug/DebugLogger.js';
 
@@ -174,9 +175,10 @@ export class Game {
     
     // Initialize the game world
     this.systems.world = new WorldGenerator({
-      width:    100,
-      height:   100,
-      tileSize: 64,
+      width:    GAME_CONSTANTS.WORLD.WIDTH,
+      height:   GAME_CONSTANTS.WORLD.HEIGHT,
+      tileSize: GAME_CONSTANTS.WORLD.TILE_SIZE,
+      seed:     GAME_CONSTANTS.WORLD.SEED,
       tilesets: this.tilesets
     });
 

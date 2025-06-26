@@ -5,7 +5,7 @@ export const GAME_CONSTANTS = {
         WIDTH: 100,
         HEIGHT: 100,
         TILE_SIZE: 64,
-        SEED: 42
+        SEED: Math.floor(Math.random() * 1000000)
     },
     
     // Server tick rate
