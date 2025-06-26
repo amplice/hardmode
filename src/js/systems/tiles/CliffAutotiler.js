@@ -1,6 +1,8 @@
 // Cliff autotiling using bitmasking for MainLev2.0 tileset
 // Based on elevation differences between neighboring tiles
 
+import { GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js';
+
 export class CliffAutotiler {
   constructor(tilesets) {
     this.tilesets = tilesets;
