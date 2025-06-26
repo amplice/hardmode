@@ -73,14 +73,17 @@ export class WorldGenerator {
   generateElevatedAreas() {
     console.log("Generating elevated areas...");
     
-    // Skip world border to better showcase organic plateau shapes
-    // console.log("[DEBUG] Adding world border cliffs for testing");
-    
     // Create organic elevated areas using noise
     this.generateOrganicPlateaus();
     
-    // Enforce minimum cliff formation rules
+    // Apply multiple passes of terrain cleanup
+    this.fillPlateauHoles();
+    this.removeSmallPlateaus();
     this.enforceMinimumFormations();
+    this.smoothElevation();
+    
+    // Final pass to ensure no issues remain
+    this.finalCleanupPass();
     
     // Count elevated tiles for debugging
     let elevatedCount = 0;
@@ -346,6 +349,163 @@ export class WorldGenerator {
       return 0; // Out of bounds is considered ground level
     }
     return this.elevationData[y][x];
+  }
+  
+  fillPlateauHoles() {
+    console.log("Filling holes in plateaus...");
+    
+    let filledCount = 0;
+    const newElevation = [];
+    for (let y = 0; y < this.height; y++) {
+      newElevation[y] = [...this.elevationData[y]];
+    }
+    
+    // Look for holes (ground level tiles surrounded by elevated tiles)
+    for (let y = 1; y < this.height - 1; y++) {
+      for (let x = 1; x < this.width - 1; x++) {
+        if (this.elevationData[y][x] === 0) {
+          // Count elevated neighbors
+          let elevatedNeighbors = 0;
+          let totalNeighbors = 0;
+          
+          // Check 3x3 area around this tile
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              if (dx === 0 && dy === 0) continue;
+              totalNeighbors++;
+              if (this.getElevationSafe(x + dx, y + dy) > 0) {
+                elevatedNeighbors++;
+              }
+            }
+          }
+          
+          // If surrounded by elevated tiles, fill the hole
+          if (elevatedNeighbors >= 6) {
+            newElevation[y][x] = 1;
+            filledCount++;
+          }
+        }
+      }
+    }
+    
+    this.elevationData = newElevation;
+    console.log(`[DEBUG] Filled ${filledCount} plateau holes`);
+  }
+  
+  removeSmallPlateaus() {
+    console.log("Removing small plateaus...");
+    
+    let removedCount = 0;
+    const visited = [];
+    const newElevation = [];
+    
+    // Initialize arrays
+    for (let y = 0; y < this.height; y++) {
+      visited[y] = new Array(this.width).fill(false);
+      newElevation[y] = [...this.elevationData[y]];
+    }
+    
+    // Find all connected plateau regions
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        if (this.elevationData[y][x] > 0 && !visited[y][x]) {
+          // Found an unvisited elevated tile, flood fill to find the plateau
+          const plateau = [];
+          const queue = [{x, y}];
+          visited[y][x] = true;
+          
+          while (queue.length > 0) {
+            const {x: cx, y: cy} = queue.shift();
+            plateau.push({x: cx, y: cy});
+            
+            // Check 4-connected neighbors
+            const neighbors = [
+              {x: cx + 1, y: cy},
+              {x: cx - 1, y: cy},
+              {x: cx, y: cy + 1},
+              {x: cx, y: cy - 1}
+            ];
+            
+            for (const {x: nx, y: ny} of neighbors) {
+              if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height &&
+                  !visited[ny][nx] && this.elevationData[ny][nx] > 0) {
+                visited[ny][nx] = true;
+                queue.push({x: nx, y: ny});
+              }
+            }
+          }
+          
+          // Remove plateau if it's too small
+          if (plateau.length < 6) {
+            for (const {x: px, y: py} of plateau) {
+              newElevation[py][px] = 0;
+              removedCount++;
+            }
+          }
+        }
+      }
+    }
+    
+    this.elevationData = newElevation;
+    console.log(`[DEBUG] Removed ${removedCount} tiles from small plateaus`);
+  }
+  
+  finalCleanupPass() {
+    console.log("Running final cleanup pass...");
+    
+    let cleanedCount = 0;
+    const newElevation = [];
+    for (let y = 0; y < this.height; y++) {
+      newElevation[y] = [...this.elevationData[y]];
+    }
+    
+    // Remove any remaining single jutting tiles
+    for (let y = 1; y < this.height - 1; y++) {
+      for (let x = 1; x < this.width - 1; x++) {
+        if (this.elevationData[y][x] === 1) {
+          // Count cardinal neighbors
+          const n = this.getElevationSafe(x, y - 1);
+          const s = this.getElevationSafe(x, y + 1);
+          const e = this.getElevationSafe(x + 1, y);
+          const w = this.getElevationSafe(x - 1, y);
+          
+          const cardinalCount = (n > 0 ? 1 : 0) + (s > 0 ? 1 : 0) + 
+                               (e > 0 ? 1 : 0) + (w > 0 ? 1 : 0);
+          
+          // Remove tiles with only one cardinal neighbor
+          if (cardinalCount <= 1) {
+            // Check if this tile has a companion in its jutting direction
+            let hasCompanion = false;
+            
+            if (n === 0 && s > 0) {
+              // Jutting north, check for horizontal companion
+              hasCompanion = (e > 0 && this.getElevationSafe(x + 1, y - 1) === 0) ||
+                            (w > 0 && this.getElevationSafe(x - 1, y - 1) === 0);
+            } else if (s === 0 && n > 0) {
+              // Jutting south, check for horizontal companion
+              hasCompanion = (e > 0 && this.getElevationSafe(x + 1, y + 1) === 0) ||
+                            (w > 0 && this.getElevationSafe(x - 1, y + 1) === 0);
+            } else if (e === 0 && w > 0) {
+              // Jutting east, check for vertical companion
+              hasCompanion = (n > 0 && this.getElevationSafe(x + 1, y - 1) === 0) ||
+                            (s > 0 && this.getElevationSafe(x + 1, y + 1) === 0);
+            } else if (w === 0 && e > 0) {
+              // Jutting west, check for vertical companion
+              hasCompanion = (n > 0 && this.getElevationSafe(x - 1, y - 1) === 0) ||
+                            (s > 0 && this.getElevationSafe(x - 1, y + 1) === 0);
+            }
+            
+            if (!hasCompanion) {
+              newElevation[y][x] = 0;
+              cleanedCount++;
+            }
+          }
+        }
+      }
+    }
+    
+    this.elevationData = newElevation;
+    console.log(`[DEBUG] Final cleanup removed ${cleanedCount} problematic tiles`);
   }
   
   createTileSprites() {

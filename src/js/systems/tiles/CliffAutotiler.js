@@ -44,7 +44,7 @@ export class CliffAutotiler {
     
     // Single edges (one direction has elevation drop)
     map.set(this.NEIGHBORS.NORTH, { row: 0, col: 1 });     // Top edge
-    map.set(this.NEIGHBORS.SOUTH, { row: 5, col: 1 });     // Bottom edge  
+    map.set(this.NEIGHBORS.SOUTH, { row: 5, col: 1 });     // Bottom edge (will be randomized later)
     map.set(this.NEIGHBORS.WEST, { row: 1, col: 0 });      // Left edge
     map.set(this.NEIGHBORS.EAST, { row: 1, col: 6 });      // Right edge
     
@@ -100,6 +100,11 @@ export class CliffAutotiler {
     map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.EAST | this.NEIGHBORS.SOUTHEAST, { row: 5, col: 6 }); // SE complex
     
     return map;
+  }
+  
+  getRandomBottomEdgeCol() {
+    // Return random column from 1-5 for bottom edges (not 6, which is the SE corner)
+    return 1 + Math.floor(Math.random() * 5); // Columns 1, 2, 3, 4, 5
   }
   
   /**
@@ -359,6 +364,11 @@ export class CliffAutotiler {
     const tileCoords = this.bitmaskToTile.get(bitmask);
     
     if (tileCoords) {
+      // Randomize bottom edge tiles (row 5, avoid column 6 which is corner)
+      if (bitmask === this.NEIGHBORS.SOUTH && tileCoords.row === 5 && tileCoords.col === 1) {
+        tileCoords.col = this.getRandomBottomEdgeCol();
+      }
+      
       // Log when we're placing diagonal connectors via the bitmask
       if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
         if (bitmask === this.NEIGHBORS.NORTHWEST && tileCoords.row === 2 && tileCoords.col === 7) {
