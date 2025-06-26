@@ -222,6 +222,11 @@ export class CliffAutotiler {
     
     // First check for connector tiles (2,7) and (2,10)
     
+    // Debug logging for connector tile detection
+    if ((nType === '0,9' || nType === '1,10' || nType === '0,8' || nType === '1,7')) {
+      console.log(`[DEBUG] Potential connector at (${x}, ${y}): nType=${nType}, eType=${eType}, wType=${wType}`);
+    }
+    
     // Check for (2,10) - East-side diagonal connector
     // When diagonal tile is above AND diagonal tile is to the east
     if ((nType === '0,9' || nType === '1,10') && 
@@ -232,11 +237,13 @@ export class CliffAutotiler {
     // Check for (2,7) - West-side diagonal connector  
     // When diagonal tile is above AND (horizontal or diagonal) tile is to the west
     if ((nType === '0,8' || nType === '1,7') && 
-        (wType === '0,0' || wType === '0,8' || wType === '1,0' || wType === '1,7')) {
+        (wType === '0,0' || wType === '0,8' || wType === '1,0' || wType === '1,7' || 
+         wType === '2,0' || wType === '3,0' || wType === '4,0')) { // Include west edge variations
       return '2,7';
     }
     // Also check for vertical tile above and diagonal to the west
-    if ((nType === '0,1' || nType === '1,0') && 
+    if ((nType === '0,1' || nType === '0,2' || nType === '0,3' || nType === '0,4' || nType === '0,5' || 
+         nType === '1,0' || nType === '2,0' || nType === '3,0' || nType === '4,0') && 
         (wType === '0,8' || wType === '1,7')) {
       return '2,7';
     }
