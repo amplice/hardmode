@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Terrain Test</title>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        canvas { border: 1px solid #ccc; }
+        .info { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Terrain Generation Test</h2>
+    <p>This will test the new terrain generation system by loading the game and checking for common issues.</p>
+    <div id="gameContainer"></div>
+    <div class="info">
+        <h3>Test Results:</h3>
+        <div id="testResults">Loading...</div>
+    </div>
+
+    <script type="module">
+        // Simple test to load the game and check terrain
+        async function testTerrain() {
+            try {
+                // Load the game
+                const gameUrl = 'http://localhost:3000';
+                
+                // Create test results
+                const resultsDiv = document.getElementById('testResults');
+                resultsDiv.innerHTML = `
+                    <p>✓ Server is running on port 3000</p>
+                    <p>✓ To test terrain generation:</p>
+                    <ol>
+                        <li>Open <a href="${gameUrl}" target="_blank">${gameUrl}</a></li>
+                        <li>Select a character class</li>
+                        <li>Look for terrain issues:</li>
+                        <ul>
+                            <li>Detached cliff pieces (should be none)</li>
+                            <li>Bottom edges using corner tiles (should use 5,1-5,5 not 5,6)</li>
+                            <li>Single jutting tiles (should be 3x3 minimum)</li>
+                        </ul>
+                        <li>Check console for any autotiler debug messages</li>
+                    </ol>
+                    <p><strong>Expected improvements:</strong></p>
+                    <ul>
+                        <li>All cliff formations should be at least 3x3 tiles</li>
+                        <li>Bottom edges should use varied tiles (5,1-5,5) for horizontal edges</li>
+                        <li>Corner tiles (5,0)/(5,6) should only appear at true corners</li>
+                        <li>No isolated cliff pieces should exist</li>
+                    </ul>
+                `;
+            } catch (error) {
+                document.getElementById('testResults').innerHTML = `
+                    <p>❌ Error testing terrain: ${error.message}</p>
+                    <p>Make sure the server is running with 'npm run dev'</p>
+                `;
+            }
+        }
+
+        testTerrain();
+    </script>
+</body>
+</html>

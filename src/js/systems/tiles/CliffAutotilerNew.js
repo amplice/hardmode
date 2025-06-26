@@ -24,46 +24,63 @@ export class CliffAutotiler {
   }
   
   createTileMapping() {
-    const map = new Map();
+    // Instead of mapping every possible bitmask combination,
+    // we'll use a priority-based approach in getTileTexture()
+    return new Map();
+  }
+  
+  /**
+   * Determine tile type based on bitmask using priority logic
+   */
+  determineTileType(bitmask) {
+    // Check cardinal directions
+    const hasNorth = (bitmask & this.BITS.NORTH) !== 0;
+    const hasEast = (bitmask & this.BITS.EAST) !== 0;
+    const hasSouth = (bitmask & this.BITS.SOUTH) !== 0;
+    const hasWest = (bitmask & this.BITS.WEST) !== 0;
     
-    // No elevation difference - pure grass
-    map.set(0, { row: 1, col: 1 }); // Pure grass
+    // Check diagonals
+    const hasNortheast = (bitmask & this.BITS.NORTHEAST) !== 0;
+    const hasNorthwest = (bitmask & this.BITS.NORTHWEST) !== 0;
+    const hasSoutheast = (bitmask & this.BITS.SOUTHEAST) !== 0;
+    const hasSouthwest = (bitmask & this.BITS.SOUTHWEST) !== 0;
     
-    // Single edges (only one cardinal direction has drop)
-    map.set(this.BITS.NORTH, { row: 0, col: 1 }); // Top edge
-    map.set(this.BITS.EAST, { row: 1, col: 6 });  // Right edge
-    map.set(this.BITS.SOUTH, { row: 5, col: 1 }); // Bottom edge - will randomize col 1-5
-    map.set(this.BITS.WEST, { row: 1, col: 0 });  // Left edge
+    // Priority 1: Corners (two adjacent cardinals)
+    if (hasNorth && hasWest) return { row: 0, col: 0, type: "NW corner" };
+    if (hasNorth && hasEast) return { row: 0, col: 6, type: "NE corner" };
+    if (hasSouth && hasWest) return { row: 5, col: 0, type: "SW corner" };
+    if (hasSouth && hasEast) return { row: 5, col: 6, type: "SE corner" };
     
-    // Corners (two adjacent cardinal directions have drops)
-    map.set(this.BITS.NORTH | this.BITS.WEST, { row: 0, col: 0 }); // NW corner
-    map.set(this.BITS.NORTH | this.BITS.EAST, { row: 0, col: 6 }); // NE corner
-    map.set(this.BITS.SOUTH | this.BITS.WEST, { row: 5, col: 0 }); // SW corner
-    map.set(this.BITS.SOUTH | this.BITS.EAST, { row: 5, col: 6 }); // SE corner
+    // Priority 2: Pure diagonal inner corners (diagonal but NO adjacent cardinals)
+    if (hasNorthwest && !hasNorth && !hasWest) return { row: 2, col: 7, type: "NW inner corner" };
+    if (hasNortheast && !hasNorth && !hasEast) return { row: 2, col: 10, type: "NE inner corner" };
+    if (hasSouthwest && !hasSouth && !hasWest) return { row: 4, col: 8, type: "SW inner corner" };
+    if (hasSoutheast && !hasSouth && !hasEast) return { row: 4, col: 9, type: "SE inner corner" };
     
-    // Inner corners (diagonal neighbors lower but cardinals same) - use diagonal connectors
-    map.set(this.BITS.NORTHWEST, { row: 2, col: 7 });   // NW inner corner → (2,7)
-    map.set(this.BITS.NORTHEAST, { row: 2, col: 10 });  // NE inner corner → (2,10)
-    map.set(this.BITS.SOUTHWEST, { row: 4, col: 8 });   // SW inner corner → (4,8)
-    map.set(this.BITS.SOUTHEAST, { row: 4, col: 9 });   // SE inner corner → (4,9)
+    // Priority 3: Single cardinal edges
+    if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 0, col: 1, type: "top edge" };
+    if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 1, col: 6, type: "right edge" };
+    if (hasSouth && !hasNorth && !hasEast && !hasWest) return { row: 5, col: 1, type: "bottom edge" };
+    if (hasWest && !hasNorth && !hasEast && !hasSouth) return { row: 1, col: 0, type: "left edge" };
     
-    // Edge variations with adjacent diagonals
-    map.set(this.BITS.NORTH | this.BITS.NORTHEAST, { row: 0, col: 2 }); // Top edge with NE
-    map.set(this.BITS.NORTH | this.BITS.NORTHWEST, { row: 0, col: 3 }); // Top edge with NW
-    map.set(this.BITS.SOUTH | this.BITS.SOUTHEAST, { row: 5, col: 2 }); // Bottom edge with SE
-    map.set(this.BITS.SOUTH | this.BITS.SOUTHWEST, { row: 5, col: 3 }); // Bottom edge with SW
-    map.set(this.BITS.WEST | this.BITS.NORTHWEST, { row: 2, col: 0 });  // Left edge with NW
-    map.set(this.BITS.WEST | this.BITS.SOUTHWEST, { row: 3, col: 0 });  // Left edge with SW
-    map.set(this.BITS.EAST | this.BITS.NORTHEAST, { row: 2, col: 6 });  // Right edge with NE
-    map.set(this.BITS.EAST | this.BITS.SOUTHEAST, { row: 3, col: 6 });  // Right edge with SE
+    // Priority 4: Edge variations (cardinal + diagonal)
+    if (hasNorth && hasNortheast && !hasEast && !hasWest) return { row: 0, col: 2, type: "top edge with NE" };
+    if (hasNorth && hasNorthwest && !hasEast && !hasWest) return { row: 0, col: 3, type: "top edge with NW" };
+    if (hasSouth && hasSoutheast && !hasEast && !hasWest) return { row: 5, col: 2, type: "bottom edge with SE" };
+    if (hasSouth && hasSouthwest && !hasEast && !hasWest) return { row: 5, col: 3, type: "bottom edge with SW" };
+    if (hasWest && hasNorthwest && !hasNorth && !hasSouth) return { row: 2, col: 0, type: "left edge with NW" };
+    if (hasWest && hasSouthwest && !hasNorth && !hasSouth) return { row: 3, col: 0, type: "left edge with SW" };
+    if (hasEast && hasNortheast && !hasNorth && !hasSouth) return { row: 2, col: 6, type: "right edge with NE" };
+    if (hasEast && hasSoutheast && !hasNorth && !hasSouth) return { row: 3, col: 6, type: "right edge with SE" };
     
-    // Complex corners (corner + adjacent diagonal)
-    map.set(this.BITS.NORTH | this.BITS.WEST | this.BITS.NORTHWEST, { row: 0, col: 0 }); // NW complex
-    map.set(this.BITS.NORTH | this.BITS.EAST | this.BITS.NORTHEAST, { row: 0, col: 6 }); // NE complex
-    map.set(this.BITS.SOUTH | this.BITS.WEST | this.BITS.SOUTHWEST, { row: 5, col: 0 }); // SW complex
-    map.set(this.BITS.SOUTH | this.BITS.EAST | this.BITS.SOUTHEAST, { row: 5, col: 6 }); // SE complex
+    // Priority 5: Fallback edges (any cardinal direction)
+    if (hasNorth) return { row: 0, col: 1, type: "top edge fallback" };
+    if (hasEast) return { row: 1, col: 6, type: "right edge fallback" };
+    if (hasSouth) return { row: 5, col: 1, type: "bottom edge fallback" };
+    if (hasWest) return { row: 1, col: 0, type: "left edge fallback" };
     
-    return map;
+    // Priority 6: Pure grass (no neighbors lower)
+    return { row: 1, col: 1, type: "grass" };
   }
   
   /**
@@ -111,35 +128,30 @@ export class CliffAutotiler {
       };
     }
     
-    // Elevated tiles - use bitmask
+    // Elevated tiles - use priority-based bitmask logic
     const bitmask = this.calculateBitmask(x, y, elevationData);
-    let tileCoords = this.tileMap.get(bitmask);
+    let tileCoords = this.determineTileType(bitmask);
     
-    if (!tileCoords) {
-      // Fallback to grass if no mapping found
-      console.warn(`[CliffAutotiler] No mapping for bitmask ${bitmask} at (${x}, ${y})`);
-      return {
-        texture: this.tilesets.getRandomPureGrass(),
-        type: 'grass'
-      };
-    }
-    
-    // Randomize bottom edge tiles (only for pure south edges, avoid corner pieces)
-    if (bitmask === this.BITS.SOUTH && tileCoords.row === 5 && tileCoords.col === 1) {
+    // Randomize bottom edge tiles (columns 1-5 for horizontal edges)
+    if (tileCoords.type.includes("bottom edge") && tileCoords.row === 5 && tileCoords.col === 1) {
       tileCoords = { ...tileCoords }; // Copy to avoid modifying original
       tileCoords.col = 1 + Math.floor(Math.random() * 5); // Columns 1-5 only
     }
     
     // Debug logging
     if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
-      console.log(`[CliffAutotiler] Tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
+      console.log(`[CliffAutotiler] Tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}], type=${tileCoords.type}`);
       
       // Special logging for bottom edges
-      if (bitmask === this.BITS.SOUTH) {
-        console.log(`[CliffAutotiler] Bottom edge at (${x}, ${y}) using tile (${tileCoords.row}, ${tileCoords.col}) - should be 5,1-5,5 NOT 5,6`);
+      if (tileCoords.type.includes("bottom edge")) {
+        if (tileCoords.col === 6) {
+          console.log(`[CliffAutotiler] ❌ BUG: Bottom edge using corner tile (5,6)!`);
+        } else {
+          console.log(`[CliffAutotiler] ✅ CORRECT: Bottom edge using tile (5,${tileCoords.col})`);
+        }
       }
-      if (bitmask === (this.BITS.SOUTH | this.BITS.EAST)) {
-        console.log(`[CliffAutotiler] SE corner at (${x}, ${y}) using tile (${tileCoords.row}, ${tileCoords.col}) - should be 5,6`);
+      if (tileCoords.type.includes("SE corner")) {
+        console.log(`[CliffAutotiler] ✅ CORRECT: SE corner using tile (5,6)`);
       }
     }
     
