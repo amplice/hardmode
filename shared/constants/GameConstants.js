@@ -48,7 +48,8 @@ export const GAME_CONSTANTS = {
     
     // Debug settings
     DEBUG: {
-        LOG_LIMIT: 10 * 1024 * 1024 // 10MB
+        LOG_LIMIT: 10 * 1024 * 1024, // 10MB
+        USE_DEBUG_TILESET: true // Toggle to use annotated tileset for debugging
     }
 };
 

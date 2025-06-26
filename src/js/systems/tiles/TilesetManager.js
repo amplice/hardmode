@@ -1,5 +1,6 @@
 // src/systems/tiles/TilesetManager.js
 import { Assets, Texture, Rectangle } from 'pixi.js';
+import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 
 export class TilesetManager {
   constructor() {
@@ -10,8 +11,12 @@ export class TilesetManager {
     
     this.tileSize = 32; // New tileset uses 32x32 tiles
     
+    const terrainTileset = GAME_CONSTANTS.DEBUG.USE_DEBUG_TILESET 
+      ? 'assets/sprites/tiles/grass/MainLev2.0_debug.png'
+      : 'assets/sprites/tiles/grass/MainLev2.0.png';
+    
     Assets.addBundle('tilesets', {
-      terrain: 'assets/sprites/tiles/grass/MainLev2.0.png',
+      terrain: terrainTileset,
       plants: 'assets/sprites/tiles/Plants.png'
     });
   }
@@ -30,6 +35,7 @@ export class TilesetManager {
     this.textures.plants = this.slicePlantsTileset(Assets.get('plants').baseTexture);
     
     console.log("Tilesets loaded successfully");
+    console.log(`[DEBUG] Using ${GAME_CONSTANTS.DEBUG.USE_DEBUG_TILESET ? 'DEBUG' : 'regular'} tileset`);
     console.log(`[DEBUG] Loaded terrain texture rows: ${this.textures.terrain.length}`);
   }
   
