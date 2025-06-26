@@ -59,12 +59,14 @@ export class CliffAutotiler {
     map.set(this.NEIGHBORS.SOUTHEAST, { row: 7, col: 7 });   // SE inner corner
     
     // Diagonal tiles - using string keys for specific tile coordinates
+    map.set('0,8', { row: 0, col: 8 });    // NW diagonal corner
+    map.set('0,9', { row: 0, col: 9 });    // NE diagonal corner  
     map.set('1,7', { row: 1, col: 7 });    // SW diagonal edge
     map.set('1,8', { row: 1, col: 8 });    // E of (1,7) when connecting to corner
     map.set('1,9', { row: 1, col: 9 });    // W of (1,10) when connecting to corner
     map.set('1,10', { row: 1, col: 10 });  // SE diagonal edge
-    map.set('2,7', { row: 2, col: 7 });    // Connector when (1,7) is N and W
-    map.set('2,10', { row: 2, col: 10 });  // Connector when (1,10) is N and E
+    map.set('2,7', { row: 2, col: 7 });    // West-side diagonal connector
+    map.set('2,10', { row: 2, col: 10 });  // East-side diagonal connector
     
     // Edge variations for more complex patterns
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHEAST, { row: 0, col: 2 }); // Top edge with NE
@@ -211,54 +213,75 @@ export class CliffAutotiler {
     // Get already processed tile types
     const nType = getProcessedType(0, -1);
     const neType = getProcessedType(1, -1);
+    const eType = getProcessedType(1, 0);
     const wType = getProcessedType(-1, 0);
     const nwType = getProcessedType(-1, -1);
+    const seType = getProcessedType(1, 1);
+    const swType = getProcessedType(-1, 1);
     
-    // Check for (1,8) - always E of (1,7) when (1,7) connects to top corner
+    // First check for connector tiles (2,7) and (2,10)
+    
+    // Check for (2,10) - East-side diagonal connector
+    // When diagonal tile is above AND diagonal tile is to the east
+    if ((nType === '0,9' || nType === '1,10') && 
+        (eType === '0,9' || eType === '1,10')) {
+      return '2,10';
+    }
+    
+    // Check for (2,7) - West-side diagonal connector  
+    // When diagonal tile is above AND (horizontal or diagonal) tile is to the west
+    if ((nType === '0,8' || nType === '1,7') && 
+        (wType === '0,0' || wType === '0,8' || wType === '1,0' || wType === '1,7')) {
+      return '2,7';
+    }
+    // Also check for vertical tile above and diagonal to the west
+    if ((nType === '0,1' || nType === '1,0') && 
+        (wType === '0,8' || wType === '1,7')) {
+      return '2,7';
+    }
+    
+    // Check for diagonal corner starts (0,8) and (0,9)
+    
+    // Check for (0,8) - NW diagonal corner (start of SW diagonal)
+    if (n < current && w < current && nw < current && 
+        s >= current && e >= current && ne < current) {
+      // This is the start of a diagonal edge going southeast
+      return '0,8';
+    }
+    
+    // Check for (0,9) - NE diagonal corner (start of SE diagonal)
+    if (n < current && e < current && ne < current &&
+        s >= current && w >= current && nw < current) {
+      // This is the start of a diagonal edge going southwest
+      return '0,9';
+    }
+    
+    // Check for diagonal edge continuations (1,7) and (1,10)
+    
+    // Check for (1,10) - SE diagonal edge continuation
+    // This continues from (0,9) in the diagonal going southwest
+    if (nwType === '0,9' && n < current && e < current && 
+        s >= current && w >= current) {
+      return '1,10';
+    }
+    
+    // Check for (1,7) - SW diagonal edge continuation
+    // This continues from (0,8) in the diagonal going southeast  
+    if (neType === '0,8' && n < current && w < current &&
+        s >= current && e >= current) {
+      return '1,7';
+    }
+    
+    // Additional checks for (1,8) and (1,9) bridge tiles
+    
+    // Check for (1,8) - E of (1,7) when connecting to corner
     if (wType === '1,7' && (nwType === '0,0' || nwType === '0,8')) {
       return '1,8';
     }
     
-    // Check for (1,9) - always W of (1,10) when (1,10) connects to top corner  
-    if (neType === '0,6' || neType === '0,9') {
-      const eType = getProcessedType(1, 0);
-      if (eType === '1,10' || (e >= current && se >= current && s >= current)) {
-        return '1,9';
-      }
-    }
-    
-    // Check for (2,7) - when (1,7) is both N and W
-    if (nType === '1,7' && wType === '1,7') {
-      return '2,7';
-    }
-    
-    // Check for (2,10) - when (1,10) is both N and E
-    if (nType === '1,10' && getProcessedType(1, 0) === '1,10') {
-      return '2,10';
-    }
-    
-    // Check for (1,7) - SW diagonal edge
-    if (n < current && w < current && s >= current && e >= current) {
-      // Check if NE has a corner
-      if (neType === '0,0' || neType === '0,8') {
-        return '1,7';
-      }
-      // Or if this continues a diagonal from NE
-      if (ne >= current && nType === '1,7') {
-        return '1,7';
-      }
-    }
-    
-    // Check for (1,10) - SE diagonal edge
-    if (n < current && e < current && s >= current && w >= current) {
-      // Check if NW has a corner
-      if (nwType === '0,6' || nwType === '0,9') {
-        return '1,10';
-      }
-      // Or if this continues a diagonal from NW
-      if (nw >= current && nType === '1,10') {
-        return '1,10';
-      }
+    // Check for (1,9) - W of (1,10) when connecting to corner
+    if (eType === '1,10' && (neType === '0,6' || neType === '0,9')) {
+      return '1,9';
     }
     
     return null; // No diagonal pattern
@@ -369,18 +392,17 @@ export class CliffAutotiler {
     const height = elevationData.length;
     const currentElevation = elevationData[y][x];
     
-    // Check if this tile needs a diagonal extension first
-    const diagonalType = this.getDiagonalType(x, y, elevationData, processedTiles);
-    if (diagonalType && y + 1 < height) {
-      const belowElevation = elevationData[y + 1][x];
-      if (belowElevation < currentElevation) {
-        // Check which diagonal extension to use
-        if (diagonalType === '3,7' || diagonalType === '3,8') { // SW diagonal
-          return this.tilesets.textures.terrain[4][7]; // SW diagonal extension
-        } else if (diagonalType === '3,10' || diagonalType === '3,9') { // SE diagonal
-          return this.tilesets.textures.terrain[4][10]; // SE diagonal extension
-        }
-      }
+    // Get the tile type of the current position
+    const currentType = processedTiles && processedTiles[y] ? processedTiles[y][x] : null;
+    
+    // Diagonal tiles should NOT have extensions - they are complete tiles
+    if (currentType && (
+        currentType === '0,8' || currentType === '0,9' ||    // Diagonal corners
+        currentType === '1,7' || currentType === '1,8' ||    // SW diagonal tiles  
+        currentType === '1,9' || currentType === '1,10' ||   // SE diagonal tiles
+        currentType === '2,7' || currentType === '2,10'      // Diagonal connectors
+    )) {
+      return null; // No extension for diagonal tiles
     }
     
     // Check if tile below has lower elevation (cliff drop)

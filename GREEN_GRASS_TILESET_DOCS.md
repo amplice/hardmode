@@ -5,16 +5,16 @@
 These tiles form the foundation for creating coherent terrain with proper edges and corners. The system includes both square (orthogonal) and diagonal cliff edges.
 
 #### Row 0 - Top Edges & Diagonal Corners
-- (0,0): Northwest corner (alternate 1) - can be used interchangeably with (0,8)
+- (0,0): Northwest corner (square/orthogonal)
 - (0,1): North edge tile 1 (cliff on top)
 - (0,2): North edge tile 2 (cliff on top, variation)
 - (0,3): North edge tile 3 (cliff on top, variation)
 - (0,4): North edge tile 4 (cliff on top, variation)
 - (0,5): North edge tile 5 (cliff on top, variation)
-- (0,6): Northeast corner (alternate 1) - can be used interchangeably with (0,9)
+- (0,6): Northeast corner (square/orthogonal)
 - (0,7): Empty
-- (0,8): Northwest corner (alternate 2) - can be used interchangeably with (0,0)
-- (0,9): Northeast corner (alternate 2) - can be used interchangeably with (0,6)
+- (0,8): Northwest diagonal corner - START of diagonal edge going southeast
+- (0,9): Northeast diagonal corner - START of diagonal edge going southwest
 - (0,10): Empty
 
 #### Row 1 - Side Edges & Diagonal Edges
@@ -25,10 +25,10 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (1,4): Pure green grass tile (variation)
 - (1,5): Pure green grass tile (variation)
 - (1,6): East edge tile (cliff on right)
-- (1,7): SW-traveling diagonal edge (connects to NW corners, continues SW)
-- (1,8): Always placed east of (1,7) when (1,7) connects to a top corner
-- (1,9): Always placed west of (1,10) when (1,10) connects to a top corner
-- (1,10): SE-traveling diagonal edge (connects to NE corners, continues SE)
+- (1,7): SW diagonal edge continuation (placed SE of (0,8))
+- (1,8): Bridge tile - placed E of (1,7) when connecting to corners
+- (1,9): Bridge tile - placed W of (1,10) when connecting to corners
+- (1,10): SE diagonal edge continuation (placed SW of (0,9))
 
 #### Row 2 - Side Edge Variations & Diagonal Connectors
 - (2,0): West edge variation 2
@@ -38,12 +38,15 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (2,4): Pure green grass tile (variation)
 - (2,5): Pure green grass tile (variation)
 - (2,6): East edge variation 2
-- (2,7): Diagonal connector - placed when (1,7) is both north AND west
+- (2,7): West-side diagonal connector - connects diagonal tiles on the west side
+  - Used when diagonal tile is above AND (horizontal or diagonal) tile is to the west
+  - Also used when vertical tile is above AND diagonal tile is to the west
 - (2,8): Empty
 - (2,9): Empty
-- (2,10): Diagonal connector - placed when (1,10) is both north AND east
+- (2,10): East-side diagonal connector - connects diagonal tiles on the east side
+  - Used when diagonal tile is above AND diagonal tile is to the east
 
-#### Row 3 - Side Edge Variations & Southwest Diagonal Start
+#### Row 3 - Side Edge Variations
 - (3,0): West edge variation 3
 - (3,1): Pure green grass tile (variation)
 - (3,2): Pure green grass tile (variation)
@@ -51,12 +54,9 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (3,4): Pure green grass tile (variation)
 - (3,5): Pure green grass tile (variation)
 - (3,6): East edge variation 3
-- (3,7): Beginning of southwest diagonal downwards
-- (3,8): Always positioned east of (3,7)
-- (3,9): Inner diagonal always west of (3,10)
-- (3,10): Southeast diagonal start
+- (3,7-3,10): Additional terrain variations
 
-#### Row 4 - Continued side variations
+#### Row 4 - Side Edge Variations
 - (4,0): West edge variation 4
 - (4,1): Pure green grass tile (variation)
 - (4,2): Pure green grass tile (variation)
@@ -64,12 +64,9 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (4,4): Pure green grass tile (variation)
 - (4,5): Pure green grass tile (variation)
 - (4,6): East edge variation 4
-- (4,7): Height depth tile (always below (3,7))
-- (4,8): Second southwest diagonal (below (3,8))
-- (4,9): Second southeast diagonal (below (3,9))
-- (4,10): Height depth tile (below (3,10))
+- (4,7-4,10): Additional terrain variations
 
-#### Row 5 - Bottom Edges & Height Layer 1
+#### Row 5 - Bottom Edges
 - (5,0): Southwest corner of cliff edge
 - (5,1): Bottom cliff edge tile 1
 - (5,2): Bottom cliff edge tile 2
@@ -77,10 +74,7 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (5,4): Bottom cliff edge tile 4
 - (5,5): Bottom cliff edge tile 5
 - (5,6): Southeast corner of cliff edge
-- (5,7): Empty
-- (5,8): Always goes below (4,8)
-- (5,9): Always goes below (4,9)
-- (5,10): Empty
+- (5,7-5,10): Additional terrain variations
 
 #### Row 6 - Height Layer 2 (Vertical Depth)
 - (6,0): Second vertical layer (always below (5,0))
@@ -90,15 +84,20 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (6,4): Second vertical layer (always below (5,4))
 - (6,5): Second vertical layer (always below (5,5))
 - (6,6): Second vertical layer (always below (5,6))
-- (6,7): Empty
-- (6,8): Always goes below (5,8)
-- (6,9): Always goes below (5,9)
-- (6,10): Empty
+- (6,7-6,10): Additional terrain variations
 
-### Height Feature Section (Rows 7-27)
+#### Row 7 - Inner Corners
+- (7,0): Northwest inner corner (grass surrounded by cliffs except NW)
+- (7,6): Northeast inner corner (grass surrounded by cliffs except NE)
+- (7,7): Southeast inner corner (grass surrounded by cliffs except SE)
+- (7,8): Southwest inner corner (grass surrounded by cliffs except SW)
+- (7,1-7,5): Additional terrain variations
+- (7,9-7,10): Additional terrain variations
+
+### Height Feature Section (Rows 8-27)
 These tiles create the illusion of elevation and depth in the 2D world.
 
-#### Rows 7-10 - Basic Elevated Platforms
+#### Rows 8-10 - Basic Elevated Platforms
 - Small elevated grass platforms with cliff edges
 - 2x2 and 3x3 elevated areas
 - Various cliff face textures for different heights
@@ -173,20 +172,30 @@ Green grass transitioning to transparency (for overlays or special effects).
 
 ## Diagonal Cliff Rules
 
-### Top Diagonal Edges (SW and SE traveling)
-1. **NW Corner to SW Diagonal**:
-   - Start with (0,0) or (0,8) as NW corner
-   - Place (1,7) directly SW of the corner
-   - Place (1,8) directly E of (1,7) when it connects to a corner
-   - Continue diagonal with more (1,7) tiles going SW
-   - When (1,7) has another (1,7) both N and W, place (2,7) as connector
+### Diagonal Tile Placement
+1. **Starting Diagonal Edges**:
+   - (0,8): NW diagonal corner - starts a diagonal edge going southeast
+   - (0,9): NE diagonal corner - starts a diagonal edge going southwest
+   
+2. **Continuing Diagonal Edges**:
+   - (1,7): SW diagonal continuation - placed southeast of (0,8)
+   - (1,10): SE diagonal continuation - placed southwest of (0,9)
+   
+3. **Diagonal Connectors**:
+   - (2,7): West-side connector - used when:
+     - Diagonal tile (0,8 or 1,7) is above AND horizontal/diagonal tile is to the west
+     - Vertical tile (0,1 or 1,0) is above AND diagonal tile is to the west
+   - (2,10): East-side connector - used when:
+     - Diagonal tile (0,9 or 1,10) is above AND diagonal tile is to the east
+   
+4. **Bridge Tiles**:
+   - (1,8): Placed east of (1,7) when connecting to corners
+   - (1,9): Placed west of (1,10) when connecting to corners
 
-2. **NE Corner to SE Diagonal**:
-   - Start with (0,6) or (0,9) as NE corner
-   - Place (1,10) directly SE of the corner
-   - Place (1,9) directly W of (1,10) when it connects to a corner
-   - Continue diagonal with more (1,10) tiles going SE
-   - When (1,10) has another (1,10) both N and E, place (2,10) as connector
+### Important Notes
+- Diagonal tiles are complete tiles and do NOT require extension tiles below them
+- Each diagonal tile should be placed only once - no overlapping
+- The system automatically determines tile placement based on elevation patterns
 
 ## Usage Notes
 1. **Basic Terrain**: Use rows 0-6 for standard terrain generation
