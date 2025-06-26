@@ -53,11 +53,10 @@ export class CliffAutotiler {
     map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.EAST, { row: 5, col: 6 });  // SE corner
     
     // Inner corners (diagonal neighbors have higher elevation)
-    // TEMPORARILY DISABLED - these are being incorrectly placed for elevated tiles
-    // map.set(this.NEIGHBORS.NORTHWEST, { row: 7, col: 0 });    // NW inner corner
-    // map.set(this.NEIGHBORS.NORTHEAST, { row: 7, col: 6 });   // NE inner corner  
-    // map.set(this.NEIGHBORS.SOUTHWEST, { row: 7, col: 8 });    // SW inner corner
-    // map.set(this.NEIGHBORS.SOUTHEAST, { row: 7, col: 7 });   // SE inner corner
+    map.set(this.NEIGHBORS.NORTHWEST, { row: 7, col: 0 });    // NW inner corner
+    map.set(this.NEIGHBORS.NORTHEAST, { row: 7, col: 6 });   // NE inner corner  
+    map.set(this.NEIGHBORS.SOUTHWEST, { row: 7, col: 8 });    // SW inner corner
+    map.set(this.NEIGHBORS.SOUTHEAST, { row: 7, col: 7 });   // SE inner corner
     
     // Diagonal tiles - using string keys for specific tile coordinates
     map.set('0,8', { row: 0, col: 8 });    // NW diagonal corner
@@ -228,6 +227,16 @@ export class CliffAutotiler {
     }
     
     // Check for (2,10) - East-side diagonal connector
+    // Special case: when we have a NE inner corner pattern but adjacent to diagonals  
+    const neElev = getElev(1, -1);
+    if (n >= current && e >= current && ne < current && w >= current && s >= current) {
+      // This is the inner corner pattern, but check adjacent tiles
+      if ((nType && (nType.includes('0,9') || nType.includes('1,10') || nType.includes('0,1') || nType.includes('0,2') || nType.includes('0,3'))) ||
+          (eType && (eType.includes('0,9') || eType.includes('1,10') || eType.includes('1,6') || eType.includes('2,6') || eType.includes('3,6')))) {
+        return '2,10';
+      }
+    }
+    
     // When diagonal tile is above AND diagonal tile is to the east
     if ((nType === '0,9' || nType === '1,10') && 
         (eType === '0,9' || eType === '1,10')) {
@@ -235,6 +244,16 @@ export class CliffAutotiler {
     }
     
     // Check for (2,7) - West-side diagonal connector  
+    // Special case: when we have a NW inner corner pattern but adjacent to diagonals
+    const nwElev = getElev(-1, -1);
+    if (n >= current && w >= current && nw < current && e >= current && s >= current) {
+      // This is the inner corner pattern, but check adjacent tiles
+      if ((nType && (nType.includes('0,8') || nType.includes('1,7') || nType.includes('0,1') || nType.includes('0,2') || nType.includes('0,3'))) ||
+          (wType && (wType.includes('0,8') || wType.includes('1,7') || wType.includes('1,0') || wType.includes('2,0') || wType.includes('3,0')))) {
+        return '2,7';
+      }
+    }
+    
     // When diagonal tile is above AND (horizontal or diagonal) tile is to the west
     if ((nType === '0,8' || nType === '1,7') && 
         (wType === '0,0' || wType === '0,8' || wType === '1,0' || wType === '1,7' || 
@@ -338,6 +357,21 @@ export class CliffAutotiler {
     const tileCoords = this.bitmaskToTile.get(bitmask);
     
     if (tileCoords) {
+      // Check if this is an inner corner that should be a diagonal connector instead
+      if (bitmask === this.NEIGHBORS.NORTHWEST && tileCoords.row === 7 && tileCoords.col === 0) {
+        console.log(`[DEBUG] Found NW inner corner at (${x}, ${y}), checking if it should be (2,7) instead`);
+        // Additional check for diagonal connector pattern
+        const nType = processedTiles && y > 0 && processedTiles[y-1] ? processedTiles[y-1][x] : null;
+        const wType = processedTiles && x > 0 && processedTiles[y] ? processedTiles[y][x-1] : null;
+        console.log(`[DEBUG] Adjacent tiles: north=${nType}, west=${wType}`);
+      } else if (bitmask === this.NEIGHBORS.NORTHEAST && tileCoords.row === 7 && tileCoords.col === 6) {
+        console.log(`[DEBUG] Found NE inner corner at (${x}, ${y}), checking if it should be (2,10) instead`);
+        // Additional check for diagonal connector pattern
+        const nType = processedTiles && y > 0 && processedTiles[y-1] ? processedTiles[y-1][x] : null;
+        const eType = processedTiles && x < elevationData[0].length - 1 && processedTiles[y] ? processedTiles[y][x+1] : null;
+        console.log(`[DEBUG] Adjacent tiles: north=${nType}, east=${eType}`);
+      }
+      
       console.log(`[DEBUG] Cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
       return {
         texture: this.tilesets.textures.terrain[tileCoords.row][tileCoords.col],
