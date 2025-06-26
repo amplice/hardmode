@@ -86,12 +86,12 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (6,6): Second vertical layer (always below (5,6))
 - (6,7-6,10): Additional terrain variations
 
-#### Row 7 - Inner Corners
-- (7,0): Northwest inner corner (grass surrounded by cliffs except NW)
-- (7,6): Northeast inner corner (grass surrounded by cliffs except NE)
+#### Row 7 - Inner Corners and Additional Tiles
+- (7,0): Not used - use (2,7) instead for all cases
+- (7,1-7,5): Additional terrain variations
+- (7,6): Not used - use (2,10) instead for all cases
 - (7,7): Southeast inner corner (grass surrounded by cliffs except SE)
 - (7,8): Southwest inner corner (grass surrounded by cliffs except SW)
-- (7,1-7,5): Additional terrain variations
 - (7,9-7,10): Additional terrain variations
 
 ### Height Feature Section (Rows 8-27)
