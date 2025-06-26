@@ -254,7 +254,7 @@ export class CliffAutotiler {
       if (innerCorner) {
         const tileCoords = this.bitmaskToTile.get(innerCorner);
         if (tileCoords) {
-          console.log(`[DEBUG] Inner corner at (${x}, ${y}): bit=${innerCorner}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
+          // console.log(`[DEBUG] Inner corner at (${x}, ${y}): bit=${innerCorner}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
           return this.tilesets.textures.terrain[tileCoords.row][tileCoords.col];
         }
       }
@@ -266,7 +266,7 @@ export class CliffAutotiler {
     if (diagonalType > 0) {
       const tileCoords = this.bitmaskToTile.get(diagonalType);
       if (tileCoords) {
-        console.log(`[DEBUG] Diagonal cliff at (${x}, ${y}): type=${diagonalType}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
+        // console.log(`[DEBUG] Diagonal cliff at (${x}, ${y}): type=${diagonalType}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
         return this.tilesets.textures.terrain[tileCoords.row][tileCoords.col];
       }
     }
@@ -351,23 +351,23 @@ export class CliffAutotiler {
       const belowElevation = elevationData[y + 1][x];
       if (belowElevation < currentElevation) {
         // This needs a cliff extension
-        console.log(`[DEBUG] Cliff extension needed at (${x}, ${y}): current=${currentElevation}, below=${belowElevation}`);
+        // console.log(`[DEBUG] Cliff extension needed at (${x}, ${y}): current=${currentElevation}, below=${belowElevation}`);
         
         // Check neighboring elevations for corner extensions
         const w = x > 0 ? elevationData[y][x - 1] : 0;
         const e = x < width - 1 ? elevationData[y][x + 1] : 0;
         
         if (w < currentElevation && e >= currentElevation) {
-          console.log(`[DEBUG] SW corner extension at (${x}, ${y})`);
+          // console.log(`[DEBUG] SW corner extension at (${x}, ${y})`);
           return this.tilesets.textures.terrain[6][0]; // SW extension
         } else if (e < currentElevation && w >= currentElevation) {
-          console.log(`[DEBUG] SE corner extension at (${x}, ${y})`);
+          // console.log(`[DEBUG] SE corner extension at (${x}, ${y})`);
           return this.tilesets.textures.terrain[6][6]; // SE extension
         } else {
           // Regular bottom extension
           const col = 1 + Math.floor(Math.random() * 5);
           const texture = this.tilesets.textures.terrain[6][col];
-          console.log(`[DEBUG] Regular bottom extension at (${x}, ${y}), col=${col}, texture exists: ${!!texture}`);
+          // console.log(`[DEBUG] Regular bottom extension at (${x}, ${y}), col=${col}, texture exists: ${!!texture}`);
           return texture;
         }
       }
