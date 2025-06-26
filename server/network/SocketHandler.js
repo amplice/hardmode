@@ -1,4 +1,5 @@
 import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
+import { SERVER_CONFIG } from '../config/ServerConfig.js';
 import { getDistance } from '../../shared/utils/MathUtils.js';
 
 export class SocketHandler {
@@ -34,7 +35,11 @@ export class SocketHandler {
                 seed: GAME_CONSTANTS.WORLD.SEED
             },
             players: this.gameState.getSerializedPlayers(this.inputProcessor),
-            monsters: this.monsterManager.getSerializedMonsters(this.monsterManager.monsters)
+            monsters: this.monsterManager.getSerializedMonsters(this.monsterManager.monsters),
+            config: {
+                debug: SERVER_CONFIG.DEBUG,
+                features: SERVER_CONFIG.FEATURES
+            }
         });
         
         // Notify others

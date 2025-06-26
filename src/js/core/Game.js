@@ -134,6 +134,25 @@ export class Game {
     // Anti-cheat is lenient enough to handle 60fps inputs
   }
 
+  // Apply server configuration to override client defaults
+  applyServerConfig(config) {
+    if (config.debug) {
+      // Update debug settings from server
+      GAME_CONSTANTS.DEBUG.USE_DEBUG_TILESET = config.debug.USE_DEBUG_TILESET;
+      GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING = config.debug.ENABLE_TILE_LOGGING;
+      GAME_CONSTANTS.DEBUG.ENABLE_MONSTER_LOGGING = config.debug.ENABLE_MONSTER_LOGGING;
+      GAME_CONSTANTS.DEBUG.ENABLE_COMBAT_LOGGING = config.debug.ENABLE_COMBAT_LOGGING;
+    }
+    
+    if (config.features) {
+      // Update feature settings from server
+      GAME_CONSTANTS.LEVELS.PLAYTEST_MODE = config.features.PLAYTEST_MODE;
+      // Note: PVP would be handled server-side, no need to update client
+    }
+    
+    console.log('Applied server configuration:', config);
+  }
+
   async loadAndInit() {
     try {
       await this.tilesets.load();               // load & slice all sheets

@@ -28,6 +28,12 @@ export class NetworkClient {
             this.id = data.id;
             this.connected = true; // Mark as connected
             console.log('Connected to server with id:', this.id);
+            
+            // Apply server configuration to client
+            if (data.config) {
+                this.game.applyServerConfig(data.config);
+            }
+            
             this.game.initMultiplayerWorld(data.world);
             data.players.forEach(p => {
                 if (p.id !== this.id) this.game.addRemotePlayer(p);

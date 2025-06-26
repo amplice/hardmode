@@ -2,7 +2,7 @@
 
 ## Debug Toggles Available
 
-The following environment variables can be set in Railway to control debug features:
+The following environment variables can be set in Railway to control debug features. These are processed server-side and sent to the client during connection initialization:
 
 ### Core Debug Settings
 
@@ -96,6 +96,8 @@ ENABLE_PVP=false
 - **String Values**: Use `"true"` or `"false"` (as strings)
 - **Auto-Deploy**: Railway redeploys automatically when variables change
 - **Takes Effect**: Changes apply after the next deployment completes
+- **Server-Side Processing**: Environment variables are processed on the server and sent to clients
+- **No Browser Restart Needed**: Clients get new settings when they connect/reconnect
 - **Logging**: Debug logs appear in Railway's deployment logs section
 
 ## Viewing Debug Output
