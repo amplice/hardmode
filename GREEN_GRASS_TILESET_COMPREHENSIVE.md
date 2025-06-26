@@ -80,13 +80,36 @@ This 10x10 grid contains a massive collection of grass variations:
 **Usage**: These decorative tiles are used sparingly via weighted selection in `getRandomPureGrass()`:
 
 ### Grass Tile Selection Weights
-- **70%**: Basic grass (1,1) - Clean, consistent base appearance
-- **25%**: Common variations (rows 27-28) - Subtle natural variety
-- **5%**: Decorative variations (22,54)-(31,63) - Special accent tiles
+
+**Ground Level & Plateau Interior Areas:**
+- **87%**: Basic grass (1,1) - Clean, consistent base appearance
+- **10%**: Common variations (rows 27-28) - Subtle natural variety
+- **3%**: Decorative variations (22,54)-(31,63) - Special accent tiles
+
+**Cliff Edges:**
+- **100%**: Exact cliff tiles (no variations) - Consistent edges/corners
 
 This ensures the world feels natural and varied without being overwhelming. The decorative tiles provide visual interest as rare special features, while the basic grass maintains a cohesive look.
 
 The cliff autotiling system always uses basic (1,1) for consistency at cliff edges.
+
+## Walkability System
+
+### Unwalkable Cliff Edges
+All cliff edge and corner tiles are marked as unwalkable for both players and monsters:
+- **Row 0**: All top edges and corners (0,0) to (0,6)
+- **Row 1**: Side edges (1,0) and (1,6)
+- **Row 2**: Edge variations (2,0), (2,6), and diagonal connectors (2,7), (2,10)
+- **Row 3**: More edge variations (3,0) and (3,6)
+- **Row 4**: Diagonal connectors (4,8) and (4,9)
+- **Row 5**: All bottom edges and corners (5,0) to (5,6)
+
+### Walkable Areas
+- **Ground level grass**: All grass variations are walkable
+- **Plateau interior grass**: All grass variations are walkable
+- **Row 1, column 1**: Basic grass tiles are always walkable
+
+This prevents players and monsters from walking on cliff edges, maintaining proper collision detection and realistic movement boundaries.
 
 ## Bitmasking Logic
 

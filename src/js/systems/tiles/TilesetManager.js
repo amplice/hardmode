@@ -199,19 +199,25 @@ export class TilesetManager {
   getRandomPureGrass() {
     const rand = Math.random();
     
-    // 70% chance for basic grass (1,1)
-    if (rand < 0.70) {
+    // 87% chance for basic grass (1,1)
+    if (rand < 0.87) {
       return this.basicGrassTile;
     }
-    // 25% chance for common variations (rows 27-28)
-    else if (rand < 0.95) {
+    // 10% chance for common variations (rows 27-28)
+    else if (rand < 0.97) {
       const index = Math.floor(Math.random() * this.commonGrassVariations.length);
       return this.commonGrassVariations[index];
     }
-    // 5% chance for decorative variations (22,54) to (31,63)
+    // 3% chance for decorative variations (22,54) to (31,63)
     else {
       const index = Math.floor(Math.random() * this.decorativeGrassVariations.length);
       return this.decorativeGrassVariations[index];
     }
+  }
+  
+  // Get a random grass tile for plateau interiors (not cliff edges)
+  getRandomPlateauGrass() {
+    // Use same percentages as regular ground
+    return this.getRandomPureGrass();
   }
 }

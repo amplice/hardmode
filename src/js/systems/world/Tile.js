@@ -10,6 +10,7 @@ export class Tile {
     this.isTransition = false;
     this.transitionType = null;
     this.waterOverlayType = null;
+    this.isCliffEdge = false; // Track if this tile is a cliff edge (unwalkable)
     
     // Container for sprites
     this.container = new PIXI.Container();
@@ -164,6 +165,6 @@ export class Tile {
   }
   
   isWalkable() {
-    return this.type !== 'water';
+    return this.type !== 'water' && !this.isCliffEdge;
   }
 }

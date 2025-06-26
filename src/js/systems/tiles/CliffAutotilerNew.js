@@ -79,8 +79,8 @@ export class CliffAutotiler {
     if (hasSouth) return { row: 5, col: 1, type: "bottom edge fallback" };
     if (hasWest) return { row: 1, col: 0, type: "left edge fallback" };
     
-    // Priority 6: Pure grass (no neighbors lower) - use basic grass for cliff edges
-    return { row: 1, col: 1, type: "grass" };
+    // Priority 6: Pure grass (no neighbors lower) - use varied grass for plateau interiors
+    return { row: 1, col: 1, type: "grass", useVariations: true };
   }
   
   /**
@@ -120,7 +120,7 @@ export class CliffAutotiler {
   getTileTexture(x, y, elevationData, processedTiles) {
     const currentElevation = elevationData[y][x];
     
-    // Ground level tiles - just use grass for now
+    // Ground level tiles - use grass variations
     if (currentElevation === 0) {
       return { 
         texture: this.tilesets.getRandomPureGrass(),
@@ -155,8 +155,18 @@ export class CliffAutotiler {
       }
     }
     
+    // Use appropriate texture based on tile type
+    let texture;
+    if (tileCoords.useVariations && tileCoords.type === "grass") {
+      // Use grass variations for plateau interiors
+      texture = this.tilesets.getRandomPlateauGrass();
+    } else {
+      // Use exact tile for cliff edges, corners, etc.
+      texture = this.tilesets.textures.terrain[tileCoords.row][tileCoords.col];
+    }
+    
     return {
-      texture: this.tilesets.textures.terrain[tileCoords.row][tileCoords.col],
+      texture: texture,
       type: `${tileCoords.row},${tileCoords.col}`
     };
   }

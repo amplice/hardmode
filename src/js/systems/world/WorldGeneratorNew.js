@@ -303,6 +303,10 @@ export class WorldGenerator {
         const tileResult = this.cliffAutotiler.getTileTexture(x, y, this.elevationData, processedTiles);
         processedTiles[y][x] = tileResult.type;
         
+        // Mark cliff edges as unwalkable
+        const isCliffEdge = this.isCliffEdgeTile(tileResult.type);
+        tile.isCliffEdge = isCliffEdge;
+        
         const sprite = new PIXI.Sprite(tileResult.texture);
         sprite.position.set(0, 0);
         sprite.scale.set(this.tileSize / 32);
@@ -343,6 +347,38 @@ export class WorldGenerator {
     console.log(`[DEBUG] Added ${extensionCount} cliff extensions`);
   }
   
+  // Helper method to determine if a tile type is a cliff edge
+  isCliffEdgeTile(tileType) {
+    // Parse tile coordinates from type string like "0,0" or "5,6"
+    if (typeof tileType !== 'string' || !tileType.includes(',')) {
+      return false; // Not a cliff tile (probably grass)
+    }
+    
+    const [row, col] = tileType.split(',').map(Number);
+    
+    // Check if it's any type of cliff edge or corner tile
+    // Row 0: Top edges and corners
+    if (row === 0 && (col === 0 || col === 6 || (col >= 1 && col <= 5))) return true;
+    
+    // Row 1: Side edges  
+    if (row === 1 && (col === 0 || col === 6)) return true;
+    
+    // Row 2: Edge variations
+    if (row === 2 && (col === 0 || col === 6)) return true;
+    
+    // Row 3: More edge variations
+    if (row === 3 && (col === 0 || col === 6)) return true;
+    
+    // Row 5: Bottom edges and corners
+    if (row === 5 && (col >= 0 && col <= 6)) return true;
+    
+    // Diagonal connectors are not walkable edges
+    if ((row === 2 && (col === 7 || col === 10)) || 
+        (row === 4 && (col === 8 || col === 9))) return true;
+    
+    return false; // Interior grass tiles are walkable
+  }
+
   // Helper methods for compatibility
   getTileType(x, y) {
     if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
