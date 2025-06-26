@@ -73,14 +73,17 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (4,10): Unknown/unused tile (purpose unclear)
 
 #### Row 5 - Bottom Edges
-- (5,0): Southwest corner of cliff edge
-- (5,1): Bottom cliff edge tile 1
-- (5,2): Bottom cliff edge tile 2
-- (5,3): Bottom cliff edge tile 3
-- (5,4): Bottom cliff edge tile 4
-- (5,5): Bottom cliff edge tile 5
-- (5,6): Southeast corner of cliff edge
+- (5,0): Southwest corner of cliff edge - CORNER ONLY (when both south and west neighbors are lower)
+- (5,1): Bottom cliff edge tile 1 - HORIZONTAL EDGE ONLY (when only south neighbor is lower)
+- (5,2): Bottom cliff edge tile 2 - HORIZONTAL EDGE ONLY (when only south neighbor is lower)
+- (5,3): Bottom cliff edge tile 3 - HORIZONTAL EDGE ONLY (when only south neighbor is lower) 
+- (5,4): Bottom cliff edge tile 4 - HORIZONTAL EDGE ONLY (when only south neighbor is lower)
+- (5,5): Bottom cliff edge tile 5 - HORIZONTAL EDGE ONLY (when only south neighbor is lower)
+- (5,6): Southeast corner of cliff edge - CORNER ONLY (when both south and east neighbors are lower)
 - (5,7-5,10): Additional terrain variations
+
+**IMPORTANT**: (5,1) to (5,5) are for horizontal bottom edges only. (5,0) and (5,6) are corner pieces only.
+Never use (5,6) for horizontal edges - it creates visual inconsistencies.
 
 #### Row 6 - Height Layer 2 (Vertical Depth)
 - (6,0): Second vertical layer (always below (5,0))
@@ -207,8 +210,14 @@ Green grass transitioning to transparency (for overlays or special effects).
 
 To ensure natural-looking cliff formations, the following minimum sizes must be enforced:
 
+#### General Formation Requirements
+- **Absolute minimum**: 3x3 tiles (9 tiles total) for any cliff formation
+- **Width requirement**: All cliff formations must be at least 3 tiles wide
+- **Height requirement**: All cliff formations must be at least 3 tiles high
+- **No narrow paths**: No formations with width or height less than 3 tiles
+
 #### Side Cliff Formations (Jutting from Plateau Sides)
-- **Minimum**: 2 tiles vertically
+- **Minimum**: 3 tiles vertically, 3 tiles horizontally
 - **Western side formations**:
   - Top tile: (1,7) - SW diagonal edge
   - Bottom tile: (4,7) - SW diagonal connector bottom
@@ -217,29 +226,29 @@ To ensure natural-looking cliff formations, the following minimum sizes must be 
   - Top tile: (1,10) - SE diagonal edge  
   - Bottom tile: (4,10) - SE diagonal connector bottom
   - Height tiles: (5,10) and (6,10) below for 2-tile cliff depth
-- **No single tiles allowed** jutting from plateau sides
 
 #### Top Cliff Formations (Jutting from Formation Tops)
-- **Minimum**: 2 tiles horizontally
+- **Minimum**: 3 tiles horizontally, 3 tiles vertically
 - **Tiles**: (0,8) NW diagonal corner and (0,9) NE diagonal corner
-- **No single tiles allowed** jutting from formation tops
+- Must be part of larger 3x3+ formation
 
 #### Bottom Cliff Formations (Jutting from Formation Bottoms)
-- **Minimum**: 2 tiles horizontally
-- **Main tiles**: (5,8) and (5,9) for the cliff bottom edge
-- **Height tiles**: (6,8) and (6,9) below for cliff depth
-- **No single tiles allowed** jutting from formation bottoms
+- **Minimum**: 3 tiles horizontally, 3 tiles vertically
+- **Main tiles**: (5,1) to (5,5) for horizontal bottom edges (NOT 5,6)
+- **Height tiles**: (6,1) to (6,5) below for cliff depth
+- **Corners**: (5,0) and (5,6) only for true corner cases
 
 #### Bottom Edge Requirements
-- **All bottom edges**: Minimum 2 tiles vertically
+- **All bottom edges**: Use (5,1) to (5,5) for horizontal edges
+- **Corner pieces**: (5,0) for SW corners, (5,6) for SE corners only
 - **Structure**: Main edge tile (row 5) + extension tile below (row 6)
-- **Examples**: (5,0)+(6,0), (5,1)+(6,1), (5,6)+(6,6), etc.
+- **Never use (5,6) for horizontal edges**
 
-#### General Formation Rules
-1. **No isolated single tiles** in any cliff formation
-2. **All jutting formations** must be at least 2 tiles in their primary direction
+#### Updated Formation Rules
+1. **No formations smaller than 3x3** (9 tiles minimum)
+2. **All jutting formations** must be at least 3 tiles in both directions
 3. **Bottom edges always need extensions** below them for proper cliff depth
-4. **Side formations need both horizontal and vertical companions** for natural appearance
+4. **Proper tile selection**: (5,1-5,5) for horizontal, (5,0)/(5,6) for corners only
 
 ## Usage Notes
 1. **Basic Terrain**: Use rows 0-6 for standard terrain generation

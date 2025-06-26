@@ -192,7 +192,7 @@ export class WorldGenerator {
   }
   
   enforceMinimumFormations() {
-    console.log("Enforcing minimum cliff formation rules...");
+    console.log("Enforcing 3-tile minimum cliff formation rules...");
     
     let removedCount = 0;
     let expandedCount = 0;
@@ -203,20 +203,22 @@ export class WorldGenerator {
       newElevation[y] = [...this.elevationData[y]];
     }
     
-    // First pass: Remove or expand isolated single jutting tiles
-    for (let y = 1; y < this.height - 1; y++) {
-      for (let x = 1; x < this.width - 1; x++) {
-        if (this.elevationData[y][x] === 1) {
-          // Check if this is a problematic single jutting tile
-          if (this.isSingleJuttingTile(x, y)) {
-            // Try to expand to meet minimum requirements
-            if (this.canExpandFormation(x, y, newElevation)) {
-              this.expandFormation(x, y, newElevation);
-              expandedCount++;
-            } else {
-              // Remove if can't expand
-              newElevation[y][x] = 0;
-              removedCount++;
+    // Multiple passes to remove problematic formations
+    for (let pass = 0; pass < 3; pass++) {
+      for (let y = 2; y < this.height - 2; y++) {
+        for (let x = 2; x < this.width - 2; x++) {
+          if (newElevation[y][x] === 1) {
+            // Check if this tile is part of a formation that's too narrow
+            if (this.isPartOfNarrowFormation(x, y, newElevation)) {
+              // Try to expand to meet 3-tile minimum
+              if (this.canExpandToThreeTiles(x, y, newElevation)) {
+                this.expandToThreeTiles(x, y, newElevation);
+                expandedCount++;
+              } else {
+                // Remove if can't expand
+                newElevation[y][x] = 0;
+                removedCount++;
+              }
             }
           }
         }
@@ -224,7 +226,7 @@ export class WorldGenerator {
     }
     
     this.elevationData = newElevation;
-    console.log(`[DEBUG] Formation enforcement: removed ${removedCount}, expanded ${expandedCount} tiles`);
+    console.log(`[DEBUG] 3-tile formation enforcement: removed ${removedCount}, expanded ${expandedCount} tiles`);
   }
   
   isSingleJuttingTile(x, y) {
@@ -435,8 +437,10 @@ export class WorldGenerator {
             }
           }
           
-          // Remove plateau if it's too small
-          if (plateau.length < 6) {
+          // Check if plateau meets minimum size and dimension requirements
+          const shouldRemove = this.shouldRemovePlateau(plateau);
+          
+          if (shouldRemove) {
             for (const {x: px, y: py} of plateau) {
               newElevation[py][px] = 0;
               removedCount++;
@@ -450,6 +454,97 @@ export class WorldGenerator {
     console.log(`[DEBUG] Removed ${removedCount} tiles from small plateaus`);
   }
   
+  shouldRemovePlateau(plateau) {
+    // Remove plateaus smaller than 9 tiles (3x3 minimum)
+    if (plateau.length < 9) {
+      return true;
+    }
+    
+    // Check if plateau has minimum width and height of 3 tiles
+    let minX = Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity;
+    
+    for (const {x, y} of plateau) {
+      minX = Math.min(minX, x);
+      maxX = Math.max(maxX, x);
+      minY = Math.min(minY, y);
+      maxY = Math.max(maxY, y);
+    }
+    
+    const width = maxX - minX + 1;
+    const height = maxY - minY + 1;
+    
+    // Remove if either dimension is less than 3
+    if (width < 3 || height < 3) {
+      return true;
+    }
+    
+    return false;
+  }
+  
+  isPartOfNarrowFormation(x, y, elevationData) {
+    // Check if this tile is part of a formation that's too narrow (less than 3 tiles in any direction)
+    
+    // Check horizontal runs
+    let leftRun = 0, rightRun = 0;
+    for (let dx = -1; dx >= -2 && this.getElevationSafeFromArray(x + dx, y, elevationData) > 0; dx--) leftRun++;
+    for (let dx = 1; dx <= 2 && this.getElevationSafeFromArray(x + dx, y, elevationData) > 0; dx++) rightRun++;
+    const horizontalRun = leftRun + 1 + rightRun;
+    
+    // Check vertical runs
+    let upRun = 0, downRun = 0;
+    for (let dy = -1; dy >= -2 && this.getElevationSafeFromArray(x, y + dy, elevationData) > 0; dy--) upRun++;
+    for (let dy = 1; dy <= 2 && this.getElevationSafeFromArray(x, y + dy, elevationData) > 0; dy++) downRun++;
+    const verticalRun = upRun + 1 + downRun;
+    
+    // If both horizontal and vertical runs are less than 3, this is problematic
+    return horizontalRun < 3 && verticalRun < 3;
+  }
+  
+  canExpandToThreeTiles(x, y, elevationData) {
+    // Check if we can expand this formation to meet 3-tile minimum
+    const spaces = [
+      {x: x - 1, y}, {x: x + 1, y},  // Horizontal
+      {x, y: y - 1}, {x, y: y + 1}   // Vertical
+    ];
+    
+    // Count available spaces for expansion
+    let availableSpaces = 0;
+    for (const space of spaces) {
+      if (this.getElevationSafeFromArray(space.x, space.y, elevationData) === 0) {
+        availableSpaces++;
+      }
+    }
+    
+    return availableSpaces >= 2; // Need at least 2 spaces to make a 3-tile formation
+  }
+  
+  expandToThreeTiles(x, y, elevationData) {
+    // Expand the formation to meet 3-tile minimum
+    const expansions = [
+      {x: x - 1, y}, {x: x + 1, y},  // Horizontal
+      {x, y: y - 1}, {x, y: y + 1}   // Vertical
+    ];
+    
+    let expanded = 0;
+    for (const expansion of expansions) {
+      if (expanded < 2 && this.getElevationSafeFromArray(expansion.x, expansion.y, elevationData) === 0) {
+        if (expansion.x >= 0 && expansion.x < this.width && 
+            expansion.y >= 0 && expansion.y < this.height) {
+          elevationData[expansion.y][expansion.x] = 1;
+          expanded++;
+        }
+      }
+    }
+  }
+  
+  getElevationSafeFromArray(x, y, elevationArray) {
+    if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+      return 0;
+    }
+    return elevationArray[y][x];
+  }
+  
   finalCleanupPass() {
     console.log("Running final cleanup pass...");
     
@@ -459,53 +554,21 @@ export class WorldGenerator {
       newElevation[y] = [...this.elevationData[y]];
     }
     
-    // Remove any remaining single jutting tiles
-    for (let y = 1; y < this.height - 1; y++) {
-      for (let x = 1; x < this.width - 1; x++) {
+    // Remove any remaining formations that don't meet 3-tile minimum
+    for (let y = 2; y < this.height - 2; y++) {
+      for (let x = 2; x < this.width - 2; x++) {
         if (this.elevationData[y][x] === 1) {
-          // Count cardinal neighbors
-          const n = this.getElevationSafe(x, y - 1);
-          const s = this.getElevationSafe(x, y + 1);
-          const e = this.getElevationSafe(x + 1, y);
-          const w = this.getElevationSafe(x - 1, y);
-          
-          const cardinalCount = (n > 0 ? 1 : 0) + (s > 0 ? 1 : 0) + 
-                               (e > 0 ? 1 : 0) + (w > 0 ? 1 : 0);
-          
-          // Remove tiles with only one cardinal neighbor
-          if (cardinalCount <= 1) {
-            // Check if this tile has a companion in its jutting direction
-            let hasCompanion = false;
-            
-            if (n === 0 && s > 0) {
-              // Jutting north, check for horizontal companion
-              hasCompanion = (e > 0 && this.getElevationSafe(x + 1, y - 1) === 0) ||
-                            (w > 0 && this.getElevationSafe(x - 1, y - 1) === 0);
-            } else if (s === 0 && n > 0) {
-              // Jutting south, check for horizontal companion
-              hasCompanion = (e > 0 && this.getElevationSafe(x + 1, y + 1) === 0) ||
-                            (w > 0 && this.getElevationSafe(x - 1, y + 1) === 0);
-            } else if (e === 0 && w > 0) {
-              // Jutting east, check for vertical companion
-              hasCompanion = (n > 0 && this.getElevationSafe(x + 1, y - 1) === 0) ||
-                            (s > 0 && this.getElevationSafe(x + 1, y + 1) === 0);
-            } else if (w === 0 && e > 0) {
-              // Jutting west, check for vertical companion
-              hasCompanion = (n > 0 && this.getElevationSafe(x - 1, y - 1) === 0) ||
-                            (s > 0 && this.getElevationSafe(x - 1, y + 1) === 0);
-            }
-            
-            if (!hasCompanion) {
-              newElevation[y][x] = 0;
-              cleanedCount++;
-            }
+          // Check if this tile is part of a formation smaller than 3x3
+          if (this.isPartOfNarrowFormation(x, y, this.elevationData)) {
+            newElevation[y][x] = 0;
+            cleanedCount++;
           }
         }
       }
     }
     
     this.elevationData = newElevation;
-    console.log(`[DEBUG] Final cleanup removed ${cleanedCount} problematic tiles`);
+    console.log(`[DEBUG] Final cleanup removed ${cleanedCount} narrow formation tiles`);
   }
   
   createTileSprites() {

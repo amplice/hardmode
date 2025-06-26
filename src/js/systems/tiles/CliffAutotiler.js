@@ -109,6 +109,7 @@ export class CliffAutotiler {
   
   /**
    * Calculate bitmask for a tile based on elevation differences with neighbors
+   * Only considers cardinal directions for edge detection, diagonals for corners
    */
   calculateBitmask(x, y, elevationData) {
     const width = elevationData[0].length;
@@ -117,20 +118,44 @@ export class CliffAutotiler {
     
     let bitmask = 0;
     
-    // Check each neighbor
-    for (const neighbor of this.NEIGHBOR_OFFSETS) {
-      const nx = x + neighbor.dx;
-      const ny = y + neighbor.dy;
-      
-      // If neighbor is outside bounds or at lower elevation, set the bit
+    // Helper to get neighbor elevation safely
+    const getNeighborElevation = (nx, ny) => {
       if (nx < 0 || nx >= width || ny < 0 || ny >= height) {
-        bitmask |= neighbor.bit; // World edge counts as elevation drop
-      } else {
-        const neighborElevation = elevationData[ny][nx];
-        if (neighborElevation < currentElevation) {
-          bitmask |= neighbor.bit; // Lower neighbor = cliff edge
-        }
+        return -1; // World edge counts as lower elevation
       }
+      return elevationData[ny][nx];
+    };
+    
+    // Check cardinal directions first
+    const n = getNeighborElevation(x, y - 1);
+    const s = getNeighborElevation(x, y + 1);
+    const e = getNeighborElevation(x + 1, y);
+    const w = getNeighborElevation(x - 1, y);
+    
+    // Set cardinal bits
+    if (n < currentElevation) bitmask |= this.NEIGHBORS.NORTH;
+    if (s < currentElevation) bitmask |= this.NEIGHBORS.SOUTH;
+    if (e < currentElevation) bitmask |= this.NEIGHBORS.EAST;
+    if (w < currentElevation) bitmask |= this.NEIGHBORS.WEST;
+    
+    // Only check diagonals for corner cases when both adjacent cardinals are also edges
+    const ne = getNeighborElevation(x + 1, y - 1);
+    const nw = getNeighborElevation(x - 1, y - 1);
+    const se = getNeighborElevation(x + 1, y + 1);
+    const sw = getNeighborElevation(x - 1, y + 1);
+    
+    // Only set diagonal bits for true corner cases
+    if ((bitmask & this.NEIGHBORS.NORTH) && (bitmask & this.NEIGHBORS.EAST) && ne < currentElevation) {
+      bitmask |= this.NEIGHBORS.NORTHEAST;
+    }
+    if ((bitmask & this.NEIGHBORS.NORTH) && (bitmask & this.NEIGHBORS.WEST) && nw < currentElevation) {
+      bitmask |= this.NEIGHBORS.NORTHWEST;
+    }
+    if ((bitmask & this.NEIGHBORS.SOUTH) && (bitmask & this.NEIGHBORS.EAST) && se < currentElevation) {
+      bitmask |= this.NEIGHBORS.SOUTHEAST;
+    }
+    if ((bitmask & this.NEIGHBORS.SOUTH) && (bitmask & this.NEIGHBORS.WEST) && sw < currentElevation) {
+      bitmask |= this.NEIGHBORS.SOUTHWEST;
     }
     
     return bitmask;
