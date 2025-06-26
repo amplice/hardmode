@@ -6,7 +6,7 @@ import { InputBuffer }    from '../systems/InputBuffer.js';
 import { MovementPredictor } from '../systems/MovementPredictor.js';
 import { Reconciler } from '../systems/Reconciler.js';
 import { PhysicsSystem }  from '../systems/Physics.js';
-import { WorldGenerator } from '../systems/world/WorldGenerator.js';
+import { WorldGenerator } from '../systems/world/WorldGeneratorNew.js';
 import { CombatSystem }   from '../systems/CombatSystem.js';
 import { MonsterSystem }  from '../systems/MonsterSystem.js';
 import { Monster } from '../entities/monsters/Monster.js';
