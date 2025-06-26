@@ -53,10 +53,10 @@ export class CliffAutotiler {
     map.set(this.NEIGHBORS.SOUTH | this.NEIGHBORS.EAST, { row: 5, col: 6 });  // SE corner
     
     // Inner corners (diagonal neighbors have higher elevation)
-    map.set(this.NEIGHBORS.NORTHWEST, { row: 1, col: 7 });    // NW inner corner
-    map.set(this.NEIGHBORS.NORTHEAST, { row: 1, col: 10 });   // NE inner corner  
-    map.set(this.NEIGHBORS.SOUTHWEST, { row: 3, col: 7 });    // SW inner corner
-    map.set(this.NEIGHBORS.SOUTHEAST, { row: 3, col: 10 });   // SE inner corner
+    map.set(this.NEIGHBORS.NORTHWEST, { row: 7, col: 0 });    // NW inner corner
+    map.set(this.NEIGHBORS.NORTHEAST, { row: 7, col: 6 });   // NE inner corner  
+    map.set(this.NEIGHBORS.SOUTHWEST, { row: 7, col: 8 });    // SW inner corner
+    map.set(this.NEIGHBORS.SOUTHEAST, { row: 7, col: 7 });   // SE inner corner
     
     // Edge variations for more complex patterns
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHEAST, { row: 0, col: 2 }); // Top edge with NE
