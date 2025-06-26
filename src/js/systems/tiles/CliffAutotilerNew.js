@@ -79,7 +79,7 @@ export class CliffAutotiler {
     if (hasSouth) return { row: 5, col: 1, type: "bottom edge fallback" };
     if (hasWest) return { row: 1, col: 0, type: "left edge fallback" };
     
-    // Priority 6: Pure grass (no neighbors lower)
+    // Priority 6: Pure grass (no neighbors lower) - use basic grass for cliff edges
     return { row: 1, col: 1, type: "grass" };
   }
   

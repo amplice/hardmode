@@ -13,16 +13,17 @@ This document contains our complete understanding of how the MainLev2.0.png tile
 - (0,8): **NW Diagonal Corner** - Special diagonal start tile
 - (0,9): **NE Diagonal Corner** - Special diagonal start tile
 
-### Row 1 - Side Edges and Grass
+### Row 1 - Side Edges and Basic Grass
 - (1,0): **West Edge** - Use when WEST=1 AND NORTH=0 AND SOUTH=0
-- (1,1-1,5): **Pure Grass** - Use when no elevation differences (all neighbors same level)
+- (1,1): **Basic Grass** - Use for cliff autotiling when no elevation differences
+- (1,2-1,5): **Redundant** - Same as (1,1), ignore these
 - (1,6): **East Edge** - Use when EAST=1 AND NORTH=0 AND SOUTH=0
 - (1,7): **SW Diagonal Edge** - Special diagonal continuation
 - (1,10): **SE Diagonal Edge** - Special diagonal continuation
 
 ### Row 2 - Edge Variations and Diagonal Connectors
 - (2,0): **West Edge Variation**
-- (2,1-2,5): **Grass Variations**
+- (2,1-2,5): **Redundant** - Same as (1,1), ignore these
 - (2,6): **East Edge Variation**
 - (2,7): **West Diagonal Connector** - Replaces old inner corner (7,0)
 - (2,10): **East Diagonal Connector** - Replaces old inner corner (7,6)
@@ -50,6 +51,35 @@ These tiles are placed below Row 5 tiles to create the 2-tile cliff height effec
 - (6,0): Below (5,0) SW corner extensions
 - (6,1-6,5): Below (5,1-5,5) bottom edge extensions  
 - (6,6): Below (5,6) SE corner extensions
+
+## Decorative Grass Variations (Rows 27-28)
+
+### Row 27 - Grass Texture Variations
+- (27,5): **Grass with small flowers**
+- (27,6): **Grass with dirt patches**
+- (27,7): **Grass with subtle wear**
+- (27,8): **Grass with small stones**
+- (27,9): **Grass with leaf litter**
+
+### Row 28 - Additional Decorative Options
+- (28,5): **More decorative grass alternatives**
+- (28,6): **Natural grass variations**
+- (28,7): **Additional texture options**
+- (28,8): **Environmental grass details**
+- (28,9): **Diverse grass appearances**
+
+## Extended Grass Variations (Rows 22-31, Columns 54-63)
+
+### Large Grass Variation Square
+This 10x10 grid contains a massive collection of grass variations:
+- **Location**: (22,54) to (31,63) - 100 unique grass tiles!
+- **Content**: Extensive variety of natural grass textures
+- **Features**: Different lighting, shadows, plant density, terrain details
+- **Purpose**: Maximum visual diversity for large grass areas
+
+**Usage**: All tiles from this square are included in `getRandomPureGrass()` along with the rows 27-28 variations. This gives a total of **111 different grass variations** (10 from rows 27-28, 100 from the square, plus 1 basic fallback).
+
+The cliff autotiling system continues to use basic (1,1) for consistency at cliff edges.
 
 ## Bitmasking Logic
 

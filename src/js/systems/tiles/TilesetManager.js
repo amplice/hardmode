@@ -57,24 +57,56 @@ export class TilesetManager {
       }
     }
     
-    // Store easy references to pure grass tiles
+    // Load decorative grass variation rows (27-28)
+    for (let row = 27; row <= 28; row++) {
+      this.textures.terrain[row] = [];
+      for (let col = 0; col < 11; col++) {
+        this.textures.terrain[row][col] = new Texture(
+          baseTexture,
+          new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+        );
+      }
+    }
+    
+    // Load the large grass variation square (22,54) to (31,63)
+    for (let row = 22; row <= 31; row++) {
+      if (!this.textures.terrain[row]) {
+        this.textures.terrain[row] = [];
+      }
+      for (let col = 54; col <= 63; col++) {
+        this.textures.terrain[row][col] = new Texture(
+          baseTexture,
+          new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+        );
+      }
+    }
+    
+    // Store actual grass variation tiles from multiple areas
     this.pureGrassTiles = [
-      this.textures.terrain[1][1],
-      this.textures.terrain[1][2],
-      this.textures.terrain[1][3],
-      this.textures.terrain[1][4],
-      this.textures.terrain[1][5],
-      this.textures.terrain[2][1],
-      this.textures.terrain[2][2],
-      this.textures.terrain[2][3],
-      this.textures.terrain[2][4],
-      this.textures.terrain[2][5],
-      this.textures.terrain[3][1],
-      this.textures.terrain[3][2],
-      this.textures.terrain[3][3],
-      this.textures.terrain[3][4],
-      this.textures.terrain[3][5]
+      // Row 27 variations (columns 5-9 have decorative grass)
+      this.textures.terrain[27][5],  // Grass with small flowers
+      this.textures.terrain[27][6],  // Grass with dirt patches
+      this.textures.terrain[27][7],  // Grass with subtle wear
+      this.textures.terrain[27][8],  // Grass with small stones
+      this.textures.terrain[27][9],  // Grass with leaf litter
+      
+      // Row 28 variations (columns 5-9 have more decorative grass)
+      this.textures.terrain[28][5],  // More decorative variations
+      this.textures.terrain[28][6],
+      this.textures.terrain[28][7], 
+      this.textures.terrain[28][8],
+      this.textures.terrain[28][9],
+      
+      // Keep one basic grass tile as fallback
+      this.textures.terrain[1][1]   // Basic grass tile
     ];
+    
+    // Add all the grass variations from the large square (22,54) to (31,63)
+    for (let row = 22; row <= 31; row++) {
+      for (let col = 54; col <= 63; col++) {
+        this.pureGrassTiles.push(this.textures.terrain[row][col]);
+      }
+    }
   }
   
   slicePlantsTileset(baseTexture) {

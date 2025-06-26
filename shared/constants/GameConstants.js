@@ -50,7 +50,7 @@ export const GAME_CONSTANTS = {
     DEBUG: {
         LOG_LIMIT: 10 * 1024 * 1024, // 10MB
         USE_DEBUG_TILESET: false, // Toggle to use annotated tileset for debugging
-        ENABLE_TILE_LOGGING: true, // Toggle for tile debug logs - ENABLED for testing
+        ENABLE_TILE_LOGGING: false, // Toggle for tile debug logs
         ENABLE_MONSTER_LOGGING: false, // Toggle for monster debug logs
         ENABLE_COMBAT_LOGGING: false // Toggle for combat debug logs
     }
