@@ -188,15 +188,22 @@ export class WorldGenerator {
   createTileSprites() {
     console.log("Creating tile sprites with bitmasking...");
     
+    // Track processed tiles for diagonal pattern detection
+    const processedTiles = [];
+    for (let y = 0; y < this.height; y++) {
+      processedTiles[y] = [];
+    }
+    
     // First pass: Create base terrain sprites using bitmasking
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         const tile = this.tiles[y][x];
         
         // Use CliffAutotiler to determine the correct texture
-        const tileTexture = this.cliffAutotiler.getTileTexture(x, y, this.elevationData);
+        const tileResult = this.cliffAutotiler.getTileTexture(x, y, this.elevationData, processedTiles);
+        processedTiles[y][x] = tileResult.type;
         
-        const sprite = new PIXI.Sprite(tileTexture);
+        const sprite = new PIXI.Sprite(tileResult.texture);
         sprite.position.set(0, 0); // Position at (0,0) within the tile container
         sprite.scale.set(this.tileSize / 32); // Scale from 32x32 to display size
         tile.sprite = sprite;

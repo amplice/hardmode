@@ -5,19 +5,19 @@
 These tiles form the foundation for creating coherent terrain with proper edges and corners. The system includes both square (orthogonal) and diagonal cliff edges.
 
 #### Row 0 - Top Edges & Diagonal Corners
-- (0,0): Northwest outer corner (square cliff edge on top and left)
+- (0,0): Northwest corner (alternate 1) - can be used interchangeably with (0,8)
 - (0,1): North edge tile 1 (cliff on top)
 - (0,2): North edge tile 2 (cliff on top, variation)
 - (0,3): North edge tile 3 (cliff on top, variation)
 - (0,4): North edge tile 4 (cliff on top, variation)
 - (0,5): North edge tile 5 (cliff on top, variation)
-- (0,6): Northeast outer corner (square cliff edge on top and right)
+- (0,6): Northeast corner (alternate 1) - can be used interchangeably with (0,9)
 - (0,7): Empty
-- (0,8): Northwest outer diagonal corner
-- (0,9): Northeast outer diagonal corner
+- (0,8): Northwest corner (alternate 2) - can be used interchangeably with (0,0)
+- (0,9): Northeast corner (alternate 2) - can be used interchangeably with (0,6)
 - (0,10): Empty
 
-#### Row 1 - Side Edges & Pure Grass
+#### Row 1 - Side Edges & Diagonal Edges
 - (1,0): West edge tile (cliff on left)
 - (1,1): Pure green grass tile
 - (1,2): Pure green grass tile (variation)
@@ -25,12 +25,12 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (1,4): Pure green grass tile (variation)
 - (1,5): Pure green grass tile (variation)
 - (1,6): East edge tile (cliff on right)
-- (1,7): Second northwest diagonal corner
-- (1,8): Inner diagonal connecting (1,7) and (0,8)
-- (1,9): Inner diagonal connecting (0,9) and (1,10)
-- (1,10): Second northeast diagonal corner
+- (1,7): SW-traveling diagonal edge (connects to NW corners, continues SW)
+- (1,8): Always placed east of (1,7) when (1,7) connects to a top corner
+- (1,9): Always placed west of (1,10) when (1,10) connects to a top corner
+- (1,10): SE-traveling diagonal edge (connects to NE corners, continues SE)
 
-#### Row 2 - Side Edge Variations & Inner Corners
+#### Row 2 - Side Edge Variations & Diagonal Connectors
 - (2,0): West edge variation 2
 - (2,1): Pure green grass tile (variation)
 - (2,2): Pure green grass tile (variation)
@@ -38,10 +38,10 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (2,4): Pure green grass tile (variation)
 - (2,5): Pure green grass tile (variation)
 - (2,6): East edge variation 2
-- (2,7): Northwest inner corner (goes below (1,7))
+- (2,7): Diagonal connector - placed when (1,7) is both north AND west
 - (2,8): Empty
 - (2,9): Empty
-- (2,10): Northeast inner corner (goes below (1,10))
+- (2,10): Diagonal connector - placed when (1,10) is both north AND east
 
 #### Row 3 - Side Edge Variations & Southwest Diagonal Start
 - (3,0): West edge variation 3
@@ -170,6 +170,23 @@ Green grass transitioning to transparency (for overlays or special effects).
 - Useful for fog of war effects
 - Edge blending with non-terrain elements
 - Overlay possibilities
+
+## Diagonal Cliff Rules
+
+### Top Diagonal Edges (SW and SE traveling)
+1. **NW Corner to SW Diagonal**:
+   - Start with (0,0) or (0,8) as NW corner
+   - Place (1,7) directly SW of the corner
+   - Place (1,8) directly E of (1,7) when it connects to a corner
+   - Continue diagonal with more (1,7) tiles going SW
+   - When (1,7) has another (1,7) both N and W, place (2,7) as connector
+
+2. **NE Corner to SE Diagonal**:
+   - Start with (0,6) or (0,9) as NE corner
+   - Place (1,10) directly SE of the corner
+   - Place (1,9) directly W of (1,10) when it connects to a corner
+   - Continue diagonal with more (1,10) tiles going SE
+   - When (1,10) has another (1,10) both N and E, place (2,10) as connector
 
 ## Usage Notes
 1. **Basic Terrain**: Use rows 0-6 for standard terrain generation

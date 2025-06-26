@@ -58,26 +58,13 @@ export class CliffAutotiler {
     map.set(this.NEIGHBORS.SOUTHWEST, { row: 7, col: 8 });    // SW inner corner
     map.set(this.NEIGHBORS.SOUTHEAST, { row: 7, col: 7 });   // SE inner corner
     
-    // Diagonal outer corners - for 45-degree cliff angles
-    // These are used when we want a diagonal cliff edge
-    map.set(1000, { row: 0, col: 8 });   // NW outer diagonal
-    map.set(1001, { row: 0, col: 9 });   // NE outer diagonal
-    map.set(1002, { row: 3, col: 7 });   // SW diagonal start
-    map.set(1003, { row: 3, col: 10 });  // SE diagonal start
-    
-    // Diagonal connectors
-    map.set(1004, { row: 1, col: 7 });   // Second NW diagonal
-    map.set(1005, { row: 1, col: 8 });   // Inner diagonal connector
-    map.set(1006, { row: 1, col: 9 });   // Inner diagonal connector
-    map.set(1007, { row: 1, col: 10 });  // Second NE diagonal
-    
-    // Diagonal cliff continuations
-    map.set(1008, { row: 3, col: 8 });   // East of SW diagonal
-    map.set(1009, { row: 3, col: 9 });   // West of SE diagonal
-    
-    // Inner diagonal corners
-    map.set(1010, { row: 2, col: 7 });   // NW inner diagonal
-    map.set(1011, { row: 2, col: 10 });  // NE inner diagonal
+    // Diagonal tiles - using string keys for specific tile coordinates
+    map.set('1,7', { row: 1, col: 7 });    // SW diagonal edge
+    map.set('1,8', { row: 1, col: 8 });    // E of (1,7) when connecting to corner
+    map.set('1,9', { row: 1, col: 9 });    // W of (1,10) when connecting to corner
+    map.set('1,10', { row: 1, col: 10 });  // SE diagonal edge
+    map.set('2,7', { row: 2, col: 7 });    // Connector when (1,7) is N and W
+    map.set('2,10', { row: 2, col: 10 });  // Connector when (1,10) is N and E
     
     // Edge variations for more complex patterns
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHEAST, { row: 0, col: 2 }); // Top edge with NE
@@ -185,14 +172,14 @@ export class CliffAutotiler {
   }
   
   /**
-   * Detect diagonal cliff patterns - checks for specific tile patterns that form diagonal runs
+   * Get diagonal type based on position - follows specific tile placement rules
    */
-  getDiagonalType(x, y, elevationData) {
+  getDiagonalType(x, y, elevationData, processedTiles) {
     const width = elevationData[0].length;
     const height = elevationData.length;
     const current = elevationData[y][x];
     
-    if (current === 0) return 0; // Not elevated
+    if (current === 0) return null; // Not elevated
     
     // Helper to safely get elevation
     const getElev = (dx, dy) => {
@@ -202,7 +189,15 @@ export class CliffAutotiler {
       return elevationData[ny][nx];
     };
     
-    // Get all neighbors
+    // Helper to get previously processed tile type
+    const getProcessedType = (dx, dy) => {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (nx < 0 || nx >= width || ny < 0 || ny >= height) return null;
+      return processedTiles[ny]?.[nx] || null;
+    };
+    
+    // Get neighbors
     const n = getElev(0, -1);
     const ne = getElev(1, -1);
     const e = getElev(1, 0);
@@ -212,71 +207,66 @@ export class CliffAutotiler {
     const w = getElev(-1, 0);
     const nw = getElev(-1, -1);
     
-    // Check if this is part of a diagonal cliff run
-    // For diagonal cliffs to look correct, we need to identify continuous diagonal runs
+    // Get already processed tile types
+    const nType = getProcessedType(0, -1);
+    const neType = getProcessedType(1, -1);
+    const wType = getProcessedType(-1, 0);
+    const nwType = getProcessedType(-1, -1);
     
-    // Northwest outer diagonal corner (0,8): Top-left corner of a diagonal run going NE
-    if (n < current && w < current && e >= current && s >= current) {
-      // Check if this connects to a diagonal run to the SE
-      if (se >= current) {
-        return 1000; // NW outer diagonal
+    // Check for (1,8) - always E of (1,7) when (1,7) connects to top corner
+    if (wType === '1,7' && (nwType === '0,0' || nwType === '0,8')) {
+      return '1,8';
+    }
+    
+    // Check for (1,9) - always W of (1,10) when (1,10) connects to top corner  
+    if (neType === '0,6' || neType === '0,9') {
+      const eType = getProcessedType(1, 0);
+      if (eType === '1,10' || (e >= current && se >= current && s >= current)) {
+        return '1,9';
       }
     }
     
-    // Northeast outer diagonal corner (0,9): Top-right corner of a diagonal run going NW
-    if (n < current && e < current && w >= current && s >= current) {
-      // Check if this connects to a diagonal run to the SW
-      if (sw >= current) {
-        return 1001; // NE outer diagonal
+    // Check for (2,7) - when (1,7) is both N and W
+    if (nType === '1,7' && wType === '1,7') {
+      return '2,7';
+    }
+    
+    // Check for (2,10) - when (1,10) is both N and E
+    if (nType === '1,10' && getProcessedType(1, 0) === '1,10') {
+      return '2,10';
+    }
+    
+    // Check for (1,7) - SW diagonal edge
+    if (n < current && w < current && s >= current && e >= current) {
+      // Check if NE has a corner
+      if (neType === '0,0' || neType === '0,8') {
+        return '1,7';
+      }
+      // Or if this continues a diagonal from NE
+      if (ne >= current && nType === '1,7') {
+        return '1,7';
       }
     }
     
-    // Southwest diagonal start (3,7): Bottom-left corner of a diagonal run going NE
-    if (s < current && w < current && e >= current && n >= current) {
-      // Check if this connects to a diagonal run to the NE
-      if (ne >= current) {
-        return 1002; // SW diagonal start
+    // Check for (1,10) - SE diagonal edge
+    if (n < current && e < current && s >= current && w >= current) {
+      // Check if NW has a corner
+      if (nwType === '0,6' || nwType === '0,9') {
+        return '1,10';
+      }
+      // Or if this continues a diagonal from NW
+      if (nw >= current && nType === '1,10') {
+        return '1,10';
       }
     }
     
-    // Southeast diagonal start (3,10): Bottom-right corner of a diagonal run going NW  
-    if (s < current && e < current && w >= current && n >= current) {
-      // Check if this connects to a diagonal run to the NW
-      if (nw >= current) {
-        return 1003; // SE diagonal start
-      }
-    }
-    
-    // Diagonal connectors - tiles that continue a diagonal cliff run
-    // These need very specific patterns to look correct
-    
-    // Check for being on a NW-SE diagonal line
-    if (nw >= current && se >= current && ne < current && sw < current) {
-      // Part of a diagonal run from NW to SE
-      if (n < current && e >= current) {
-        return 1005; // Inner diagonal connector
-      } else if (w < current && s >= current) {
-        return 1006; // Inner diagonal connector
-      }
-    }
-    
-    // Check for being on a NE-SW diagonal line
-    if (ne >= current && sw >= current && nw < current && se < current) {
-      // Part of a diagonal run from NE to SW
-      if (n < current && w >= current) {
-        return 1005; // Inner diagonal connector
-      } else if (e < current && s >= current) {
-        return 1006; // Inner diagonal connector
-      }
-    }
-    
-    return 0; // No diagonal pattern
+    return null; // No diagonal pattern
   }
   
   /**
    * Get the appropriate tile texture for a position based on elevation data
    */
-  getTileTexture(x, y, elevationData) {
+  getTileTexture(x, y, elevationData, processedTiles) {
     const currentElevation = elevationData[y][x];
     
     // For ground level tiles, check for inner corners first
@@ -286,19 +276,28 @@ export class CliffAutotiler {
         const tileCoords = this.bitmaskToTile.get(innerCorner);
         if (tileCoords) {
           // console.log(`[DEBUG] Inner corner at (${x}, ${y}): bit=${innerCorner}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
-          return this.tilesets.textures.terrain[tileCoords.row][tileCoords.col];
+          return { 
+            texture: this.tilesets.textures.terrain[tileCoords.row][tileCoords.col],
+            type: `${tileCoords.row},${tileCoords.col}`
+          };
         }
       }
-      return this.tilesets.getRandomPureGrass();
+      return { 
+        texture: this.tilesets.getRandomPureGrass(),
+        type: 'grass'
+      };
     }
     
     // For elevated tiles, first check for diagonal patterns
-    const diagonalType = this.getDiagonalType(x, y, elevationData);
-    if (diagonalType > 0) {
+    const diagonalType = this.getDiagonalType(x, y, elevationData, processedTiles);
+    if (diagonalType) {
       const tileCoords = this.bitmaskToTile.get(diagonalType);
       if (tileCoords) {
-        // console.log(`[DEBUG] Diagonal cliff at (${x}, ${y}): type=${diagonalType}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
-        return this.tilesets.textures.terrain[tileCoords.row][tileCoords.col];
+        console.log(`[DEBUG] Diagonal cliff at (${x}, ${y}): type=${diagonalType}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
+        return {
+          texture: this.tilesets.textures.terrain[tileCoords.row][tileCoords.col],
+          type: diagonalType
+        };
       }
     }
     
@@ -308,17 +307,23 @@ export class CliffAutotiler {
     
     if (tileCoords) {
       // console.log(`[DEBUG] Cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
-      return this.tilesets.textures.terrain[tileCoords.row][tileCoords.col];
+      return {
+        texture: this.tilesets.textures.terrain[tileCoords.row][tileCoords.col],
+        type: `${tileCoords.row},${tileCoords.col}`
+      };
     }
     
     // Fallback: try to find a close match or use pure grass
     const fallback = this.findClosestMatch(bitmask);
     if (fallback) {
       // console.log(`[DEBUG] Fallback cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}`);
-      return fallback;
+      return { texture: fallback, type: 'fallback' };
     }
     
-    return this.tilesets.getRandomPureGrass();
+    return { 
+      texture: this.tilesets.getRandomPureGrass(),
+      type: 'grass'
+    };
   }
   
   /**
