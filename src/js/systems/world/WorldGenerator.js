@@ -73,90 +73,11 @@ export class WorldGenerator {
   generateElevatedAreas() {
     console.log("Generating elevated areas...");
     
-    // Add cliff border around the entire world for testing
-    console.log("[DEBUG] Adding world border cliffs for testing");
-    for (let x = 0; x < this.width; x++) {
-      for (let y = 0; y < this.height; y++) {
-        // Create a border that's 5 tiles wide around the edges
-        // Move bottom edge up by 1 to leave room for cliff extensions
-        if (x < 5 || x >= this.width - 5 || y < 5 || y >= this.height - 6) {
-          this.elevationData[y][x] = 1; // Elevated border
-        }
-      }
-    }
+    // Skip world border to better showcase organic plateau shapes
+    // console.log("[DEBUG] Adding world border cliffs for testing");
     
-    // Create a few elevated plateaus in the center
-    const plateauCount = 2 + Math.floor(this.random() * 3);
-    console.log(`[DEBUG] Creating ${plateauCount} elevated plateaus`);
-    
-    for (let i = 0; i < plateauCount; i++) {
-      const plateauType = Math.floor(this.random() * 3); // 0: rectangular, 1: diamond, 2: octagonal
-      
-      if (plateauType === 0) {
-        // Rectangular plateau
-        const width = 5 + Math.floor(this.random() * 8);
-        const height = 5 + Math.floor(this.random() * 8);
-        const x = Math.floor(this.random() * (this.width - width - 20)) + 10;
-        const y = Math.floor(this.random() * (this.height - height - 20)) + 10;
-        
-        console.log(`[DEBUG] Rectangular plateau ${i}: ${width}x${height} at (${x}, ${y})`);
-        
-        for (let dy = 0; dy < height; dy++) {
-          for (let dx = 0; dx < width; dx++) {
-            if (x + dx < this.width && y + dy < this.height) {
-              this.elevationData[y + dy][x + dx] = 1;
-            }
-          }
-        }
-      } else if (plateauType === 1) {
-        // Diamond-shaped plateau
-        const size = 4 + Math.floor(this.random() * 6);
-        const cx = Math.floor(this.random() * (this.width - size * 2 - 20)) + size + 10;
-        const cy = Math.floor(this.random() * (this.height - size * 2 - 20)) + size + 10;
-        
-        console.log(`[DEBUG] Diamond plateau ${i}: size=${size} at center (${cx}, ${cy})`);
-        
-        for (let dy = -size; dy <= size; dy++) {
-          for (let dx = -size; dx <= size; dx++) {
-            if (Math.abs(dx) + Math.abs(dy) <= size) {
-              const px = cx + dx;
-              const py = cy + dy;
-              if (px >= 0 && px < this.width && py >= 0 && py < this.height) {
-                this.elevationData[py][px] = 1;
-              }
-            }
-          }
-        }
-      } else {
-        // Octagonal plateau (cut corners from rectangle)
-        const width = 6 + Math.floor(this.random() * 8);
-        const height = 6 + Math.floor(this.random() * 8);
-        const x = Math.floor(this.random() * (this.width - width - 20)) + 10;
-        const y = Math.floor(this.random() * (this.height - height - 20)) + 10;
-        const cornerCut = 2;
-        
-        console.log(`[DEBUG] Octagonal plateau ${i}: ${width}x${height} at (${x}, ${y})`);
-        
-        for (let dy = 0; dy < height; dy++) {
-          for (let dx = 0; dx < width; dx++) {
-            // Cut corners to make octagon
-            const fromTop = dy;
-            const fromBottom = height - 1 - dy;
-            const fromLeft = dx;
-            const fromRight = width - 1 - dx;
-            
-            if ((fromTop >= cornerCut || fromLeft >= cornerCut) &&
-                (fromTop >= cornerCut || fromRight >= cornerCut) &&
-                (fromBottom >= cornerCut || fromLeft >= cornerCut) &&
-                (fromBottom >= cornerCut || fromRight >= cornerCut)) {
-              if (x + dx < this.width && y + dy < this.height) {
-                this.elevationData[y + dy][x + dx] = 1;
-              }
-            }
-          }
-        }
-      }
-    }
+    // Create organic elevated areas using noise
+    this.generateOrganicPlateaus();
     
     // Count elevated tiles for debugging
     let elevatedCount = 0;
@@ -165,7 +86,103 @@ export class WorldGenerator {
         if (this.elevationData[y][x] > 0) elevatedCount++;
       }
     }
-    console.log(`[DEBUG] Total elevated tiles: ${elevatedCount}`)
+    console.log(`[DEBUG] Total elevated tiles: ${elevatedCount}`);
+  }
+  
+  generateOrganicPlateaus() {
+    console.log("Generating organic plateaus using noise...");
+    
+    // Create several blob-like elevated areas
+    const plateauCount = 3 + Math.floor(this.random() * 4);
+    
+    for (let i = 0; i < plateauCount; i++) {
+      // Random center and size for each plateau
+      const cx = 15 + Math.floor(this.random() * (this.width - 30));
+      const cy = 15 + Math.floor(this.random() * (this.height - 30));
+      const baseRadius = 5 + Math.floor(this.random() * 10);
+      const noiseScale = 0.1 + this.random() * 0.2;
+      const threshold = 0.3 + this.random() * 0.3;
+      
+      console.log(`[DEBUG] Organic plateau ${i}: center (${cx}, ${cy}), radius ${baseRadius}`);
+      
+      // Use noise to create organic shapes
+      for (let y = cy - baseRadius * 2; y <= cy + baseRadius * 2; y++) {
+        for (let x = cx - baseRadius * 2; x <= cx + baseRadius * 2; x++) {
+          if (x >= 5 && x < this.width - 5 && y >= 5 && y < this.height - 6) {
+            const dx = x - cx;
+            const dy = y - cy;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            // Combine distance falloff with noise for organic edges
+            const distanceFactor = 1 - (distance / (baseRadius * 1.5));
+            const noiseValue = this.noise2D(x * noiseScale, y * noiseScale);
+            const combined = distanceFactor + noiseValue * 0.5;
+            
+            if (combined > threshold) {
+              this.elevationData[y][x] = 1;
+            }
+          }
+        }
+      }
+    }
+    
+    // Add some smaller elevated features
+    const featureCount = 5 + Math.floor(this.random() * 10);
+    for (let i = 0; i < featureCount; i++) {
+      const x = 10 + Math.floor(this.random() * (this.width - 20));
+      const y = 10 + Math.floor(this.random() * (this.height - 20));
+      const size = 2 + Math.floor(this.random() * 4);
+      
+      // Small noise-based features
+      for (let dy = -size; dy <= size; dy++) {
+        for (let dx = -size; dx <= size; dx++) {
+          const px = x + dx;
+          const py = y + dy;
+          if (px >= 5 && px < this.width - 5 && py >= 5 && py < this.height - 6) {
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist <= size) {
+              const noise = this.noise2D(px * 0.3, py * 0.3);
+              if (noise > 0.1 - (dist / size) * 0.3) {
+                this.elevationData[py][px] = 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    // Smooth the elevation data to create more natural transitions
+    this.smoothElevation();
+  }
+  
+  smoothElevation() {
+    // Apply a smoothing pass to create more natural cliff lines
+    const newElevation = [];
+    for (let y = 0; y < this.height; y++) {
+      newElevation[y] = [...this.elevationData[y]];
+    }
+    
+    for (let y = 6; y < this.height - 6; y++) {
+      for (let x = 6; x < this.width - 6; x++) {
+        let elevatedNeighbors = 0;
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            if (this.elevationData[y + dy][x + dx] === 1) {
+              elevatedNeighbors++;
+            }
+          }
+        }
+        
+        // Smooth based on neighbor count
+        if (elevatedNeighbors >= 6) {
+          newElevation[y][x] = 1;
+        } else if (elevatedNeighbors <= 3) {
+          newElevation[y][x] = 0;
+        }
+      }
+    }
+    
+    this.elevationData = newElevation;
   }
   
   createTileSprites() {

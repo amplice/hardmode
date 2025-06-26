@@ -75,6 +75,10 @@ export class CliffAutotiler {
     map.set(1008, { row: 3, col: 8 });   // East of SW diagonal
     map.set(1009, { row: 3, col: 9 });   // West of SE diagonal
     
+    // Inner diagonal corners
+    map.set(1010, { row: 2, col: 7 });   // NW inner diagonal
+    map.set(1011, { row: 2, col: 10 });  // NE inner diagonal
+    
     // Edge variations for more complex patterns
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHEAST, { row: 0, col: 2 }); // Top edge with NE
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHWEST, { row: 0, col: 3 }); // Top edge with NW
@@ -181,12 +185,14 @@ export class CliffAutotiler {
   }
   
   /**
-   * Detect diagonal cliff patterns
+   * Detect diagonal cliff patterns - checks for specific tile patterns that form diagonal runs
    */
   getDiagonalType(x, y, elevationData) {
     const width = elevationData[0].length;
     const height = elevationData.length;
     const current = elevationData[y][x];
+    
+    if (current === 0) return 0; // Not elevated
     
     // Helper to safely get elevation
     const getElev = (dx, dy) => {
@@ -196,7 +202,7 @@ export class CliffAutotiler {
       return elevationData[ny][nx];
     };
     
-    // Get all 8 neighbors
+    // Get all neighbors
     const n = getElev(0, -1);
     const ne = getElev(1, -1);
     const e = getElev(1, 0);
@@ -206,36 +212,61 @@ export class CliffAutotiler {
     const w = getElev(-1, 0);
     const nw = getElev(-1, -1);
     
-    // Northwest outer diagonal: cliff runs from SW to NE
-    if (current > 0 && w < current && n < current && s >= current && e >= current && nw < current) {
-      return 1000; // NW outer diagonal
-    }
+    // Check if this is part of a diagonal cliff run
+    // For diagonal cliffs to look correct, we need to identify continuous diagonal runs
     
-    // Northeast outer diagonal: cliff runs from SE to NW
-    if (current > 0 && e < current && n < current && s >= current && w >= current && ne < current) {
-      return 1001; // NE outer diagonal
-    }
-    
-    // Southwest diagonal: cliff runs from NW to SE
-    if (current > 0 && w < current && s < current && n >= current && e >= current && sw < current) {
-      return 1002; // SW diagonal start
-    }
-    
-    // Southeast diagonal: cliff runs from NE to SW
-    if (current > 0 && e < current && s < current && n >= current && w >= current && se < current) {
-      return 1003; // SE diagonal start
-    }
-    
-    // Check for diagonal continuations
-    if (current > 0) {
-      // Northwest diagonal continuation
-      if (w >= current && n >= current && nw < current && s >= current && e >= current) {
-        return 1004; // Second NW diagonal
+    // Northwest outer diagonal corner (0,8): Top-left corner of a diagonal run going NE
+    if (n < current && w < current && e >= current && s >= current) {
+      // Check if this connects to a diagonal run to the SE
+      if (se >= current) {
+        return 1000; // NW outer diagonal
       }
-      
-      // Northeast diagonal continuation
-      if (e >= current && n >= current && ne < current && s >= current && w >= current) {
-        return 1007; // Second NE diagonal
+    }
+    
+    // Northeast outer diagonal corner (0,9): Top-right corner of a diagonal run going NW
+    if (n < current && e < current && w >= current && s >= current) {
+      // Check if this connects to a diagonal run to the SW
+      if (sw >= current) {
+        return 1001; // NE outer diagonal
+      }
+    }
+    
+    // Southwest diagonal start (3,7): Bottom-left corner of a diagonal run going NE
+    if (s < current && w < current && e >= current && n >= current) {
+      // Check if this connects to a diagonal run to the NE
+      if (ne >= current) {
+        return 1002; // SW diagonal start
+      }
+    }
+    
+    // Southeast diagonal start (3,10): Bottom-right corner of a diagonal run going NW  
+    if (s < current && e < current && w >= current && n >= current) {
+      // Check if this connects to a diagonal run to the NW
+      if (nw >= current) {
+        return 1003; // SE diagonal start
+      }
+    }
+    
+    // Diagonal connectors - tiles that continue a diagonal cliff run
+    // These need very specific patterns to look correct
+    
+    // Check for being on a NW-SE diagonal line
+    if (nw >= current && se >= current && ne < current && sw < current) {
+      // Part of a diagonal run from NW to SE
+      if (n < current && e >= current) {
+        return 1005; // Inner diagonal connector
+      } else if (w < current && s >= current) {
+        return 1006; // Inner diagonal connector
+      }
+    }
+    
+    // Check for being on a NE-SW diagonal line
+    if (ne >= current && sw >= current && nw < current && se < current) {
+      // Part of a diagonal run from NE to SW
+      if (n < current && w >= current) {
+        return 1005; // Inner diagonal connector
+      } else if (e < current && s >= current) {
+        return 1006; // Inner diagonal connector
       }
     }
     

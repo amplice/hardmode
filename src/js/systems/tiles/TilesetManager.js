@@ -40,8 +40,8 @@ export class TilesetManager {
     // Store as 2D array for easier access
     this.textures.terrain = [];
     
-    // Load rows 0-7 for basic terrain including cliff extensions and inner corners
-    for (let row = 0; row < 8; row++) {
+    // Load rows 0-10 to include all cliff variations and inner corners
+    for (let row = 0; row < 11; row++) {
       this.textures.terrain[row] = [];
       for (let col = 0; col < 11; col++) { // Only green grass zone (first 11 columns)
         this.textures.terrain[row][col] = new Texture(
