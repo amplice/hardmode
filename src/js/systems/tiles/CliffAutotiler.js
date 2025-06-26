@@ -55,8 +55,8 @@ export class CliffAutotiler {
     // Replace inner corners with diagonal connectors
     map.set(this.NEIGHBORS.NORTHWEST, { row: 2, col: 7 });    // Use (2,7) instead of (7,0)
     map.set(this.NEIGHBORS.NORTHEAST, { row: 2, col: 10 });   // Use (2,10) instead of (7,6)
-    map.set(this.NEIGHBORS.SOUTHWEST, { row: 3, col: 7 });    // Use (3,7) instead of (7,8)
-    map.set(this.NEIGHBORS.SOUTHEAST, { row: 3, col: 10 });   // Use (3,10) instead of (7,7)
+    map.set(this.NEIGHBORS.SOUTHWEST, { row: 4, col: 8 });    // Use (4,8) instead of (7,8)
+    map.set(this.NEIGHBORS.SOUTHEAST, { row: 4, col: 9 });    // Use (4,9) instead of (7,7)
     
     // Diagonal tiles - using string keys for specific tile coordinates
     map.set('0,8', { row: 0, col: 8 });    // NW diagonal corner
@@ -324,10 +324,10 @@ export class CliffAutotiler {
         console.log(`[DEBUG] Placing (2,7) at (${x}, ${y}) via NORTHWEST bitmask`);
       } else if (bitmask === this.NEIGHBORS.NORTHEAST && tileCoords.row === 2 && tileCoords.col === 10) {
         console.log(`[DEBUG] Placing (2,10) at (${x}, ${y}) via NORTHEAST bitmask`);
-      } else if (bitmask === this.NEIGHBORS.SOUTHWEST && tileCoords.row === 3 && tileCoords.col === 7) {
-        console.log(`[DEBUG] Placing (3,7) at (${x}, ${y}) via SOUTHWEST bitmask`);
-      } else if (bitmask === this.NEIGHBORS.SOUTHEAST && tileCoords.row === 3 && tileCoords.col === 10) {
-        console.log(`[DEBUG] Placing (3,10) at (${x}, ${y}) via SOUTHEAST bitmask`);
+      } else if (bitmask === this.NEIGHBORS.SOUTHWEST && tileCoords.row === 4 && tileCoords.col === 8) {
+        console.log(`[DEBUG] Placing (4,8) at (${x}, ${y}) via SOUTHWEST bitmask`);
+      } else if (bitmask === this.NEIGHBORS.SOUTHEAST && tileCoords.row === 4 && tileCoords.col === 9) {
+        console.log(`[DEBUG] Placing (4,9) at (${x}, ${y}) via SOUTHEAST bitmask`);
       }
       
       console.log(`[DEBUG] Cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}]`);

@@ -46,7 +46,7 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (2,10): East-side diagonal connector - connects diagonal tiles on the east side
   - Used when diagonal tile is above AND diagonal tile is to the east
 
-#### Row 3 - Side Edge Variations & Bottom Diagonal Connectors
+#### Row 3 - Side Edge Variations
 - (3,0): West edge variation 3
 - (3,1): Pure green grass tile (variation)
 - (3,2): Pure green grass tile (variation)
@@ -54,12 +54,12 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (3,4): Pure green grass tile (variation)
 - (3,5): Pure green grass tile (variation)
 - (3,6): East edge variation 3
-- (3,7): Southwest diagonal connector (replaces inner corner 7,8)
-- (3,8): Additional terrain variation
-- (3,9): Additional terrain variation
-- (3,10): Southeast diagonal connector (replaces inner corner 7,7)
+- (3,7): Unknown/unused tile (purpose unclear)
+- (3,8): Unknown/unused tile (purpose unclear)
+- (3,9): Unknown/unused tile (purpose unclear)
+- (3,10): Unknown/unused tile (purpose unclear)
 
-#### Row 4 - Side Edge Variations
+#### Row 4 - Side Edge Variations & Bottom Diagonal Connectors
 - (4,0): West edge variation 4
 - (4,1): Pure green grass tile (variation)
 - (4,2): Pure green grass tile (variation)
@@ -67,7 +67,10 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (4,4): Pure green grass tile (variation)
 - (4,5): Pure green grass tile (variation)
 - (4,6): East edge variation 4
-- (4,7-4,10): Additional terrain variations
+- (4,7): Unknown/unused tile (purpose unclear)
+- (4,8): Southwest diagonal connector (replaces inner corner 7,8)
+- (4,9): Southeast diagonal connector (replaces inner corner 7,7)
+- (4,10): Unknown/unused tile (purpose unclear)
 
 #### Row 5 - Bottom Edges
 - (5,0): Southwest corner of cliff edge
@@ -93,8 +96,8 @@ These tiles form the foundation for creating coherent terrain with proper edges 
 - (7,0): Not used - use (2,7) instead for all cases
 - (7,1-7,5): Additional terrain variations
 - (7,6): Not used - use (2,10) instead for all cases
-- (7,7): Not used - use (3,10) instead for all cases
-- (7,8): Not used - use (3,7) instead for all cases
+- (7,7): Not used - use (4,9) instead for all cases
+- (7,8): Not used - use (4,8) instead for all cases
 - (7,9-7,10): Additional terrain variations
 
 ### Height Feature Section (Rows 8-27)
