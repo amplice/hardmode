@@ -58,6 +58,23 @@ export class CliffAutotiler {
     map.set(this.NEIGHBORS.SOUTHWEST, { row: 7, col: 8 });    // SW inner corner
     map.set(this.NEIGHBORS.SOUTHEAST, { row: 7, col: 7 });   // SE inner corner
     
+    // Diagonal outer corners - for 45-degree cliff angles
+    // These are used when we want a diagonal cliff edge
+    map.set(1000, { row: 0, col: 8 });   // NW outer diagonal
+    map.set(1001, { row: 0, col: 9 });   // NE outer diagonal
+    map.set(1002, { row: 3, col: 7 });   // SW diagonal start
+    map.set(1003, { row: 3, col: 10 });  // SE diagonal start
+    
+    // Diagonal connectors
+    map.set(1004, { row: 1, col: 7 });   // Second NW diagonal
+    map.set(1005, { row: 1, col: 8 });   // Inner diagonal connector
+    map.set(1006, { row: 1, col: 9 });   // Inner diagonal connector
+    map.set(1007, { row: 1, col: 10 });  // Second NE diagonal
+    
+    // Diagonal cliff continuations
+    map.set(1008, { row: 3, col: 8 });   // East of SW diagonal
+    map.set(1009, { row: 3, col: 9 });   // West of SE diagonal
+    
     // Edge variations for more complex patterns
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHEAST, { row: 0, col: 2 }); // Top edge with NE
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHWEST, { row: 0, col: 3 }); // Top edge with NW
@@ -164,6 +181,68 @@ export class CliffAutotiler {
   }
   
   /**
+   * Detect diagonal cliff patterns
+   */
+  getDiagonalType(x, y, elevationData) {
+    const width = elevationData[0].length;
+    const height = elevationData.length;
+    const current = elevationData[y][x];
+    
+    // Helper to safely get elevation
+    const getElev = (dx, dy) => {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (nx < 0 || nx >= width || ny < 0 || ny >= height) return -1;
+      return elevationData[ny][nx];
+    };
+    
+    // Get all 8 neighbors
+    const n = getElev(0, -1);
+    const ne = getElev(1, -1);
+    const e = getElev(1, 0);
+    const se = getElev(1, 1);
+    const s = getElev(0, 1);
+    const sw = getElev(-1, 1);
+    const w = getElev(-1, 0);
+    const nw = getElev(-1, -1);
+    
+    // Northwest outer diagonal: cliff runs from SW to NE
+    if (current > 0 && w < current && n < current && s >= current && e >= current && nw < current) {
+      return 1000; // NW outer diagonal
+    }
+    
+    // Northeast outer diagonal: cliff runs from SE to NW
+    if (current > 0 && e < current && n < current && s >= current && w >= current && ne < current) {
+      return 1001; // NE outer diagonal
+    }
+    
+    // Southwest diagonal: cliff runs from NW to SE
+    if (current > 0 && w < current && s < current && n >= current && e >= current && sw < current) {
+      return 1002; // SW diagonal start
+    }
+    
+    // Southeast diagonal: cliff runs from NE to SW
+    if (current > 0 && e < current && s < current && n >= current && w >= current && se < current) {
+      return 1003; // SE diagonal start
+    }
+    
+    // Check for diagonal continuations
+    if (current > 0) {
+      // Northwest diagonal continuation
+      if (w >= current && n >= current && nw < current && s >= current && e >= current) {
+        return 1004; // Second NW diagonal
+      }
+      
+      // Northeast diagonal continuation
+      if (e >= current && n >= current && ne < current && s >= current && w >= current) {
+        return 1007; // Second NE diagonal
+      }
+    }
+    
+    return 0; // No diagonal pattern
+  }
+  
+  /**
    * Get the appropriate tile texture for a position based on elevation data
    */
   getTileTexture(x, y, elevationData) {
@@ -182,7 +261,17 @@ export class CliffAutotiler {
       return this.tilesets.getRandomPureGrass();
     }
     
-    // For elevated tiles, calculate bitmask and get cliff tile
+    // For elevated tiles, first check for diagonal patterns
+    const diagonalType = this.getDiagonalType(x, y, elevationData);
+    if (diagonalType > 0) {
+      const tileCoords = this.bitmaskToTile.get(diagonalType);
+      if (tileCoords) {
+        console.log(`[DEBUG] Diagonal cliff at (${x}, ${y}): type=${diagonalType}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
+        return this.tilesets.textures.terrain[tileCoords.row][tileCoords.col];
+      }
+    }
+    
+    // If no diagonal pattern, use regular bitmask
     const bitmask = this.calculateBitmask(x, y, elevationData);
     const tileCoords = this.bitmaskToTile.get(bitmask);
     
@@ -242,6 +331,20 @@ export class CliffAutotiler {
     const width = elevationData[0].length;
     const height = elevationData.length;
     const currentElevation = elevationData[y][x];
+    
+    // Check if this tile needs a diagonal extension first
+    const diagonalType = this.getDiagonalType(x, y, elevationData);
+    if (diagonalType > 0 && y + 1 < height) {
+      const belowElevation = elevationData[y + 1][x];
+      if (belowElevation < currentElevation) {
+        // Check which diagonal extension to use
+        if (diagonalType === 1002 || diagonalType === 1008) { // SW diagonal
+          return this.tilesets.textures.terrain[4][7]; // SW diagonal extension
+        } else if (diagonalType === 1003 || diagonalType === 1009) { // SE diagonal
+          return this.tilesets.textures.terrain[4][10]; // SE diagonal extension
+        }
+      }
+    }
     
     // Check if tile below has lower elevation (cliff drop)
     if (y + 1 < height) {

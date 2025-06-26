@@ -90,18 +90,69 @@ export class WorldGenerator {
     console.log(`[DEBUG] Creating ${plateauCount} elevated plateaus`);
     
     for (let i = 0; i < plateauCount; i++) {
-      const width = 5 + Math.floor(this.random() * 8);
-      const height = 5 + Math.floor(this.random() * 8);
-      const x = Math.floor(this.random() * (this.width - width - 20)) + 10;
-      const y = Math.floor(this.random() * (this.height - height - 20)) + 10;
+      const plateauType = Math.floor(this.random() * 3); // 0: rectangular, 1: diamond, 2: octagonal
       
-      console.log(`[DEBUG] Plateau ${i}: ${width}x${height} at (${x}, ${y})`);
-      
-      // Mark the elevated area
-      for (let dy = 0; dy < height; dy++) {
-        for (let dx = 0; dx < width; dx++) {
-          if (x + dx < this.width && y + dy < this.height) {
-            this.elevationData[y + dy][x + dx] = 1; // Elevated
+      if (plateauType === 0) {
+        // Rectangular plateau
+        const width = 5 + Math.floor(this.random() * 8);
+        const height = 5 + Math.floor(this.random() * 8);
+        const x = Math.floor(this.random() * (this.width - width - 20)) + 10;
+        const y = Math.floor(this.random() * (this.height - height - 20)) + 10;
+        
+        console.log(`[DEBUG] Rectangular plateau ${i}: ${width}x${height} at (${x}, ${y})`);
+        
+        for (let dy = 0; dy < height; dy++) {
+          for (let dx = 0; dx < width; dx++) {
+            if (x + dx < this.width && y + dy < this.height) {
+              this.elevationData[y + dy][x + dx] = 1;
+            }
+          }
+        }
+      } else if (plateauType === 1) {
+        // Diamond-shaped plateau
+        const size = 4 + Math.floor(this.random() * 6);
+        const cx = Math.floor(this.random() * (this.width - size * 2 - 20)) + size + 10;
+        const cy = Math.floor(this.random() * (this.height - size * 2 - 20)) + size + 10;
+        
+        console.log(`[DEBUG] Diamond plateau ${i}: size=${size} at center (${cx}, ${cy})`);
+        
+        for (let dy = -size; dy <= size; dy++) {
+          for (let dx = -size; dx <= size; dx++) {
+            if (Math.abs(dx) + Math.abs(dy) <= size) {
+              const px = cx + dx;
+              const py = cy + dy;
+              if (px >= 0 && px < this.width && py >= 0 && py < this.height) {
+                this.elevationData[py][px] = 1;
+              }
+            }
+          }
+        }
+      } else {
+        // Octagonal plateau (cut corners from rectangle)
+        const width = 6 + Math.floor(this.random() * 8);
+        const height = 6 + Math.floor(this.random() * 8);
+        const x = Math.floor(this.random() * (this.width - width - 20)) + 10;
+        const y = Math.floor(this.random() * (this.height - height - 20)) + 10;
+        const cornerCut = 2;
+        
+        console.log(`[DEBUG] Octagonal plateau ${i}: ${width}x${height} at (${x}, ${y})`);
+        
+        for (let dy = 0; dy < height; dy++) {
+          for (let dx = 0; dx < width; dx++) {
+            // Cut corners to make octagon
+            const fromTop = dy;
+            const fromBottom = height - 1 - dy;
+            const fromLeft = dx;
+            const fromRight = width - 1 - dx;
+            
+            if ((fromTop >= cornerCut || fromLeft >= cornerCut) &&
+                (fromTop >= cornerCut || fromRight >= cornerCut) &&
+                (fromBottom >= cornerCut || fromLeft >= cornerCut) &&
+                (fromBottom >= cornerCut || fromRight >= cornerCut)) {
+              if (x + dx < this.width && y + dy < this.height) {
+                this.elevationData[y + dy][x + dx] = 1;
+              }
+            }
           }
         }
       }
