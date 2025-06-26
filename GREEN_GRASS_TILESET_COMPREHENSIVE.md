@@ -77,9 +77,16 @@ This 10x10 grid contains a massive collection of grass variations:
 - **Features**: Different lighting, shadows, plant density, terrain details
 - **Purpose**: Maximum visual diversity for large grass areas
 
-**Usage**: All tiles from this square are included in `getRandomPureGrass()` along with the rows 27-28 variations. This gives a total of **111 different grass variations** (10 from rows 27-28, 100 from the square, plus 1 basic fallback).
+**Usage**: These decorative tiles are used sparingly via weighted selection in `getRandomPureGrass()`:
 
-The cliff autotiling system continues to use basic (1,1) for consistency at cliff edges.
+### Grass Tile Selection Weights
+- **70%**: Basic grass (1,1) - Clean, consistent base appearance
+- **25%**: Common variations (rows 27-28) - Subtle natural variety
+- **5%**: Decorative variations (22,54)-(31,63) - Special accent tiles
+
+This ensures the world feels natural and varied without being overwhelming. The decorative tiles provide visual interest as rare special features, while the basic grass maintains a cohesive look.
+
+The cliff autotiling system always uses basic (1,1) for consistency at cliff edges.
 
 ## Bitmasking Logic
 

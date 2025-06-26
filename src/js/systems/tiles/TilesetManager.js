@@ -81,32 +81,33 @@ export class TilesetManager {
       }
     }
     
-    // Store actual grass variation tiles from multiple areas
-    this.pureGrassTiles = [
-      // Row 27 variations (columns 5-9 have decorative grass)
+    // Store grass tiles with different frequency weights
+    this.basicGrassTile = this.textures.terrain[1][1];
+    
+    // Common grass variations (rows 27-28) - used moderately
+    this.commonGrassVariations = [
       this.textures.terrain[27][5],  // Grass with small flowers
       this.textures.terrain[27][6],  // Grass with dirt patches
       this.textures.terrain[27][7],  // Grass with subtle wear
       this.textures.terrain[27][8],  // Grass with small stones
       this.textures.terrain[27][9],  // Grass with leaf litter
-      
-      // Row 28 variations (columns 5-9 have more decorative grass)
       this.textures.terrain[28][5],  // More decorative variations
       this.textures.terrain[28][6],
       this.textures.terrain[28][7], 
       this.textures.terrain[28][8],
-      this.textures.terrain[28][9],
-      
-      // Keep one basic grass tile as fallback
-      this.textures.terrain[1][1]   // Basic grass tile
+      this.textures.terrain[28][9]
     ];
     
-    // Add all the grass variations from the large square (22,54) to (31,63)
+    // Decorative grass variations (22,54) to (31,63) - used sparingly
+    this.decorativeGrassVariations = [];
     for (let row = 22; row <= 31; row++) {
       for (let col = 54; col <= 63; col++) {
-        this.pureGrassTiles.push(this.textures.terrain[row][col]);
+        this.decorativeGrassVariations.push(this.textures.terrain[row][col]);
       }
     }
+    
+    // Legacy array for compatibility - not used directly anymore
+    this.pureGrassTiles = [this.basicGrassTile];
   }
   
   slicePlantsTileset(baseTexture) {
@@ -194,8 +195,23 @@ export class TilesetManager {
     return null;
   }
   
-  // Get a random pure grass tile
+  // Get a random pure grass tile with weighted selection
   getRandomPureGrass() {
-    return this.pureGrassTiles[Math.floor(Math.random() * this.pureGrassTiles.length)];
+    const rand = Math.random();
+    
+    // 70% chance for basic grass (1,1)
+    if (rand < 0.70) {
+      return this.basicGrassTile;
+    }
+    // 25% chance for common variations (rows 27-28)
+    else if (rand < 0.95) {
+      const index = Math.floor(Math.random() * this.commonGrassVariations.length);
+      return this.commonGrassVariations[index];
+    }
+    // 5% chance for decorative variations (22,54) to (31,63)
+    else {
+      const index = Math.floor(Math.random() * this.decorativeGrassVariations.length);
+      return this.decorativeGrassVariations[index];
+    }
   }
 }
