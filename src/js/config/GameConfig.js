@@ -126,7 +126,7 @@ export const MONSTER_CONFIG = {
 
 export const PLAYER_CONFIG = {
   // PvP Settings
-  pvpEnabled: false,  // Global PvP toggle - disabled for now while we work on PvE
+  pvpEnabled: process.env.ENABLE_PVP === 'true' || false,  // Environment variable override
   
   // Character class stats
   classes: {

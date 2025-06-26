@@ -222,7 +222,7 @@ export class CliffAutotiler {
     // First check for connector tiles (2,7) and (2,10)
     
     // Debug logging for connector tile detection
-    if ((nType === '0,9' || nType === '1,10' || nType === '0,8' || nType === '1,7')) {
+    if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING && (nType === '0,9' || nType === '1,10' || nType === '0,8' || nType === '1,7')) {
       console.log(`[DEBUG] Potential connector at (${x}, ${y}): nType=${nType}, eType=${eType}, wType=${wType}`);
     }
     
@@ -306,7 +306,9 @@ export class CliffAutotiler {
     if (diagonalType) {
       const tileCoords = this.bitmaskToTile.get(diagonalType);
       if (tileCoords) {
-        console.log(`[DEBUG] Diagonal cliff at (${x}, ${y}): type=${diagonalType}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
+        if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
+          console.log(`[DEBUG] Diagonal cliff at (${x}, ${y}): type=${diagonalType}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
+        }
         return {
           texture: this.tilesets.textures.terrain[tileCoords.row][tileCoords.col],
           type: diagonalType
@@ -320,17 +322,19 @@ export class CliffAutotiler {
     
     if (tileCoords) {
       // Log when we're placing diagonal connectors via the bitmask
-      if (bitmask === this.NEIGHBORS.NORTHWEST && tileCoords.row === 2 && tileCoords.col === 7) {
-        console.log(`[DEBUG] Placing (2,7) at (${x}, ${y}) via NORTHWEST bitmask`);
-      } else if (bitmask === this.NEIGHBORS.NORTHEAST && tileCoords.row === 2 && tileCoords.col === 10) {
-        console.log(`[DEBUG] Placing (2,10) at (${x}, ${y}) via NORTHEAST bitmask`);
-      } else if (bitmask === this.NEIGHBORS.SOUTHWEST && tileCoords.row === 4 && tileCoords.col === 8) {
-        console.log(`[DEBUG] Placing (4,8) at (${x}, ${y}) via SOUTHWEST bitmask`);
-      } else if (bitmask === this.NEIGHBORS.SOUTHEAST && tileCoords.row === 4 && tileCoords.col === 9) {
-        console.log(`[DEBUG] Placing (4,9) at (${x}, ${y}) via SOUTHEAST bitmask`);
+      if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
+        if (bitmask === this.NEIGHBORS.NORTHWEST && tileCoords.row === 2 && tileCoords.col === 7) {
+          console.log(`[DEBUG] Placing (2,7) at (${x}, ${y}) via NORTHWEST bitmask`);
+        } else if (bitmask === this.NEIGHBORS.NORTHEAST && tileCoords.row === 2 && tileCoords.col === 10) {
+          console.log(`[DEBUG] Placing (2,10) at (${x}, ${y}) via NORTHEAST bitmask`);
+        } else if (bitmask === this.NEIGHBORS.SOUTHWEST && tileCoords.row === 4 && tileCoords.col === 8) {
+          console.log(`[DEBUG] Placing (4,8) at (${x}, ${y}) via SOUTHWEST bitmask`);
+        } else if (bitmask === this.NEIGHBORS.SOUTHEAST && tileCoords.row === 4 && tileCoords.col === 9) {
+          console.log(`[DEBUG] Placing (4,9) at (${x}, ${y}) via SOUTHEAST bitmask`);
+        }
+        
+        console.log(`[DEBUG] Cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
       }
-      
-      console.log(`[DEBUG] Cliff tile at (${x}, ${y}): elevation=${currentElevation}, bitmask=${bitmask}, tile=[${tileCoords.row}, ${tileCoords.col}]`);
       return {
         texture: this.tilesets.textures.terrain[tileCoords.row][tileCoords.col],
         type: `${tileCoords.row},${tileCoords.col}`
@@ -417,7 +421,9 @@ export class CliffAutotiler {
       
       if (belowElevation < currentElevation) {
         // This needs a cliff extension
-        console.log(`[DEBUG] Cliff extension needed at (${x}, ${y}): current=${currentElevation}, below=${belowElevation}, currentType=${currentType}, belowType=${belowType}`);
+        if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
+          console.log(`[DEBUG] Cliff extension needed at (${x}, ${y}): current=${currentElevation}, below=${belowElevation}, currentType=${currentType}, belowType=${belowType}`);
+        }
         
         // Check neighboring elevations for corner extensions
         const w = x > 0 ? elevationData[y][x - 1] : 0;
