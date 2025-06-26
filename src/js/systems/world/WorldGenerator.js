@@ -214,11 +214,11 @@ export class WorldGenerator {
     }
     
     // Second pass: Add cliff extensions for 2-tile height effect
-    this.addCliffExtensions();
+    this.addCliffExtensions(processedTiles);
   }
   
   
-  addCliffExtensions() {
+  addCliffExtensions(processedTiles) {
     console.log("Adding cliff extensions using bitmasking...");
     
     let extensionCount = 0;
@@ -230,7 +230,7 @@ export class WorldGenerator {
         if (elevation === 0) continue;
         
         // Use CliffAutotiler to determine if we need an extension
-        const extensionTexture = this.cliffAutotiler.getCliffExtensionTexture(x, y, this.elevationData);
+        const extensionTexture = this.cliffAutotiler.getCliffExtensionTexture(x, y, this.elevationData, processedTiles);
         
         if (extensionTexture && y + 1 < this.height) {
           const extensionSprite = new PIXI.Sprite(extensionTexture);

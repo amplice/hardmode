@@ -194,7 +194,8 @@ export class CliffAutotiler {
       const nx = x + dx;
       const ny = y + dy;
       if (nx < 0 || nx >= width || ny < 0 || ny >= height) return null;
-      return processedTiles[ny]?.[nx] || null;
+      if (!processedTiles || !processedTiles[ny]) return null;
+      return processedTiles[ny][nx] || null;
     };
     
     // Get neighbors
@@ -363,20 +364,20 @@ export class CliffAutotiler {
   /**
    * Get cliff extension texture for 2-tile height effect
    */
-  getCliffExtensionTexture(x, y, elevationData) {
+  getCliffExtensionTexture(x, y, elevationData, processedTiles) {
     const width = elevationData[0].length;
     const height = elevationData.length;
     const currentElevation = elevationData[y][x];
     
     // Check if this tile needs a diagonal extension first
-    const diagonalType = this.getDiagonalType(x, y, elevationData);
-    if (diagonalType > 0 && y + 1 < height) {
+    const diagonalType = this.getDiagonalType(x, y, elevationData, processedTiles);
+    if (diagonalType && y + 1 < height) {
       const belowElevation = elevationData[y + 1][x];
       if (belowElevation < currentElevation) {
         // Check which diagonal extension to use
-        if (diagonalType === 1002 || diagonalType === 1008) { // SW diagonal
+        if (diagonalType === '3,7' || diagonalType === '3,8') { // SW diagonal
           return this.tilesets.textures.terrain[4][7]; // SW diagonal extension
-        } else if (diagonalType === 1003 || diagonalType === 1009) { // SE diagonal
+        } else if (diagonalType === '3,10' || diagonalType === '3,9') { // SE diagonal
           return this.tilesets.textures.terrain[4][10]; // SE diagonal extension
         }
       }
