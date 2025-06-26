@@ -70,6 +70,16 @@ export class CliffAutotiler {
     map.set('2,7', { row: 2, col: 7 });    // West-side diagonal connector
     map.set('2,10', { row: 2, col: 10 });  // East-side diagonal connector
     
+    // Side formation bottom tiles
+    map.set('4,7', { row: 4, col: 7 });    // SW side formation bottom
+    map.set('4,10', { row: 4, col: 10 });  // SE side formation bottom
+    
+    // Bottom formation tiles  
+    map.set('5,8', { row: 5, col: 8 });    // Bottom formation left
+    map.set('5,9', { row: 5, col: 9 });    // Bottom formation right
+    map.set('6,8', { row: 6, col: 8 });    // Bottom formation height left
+    map.set('6,9', { row: 6, col: 9 });    // Bottom formation height right
+    
     // Edge variations for more complex patterns
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHEAST, { row: 0, col: 2 }); // Top edge with NE
     map.set(this.NEIGHBORS.NORTH | this.NEIGHBORS.NORTHWEST, { row: 0, col: 3 }); // Top edge with NW
@@ -263,6 +273,32 @@ export class CliffAutotiler {
       return '1,7';
     }
     
+    // Check for side formation bottom tiles
+    
+    // Check for (4,7) - SW side formation bottom (below 1,7)
+    if (nType === '1,7' && n >= current && w >= current && s < current && e >= current) {
+      return '4,7';
+    }
+    
+    // Check for (4,10) - SE side formation bottom (below 1,10)  
+    if (nType === '1,10' && n >= current && e >= current && s < current && w >= current) {
+      return '4,10';
+    }
+    
+    // Check for bottom formation tiles (2-tile horizontal formations)
+    
+    // Check for (5,8) - Bottom formation left (when part of horizontal pair)
+    if (s < current && n >= current && eType && (eType === '5,9' || e >= current)) {
+      // This could be the left side of a bottom formation
+      return '5,8';
+    }
+    
+    // Check for (5,9) - Bottom formation right (when part of horizontal pair)
+    if (s < current && n >= current && wType && (wType === '5,8' || w >= current)) {
+      // This could be the right side of a bottom formation
+      return '5,9';
+    }
+    
     // Additional checks for (1,8) and (1,9) bridge tiles
     
     // Check for (1,8) - E of (1,7) when connecting to corner
@@ -425,6 +461,22 @@ export class CliffAutotiler {
         // This needs a cliff extension
         if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
           console.log(`[DEBUG] Cliff extension needed at (${x}, ${y}): current=${currentElevation}, below=${belowElevation}, currentType=${currentType}, belowType=${belowType}`);
+        }
+        
+        // Check for specific bottom formation height tiles first
+        if (currentType === '5,8') {
+          return this.tilesets.textures.terrain[6][8]; // (6,8) below (5,8)
+        }
+        if (currentType === '5,9') {
+          return this.tilesets.textures.terrain[6][9]; // (6,9) below (5,9)  
+        }
+        
+        // Check for side formation extensions
+        if (currentType === '4,7') {
+          return this.tilesets.textures.terrain[5][7]; // (5,7) below (4,7)
+        }
+        if (currentType === '4,10') {
+          return this.tilesets.textures.terrain[5][10]; // (5,10) below (4,10)
         }
         
         // Check neighboring elevations for corner extensions

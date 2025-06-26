@@ -79,6 +79,9 @@ export class WorldGenerator {
     // Create organic elevated areas using noise
     this.generateOrganicPlateaus();
     
+    // Enforce minimum cliff formation rules
+    this.enforceMinimumFormations();
+    
     // Count elevated tiles for debugging
     let elevatedCount = 0;
     for (let y = 0; y < this.height; y++) {
@@ -183,6 +186,166 @@ export class WorldGenerator {
     }
     
     this.elevationData = newElevation;
+  }
+  
+  enforceMinimumFormations() {
+    console.log("Enforcing minimum cliff formation rules...");
+    
+    let removedCount = 0;
+    let expandedCount = 0;
+    
+    // Create a copy to modify
+    const newElevation = [];
+    for (let y = 0; y < this.height; y++) {
+      newElevation[y] = [...this.elevationData[y]];
+    }
+    
+    // First pass: Remove or expand isolated single jutting tiles
+    for (let y = 1; y < this.height - 1; y++) {
+      for (let x = 1; x < this.width - 1; x++) {
+        if (this.elevationData[y][x] === 1) {
+          // Check if this is a problematic single jutting tile
+          if (this.isSingleJuttingTile(x, y)) {
+            // Try to expand to meet minimum requirements
+            if (this.canExpandFormation(x, y, newElevation)) {
+              this.expandFormation(x, y, newElevation);
+              expandedCount++;
+            } else {
+              // Remove if can't expand
+              newElevation[y][x] = 0;
+              removedCount++;
+            }
+          }
+        }
+      }
+    }
+    
+    this.elevationData = newElevation;
+    console.log(`[DEBUG] Formation enforcement: removed ${removedCount}, expanded ${expandedCount} tiles`);
+  }
+  
+  isSingleJuttingTile(x, y) {
+    // Check if this tile is jutting out alone from a formation
+    const current = this.elevationData[y][x];
+    if (current === 0) return false;
+    
+    // Get neighbors
+    const n = this.getElevationSafe(x, y - 1);
+    const s = this.getElevationSafe(x, y + 1);
+    const e = this.getElevationSafe(x + 1, y);
+    const w = this.getElevationSafe(x - 1, y);
+    const ne = this.getElevationSafe(x + 1, y - 1);
+    const nw = this.getElevationSafe(x - 1, y - 1);
+    const se = this.getElevationSafe(x + 1, y + 1);
+    const sw = this.getElevationSafe(x - 1, y + 1);
+    
+    // Count elevated neighbors in different directions
+    const northConnections = (n > 0 ? 1 : 0) + (ne > 0 ? 1 : 0) + (nw > 0 ? 1 : 0);
+    const southConnections = (s > 0 ? 1 : 0) + (se > 0 ? 1 : 0) + (sw > 0 ? 1 : 0);
+    const eastConnections = (e > 0 ? 1 : 0) + (ne > 0 ? 1 : 0) + (se > 0 ? 1 : 0);
+    const westConnections = (w > 0 ? 1 : 0) + (nw > 0 ? 1 : 0) + (sw > 0 ? 1 : 0);
+    
+    // Check for single jutting patterns
+    // Single tile jutting north
+    if (northConnections === 0 && (southConnections > 0 || eastConnections > 0 || westConnections > 0)) {
+      return true;
+    }
+    // Single tile jutting south  
+    if (southConnections === 0 && (northConnections > 0 || eastConnections > 0 || westConnections > 0)) {
+      return true;
+    }
+    // Single tile jutting east
+    if (eastConnections === 0 && (northConnections > 0 || southConnections > 0 || westConnections > 0)) {
+      return true;
+    }
+    // Single tile jutting west
+    if (westConnections === 0 && (northConnections > 0 || southConnections > 0 || eastConnections > 0)) {
+      return true;
+    }
+    
+    // Check for tiles that are part of formations that are too small
+    // If only connected in one cardinal direction and it's a single connection
+    const cardinalConnections = (n > 0 ? 1 : 0) + (s > 0 ? 1 : 0) + (e > 0 ? 1 : 0) + (w > 0 ? 1 : 0);
+    if (cardinalConnections === 1) {
+      // This is likely a single jutting tile
+      return true;
+    }
+    
+    return false;
+  }
+  
+  canExpandFormation(x, y, elevationData) {
+    // Check if we can expand this formation to meet minimum requirements
+    // For now, be conservative and only expand if there's clear space
+    
+    // Get neighbors to see which direction to expand
+    const n = this.getElevationSafe(x, y - 1);
+    const s = this.getElevationSafe(x, y + 1);
+    const e = this.getElevationSafe(x + 1, y);
+    const w = this.getElevationSafe(x - 1, y);
+    
+    // If jutting north, try to expand it horizontally
+    if (n === 0 && (s > 0 || e > 0 || w > 0)) {
+      if (x > 1 && x < this.width - 2) {
+        const leftClear = this.getElevationSafe(x - 1, y) === 0;
+        const rightClear = this.getElevationSafe(x + 1, y) === 0;
+        if (leftClear || rightClear) return true;
+      }
+    }
+    
+    // If jutting south, try to expand it horizontally
+    if (s === 0 && (n > 0 || e > 0 || w > 0)) {
+      if (x > 1 && x < this.width - 2) {
+        const leftClear = this.getElevationSafe(x - 1, y) === 0;
+        const rightClear = this.getElevationSafe(x + 1, y) === 0;
+        if (leftClear || rightClear) return true;
+      }
+    }
+    
+    // If jutting east or west, try to expand vertically
+    if ((e === 0 || w === 0) && (n > 0 || s > 0)) {
+      if (y > 1 && y < this.height - 2) {
+        const upClear = this.getElevationSafe(x, y - 1) === 0;
+        const downClear = this.getElevationSafe(x, y + 1) === 0;
+        if (upClear || downClear) return true;
+      }
+    }
+    
+    return false;
+  }
+  
+  expandFormation(x, y, elevationData) {
+    // Expand the formation to meet minimum requirements
+    // Get neighbors to determine expansion direction
+    const n = this.getElevationSafe(x, y - 1);
+    const s = this.getElevationSafe(x, y + 1);
+    const e = this.getElevationSafe(x + 1, y);
+    const w = this.getElevationSafe(x - 1, y);
+    
+    // If jutting north or south, expand horizontally
+    if ((n === 0 || s === 0) && x > 1 && x < this.width - 2) {
+      if (this.getElevationSafe(x + 1, y) === 0) {
+        elevationData[y][x + 1] = 1;
+      } else if (this.getElevationSafe(x - 1, y) === 0) {
+        elevationData[y][x - 1] = 1;
+      }
+    }
+    
+    // If jutting east or west, expand vertically
+    if ((e === 0 || w === 0) && y > 1 && y < this.height - 2) {
+      if (this.getElevationSafe(x, y + 1) === 0) {
+        elevationData[y + 1][x] = 1;
+      } else if (this.getElevationSafe(x, y - 1) === 0) {
+        elevationData[y - 1][x] = 1;
+      }
+    }
+  }
+  
+  getElevationSafe(x, y) {
+    if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+      return 0; // Out of bounds is considered ground level
+    }
+    return this.elevationData[y][x];
   }
   
   createTileSprites() {

@@ -203,6 +203,44 @@ Green grass transitioning to transparency (for overlays or special effects).
 - Each diagonal tile should be placed only once - no overlapping
 - The system automatically determines tile placement based on elevation patterns
 
+### Minimum Cliff Formation Rules
+
+To ensure natural-looking cliff formations, the following minimum sizes must be enforced:
+
+#### Side Cliff Formations (Jutting from Plateau Sides)
+- **Minimum**: 2 tiles vertically
+- **Western side formations**:
+  - Top tile: (1,7) - SW diagonal edge
+  - Bottom tile: (4,7) - SW diagonal connector bottom
+  - Height tiles: (5,7) and (6,7) below for 2-tile cliff depth
+- **Eastern side formations**:
+  - Top tile: (1,10) - SE diagonal edge  
+  - Bottom tile: (4,10) - SE diagonal connector bottom
+  - Height tiles: (5,10) and (6,10) below for 2-tile cliff depth
+- **No single tiles allowed** jutting from plateau sides
+
+#### Top Cliff Formations (Jutting from Formation Tops)
+- **Minimum**: 2 tiles horizontally
+- **Tiles**: (0,8) NW diagonal corner and (0,9) NE diagonal corner
+- **No single tiles allowed** jutting from formation tops
+
+#### Bottom Cliff Formations (Jutting from Formation Bottoms)
+- **Minimum**: 2 tiles horizontally
+- **Main tiles**: (5,8) and (5,9) for the cliff bottom edge
+- **Height tiles**: (6,8) and (6,9) below for cliff depth
+- **No single tiles allowed** jutting from formation bottoms
+
+#### Bottom Edge Requirements
+- **All bottom edges**: Minimum 2 tiles vertically
+- **Structure**: Main edge tile (row 5) + extension tile below (row 6)
+- **Examples**: (5,0)+(6,0), (5,1)+(6,1), (5,6)+(6,6), etc.
+
+#### General Formation Rules
+1. **No isolated single tiles** in any cliff formation
+2. **All jutting formations** must be at least 2 tiles in their primary direction
+3. **Bottom edges always need extensions** below them for proper cliff depth
+4. **Side formations need both horizontal and vertical companions** for natural appearance
+
 ## Usage Notes
 1. **Basic Terrain**: Use rows 0-6 for standard terrain generation
    - Square cliff edges use columns 0-6
