@@ -51,6 +51,9 @@ export class WorldGenerator {
     // Place stairs on plateau edges before creating visual tiles
     this.placeStairsOnPlateaus();
     
+    // Update collision mask to mark walkable stair tiles
+    this.updateCollisionMaskForStairs();
+    
     // Create visual tiles using new autotiler
     this.createTileSprites();
     
@@ -329,8 +332,8 @@ export class WorldGenerator {
           tile.sprite = sprite;
           tile.container.addChild(sprite);
           
-          // Mark stairs as walkable for now
-          tile.isCliffEdge = false;
+          // Check if this stair tile is walkable
+          tile.isCliffEdge = !this.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX);
           processedTiles[y][x] = 'stairs';
         } else {
           // Normal tile processing
@@ -508,6 +511,22 @@ export class WorldGenerator {
     }
   }
   
+  updateCollisionMaskForStairs() {
+    // Update collision mask for walkable stair tiles
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        if (this.stairsData[y][x]) {
+          const stairInfo = this.stairsData[y][x];
+          // If this stair tile is walkable, mark it as walkable in collision mask
+          if (this.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX)) {
+            this.collisionMask.mask[y][x] = true;
+          }
+        }
+      }
+    }
+    console.log("[WorldGenerator] Updated collision mask for walkable stair tiles");
+  }
+  
   findAllPlateaus() {
     const visited = [];
     const plateaus = [];
@@ -568,8 +587,8 @@ export class WorldGenerator {
     // Try to place stairs on each type of edge, preferring longer edges
     const stairPlacements = [];
     
-    // Check west edges (need 4 consecutive vertical tiles)
-    const validWestEdges = this.findValidStairPositions(edges.west, 'vertical', 4);
+    // Check west edges (need 6 consecutive vertical tiles: 1 buffer + 4 stairs + 1 buffer)
+    const validWestEdges = this.findValidStairPositions(edges.west, 'vertical', 6);
     if (validWestEdges.length > 0) {
       stairPlacements.push({
         type: 'west',
@@ -578,8 +597,8 @@ export class WorldGenerator {
       });
     }
     
-    // Check east edges (need 4 consecutive vertical tiles)
-    const validEastEdges = this.findValidStairPositions(edges.east, 'vertical', 4);
+    // Check east edges (need 6 consecutive vertical tiles: 1 buffer + 4 stairs + 1 buffer)
+    const validEastEdges = this.findValidStairPositions(edges.east, 'vertical', 6);
     if (validEastEdges.length > 0) {
       stairPlacements.push({
         type: 'east',
@@ -588,8 +607,8 @@ export class WorldGenerator {
       });
     }
     
-    // Check north edges (need 3 consecutive horizontal tiles)
-    const validNorthEdges = this.findValidStairPositions(edges.north, 'horizontal', 3);
+    // Check north edges (need 5 consecutive horizontal tiles: 1 buffer + 3 stairs + 1 buffer)
+    const validNorthEdges = this.findValidStairPositions(edges.north, 'horizontal', 5);
     if (validNorthEdges.length > 0) {
       stairPlacements.push({
         type: 'north',
@@ -598,8 +617,8 @@ export class WorldGenerator {
       });
     }
     
-    // Check south edges (need 3 consecutive horizontal tiles)
-    const validSouthEdges = this.findValidStairPositions(edges.south, 'horizontal', 3);
+    // Check south edges (need 5 consecutive horizontal tiles: 1 buffer + 3 stairs + 1 buffer)
+    const validSouthEdges = this.findValidStairPositions(edges.south, 'horizontal', 5);
     if (validSouthEdges.length > 0) {
       stairPlacements.push({
         type: 'south',
@@ -699,11 +718,28 @@ export class WorldGenerator {
       }
     }
     
-    // Return start position and length
+    // Return start position (skipping first buffer tile) and length
     return {
-      start: bestRun[0],
+      start: bestRun[1], // Skip first buffer tile
       length: bestRun.length
     };
+  }
+  
+  isStairTileWalkable(tileY, tileX) {
+    // Define walkable stair tiles
+    const walkableStairs = [
+      // Western stairs walkable tiles
+      [14, 2], [14, 3], [15, 2], [15, 3],
+      // Top edge stairs walkable tiles
+      [13, 5], [13, 6], [14, 5], [14, 6],
+      // Bottom edge stairs walkable tiles (assuming !5,6 was typo for 15,6)
+      [15, 5], [15, 6], [16, 5], [16, 6], [17, 5], [17, 6],
+      // Eastern stairs walkable tiles
+      [14, 7], [14, 8], [15, 7], [15, 8]
+    ];
+    
+    // Check if this tile position is in the walkable list
+    return walkableStairs.some(([row, col]) => row === tileY && col === tileX);
   }
   
   placeStairs(startPos, direction) {
