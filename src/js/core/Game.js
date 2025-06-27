@@ -48,6 +48,7 @@ export class Game {
     document.body.appendChild(this.app.view);
 
     this.worldContainer  = new PIXI.Container();
+    this.worldContainer.sortableChildren = true; // Enable zIndex sorting for debug overlay
     this.entityContainer = new PIXI.Container();
     this.uiContainer = new PIXI.Container();
     this.uiContainer.sortableChildren = true;
