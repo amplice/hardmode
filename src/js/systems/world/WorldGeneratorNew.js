@@ -48,6 +48,9 @@ export class WorldGenerator {
     console.log("[WorldGenerator] Client collision mask generated");
     console.log("[WorldGenerator] Client collision stats:", this.collisionMask.getStats());
     
+    // Place stairs on plateau edges before creating visual tiles
+    this.placeStairsOnPlateaus();
+    
     // Create visual tiles using new autotiler
     this.createTileSprites();
     
@@ -314,17 +317,35 @@ export class WorldGenerator {
       for (let x = 0; x < this.width; x++) {
         const tile = this.tiles[y][x];
         
-        const tileResult = this.cliffAutotiler.getTileTexture(x, y, this.elevationData, processedTiles);
-        processedTiles[y][x] = tileResult.type;
-        
-        // Mark tile walkability based on collision mask
-        tile.isCliffEdge = !this.collisionMask.isTileWalkable(x, y);
-        
-        const sprite = new PIXI.Sprite(tileResult.texture);
-        sprite.position.set(0, 0);
-        sprite.scale.set(this.tileSize / 32);
-        tile.sprite = sprite;
-        tile.container.addChild(sprite);
+        // Check if this position has stairs
+        if (this.stairsData[y][x]) {
+          // Place stair tile
+          const stairInfo = this.stairsData[y][x];
+          const stairTexture = this.tilesets.getTileTexture(stairInfo.tileX, stairInfo.tileY);
+          
+          const sprite = new PIXI.Sprite(stairTexture);
+          sprite.position.set(0, 0);
+          sprite.scale.set(this.tileSize / 32);
+          tile.sprite = sprite;
+          tile.container.addChild(sprite);
+          
+          // Mark stairs as walkable for now
+          tile.isCliffEdge = false;
+          processedTiles[y][x] = 'stairs';
+        } else {
+          // Normal tile processing
+          const tileResult = this.cliffAutotiler.getTileTexture(x, y, this.elevationData, processedTiles);
+          processedTiles[y][x] = tileResult.type;
+          
+          // Mark tile walkability based on collision mask
+          tile.isCliffEdge = !this.collisionMask.isTileWalkable(x, y);
+          
+          const sprite = new PIXI.Sprite(tileResult.texture);
+          sprite.position.set(0, 0);
+          sprite.scale.set(this.tileSize / 32);
+          tile.sprite = sprite;
+          tile.container.addChild(sprite);
+        }
         
         this.container.addChild(tile.container);
       }
@@ -463,5 +484,291 @@ export class WorldGenerator {
     graphics.y = tileY * this.tileSize;
     
     return graphics;
+  }
+  
+  placeStairsOnPlateaus() {
+    console.log("[WorldGenerator] Placing stairs on plateau edges...");
+    
+    // Initialize stairs data (stores what type of stairs at each position)
+    this.stairsData = [];
+    for (let y = 0; y < this.height; y++) {
+      this.stairsData[y] = [];
+      for (let x = 0; x < this.width; x++) {
+        this.stairsData[y][x] = null;
+      }
+    }
+    
+    // Find all plateaus
+    const plateaus = this.findAllPlateaus();
+    console.log(`[WorldGenerator] Found ${plateaus.length} plateaus`);
+    
+    // Place stairs on each plateau
+    for (let i = 0; i < plateaus.length; i++) {
+      this.placeStairsOnPlateau(plateaus[i], i);
+    }
+  }
+  
+  findAllPlateaus() {
+    const visited = [];
+    const plateaus = [];
+    
+    // Initialize visited array
+    for (let y = 0; y < this.height; y++) {
+      visited[y] = new Array(this.width).fill(false);
+    }
+    
+    // Find all connected elevated regions
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        if (this.elevationData[y][x] > 0 && !visited[y][x]) {
+          const plateau = this.floodFillPlateau(x, y, visited);
+          if (plateau.length > 0) {
+            plateaus.push(plateau);
+          }
+        }
+      }
+    }
+    
+    return plateaus;
+  }
+  
+  floodFillPlateau(startX, startY, visited) {
+    const plateau = [];
+    const queue = [{x: startX, y: startY}];
+    visited[startY][startX] = true;
+    
+    while (queue.length > 0) {
+      const {x, y} = queue.shift();
+      plateau.push({x, y});
+      
+      // Check 4-connected neighbors
+      const neighbors = [
+        {x: x + 1, y: y},
+        {x: x - 1, y: y},
+        {x: x, y: y + 1},
+        {x: x, y: y - 1}
+      ];
+      
+      for (const {x: nx, y: ny} of neighbors) {
+        if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height &&
+            !visited[ny][nx] && this.elevationData[ny][nx] > 0) {
+          visited[ny][nx] = true;
+          queue.push({x: nx, y: ny});
+        }
+      }
+    }
+    
+    return plateau;
+  }
+  
+  placeStairsOnPlateau(plateau, plateauIndex) {
+    // Find all valid edge positions for stairs
+    const edges = this.findPlateauEdges(plateau);
+    
+    // Try to place stairs on each type of edge, preferring longer edges
+    const stairPlacements = [];
+    
+    // Check west edges (need 2 consecutive vertical tiles)
+    const validWestEdges = this.findValidStairPositions(edges.west, 'vertical', 2);
+    if (validWestEdges.length > 0) {
+      stairPlacements.push({
+        type: 'west',
+        positions: validWestEdges,
+        edge: this.selectBestEdgePosition(validWestEdges)
+      });
+    }
+    
+    // Check east edges (need 2 consecutive vertical tiles)
+    const validEastEdges = this.findValidStairPositions(edges.east, 'vertical', 2);
+    if (validEastEdges.length > 0) {
+      stairPlacements.push({
+        type: 'east',
+        positions: validEastEdges,
+        edge: this.selectBestEdgePosition(validEastEdges)
+      });
+    }
+    
+    // Check north edges (need 3 consecutive horizontal tiles)
+    const validNorthEdges = this.findValidStairPositions(edges.north, 'horizontal', 3);
+    if (validNorthEdges.length > 0) {
+      stairPlacements.push({
+        type: 'north',
+        positions: validNorthEdges,
+        edge: this.selectBestEdgePosition(validNorthEdges)
+      });
+    }
+    
+    // Check south edges (need 3 consecutive horizontal tiles)
+    const validSouthEdges = this.findValidStairPositions(edges.south, 'horizontal', 3);
+    if (validSouthEdges.length > 0) {
+      stairPlacements.push({
+        type: 'south',
+        positions: validSouthEdges,
+        edge: this.selectBestEdgePosition(validSouthEdges)
+      });
+    }
+    
+    // Place at least one stair set if possible
+    if (stairPlacements.length > 0) {
+      // Sort by edge length (prefer longer edges)
+      stairPlacements.sort((a, b) => b.edge.length - a.edge.length);
+      
+      // Place stairs on the best edge
+      const chosen = stairPlacements[0];
+      this.placeStairs(chosen.edge.start, chosen.type);
+      
+      console.log(`[WorldGenerator] Placed ${chosen.type} stairs on plateau ${plateauIndex} at (${chosen.edge.start.x}, ${chosen.edge.start.y})`);
+    } else {
+      console.log(`[WorldGenerator] Plateau ${plateauIndex} too small for stairs`);
+    }
+  }
+  
+  findPlateauEdges(plateau) {
+    const edges = {
+      north: [],
+      south: [],
+      east: [],
+      west: []
+    };
+    
+    // Create a set for fast lookup
+    const plateauSet = new Set(plateau.map(p => `${p.x},${p.y}`));
+    
+    for (const {x, y} of plateau) {
+      // Check if this is an edge tile
+      const northEmpty = y === 0 || !plateauSet.has(`${x},${y-1}`);
+      const southEmpty = y === this.height - 1 || !plateauSet.has(`${x},${y+1}`);
+      const eastEmpty = x === this.width - 1 || !plateauSet.has(`${x+1},${y}`);
+      const westEmpty = x === 0 || !plateauSet.has(`${x-1},${y}`);
+      
+      if (northEmpty) edges.north.push({x, y});
+      if (southEmpty) edges.south.push({x, y});
+      if (eastEmpty) edges.east.push({x, y});
+      if (westEmpty) edges.west.push({x, y});
+    }
+    
+    return edges;
+  }
+  
+  findValidStairPositions(edgeTiles, direction, minLength) {
+    if (edgeTiles.length < minLength) return [];
+    
+    // Sort tiles by primary axis
+    if (direction === 'horizontal') {
+      edgeTiles.sort((a, b) => a.x - b.x);
+    } else {
+      edgeTiles.sort((a, b) => a.y - b.y);
+    }
+    
+    // Find consecutive runs
+    const validRuns = [];
+    let currentRun = [edgeTiles[0]];
+    
+    for (let i = 1; i < edgeTiles.length; i++) {
+      const prev = edgeTiles[i - 1];
+      const curr = edgeTiles[i];
+      
+      const isConsecutive = direction === 'horizontal' 
+        ? (curr.x === prev.x + 1 && curr.y === prev.y)
+        : (curr.y === prev.y + 1 && curr.x === prev.x);
+        
+      if (isConsecutive) {
+        currentRun.push(curr);
+      } else {
+        if (currentRun.length >= minLength) {
+          validRuns.push(currentRun);
+        }
+        currentRun = [curr];
+      }
+    }
+    
+    // Check last run
+    if (currentRun.length >= minLength) {
+      validRuns.push(currentRun);
+    }
+    
+    return validRuns;
+  }
+  
+  selectBestEdgePosition(validRuns) {
+    // Select the longest run, or the middle one if tied
+    let bestRun = validRuns[0];
+    for (const run of validRuns) {
+      if (run.length > bestRun.length) {
+        bestRun = run;
+      }
+    }
+    
+    // Return start position and length
+    return {
+      start: bestRun[0],
+      length: bestRun.length
+    };
+  }
+  
+  placeStairs(startPos, direction) {
+    const {x, y} = startPos;
+    
+    switch (direction) {
+      case 'west':
+        // Place 4x2 west stairs
+        for (let dy = 0; dy < 2; dy++) {
+          for (let dx = 0; dx < 4; dx++) {
+            if (x - dx - 1 >= 0 && y + dy < this.height) {
+              this.stairsData[y + dy][x - dx - 1] = {
+                type: 'west',
+                tileX: 13 + (3 - dx), // Reverse x for west stairs
+                tileY: 2 + dy
+              };
+            }
+          }
+        }
+        break;
+        
+      case 'east':
+        // Place 4x2 east stairs
+        for (let dy = 0; dy < 2; dy++) {
+          for (let dx = 0; dx < 4; dx++) {
+            if (x + dx + 1 < this.width && y + dy < this.height) {
+              this.stairsData[y + dy][x + dx + 1] = {
+                type: 'east',
+                tileX: 13 + dx,
+                tileY: 7 + dy
+              };
+            }
+          }
+        }
+        break;
+        
+      case 'north':
+        // Place 2x3 north stairs
+        for (let dy = 0; dy < 3; dy++) {
+          for (let dx = 0; dx < 2; dx++) {
+            if (x + dx < this.width && y - dy - 1 >= 0) {
+              this.stairsData[y - dy - 1][x + dx] = {
+                type: 'north',
+                tileX: 13 + dx,
+                tileY: 4 + (2 - dy) // Reverse y for north stairs
+              };
+            }
+          }
+        }
+        break;
+        
+      case 'south':
+        // Place 3x3 south stairs
+        for (let dy = 0; dy < 3; dy++) {
+          for (let dx = 0; dx < 3; dx++) {
+            if (x + dx < this.width && y + dy + 1 < this.height) {
+              this.stairsData[y + dy + 1][x + dx] = {
+                type: 'south',
+                tileX: 15 + dx,
+                tileY: 4 + dy
+              };
+            }
+          }
+        }
+        break;
+    }
   }
 }
