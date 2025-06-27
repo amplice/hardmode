@@ -51,6 +51,9 @@ export class WorldGenerator {
     // Create visual tiles using new autotiler
     this.createTileSprites();
     
+    // Create debug overlay for collision boundaries
+    this.createCollisionDebugOverlay();
+    
     console.log("World generation complete!");
     return this.container;
   }
@@ -406,5 +409,59 @@ export class WorldGenerator {
   
   isTileWalkable(worldX, worldY) {
     return this.collisionMask.isWalkable(worldX, worldY);
+  }
+  
+  createCollisionDebugOverlay() {
+    console.log("Creating collision debug overlay...");
+    
+    // Create debug container
+    this.debugContainer = new PIXI.Container();
+    this.debugContainer.visible = false; // Hidden by default
+    this.debugContainer.zIndex = 1000; // On top of everything
+    
+    // Create red overlay for each unwalkable tile
+    let debugTileCount = 0;
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        if (!this.collisionMask.isTileWalkable(x, y)) {
+          const debugTile = this.createDebugTile(x, y);
+          this.debugContainer.addChild(debugTile);
+          debugTileCount++;
+        }
+      }
+    }
+    
+    // Add debug container to world (so it moves with camera)
+    this.container.addChild(this.debugContainer);
+    
+    console.log(`[Debug] Created ${debugTileCount} debug overlay tiles`);
+    
+    // Expose global toggle function
+    window.toggleCollisionDebug = () => {
+      this.debugContainer.visible = !this.debugContainer.visible;
+      console.log(`Collision debug: ${this.debugContainer.visible ? 'ON' : 'OFF'}`);
+      return this.debugContainer.visible ? 'Debug overlay enabled' : 'Debug overlay disabled';
+    };
+    
+    console.log("Use toggleCollisionDebug() to show/hide collision boundaries");
+  }
+  
+  createDebugTile(tileX, tileY) {
+    const graphics = new PIXI.Graphics();
+    
+    // Semi-transparent red overlay
+    graphics.beginFill(0xFF0000, 0.4);
+    graphics.drawRect(0, 0, this.tileSize, this.tileSize);
+    graphics.endFill();
+    
+    // Red border for clear definition
+    graphics.lineStyle(2, 0xFF0000, 1.0);
+    graphics.drawRect(0, 0, this.tileSize, this.tileSize);
+    
+    // Position at tile coordinates
+    graphics.x = tileX * this.tileSize;
+    graphics.y = tileY * this.tileSize;
+    
+    return graphics;
   }
 }
