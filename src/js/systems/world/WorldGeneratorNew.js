@@ -22,7 +22,10 @@ export class WorldGenerator {
     this.tiles = [];
     this.elevationData = [];
     this.cliffAutotiler = new CliffAutotiler(this.tilesets);
+    
+    // Initialize collision mask for debug visualization
     this.collisionMask = new CollisionMask(this.width, this.height, this.tileSize);
+    console.log("[WorldGenerator] Client collision mask initialized");
   }
 
   generate() {
@@ -39,6 +42,9 @@ export class WorldGenerator {
     
     // Generate collision mask from elevation data
     this.collisionMask.generateFromElevationData(this.elevationData);
+    
+    console.log("[WorldGenerator] Client collision mask generated");
+    console.log("[WorldGenerator] Client collision stats:", this.collisionMask.getStats());
     
     // Create visual tiles using new autotiler
     this.createTileSprites();

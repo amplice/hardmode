@@ -26,7 +26,18 @@ export class CollisionDebugRenderer {
             return self.toggle();
         };
         
+        // Add debug info function
+        window.checkCollisionMask = function() {
+            console.log("[CollisionDebug] World:", self.world);
+            console.log("[CollisionDebug] Collision mask:", self.world ? self.world.collisionMask : "No world");
+            if (self.world && self.world.collisionMask) {
+                console.log("[CollisionDebug] Collision mask stats:", self.world.collisionMask.getStats());
+            }
+            return self.world && self.world.collisionMask ? "Collision mask exists" : "No collision mask found";
+        };
+        
         console.log("[CollisionDebugRenderer] Initialized. Use toggleCollisionDebug() to toggle visualization.");
+        console.log("[CollisionDebugRenderer] Use checkCollisionMask() to verify mask exists.");
     }
     
     /**
