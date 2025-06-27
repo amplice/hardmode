@@ -711,11 +711,13 @@ export class WorldGenerator {
     
     switch (direction) {
       case 'west':
-        // Place west stairs: rows 13-16, columns 2-3
+        // Place west stairs: rows 13-16, columns 2-3 (replacing cliff edge)
+        // Place in exact tilesheet configuration: leftmost column first
         for (let dy = 0; dy < 4; dy++) {
           for (let dx = 0; dx < 2; dx++) {
-            if (x - dx - 1 >= 0 && y + dy < this.height) {
-              this.stairsData[y + dy][x - dx - 1] = {
+            if (x - 1 + dx >= 0 && y + dy < this.height) {
+              // dx=0 places column 2, dx=1 places column 3
+              this.stairsData[y + dy][x - 1 + dx] = {
                 type: 'west',
                 tileX: 2 + dx,
                 tileY: 13 + dy
@@ -726,11 +728,12 @@ export class WorldGenerator {
         break;
         
       case 'east':
-        // Place east stairs: rows 13-16, columns 7-8
+        // Place east stairs: rows 13-16, columns 7-8 (replacing cliff edge)
         for (let dy = 0; dy < 4; dy++) {
           for (let dx = 0; dx < 2; dx++) {
-            if (x + dx + 1 < this.width && y + dy < this.height) {
-              this.stairsData[y + dy][x + dx + 1] = {
+            if (x + dx < this.width && y + dy < this.height) {
+              // Place stairs ON the cliff edge, not adjacent
+              this.stairsData[y + dy][x + dx] = {
                 type: 'east',
                 tileX: 7 + dx,
                 tileY: 13 + dy
@@ -741,14 +744,15 @@ export class WorldGenerator {
         break;
         
       case 'north':
-        // Place north stairs: rows 13-14, columns 4-6
+        // Place north stairs: rows 13-14, columns 4-6 (replacing cliff edge)
         for (let dy = 0; dy < 2; dy++) {
           for (let dx = 0; dx < 3; dx++) {
-            if (x + dx < this.width && y - dy - 1 >= 0) {
-              this.stairsData[y - dy - 1][x + dx] = {
+            if (x + dx < this.width && y >= 0) {
+              // Place stairs ON the cliff edge, not adjacent
+              this.stairsData[y + dy][x + dx] = {
                 type: 'north',
                 tileX: 4 + dx,
-                tileY: 13 + (1 - dy) // Reverse y for north stairs
+                tileY: 13 + dy
               };
             }
           }
@@ -756,11 +760,12 @@ export class WorldGenerator {
         break;
         
       case 'south':
-        // Place south stairs: rows 15-17, columns 4-6
+        // Place south stairs: rows 15-17, columns 4-6 (replacing cliff edge)
         for (let dy = 0; dy < 3; dy++) {
           for (let dx = 0; dx < 3; dx++) {
-            if (x + dx < this.width && y + dy + 1 < this.height) {
-              this.stairsData[y + dy + 1][x + dx] = {
+            if (x + dx < this.width && y + dy < this.height) {
+              // Place stairs ON the cliff edge, not adjacent
+              this.stairsData[y + dy][x + dx] = {
                 type: 'south',
                 tileX: 4 + dx,
                 tileY: 15 + dy
