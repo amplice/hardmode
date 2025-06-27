@@ -15,8 +15,10 @@ export class CollisionDebugRenderer {
         this.debugContainer.visible = false;
         this.debugContainer.zIndex = 1000; // Ensure it's on top of tiles
         
-        // Add to world container so it moves with camera
-        game.worldContainer.addChild(this.debugContainer);
+        // Add to world container AFTER the world tiles are added
+        // This ensures debug layer is on top of tiles
+        // The container will be properly added when world is generated
+        this.pendingAddToWorld = true;
         
         console.log("[CollisionDebugRenderer] Debug container added to world container");
         
@@ -36,31 +38,26 @@ export class CollisionDebugRenderer {
             return self.world && self.world.collisionMask ? "Collision mask exists" : "No collision mask found";
         };
         
-        // Add force test function to verify rendering works
-        window.forceTestDebug = function() {
-            console.log("[CollisionDebug] Forcing test debug visualization...");
-            self.clearDebugSprites();
+        // Add diagnostic function to check render tree
+        window.debugCollisionRenderTree = function() {
+            console.log("[CollisionDebug] === Render Tree Diagnostic ===");
+            console.log("App stage children:", self.game.app.stage.children.length);
+            console.log("World container children:", self.game.worldContainer.children.length);
+            console.log("Debug container parent:", self.debugContainer.parent);
+            console.log("Debug container visible:", self.debugContainer.visible);
+            console.log("Debug container children:", self.debugContainer.children.length);
+            console.log("World container position:", self.game.worldContainer.position);
+            console.log("Debug container position:", self.debugContainer.position);
             
-            // Create highly visible test tiles at fixed positions
-            const positions = [
-                {x: 10, y: 10}, {x: 20, y: 20}, {x: 30, y: 30},
-                {x: 50, y: 50}, {x: 60, y: 60}, {x: 70, y: 70}
-            ];
-            
-            for (const pos of positions) {
-                const testSprite = self.createDebugTile(pos.x, pos.y, self.world ? self.world.tileSize : 64);
-                self.debugContainer.addChild(testSprite);
-                self.debugSprites.push(testSprite);
+            if (self.debugSprites.length > 0) {
+                const firstSprite = self.debugSprites[0];
+                console.log("First debug sprite position:", firstSprite.position);
+                console.log("First debug sprite visible:", firstSprite.visible);
+                console.log("First debug sprite alpha:", firstSprite.alpha);
+                console.log("First debug sprite parent:", firstSprite.parent);
             }
             
-            self.debugContainer.visible = true;
-            self.isEnabled = true;
-            
-            console.log(`[CollisionDebug] Created ${self.debugSprites.length} forced test tiles`);
-            console.log(`[CollisionDebug] Debug container visible: ${self.debugContainer.visible}`);
-            console.log(`[CollisionDebug] Debug container parent:`, self.debugContainer.parent);
-            
-            return `Created ${self.debugSprites.length} test debug tiles`;
+            return "Check console for render tree details";
         };
         
         console.log("[CollisionDebugRenderer] Initialized. Use toggleCollisionDebug() to toggle visualization.");
@@ -90,6 +87,13 @@ export class CollisionDebugRenderer {
     generateDebugVisualization() {
         console.log("[CollisionDebug] Starting debug visualization generation...");
         
+        // Ensure debug container is properly added to world
+        if (this.pendingAddToWorld && this.game.worldContainer) {
+            this.game.worldContainer.addChild(this.debugContainer);
+            this.pendingAddToWorld = false;
+            console.log("[CollisionDebug] Debug container added to world container");
+        }
+        
         // Clear existing debug sprites
         this.clearDebugSprites();
         
@@ -109,8 +113,9 @@ export class CollisionDebugRenderer {
         
         console.log(`[CollisionDebug] Collision mask dimensions: ${collisionMask.width}x${collisionMask.height}, tileSize: ${tileSize}`);
         
-        // Create debug sprites for solid tiles
+        // Create debug sprites for ALL solid tiles - this is what we want to see
         let solidTileCount = 0;
+        
         for (let y = 0; y < collisionMask.height; y++) {
             for (let x = 0; x < collisionMask.width; x++) {
                 if (!collisionMask.isTileWalkable(x, y)) {
@@ -122,29 +127,10 @@ export class CollisionDebugRenderer {
             }
         }
         
-        // If no collision tiles found, create test tiles to verify rendering works
-        if (solidTileCount === 0) {
-            console.warn("[CollisionDebug] No solid tiles found! Creating test tiles for visibility verification");
-            
-            // Create a 3x3 grid of test tiles in center of screen
-            const centerX = Math.floor(this.world.width / 2);
-            const centerY = Math.floor(this.world.height / 2);
-            
-            for (let dy = -1; dy <= 1; dy++) {
-                for (let dx = -1; dx <= 1; dx++) {
-                    const testX = centerX + dx;
-                    const testY = centerY + dy;
-                    const testSprite = this.createDebugTile(testX, testY, tileSize);
-                    this.debugContainer.addChild(testSprite);
-                    this.debugSprites.push(testSprite);
-                }
-            }
-            console.log("[CollisionDebug] Created 9 test tiles for visibility verification");
-        }
-        
         console.log(`[CollisionDebug] Generated ${this.debugSprites.length} debug tiles for ${solidTileCount} solid tiles`);
         console.log(`[CollisionDebug] Debug container children count: ${this.debugContainer.children.length}`);
         console.log(`[CollisionDebug] Debug container visible: ${this.debugContainer.visible}`);
+        console.log(`[CollisionDebug] Debug container parent:`, this.debugContainer.parent);
     }
     
     /**
@@ -153,13 +139,13 @@ export class CollisionDebugRenderer {
     createDebugTile(tileX, tileY, tileSize) {
         const graphics = new PIXI.Graphics();
         
-        // Very bright, opaque red overlay - maximum visibility
-        graphics.beginFill(0xFF0000, 1.0); // Full opacity
+        // Semi-transparent red overlay so you can see terrain underneath
+        graphics.beginFill(0xFF0000, 0.4); // 40% opacity
         graphics.drawRect(0, 0, tileSize, tileSize);
         graphics.endFill();
         
-        // Thick bright yellow border for contrast
-        graphics.lineStyle(4, 0xFFFF00, 1.0);
+        // Bright red border for clear boundary definition
+        graphics.lineStyle(2, 0xFF0000, 1.0);
         graphics.drawRect(0, 0, tileSize, tileSize);
         
         // Position the sprite
@@ -170,8 +156,6 @@ export class CollisionDebugRenderer {
         graphics.visible = true;
         graphics.alpha = 1.0;
         graphics.renderable = true;
-        
-        console.log(`[CollisionDebug] Created debug tile at (${tileX}, ${tileY}) -> screen pos (${graphics.x}, ${graphics.y})`);
         
         return graphics;
     }
