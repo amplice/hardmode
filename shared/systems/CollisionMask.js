@@ -32,9 +32,17 @@ export class CollisionMask {
     generateFromElevationData(elevationData) {
         console.log("[CollisionMask] Generating collision mask from elevation data...");
         
+        // First pass: Mark all tiles as walkable by default
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                // Mark elevated tiles as unwalkable
+                this.mask[y][x] = true;
+            }
+        }
+        
+        // Second pass: Mark elevated tiles and their extensions as unwalkable
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                // Mark elevated tiles and 2 tiles below as unwalkable
                 if (elevationData[y] && elevationData[y][x] > 0) {
                     this.mask[y][x] = false;
                     
@@ -45,9 +53,6 @@ export class CollisionMask {
                     if (y + 2 < this.height) {
                         this.mask[y + 2][x] = false;
                     }
-                } else {
-                    // All other tiles are walkable
-                    this.mask[y][x] = true;
                 }
             }
         }
