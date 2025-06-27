@@ -42,16 +42,13 @@ export class CollisionMask {
         // Second pass: Mark elevated tiles and their extensions as unwalkable
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                // Mark elevated tiles and 2 tiles below as unwalkable
+                // Mark elevated tiles and 1 tile below as unwalkable
                 if (elevationData[y] && elevationData[y][x] > 0) {
                     this.mask[y][x] = false;
                     
-                    // Mark 2 tiles below elevated areas as unwalkable (for cliff visuals)
+                    // Mark 1 tile below elevated areas as unwalkable (for cliff visuals)
                     if (y + 1 < this.height) {
                         this.mask[y + 1][x] = false;
-                    }
-                    if (y + 2 < this.height) {
-                        this.mask[y + 2][x] = false;
                     }
                 }
             }
