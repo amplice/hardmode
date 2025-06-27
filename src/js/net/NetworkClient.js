@@ -36,6 +36,12 @@ export class NetworkClient {
             this.connected = true; // Mark as connected
             console.log('Connected to server with id:', this.id);
             
+            // Store server's world seed for world generation
+            if (data.world && data.world.seed) {
+                this.serverWorldSeed = data.world.seed;
+                console.log(`[NetworkClient] Received world seed from server: ${this.serverWorldSeed}`);
+            }
+            
             // Apply server configuration to client
             if (data.config) {
                 this.game.applyServerConfig(data.config);

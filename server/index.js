@@ -33,14 +33,21 @@ app.use(express.static(path.join(__dirname, '..', 'src')));
 app.use('/node_modules', express.static(path.join(__dirname, '..', 'node_modules')));
 app.use('/shared', express.static(path.join(__dirname, '..', 'shared')));
 
+// Generate server-authoritative world seed
+const SERVER_WORLD_SEED = Math.floor(Math.random() * 1000000);
+console.log(`[Server] Generated world seed: ${SERVER_WORLD_SEED}`);
+
+// Override the constant with server's seed
+GAME_CONSTANTS.WORLD.SEED = SERVER_WORLD_SEED;
+
 // Initialize game systems
 const gameState = new GameStateManager(io);
-const monsterManager = new MonsterManager(io);
+const monsterManager = new MonsterManager(io, SERVER_WORLD_SEED);
 const projectileManager = new ProjectileManager(io);
 const abilityManager = new AbilityManager(io, gameState, projectileManager);
 const lagCompensation = new LagCompensation();
 const sessionAntiCheat = new SessionAntiCheat(abilityManager);
-const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation, sessionAntiCheat);
+const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED);
 const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat);
 const networkOptimizer = new NetworkOptimizer();
 

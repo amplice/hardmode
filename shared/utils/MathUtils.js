@@ -1,5 +1,14 @@
 // Shared mathematical utility functions
 
+export function createSeededRandom(seed) {
+    let s = seed >>> 0;
+    return function() {
+        // Linear congruential generator
+        s = (s * 1664525 + 1013904223) >>> 0;
+        return s / 0xFFFFFFFF;
+    };
+}
+
 export function getDistance(a, b) {
     const dx = a.x - b.x;
     const dy = a.y - b.y;

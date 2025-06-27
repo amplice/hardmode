@@ -1,15 +1,17 @@
 import { GAME_CONSTANTS, MONSTER_STATS, MONSTER_SPAWN_WEIGHTS } from '../../shared/constants/GameConstants.js';
 import { getDistance, selectWeightedRandom } from '../../shared/utils/MathUtils.js';
 import { CollisionMask } from '../../shared/systems/CollisionMask.js';
+import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
 
 export class MonsterManager {
-    constructor(io) {
+    constructor(io, worldSeed = 42) {
         this.io = io;
         this.monsters = new Map();
         this.nextMonsterId = 1;
         this.spawnTimer = 0;
+        this.worldSeed = worldSeed;
         
-        // Initialize collision mask with same logic as InputProcessor
+        // Initialize collision mask with server's world seed
         this.collisionMask = new CollisionMask(100, 100, 64);
         this.initializeCollisionMask();
     }
@@ -19,45 +21,23 @@ export class MonsterManager {
      * This ensures monsters use the same collision data as players
      */
     initializeCollisionMask() {
-        // Generate elevation data using same algorithm as InputProcessor
-        const width = 100;
-        const height = 100;
-        const elevationData = [];
-        
-        // Create elevation data - must match InputProcessor logic exactly
-        for (let y = 0; y < height; y++) {
-            elevationData[y] = [];
-            for (let x = 0; x < width; x++) {
-                const centerX = width / 2;
-                const centerY = height / 2;
-                const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
-                
-                // Create some elevated plateaus for collision testing
-                const isElevated = (
-                    (distance > 15 && distance < 25) || // Ring around center
-                    (x < 10 || x > width - 10 || y < 10 || y > height - 10) // Borders
-                );
-                
-                elevationData[y][x] = isElevated ? 1 : 0;
-            }
-        }
+        // Use shared world generator with server's seed
+        const worldGen = new SharedWorldGenerator(100, 100, this.worldSeed);
+        const elevationData = worldGen.generateElevationData();
         
         // Generate collision mask from elevation data
         this.collisionMask.generateFromElevationData(elevationData);
         
-        console.log("[MonsterManager] Collision mask initialized");
+        console.log("[MonsterManager] Collision mask initialized with seed:", this.worldSeed);
+        console.log("[MonsterManager] Collision stats:", this.collisionMask.getStats());
     }
     
     /**
-     * Update collision mask with data from client
-     * This ensures monsters use the same collision data as the client's generated world
+     * Update collision mask with data from client (legacy method - no longer needed)
+     * Server now generates same world as client using shared seed
      */
     updateCollisionMask(collisionMaskData) {
-        if (this.collisionMask && collisionMaskData) {
-            this.collisionMask.deserialize(collisionMaskData);
-            console.log("[MonsterManager] Collision mask updated from client");
-            console.log("[MonsterManager] New collision stats:", this.collisionMask.getStats());
-        }
+        console.log("[MonsterManager] Collision mask sync not needed - using shared world seed");
     }
 
     update(deltaTime, players) {

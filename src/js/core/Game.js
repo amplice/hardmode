@@ -192,12 +192,15 @@ export class Game {
       this.classSelectUI = null;
     }
     
-    // Initialize the game world
+    // Initialize the game world using server's seed if available
+    const worldSeed = this.network ? this.network.serverWorldSeed || GAME_CONSTANTS.WORLD.SEED : GAME_CONSTANTS.WORLD.SEED;
+    console.log(`[Game] Using world seed: ${worldSeed}`);
+    
     this.systems.world = new WorldGenerator({
       width:    GAME_CONSTANTS.WORLD.WIDTH,
       height:   GAME_CONSTANTS.WORLD.HEIGHT,
       tileSize: GAME_CONSTANTS.WORLD.TILE_SIZE,
-      seed:     GAME_CONSTANTS.WORLD.SEED,
+      seed:     worldSeed,
       tilesets: this.tilesets
     });
 
@@ -216,8 +219,7 @@ export class Game {
 
     if (this.network) {
       this.network.setClass(this.entities.player.characterClass);
-      // Send collision mask to server for synchronization
-      this.network.sendCollisionMask(this.systems.world.collisionMask);
+      // No need to send collision mask - server generates same world with same seed
     }
 
     // Add health and stats UI
