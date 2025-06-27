@@ -15,8 +15,11 @@ export class CollisionDebugRenderer {
         this.debugContainer.visible = false;
         game.worldContainer.addChild(this.debugContainer);
         
-        // Add global toggle function
-        window.toggleCollisionDebug = () => this.toggle();
+        // Add global toggle function with proper binding
+        const self = this;
+        window.toggleCollisionDebug = function() {
+            return self.toggle();
+        };
         
         console.log("[CollisionDebugRenderer] Initialized. Use toggleCollisionDebug() to toggle visualization.");
     }
@@ -31,8 +34,10 @@ export class CollisionDebugRenderer {
         if (this.isEnabled) {
             this.generateDebugVisualization();
             console.log("[CollisionDebug] Collision visualization enabled");
+            return "Collision debug enabled";
         } else {
             console.log("[CollisionDebug] Collision visualization disabled");
+            return "Collision debug disabled";
         }
     }
     

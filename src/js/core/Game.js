@@ -214,7 +214,12 @@ export class Game {
     }
     
     // Initialize collision debug renderer
-    this.collisionDebugRenderer = new CollisionDebugRenderer(this.systems.world, this);
+    try {
+      this.collisionDebugRenderer = new CollisionDebugRenderer(this.systems.world, this);
+      console.log("[Game] Collision debug renderer initialized");
+    } catch (error) {
+      console.error("[Game] Failed to initialize collision debug renderer:", error);
+    }
 
     // Create player with selected class
     this.entities.player = new Player({

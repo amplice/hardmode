@@ -37,6 +37,12 @@ export class CollisionMask {
                 // Mark elevated tiles as unwalkable
                 if (elevationData[y] && elevationData[y][x] > 0) {
                     this.mask[y][x] = false;
+                    
+                    // IMPORTANT: Also mark the tile directly below elevated tiles as unwalkable
+                    // This ensures bottom edge cliff visuals (row 6 in tileset) are solid
+                    if (y + 1 < this.height) {
+                        this.mask[y + 1][x] = false;
+                    }
                     continue;
                 }
                 
@@ -54,12 +60,11 @@ export class CollisionMask {
     
     /**
      * Check if a tile is adjacent to an elevated area (cliff edge detection)
-     * Extended to create a buffer around cliffs
      */
     isAdjacentToElevated(x, y, elevationData) {
-        // Check all tiles within a 2-tile radius for more solid boundaries
-        for (let dy = -2; dy <= 2; dy++) {
-            for (let dx = -2; dx <= 2; dx++) {
+        // Check all 8 adjacent tiles (1-tile radius)
+        for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
                 if (dx === 0 && dy === 0) continue; // Skip self
                 
                 const nx = x + dx;
@@ -67,14 +72,7 @@ export class CollisionMask {
                 
                 if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
                     if (elevationData[ny] && elevationData[ny][nx] > 0) {
-                        // Distance-based collision: closer tiles are definitely blocked
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance <= 1.5) { // Immediate neighbors and diagonals
-                            return true;
-                        } else if (distance <= 2.2) { // Extended boundary 
-                            // 50% chance for extended boundary to create some variety
-                            return Math.abs(dx) + Math.abs(dy) <= 2; // Manhattan distance
-                        }
+                        return true;
                     }
                 }
             }
@@ -126,8 +124,8 @@ export class CollisionMask {
      * Enhanced to provide more solid collision detection
      */
     canMove(fromX, fromY, toX, toY) {
-        // Add buffer around player position for more solid collision
-        const buffer = 16; // Half a tile buffer
+        // Add small buffer around player position for solid collision
+        const buffer = 8; // Small buffer to prevent edge clipping
         
         // Check destination and area around destination
         if (!this.isWalkable(toX, toY) || 
