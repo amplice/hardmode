@@ -88,14 +88,7 @@ export class PhysicsSystem {
             return;
         }
         
-        // If all movement is blocked, find nearest walkable position as fallback
-        const fallbackPos = this.collisionMask.findNearestWalkable(entity.position.x, entity.position.y, 64);
-        if (fallbackPos) {
-            // Only use fallback if entity is actually stuck in solid area
-            if (!this.collisionMask.isWalkable(entity.position.x, entity.position.y)) {
-                entity.position.x = fallbackPos.x;
-                entity.position.y = fallbackPos.y;
-            }
-        }
+        // Don't use fallback position - just stay in place if blocked
+        // This prevents teleporting to spawn point when hitting walls
     }
 }

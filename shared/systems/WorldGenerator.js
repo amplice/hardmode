@@ -28,16 +28,32 @@ export class SharedWorldGenerator {
             }
         }
 
+        // Use the exact same generation as client WorldGeneratorNew.js
+        this.generateProperElevatedAreas(elevationData);
+
+        return elevationData;
+    }
+
+    generateProperElevatedAreas(elevationData) {
+        console.log("Generating proper elevated areas with noise constraints...");
+        
         // Generate plateau candidates
         this.generatePlateauCandidates(elevationData);
         
-        // Enforce minimum plateau sizes  
+        // Enforce minimum plateau sizes
         this.enforceMinimumPlateauSizes(elevationData);
         
-        // Final cleanup
+        // Remove any remaining problematic formations
         this.finalCleanup(elevationData);
-
-        return elevationData;
+        
+        // Count elevated tiles
+        let elevatedCount = 0;
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (elevationData[y][x] > 0) elevatedCount++;
+            }
+        }
+        console.log(`[SharedWorldGenerator] Final elevated tiles: ${elevatedCount}`);
     }
 
     generatePlateauCandidates(elevationData) {

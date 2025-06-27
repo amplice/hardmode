@@ -133,26 +133,10 @@ export class MovementPredictor {
         const newX = Math.round(state.x + velocity.x);
         const newY = Math.round(state.y + velocity.y);
         
-        // Validate movement using collision mask (match server logic exactly)
-        if (this.collisionMask && this.collisionMask.canMove(state.x, state.y, newX, newY)) {
-            // Movement is valid, update position
-            state.x = newX;
-            state.y = newY;
-        } else if (this.collisionMask) {
-            // Movement blocked, try partial movement (sliding along walls)
-            if (this.collisionMask.canMove(state.x, state.y, newX, state.y)) {
-                // Can move in X direction only
-                state.x = newX;
-            } else if (this.collisionMask.canMove(state.x, state.y, state.x, newY)) {
-                // Can move in Y direction only
-                state.y = newY;
-            }
-            // If both directions blocked, don't move
-        } else {
-            // Fallback: update position without collision checking
-            state.x = newX;
-            state.y = newY;
-        }
+        // TEMPORARILY DISABLE CLIENT COLLISION CHECKING
+        // Let server be authoritative for collision detection to fix teleporting issue
+        state.x = newX;
+        state.y = newY;
 
         // Apply world boundaries (match server)
         this.applyWorldBounds(state);

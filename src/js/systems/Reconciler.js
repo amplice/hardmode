@@ -8,7 +8,7 @@ export class Reconciler {
     constructor(inputBuffer, predictor) {
         this.inputBuffer = inputBuffer;
         this.predictor = predictor;
-        this.positionTolerance = 5; // pixels - adjust based on testing
+        this.positionTolerance = 15; // pixels - increased to reduce aggressive corrections
         this.smoothingFactor = 0.3; // For small corrections
         
         // Debug statistics
