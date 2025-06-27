@@ -43,12 +43,10 @@ export class CollisionMask {
                     if (y + 1 < this.height) {
                         this.mask[y + 1][x] = false;
                     }
-                    continue;
+                } else {
+                    // All other tiles are walkable (removed adjacent tile detection)
+                    this.mask[y][x] = true;
                 }
-                
-                // Mark cliff edges as unwalkable (tiles adjacent to elevated areas)
-                const isCliffEdge = this.isAdjacentToElevated(x, y, elevationData);
-                this.mask[y][x] = !isCliffEdge;
             }
         }
         
@@ -58,27 +56,6 @@ export class CollisionMask {
         console.log("[CollisionMask] Collision mask generated successfully");
     }
     
-    /**
-     * Check if a tile is adjacent to an elevated area (cliff edge detection)
-     */
-    isAdjacentToElevated(x, y, elevationData) {
-        // Check all 8 adjacent tiles (1-tile radius)
-        for (let dy = -1; dy <= 1; dy++) {
-            for (let dx = -1; dx <= 1; dx++) {
-                if (dx === 0 && dy === 0) continue; // Skip self
-                
-                const nx = x + dx;
-                const ny = y + dy;
-                
-                if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
-                    if (elevationData[ny] && elevationData[ny][nx] > 0) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
     
     /**
      * Mark world boundaries as unwalkable

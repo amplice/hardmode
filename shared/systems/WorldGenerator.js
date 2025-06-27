@@ -154,23 +154,31 @@ export class SharedWorldGenerator {
     }
 
     finalCleanup(elevationData) {
-        // Remove any isolated elevated tiles
-        for (let y = 1; y < this.height - 1; y++) {
-            for (let x = 1; x < this.width - 1; x++) {
-                if (elevationData[y][x] > 0) {
-                    // Count connected elevated neighbors (4-connected)
-                    let neighbors = 0;
-                    if (elevationData[y-1][x] > 0) neighbors++;
-                    if (elevationData[y+1][x] > 0) neighbors++;
-                    if (elevationData[y][x-1] > 0) neighbors++;
-                    if (elevationData[y][x+1] > 0) neighbors++;
-                    
-                    // Remove completely isolated tiles
-                    if (neighbors === 0) {
-                        elevationData[y][x] = 0;
+        console.log("Running final cleanup to remove isolated tiles and single protrusions...");
+        let cleanedCount = 0;
+        
+        // Multiple passes to remove isolated tiles and single protrusions
+        for (let pass = 0; pass < 3; pass++) {
+            for (let y = 1; y < this.height - 1; y++) {
+                for (let x = 1; x < this.width - 1; x++) {
+                    if (elevationData[y][x] > 0) {
+                        // Count connected elevated neighbors (4-connected)
+                        let neighbors = 0;
+                        if (elevationData[y-1][x] > 0) neighbors++;
+                        if (elevationData[y+1][x] > 0) neighbors++;
+                        if (elevationData[y][x-1] > 0) neighbors++;
+                        if (elevationData[y][x+1] > 0) neighbors++;
+                        
+                        // Remove isolated tiles and single protrusions (tiles with only 1 neighbor)
+                        if (neighbors <= 1) {
+                            elevationData[y][x] = 0;
+                            cleanedCount++;
+                        }
                     }
                 }
             }
         }
+        
+        console.log(`[SharedWorldGenerator] Final cleanup removed ${cleanedCount} isolated/protruding tiles`);
     }
 }
