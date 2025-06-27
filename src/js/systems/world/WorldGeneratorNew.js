@@ -8,6 +8,7 @@ import { DecorationManager } from '../tiles/DecorationManager.js';
 import { createSeededRandom } from '../../utils/Random.js';
 import { CliffAutotiler } from '../tiles/CliffAutotilerNew.js';
 import { CollisionMask } from '../../../shared/systems/CollisionMask.js';
+import { SharedWorldGenerator } from '../../../shared/systems/WorldGenerator.js';
 
 export class WorldGenerator {
   constructor(options = {}) {
@@ -40,8 +41,10 @@ export class WorldGenerator {
     // Generate elevated areas with proper constraints
     this.generateProperElevatedAreas();
     
-    // Generate collision mask from elevation data
-    this.collisionMask.generateFromElevationData(this.elevationData);
+    // Generate collision mask using same logic as server
+    const sharedWorldGen = new SharedWorldGenerator(this.width, this.height, this.seed);
+    const sharedElevationData = sharedWorldGen.generateElevationData();
+    this.collisionMask.generateFromElevationData(sharedElevationData);
     
     console.log("[WorldGenerator] Client collision mask generated");
     console.log("[WorldGenerator] Client collision stats:", this.collisionMask.getStats());
