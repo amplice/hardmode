@@ -11,9 +11,14 @@ export class CollisionDebugRenderer {
         this.isEnabled = false;
         this.debugSprites = [];
         
-        // Add debug container to world but make it invisible by default
+        // Add debug container to world container but ensure it's above tiles
         this.debugContainer.visible = false;
+        this.debugContainer.zIndex = 1000; // Ensure it's on top of tiles
+        
+        // Add to world container so it moves with camera
         game.worldContainer.addChild(this.debugContainer);
+        
+        console.log("[CollisionDebugRenderer] Debug container added to world container");
         
         // Add global toggle function with proper binding
         const self = this;
@@ -45,29 +50,51 @@ export class CollisionDebugRenderer {
      * Generate visual representation of collision mask
      */
     generateDebugVisualization() {
+        console.log("[CollisionDebug] Starting debug visualization generation...");
+        
         // Clear existing debug sprites
         this.clearDebugSprites();
         
+        if (!this.world) {
+            console.error("[CollisionDebug] No world available");
+            return;
+        }
+        
         if (!this.world.collisionMask) {
-            console.warn("[CollisionDebug] No collision mask available");
+            console.error("[CollisionDebug] No collision mask available on world");
+            console.log("[CollisionDebug] World object:", this.world);
             return;
         }
         
         const collisionMask = this.world.collisionMask;
         const tileSize = this.world.tileSize;
         
+        console.log(`[CollisionDebug] Collision mask dimensions: ${collisionMask.width}x${collisionMask.height}, tileSize: ${tileSize}`);
+        
         // Create debug sprites for solid tiles
+        let solidTileCount = 0;
         for (let y = 0; y < collisionMask.height; y++) {
             for (let x = 0; x < collisionMask.width; x++) {
                 if (!collisionMask.isTileWalkable(x, y)) {
                     const debugSprite = this.createDebugTile(x, y, tileSize);
                     this.debugContainer.addChild(debugSprite);
                     this.debugSprites.push(debugSprite);
+                    solidTileCount++;
                 }
             }
         }
         
-        console.log(`[CollisionDebug] Generated ${this.debugSprites.length} debug tiles`);
+        // If no collision tiles found, create a test tile to verify rendering works
+        if (solidTileCount === 0) {
+            console.warn("[CollisionDebug] No solid tiles found! Creating test tile at (10, 10)");
+            const testSprite = this.createDebugTile(10, 10, tileSize);
+            this.debugContainer.addChild(testSprite);
+            this.debugSprites.push(testSprite);
+        }
+        
+        console.log(`[CollisionDebug] Generated ${this.debugSprites.length} debug tiles for ${solidTileCount} solid tiles`);
+        console.log(`[CollisionDebug] Debug container children count: ${this.debugContainer.children.length}`);
+        console.log(`[CollisionDebug] Debug container visible: ${this.debugContainer.visible}`);
     }
     
     /**
@@ -76,18 +103,20 @@ export class CollisionDebugRenderer {
     createDebugTile(tileX, tileY, tileSize) {
         const graphics = new PIXI.Graphics();
         
-        // Semi-transparent red overlay
-        graphics.beginFill(0xFF0000, 0.3);
+        // Bright red overlay - more visible
+        graphics.beginFill(0xFF0000, 0.6);
         graphics.drawRect(0, 0, tileSize, tileSize);
         graphics.endFill();
         
-        // Red border
-        graphics.lineStyle(1, 0xFF0000, 0.8);
+        // Bright red border
+        graphics.lineStyle(2, 0xFF0000, 1.0);
         graphics.drawRect(0, 0, tileSize, tileSize);
         
-        // Position the sprite
+        // Position the sprite (accounting for world offset since we're on stage)
         graphics.x = tileX * tileSize;
         graphics.y = tileY * tileSize;
+        
+        console.log(`[CollisionDebug] Created debug tile at (${tileX}, ${tileY}) -> screen pos (${graphics.x}, ${graphics.y})`);
         
         return graphics;
     }
