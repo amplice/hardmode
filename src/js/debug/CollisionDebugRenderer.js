@@ -36,6 +36,33 @@ export class CollisionDebugRenderer {
             return self.world && self.world.collisionMask ? "Collision mask exists" : "No collision mask found";
         };
         
+        // Add force test function to verify rendering works
+        window.forceTestDebug = function() {
+            console.log("[CollisionDebug] Forcing test debug visualization...");
+            self.clearDebugSprites();
+            
+            // Create highly visible test tiles at fixed positions
+            const positions = [
+                {x: 10, y: 10}, {x: 20, y: 20}, {x: 30, y: 30},
+                {x: 50, y: 50}, {x: 60, y: 60}, {x: 70, y: 70}
+            ];
+            
+            for (const pos of positions) {
+                const testSprite = self.createDebugTile(pos.x, pos.y, self.world ? self.world.tileSize : 64);
+                self.debugContainer.addChild(testSprite);
+                self.debugSprites.push(testSprite);
+            }
+            
+            self.debugContainer.visible = true;
+            self.isEnabled = true;
+            
+            console.log(`[CollisionDebug] Created ${self.debugSprites.length} forced test tiles`);
+            console.log(`[CollisionDebug] Debug container visible: ${self.debugContainer.visible}`);
+            console.log(`[CollisionDebug] Debug container parent:`, self.debugContainer.parent);
+            
+            return `Created ${self.debugSprites.length} test debug tiles`;
+        };
+        
         console.log("[CollisionDebugRenderer] Initialized. Use toggleCollisionDebug() to toggle visualization.");
         console.log("[CollisionDebugRenderer] Use checkCollisionMask() to verify mask exists.");
     }
@@ -95,12 +122,24 @@ export class CollisionDebugRenderer {
             }
         }
         
-        // If no collision tiles found, create a test tile to verify rendering works
+        // If no collision tiles found, create test tiles to verify rendering works
         if (solidTileCount === 0) {
-            console.warn("[CollisionDebug] No solid tiles found! Creating test tile at (10, 10)");
-            const testSprite = this.createDebugTile(10, 10, tileSize);
-            this.debugContainer.addChild(testSprite);
-            this.debugSprites.push(testSprite);
+            console.warn("[CollisionDebug] No solid tiles found! Creating test tiles for visibility verification");
+            
+            // Create a 3x3 grid of test tiles in center of screen
+            const centerX = Math.floor(this.world.width / 2);
+            const centerY = Math.floor(this.world.height / 2);
+            
+            for (let dy = -1; dy <= 1; dy++) {
+                for (let dx = -1; dx <= 1; dx++) {
+                    const testX = centerX + dx;
+                    const testY = centerY + dy;
+                    const testSprite = this.createDebugTile(testX, testY, tileSize);
+                    this.debugContainer.addChild(testSprite);
+                    this.debugSprites.push(testSprite);
+                }
+            }
+            console.log("[CollisionDebug] Created 9 test tiles for visibility verification");
         }
         
         console.log(`[CollisionDebug] Generated ${this.debugSprites.length} debug tiles for ${solidTileCount} solid tiles`);
@@ -114,18 +153,23 @@ export class CollisionDebugRenderer {
     createDebugTile(tileX, tileY, tileSize) {
         const graphics = new PIXI.Graphics();
         
-        // Bright red overlay - more visible
-        graphics.beginFill(0xFF0000, 0.6);
+        // Very bright, opaque red overlay - maximum visibility
+        graphics.beginFill(0xFF0000, 1.0); // Full opacity
         graphics.drawRect(0, 0, tileSize, tileSize);
         graphics.endFill();
         
-        // Bright red border
-        graphics.lineStyle(2, 0xFF0000, 1.0);
+        // Thick bright yellow border for contrast
+        graphics.lineStyle(4, 0xFFFF00, 1.0);
         graphics.drawRect(0, 0, tileSize, tileSize);
         
-        // Position the sprite (accounting for world offset since we're on stage)
+        // Position the sprite
         graphics.x = tileX * tileSize;
         graphics.y = tileY * tileSize;
+        
+        // Force visible properties
+        graphics.visible = true;
+        graphics.alpha = 1.0;
+        graphics.renderable = true;
         
         console.log(`[CollisionDebug] Created debug tile at (${tileX}, ${tileY}) -> screen pos (${graphics.x}, ${graphics.y})`);
         
