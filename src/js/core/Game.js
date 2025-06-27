@@ -181,7 +181,7 @@ export class Game {
       // Jitter buffer disabled - caused laggy behavior
       
       // Initialize predictor with latency tracker
-      this.systems.predictor = new MovementPredictor(this.latencyTracker);
+      this.systems.predictor = new MovementPredictor(this.latencyTracker, this.systems.world.collisionMask);
       
       // Initialize reconciler after predictor
       this.systems.reconciler = new Reconciler(this.systems.inputBuffer, this.systems.predictor);
