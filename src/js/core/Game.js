@@ -21,7 +21,6 @@ import { ProjectileRenderer } from '../systems/ProjectileRenderer.js';
 import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 import { DebugLogger } from '../debug/DebugLogger.js';
-import { CollisionDebugRenderer } from '../debug/CollisionDebugRenderer.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
@@ -128,8 +127,6 @@ export class Game {
     this.debugLogger = new DebugLogger();
     this.debugLogger.setupConsoleCommands();
     
-    // Collision debug renderer will be initialized after world generation
-    this.collisionDebugRenderer = null;
     
     // Will be initialized when game starts
     this.projectileRenderer = null;
@@ -213,13 +210,6 @@ export class Game {
       this.systems.reconciler = new Reconciler(this.systems.inputBuffer, this.systems.predictor);
     }
     
-    // Initialize collision debug renderer
-    try {
-      this.collisionDebugRenderer = new CollisionDebugRenderer(this.systems.world, this);
-      console.log("[Game] Collision debug renderer initialized");
-    } catch (error) {
-      console.error("[Game] Failed to initialize collision debug renderer:", error);
-    }
 
     // Create player with selected class
     this.entities.player = new Player({
