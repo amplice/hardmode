@@ -321,7 +321,7 @@ export class WorldGenerator {
         if (this.stairsData[y][x]) {
           // Place stair tile
           const stairInfo = this.stairsData[y][x];
-          const stairTexture = this.tilesets.getTileTexture(stairInfo.tileX, stairInfo.tileY);
+          const stairTexture = this.tilesets.textures.terrain[stairInfo.tileY][stairInfo.tileX];
           
           const sprite = new PIXI.Sprite(stairTexture);
           sprite.position.set(0, 0);
