@@ -53,12 +53,13 @@ export class CollisionMask {
     }
     
     /**
-     * Check if a tile is adjacent to an elevated area
+     * Check if a tile is adjacent to an elevated area (cliff edge detection)
+     * Extended to create a buffer around cliffs
      */
     isAdjacentToElevated(x, y, elevationData) {
-        // Check all 8 adjacent tiles
-        for (let dy = -1; dy <= 1; dy++) {
-            for (let dx = -1; dx <= 1; dx++) {
+        // Check all tiles within a 2-tile radius for more solid boundaries
+        for (let dy = -2; dy <= 2; dy++) {
+            for (let dx = -2; dx <= 2; dx++) {
                 if (dx === 0 && dy === 0) continue; // Skip self
                 
                 const nx = x + dx;
@@ -66,7 +67,14 @@ export class CollisionMask {
                 
                 if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
                     if (elevationData[ny] && elevationData[ny][nx] > 0) {
-                        return true;
+                        // Distance-based collision: closer tiles are definitely blocked
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance <= 1.5) { // Immediate neighbors and diagonals
+                            return true;
+                        } else if (distance <= 2.2) { // Extended boundary 
+                            // 50% chance for extended boundary to create some variety
+                            return Math.abs(dx) + Math.abs(dy) <= 2; // Manhattan distance
+                        }
                     }
                 }
             }
@@ -115,16 +123,24 @@ export class CollisionMask {
     /**
      * Validate movement from one position to another
      * Checks entire path to prevent teleporting through walls
+     * Enhanced to provide more solid collision detection
      */
     canMove(fromX, fromY, toX, toY) {
-        // Quick check: is destination walkable?
-        if (!this.isWalkable(toX, toY)) {
+        // Add buffer around player position for more solid collision
+        const buffer = 16; // Half a tile buffer
+        
+        // Check destination and area around destination
+        if (!this.isWalkable(toX, toY) || 
+            !this.isWalkable(toX + buffer, toY) ||
+            !this.isWalkable(toX - buffer, toY) ||
+            !this.isWalkable(toX, toY + buffer) ||
+            !this.isWalkable(toX, toY - buffer)) {
             return false;
         }
         
-        // For short movements, just check destination
+        // For short movements, the above check is sufficient
         const distance = Math.sqrt((toX - fromX) ** 2 + (toY - fromY) ** 2);
-        if (distance <= this.tileSize * 0.5) {
+        if (distance <= this.tileSize * 0.3) {
             return true;
         }
         

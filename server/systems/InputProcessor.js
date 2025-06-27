@@ -237,21 +237,28 @@ export class InputProcessor {
         const newX = Math.round(player.x + velocity.x);
         const newY = Math.round(player.y + velocity.y);
         
-        // Validate movement using collision mask
+        // Validate movement using collision mask with solid collision behavior
         if (this.collisionMask.canMove(player.x, player.y, newX, newY)) {
             // Movement is valid, update position
             player.x = newX;
             player.y = newY;
         } else {
-            // Movement blocked, try partial movement (sliding)
-            if (this.collisionMask.canMove(player.x, player.y, newX, player.y)) {
-                // Can move in X direction only
-                player.x = newX;
-            } else if (this.collisionMask.canMove(player.x, player.y, player.x, newY)) {
-                // Can move in Y direction only
-                player.y = newY;
+            // Movement completely blocked - no partial movement to avoid bouncing
+            // Player stops dead at the boundary for solid feel
+            
+            // Optional: still allow sliding along walls for diagonal movement
+            const canMoveX = this.collisionMask.canMove(player.x, player.y, newX, player.y);
+            const canMoveY = this.collisionMask.canMove(player.x, player.y, player.x, newY);
+            
+            // Only allow sliding if moving diagonally and one direction is clear
+            if (Math.abs(velocity.x) > 0 && Math.abs(velocity.y) > 0) {
+                if (canMoveX && !canMoveY) {
+                    player.x = newX; // Slide along horizontal wall
+                } else if (canMoveY && !canMoveX) {
+                    player.y = newY; // Slide along vertical wall
+                }
             }
-            // If both directions blocked, don't move (prevents getting stuck)
+            // For straight movement into walls, just stop completely
         }
 
         // Apply world boundaries as final constraint
