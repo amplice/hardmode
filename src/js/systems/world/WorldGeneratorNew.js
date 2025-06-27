@@ -587,8 +587,8 @@ export class WorldGenerator {
     // Try to place stairs on each type of edge, preferring longer edges
     const stairPlacements = [];
     
-    // Check west edges (need 6 consecutive vertical tiles: 1 buffer + 4 stairs + 1 buffer)
-    const validWestEdges = this.findValidStairPositions(edges.west, 'vertical', 6);
+    // Check west edges (need 4 consecutive vertical tiles for stairs)
+    const validWestEdges = this.findValidStairPositions(edges.west, 'vertical', 4);
     if (validWestEdges.length > 0) {
       stairPlacements.push({
         type: 'west',
@@ -597,8 +597,8 @@ export class WorldGenerator {
       });
     }
     
-    // Check east edges (need 6 consecutive vertical tiles: 1 buffer + 4 stairs + 1 buffer)
-    const validEastEdges = this.findValidStairPositions(edges.east, 'vertical', 6);
+    // Check east edges (need 4 consecutive vertical tiles for stairs)
+    const validEastEdges = this.findValidStairPositions(edges.east, 'vertical', 4);
     if (validEastEdges.length > 0) {
       stairPlacements.push({
         type: 'east',
@@ -607,8 +607,8 @@ export class WorldGenerator {
       });
     }
     
-    // Check north edges (need 5 consecutive horizontal tiles: 1 buffer + 3 stairs + 1 buffer)
-    const validNorthEdges = this.findValidStairPositions(edges.north, 'horizontal', 5);
+    // Check north edges (need 3 consecutive horizontal tiles for stairs)
+    const validNorthEdges = this.findValidStairPositions(edges.north, 'horizontal', 3);
     if (validNorthEdges.length > 0) {
       stairPlacements.push({
         type: 'north',
@@ -617,8 +617,8 @@ export class WorldGenerator {
       });
     }
     
-    // Check south edges (need 5 consecutive horizontal tiles: 1 buffer + 3 stairs + 1 buffer)
-    const validSouthEdges = this.findValidStairPositions(edges.south, 'horizontal', 5);
+    // Check south edges (need 3 consecutive horizontal tiles for stairs)
+    const validSouthEdges = this.findValidStairPositions(edges.south, 'horizontal', 3);
     if (validSouthEdges.length > 0) {
       stairPlacements.push({
         type: 'south',
@@ -718,9 +718,9 @@ export class WorldGenerator {
       }
     }
     
-    // Return start position (skipping first buffer tile) and length
+    // Return start position and length
     return {
-      start: bestRun[1], // Skip first buffer tile
+      start: bestRun[0], // Start from the first tile
       length: bestRun.length
     };
   }
@@ -751,9 +751,9 @@ export class WorldGenerator {
         // Place in exact tilesheet configuration: leftmost column first
         for (let dy = 0; dy < 4; dy++) {
           for (let dx = 0; dx < 2; dx++) {
-            if (x - 1 + dx >= 0 && y + dy < this.height) {
+            if (x + dx >= 0 && y + dy < this.height) {
               // dx=0 places column 2, dx=1 places column 3
-              this.stairsData[y + dy][x - 1 + dx] = {
+              this.stairsData[y + dy][x + dx] = {
                 type: 'west',
                 tileX: 2 + dx,
                 tileY: 13 + dy

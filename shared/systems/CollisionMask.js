@@ -27,7 +27,7 @@ export class CollisionMask {
     
     /**
      * Generate collision mask from elevation data
-     * Simple rule: elevated areas and their edges are unwalkable
+     * Only cliff edges are unwalkable - plateau interiors are walkable
      */
     generateFromElevationData(elevationData) {
         console.log("[CollisionMask] Generating collision mask from elevation data...");
@@ -39,17 +39,27 @@ export class CollisionMask {
             }
         }
         
-        // Second pass: Mark elevated tiles and their extensions as unwalkable
+        // Second pass: Mark only cliff edges as unwalkable
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                // Mark elevated tiles and 1 tile below as unwalkable
                 if (elevationData[y] && elevationData[y][x] > 0) {
-                    this.mask[y][x] = false;
+                    // Check if this is a cliff edge (has a lower neighbor)
+                    const hasLowerNeighbor = 
+                        (y > 0 && (!elevationData[y-1] || elevationData[y-1][x] < elevationData[y][x])) || // North
+                        (y < this.height - 1 && (!elevationData[y+1] || elevationData[y+1][x] < elevationData[y][x])) || // South
+                        (x > 0 && (!elevationData[y][x-1] || elevationData[y][x-1] < elevationData[y][x])) || // West
+                        (x < this.width - 1 && (!elevationData[y][x+1] || elevationData[y][x+1] < elevationData[y][x])); // East
                     
-                    // Mark 1 tile below elevated areas as unwalkable (for cliff visuals)
-                    if (y + 1 < this.height) {
-                        this.mask[y + 1][x] = false;
+                    // Only mark as unwalkable if it's a cliff edge
+                    if (hasLowerNeighbor) {
+                        this.mask[y][x] = false;
+                        
+                        // Also mark the extension tile below cliff edges as unwalkable
+                        if (y + 1 < this.height && elevationData[y+1][x] === 0) {
+                            this.mask[y + 1][x] = false;
+                        }
                     }
+                    // Plateau interiors remain walkable (true)
                 }
             }
         }
