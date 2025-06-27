@@ -3,6 +3,12 @@
 ## Overview
 This document contains our complete understanding of how the MainLev2.0.png tileset works based on extensive testing and debugging.
 
+## Coordinate System
+All coordinates in this document use (row, column) format where:
+- First number = row (y-coordinate, vertical position)
+- Second number = column (x-coordinate, horizontal position)
+- Example: (13,2) means row 13, column 2
+
 ## Core Autotiling System (Rows 0-6)
 
 ### Row 0 - Top Edges and Diagonal Corners
@@ -189,3 +195,24 @@ The key is to separate the logic clearly:
 4. **Extension Layer**: Automatic placement below cliff edges
 
 This approach should eliminate the complex diagonal detection and focus on getting the basic edge/corner selection correct first.
+## Stairs (Rows 13-17)
+
+### West Stairs
+- Location: Rows 13-16, Columns 2-3
+- Size: 4 rows × 2 columns
+- Placement: Western edges of plateaus
+
+### North Stairs
+- Location: Rows 13-14, Columns 4-6
+- Size: 2 rows × 3 columns
+- Placement: Northern edges of plateaus
+
+### South Stairs
+- Location: Rows 15-17, Columns 4-6
+- Size: 3 rows × 3 columns
+- Placement: Southern edges of plateaus
+
+### East Stairs
+- Location: Rows 13-16, Columns 7-8
+- Size: 4 rows × 2 columns
+- Placement: Eastern edges of plateaus

@@ -46,10 +46,21 @@ export class TilesetManager {
     // Store as 2D array for easier access
     this.textures.terrain = [];
     
-    // Load rows 0-10 to include all cliff variations, inner corners, and stairs
+    // Load rows 0-10 to include all cliff variations and inner corners
     for (let row = 0; row < 11; row++) {
       this.textures.terrain[row] = [];
-      for (let col = 0; col < 18; col++) { // Extended to column 17 to include stairs (13-17)
+      for (let col = 0; col < 11; col++) {
+        this.textures.terrain[row][col] = new Texture(
+          baseTexture,
+          new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+        );
+      }
+    }
+    
+    // Load rows 13-17 to include stairs
+    for (let row = 13; row <= 17; row++) {
+      this.textures.terrain[row] = [];
+      for (let col = 0; col < 11; col++) {
         this.textures.terrain[row][col] = new Texture(
           baseTexture,
           new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
@@ -60,7 +71,7 @@ export class TilesetManager {
     // Load decorative grass variation rows (27-28)
     for (let row = 27; row <= 28; row++) {
       this.textures.terrain[row] = [];
-      for (let col = 0; col < 18; col++) { // Extended to be consistent
+      for (let col = 0; col < 11; col++) {
         this.textures.terrain[row][col] = new Texture(
           baseTexture,
           new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)

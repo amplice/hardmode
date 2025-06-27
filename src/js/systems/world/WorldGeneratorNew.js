@@ -568,8 +568,8 @@ export class WorldGenerator {
     // Try to place stairs on each type of edge, preferring longer edges
     const stairPlacements = [];
     
-    // Check west edges (need 2 consecutive vertical tiles)
-    const validWestEdges = this.findValidStairPositions(edges.west, 'vertical', 2);
+    // Check west edges (need 4 consecutive vertical tiles)
+    const validWestEdges = this.findValidStairPositions(edges.west, 'vertical', 4);
     if (validWestEdges.length > 0) {
       stairPlacements.push({
         type: 'west',
@@ -578,8 +578,8 @@ export class WorldGenerator {
       });
     }
     
-    // Check east edges (need 2 consecutive vertical tiles)
-    const validEastEdges = this.findValidStairPositions(edges.east, 'vertical', 2);
+    // Check east edges (need 4 consecutive vertical tiles)
+    const validEastEdges = this.findValidStairPositions(edges.east, 'vertical', 4);
     if (validEastEdges.length > 0) {
       stairPlacements.push({
         type: 'east',
@@ -711,14 +711,14 @@ export class WorldGenerator {
     
     switch (direction) {
       case 'west':
-        // Place 4x2 west stairs
-        for (let dy = 0; dy < 2; dy++) {
-          for (let dx = 0; dx < 4; dx++) {
+        // Place west stairs: rows 13-16, columns 2-3
+        for (let dy = 0; dy < 4; dy++) {
+          for (let dx = 0; dx < 2; dx++) {
             if (x - dx - 1 >= 0 && y + dy < this.height) {
               this.stairsData[y + dy][x - dx - 1] = {
                 type: 'west',
-                tileX: 13 + (3 - dx), // Reverse x for west stairs
-                tileY: 2 + dy
+                tileX: 2 + dx,
+                tileY: 13 + dy
               };
             }
           }
@@ -726,14 +726,14 @@ export class WorldGenerator {
         break;
         
       case 'east':
-        // Place 4x2 east stairs
-        for (let dy = 0; dy < 2; dy++) {
-          for (let dx = 0; dx < 4; dx++) {
+        // Place east stairs: rows 13-16, columns 7-8
+        for (let dy = 0; dy < 4; dy++) {
+          for (let dx = 0; dx < 2; dx++) {
             if (x + dx + 1 < this.width && y + dy < this.height) {
               this.stairsData[y + dy][x + dx + 1] = {
                 type: 'east',
-                tileX: 13 + dx,
-                tileY: 7 + dy
+                tileX: 7 + dx,
+                tileY: 13 + dy
               };
             }
           }
@@ -741,14 +741,14 @@ export class WorldGenerator {
         break;
         
       case 'north':
-        // Place 2x3 north stairs
-        for (let dy = 0; dy < 3; dy++) {
-          for (let dx = 0; dx < 2; dx++) {
+        // Place north stairs: rows 13-14, columns 4-6
+        for (let dy = 0; dy < 2; dy++) {
+          for (let dx = 0; dx < 3; dx++) {
             if (x + dx < this.width && y - dy - 1 >= 0) {
               this.stairsData[y - dy - 1][x + dx] = {
                 type: 'north',
-                tileX: 13 + dx,
-                tileY: 4 + (2 - dy) // Reverse y for north stairs
+                tileX: 4 + dx,
+                tileY: 13 + (1 - dy) // Reverse y for north stairs
               };
             }
           }
@@ -756,14 +756,14 @@ export class WorldGenerator {
         break;
         
       case 'south':
-        // Place 3x3 south stairs
+        // Place south stairs: rows 15-17, columns 4-6
         for (let dy = 0; dy < 3; dy++) {
           for (let dx = 0; dx < 3; dx++) {
             if (x + dx < this.width && y + dy + 1 < this.height) {
               this.stairsData[y + dy + 1][x + dx] = {
                 type: 'south',
-                tileX: 15 + dx,
-                tileY: 4 + dy
+                tileX: 4 + dx,
+                tileY: 15 + dy
               };
             }
           }
