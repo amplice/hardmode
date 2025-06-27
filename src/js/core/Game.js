@@ -180,11 +180,7 @@ export class Game {
       
       // Jitter buffer disabled - caused laggy behavior
       
-      // Initialize predictor with latency tracker
-      this.systems.predictor = new MovementPredictor(this.latencyTracker, this.systems.world.collisionMask);
-      
-      // Initialize reconciler after predictor
-      this.systems.reconciler = new Reconciler(this.systems.inputBuffer, this.systems.predictor);
+      // Note: predictor and reconciler will be initialized after world generation
     }
     // Remove class selection UI
     if (this.classSelectUI) {
@@ -206,6 +202,12 @@ export class Game {
 
     const worldView = this.systems.world.generate();
     this.worldContainer.addChild(worldView);
+    
+    // Now initialize predictor and reconciler with collision mask from generated world
+    if (this.network) {
+      this.systems.predictor = new MovementPredictor(this.latencyTracker, this.systems.world.collisionMask);
+      this.systems.reconciler = new Reconciler(this.systems.inputBuffer, this.systems.predictor);
+    }
 
     // Create player with selected class
     this.entities.player = new Player({
