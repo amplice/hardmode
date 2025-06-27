@@ -38,13 +38,12 @@ export class WorldGenerator {
     // Generate base terrain (all grass initially)
     this.generateBaseTerrain();
     
-    // Generate elevated areas with proper constraints
-    this.generateProperElevatedAreas();
-    
-    // Generate collision mask using same logic as server
+    // Generate elevation data using SharedWorldGenerator (same as server)
     const sharedWorldGen = new SharedWorldGenerator(this.width, this.height, this.seed);
-    const sharedElevationData = sharedWorldGen.generateElevationData();
-    this.collisionMask.generateFromElevationData(sharedElevationData);
+    this.elevationData = sharedWorldGen.generateElevationData();
+    
+    // Generate collision mask from the same elevation data
+    this.collisionMask.generateFromElevationData(this.elevationData);
     
     console.log("[WorldGenerator] Client collision mask generated");
     console.log("[WorldGenerator] Client collision stats:", this.collisionMask.getStats());
@@ -67,14 +66,12 @@ export class WorldGenerator {
   generateBaseTerrain() {
     console.log("Generating base terrain...");
     
-    // Initialize arrays
+    // Initialize tiles array only (elevationData will be set by SharedWorldGenerator)
     for (let y = 0; y < this.height; y++) {
       this.tiles[y] = [];
-      this.elevationData[y] = [];
       for (let x = 0; x < this.width; x++) {
         const tile = new Tile(x, y, 'grass', this.tilesets, this.tileSize);
         this.tiles[y][x] = tile;
-        this.elevationData[y][x] = 0; // All flat initially
       }
     }
   }
