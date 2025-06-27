@@ -38,16 +38,12 @@ export class CollisionMask {
                 if (elevationData[y] && elevationData[y][x] > 0) {
                     this.mask[y][x] = false;
                     
-                    // Mark tiles below elevated areas as unwalkable (bottom cliff edges are 2 tiles tall)
+                    // Mark 2 tiles below elevated areas as unwalkable (for cliff visuals)
                     if (y + 1 < this.height) {
                         this.mask[y + 1][x] = false;
-                        
-                        // Check if this is a bottom edge (no elevated tile below the current one)
-                        const hasElevatedBelow = (y + 1 < this.height) && elevationData[y + 1] && elevationData[y + 1][x] > 0;
-                        if (!hasElevatedBelow && y + 2 < this.height) {
-                            // Bottom cliff edges extend 2 tiles down, mark the second extension tile
-                            this.mask[y + 2][x] = false;
-                        }
+                    }
+                    if (y + 2 < this.height) {
+                        this.mask[y + 2][x] = false;
                     }
                 } else {
                     // All other tiles are walkable
