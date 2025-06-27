@@ -57,6 +57,7 @@ export class SocketHandler {
         socket.on('attackMonster', data => this.handleAttackMonster(socket, data));
         socket.on('createProjectile', data => this.handleCreateProjectile(socket, data));
         socket.on('setClass', cls => this.handleSetClass(socket, cls));
+        socket.on('collisionMask', data => this.handleCollisionMask(socket, data));
         socket.on('ping', data => this.handlePing(socket, data)); // Latency measurement
         socket.on('disconnect', () => this.handleDisconnect(socket));
     }
@@ -169,6 +170,22 @@ export class SocketHandler {
         if (player) {
             this.gameState.setPlayerClass(socket.id, className);
         }
+    }
+    
+    handleCollisionMask(socket, collisionMaskData) {
+        console.log(`[SocketHandler] Received collision mask from client ${socket.id}`);
+        
+        // Update InputProcessor with client's collision mask
+        if (this.inputProcessor && this.inputProcessor.updateCollisionMask) {
+            this.inputProcessor.updateCollisionMask(collisionMaskData);
+        }
+        
+        // Update MonsterManager with client's collision mask
+        if (this.monsterManager && this.monsterManager.updateCollisionMask) {
+            this.monsterManager.updateCollisionMask(collisionMaskData);
+        }
+        
+        console.log(`[SocketHandler] Server collision systems synchronized with client world`);
     }
 
     /**

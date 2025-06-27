@@ -6,31 +6,19 @@ export class PhysicsSystem {
             width: 0,
             height: 0
         };
+        this.collisionMask = null;
     }
     
     update(deltaTime, entities, world) {
         if (world) {
-            // Update world bounds based on generated world
+            // Get collision mask from world
+            this.collisionMask = world.collisionMask;
             this.worldBounds.width = world.width * world.tileSize;
             this.worldBounds.height = world.height * world.tileSize;
             
             entities.forEach(entity => {
-                // Keep player within world bounds
-                if (entity.position.x < this.worldBounds.x + 20) {
-                    entity.position.x = this.worldBounds.x + 20;
-                }
-                if (entity.position.x > this.worldBounds.width - 20) {
-                    entity.position.x = this.worldBounds.width - 20;
-                }
-                if (entity.position.y < this.worldBounds.y + 20) {
-                    entity.position.y = this.worldBounds.y + 20;
-                }
-                if (entity.position.y > this.worldBounds.height - 20) {
-                    entity.position.y = this.worldBounds.height - 20;
-                }
-                
-                // New AABB-based tile collision logic
-                this.handleTileCollisionsAABB(entity, world);
+                // Handle collision-aware movement
+                this.handleEntityMovement(entity);
                 
                 // Update sprite position to match entity position
                 if (entity.sprite) {
@@ -38,24 +26,14 @@ export class PhysicsSystem {
                 }
             });
         } else {
-            // Just basic screen boundary collision if no world is provided
+            // Fallback to basic screen boundary collision if no world is provided
             this.worldBounds.width = window.innerWidth;
             this.worldBounds.height = window.innerHeight;
             
             entities.forEach(entity => {
-                // Keep player within screen bounds
-                if (entity.position.x < this.worldBounds.x + 20) {
-                    entity.position.x = this.worldBounds.x + 20;
-                }
-                if (entity.position.x > this.worldBounds.width - 20) {
-                    entity.position.x = this.worldBounds.width - 20;
-                }
-                if (entity.position.y < this.worldBounds.y + 20) {
-                    entity.position.y = this.worldBounds.y + 20;
-                }
-                if (entity.position.y > this.worldBounds.height - 20) {
-                    entity.position.y = this.worldBounds.height - 20;
-                }
+                // Basic boundary constraints
+                entity.position.x = Math.max(20, Math.min(this.worldBounds.width - 20, entity.position.x));
+                entity.position.y = Math.max(20, Math.min(this.worldBounds.height - 20, entity.position.y));
                 
                 // Update sprite position to match entity position
                 if (entity.sprite) {
@@ -65,98 +43,59 @@ export class PhysicsSystem {
         }
     }
 
-    getCollisionBox(entity) {
-        // If entity already has a collisionBox defined (e.g., from config in the future)
-        if (entity.collisionBox) {
-            return entity.collisionBox;
+    /**
+     * Handle entity movement with collision detection
+     * Pre-validates movement to prevent entering solid areas
+     */
+    handleEntityMovement(entity) {
+        if (!this.collisionMask || !entity.velocity) {
+            return;
         }
-        // Derive from collisionRadius if available (typically for monsters)
-        if (entity.collisionRadius) {
-            const size = entity.collisionRadius * 1.8; // Factor to approximate AABB from radius
-            return { width: size, height: size };
+        
+        // Calculate intended new position
+        const newX = entity.position.x + entity.velocity.x;
+        const newY = entity.position.y + entity.velocity.y;
+        
+        // Check if movement is valid
+        if (this.collisionMask.canMove(entity.position.x, entity.position.y, newX, newY)) {
+            // Movement is valid, update position
+            entity.position.x = newX;
+            entity.position.y = newY;
+        } else {
+            // Movement blocked, try partial movement
+            this.handleBlockedMovement(entity, newX, newY);
         }
-        // Default for player or other entities if no specific box/radius
-        const defaultRadius = 20; // Based on old characterRadius
-        const defaultSize = defaultRadius * 1.8;
-        return { width: defaultSize, height: defaultSize };
+        
+        // Apply world boundaries as final constraint
+        entity.position.x = Math.max(20, Math.min(this.worldBounds.width - 20, entity.position.x));
+        entity.position.y = Math.max(20, Math.min(this.worldBounds.height - 20, entity.position.y));
     }
-
-    handleTileCollisionsAABB(entity, world) {
-        const tileSize = world.tileSize;
-        const entityCollisionBox = this.getCollisionBox(entity);
-
-        // Entity's AABB (center-based position)
-        const entityAABB = {
-            minX: entity.position.x - entityCollisionBox.width / 2,
-            maxX: entity.position.x + entityCollisionBox.width / 2,
-            minY: entity.position.y - entityCollisionBox.height / 2,
-            maxY: entity.position.y + entityCollisionBox.height / 2,
-        };
-
-        // Get the range of tiles to check around the entity
-        const startTileX = Math.floor(entityAABB.minX / tileSize);
-        const endTileX = Math.floor(entityAABB.maxX / tileSize);
-        const startTileY = Math.floor(entityAABB.minY / tileSize);
-        const endTileY = Math.floor(entityAABB.maxY / tileSize);
-
-        for (let tileY = startTileY; tileY <= endTileY; tileY++) {
-            for (let tileX = startTileX; tileX <= endTileX; tileX++) {
-                if (tileX >= 0 && tileX < world.width && tileY >= 0 && tileY < world.height) {
-                    // Get the tile object from the world
-                    const tile = world.tiles[tileY][tileX];
-
-                    // If the tile doesn't exist or is walkable, skip collision processing
-                    if (!tile || tile.isWalkable()) {
-                        continue; // Skip if no tile or if tile is walkable
-                    }
-
-                    // If we reach here, the tile is solid, so proceed with collision check
-                    const tileAABB = {
-                        minX: tileX * tileSize,
-                        maxX: (tileX + 1) * tileSize,
-                        minY: tileY * tileSize,
-                        maxY: (tileY + 1) * tileSize,
-                    };
-
-                    // Check for intersection
-                    if (this.intersectsAABB(entityAABB, tileAABB)) {
-                        // Collision detected, calculate penetration depth
-                        const overlapX = Math.min(entityAABB.maxX, tileAABB.maxX) - Math.max(entityAABB.minX, tileAABB.minX);
-                        const overlapY = Math.min(entityAABB.maxY, tileAABB.maxY) - Math.max(entityAABB.minY, tileAABB.minY);
-
-                        // Resolve collision by pushing entity along the axis of minimum penetration
-                        if (overlapX < overlapY) {
-                            // Push in X direction
-                            if (entity.position.x < tileAABB.minX + tileSize / 2) { // Entity is to the left of tile center
-                                entity.position.x -= overlapX;
-                            } else { // Entity is to the right of tile center
-                                entity.position.x += overlapX;
-                            }
-                        } else {
-                            // Push in Y direction
-                            if (entity.position.y < tileAABB.minY + tileSize / 2) { // Entity is above tile center
-                                entity.position.y -= overlapY;
-                            } else { // Entity is below tile center
-                                entity.position.y += overlapY;
-                            }
-                        }
-                        // Re-calculate entityAABB after position adjustment before checking next tile (important for multiple collisions)
-                        entityAABB.minX = entity.position.x - entityCollisionBox.width / 2;
-                        entityAABB.maxX = entity.position.x + entityCollisionBox.width / 2;
-                        entityAABB.minY = entity.position.y - entityCollisionBox.height / 2;
-                        entityAABB.maxY = entity.position.y + entityCollisionBox.height / 2;
-                    }
-                }
+    
+    /**
+     * Handle movement when blocked by collision
+     * Try sliding along walls or finding nearby walkable position
+     */
+    handleBlockedMovement(entity, targetX, targetY) {
+        // Try moving in X direction only
+        if (this.collisionMask.canMove(entity.position.x, entity.position.y, targetX, entity.position.y)) {
+            entity.position.x = targetX;
+            return;
+        }
+        
+        // Try moving in Y direction only  
+        if (this.collisionMask.canMove(entity.position.x, entity.position.y, entity.position.x, targetY)) {
+            entity.position.y = targetY;
+            return;
+        }
+        
+        // If all movement is blocked, find nearest walkable position as fallback
+        const fallbackPos = this.collisionMask.findNearestWalkable(entity.position.x, entity.position.y, 64);
+        if (fallbackPos) {
+            // Only use fallback if entity is actually stuck in solid area
+            if (!this.collisionMask.isWalkable(entity.position.x, entity.position.y)) {
+                entity.position.x = fallbackPos.x;
+                entity.position.y = fallbackPos.y;
             }
         }
-    }
-
-    intersectsAABB(aabb1, aabb2) {
-        return (
-            aabb1.minX < aabb2.maxX &&
-            aabb1.maxX > aabb2.minX &&
-            aabb1.minY < aabb2.maxY &&
-            aabb1.maxY > aabb2.minY
-        );
     }
 }

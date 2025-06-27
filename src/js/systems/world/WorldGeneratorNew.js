@@ -7,6 +7,7 @@ import { createNoise2D } from 'simplex-noise';
 import { DecorationManager } from '../tiles/DecorationManager.js';
 import { createSeededRandom } from '../../utils/Random.js';
 import { CliffAutotiler } from '../tiles/CliffAutotilerNew.js';
+import { CollisionMask } from '../../../shared/systems/CollisionMask.js';
 
 export class WorldGenerator {
   constructor(options = {}) {
@@ -21,6 +22,7 @@ export class WorldGenerator {
     this.tiles = [];
     this.elevationData = [];
     this.cliffAutotiler = new CliffAutotiler(this.tilesets);
+    this.collisionMask = new CollisionMask(this.width, this.height, this.tileSize);
   }
 
   generate() {
@@ -34,6 +36,9 @@ export class WorldGenerator {
     
     // Generate elevated areas with proper constraints
     this.generateProperElevatedAreas();
+    
+    // Generate collision mask from elevation data
+    this.collisionMask.generateFromElevationData(this.elevationData);
     
     // Create visual tiles using new autotiler
     this.createTileSprites();
@@ -303,9 +308,8 @@ export class WorldGenerator {
         const tileResult = this.cliffAutotiler.getTileTexture(x, y, this.elevationData, processedTiles);
         processedTiles[y][x] = tileResult.type;
         
-        // Mark cliff edges as unwalkable
-        const isCliffEdge = this.isCliffEdgeTile(tileResult.type);
-        tile.isCliffEdge = isCliffEdge;
+        // Mark tile walkability based on collision mask
+        tile.isCliffEdge = !this.collisionMask.isTileWalkable(x, y);
         
         const sprite = new PIXI.Sprite(tileResult.texture);
         sprite.position.set(0, 0);
@@ -395,9 +399,6 @@ export class WorldGenerator {
   }
   
   isTileWalkable(worldX, worldY) {
-    const tileX = Math.floor(worldX / this.tileSize);
-    const tileY = Math.floor(worldY / this.tileSize);
-    const tile = this.getTileAt(tileX, tileY);
-    return tile ? tile.isWalkable() : false;
+    return this.collisionMask.isWalkable(worldX, worldY);
   }
 }

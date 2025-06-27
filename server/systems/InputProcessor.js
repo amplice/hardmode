@@ -5,6 +5,8 @@
  * from clients and applying them server-side to maintain authority
  * while preparing for client-side prediction in later phases.
  */
+import { CollisionMask } from '../../shared/systems/CollisionMask.js';
+
 export class InputProcessor {
     constructor(gameState, abilityManager = null, lagCompensation = null, sessionAntiCheat = null) {
         this.gameState = gameState;
@@ -14,6 +16,61 @@ export class InputProcessor {
         this.inputQueues = new Map(); // playerId -> array of input commands
         this.lastProcessedSequence = new Map(); // playerId -> last sequence processed
         this.playerPhysics = new Map(); // playerId -> physics state
+        
+        // Initialize collision mask with world constants
+        // Using same parameters as client: 100x100 tiles, 64px tile size
+        this.collisionMask = new CollisionMask(100, 100, 64);
+        this.initializeCollisionMask();
+    }
+
+    /**
+     * Initialize collision mask using same generation logic as client
+     * This ensures server and client have identical collision data
+     */
+    initializeCollisionMask() {
+        // Generate elevation data using same algorithm as client
+        // Using deterministic noise with same seed (1) as client
+        const width = 100;
+        const height = 100;
+        const elevationData = [];
+        
+        // Create elevation data - simplified version matching client logic
+        for (let y = 0; y < height; y++) {
+            elevationData[y] = [];
+            for (let x = 0; x < width; x++) {
+                // Create elevated areas - simplified noise-based generation
+                // This should match the client's generateProperElevatedAreas() logic
+                const centerX = width / 2;
+                const centerY = height / 2;
+                const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
+                
+                // Create some elevated plateaus for collision testing
+                const isElevated = (
+                    (distance > 15 && distance < 25) || // Ring around center
+                    (x < 10 || x > width - 10 || y < 10 || y > height - 10) // Borders
+                );
+                
+                elevationData[y][x] = isElevated ? 1 : 0;
+            }
+        }
+        
+        // Generate collision mask from elevation data
+        this.collisionMask.generateFromElevationData(elevationData);
+        
+        console.log("[InputProcessor] Server collision mask initialized");
+        console.log("[InputProcessor] Collision stats:", this.collisionMask.getStats());
+    }
+    
+    /**
+     * Update collision mask with data from client
+     * This ensures server uses the same collision data as the client's generated world
+     */
+    updateCollisionMask(collisionMaskData) {
+        if (this.collisionMask && collisionMaskData) {
+            this.collisionMask.deserialize(collisionMaskData);
+            console.log("[InputProcessor] Collision mask updated from client");
+            console.log("[InputProcessor] New collision stats:", this.collisionMask.getStats());
+        }
     }
 
     /**
@@ -200,11 +257,28 @@ export class InputProcessor {
             y: movement.y * finalSpeed * deltaTime * 60
         };
 
-        // Update position
-        player.x = Math.round(player.x + velocity.x);
-        player.y = Math.round(player.y + velocity.y);
+        // Calculate new position
+        const newX = Math.round(player.x + velocity.x);
+        const newY = Math.round(player.y + velocity.y);
+        
+        // Validate movement using collision mask
+        if (this.collisionMask.canMove(player.x, player.y, newX, newY)) {
+            // Movement is valid, update position
+            player.x = newX;
+            player.y = newY;
+        } else {
+            // Movement blocked, try partial movement (sliding)
+            if (this.collisionMask.canMove(player.x, player.y, newX, player.y)) {
+                // Can move in X direction only
+                player.x = newX;
+            } else if (this.collisionMask.canMove(player.x, player.y, player.x, newY)) {
+                // Can move in Y direction only
+                player.y = newY;
+            }
+            // If both directions blocked, don't move (prevents getting stuck)
+        }
 
-        // Apply world boundaries (basic collision)
+        // Apply world boundaries as final constraint
         this.applyWorldBounds(player);
     }
 

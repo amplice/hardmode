@@ -13,6 +13,13 @@ export class NetworkClient {
     setClass(cls) {
         this.socket.emit('setClass', cls);
     }
+    
+    sendCollisionMask(collisionMask) {
+        if (this.connected && collisionMask) {
+            console.log('[NetworkClient] Sending collision mask to server');
+            this.socket.emit('collisionMask', collisionMask.serialize());
+        }
+    }
 
     sendAttack(player, type) {
         this.socket.emit('attack', {

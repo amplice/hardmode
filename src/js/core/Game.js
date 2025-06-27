@@ -216,6 +216,8 @@ export class Game {
 
     if (this.network) {
       this.network.setClass(this.entities.player.characterClass);
+      // Send collision mask to server for synchronization
+      this.network.sendCollisionMask(this.systems.world.collisionMask);
     }
 
     // Add health and stats UI

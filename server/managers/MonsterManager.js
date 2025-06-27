@@ -1,5 +1,6 @@
 import { GAME_CONSTANTS, MONSTER_STATS, MONSTER_SPAWN_WEIGHTS } from '../../shared/constants/GameConstants.js';
 import { getDistance, selectWeightedRandom } from '../../shared/utils/MathUtils.js';
+import { CollisionMask } from '../../shared/systems/CollisionMask.js';
 
 export class MonsterManager {
     constructor(io) {
@@ -7,6 +8,56 @@ export class MonsterManager {
         this.monsters = new Map();
         this.nextMonsterId = 1;
         this.spawnTimer = 0;
+        
+        // Initialize collision mask with same logic as InputProcessor
+        this.collisionMask = new CollisionMask(100, 100, 64);
+        this.initializeCollisionMask();
+    }
+
+    /**
+     * Initialize collision mask using same generation logic as InputProcessor
+     * This ensures monsters use the same collision data as players
+     */
+    initializeCollisionMask() {
+        // Generate elevation data using same algorithm as InputProcessor
+        const width = 100;
+        const height = 100;
+        const elevationData = [];
+        
+        // Create elevation data - must match InputProcessor logic exactly
+        for (let y = 0; y < height; y++) {
+            elevationData[y] = [];
+            for (let x = 0; x < width; x++) {
+                const centerX = width / 2;
+                const centerY = height / 2;
+                const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
+                
+                // Create some elevated plateaus for collision testing
+                const isElevated = (
+                    (distance > 15 && distance < 25) || // Ring around center
+                    (x < 10 || x > width - 10 || y < 10 || y > height - 10) // Borders
+                );
+                
+                elevationData[y][x] = isElevated ? 1 : 0;
+            }
+        }
+        
+        // Generate collision mask from elevation data
+        this.collisionMask.generateFromElevationData(elevationData);
+        
+        console.log("[MonsterManager] Collision mask initialized");
+    }
+    
+    /**
+     * Update collision mask with data from client
+     * This ensures monsters use the same collision data as the client's generated world
+     */
+    updateCollisionMask(collisionMaskData) {
+        if (this.collisionMask && collisionMaskData) {
+            this.collisionMask.deserialize(collisionMaskData);
+            console.log("[MonsterManager] Collision mask updated from client");
+            console.log("[MonsterManager] New collision stats:", this.collisionMask.getStats());
+        }
     }
 
     update(deltaTime, players) {
@@ -383,8 +434,28 @@ export class MonsterManager {
         if (distance > 0) {
             monster.velocity.x = (dx / distance) * speed;
             monster.velocity.y = (dy / distance) * speed;
-            monster.x += monster.velocity.x;
-            monster.y += monster.velocity.y;
+            
+            // Calculate intended new position
+            const newX = monster.x + monster.velocity.x;
+            const newY = monster.y + monster.velocity.y;
+            
+            // Validate movement using collision mask
+            if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, newY)) {
+                // Movement is valid, update position
+                monster.x = newX;
+                monster.y = newY;
+            } else {
+                // Movement blocked, try partial movement (sliding along walls)
+                if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, monster.y)) {
+                    // Can move in X direction only
+                    monster.x = newX;
+                } else if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, monster.x, newY)) {
+                    // Can move in Y direction only
+                    monster.y = newY;
+                }
+                // If both directions blocked, don't move (prevents getting stuck)
+            }
+            
             monster.facing = this.getFacingDirection(dx, dy);
         }
     }
