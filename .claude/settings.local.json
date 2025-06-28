@@ -42,7 +42,8 @@
       "WebFetch(domain:docs.railway.app)",
       "WebFetch(domain:docs.railway.com)",
       "Bash(RAILWAY_TOKEN=\"2100e401-081d-404b-8731-10544307a4da\" railway service)",
-      "Bash(RAILWAY_TOKEN=\"2100e401-081d-404b-8731-10544307a4da\" railway logs --service hardmode)"
+      "Bash(RAILWAY_TOKEN=\"2100e401-081d-404b-8731-10544307a4da\" railway logs --service hardmode)",
+      "Bash(diff:*)"
     ],
     "deny": []
   }

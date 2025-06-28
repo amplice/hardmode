@@ -136,15 +136,7 @@ export class CombatSystem {
   }
 
   createProjectile(x, y, angle, owner, options = {}) {
-    console.log(`[DEBUG] Creating projectile:`, {
-      position: { x: Math.round(x), y: Math.round(y) },
-      angle: angle.toFixed(2) + ' rad',
-      owner: {
-        class: owner.characterClass,
-        id: owner.id || 'local'
-      },
-      options: options
-    });
+    // Creating projectile
     
     // Now we just request the server to create the projectile
     if (window.game?.network) {
@@ -248,7 +240,7 @@ export class CombatSystem {
       modifiedConfig.cooldown = Math.max(100, attackConfig.cooldown - entity.attackCooldownBonus);
     }
         
-    console.log(`CombatSystem: ${entity.characterClass || 'Entity'} executing ${modifiedConfig.name}`);
+    // Executing attack
     entity.startPositionForAttack = { x: entity.position.x, y: entity.position.y };
     this.scheduleAllAttackEffects(entity, modifiedConfig, attackType);
 
@@ -381,7 +373,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
         for (const remotePlayer of window.game.remotePlayers.values()) {
           if (remotePlayer !== entity && hitbox.testHit(remotePlayer, 20)) {
             // For now, just log it - actual damage will be handled server-side later
-            console.log(`Would damage remote player ${remotePlayer.id} for ${damage} (PvP disabled)`);
+            // Would damage remote player (PvP disabled)
           }
         }
       }

@@ -82,20 +82,17 @@ export class Game {
     // Add camera smoothing controls for testing
     window.setCameraSmoothing = (value) => {
       this.camera.smoothing = Math.max(0.01, Math.min(1.0, value));
-      console.log(`Camera smoothing set to ${this.camera.smoothing}`);
+      // Camera smoothing updated
     };
     
     // Add latency debugging commands (will be available after game starts)
     window.getLatencyStats = () => {
       if (this.latencyTracker) {
         const stats = this.latencyTracker.getStats();
-        console.log('=== Connection Quality ===');
-        console.log(`RTT: ${stats.currentRTT.toFixed(1)}ms (avg: ${stats.averageRTT.toFixed(1)}ms)`);
-        console.log(`Jitter: ${stats.jitter.toFixed(1)}ms`);
-        console.log(`Quality: ${stats.connectionQuality.quality} - ${stats.connectionQuality.description}`);
+        // Connection quality stats retrieved
         return stats;
       } else {
-        console.log('Latency tracker not initialized - start game first');
+        // Latency tracker not initialized - start game first
         return null;
       }
     };
@@ -105,11 +102,7 @@ export class Game {
       try {
         const response = await fetch('/anticheat-stats');
         const stats = await response.json();
-        console.log('=== Anti-Cheat Stats ===');
-        console.log(`Tracked players: ${stats.trackedPlayers}`);
-        console.log(`Total violations: ${stats.totalViolations}`);
-        console.log('Players by strikes:', stats.playersByStrikes);
-        console.log('Violation types:', stats.violationTypes);
+        // Anti-cheat stats retrieved
         return stats;
       } catch (error) {
         console.error('Failed to get anti-cheat stats:', error);
@@ -152,7 +145,7 @@ export class Game {
       // Note: PVP would be handled server-side, no need to update client
     }
     
-    console.log('Applied server configuration:', config);
+    // Applied server configuration
   }
 
   async loadAndInit() {
@@ -192,7 +185,7 @@ export class Game {
     
     // Initialize the game world using server's seed if available
     const worldSeed = this.network ? this.network.serverWorldSeed || GAME_CONSTANTS.WORLD.SEED : GAME_CONSTANTS.WORLD.SEED;
-    console.log(`[Game] Using world seed: ${worldSeed}`);
+    // Using world seed
     
     this.systems.world = new WorldGenerator({
       width:    GAME_CONSTANTS.WORLD.WIDTH,
@@ -250,7 +243,7 @@ export class Game {
     this.updateCamera();
     this.app.ticker.add(this.update.bind(this));
     this.gameStarted = true;
-    console.log(`Game initialized with ${selectedClass} player`);
+    // Game initialized with player class
   }
 
   update(delta) {
@@ -430,7 +423,7 @@ export class Game {
     });
     const worldView = this.systems.world.generate();
     this.worldContainer.addChild(worldView);
-    console.log('Connected to multiplayer server', data);
+    // Connected to multiplayer server
   }
 
   addRemotePlayer(info) {
@@ -553,7 +546,7 @@ export class Game {
       });
       this.entityContainer.addChild(monster.sprite);
       this.remoteMonsters.set(info.id, monster);
-      console.log(`Created new ${info.type} monster with ID ${info.id}`);
+      // Created new monster
     }
     
     // Update monster state from server
@@ -566,7 +559,7 @@ export class Game {
           monster.sprite.parent.removeChild(monster.sprite);
         }
         this.remoteMonsters.delete(info.id);
-        console.log(`Removed ${info.type} monster with ID ${info.id}`);
+        // Removed monster
       }, 1000); // Wait for death animation
     }
   }

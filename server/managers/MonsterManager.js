@@ -28,8 +28,7 @@ export class MonsterManager {
         // Generate collision mask from elevation data, passing worldGen for stairs support
         this.collisionMask.generateFromElevationData(elevationData, worldGen);
         
-        console.log("[MonsterManager] Collision mask initialized with seed:", this.worldSeed);
-        console.log("[MonsterManager] Collision stats:", this.collisionMask.getStats());
+        // Collision mask initialized
     }
     
     /**
@@ -37,7 +36,7 @@ export class MonsterManager {
      * Server now generates same world as client using shared seed
      */
     updateCollisionMask(collisionMaskData) {
-        console.log("[MonsterManager] Collision mask sync not needed - using shared world seed");
+        // Collision mask sync not needed - using shared world seed
     }
 
     update(deltaTime, players) {
@@ -98,18 +97,13 @@ export class MonsterManager {
         };
 
         this.monsters.set(id, monster);
-        console.log(`[DEBUG] Monster created and added to map:`, {
-            id: monster.id,
-            type: monster.type,
-            position: { x: Math.round(monster.x), y: Math.round(monster.y) },
-            collisionRadius: stats.collisionRadius || 20
-        });
+        // Monster created and added to map
         return monster;
     }
 
     spawnMonster(players) {
         const monster = this.createMonster(null, null, players);
-        console.log(`Spawned ${monster.type} at (${Math.round(monster.x)}, ${Math.round(monster.y)})`);
+        // Spawned monster
         return monster;
     }
 
@@ -193,11 +187,7 @@ export class MonsterManager {
                 break;
         }
         
-        // Log state transitions for debugging
-        if (oldState !== monster.state) {
-            console.log(`Monster ${monster.type}[${monster.id}] state: ${oldState} -> ${monster.state}` + 
-                       (monster.isAttackAnimating ? ' (animating)' : ''));
-        }
+        // State transition handled
         
         monster.lastUpdate = Date.now();
     }
@@ -355,7 +345,7 @@ export class MonsterManager {
         if (!target.invulnerable) {
             target.hp = Math.max(0, target.hp - stats.damage);
             
-            console.log(`${monster.type} attacks ${target.id} for ${stats.damage} damage (${target.hp}/${target.maxHp} HP)`);
+            // Monster attack processed
             
             // Notify clients
             this.io.emit('playerDamaged', {
@@ -366,7 +356,7 @@ export class MonsterManager {
             });
             
             if (target.hp <= 0) {
-                console.log(`Player ${target.id} killed by ${monster.type}`);
+                // Player killed by monster
                 this.io.emit('playerKilled', {
                     playerId: monster.target,
                     killedBy: monster.type
@@ -468,7 +458,7 @@ export class MonsterManager {
             }
         }
         
-        console.log(`Monster ${monster.type} takes ${damage} damage (${monster.hp}/${monster.maxHp} HP) - stunned for ${stunDuration}s`);
+        // Monster damaged and stunned
         
         // Broadcast damage
         this.io.emit('monsterDamaged', {
@@ -494,7 +484,7 @@ export class MonsterManager {
         killer.xp = (killer.xp || 0) + stats.xp;
         killer.kills = (killer.kills || 0) + 1;
         
-        console.log(`${monster.type} killed by ${killer.id}! +${stats.xp} XP (Total: ${killer.xp})`);
+        // Monster killed, XP awarded
         
         // Check level up
         this.checkLevelUp(killer);
@@ -550,7 +540,7 @@ export class MonsterManager {
                 this.applyLevelBonus(player, level);
             }
             
-            console.log(`Player ${player.id} leveled up to ${player.level}! (${player.xp} XP)`);
+            // Player leveled up
             
             this.io.emit('playerLevelUp', {
                 playerId: player.id,
@@ -566,41 +556,41 @@ export class MonsterManager {
     }
 
     applyLevelBonus(player, level) {
-        console.log(`Applying level ${level} bonus for player ${player.id}`);
+        // Applying level bonus
         
         switch (level) {
             case 2:
             case 6:
                 // Move speed bonus
                 player.moveSpeedBonus += 0.25;
-                console.log(`  +0.25 move speed bonus (total: +${player.moveSpeedBonus})`);
+                // Move speed bonus applied
                 break;
             case 3:
             case 7:
                 // Attack recovery reduction
                 player.attackRecoveryBonus += 25; // 25ms reduction
-                console.log(`  -25ms attack recovery bonus (total: -${player.attackRecoveryBonus}ms)`);
+                // Attack recovery bonus applied
                 break;
             case 4:
             case 8:
                 // Attack cooldown reduction
                 player.attackCooldownBonus += 100; // 100ms reduction
-                console.log(`  -100ms attack cooldown bonus (total: -${player.attackCooldownBonus}ms)`);
+                // Attack cooldown bonus applied
                 break;
             case 5:
                 // Roll unlock
                 player.rollUnlocked = true;
-                console.log(`  Roll ability unlocked`);
+                // Roll ability unlocked
                 break;
             case 9:
                 // Future move unlock placeholder
-                console.log(`  Future ability unlock`);
+                // Future ability unlock
                 break;
             case 10:
                 // Max HP increase
                 player.maxHp += 1;
                 player.hp = player.maxHp; // Heal to full with new max HP
-                console.log(`  +1 max HP bonus (now ${player.maxHp})`);
+                // Max HP bonus applied
                 break;
         }
     }
@@ -638,11 +628,10 @@ export class MonsterManager {
 
     // Spawn initial monsters
     spawnInitialMonsters(count = 5) {
-        console.log(`[DEBUG] Spawning ${count} initial monsters`);
+        // Spawning initial monsters
         for (let i = 0; i < count; i++) {
             const monster = this.createMonster();
-            console.log(`[DEBUG] Spawned ${monster.type} at (${Math.round(monster.x)}, ${Math.round(monster.y)})`);
         }
-        console.log(`[DEBUG] Total monsters after initial spawn: ${this.monsters.size}`);
+        // Initial spawn complete
     }
 }

@@ -26,11 +26,11 @@ export class WorldGenerator {
     
     // Initialize collision mask for debug visualization
     this.collisionMask = new CollisionMask(this.width, this.height, this.tileSize);
-    console.log("[WorldGenerator] Client collision mask initialized");
+    // Client collision mask initialized
   }
 
   generate() {
-    console.log("Generating world with new simplified approach...");
+    // Generating world with new simplified approach
     
     // Create world boundary
     this.createWorldBoundary();
@@ -48,8 +48,7 @@ export class WorldGenerator {
     // Generate collision mask from the same elevation data and stairs
     this.collisionMask.generateFromElevationData(this.elevationData, this.sharedWorldGen);
     
-    console.log("[WorldGenerator] Client collision mask generated");
-    console.log("[WorldGenerator] Client collision stats:", this.collisionMask.getStats());
+    // Client collision mask generated
     
     // Create visual tiles using new autotiler
     this.createTileSprites();
@@ -57,7 +56,7 @@ export class WorldGenerator {
     // Create debug overlay for collision boundaries
     this.createCollisionDebugOverlay();
     
-    console.log("World generation complete!");
+    // World generation complete
     return this.container;
   }
   
@@ -70,7 +69,7 @@ export class WorldGenerator {
   }
   
   generateBaseTerrain() {
-    console.log("Generating base terrain...");
+    // Generating base terrain
     
     // Initialize tiles array only (elevationData will be set by SharedWorldGenerator)
     for (let y = 0; y < this.height; y++) {
@@ -83,7 +82,7 @@ export class WorldGenerator {
   }
   
   generateProperElevatedAreas() {
-    console.log("Generating elevated areas with proper 3x3 minimum enforcement...");
+    // Generating elevated areas with proper 3x3 minimum enforcement
     
     // Generate plateau candidates using noise
     this.generatePlateauCandidates();
@@ -101,11 +100,11 @@ export class WorldGenerator {
         if (this.elevationData[y][x] > 0) elevatedCount++;
       }
     }
-    console.log(`[DEBUG] Final elevated tiles: ${elevatedCount}`);
+    // Final elevated tiles generated
   }
   
   generatePlateauCandidates() {
-    console.log("Generating plateau candidates with noise...");
+    // Generating plateau candidates with noise
     
     // Create several noise-based plateau seeds
     const plateauCount = 4 + Math.floor(this.random() * 3);
@@ -116,7 +115,7 @@ export class WorldGenerator {
       const cy = 10 + Math.floor(this.random() * (this.height - 20));
       const baseRadius = 6 + Math.floor(this.random() * 8); // Larger to ensure 3x3
       
-      console.log(`[DEBUG] Plateau ${i}: center (${cx}, ${cy}), radius ${baseRadius}`);
+      // Plateau generated
       
       // Use noise to create organic shape, but with minimum size guarantee
       this.createNoisyPlateau(cx, cy, baseRadius);
@@ -164,7 +163,7 @@ export class WorldGenerator {
   }
   
   enforceMinimumPlateauSizes() {
-    console.log("Enforcing 3x3 minimum plateau sizes...");
+    // Enforcing 3x3 minimum plateau sizes
     
     const visited = [];
     for (let y = 0; y < this.height; y++) {
@@ -265,18 +264,18 @@ export class WorldGenerator {
       }
     }
     
-    console.log(`[DEBUG] Expanded plateau from ${maxX-minX+1}x${maxY-minY+1} to ${targetMaxX-targetMinX+1}x${targetMaxY-targetMinY+1}`);
+    // Expanded plateau
   }
   
   removePlateau(plateau) {
     for (const {x, y} of plateau) {
       this.elevationData[y][x] = 0;
     }
-    console.log(`[DEBUG] Removed plateau of ${plateau.length} tiles`);
+    // Removed small plateau
   }
   
   finalCleanup() {
-    console.log("Running final cleanup...");
+    // Running final cleanup
     
     // One more pass to remove any remaining problematic tiles
     let cleanedCount = 0;
@@ -301,11 +300,11 @@ export class WorldGenerator {
       }
     }
     
-    console.log(`[DEBUG] Final cleanup removed ${cleanedCount} isolated tiles`);
+    // Final cleanup complete
   }
   
   createTileSprites() {
-    console.log("Creating tile sprites with new autotiler...");
+    // Creating tile sprites with new autotiler
     
     const processedTiles = [];
     for (let y = 0; y < this.height; y++) {
@@ -356,7 +355,7 @@ export class WorldGenerator {
   }
   
   addCliffExtensions(processedTiles) {
-    console.log("Adding cliff extensions...");
+    // Adding cliff extensions
     
     let extensionCount = 0;
     
@@ -378,7 +377,7 @@ export class WorldGenerator {
       }
     }
     
-    console.log(`[DEBUG] Added ${extensionCount} cliff extensions`);
+    // Cliff extensions added
   }
   
   // Helper method to determine if a tile type is a cliff edge
@@ -433,7 +432,7 @@ export class WorldGenerator {
   }
   
   createCollisionDebugOverlay() {
-    console.log("Creating collision debug overlay...");
+    // Creating collision debug overlay
     
     // Create debug container
     this.debugContainer = new PIXI.Container();
@@ -455,7 +454,7 @@ export class WorldGenerator {
     // Add debug container to world (so it moves with camera)
     this.container.addChild(this.debugContainer);
     
-    console.log(`[Debug] Created ${debugTileCount} debug overlay tiles`);
+    // Created debug overlay tiles
     
     // Expose global toggle function
     window.toggleCollisionDebug = () => {

@@ -20,7 +20,7 @@ export class SocketHandler {
     }
 
     handleConnection(socket) {
-        console.log(`Player ${socket.id} connected`);
+        // Player connected
         
         // Create new player
         const player = this.gameState.createPlayer(socket.id);
@@ -81,7 +81,7 @@ export class SocketHandler {
         const player = this.gameState.getPlayer(socket.id);
         if (!player || player.hp <= 0) return;
         
-        console.log(`Player ${player.id} performs ${data.type} attack`);
+        // Player attack
         
         // Broadcast attack to all clients
         this.io.emit('playerAttack', {
@@ -122,7 +122,7 @@ export class SocketHandler {
         const attackRange = data.attackType === 'primary' ? 150 : 200;
         
         if (distance > attackRange) {
-            console.log(`Attack out of range: ${distance} > ${attackRange}`);
+            // Attack out of range
             return;
         }
         
@@ -132,24 +132,18 @@ export class SocketHandler {
     }
 
     handleCreateProjectile(socket, data) {
-        console.log(`Received createProjectile request from ${socket.id}:`, data);
+        // Received createProjectile request
         const player = this.gameState.getPlayer(socket.id);
         if (!player || player.hp <= 0) {
-            console.log(`Rejected projectile: player ${socket.id} not found or dead`);
+            // Rejected projectile: player not found or dead
             return;
         }
         
-        // DEBUG: Log player details
-        console.log(`[DEBUG] Player creating projectile:`, {
-            id: player.id,
-            class: player.class,
-            position: { x: Math.round(player.x), y: Math.round(player.y) },
-            hp: `${player.hp}/${player.maxHp}`
-        });
+        // Player creating projectile
         
         // Validate the request
         if (data.x === undefined || data.y === undefined || data.angle === undefined) {
-            console.log(`Rejected projectile: invalid data - x:${data.x}, y:${data.y}, angle:${data.angle}`);
+            // Rejected projectile: invalid data
             return;
         }
         
@@ -173,7 +167,7 @@ export class SocketHandler {
     }
     
     handleCollisionMask(socket, collisionMaskData) {
-        console.log(`[SocketHandler] Received collision mask from client ${socket.id}`);
+        // Received collision mask from client
         
         // Update InputProcessor with client's collision mask
         if (this.inputProcessor && this.inputProcessor.updateCollisionMask) {
@@ -185,7 +179,7 @@ export class SocketHandler {
             this.monsterManager.updateCollisionMask(collisionMaskData);
         }
         
-        console.log(`[SocketHandler] Server collision systems synchronized with client world`);
+        // Server collision systems synchronized with client world
     }
 
     /**
@@ -215,7 +209,7 @@ export class SocketHandler {
     }
 
     handleDisconnect(socket) {
-        console.log(`Player ${socket.id} disconnected`);
+        // Player disconnected
         this.abilityManager.removePlayer(socket.id);
         this.inputProcessor.removePlayer(socket.id); // This also cleans up anti-cheat data
         this.lagCompensation.removePlayer(socket.id);

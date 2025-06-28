@@ -11,14 +11,7 @@ export class ProjectileManager {
     createProjectile(owner, data) {
         const id = this.nextProjectileId++;
         
-        // DEBUG: Log owner information
-        console.log(`[DEBUG] Creating projectile - Owner info:`, {
-            id: owner.id,
-            class: owner.class,
-            type: owner.type,
-            hasClass: !!owner.class,
-            hasType: !!owner.type
-        });
+        // Creating projectile from owner
         
         const projectile = {
             id,
@@ -41,16 +34,7 @@ export class ProjectileManager {
             createdAt: Date.now()
         };
         
-        // DEBUG: Log projectile details
-        console.log(`[DEBUG] Projectile ${id} created:`, {
-            ownerId: projectile.ownerId,
-            ownerType: projectile.ownerType,
-            position: { x: Math.round(projectile.x), y: Math.round(projectile.y) },
-            angle: projectile.angle.toFixed(2),
-            damage: projectile.damage,
-            speed: projectile.speed,
-            maxRange: projectile.maxRange
-        });
+        // Projectile created
         
         this.projectiles.set(id, projectile);
         
@@ -66,17 +50,14 @@ export class ProjectileManager {
             effectType: projectile.effectType
         });
         
-        console.log(`Projectile ${id} created by ${owner.id} at (${Math.round(data.x)}, ${Math.round(data.y)})`);
+        // Projectile created
         return projectile;
     }
 
     update(deltaTime, players, monsters) {
         const projectilesToRemove = [];
         
-        // DEBUG: Log update cycle info
-        if (this.projectiles.size > 0) {
-            console.log(`[DEBUG] ProjectileManager update - Active projectiles: ${this.projectiles.size}, Monsters: ${monsters.size}`);
-        }
+        // Update projectiles
         
         for (const [id, projectile] of this.projectiles) {
             if (!projectile.active) {
@@ -107,16 +88,11 @@ export class ProjectileManager {
                                      projectile.ownerType !== 'ogre' && 
                                      projectile.ownerType !== 'wildarcher';
             
-            // DEBUG: Log projectile type determination
-            console.log(`[DEBUG] Projectile ${id}:`, {
-                ownerType: projectile.ownerType,
-                isPlayerProjectile: isPlayerProjectile,
-                position: { x: Math.round(projectile.x), y: Math.round(projectile.y) }
-            });
+            // Check projectile type
             
             if (isPlayerProjectile) {
                 // Player projectiles hit monsters
-                console.log(`[DEBUG] Checking collision for player projectile ${id} against ${monsters.size} monsters`);
+                // Check collision with monsters
                 
                 for (const [monsterId, monster] of monsters) {
                     if (monster.hp <= 0) continue;
@@ -124,20 +100,11 @@ export class ProjectileManager {
                     const distance = getDistance(projectile, monster);
                     const hitRadius = monster.collisionRadius || 20;
                     
-                    // DEBUG: Log each collision check
-                    if (distance < hitRadius * 2) { // Log only when relatively close
-                        console.log(`[DEBUG] Projectile ${id} -> Monster ${monsterId}:`, {
-                            distance: distance.toFixed(2),
-                            hitRadius: hitRadius,
-                            willHit: distance <= hitRadius,
-                            projectilePos: { x: Math.round(projectile.x), y: Math.round(projectile.y) },
-                            monsterPos: { x: Math.round(monster.x), y: Math.round(monster.y) }
-                        });
-                    }
+                    // Check distance to monster
                     
                     if (distance <= hitRadius) {
                         // Hit detected
-                        console.log(`[DEBUG] HIT DETECTED! Projectile ${id} hit monster ${monsterId}`);
+                        // Hit detected
                         this.handleProjectileHit(projectile, monster, 'monster', players, monsters);
                         projectilesToRemove.push(id);
                         break;
@@ -145,7 +112,7 @@ export class ProjectileManager {
                 }
             } else {
                 // Monster projectiles hit players
-                console.log(`[DEBUG] Checking collision for monster projectile ${id} (${projectile.ownerType}) against ${players.size} players`);
+                // Check collision with players
                 
                 for (const [playerId, player] of players) {
                     if (player.hp <= 0 || playerId === projectile.ownerId) continue;
@@ -155,7 +122,7 @@ export class ProjectileManager {
                     
                     if (distance <= hitRadius) {
                         // Hit detected
-                        console.log(`[DEBUG] Monster projectile ${id} hit player ${playerId}`);
+                        // Hit detected
                         this.handleProjectileHit(projectile, player, 'player', players, monsters);
                         projectilesToRemove.push(id);
                         break;
@@ -171,21 +138,17 @@ export class ProjectileManager {
     }
 
     handleProjectileHit(projectile, target, targetType, players, monsters) {
-        console.log(`Projectile ${projectile.id} hit ${targetType} ${target.id || target.type}`);
+        // Projectile hit target
         
         if (targetType === 'monster') {
             // Apply damage to monster
             const monsterManager = this.io.monsterManager; // Assume this is passed in
-            console.log(`MonsterManager available: ${!!monsterManager}`);
+            // Apply damage to monster
             if (monsterManager) {
                 const owner = players.get(projectile.ownerId);
-                console.log(`Owner found: ${!!owner}, ownerId: ${projectile.ownerId}`);
                 if (owner) {
-                    console.log(`Applying damage to monster ${target.id}`);
                     monsterManager.handleMonsterDamage(target.id, projectile.damage, owner);
                 }
-            } else {
-                console.error('MonsterManager not available in ProjectileManager!');
             }
         } else if (targetType === 'player') {
             // Apply damage to player
@@ -195,7 +158,7 @@ export class ProjectileManager {
                 // Get monster type for kill message
                 const monsterType = projectile.ownerType;
                 
-                console.log(`${monsterType} projectile hits ${target.id} for ${projectile.damage} damage (${target.hp}/${target.maxHp} HP)`);
+                // Player hit by projectile
                 
                 // Notify clients
                 this.io.emit('playerDamaged', {
@@ -206,7 +169,7 @@ export class ProjectileManager {
                 });
                 
                 if (target.hp <= 0) {
-                    console.log(`Player ${target.id} killed by ${monsterType} projectile`);
+                    // Player killed by projectile
                     this.io.emit('playerKilled', {
                         playerId: target.id,
                         killedBy: monsterType

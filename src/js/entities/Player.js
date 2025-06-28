@@ -250,7 +250,7 @@ class AnimationComponent extends Component {
             this.owner.animatedSprite.tint = 0xFFFF00; // Yellow
             // Debug logging
             if (!this.tintDebugLogged) {
-                console.log(`Applying yellow tint, spawn protection timer: ${this.owner.spawnProtectionTimer}`);
+                // Applying yellow tint for spawn protection
                 this.tintDebugLogged = true;
                 setTimeout(() => { this.tintDebugLogged = false; }, 1000);
             }
@@ -262,7 +262,7 @@ class AnimationComponent extends Component {
     onAnimationComplete() {
         // If we just finished an attack animation, return to idle
         if (this.owner.isAttacking) {
-            console.log(`Attack animation completed for ${this.owner.currentAttackType}`);
+            // Attack animation completed
             
             // For projectile attacks, let the combat system manage the attack state
             // since projectiles have a windup time that may exceed animation duration
@@ -275,7 +275,7 @@ class AnimationComponent extends Component {
                 this.owner.attackHitFrameReached = false;
                 this.owner.currentAttackType = null;
             } else {
-                console.log("Projectile attack - keeping isAttacking true for windup");
+                // Projectile attack - keeping isAttacking true for windup
             }
             
             // Return to idle or movement animation
@@ -488,7 +488,7 @@ class AnimationComponent extends Component {
             }
         } else {
             // If no sprite manager, wait for server respawn (don't trigger client respawn)
-            console.log("No sprite manager - waiting for server respawn");
+            // No sprite manager - waiting for server respawn
         }
     }
     
@@ -548,7 +548,7 @@ class CombatComponent extends Component {
         case 'rogue': attackName = 'thrust attack'; break;
         default: attackName = 'forehand slash'; break;
       }
-      console.log(`Primary attack (${attackName}) started`);
+      // Primary attack started
       this.owner.isAttacking = true;
       this.owner.attackHitFrameReached = false;
       this.owner.currentAttackType = 'primary';
@@ -570,7 +570,7 @@ class CombatComponent extends Component {
       if (this.owner.combatSystem) {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'primary');
         this.owner.primaryAttackCooldown = cooldown / 1000; // Store in the correct variable
-        console.log(`[DEBUG] Primary attack cooldown set to ${this.owner.primaryAttackCooldown}s (${cooldown}ms)`);
+        // Primary attack cooldown set
       }
       if (window.game?.network) {
         window.game.network.sendAttack(this.owner, 'primary');
@@ -578,7 +578,7 @@ class CombatComponent extends Component {
     }
     
     performSecondaryAttack() {
-      console.log(`Secondary attack (${this.owner.characterClass === 'guardian' ? 'jump attack' : 'overhead smash'}) started`);
+      // Secondary attack started
       this.owner.isAttacking = true;
       this.owner.attackHitFrameReached = false;
       this.owner.currentAttackType = 'secondary';
@@ -607,7 +607,7 @@ class CombatComponent extends Component {
     }
 
     performRoll() {
-      console.log('Roll started');
+      // Roll started
       this.owner.isAttacking = true;
       this.owner.attackHitFrameReached = false;
       this.owner.currentAttackType = 'roll';
@@ -653,7 +653,7 @@ class HealthComponent extends Component {
         // Initial spawn protection
         this.owner.isInvulnerable = true;
         this.owner.spawnProtectionTimer = 3.0;
-        console.log(`Player spawned with initial protection: ${this.owner.spawnProtectionTimer}s`);
+        // Player spawned with initial protection
     }
     
     update(deltaTime) {
@@ -682,11 +682,11 @@ class HealthComponent extends Component {
     takeDamage(amount) {
         // Check for invulnerability
         if (this.owner.isInvulnerable) {
-          console.log("Attack blocked by invulnerability!");
+          // Attack blocked by invulnerability
           return;
         }
         
-        console.log(`Player took ${amount} damage!`);
+        // Player took damage
         this.owner.hitPoints -= amount;
         
         // Don't play take damage animation if already dead or dying
@@ -711,7 +711,7 @@ class HealthComponent extends Component {
             return;
         }
         
-        console.log("Player died!");
+        // Player died
         this.owner.isDying = true;
         this.owner.isDead = true;
         
@@ -725,7 +725,7 @@ class HealthComponent extends Component {
             return;
         }
         
-        console.log("Player respawning!");
+        // Player respawning
         
         // Reset health to correct values
         this.owner.maxHitPoints = this.getClassHitPoints();
@@ -746,7 +746,7 @@ class HealthComponent extends Component {
         // Add spawn protection
         this.owner.isInvulnerable = true;
         this.owner.spawnProtectionTimer = 3.0; // 3 seconds of protection
-        console.log(`Player respawned with spawn protection: ${this.owner.spawnProtectionTimer}s`);
+        // Player respawned with spawn protection
         
         // Reset animation to idle and clear any death animation
         this.owner.currentAnimation = null;
@@ -1028,6 +1028,6 @@ playLevelUpEffect() {
         );
     }
     
-    console.log("Level up effect played!");
+    // Level up effect played
 }
 }

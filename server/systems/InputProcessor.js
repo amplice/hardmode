@@ -37,8 +37,7 @@ export class InputProcessor {
         // Generate collision mask from elevation data, passing worldGen for stairs support
         this.collisionMask.generateFromElevationData(elevationData, worldGen);
         
-        console.log("[InputProcessor] Server collision mask initialized with seed:", this.worldSeed);
-        console.log("[InputProcessor] Collision stats:", this.collisionMask.getStats());
+        // Server collision mask initialized
     }
     
     /**
@@ -46,7 +45,7 @@ export class InputProcessor {
      * Server now generates same world as client using shared seed
      */
     updateCollisionMask(collisionMaskData) {
-        console.log("[InputProcessor] Collision mask sync not needed - using shared world seed");
+        // Collision mask sync not needed - using shared world seed
     }
 
     /**
@@ -78,7 +77,7 @@ export class InputProcessor {
         }
 
         if (Math.random() < 0.001) { // Very reduced logging (0.1% chance)
-            console.log(`[InputProcessor] Queued input for player ${playerId}, sequence ${inputCommand.sequence}, keys: ${inputCommand.data.keys.join(',')}`);
+            // Queued input for player
         }
         
         return true;
@@ -143,7 +142,7 @@ export class InputProcessor {
             
             // Log compensation only for significant adjustments
             if (compensation.compensation > 25 && Math.random() < 0.01) {
-                console.log(`[InputProcessor] High latency compensation for ${player.id}: +${compensation.compensation.toFixed(1)}ms`);
+                // High latency compensation applied
             }
         }
         
@@ -331,7 +330,7 @@ export class InputProcessor {
         const seq = this.lastProcessedSequence.get(playerId) || 0;
         // Debug: Log sequence requests
         if (Math.random() < 0.05) {
-            console.log(`[InputProcessor] Getting sequence for player ${playerId}: ${seq}`);
+            // Getting sequence for player
         }
         return seq;
     }
@@ -350,7 +349,7 @@ export class InputProcessor {
             this.sessionAntiCheat.removePlayer(playerId);
         }
         
-        console.log(`[InputProcessor] Removed player ${playerId} from input processing`);
+        // Removed player from input processing
     }
 
     /**

@@ -36,21 +36,21 @@ export class ProjectileRenderer {
         projectile.graphics = graphics; // Store reference
         
         // Try to add sprite effect if available
-        console.log(`Creating projectile visual - effectType: ${data.effectType}, sprites loaded: ${this.game.systems.sprites?.loaded}`);
+        // Creating projectile visual
         if (data.effectType && this.game.systems.sprites?.loaded) {
             const effect = this.createEffectSprite(data.effectType);
             if (effect) {
-                console.log(`Successfully created sprite effect for ${data.effectType}`);
+                // Successfully created sprite effect
                 projectile.sprite.addChild(effect);
                 projectile.effect = effect;
                 // Hide the basic graphics if we have a sprite
                 graphics.visible = false;
             } else {
-                console.log(`Failed to create sprite effect for ${data.effectType}`);
+                // Failed to create sprite effect
             }
         } else if (data.effectType && !this.game.systems.sprites?.loaded) {
             // Store projectile to update later when sprites are loaded
-            console.log(`Sprites not loaded yet, will retry for ${data.effectType}`);
+            // Sprites not loaded yet, will retry
         }
         
         // Set initial position and rotation
@@ -118,7 +118,7 @@ export class ProjectileRenderer {
             if (!projectile.effect && projectile.effectType && this.game.systems.sprites?.loaded) {
                 const effect = this.createEffectSprite(projectile.effectType);
                 if (effect) {
-                    console.log(`Late-loading sprite effect for ${projectile.effectType}`);
+                    // Late-loading sprite effect
                     projectile.sprite.addChild(effect);
                     projectile.effect = effect;
                     // Hide the basic graphics

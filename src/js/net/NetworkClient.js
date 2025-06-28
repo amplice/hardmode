@@ -7,7 +7,7 @@ export class NetworkClient {
         this.connected = false; // Initialize connected state
 
         this.setupHandlers();
-        console.log('NetworkClient initialized');
+        // NetworkClient initialized
     }
 
     setClass(cls) {
@@ -16,7 +16,7 @@ export class NetworkClient {
     
     sendCollisionMask(collisionMask) {
         if (this.connected && collisionMask) {
-            console.log('[NetworkClient] Sending collision mask to server');
+            // Sending collision mask to server
             this.socket.emit('collisionMask', collisionMask.serialize());
         }
     }
@@ -34,12 +34,12 @@ export class NetworkClient {
         this.socket.on('init', data => {
             this.id = data.id;
             this.connected = true; // Mark as connected
-            console.log('Connected to server with id:', this.id);
+            // Connected to server
             
             // Store server's world seed for world generation
             if (data.world && data.world.seed) {
                 this.serverWorldSeed = data.world.seed;
-                console.log(`[NetworkClient] Received world seed from server: ${this.serverWorldSeed}`);
+                // Received world seed from server
             }
             
             // Apply server configuration to client
@@ -97,7 +97,7 @@ export class NetworkClient {
                 
                 // If monster was stunned, show visual feedback
                 if (data.stunned) {
-                    console.log(`[CONFIRMED] ${monster.type} stunned by hit`);
+                    // Monster stunned by hit
                     // Trigger stun animation
                     monster.changeState('stunned');
                 }
@@ -147,7 +147,7 @@ export class NetworkClient {
         this.socket.on('playerKilled', (data) => {
             if (data.playerId === this.socket.id) {
                 // We died
-                console.log(`You were killed by ${data.killedBy}!`);
+                // Player killed
                 if (this.game.entities.player) {
                     this.game.entities.player.health.die();
                 }
@@ -163,7 +163,7 @@ export class NetworkClient {
         this.socket.on('playerLevelUp', (data) => {
             if (data.playerId === this.socket.id) {
                 // We leveled up
-                console.log(`Level up! You are now level ${data.level}`);
+                // Level up!
                 if (this.game.entities.player) {
                     const player = this.game.entities.player;
                     player.level = data.level;
@@ -203,7 +203,7 @@ export class NetworkClient {
         this.socket.on('playerRespawned', (data) => {
             if (data.playerId === this.socket.id) {
                 // We respawned - reset our XP and level
-                console.log(`You respawned! Reset to level ${data.level} with ${data.xp} XP`);
+                // Player respawned
                 if (this.game.entities.player) {
                     const player = this.game.entities.player;
                     player.level = data.level;
@@ -244,12 +244,12 @@ export class NetworkClient {
         // Handle disconnection
         this.socket.on('disconnect', () => {
             this.connected = false;
-            console.log('Disconnected from server');
+            // Disconnected from server
         });
         
         // Handle connection errors
         this.socket.on('connect_error', (error) => {
-            console.error('Connection error:', error.message);
+            // Connection error
         });
         
         // Handle projectile events
@@ -411,7 +411,7 @@ export class NetworkClient {
      */
     sendPlayerInput(inputCommand) {
         if (!this.connected) {
-            console.warn('Cannot send input - not connected to server');
+            // Cannot send input - not connected
             return;
         }
         
@@ -420,11 +420,11 @@ export class NetworkClient {
     
     createProjectile(data) {
         if (!this.connected) {
-            console.error('Cannot create projectile - not connected');
+            // Cannot create projectile - not connected
             return;
         }
         
-        console.log('Sending createProjectile to server:', data);
+        // Sending createProjectile to server
         this.socket.emit('createProjectile', {
             x: data.x,
             y: data.y,
@@ -438,11 +438,11 @@ export class NetworkClient {
     
     sendAbilityRequest(abilityType, extraData = {}) {
         if (!this.connected) {
-            console.error('Cannot send ability request - not connected');
+            // Cannot send ability request - not connected
             return;
         }
         
-        console.log('Sending ability request to server:', abilityType, extraData);
+        // Sending ability request to server
         this.socket.emit('executeAbility', {
             abilityType: abilityType,
             ...extraData
@@ -464,11 +464,9 @@ export class NetworkClient {
                 // Perform reconciliation if we have sequence number
                 if (playerState.lastProcessedSeq !== undefined) {
                     const reconciled = this.game.systems.reconciler.reconcile(playerState, player);
-                    if (reconciled && Math.random() < 0.01) { // Reduced logging
-                        console.log('[NetworkClient] Position reconciled by server');
-                    }
+                    // Position reconciled by server
                 } else {
-                    console.warn('[NetworkClient] Server state missing lastProcessedSeq - using fallback');
+                    // Server state missing lastProcessedSeq - using fallback
                     // Fallback to direct position update if no sequence
                     player.position.x = playerState.x;
                     player.position.y = playerState.y;
