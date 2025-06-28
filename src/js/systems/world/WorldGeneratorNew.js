@@ -39,14 +39,14 @@ export class WorldGenerator {
     this.generateBaseTerrain();
     
     // Generate elevation data using SharedWorldGenerator (same as server)
-    const sharedWorldGen = new SharedWorldGenerator(this.width, this.height, this.seed);
-    this.elevationData = sharedWorldGen.generateElevationData();
+    this.sharedWorldGen = new SharedWorldGenerator(this.width, this.height, this.seed);
+    this.elevationData = this.sharedWorldGen.generateElevationData();
     
     // Get stairs data from SharedWorldGenerator
-    this.stairsData = sharedWorldGen.getStairsData();
+    this.stairsData = this.sharedWorldGen.getStairsData();
     
     // Generate collision mask from the same elevation data and stairs
-    this.collisionMask.generateFromElevationData(this.elevationData, sharedWorldGen);
+    this.collisionMask.generateFromElevationData(this.elevationData, this.sharedWorldGen);
     
     console.log("[WorldGenerator] Client collision mask generated");
     console.log("[WorldGenerator] Client collision stats:", this.collisionMask.getStats());
@@ -330,7 +330,7 @@ export class WorldGenerator {
           tile.container.addChild(sprite);
           
           // Check if this stair tile is walkable
-          tile.isCliffEdge = !this.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX);
+          tile.isCliffEdge = !this.sharedWorldGen.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX);
           processedTiles[y][x] = 'stairs';
         } else {
           // Normal tile processing
