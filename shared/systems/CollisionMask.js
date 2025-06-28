@@ -29,7 +29,7 @@ export class CollisionMask {
      * Generate collision mask from elevation data
      * Only cliff edges are unwalkable - plateau interiors are walkable
      */
-    generateFromElevationData(elevationData) {
+    generateFromElevationData(elevationData, worldGenerator = null) {
         console.log("[CollisionMask] Generating collision mask from elevation data...");
         
         // First pass: Mark all tiles as walkable by default
@@ -61,6 +61,25 @@ export class CollisionMask {
                     }
                     // Plateau interiors remain walkable (true)
                 }
+            }
+        }
+        
+        // Third pass: Update collision mask for walkable stair tiles
+        if (worldGenerator && worldGenerator.getStairsData) {
+            const stairsData = worldGenerator.getStairsData();
+            if (stairsData) {
+                for (let y = 0; y < this.height; y++) {
+                    for (let x = 0; x < this.width; x++) {
+                        if (stairsData[y][x]) {
+                            const stairInfo = stairsData[y][x];
+                            // If this stair tile is walkable, mark it as walkable in collision mask
+                            if (worldGenerator.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX)) {
+                                this.mask[y][x] = true;
+                            }
+                        }
+                    }
+                }
+                console.log("[CollisionMask] Updated collision mask for walkable stair tiles");
             }
         }
         

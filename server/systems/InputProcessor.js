@@ -34,8 +34,8 @@ export class InputProcessor {
         const worldGen = new SharedWorldGenerator(100, 100, this.worldSeed);
         const elevationData = worldGen.generateElevationData();
         
-        // Generate collision mask from elevation data
-        this.collisionMask.generateFromElevationData(elevationData);
+        // Generate collision mask from elevation data, passing worldGen for stairs support
+        this.collisionMask.generateFromElevationData(elevationData, worldGen);
         
         console.log("[InputProcessor] Server collision mask initialized with seed:", this.worldSeed);
         console.log("[InputProcessor] Collision stats:", this.collisionMask.getStats());
