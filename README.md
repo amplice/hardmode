@@ -1,76 +1,79 @@
-# Hardmode - Multiplayer Action RPG
+# Hardmode MMORPG
 
-A real-time multiplayer action RPG with pixel art graphics, featuring skill-based combat and character progression.
+A 2D pixel-art multiplayer MMORPG focused on skill-based combat. Built with PIXI.js and Node.js.
 
-## Quick Start
+## 🎮 **What This Is**
+
+A **working multiplayer game** where:
+- **Level 1 can beat Level 10** through superior positioning and timing
+- **4 distinct character classes** with unique abilities
+- **Real-time combat** with meaningful progression (roll unlocks at level 5!)
+- **No items/inventory** - pure skill-based gameplay
+- **Small-scale multiplayer** (10-20 players) with smooth netcode
+
+## 🚀 **Quick Start**
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000` in your browser to play. Open multiple browser windows to test multiplayer.
+Open `http://localhost:3000` to play. Open multiple browser windows for local multiplayer testing.
 
-## How to Play
+## 📖 **Documentation**
 
-### Controls
-- **WASD** - Move in 8 directions
-- **Mouse** - Aim (character always faces cursor)
-- **Left Click** - Primary attack
-- **Spacebar** - Secondary attack  
-- **Shift** - Roll/dash (unlocked at level 5, not yet implemented)
+**📋 [CLAUDE.md](CLAUDE.md) - Complete Game Guide**  
+*This is the master documentation that accurately describes what's implemented, how it works, and current limitations.*
 
-### Character Classes
-1. **Bladedancer** - Balanced melee fighter (3 HP)
-2. **Guardian** - Heavy tank with area attacks (4 HP)
-3. **Hunter** - Fragile ranged archer (1 HP)
-4. **Rogue** - Fast assassin with critical strikes (2 HP)
+## 🧪 **Testing**
 
-### Gameplay
-- Choose your class at the start
-- Fight monsters to gain XP and level up (max level 10)
-- Engage in PvP combat with other players
-- Respawn instantly at world center when you die
-- Unlock roll ability at level 5
+```bash
+npm test              # Run all tests (unit + browser automation)
+npm test:watch        # Watch mode for development
+```
 
-## Technical Overview
+Includes comprehensive test suite:
+- Unit tests for combat balance and world generation
+- **Puppeteer browser automation** that actually plays the game
+- **Socket.io automated playtesting** with real server connections
+- Performance monitoring and screenshot capture
 
-### Architecture
-- **Client**: JavaScript ES6 modules with PIXI.js for rendering
-- **Server**: Node.js with Express and Socket.io (simple authoritative server)
-- **Networking**: Basic position sync at 30Hz - no prediction or interpolation
+## 🎯 **Current Status: Functional Multiplayer MMORPG**
 
-### Key Files
-- `server.js` - Multiplayer server (200 lines)
-- `src/js/core/Game.js` - Main game orchestration
-- `src/js/net/NetworkClient.js` - Socket.io client
-- `src/js/config/GameConfig.js` - All game constants
+**✅ What Works:**
+- Real-time multiplayer with smooth synchronization
+- 4 character classes with distinct combat styles
+- XP progression with meaningful stat bonuses
+- Roll mechanics unlocked at level 5 (Shift key)
+- Monster AI with 5 different types
+- Deterministic world generation
+- Professional anti-cheat and network optimization
 
-### Development
-- Uses ES6 modules
-- 4-space indentation
-- Simple Socket.io events for networking
-- No build process - just run the server
+**🔄 In Progress:**
+- Combat balance refinement
+- True permadeath implementation (currently 3-second respawn)
+- Database persistence (currently session-based)
 
-## Documentation
+**🎮 Philosophy:** Simple architecture that works > Complex architecture that doesn't
 
-- **CLAUDE.md** - Guide for AI assistants working on this code
-- **GAME_OVERVIEW.md** - Detailed game mechanics and features
-- **EXACT_GAMEPLAY_SPECIFICATION.md** - Precise values for all game mechanics
-- **AGENTS.md** - Guidelines for AI agents and contributors
+## 🏗️ **Architecture**
 
-## Current Status
+- **Frontend:** PIXI.js with JavaScript ES6 modules
+- **Backend:** Node.js with Socket.io (30Hz tick rate)
+- **Networking:** Event-based messaging with area-of-interest optimization
+- **Testing:** Jest + Puppeteer for comprehensive coverage
 
-The game is fully playable with working multiplayer. Player movement syncs properly between clients using a simple but effective Socket.io implementation. The architecture is straightforward - the server broadcasts all game state 30 times per second and clients render what they receive.
+Built for **small-scale skill-based PvP**, not massive server populations.
 
-## Contributing
+## 🤝 **Contributing**
 
-This project was created with AI assistance as a learning experiment. The focus is on functional gameplay over perfect architecture. When contributing:
-- Extend existing systems rather than rewriting
-- Keep the simple networking approach
-- Test with multiple browser windows
-- Make small, clear commits
+See [CLAUDE.md](CLAUDE.md) for comprehensive development guidance, including:
+- How features actually work (not aspirational docs)
+- Common development tasks
+- Testing infrastructure
+- Performance debugging tools
+- Honest assessment of current limitations
 
-## License
+## 📜 **License**
 
-This is a hobbyist learning project.
+ISC
