@@ -12,7 +12,11 @@ export class MonsterManager {
         this.worldSeed = worldSeed;
         
         // Initialize collision mask with server's world seed
-        this.collisionMask = new CollisionMask(100, 100, 64);
+        this.collisionMask = new CollisionMask(
+            GAME_CONSTANTS.WORLD.WIDTH,
+            GAME_CONSTANTS.WORLD.HEIGHT,
+            GAME_CONSTANTS.WORLD.TILE_SIZE
+        );
         this.initializeCollisionMask();
     }
 
@@ -21,8 +25,12 @@ export class MonsterManager {
      * This ensures monsters use the same collision data as players
      */
     initializeCollisionMask() {
-        // Use shared world generator with server's seed
-        const worldGen = new SharedWorldGenerator(100, 100, this.worldSeed);
+        // Use shared world generator with server's seed and dynamic world size
+        const worldGen = new SharedWorldGenerator(
+            GAME_CONSTANTS.WORLD.WIDTH,
+            GAME_CONSTANTS.WORLD.HEIGHT,
+            this.worldSeed
+        );
         const elevationData = worldGen.generateElevationData();
         
         // Generate collision mask from elevation data, passing worldGen for stairs support

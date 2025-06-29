@@ -7,6 +7,7 @@
  */
 import { CollisionMask } from '../../shared/systems/CollisionMask.js';
 import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
+import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 
 export class InputProcessor {
     constructor(gameState, abilityManager = null, lagCompensation = null, sessionAntiCheat = null, worldSeed = 42) {
@@ -20,8 +21,12 @@ export class InputProcessor {
         this.worldSeed = worldSeed;
         
         // Initialize collision mask with server's world seed
-        // Using same parameters as client: 100x100 tiles, 64px tile size
-        this.collisionMask = new CollisionMask(100, 100, 64);
+        // Use shared world constants for dynamic world size
+        this.collisionMask = new CollisionMask(
+            GAME_CONSTANTS.WORLD.WIDTH, 
+            GAME_CONSTANTS.WORLD.HEIGHT, 
+            GAME_CONSTANTS.WORLD.TILE_SIZE
+        );
         this.initializeCollisionMask();
     }
 
@@ -30,8 +35,12 @@ export class InputProcessor {
      * This ensures server and client have identical collision data
      */
     initializeCollisionMask() {
-        // Use shared world generator with server's seed
-        const worldGen = new SharedWorldGenerator(100, 100, this.worldSeed);
+        // Use shared world generator with server's seed and dynamic world size
+        const worldGen = new SharedWorldGenerator(
+            GAME_CONSTANTS.WORLD.WIDTH, 
+            GAME_CONSTANTS.WORLD.HEIGHT, 
+            this.worldSeed
+        );
         const elevationData = worldGen.generateElevationData();
         
         // Generate collision mask from elevation data, passing worldGen for stairs support
@@ -297,9 +306,9 @@ export class InputProcessor {
      * @param {Object} player - The player object
      */
     applyWorldBounds(player) {
-        // Basic world bounds - should match server constants
-        const worldWidth = 100 * 64; // 100 tiles * 64 pixels
-        const worldHeight = 100 * 64;
+        // Use dynamic world bounds from shared constants
+        const worldWidth = this.collisionMask.width * this.collisionMask.tileSize;
+        const worldHeight = this.collisionMask.height * this.collisionMask.tileSize;
         
         player.x = Math.max(0, Math.min(worldWidth, player.x));
         player.y = Math.max(0, Math.min(worldHeight, player.y));
