@@ -283,9 +283,10 @@ export class NetworkClient {
                     // Store the start position for effects
                     player.startPositionForAttack = { x: data.startX, y: data.startY };
                     
-                    // For jump attacks, we need to show a jump arc visually
+                    // For jump attacks, we don't need visual height changes in a 2D game
+                    // The server handles all movement, we just need to track the ability state
                     if (data.type === 'jump' && player.sprite) {
-                        // Store the jump data for visual interpolation
+                        // Store the jump data for ability tracking only
                         player.jumpData = {
                             startX: data.startX,
                             startY: data.startY,
@@ -296,35 +297,8 @@ export class NetworkClient {
                             backwardJump: data.backwardJump
                         };
                         
-                        // Start the visual jump animation
-                        const jumpHeight = 80; // Default jump height
-                        const animateJump = (timestamp) => {
-                            if (!player.jumpData) return; // Jump was cancelled
-                            
-                            const elapsed = timestamp - player.jumpData.startTime;
-                            const progress = Math.min(elapsed / player.jumpData.duration, 1);
-                            
-                            // Server controls X/Y, we just add visual height
-                            const height = Math.sin(Math.PI * progress) * jumpHeight;
-                            
-                            // Update sprite visual position (not the actual position)
-                            if (player.sprite) {
-                                player.sprite.position.set(
-                                    player.position.x,
-                                    player.position.y - height
-                                );
-                            }
-                            
-                            if (progress < 1) {
-                                requestAnimationFrame(animateJump);
-                            } else {
-                                // Ensure sprite is back at ground level
-                                if (player.sprite) {
-                                    player.sprite.position.set(player.position.x, player.position.y);
-                                }
-                            }
-                        };
-                        requestAnimationFrame(animateJump);
+                        // No visual height animation - this is a 2D game
+                        // The sprite position will be updated by normal position syncing
                     }
                 }
             }

@@ -41,5 +41,8 @@ Thumbs.db
 tmp/
 temp/
 
+# Claude configuration (contains credentials)
+.claude/
+
 # Old single-player server (excluded from multiplayer rewrite)
 # server/
