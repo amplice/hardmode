@@ -45,7 +45,10 @@
       "Bash(RAILWAY_TOKEN=\"2100e401-081d-404b-8731-10544307a4da\" railway logs --service hardmode)",
       "Bash(diff:*)",
       "Bash(npm test)",
-      "Bash(npm test:*)"
+      "Bash(npm test:*)",
+      "Bash(dpkg:*)",
+      "Bash(wget:*)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": []
   }

@@ -24,7 +24,6 @@
     "@babel/preset-env": "^7.27.2",
     "babel-jest": "^30.0.2",
     "jest": "^30.0.3",
-    "playwright": "^1.53.1",
     "puppeteer": "^24.11.1",
     "socket.io-client": "^4.8.1",
     "vite": "^6.3.2"
