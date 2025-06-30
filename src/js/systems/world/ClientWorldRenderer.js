@@ -10,27 +10,43 @@ import { CliffAutotiler } from '../tiles/CliffAutotilerNew.js';
 import { CollisionMask } from '../../../shared/systems/CollisionMask.js';
 import { SharedWorldGenerator } from '../../../shared/systems/WorldGenerator.js';
 
-export class WorldGenerator {
+export class ClientWorldRenderer {
   constructor(options = {}) {
     this.width = options.width || 100;
     this.height = options.height || 100;
     this.tileSize = options.tileSize || 64;
     this.tilesets = options.tilesets;
     this.seed = options.seed || 1;
-    this.random = createSeededRandom(this.seed);
-    this.noise2D = createNoise2D(this.random);
     this.container = new PIXI.Container();
     this.tiles = [];
-    this.elevationData = [];
     this.cliffAutotiler = new CliffAutotiler(this.tilesets);
+    
+    // World data (will be set by render method)
+    this.elevationData = null;
+    this.biomeData = null;  
+    this.stairsData = null;
+    this.sharedWorldGen = null;
     
     // Initialize collision mask for debug visualization
     this.collisionMask = new CollisionMask(this.width, this.height, this.tileSize);
-    // Client collision mask initialized
+    console.log('[ClientWorldRenderer] Initialized for rendering only');
   }
 
-  generate() {
-    // Generating world with new simplified approach
+  /**
+   * Render world visuals from provided world data
+   * @param {Object} worldData - Pre-generated world data {elevationData, biomeData, stairsData}
+   * @param {SharedWorldGenerator} sharedWorldGen - World generator instance for collision/utility
+   */
+  render(worldData, sharedWorldGen) {
+    console.log('[ClientWorldRenderer] Rendering world visuals from provided data');
+    
+    // Store world data for rendering
+    this.elevationData = worldData.elevationData;
+    this.biomeData = worldData.biomeData;
+    this.stairsData = worldData.stairsData;
+    this.sharedWorldGen = sharedWorldGen;
+    
+    console.log('[ClientWorldRenderer] World data received - biomes:', this.biomeData.length, 'rows');
     
     // Create world boundary
     this.createWorldBoundary();
@@ -38,29 +54,34 @@ export class WorldGenerator {
     // Generate base terrain (all grass initially)
     this.generateBaseTerrain();
     
-    // Generate world using new order: biomes → elevation → stairs
-    this.sharedWorldGen = new SharedWorldGenerator(this.width, this.height, this.seed);
-    const worldData = this.sharedWorldGen.generateWorld();
-    
-    this.elevationData = worldData.elevationData;
-    this.biomeData = worldData.biomeData;
-    this.stairsData = worldData.stairsData;
-    
-    console.log('[WorldGenerator] Generated world with new order - biomes:', this.biomeData.length, 'rows');
-    
-    // Generate collision mask from the same elevation data and stairs
+    // Generate collision mask from provided elevation data and stairs
     this.collisionMask.generateFromElevationData(this.elevationData, this.sharedWorldGen);
     
-    // Client collision mask generated
+    console.log('[ClientWorldRenderer] Client collision mask generated from shared data');
     
-    // Create visual tiles using new autotiler
+    // Create visual tiles using autotiler
     this.createTileSprites();
     
     // Create debug overlay for collision boundaries
     this.createCollisionDebugOverlay();
     
-    // World generation complete
+    console.log('[ClientWorldRenderer] World rendering complete');
     return this.container;
+  }
+  
+  /**
+   * Legacy generate method for compatibility - generates world data then renders
+   * @deprecated Use render() method with pre-generated world data instead
+   */
+  generate() {
+    console.warn('[ClientWorldRenderer] Using deprecated generate() method - consider using render() with shared data');
+    
+    // Generate world data (for compatibility)
+    this.sharedWorldGen = new SharedWorldGenerator(this.width, this.height, this.seed);
+    const worldData = this.sharedWorldGen.generateWorld();
+    
+    // Render using generated data
+    return this.render(worldData, this.sharedWorldGen);
   }
   
   createWorldBoundary() {

@@ -10,7 +10,7 @@ import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
 import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 
 export class InputProcessor {
-    constructor(gameState, abilityManager = null, lagCompensation = null, sessionAntiCheat = null, worldSeed = 42) {
+    constructor(gameState, abilityManager = null, lagCompensation = null, sessionAntiCheat = null, serverWorldManager) {
         this.gameState = gameState;
         this.abilityManager = abilityManager;
         this.lagCompensation = lagCompensation;
@@ -18,10 +18,9 @@ export class InputProcessor {
         this.inputQueues = new Map(); // playerId -> array of input commands
         this.lastProcessedSequence = new Map(); // playerId -> last sequence processed
         this.playerPhysics = new Map(); // playerId -> physics state
-        this.worldSeed = worldSeed;
+        this.serverWorldManager = serverWorldManager;
         
-        // Initialize collision mask with server's world seed
-        // Use shared world constants for dynamic world size
+        // Initialize collision mask using shared world data (NO duplicate generation)
         this.collisionMask = new CollisionMask(
             GAME_CONSTANTS.WORLD.WIDTH, 
             GAME_CONSTANTS.WORLD.HEIGHT, 
@@ -31,22 +30,18 @@ export class InputProcessor {
     }
 
     /**
-     * Initialize collision mask using exact same generation logic as client
-     * This ensures server and client have identical collision data
+     * Initialize collision mask using shared world data from ServerWorldManager
+     * This ensures server and client have identical collision data WITHOUT duplicate generation
      */
     initializeCollisionMask() {
-        // Use shared world generator with server's seed and dynamic world size
-        const worldGen = new SharedWorldGenerator(
-            GAME_CONSTANTS.WORLD.WIDTH, 
-            GAME_CONSTANTS.WORLD.HEIGHT, 
-            this.worldSeed
-        );
-        const worldData = worldGen.generateWorld();
+        // Use shared world data (already generated once by ServerWorldManager)
+        const worldData = this.serverWorldManager.getWorldData();
+        const worldGen = this.serverWorldManager.getWorldGenerator();
         
-        // Generate collision mask from elevation data, passing worldGen for stairs support
+        // Generate collision mask from shared elevation data
         this.collisionMask.generateFromElevationData(worldData.elevationData, worldGen);
         
-        // Server collision mask initialized
+        console.log('[InputProcessor] Collision mask initialized using shared world data');
     }
     
     /**

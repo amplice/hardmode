@@ -4,14 +4,14 @@ import { CollisionMask } from '../../shared/systems/CollisionMask.js';
 import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
 
 export class MonsterManager {
-    constructor(io, worldSeed = 42) {
+    constructor(io, serverWorldManager) {
         this.io = io;
         this.monsters = new Map();
         this.nextMonsterId = 1;
         this.spawnTimer = 0;
-        this.worldSeed = worldSeed;
+        this.serverWorldManager = serverWorldManager;
         
-        // Initialize collision mask with server's world seed
+        // Initialize collision mask using shared world data (NO duplicate generation)
         this.collisionMask = new CollisionMask(
             GAME_CONSTANTS.WORLD.WIDTH,
             GAME_CONSTANTS.WORLD.HEIGHT,
@@ -21,22 +21,18 @@ export class MonsterManager {
     }
 
     /**
-     * Initialize collision mask using same generation logic as InputProcessor
-     * This ensures monsters use the same collision data as players
+     * Initialize collision mask using shared world data from ServerWorldManager
+     * This ensures monsters use identical collision data as players WITHOUT duplicate generation
      */
     initializeCollisionMask() {
-        // Use shared world generator with server's seed and dynamic world size
-        const worldGen = new SharedWorldGenerator(
-            GAME_CONSTANTS.WORLD.WIDTH,
-            GAME_CONSTANTS.WORLD.HEIGHT,
-            this.worldSeed
-        );
-        const worldData = worldGen.generateWorld();
+        // Use shared world data (already generated once by ServerWorldManager)
+        const worldData = this.serverWorldManager.getWorldData();
+        const worldGen = this.serverWorldManager.getWorldGenerator();
         
-        // Generate collision mask from elevation data, passing worldGen for stairs support
+        // Generate collision mask from shared elevation data
         this.collisionMask.generateFromElevationData(worldData.elevationData, worldGen);
         
-        // Collision mask initialized
+        console.log('[MonsterManager] Collision mask initialized using shared world data');
     }
     
     /**

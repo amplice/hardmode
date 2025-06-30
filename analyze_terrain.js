@@ -1,5 +1,5 @@
 // Terrain analysis script to test the new generation system
-import { WorldGenerator } from './src/js/systems/world/WorldGeneratorNew.js';
+import { ClientWorldRenderer } from './src/js/systems/world/ClientWorldRenderer.js';
 import { TilesetManager } from './src/js/systems/tiles/TilesetManager.js';
 
 // Mock PIXI for testing

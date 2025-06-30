@@ -10,6 +10,7 @@ import { GameStateManager } from './managers/GameStateManager.js';
 import { MonsterManager } from './managers/MonsterManager.js';
 import { ProjectileManager } from './managers/ProjectileManager.js';
 import { AbilityManager } from './managers/AbilityManager.js';
+import { ServerWorldManager } from './managers/ServerWorldManager.js';
 import { InputProcessor } from './systems/InputProcessor.js';
 import { LagCompensation } from './systems/LagCompensation.js';
 import { SessionAntiCheat } from './systems/SessionAntiCheat.js';
@@ -40,14 +41,18 @@ console.log(`[Server] Generated world seed: ${SERVER_WORLD_SEED}`);
 // Override the constant with server's seed
 GAME_CONSTANTS.WORLD.SEED = SERVER_WORLD_SEED;
 
-// Initialize game systems
+// Initialize centralized world generation (SINGLE world generation for entire server)
+const serverWorldManager = new ServerWorldManager(SERVER_WORLD_SEED);
+serverWorldManager.initialize();
+
+// Initialize game systems with shared world data
 const gameState = new GameStateManager(io);
-const monsterManager = new MonsterManager(io, SERVER_WORLD_SEED);
+const monsterManager = new MonsterManager(io, serverWorldManager);
 const projectileManager = new ProjectileManager(io);
 const abilityManager = new AbilityManager(io, gameState, projectileManager);
 const lagCompensation = new LagCompensation();
 const sessionAntiCheat = new SessionAntiCheat(abilityManager);
-const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED);
+const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation, sessionAntiCheat, serverWorldManager);
 const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED);
 const networkOptimizer = new NetworkOptimizer();
 

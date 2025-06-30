@@ -6,7 +6,8 @@ import { InputBuffer }    from '../systems/InputBuffer.js';
 import { MovementPredictor } from '../systems/MovementPredictor.js';
 import { Reconciler } from '../systems/Reconciler.js';
 import { PhysicsSystem }  from '../systems/Physics.js';
-import { WorldGenerator } from '../systems/world/WorldGeneratorNew.js';
+import { ClientWorldRenderer } from '../systems/world/ClientWorldRenderer.js';
+import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
 import { CombatSystem }   from '../systems/CombatSystem.js';
 import { MonsterSystem }  from '../systems/MonsterSystem.js';
 import { Monster } from '../entities/monsters/Monster.js';
@@ -185,9 +186,18 @@ export class Game {
     
     // Initialize the game world using server's seed if available
     const worldSeed = this.network ? this.network.serverWorldSeed || GAME_CONSTANTS.WORLD.SEED : GAME_CONSTANTS.WORLD.SEED;
-    // Using world seed
+    console.log('[Game] Initializing world with seed:', worldSeed);
     
-    this.systems.world = new WorldGenerator({
+    // Generate world data once using SharedWorldGenerator
+    const worldGenerator = new SharedWorldGenerator(
+      GAME_CONSTANTS.WORLD.WIDTH,
+      GAME_CONSTANTS.WORLD.HEIGHT, 
+      worldSeed
+    );
+    const worldData = worldGenerator.generateWorld();
+    
+    // Create renderer and render the world data
+    this.systems.world = new ClientWorldRenderer({
       width:    GAME_CONSTANTS.WORLD.WIDTH,
       height:   GAME_CONSTANTS.WORLD.HEIGHT,
       tileSize: GAME_CONSTANTS.WORLD.TILE_SIZE,
@@ -195,7 +205,7 @@ export class Game {
       tilesets: this.tilesets
     });
 
-    const worldView = this.systems.world.generate();
+    const worldView = this.systems.world.render(worldData, worldGenerator);
     this.worldContainer.addChild(worldView);
     
     // Now initialize predictor and reconciler with collision mask from generated world
@@ -414,16 +424,29 @@ export class Game {
     if (this.systems.world) {
       this.worldContainer.removeChildren();
     }
-    this.systems.world = new WorldGenerator({
+    
+    console.log('[Game] Initializing multiplayer world with server seed:', data.seed);
+    
+    // Generate world data once using SharedWorldGenerator with server's seed
+    const worldGenerator = new SharedWorldGenerator(
+      data.width,
+      data.height,
+      data.seed
+    );
+    const worldData = worldGenerator.generateWorld();
+    
+    // Create renderer and render the world data  
+    this.systems.world = new ClientWorldRenderer({
       width: data.width,
       height: data.height,
       tileSize: data.tileSize,
       tilesets: this.tilesets,
       seed: data.seed
     });
-    const worldView = this.systems.world.generate();
+    
+    const worldView = this.systems.world.render(worldData, worldGenerator);
     this.worldContainer.addChild(worldView);
-    // Connected to multiplayer server
+    console.log('[Game] Connected to multiplayer server - world synchronized');
   }
 
   addRemotePlayer(info) {
