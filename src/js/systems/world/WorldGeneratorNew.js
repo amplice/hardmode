@@ -343,11 +343,36 @@ export class WorldGenerator {
           // Mark tile walkability based on collision mask
           tile.isCliffEdge = !this.collisionMask.isTileWalkable(x, y);
           
-          const sprite = new PIXI.Sprite(tileResult.texture);
-          sprite.position.set(0, 0);
-          sprite.scale.set(this.tileSize / 32);
-          tile.sprite = sprite;
-          tile.container.addChild(sprite);
+          // FOR ELEVATED TILES: Create base ground sprite first, then cliff tile on top
+          if (this.elevationData[y][x] > 0) {
+            // Get the biome for this elevated tile
+            const cliffBiome = this.biomeData && this.biomeData[y] ? this.biomeData[y][x] : 0;
+            const isDarkGrassCliff = cliffBiome === 1;
+            
+            // Create base ground sprite (what shows through transparent areas)
+            const baseGroundTexture = isDarkGrassCliff ? 
+              this.tilesets.getRandomPureDarkGrass() : 
+              this.tilesets.getRandomPureGrass();
+            
+            const baseSprite = new PIXI.Sprite(baseGroundTexture);
+            baseSprite.position.set(0, 0);
+            baseSprite.scale.set(this.tileSize / 32);
+            tile.container.addChild(baseSprite);
+            
+            // Create cliff tile sprite on top
+            const cliffSprite = new PIXI.Sprite(tileResult.texture);
+            cliffSprite.position.set(0, 0);
+            cliffSprite.scale.set(this.tileSize / 32);
+            tile.sprite = cliffSprite; // Keep reference to main sprite
+            tile.container.addChild(cliffSprite);
+          } else {
+            // Ground level tiles - single sprite as before
+            const sprite = new PIXI.Sprite(tileResult.texture);
+            sprite.position.set(0, 0);
+            sprite.scale.set(this.tileSize / 32);
+            tile.sprite = sprite;
+            tile.container.addChild(sprite);
+          }
         }
         
         this.container.addChild(tile.container);
