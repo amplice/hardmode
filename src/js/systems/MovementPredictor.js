@@ -21,8 +21,8 @@ export class MovementPredictor {
         };
         
         this.worldBounds = {
-            width: 250 * 64,  // Updated to 250x250 world (16000x16000 pixels)
-            height: 250 * 64
+            width: 200 * 64,  // Updated to 200x200 world (12800x12800 pixels)
+            height: 200 * 64
         };
         
         // Minimal prediction adjustment for high latency

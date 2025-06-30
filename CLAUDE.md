@@ -83,11 +83,11 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
   - **Ghoul**: 2 HP, fast aggressive pursuer
   - **Wild Archer**: 1 HP, long-range sniper
 - **AI States**: idle → chase → attack → dying
-- **Smart spawning**: Away from players, max 40 concurrent (scaled for 250x250 world)
-- **Automatic spawning**: Every 3 seconds (faster to populate larger world)
+- **Smart spawning**: Away from players, max 25 concurrent (balanced for 200x200 world)
+- **Automatic spawning**: Every 4 seconds
 
 ### **World Generation - Deterministic**
-- **250x250 tile world** with server-controlled seed (expanded from 100x100 for more exploration space)
+- **200x200 tile world** with server-controlled seed (expanded from 100x100 for good exploration/performance balance)
 - **Procedural terrain**: Elevation, walkable areas, stair connections
 - **Collision system**: Proper tile-based movement validation
 - **Visual consistency**: All clients see identical world
