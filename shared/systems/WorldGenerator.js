@@ -626,18 +626,27 @@ export class SharedWorldGenerator {
         const isDarkGrassStairs = stairBiome === 1;
         const colOffset = isDarkGrassStairs ? 11 : 0;
         
+        // DEBUG: Log stair placement details
+        console.log(`[SharedWorldGenerator] Placing ${direction} stairs at (${x},${y}): biome=${stairBiome}, isDark=${isDarkGrassStairs}, colOffset=${colOffset}`);
+        
         switch (direction) {
             case 'west':
                 // Place west stairs with biome-appropriate tiles
                 for (let dy = 0; dy < 4; dy++) {
                     for (let dx = 0; dx < 2; dx++) {
                         if (x + dx >= 0 && y + dy < this.height) {
+                            const tileX = 2 + dx + colOffset;
+                            const tileY = 13 + dy;
                             this.stairsData[y + dy][x + dx] = {
                                 type: 'west',
-                                tileX: 2 + dx + colOffset,
-                                tileY: 13 + dy,
+                                tileX: tileX,
+                                tileY: tileY,
                                 biome: stairBiome
                             };
+                            // DEBUG: Log each stair tile placement
+                            if (dy === 0 && dx === 0) { // Only log first tile to avoid spam
+                                console.log(`[SharedWorldGenerator] West stair tile: (${tileY},${tileX}) biome=${stairBiome}`);
+                            }
                         }
                     }
                 }

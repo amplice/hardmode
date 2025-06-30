@@ -325,6 +325,12 @@ export class WorldGenerator {
           const stairInfo = this.stairsData[y][x];
           const stairTexture = this.tilesets.textures.terrain[stairInfo.tileY][stairInfo.tileX];
           
+          // DEBUG: Log stair rendering details  
+          if (Math.random() < 0.1) { // Only log 10% to avoid spam
+            console.log(`[WorldGenerator] Rendering stair at (${x},${y}): tile(${stairInfo.tileY},${stairInfo.tileX}) biome=${stairInfo.biome || 'undefined'} type=${stairInfo.type}`);
+            console.log(`[WorldGenerator] Texture exists: ${!!stairTexture}, Expected dark grass: ${(stairInfo.biome === 1)}`);
+          }
+          
           const sprite = new PIXI.Sprite(stairTexture);
           sprite.position.set(0, 0);
           sprite.scale.set(this.tileSize / 32);
