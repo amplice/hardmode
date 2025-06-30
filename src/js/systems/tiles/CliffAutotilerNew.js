@@ -322,17 +322,17 @@ export class CliffAutotiler {
     // Dark SOUTH of green = TOP of dark area = use NORTH edge (row 32)
     // Dark NORTH of green = BOTTOM of dark area = use SOUTH edge (row 36)
     
-    // Priority 1: Outer diagonal corners/edges (two adjacent cardinals)
-    if (hasSouth && hasEast) return { row: 32, col: baseCol + 0, type: "NW outer corner/diagonal (dark SE)" };
-    if (hasSouth && hasWest) return { row: 32, col: baseCol + 4, type: "NE outer corner/diagonal (dark SW)" };
-    if (hasNorth && hasEast) return { row: 36, col: baseCol + 0, type: "SW outer corner/diagonal (dark NE)" };
-    if (hasNorth && hasWest) return { row: 36, col: baseCol + 4, type: "SE outer corner/diagonal (dark NW)" };
+    // Priority 1: Inner corners (two adjacent cardinals = outer corner of dark area)
+    if (hasSouth && hasEast) return { row: 30, col: baseCol + 2, type: "NW inner corner (dark SE corner)" };
+    if (hasSouth && hasWest) return { row: 30, col: baseCol + 3, type: "NE inner corner (dark SW corner)" };
+    if (hasNorth && hasEast) return { row: 31, col: baseCol + 2, type: "SW inner corner (dark NE corner)" };
+    if (hasNorth && hasWest) return { row: 31, col: baseCol + 3, type: "SE inner corner (dark NW corner)" };
     
-    // Priority 2: Inner diagonal corners (diagonal but NO adjacent cardinals)
-    if (hasSoutheast && !hasSouth && !hasEast) return { row: 30, col: baseCol + 2, type: "NW inner corner" };
-    if (hasSouthwest && !hasSouth && !hasWest) return { row: 30, col: baseCol + 3, type: "NE inner corner" };
-    if (hasNortheast && !hasNorth && !hasEast) return { row: 31, col: baseCol + 2, type: "SW inner corner" };
-    if (hasNorthwest && !hasNorth && !hasWest) return { row: 31, col: baseCol + 3, type: "SE inner corner" };
+    // Priority 2: Outer diagonal edges (diagonal only, no adjacent cardinals = inner corner of dark area)
+    if (hasSoutheast && !hasSouth && !hasEast) return { row: 32, col: baseCol + 0, type: "NW outer diagonal edge" };
+    if (hasSouthwest && !hasSouth && !hasWest) return { row: 32, col: baseCol + 4, type: "NE outer diagonal edge" };
+    if (hasNortheast && !hasNorth && !hasEast) return { row: 36, col: baseCol + 0, type: "SW outer diagonal edge" };
+    if (hasNorthwest && !hasNorth && !hasWest) return { row: 36, col: baseCol + 4, type: "SE outer diagonal edge" };
     
     // Priority 3: Single cardinal edges (REVERSED)
     if (hasSouth && !hasEast && !hasNorth && !hasWest) return { row: 32, col: baseCol + 1, type: "N edge (dark south)" };
