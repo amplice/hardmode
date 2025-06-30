@@ -3,7 +3,7 @@ import { SERVER_CONFIG } from '../config/ServerConfig.js';
 import { getDistance } from '../../shared/utils/MathUtils.js';
 
 export class SocketHandler {
-    constructor(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat) {
+    constructor(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, worldSeed) {
         this.io = io;
         this.gameState = gameState;
         this.monsterManager = monsterManager;
@@ -12,6 +12,7 @@ export class SocketHandler {
         this.inputProcessor = inputProcessor;
         this.lagCompensation = lagCompensation;
         this.sessionAntiCheat = sessionAntiCheat;
+        this.worldSeed = worldSeed;
         this.setupEventHandlers();
     }
 
@@ -32,7 +33,7 @@ export class SocketHandler {
                 width: GAME_CONSTANTS.WORLD.WIDTH,
                 height: GAME_CONSTANTS.WORLD.HEIGHT,
                 tileSize: GAME_CONSTANTS.WORLD.TILE_SIZE,
-                seed: GAME_CONSTANTS.WORLD.SEED
+                seed: this.worldSeed
             },
             players: this.gameState.getSerializedPlayers(this.inputProcessor),
             monsters: this.monsterManager.getSerializedMonsters(this.monsterManager.monsters),

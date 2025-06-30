@@ -48,7 +48,7 @@ const abilityManager = new AbilityManager(io, gameState, projectileManager);
 const lagCompensation = new LagCompensation();
 const sessionAntiCheat = new SessionAntiCheat(abilityManager);
 const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED);
-const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat);
+const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED);
 const networkOptimizer = new NetworkOptimizer();
 
 // Setup debug endpoint with access to systems
