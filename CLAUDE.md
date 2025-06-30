@@ -279,7 +279,19 @@ The implementation is **intentionally simple** and works well for the intended s
 
 ---
 
-**Last Updated**: June 29, 2025 - Complete codebase verification and documentation accuracy confirmation.
+**Last Updated**: June 30, 2025 - Dark grass biome coordinate system correction.
 **Verification Status**: ✅ **98% accurate** - All systems verified against actual implementation.
 **Game Status**: Functional multiplayer MMORPG with sophisticated networking and security systems.
 **Development Approach**: Simple architecture, professional execution, skill-based gameplay focus.
+
+## ⚠️ CRITICAL COORDINATE SYSTEM NOTE
+
+**Tileset Coordinates**: (row, column) format
+- (1,1) = row 1, column 1 (green grass main tile)
+- (1,12) = row 1, column 12 (dark grass main tile - same row, +11 column offset)
+- **NOT (12,1)** which would be row 12, column 1
+
+**Dark Grass Biome Coordinates**: 
+- Dark grass tiles: Same rows as green grass (0-10), but columns 11-21 (+11 column offset)
+- Transition tiles: rows 0-9, columns 30-36
+- **Column offset, NOT row offset**

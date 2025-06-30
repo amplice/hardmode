@@ -46,21 +46,11 @@ export class TilesetManager {
     // Store as 2D array for easier access
     this.textures.terrain = [];
     
-    // Load rows 0-10 to include all green grass cliff variations and inner corners
+    // Load rows 0-10 with both green grass (cols 0-10) and dark grass (cols 11-21)
     for (let row = 0; row < 11; row++) {
       this.textures.terrain[row] = [];
-      for (let col = 0; col < 11; col++) {
-        this.textures.terrain[row][col] = new Texture(
-          baseTexture,
-          new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-        );
-      }
-    }
-    
-    // Load rows 11-21 for dark grass tileset (mirrors green grass with +11 offset)
-    for (let row = 11; row <= 21; row++) {
-      this.textures.terrain[row] = [];
-      for (let col = 0; col < 26; col++) { // Dark grass uses columns 0-25
+      // Load green grass columns (0-10) and dark grass columns (11-21)
+      for (let col = 0; col < 22; col++) {
         this.textures.terrain[row][col] = new Texture(
           baseTexture,
           new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
@@ -106,8 +96,8 @@ export class TilesetManager {
     // Store green grass tiles with different frequency weights
     this.basicGrassTile = this.textures.terrain[1][1];
     
-    // Store dark grass tiles (row 12 = row 1 + 11 offset)
-    this.basicDarkGrassTile = this.textures.terrain[12][1];
+    // Store dark grass tiles (column 12 = column 1 + 11 offset, same row)
+    this.basicDarkGrassTile = this.textures.terrain[1][12];
     
     // Common green grass variations (rows 27-28) - used moderately
     this.commonGrassVariations = [
@@ -123,14 +113,13 @@ export class TilesetManager {
       this.textures.terrain[28][9]
     ];
     
-    // Dark grass variations (using the same column pattern but in dark grass rows)
-    // For now, use main dark grass tiles as we focus on basic implementation
+    // Dark grass variations (using the same row pattern but with +11 column offset)
     this.commonDarkGrassVariations = [
-      this.textures.terrain[12][1],  // Basic dark grass
-      this.textures.terrain[12][2],  // Dark grass variation 2
-      this.textures.terrain[12][3],  // Dark grass variation 3
-      this.textures.terrain[12][4],  // Dark grass variation 4
-      this.textures.terrain[12][5]   // Dark grass variation 5
+      this.textures.terrain[1][12],  // Basic dark grass (1,12)
+      this.textures.terrain[1][13],  // Dark grass variation 2 (1,13)
+      this.textures.terrain[1][14],  // Dark grass variation 3 (1,14)
+      this.textures.terrain[1][15],  // Dark grass variation 4 (1,15)
+      this.textures.terrain[1][16]   // Dark grass variation 5 (1,16)
     ];
     
     // Decorative grass variations (22,54) to (31,63) - used sparingly
