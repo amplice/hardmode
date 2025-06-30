@@ -370,6 +370,19 @@ export class WorldGenerator {
         const extensionTexture = this.cliffAutotiler.getCliffExtensionTexture(x, y, this.elevationData, processedTiles, this.biomeData);
         
         if (extensionTexture && y + 1 < this.height) {
+          // FIX: Update the ground tile underneath to match the cliff's biome
+          const cliffBiome = this.biomeData && this.biomeData[y] ? this.biomeData[y][x] : 0;
+          const groundTile = this.tiles[y + 1][x];
+          
+          // Replace the ground tile sprite with the appropriate biome grass
+          if (groundTile && groundTile.sprite) {
+            const newGroundTexture = cliffBiome === 1 ? 
+              this.tilesets.getRandomPureDarkGrass() : 
+              this.tilesets.getRandomPureGrass();
+            
+            groundTile.sprite.texture = newGroundTexture;
+          }
+          
           const extensionSprite = new PIXI.Sprite(extensionTexture);
           extensionSprite.x = x * this.tileSize;
           extensionSprite.y = (y + 1) * this.tileSize;
