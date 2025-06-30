@@ -38,16 +38,15 @@ export class WorldGenerator {
     // Generate base terrain (all grass initially)
     this.generateBaseTerrain();
     
-    // Generate elevation data using SharedWorldGenerator (same as server)
+    // Generate world using new order: biomes → elevation → stairs
     this.sharedWorldGen = new SharedWorldGenerator(this.width, this.height, this.seed);
-    this.elevationData = this.sharedWorldGen.generateElevationData();
+    const worldData = this.sharedWorldGen.generateWorld();
     
-    // Generate biome data for dark grass mini-biomes
-    this.biomeData = this.sharedWorldGen.generateBiomeData();
-    console.log('[WorldGenerator] Generated biome data with', this.biomeData.length, 'rows');
+    this.elevationData = worldData.elevationData;
+    this.biomeData = worldData.biomeData;
+    this.stairsData = worldData.stairsData;
     
-    // Get stairs data from SharedWorldGenerator
-    this.stairsData = this.sharedWorldGen.getStairsData();
+    console.log('[WorldGenerator] Generated world with new order - biomes:', this.biomeData.length, 'rows');
     
     // Generate collision mask from the same elevation data and stairs
     this.collisionMask.generateFromElevationData(this.elevationData, this.sharedWorldGen);

@@ -31,10 +31,10 @@ export class MonsterManager {
             GAME_CONSTANTS.WORLD.HEIGHT,
             this.worldSeed
         );
-        const elevationData = worldGen.generateElevationData();
+        const worldData = worldGen.generateWorld();
         
         // Generate collision mask from elevation data, passing worldGen for stairs support
-        this.collisionMask.generateFromElevationData(elevationData, worldGen);
+        this.collisionMask.generateFromElevationData(worldData.elevationData, worldGen);
         
         // Collision mask initialized
     }
