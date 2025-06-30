@@ -46,11 +46,11 @@ export class TilesetManager {
     // Store as 2D array for easier access
     this.textures.terrain = [];
     
-    // Load rows 0-10 with green grass (cols 0-10), dark grass (cols 11-21), and transitions (cols 30-36)
+    // Load rows 0-10 with green grass (cols 0-10) and dark grass (cols 11-21)
     for (let row = 0; row < 11; row++) {
       this.textures.terrain[row] = [];
-      // Load green grass columns (0-10), dark grass columns (11-21), and transition columns (30-36)
-      for (let col = 0; col < 37; col++) {
+      // Load green grass columns (0-10) and dark grass columns (11-21)
+      for (let col = 0; col < 22; col++) {
         this.textures.terrain[row][col] = new Texture(
           baseTexture,
           new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
@@ -73,6 +73,17 @@ export class TilesetManager {
     for (let row = 27; row <= 28; row++) {
       this.textures.terrain[row] = [];
       for (let col = 0; col < 11; col++) {
+        this.textures.terrain[row][col] = new Texture(
+          baseTexture,
+          new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+        );
+      }
+    }
+    
+    // Load transition tiles (rows 30-36, columns 0-9)
+    for (let row = 30; row <= 36; row++) {
+      this.textures.terrain[row] = [];
+      for (let col = 0; col <= 9; col++) {
         this.textures.terrain[row][col] = new Texture(
           baseTexture,
           new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
