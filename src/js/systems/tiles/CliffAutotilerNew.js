@@ -318,48 +318,59 @@ export class CliffAutotiler {
     // Green grass uses columns 0-4 (green to dark transitions)
     const baseCol = 0;
     
+    // REVERSED LOGIC: Transition tiles represent the dark area's edges, not neighbor directions
+    // Dark SOUTH of green = TOP of dark area = use NORTH edge (row 32)
+    // Dark NORTH of green = BOTTOM of dark area = use SOUTH edge (row 36)
+    
     // Priority 1: Outer diagonal corners/edges (two adjacent cardinals)
-    if (hasNorth && hasWest) return { row: 32, col: baseCol + 0, type: "NW outer corner/diagonal" };
-    if (hasNorth && hasEast) return { row: 32, col: baseCol + 4, type: "NE outer corner/diagonal" };
-    if (hasSouth && hasWest) return { row: 36, col: baseCol + 0, type: "SW outer corner/diagonal" };
-    if (hasSouth && hasEast) return { row: 36, col: baseCol + 4, type: "SE outer corner/diagonal" };
+    if (hasSouth && hasEast) return { row: 32, col: baseCol + 0, type: "NW outer corner/diagonal (dark SE)" };
+    if (hasSouth && hasWest) return { row: 32, col: baseCol + 4, type: "NE outer corner/diagonal (dark SW)" };
+    if (hasNorth && hasEast) return { row: 36, col: baseCol + 0, type: "SW outer corner/diagonal (dark NE)" };
+    if (hasNorth && hasWest) return { row: 36, col: baseCol + 4, type: "SE outer corner/diagonal (dark NW)" };
     
     // Priority 2: Inner diagonal corners (diagonal but NO adjacent cardinals)
-    if (hasNorthwest && !hasNorth && !hasWest) return { row: 30, col: baseCol + 2, type: "NW inner corner" };
-    if (hasNortheast && !hasNorth && !hasEast) return { row: 30, col: baseCol + 3, type: "NE inner corner" };
-    if (hasSouthwest && !hasSouth && !hasWest) return { row: 31, col: baseCol + 2, type: "SW inner corner" };
-    if (hasSoutheast && !hasSouth && !hasEast) return { row: 31, col: baseCol + 3, type: "SE inner corner" };
+    if (hasSoutheast && !hasSouth && !hasEast) return { row: 30, col: baseCol + 2, type: "NW inner corner" };
+    if (hasSouthwest && !hasSouth && !hasWest) return { row: 30, col: baseCol + 3, type: "NE inner corner" };
+    if (hasNortheast && !hasNorth && !hasEast) return { row: 31, col: baseCol + 2, type: "SW inner corner" };
+    if (hasNorthwest && !hasNorth && !hasWest) return { row: 31, col: baseCol + 3, type: "SE inner corner" };
     
-    // Priority 3: Single cardinal edges  
-    if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 32, col: baseCol + 1, type: "N edge" };
-    if (hasWest && !hasNorth && !hasEast && !hasSouth) return { row: 33, col: baseCol + 0, type: "W edge" };
-    if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 34, col: baseCol + 4, type: "E edge" };
-    if (hasSouth && !hasNorth && !hasEast && !hasWest) return { row: 36, col: baseCol + 1, type: "S edge" };
+    // Priority 3: Single cardinal edges (REVERSED)
+    if (hasSouth && !hasEast && !hasNorth && !hasWest) return { row: 32, col: baseCol + 1, type: "N edge (dark south)" };
+    if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 33, col: baseCol + 0, type: "W edge (dark east)" };
+    if (hasWest && !hasNorth && !hasSouth && !hasEast) return { row: 34, col: baseCol + 4, type: "E edge (dark west)" };
+    if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 36, col: baseCol + 1, type: "S edge (dark north)" };
     
-    // Priority 4: Edge variants and combinations
-    // West edge variants
+    // Priority 4: Edge variants and combinations (REVERSED)
+    // Dark west (east edge of dark area) - use east edge variants
     if (hasWest && !hasEast) {
-      // Prefer different west edge rows for variation
-      if (hasNorth || hasSouth) return { row: 34, col: baseCol + 0, type: "W edge variant" };
-      return { row: 35, col: baseCol + 0, type: "W edge variant 2" };
+      // Use east edge tiles for dark areas to our west
+      if (hasNorth || hasSouth) return { row: 34, col: baseCol + 4, type: "E edge variant (dark west)" };
+      return { row: 35, col: baseCol + 4, type: "E edge variant 2 (dark west)" };
     }
     
-    // East edge variants  
+    // Dark east (west edge of dark area) - use west edge variants  
     if (hasEast && !hasWest) {
-      return { row: 35, col: baseCol + 4, type: "E edge variant" };
+      if (hasNorth || hasSouth) return { row: 34, col: baseCol + 0, type: "W edge variant (dark east)" };
+      return { row: 35, col: baseCol + 0, type: "W edge variant 2 (dark east)" };
     }
     
-    // South edge variants
+    // Dark south (north edge of dark area) - use north edge variants
     if (hasSouth && !hasNorth) {
-      if (hasWest || hasEast) return { row: 36, col: baseCol + 2, type: "S edge variant" };
-      return { row: 36, col: baseCol + 3, type: "S edge variant 2" };
+      if (hasWest || hasEast) return { row: 32, col: baseCol + 2, type: "N edge variant (dark south)" };
+      return { row: 32, col: baseCol + 3, type: "N edge variant 2 (dark south)" };
     }
     
-    // Priority 5: Fallback for any cardinal direction
-    if (hasNorth) return { row: 32, col: baseCol + 1, type: "N edge fallback" };
-    if (hasWest) return { row: 33, col: baseCol + 0, type: "W edge fallback" };
-    if (hasEast) return { row: 34, col: baseCol + 4, type: "E edge fallback" };
-    if (hasSouth) return { row: 36, col: baseCol + 1, type: "S edge fallback" };
+    // Dark north (south edge of dark area) - use south edge variants
+    if (hasNorth && !hasSouth) {
+      if (hasWest || hasEast) return { row: 36, col: baseCol + 2, type: "S edge variant (dark north)" };
+      return { row: 36, col: baseCol + 3, type: "S edge variant 2 (dark north)" };
+    }
+    
+    // Priority 5: Fallback for any cardinal direction (REVERSED)
+    if (hasSouth) return { row: 32, col: baseCol + 1, type: "N edge fallback (dark south)" };
+    if (hasEast) return { row: 33, col: baseCol + 0, type: "W edge fallback (dark east)" };
+    if (hasWest) return { row: 34, col: baseCol + 4, type: "E edge fallback (dark west)" };
+    if (hasNorth) return { row: 36, col: baseCol + 1, type: "S edge fallback (dark north)" };
     
     // Priority 6: No transition needed - this shouldn't happen if bitmask > 0
     return null;
