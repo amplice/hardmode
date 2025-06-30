@@ -779,53 +779,21 @@ export class SharedWorldGenerator {
         const plateauCount = 4 + Math.floor(this.random() * 3);
         
         for (let i = 0; i < plateauCount; i++) {
-            // Choose center point with buffer for 3x3 minimum + 1 tile biome buffer
-            const cx = 12 + Math.floor(this.random() * (this.width - 24)); // Extra buffer for biome constraints
-            const cy = 12 + Math.floor(this.random() * (this.height - 24));
+            // Choose center point with normal buffer for 3x3 minimum
+            const cx = 10 + Math.floor(this.random() * (this.width - 20));
+            const cy = 10 + Math.floor(this.random() * (this.height - 20));
             
-            // Check if this area is suitable (single biome with buffer)
-            if (!this.isSuitableForPlateau(cx, cy, biomeData)) {
-                continue; // Skip this plateau if it would violate biome boundaries
-            }
-            
-            // Get the biome for this plateau
-            const plateauBiome = biomeData[cy][cx];
-            
-            // Generate plateau within biome constraints
+            // Generate plateau normally (ignoring biome constraints initially)
             const size = 6 + Math.floor(this.random() * 8); // 6-13 tile radius
-            this.generateConstrainedPlateau(elevationData, biomeData, cx, cy, size, plateauBiome);
+            this.generateUnconstrainedPlateau(elevationData, cx, cy, size);
         }
     }
 
-    /**
-     * Check if a location is suitable for plateau placement
-     * Ensures 1-tile buffer from biome edges
-     */
-    isSuitableForPlateau(centerX, centerY, biomeData) {
-        const checkRadius = 8; // Check larger area for biome consistency
-        const centerBiome = biomeData[centerY][centerX];
-        
-        // Check if the entire area (including buffer) is the same biome
-        for (let dy = -checkRadius; dy <= checkRadius; dy++) {
-            for (let dx = -checkRadius; dx <= checkRadius; dx++) {
-                const x = centerX + dx;
-                const y = centerY + dy;
-                
-                if (x < 0 || x >= this.width || y < 0 || y >= this.height) continue;
-                
-                if (biomeData[y][x] !== centerBiome) {
-                    return false; // Different biome found - not suitable
-                }
-            }
-        }
-        
-        return true;
-    }
 
     /**
-     * Generate a plateau constrained to stay within a single biome
+     * Generate an unconstrained plateau (normal generation, no biome checking)
      */
-    generateConstrainedPlateau(elevationData, biomeData, centerX, centerY, maxRadius, plateauBiome) {
+    generateUnconstrainedPlateau(elevationData, centerX, centerY, maxRadius) {
         const noiseScale = 0.1;
         
         for (let dy = -maxRadius; dy <= maxRadius; dy++) {
@@ -834,9 +802,6 @@ export class SharedWorldGenerator {
                 const y = centerY + dy;
                 
                 if (x < 1 || x >= this.width - 1 || y < 1 || y >= this.height - 1) continue;
-                
-                // Only place elevated tiles in the same biome with 1-tile buffer from edges
-                if (!this.isValidPlateauPosition(x, y, biomeData, plateauBiome)) continue;
                 
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 const noiseValue = this.noise2D(x * noiseScale, y * noiseScale);
@@ -850,67 +815,66 @@ export class SharedWorldGenerator {
     }
 
     /**
-     * Check if a position is valid for plateau placement (respects biome buffers)
-     */
-    isValidPlateauPosition(x, y, biomeData, plateauBiome) {
-        // Check that this position and all adjacent positions are the same biome
-        for (let dy = -1; dy <= 1; dy++) {
-            for (let dx = -1; dx <= 1; dx++) {
-                const checkX = x + dx;
-                const checkY = y + dy;
-                
-                if (checkX < 0 || checkX >= this.width || checkY < 0 || checkY >= this.height) {
-                    return false; // Near world edge
-                }
-                
-                if (biomeData[checkY][checkX] !== plateauBiome) {
-                    return false; // Adjacent to different biome
-                }
-            }
-        }
-        
-        return true;
-    }
-
-    /**
-     * Remove any elevated areas that violate biome boundaries
+     * Trim elevated areas to respect biome boundaries with 1-tile buffer
+     * Instead of removing entire plateaus, just trim the edges that violate boundaries
      */
     removebiomeBoundaryViolations(elevationData, biomeData) {
         let removedCount = 0;
+        let iterations = 0;
+        const maxIterations = 5; // Prevent infinite loops
         
-        for (let y = 0; y < this.height; y++) {
-            for (let x = 0; x < this.width; x++) {
-                if (elevationData[y][x] === 0) continue; // Not elevated
-                
-                const currentBiome = biomeData[y][x];
-                
-                // Check if this elevated tile violates biome buffer rules
-                let hasAdjacentDifferentBiome = false;
-                
-                for (let dy = -1; dy <= 1; dy++) {
-                    for (let dx = -1; dx <= 1; dx++) {
-                        const checkX = x + dx;
-                        const checkY = y + dy;
-                        
-                        if (checkX < 0 || checkX >= this.width || checkY < 0 || checkY >= this.height) continue;
-                        
-                        if (biomeData[checkY][checkX] !== currentBiome) {
-                            hasAdjacentDifferentBiome = true;
-                            break;
-                        }
+        // Keep trimming until no more violations exist (or max iterations reached)
+        while (iterations < maxIterations) {
+            let foundViolations = false;
+            iterations++;
+            
+            for (let y = 0; y < this.height; y++) {
+                for (let x = 0; x < this.width; x++) {
+                    if (elevationData[y][x] === 0) continue; // Not elevated
+                    
+                    // Check if this elevated tile violates the 1-tile buffer rule
+                    if (this.violatesBiomeBuffer(x, y, biomeData)) {
+                        elevationData[y][x] = 0; // Remove this elevated tile
+                        removedCount++;
+                        foundViolations = true;
                     }
-                    if (hasAdjacentDifferentBiome) break;
+                }
+            }
+            
+            if (!foundViolations) break; // No more violations found
+        }
+        
+        if (removedCount > 0) {
+            console.log(`[SharedWorldGenerator] Trimmed ${removedCount} elevated tiles to respect biome boundaries (${iterations} iterations)`);
+        }
+    }
+
+    /**
+     * Check if an elevated tile violates the 1-tile biome buffer rule
+     */
+    violatesBiomeBuffer(x, y, biomeData) {
+        const currentBiome = biomeData[y][x];
+        
+        // Check all adjacent tiles (8-direction)
+        for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+                if (dx === 0 && dy === 0) continue; // Skip center tile
+                
+                const checkX = x + dx;
+                const checkY = y + dy;
+                
+                // World edges count as different biome (need buffer from edges)
+                if (checkX < 0 || checkX >= this.width || checkY < 0 || checkY >= this.height) {
+                    return true;
                 }
                 
-                if (hasAdjacentDifferentBiome) {
-                    elevationData[y][x] = 0; // Remove this elevated tile
-                    removedCount++;
+                // If adjacent tile is different biome, this violates the buffer rule
+                if (biomeData[checkY][checkX] !== currentBiome) {
+                    return true;
                 }
             }
         }
         
-        if (removedCount > 0) {
-            console.log(`[SharedWorldGenerator] Removed ${removedCount} elevated tiles that violated biome boundaries`);
-        }
+        return false; // No violations found
     }
 }
