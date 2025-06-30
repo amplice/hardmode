@@ -85,8 +85,8 @@ export class SharedWorldGenerator {
             }
         }
 
-        // Generate 2-4 large dark grass zones (zone-based approach)
-        const zoneCount = 2 + Math.floor(this.random() * 3);
+        // Generate 3-5 large dark grass zones to increase coverage to 40-60%
+        const zoneCount = 3 + Math.floor(this.random() * 3);
         console.log(`[SharedWorldGenerator] Generating ${zoneCount} dark grass zones`);
 
         this.generateLargeBiomeZones(biomeData, zoneCount);
@@ -110,8 +110,8 @@ export class SharedWorldGenerator {
             }
         }
 
-        // Generate 2-4 large dark grass zones (zone-based approach)
-        const zoneCount = 2 + Math.floor(this.random() * 3);
+        // Generate 3-5 large dark grass zones to increase coverage to 40-60%
+        const zoneCount = 3 + Math.floor(this.random() * 3);
         console.log(`[SharedWorldGenerator] Generating ${zoneCount} dark grass zones`);
 
         this.generateLargeBiomeZones(biomeData, zoneCount);
@@ -208,8 +208,8 @@ export class SharedWorldGenerator {
                 const maxInfluenceDistance = Math.min(this.width, this.height) * 0.4;
                 const influence = Math.max(0, 1 - (closestDistance / maxInfluenceDistance));
                 
-                // Apply dark grass if this zone should be dark and has enough influence
-                if (closestZone >= 0 && closestZone % 2 === 1 && influence > boundary) {
+                // Apply dark grass - make most zones dark (except zone 0) for 40-60% coverage
+                if (closestZone >= 1 && influence > boundary) {
                     biomeData[y][x] = 1; // Dark grass
                 }
             }
@@ -279,16 +279,16 @@ export class SharedWorldGenerator {
     }
 
     generatePlateauCandidates(elevationData) {
-        // Create several noise-based plateau seeds
-        const plateauCount = 4 + Math.floor(this.random() * 3);
+        // Create fewer but much larger plateaus 
+        const plateauCount = 2 + Math.floor(this.random() * 2); // 2-3 large plateaus
         
         for (let i = 0; i < plateauCount; i++) {
-            // Choose center point with buffer for 3x3 minimum
-            const cx = 10 + Math.floor(this.random() * (this.width - 20));
-            const cy = 10 + Math.floor(this.random() * (this.height - 20));
-            const baseRadius = 6 + Math.floor(this.random() * 8); // Larger to ensure 3x3
+            // Choose center point with larger buffer for big plateaus
+            const cx = 20 + Math.floor(this.random() * (this.width - 40));
+            const cy = 20 + Math.floor(this.random() * (this.height - 40));
+            const baseRadius = 15 + Math.floor(this.random() * 12); // Much larger: 15-26 radius
             
-            // Use noise to create organic shape
+            // Use noise to create organic shape with larger plateaus
             this.createNoisyPlateau(elevationData, cx, cy, baseRadius);
         }
     }
@@ -786,15 +786,15 @@ export class SharedWorldGenerator {
      * Ensures plateaus stay within biome boundaries with 1-tile buffer
      */
     generatePlateauCandidatesWithBiomeBuffers(elevationData, biomeData) {
-        const plateauCount = 4 + Math.floor(this.random() * 3);
+        const plateauCount = 2 + Math.floor(this.random() * 2); // 2-3 large plateaus
         
         for (let i = 0; i < plateauCount; i++) {
-            // Choose center point with normal buffer for 3x3 minimum
-            const cx = 10 + Math.floor(this.random() * (this.width - 20));
-            const cy = 10 + Math.floor(this.random() * (this.height - 20));
+            // Choose center point with larger buffer for big plateaus
+            const cx = 20 + Math.floor(this.random() * (this.width - 40));
+            const cy = 20 + Math.floor(this.random() * (this.height - 40));
             
-            // Generate plateau normally (ignoring biome constraints initially)
-            const size = 6 + Math.floor(this.random() * 8); // 6-13 tile radius
+            // Generate much larger plateaus (ignoring biome constraints initially)
+            const size = 15 + Math.floor(this.random() * 12); // 15-26 tile radius (much larger)
             this.generateUnconstrainedPlateau(elevationData, cx, cy, size);
         }
     }

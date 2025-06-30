@@ -70,10 +70,11 @@ export class TilesetManager {
       }
     }
     
-    // Load decorative grass variation rows (27-28)
+    // Load decorative grass variation rows (27-28) with full column range for dark grass
     for (let row = 27; row <= 28; row++) {
       this.textures.terrain[row] = [];
-      for (let col = 0; col < 11; col++) {
+      // Load green grass common variations (cols 0-10) and dark grass common variations (cols 16-20)
+      for (let col = 0; col < 21; col++) {
         this.textures.terrain[row][col] = new Texture(
           baseTexture,
           new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
@@ -92,11 +93,19 @@ export class TilesetManager {
       }
     }
     
-    // Load the large grass variation square (22,54) to (31,63)
+    // Load the rare grass variations: green (22,54) to (31,63) and dark (22,44) to (31,53)
     for (let row = 22; row <= 31; row++) {
       if (!this.textures.terrain[row]) {
         this.textures.terrain[row] = [];
       }
+      // Load dark grass rare variations (22,44) to (31,53)
+      for (let col = 44; col <= 53; col++) {
+        this.textures.terrain[row][col] = new Texture(
+          baseTexture,
+          new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+        );
+      }
+      // Load green grass rare variations (22,54) to (31,63)
       for (let col = 54; col <= 63; col++) {
         this.textures.terrain[row][col] = new Texture(
           baseTexture,
@@ -125,20 +134,33 @@ export class TilesetManager {
       this.textures.terrain[28][9]
     ];
     
-    // Dark grass variations (using the same row pattern but with +11 column offset)
+    // Dark grass common variations (rows 27-28, columns 16-20)
     this.commonDarkGrassVariations = [
-      this.textures.terrain[1][12],  // Basic dark grass (1,12)
-      this.textures.terrain[1][13],  // Dark grass variation 2 (1,13)
-      this.textures.terrain[1][14],  // Dark grass variation 3 (1,14)
-      this.textures.terrain[1][15],  // Dark grass variation 4 (1,15)
-      this.textures.terrain[1][16]   // Dark grass variation 5 (1,16)
+      this.textures.terrain[27][16],  // Dark grass with small flowers
+      this.textures.terrain[27][17],  // Dark grass with dirt patches
+      this.textures.terrain[27][18],  // Dark grass with subtle wear
+      this.textures.terrain[27][19],  // Dark grass with small stones
+      this.textures.terrain[27][20],  // Dark grass with leaf litter
+      this.textures.terrain[28][16],  // More decorative dark variations
+      this.textures.terrain[28][17],
+      this.textures.terrain[28][18], 
+      this.textures.terrain[28][19],
+      this.textures.terrain[28][20]
     ];
     
-    // Decorative grass variations (22,54) to (31,63) - used sparingly
+    // Rare green grass variations (22,54) to (31,63) - used sparingly
     this.decorativeGrassVariations = [];
     for (let row = 22; row <= 31; row++) {
       for (let col = 54; col <= 63; col++) {
         this.decorativeGrassVariations.push(this.textures.terrain[row][col]);
+      }
+    }
+    
+    // Rare dark grass variations (22,44) to (31,53) - used sparingly  
+    this.decorativeDarkGrassVariations = [];
+    for (let row = 22; row <= 31; row++) {
+      for (let col = 44; col <= 53; col++) {
+        this.decorativeDarkGrassVariations.push(this.textures.terrain[row][col]);
       }
     }
     
@@ -262,14 +284,19 @@ export class TilesetManager {
   getRandomPureDarkGrass() {
     const rand = Math.random();
     
-    // 87% chance for basic dark grass (12,1)
+    // 87% chance for basic dark grass (1,12)
     if (rand < 0.87) {
       return this.basicDarkGrassTile;
     }
-    // 13% chance for dark grass variations (12,2-5)
-    else {
+    // 10% chance for common dark grass variations (rows 27-28, cols 16-20)
+    else if (rand < 0.97) {
       const index = Math.floor(Math.random() * this.commonDarkGrassVariations.length);
       return this.commonDarkGrassVariations[index];
+    }
+    // 3% chance for rare dark grass variations (22,44) to (31,53)
+    else {
+      const index = Math.floor(Math.random() * this.decorativeDarkGrassVariations.length);
+      return this.decorativeDarkGrassVariations[index];
     }
   }
   
