@@ -134,7 +134,7 @@ export class CliffAutotiler {
     
     // Debug logging for biome selection (only log occasionally to avoid spam)
     if (Math.random() < 0.001) {
-      console.log(`[CliffAutotiler] Tile (${x},${y}): biome=${isDarkGrass ? 'dark' : 'green'}, elevation=${currentElevation}`);</param>
+      console.log(`[CliffAutotiler] Tile (${x},${y}): biome=${isDarkGrass ? 'dark' : 'green'}, elevation=${currentElevation}`);
     }
     
     // Ground level tiles - use grass variations based on biome
