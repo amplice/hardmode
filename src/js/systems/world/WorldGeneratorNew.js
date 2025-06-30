@@ -350,10 +350,22 @@ export class WorldGenerator {
             tile.sprite = sprite;
             tile.container.addChild(sprite);
           } else {
+            // Create base color fill matching the stair's biome (what shows through transparent areas)
+            const stairBiome = stairInfo.biome || 0;
+            const isDarkGrassStair = stairBiome === 1;
+            const baseColor = isDarkGrassStair ? 0x2a3a1c : 0x3e5b24; // dark grass : green grass
+            
+            const colorFill = new PIXI.Graphics();
+            colorFill.beginFill(baseColor);
+            colorFill.drawRect(0, 0, this.tileSize, this.tileSize);
+            colorFill.endFill();
+            tile.container.addChild(colorFill);
+            
+            // Create stair sprite on top of base color
             const sprite = new PIXI.Sprite(stairTexture);
             sprite.position.set(0, 0);
             sprite.scale.set(this.tileSize / 32);
-            tile.sprite = sprite;
+            tile.sprite = sprite; // Keep reference to main sprite
             tile.container.addChild(sprite);
           }
           
