@@ -127,17 +127,18 @@ export class CliffAutotiler {
    * @param {Array} biomeData - 2D biome map (0=green, 1=dark)
    */
   getTileTexture(x, y, elevationData, processedTiles, biomeData = null) {
-    const currentElevation = elevationData[y][x];
-    
-    // Determine biome type (0=green grass, 1=dark grass)
+    // STEP 1: BIOME DETERMINATION FIRST
+    // Determine biome type (0=green grass, 1=dark grass) - this drives everything else
     const isDarkGrass = biomeData && biomeData[y] && biomeData[y][x] === 1;
+    const currentElevation = elevationData[y][x];
     
     // Debug logging for biome selection (only log occasionally to avoid spam)
     if (Math.random() < 0.001) {
       console.log(`[CliffAutotiler] Tile (${x},${y}): biome=${isDarkGrass ? 'dark' : 'green'}, elevation=${currentElevation}`);
     }
     
-    // Ground level tiles - check for biome transitions first
+    // STEP 2: CLIFF/TERRAIN GENERATION BASED ON BIOME
+    // Ground level tiles - biome-specific handling
     if (currentElevation === 0) {
       // UNIDIRECTIONAL TRANSITIONS: Only green tiles get transitions when next to dark
       // This prevents both boundary tiles from becoming transitions
@@ -148,14 +149,14 @@ export class CliffAutotiler {
         }
       }
       
-      // No transition needed - use pure biome tiles
+      // No transition needed - use biome-appropriate pure tiles
       return { 
         texture: isDarkGrass ? this.tilesets.getRandomPureDarkGrass() : this.tilesets.getRandomPureGrass(),
         type: 'grass'
       };
     }
     
-    // Elevated tiles - use priority-based bitmask logic with biome support
+    // Elevated tiles - cliff generation using biome-appropriate tileset
     const bitmask = this.calculateBitmask(x, y, elevationData);
     let tileCoords = this.determineTileType(bitmask, isDarkGrass);
     
@@ -209,6 +210,10 @@ export class CliffAutotiler {
    * @param {Array} biomeData - 2D biome map (0=green, 1=dark)
    */
   getCliffExtensionTexture(x, y, elevationData, processedTiles, biomeData = null) {
+    // STEP 1: BIOME DETERMINATION FIRST
+    // Determine biome type for extension - this drives which tileset to use
+    const isDarkGrass = biomeData && biomeData[y] && biomeData[y][x] === 1;
+    
     const width = elevationData[0].length;
     const height = elevationData.length;
     const currentElevation = elevationData[y][x];
@@ -218,9 +223,6 @@ export class CliffAutotiler {
     
     const belowElevation = elevationData[y + 1][x];
     if (belowElevation >= currentElevation) return null; // No cliff below
-    
-    // Determine biome type for extension
-    const isDarkGrass = biomeData && biomeData[y] && biomeData[y][x] === 1;
     
     // Get the current tile type to determine extension
     const currentTile = processedTiles && processedTiles[y] ? processedTiles[y][x] : null;
