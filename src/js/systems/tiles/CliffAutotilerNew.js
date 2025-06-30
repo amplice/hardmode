@@ -139,10 +139,13 @@ export class CliffAutotiler {
     
     // Ground level tiles - check for biome transitions first
     if (currentElevation === 0) {
-      // Check if this tile is at a biome boundary and needs transition tiles
-      const transitionTile = this.getBiomeTransitionTile(x, y, biomeData);
-      if (transitionTile) {
-        return transitionTile;
+      // UNIDIRECTIONAL TRANSITIONS: Only green tiles get transitions when next to dark
+      // This prevents both boundary tiles from becoming transitions
+      if (!isDarkGrass) {  // Only apply transitions to GREEN tiles
+        const transitionTile = this.getBiomeTransitionTile(x, y, biomeData);
+        if (transitionTile) {
+          return transitionTile;
+        }
       }
       
       // No transition needed - use pure biome tiles
@@ -311,10 +314,9 @@ export class CliffAutotiler {
     const hasSoutheast = (bitmask & this.BITS.SOUTHEAST) !== 0;
     const hasSouthwest = (bitmask & this.BITS.SOUTHWEST) !== 0;
     
-    // Determine which transition set to use based on current biome
-    // Green grass (0) uses columns 0-4 (green to dark transitions)
-    // Dark grass (1) uses columns 5-9 (dark to green transitions)
-    const baseCol = currentBiome === 0 ? 0 : 5;
+    // Since we only apply transitions to green tiles, always use green-to-dark transitions
+    // Green grass uses columns 0-4 (green to dark transitions)
+    const baseCol = 0;
     
     // Priority 1: Outer diagonal corners/edges (two adjacent cardinals)
     if (hasNorth && hasWest) return { row: 32, col: baseCol + 0, type: "NW outer corner/diagonal" };
