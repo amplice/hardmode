@@ -1,5 +1,7 @@
-# Green Grass Zone Documentation (MainLev2.0.png)
-## Columns 0-10, Rows 0-43
+# MainLev2.0.png Tileset Documentation
+## Columns 0-36, Rows 0-43
+
+This tileset contains green grass, dark grass, and transition tiles for creating varied terrain with mini-biomes.
 
 ### Basic Autotiling Section (Rows 0-6)
 These tiles form the foundation for creating coherent terrain with proper edges and corners. The system includes both square (orthogonal) and diagonal cliff edges.
@@ -154,8 +156,64 @@ These provide visual variety to break up monotonous grass areas.
 ### Row 30
 - Empty/transparent (used as spacing)
 
-### Transition Section (Rows 31-37)
-Green grass transitioning to dark grass.
+## Dark Grass Zone (Columns 0-25, Rows 11-21)
+**IMPORTANT**: The dark grass zone has exactly the same layout and structure as the green grass zone (rows 0-10).
+
+### Dark Grass Autotiling Section (Rows 11-17)
+- **Row 11**: Top edges & diagonal corners (mirrors row 0)
+- **Row 12**: Side edges & diagonal edges (mirrors row 1)  
+- **Row 13**: Side edge variations & diagonal connectors (mirrors row 2)
+- **Row 14**: Side edge variations (mirrors row 3)
+- **Row 15**: Side edge variations & bottom diagonal connectors (mirrors row 4)
+- **Row 16**: Bottom edges (mirrors row 5)
+- **Row 17**: Height Layer 2 for dark grass (mirrors row 6)
+
+### Dark Grass Height Features (Rows 18-21)
+- **Rows 18-21**: Dark grass elevated platforms, slopes, stairs (mirrors rows 7-10)
+
+All placement rules, corner logic, and cliff formation requirements that apply to green grass also apply to dark grass using the corresponding row offset (+11).
+
+## Green-Dark Grass Transitions (Columns 30-36, Rows 0-9)
+These tiles handle the blending between green and dark grass biomes.
+
+### Diagonal Transition Tiles (30,0) to (31,1)
+- **(30,0)**: Green grass top-left, dark grass bottom-right (diagonal split)
+- **(30,1)**: Green grass top-right, dark grass bottom-left (diagonal split)
+- **(31,0)**: Green grass bottom-left, dark grass top-right (diagonal split)
+- **(31,1)**: Green grass bottom-right, dark grass top-left (diagonal split)
+Used for outer diagonal transitions where biomes meet at an angle.
+
+### Green Grass Corner Patches (30,2) to (31,3)
+Small green grass patches surrounded by dark grass:
+- **(30,2)**: Tiny green patch in top-left corner
+- **(30,3)**: Tiny green patch in top-right corner
+- **(31,2)**: Tiny green patch in bottom-left corner
+- **(31,3)**: Tiny green patch in bottom-right corner
+
+### Dark Grass Corner Patches (30,4) to (31,5)
+Small dark grass patches surrounded by green grass:
+- **(30,4)**: Tiny dark patch in bottom-right corner
+- **(30,5)**: Tiny dark patch in bottom-left corner
+- **(31,4)**: Tiny dark patch in top-right corner
+- **(31,5)**: Tiny dark patch in top-left corner
+
+### Green Surrounding Dark Transitions (32,0) to (36,4)
+5x5 autotiling set where green grass surrounds dark grass:
+- **(32,0)**: Top-left corner (green)
+- **(32,1-35,1)**: Top edge pieces (green)
+- **(36,0)**: Top-right corner (green)
+- **(32,1-32,3)**: Left edge pieces (green)
+- **(33,1-35,3)**: Center pieces (dark grass)
+- **(36,1-36,3)**: Right edge pieces (green)
+- **(32,4-36,4)**: Bottom edge pieces (green)
+
+### Dark Surrounding Green Transitions (32,5) to (36,9)
+5x5 autotiling set where dark grass surrounds green grass:
+- Same layout as above but inverted - dark grass forms the border around green grass center
+- Used when dark grass biome has small green grass inclusions
+
+### Transition Section (Rows 31-37) - LEGACY
+Legacy green grass transitioning to dark grass (may be superseded by new transition system above).
 
 #### Row 31 - Basic Transitions
 - (31,0): Northwest corner (green to dark)
@@ -251,18 +309,32 @@ To ensure natural-looking cliff formations, the following minimum sizes must be 
 4. **Proper tile selection**: (5,1-5,5) for horizontal, (5,0)/(5,6) for corners only
 
 ## Usage Notes
-1. **Basic Terrain**: Use rows 0-6 for standard terrain generation
+1. **Green Grass Terrain**: Use rows 0-10 for green grass terrain generation
    - Square cliff edges use columns 0-6
    - Diagonal cliff edges use columns 7-10
    - Pure grass tiles are found at (1,1) through (1,5) and variations in rows 2-3
-2. **Height System**: 
-   - Cliffs have a height of 2 tiles
-   - Row 5 tiles must be followed by row 6 tiles below them to show proper depth
-   - Diagonal corners also follow this 2-tile height system
-3. **Elevation**: Use rows 7-27 to create additional height variation
-4. **Variety**: Substitute row 28-29 tiles randomly for visual interest
-5. **Zone Transitions**: Use rows 31-37 when transitioning to dark grass zones
-6. **Special Effects**: Use rows 38-43 for transparency effects
+2. **Dark Grass Terrain**: Use rows 11-21 for dark grass terrain generation
+   - Exact same logic as green grass but with +11 row offset
+   - Pure dark grass tiles at (12,1) through (12,5)
+   - All cliff rules apply with corresponding dark grass tiles
+3. **Biome Transitions**: Use columns 30-36 for green-dark grass transitions
+   - Diagonal transitions: (30,0) to (31,1)
+   - Corner patches: (30,2) to (31,5)
+   - Full autotiling: (32,0) to (36,9)
+4. **Height System**: 
+   - Cliffs have a height of 2 tiles (both green and dark grass)
+   - Row 5/16 tiles must be followed by row 6/17 tiles below them
+   - Diagonal corners follow this 2-tile height system
+5. **Elevation**: Use height feature rows for additional variation
+6. **Variety**: Substitute decorative tiles randomly for visual interest
+7. **Legacy Transitions**: Use rows 31-37 for older transition system
+8. **Special Effects**: Use rows 38-43 for transparency effects
+
+## Mini-Biome Implementation
+- Create **large chunks** of each grass type (green or dark)
+- Use transition tiles sparingly - only at biome boundaries
+- Aim for natural-looking irregular boundaries between biomes
+- Dark grass should feel like distinct terrain zones, not scattered patches
 
 ## Tile Indexing
 For programming reference:

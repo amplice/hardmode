@@ -38,6 +38,64 @@ export class SharedWorldGenerator {
         return elevationData;
     }
 
+    /**
+     * Generate biome data for mini-biomes (green vs dark grass)
+     * Returns 2D array with 0 = green grass, 1 = dark grass
+     */
+    generateBiomeData() {
+        const biomeData = [];
+        for (let y = 0; y < this.height; y++) {
+            biomeData[y] = [];
+            for (let x = 0; x < this.width; x++) {
+                biomeData[y][x] = 0; // Default to green grass
+            }
+        }
+
+        // Generate 2-4 dark grass biomes
+        const biomeCount = 2 + Math.floor(this.random() * 3);
+        console.log(`[SharedWorldGenerator] Generating ${biomeCount} dark grass biomes`);
+
+        for (let i = 0; i < biomeCount; i++) {
+            this.generateDarkGrassBiome(biomeData, i);
+        }
+
+        return biomeData;
+    }
+
+    generateDarkGrassBiome(biomeData, biomeIndex) {
+        // Choose a random center point with margin from edges
+        const margin = 20;
+        const centerX = margin + Math.floor(this.random() * (this.width - 2 * margin));
+        const centerY = margin + Math.floor(this.random() * (this.height - 2 * margin));
+        
+        // Determine biome size (large chunks as requested)
+        const baseSize = 15 + Math.floor(this.random() * 15); // 15-30 tile radius
+        
+        console.log(`[SharedWorldGenerator] Dark biome ${biomeIndex}: center (${centerX}, ${centerY}), size ${baseSize}`);
+
+        // Use organic noise-based shape
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const dx = x - centerX;
+                const dy = y - centerY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                // Base circular influence
+                let influence = Math.max(0, 1 - (distance / baseSize));
+                
+                // Add noise for organic boundaries
+                const noiseScale = 0.1;
+                const noiseValue = this.noise2D(x * noiseScale, y * noiseScale);
+                influence += noiseValue * 0.3;
+                
+                // Apply biome if influence is strong enough
+                if (influence > 0.4) {
+                    biomeData[y][x] = 1; // Dark grass
+                }
+            }
+        }
+    }
+
     generateProperElevatedAreas(elevationData) {
         console.log("Generating proper elevated areas with noise constraints...");
         

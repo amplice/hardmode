@@ -31,8 +31,12 @@ export class CliffAutotiler {
   
   /**
    * Determine tile type based on bitmask using priority logic
+   * @param {number} bitmask - 8-bit neighbor bitmask
+   * @param {boolean} isDarkGrass - Whether to use dark grass tileset
    */
-  determineTileType(bitmask) {
+  determineTileType(bitmask, isDarkGrass = false) {
+    // Base row offset for biome
+    const rowOffset = isDarkGrass ? 11 : 0;
     // Check cardinal directions
     const hasNorth = (bitmask & this.BITS.NORTH) !== 0;
     const hasEast = (bitmask & this.BITS.EAST) !== 0;
@@ -46,41 +50,41 @@ export class CliffAutotiler {
     const hasSouthwest = (bitmask & this.BITS.SOUTHWEST) !== 0;
     
     // Priority 1: Corners (two adjacent cardinals)
-    if (hasNorth && hasWest) return { row: 0, col: 0, type: "NW corner" };
-    if (hasNorth && hasEast) return { row: 0, col: 6, type: "NE corner" };
-    if (hasSouth && hasWest) return { row: 5, col: 0, type: "SW corner" };
-    if (hasSouth && hasEast) return { row: 5, col: 6, type: "SE corner" };
+    if (hasNorth && hasWest) return { row: 0 + rowOffset, col: 0, type: "NW corner" };
+    if (hasNorth && hasEast) return { row: 0 + rowOffset, col: 6, type: "NE corner" };
+    if (hasSouth && hasWest) return { row: 5 + rowOffset, col: 0, type: "SW corner" };
+    if (hasSouth && hasEast) return { row: 5 + rowOffset, col: 6, type: "SE corner" };
     
     // Priority 2: Pure diagonal inner corners (diagonal but NO adjacent cardinals)
-    if (hasNorthwest && !hasNorth && !hasWest) return { row: 2, col: 7, type: "NW inner corner" };
-    if (hasNortheast && !hasNorth && !hasEast) return { row: 2, col: 10, type: "NE inner corner" };
-    if (hasSouthwest && !hasSouth && !hasWest) return { row: 4, col: 8, type: "SW inner corner" };
-    if (hasSoutheast && !hasSouth && !hasEast) return { row: 4, col: 9, type: "SE inner corner" };
+    if (hasNorthwest && !hasNorth && !hasWest) return { row: 2 + rowOffset, col: 7, type: "NW inner corner" };
+    if (hasNortheast && !hasNorth && !hasEast) return { row: 2 + rowOffset, col: 10, type: "NE inner corner" };
+    if (hasSouthwest && !hasSouth && !hasWest) return { row: 4 + rowOffset, col: 8, type: "SW inner corner" };
+    if (hasSoutheast && !hasSouth && !hasEast) return { row: 4 + rowOffset, col: 9, type: "SE inner corner" };
     
     // Priority 3: Single cardinal edges
-    if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 0, col: 1, type: "top edge" };
-    if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 1, col: 6, type: "right edge" };
-    if (hasSouth && !hasNorth && !hasEast && !hasWest) return { row: 5, col: 1, type: "bottom edge" };
-    if (hasWest && !hasNorth && !hasEast && !hasSouth) return { row: 1, col: 0, type: "left edge" };
+    if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 0 + rowOffset, col: 1, type: "top edge" };
+    if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 1 + rowOffset, col: 6, type: "right edge" };
+    if (hasSouth && !hasNorth && !hasEast && !hasWest) return { row: 5 + rowOffset, col: 1, type: "bottom edge" };
+    if (hasWest && !hasNorth && !hasEast && !hasSouth) return { row: 1 + rowOffset, col: 0, type: "left edge" };
     
     // Priority 4: Edge variations (cardinal + diagonal)
-    if (hasNorth && hasNortheast && !hasEast && !hasWest) return { row: 0, col: 2, type: "top edge with NE" };
-    if (hasNorth && hasNorthwest && !hasEast && !hasWest) return { row: 0, col: 3, type: "top edge with NW" };
-    if (hasSouth && hasSoutheast && !hasEast && !hasWest) return { row: 5, col: 2, type: "bottom edge with SE" };
-    if (hasSouth && hasSouthwest && !hasEast && !hasWest) return { row: 5, col: 3, type: "bottom edge with SW" };
-    if (hasWest && hasNorthwest && !hasNorth && !hasSouth) return { row: 2, col: 0, type: "left edge with NW" };
-    if (hasWest && hasSouthwest && !hasNorth && !hasSouth) return { row: 3, col: 0, type: "left edge with SW" };
-    if (hasEast && hasNortheast && !hasNorth && !hasSouth) return { row: 2, col: 6, type: "right edge with NE" };
-    if (hasEast && hasSoutheast && !hasNorth && !hasSouth) return { row: 3, col: 6, type: "right edge with SE" };
+    if (hasNorth && hasNortheast && !hasEast && !hasWest) return { row: 0 + rowOffset, col: 2, type: "top edge with NE" };
+    if (hasNorth && hasNorthwest && !hasEast && !hasWest) return { row: 0 + rowOffset, col: 3, type: "top edge with NW" };
+    if (hasSouth && hasSoutheast && !hasEast && !hasWest) return { row: 5 + rowOffset, col: 2, type: "bottom edge with SE" };
+    if (hasSouth && hasSouthwest && !hasEast && !hasWest) return { row: 5 + rowOffset, col: 3, type: "bottom edge with SW" };
+    if (hasWest && hasNorthwest && !hasNorth && !hasSouth) return { row: 2 + rowOffset, col: 0, type: "left edge with NW" };
+    if (hasWest && hasSouthwest && !hasNorth && !hasSouth) return { row: 3 + rowOffset, col: 0, type: "left edge with SW" };
+    if (hasEast && hasNortheast && !hasNorth && !hasSouth) return { row: 2 + rowOffset, col: 6, type: "right edge with NE" };
+    if (hasEast && hasSoutheast && !hasNorth && !hasSouth) return { row: 3 + rowOffset, col: 6, type: "right edge with SE" };
     
     // Priority 5: Fallback edges (any cardinal direction)
-    if (hasNorth) return { row: 0, col: 1, type: "top edge fallback" };
-    if (hasEast) return { row: 1, col: 6, type: "right edge fallback" };
-    if (hasSouth) return { row: 5, col: 1, type: "bottom edge fallback" };
-    if (hasWest) return { row: 1, col: 0, type: "left edge fallback" };
+    if (hasNorth) return { row: 0 + rowOffset, col: 1, type: "top edge fallback" };
+    if (hasEast) return { row: 1 + rowOffset, col: 6, type: "right edge fallback" };
+    if (hasSouth) return { row: 5 + rowOffset, col: 1, type: "bottom edge fallback" };
+    if (hasWest) return { row: 1 + rowOffset, col: 0, type: "left edge fallback" };
     
     // Priority 6: Pure grass (no neighbors lower) - use varied grass for plateau interiors
-    return { row: 1, col: 1, type: "grass", useVariations: true };
+    return { row: 1 + rowOffset, col: 1, type: "grass", useVariations: true, isDarkGrass };
   }
   
   /**
@@ -116,21 +120,34 @@ export class CliffAutotiler {
   
   /**
    * Get the appropriate tile texture for a position
+   * @param {number} x - Tile X coordinate
+   * @param {number} y - Tile Y coordinate
+   * @param {Array} elevationData - 2D elevation map
+   * @param {Array} processedTiles - Processed tile types
+   * @param {Array} biomeData - 2D biome map (0=green, 1=dark)
    */
-  getTileTexture(x, y, elevationData, processedTiles) {
+  getTileTexture(x, y, elevationData, processedTiles, biomeData = null) {
     const currentElevation = elevationData[y][x];
     
-    // Ground level tiles - use grass variations
+    // Determine biome type (0=green grass, 1=dark grass)
+    const isDarkGrass = biomeData && biomeData[y] && biomeData[y][x] === 1;
+    
+    // Debug logging for biome selection (only log occasionally to avoid spam)
+    if (Math.random() < 0.001) {
+      console.log(`[CliffAutotiler] Tile (${x},${y}): biome=${isDarkGrass ? 'dark' : 'green'}, elevation=${currentElevation}`);</param>
+    }
+    
+    // Ground level tiles - use grass variations based on biome
     if (currentElevation === 0) {
       return { 
-        texture: this.tilesets.getRandomPureGrass(),
+        texture: isDarkGrass ? this.tilesets.getRandomPureDarkGrass() : this.tilesets.getRandomPureGrass(),
         type: 'grass'
       };
     }
     
-    // Elevated tiles - use priority-based bitmask logic
+    // Elevated tiles - use priority-based bitmask logic with biome support
     const bitmask = this.calculateBitmask(x, y, elevationData);
-    let tileCoords = this.determineTileType(bitmask);
+    let tileCoords = this.determineTileType(bitmask, isDarkGrass);
     
     // Randomize bottom edge tiles (columns 1-5 for horizontal edges)
     if (tileCoords.type.includes("bottom edge") && tileCoords.row === 5 && tileCoords.col === 1) {
@@ -155,11 +172,13 @@ export class CliffAutotiler {
       }
     }
     
-    // Use appropriate texture based on tile type
+    // Use appropriate texture based on tile type and biome
     let texture;
     if (tileCoords.useVariations && tileCoords.type === "grass") {
-      // Use grass variations for plateau interiors
-      texture = this.tilesets.getRandomPlateauGrass();
+      // Use grass variations for plateau interiors based on biome
+      texture = tileCoords.isDarkGrass ? 
+        this.tilesets.getRandomPlateauDarkGrass() : 
+        this.tilesets.getRandomPlateauGrass();
     } else {
       // Use exact tile for cliff edges, corners, etc.
       texture = this.tilesets.textures.terrain[tileCoords.row][tileCoords.col];
@@ -173,8 +192,13 @@ export class CliffAutotiler {
   
   /**
    * Get cliff extension texture for 2-tile height effect
+   * @param {number} x - Tile X coordinate
+   * @param {number} y - Tile Y coordinate
+   * @param {Array} elevationData - 2D elevation map
+   * @param {Array} processedTiles - Processed tile types
+   * @param {Array} biomeData - 2D biome map (0=green, 1=dark)
    */
-  getCliffExtensionTexture(x, y, elevationData, processedTiles) {
+  getCliffExtensionTexture(x, y, elevationData, processedTiles, biomeData = null) {
     const width = elevationData[0].length;
     const height = elevationData.length;
     const currentElevation = elevationData[y][x];
@@ -185,18 +209,22 @@ export class CliffAutotiler {
     const belowElevation = elevationData[y + 1][x];
     if (belowElevation >= currentElevation) return null; // No cliff below
     
+    // Determine biome type for extension
+    const isDarkGrass = biomeData && biomeData[y] && biomeData[y][x] === 1;
+    const rowOffset = isDarkGrass ? 11 : 0;
+    
     // Get the current tile type to determine extension
     const currentTile = processedTiles && processedTiles[y] ? processedTiles[y][x] : null;
     
     if (currentTile) {
       const [row, col] = currentTile.split(',').map(Number);
       
-      // Add extensions for row 5 tiles
-      if (row === 5) {
-        const extensionTexture = this.tilesets.textures.terrain[6][col];
+      // Add extensions for row 5/16 tiles (green/dark grass respectively)
+      if (row === 5 + rowOffset) {
+        const extensionTexture = this.tilesets.textures.terrain[6 + rowOffset][col];
         if (extensionTexture) {
           if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
-            console.log(`[CliffAutotiler] Extension at (${x}, ${y + 1}) using (6, ${col}) below (${row}, ${col})`);
+            console.log(`[CliffAutotiler] Extension at (${x}, ${y + 1}) using (${6 + rowOffset}, ${col}) below (${row}, ${col})`);
           }
           return extensionTexture;
         }

@@ -46,10 +46,21 @@ export class TilesetManager {
     // Store as 2D array for easier access
     this.textures.terrain = [];
     
-    // Load rows 0-10 to include all cliff variations and inner corners
+    // Load rows 0-10 to include all green grass cliff variations and inner corners
     for (let row = 0; row < 11; row++) {
       this.textures.terrain[row] = [];
       for (let col = 0; col < 11; col++) {
+        this.textures.terrain[row][col] = new Texture(
+          baseTexture,
+          new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+        );
+      }
+    }
+    
+    // Load rows 11-21 for dark grass tileset (mirrors green grass with +11 offset)
+    for (let row = 11; row <= 21; row++) {
+      this.textures.terrain[row] = [];
+      for (let col = 0; col < 26; col++) { // Dark grass uses columns 0-25
         this.textures.terrain[row][col] = new Texture(
           baseTexture,
           new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
@@ -92,10 +103,13 @@ export class TilesetManager {
       }
     }
     
-    // Store grass tiles with different frequency weights
+    // Store green grass tiles with different frequency weights
     this.basicGrassTile = this.textures.terrain[1][1];
     
-    // Common grass variations (rows 27-28) - used moderately
+    // Store dark grass tiles (row 12 = row 1 + 11 offset)
+    this.basicDarkGrassTile = this.textures.terrain[12][1];
+    
+    // Common green grass variations (rows 27-28) - used moderately
     this.commonGrassVariations = [
       this.textures.terrain[27][5],  // Grass with small flowers
       this.textures.terrain[27][6],  // Grass with dirt patches
@@ -109,6 +123,16 @@ export class TilesetManager {
       this.textures.terrain[28][9]
     ];
     
+    // Dark grass variations (using the same column pattern but in dark grass rows)
+    // For now, use main dark grass tiles as we focus on basic implementation
+    this.commonDarkGrassVariations = [
+      this.textures.terrain[12][1],  // Basic dark grass
+      this.textures.terrain[12][2],  // Dark grass variation 2
+      this.textures.terrain[12][3],  // Dark grass variation 3
+      this.textures.terrain[12][4],  // Dark grass variation 4
+      this.textures.terrain[12][5]   // Dark grass variation 5
+    ];
+    
     // Decorative grass variations (22,54) to (31,63) - used sparingly
     this.decorativeGrassVariations = [];
     for (let row = 22; row <= 31; row++) {
@@ -117,8 +141,9 @@ export class TilesetManager {
       }
     }
     
-    // Legacy array for compatibility - not used directly anymore
+    // Legacy arrays for compatibility - not used directly anymore
     this.pureGrassTiles = [this.basicGrassTile];
+    this.pureDarkGrassTiles = [this.basicDarkGrassTile];
   }
   
   slicePlantsTileset(baseTexture) {
@@ -230,5 +255,26 @@ export class TilesetManager {
   getRandomPlateauGrass() {
     // Use same percentages as regular ground
     return this.getRandomPureGrass();
+  }
+  
+  // Get a random pure dark grass tile with weighted selection
+  getRandomPureDarkGrass() {
+    const rand = Math.random();
+    
+    // 87% chance for basic dark grass (12,1)
+    if (rand < 0.87) {
+      return this.basicDarkGrassTile;
+    }
+    // 13% chance for dark grass variations (12,2-5)
+    else {
+      const index = Math.floor(Math.random() * this.commonDarkGrassVariations.length);
+      return this.commonDarkGrassVariations[index];
+    }
+  }
+  
+  // Get a random dark grass tile for plateau interiors (not cliff edges)
+  getRandomPlateauDarkGrass() {
+    // Use same logic as regular dark grass
+    return this.getRandomPureDarkGrass();
   }
 }

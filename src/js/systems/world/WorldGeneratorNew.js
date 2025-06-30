@@ -42,6 +42,10 @@ export class WorldGenerator {
     this.sharedWorldGen = new SharedWorldGenerator(this.width, this.height, this.seed);
     this.elevationData = this.sharedWorldGen.generateElevationData();
     
+    // Generate biome data for dark grass mini-biomes
+    this.biomeData = this.sharedWorldGen.generateBiomeData();
+    console.log('[WorldGenerator] Generated biome data with', this.biomeData.length, 'rows');
+    
     // Get stairs data from SharedWorldGenerator
     this.stairsData = this.sharedWorldGen.getStairsData();
     
@@ -332,8 +336,8 @@ export class WorldGenerator {
           tile.isCliffEdge = !this.sharedWorldGen.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX);
           processedTiles[y][x] = 'stairs';
         } else {
-          // Normal tile processing
-          const tileResult = this.cliffAutotiler.getTileTexture(x, y, this.elevationData, processedTiles);
+          // Normal tile processing - pass biome data to autotiler
+          const tileResult = this.cliffAutotiler.getTileTexture(x, y, this.elevationData, processedTiles, this.biomeData);
           processedTiles[y][x] = tileResult.type;
           
           // Mark tile walkability based on collision mask
@@ -363,7 +367,7 @@ export class WorldGenerator {
       for (let x = 0; x < this.width; x++) {
         if (this.elevationData[y][x] === 0) continue;
         
-        const extensionTexture = this.cliffAutotiler.getCliffExtensionTexture(x, y, this.elevationData, processedTiles);
+        const extensionTexture = this.cliffAutotiler.getCliffExtensionTexture(x, y, this.elevationData, processedTiles, this.biomeData);
         
         if (extensionTexture && y + 1 < this.height) {
           const extensionSprite = new PIXI.Sprite(extensionTexture);
