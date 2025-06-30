@@ -626,8 +626,9 @@ export class SharedWorldGenerator {
         const isDarkGrassStairs = stairBiome === 1;
         const colOffset = isDarkGrassStairs ? 11 : 0;
         
-        // DEBUG: Log stair placement details
+        // DEBUG: Log stair placement details  
         console.log(`[SharedWorldGenerator] Placing ${direction} stairs at (${x},${y}): biome=${stairBiome}, isDark=${isDarkGrassStairs}, colOffset=${colOffset}`);
+        console.log(`[SharedWorldGenerator] biomeData exists: ${!!this.biomeData}, biomeData[${y}] exists: ${!!(this.biomeData && this.biomeData[y])}, value: ${this.biomeData && this.biomeData[y] && this.biomeData[y][x]}`);
         
         switch (direction) {
             case 'west':

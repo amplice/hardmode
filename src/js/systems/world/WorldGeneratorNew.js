@@ -325,17 +325,37 @@ export class WorldGenerator {
           const stairInfo = this.stairsData[y][x];
           const stairTexture = this.tilesets.textures.terrain[stairInfo.tileY][stairInfo.tileX];
           
-          // DEBUG: Log stair rendering details  
-          if (Math.random() < 0.1) { // Only log 10% to avoid spam
-            console.log(`[WorldGenerator] Rendering stair at (${x},${y}): tile(${stairInfo.tileY},${stairInfo.tileX}) biome=${stairInfo.biome || 'undefined'} type=${stairInfo.type}`);
-            console.log(`[WorldGenerator] Texture exists: ${!!stairTexture}, Expected dark grass: ${(stairInfo.biome === 1)}`);
+          // DEBUG: Enhanced debugging for stair texture issues
+          if (!stairTexture || stairInfo.biome === 1) { // Always log dark grass stairs or missing textures
+            console.log(`[WorldGenerator] STAIR TEXTURE DEBUG at (${x},${y}):`);
+            console.log(`  - stairInfo:`, stairInfo);
+            console.log(`  - Accessing: terrain[${stairInfo.tileY}][${stairInfo.tileX}]`);
+            console.log(`  - terrain[${stairInfo.tileY}] exists:`, !!this.tilesets.textures.terrain[stairInfo.tileY]);
+            console.log(`  - stairTexture exists:`, !!stairTexture);
+            console.log(`  - Expected dark grass:`, (stairInfo.biome === 1));
+            
+            if (this.tilesets.textures.terrain[stairInfo.tileY]) {
+              console.log(`  - Available columns in row ${stairInfo.tileY}:`, Object.keys(this.tilesets.textures.terrain[stairInfo.tileY]));
+            }
           }
           
-          const sprite = new PIXI.Sprite(stairTexture);
-          sprite.position.set(0, 0);
-          sprite.scale.set(this.tileSize / 32);
-          tile.sprite = sprite;
-          tile.container.addChild(sprite);
+          // Handle missing textures gracefully
+          if (!stairTexture) {
+            console.error(`[WorldGenerator] Missing stair texture at (${stairInfo.tileY},${stairInfo.tileX}) for stair at (${x},${y})`);
+            // Fallback to basic grass texture
+            const fallbackTexture = this.tilesets.getRandomPureGrass();
+            const sprite = new PIXI.Sprite(fallbackTexture);
+            sprite.position.set(0, 0);
+            sprite.scale.set(this.tileSize / 32);
+            tile.sprite = sprite;
+            tile.container.addChild(sprite);
+          } else {
+            const sprite = new PIXI.Sprite(stairTexture);
+            sprite.position.set(0, 0);
+            sprite.scale.set(this.tileSize / 32);
+            tile.sprite = sprite;
+            tile.container.addChild(sprite);
+          }
           
           // Check if this stair tile is walkable
           tile.isCliffEdge = !this.sharedWorldGen.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX);
