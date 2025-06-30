@@ -58,10 +58,11 @@ export class TilesetManager {
       }
     }
     
-    // Load rows 13-17 to include stairs
+    // Load rows 13-17 to include stairs (both green and dark grass stairs)
     for (let row = 13; row <= 17; row++) {
       this.textures.terrain[row] = [];
-      for (let col = 0; col < 11; col++) {
+      // Load green grass stairs (cols 0-10) and dark grass stairs (cols 11-21)
+      for (let col = 0; col < 22; col++) {
         this.textures.terrain[row][col] = new Texture(
           baseTexture,
           new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)

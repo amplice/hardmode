@@ -513,16 +513,24 @@ export class SharedWorldGenerator {
     placeStairs(startPos, direction) {
         const {x, y} = startPos;
         
+        // Check biome at stair location to determine which stair tileset to use
+        const stairBiome = this.biomeData && this.biomeData[y] && this.biomeData[y][x] ? this.biomeData[y][x] : 0;
+        const isDarkGrassStairs = stairBiome === 1;
+        
+        // Column offset for dark grass stairs (+11 columns, same rows)
+        const colOffset = isDarkGrassStairs ? 11 : 0;
+        
         switch (direction) {
             case 'west':
-                // Place west stairs: rows 13-16, columns 2-3
+                // Place west stairs: rows 13-16, columns 2-3 (green) or 13-14 (dark)
                 for (let dy = 0; dy < 4; dy++) {
                     for (let dx = 0; dx < 2; dx++) {
                         if (x + dx >= 0 && y + dy < this.height) {
                             this.stairsData[y + dy][x + dx] = {
                                 type: 'west',
-                                tileX: 2 + dx,
-                                tileY: 13 + dy
+                                tileX: 2 + dx + colOffset,
+                                tileY: 13 + dy,
+                                biome: stairBiome
                             };
                         }
                     }
@@ -530,14 +538,15 @@ export class SharedWorldGenerator {
                 break;
                 
             case 'east':
-                // Place east stairs: rows 13-16, columns 7-8
+                // Place east stairs: rows 13-16, columns 7-8 (green) or 18-19 (dark)
                 for (let dy = 0; dy < 4; dy++) {
                     for (let dx = 0; dx < 2; dx++) {
                         if (x + dx < this.width && y + dy < this.height) {
                             this.stairsData[y + dy][x + dx] = {
                                 type: 'east',
-                                tileX: 7 + dx,
-                                tileY: 13 + dy
+                                tileX: 7 + dx + colOffset,
+                                tileY: 13 + dy,
+                                biome: stairBiome
                             };
                         }
                     }
@@ -545,14 +554,15 @@ export class SharedWorldGenerator {
                 break;
                 
             case 'north':
-                // Place north stairs: rows 13-14, columns 4-6
+                // Place north stairs: rows 13-14, columns 4-6 (green) or 15-17 (dark)
                 for (let dy = 0; dy < 2; dy++) {
                     for (let dx = 0; dx < 3; dx++) {
                         if (x + dx < this.width && y + dy >= 0) {
                             this.stairsData[y + dy][x + dx] = {
                                 type: 'north',
-                                tileX: 4 + dx,
-                                tileY: 13 + dy
+                                tileX: 4 + dx + colOffset,
+                                tileY: 13 + dy,
+                                biome: stairBiome
                             };
                         }
                     }
@@ -560,14 +570,15 @@ export class SharedWorldGenerator {
                 break;
                 
             case 'south':
-                // Place south stairs: rows 15-17, columns 4-6
+                // Place south stairs: rows 15-17, columns 4-6 (green) or 15-17 (dark)
                 for (let dy = 0; dy < 3; dy++) {
                     for (let dx = 0; dx < 3; dx++) {
                         if (x + dx < this.width && y + dy < this.height) {
                             this.stairsData[y + dy][x + dx] = {
                                 type: 'south',
-                                tileX: 4 + dx,
-                                tileY: 15 + dy
+                                tileX: 4 + dx + colOffset,
+                                tileY: 15 + dy,
+                                biome: stairBiome
                             };
                         }
                     }
@@ -582,14 +593,23 @@ export class SharedWorldGenerator {
      */
     isStairTileWalkable(tileY, tileX) {
         const walkableStairs = [
-            // Western stairs walkable tiles
+            // GREEN GRASS STAIRS - Western stairs walkable tiles
             [14, 2], [14, 3], [15, 2], [15, 3],
-            // Top edge stairs walkable tiles
+            // GREEN GRASS STAIRS - Top edge stairs walkable tiles
             [13, 5], [13, 6], [14, 5], [14, 6],
-            // Bottom edge stairs walkable tiles
+            // GREEN GRASS STAIRS - Bottom edge stairs walkable tiles
             [15, 5], [15, 6], [16, 5], [16, 6], [17, 5], [17, 6],
-            // Eastern stairs walkable tiles
-            [14, 7], [14, 8], [15, 7], [15, 8]
+            // GREEN GRASS STAIRS - Eastern stairs walkable tiles
+            [14, 7], [14, 8], [15, 7], [15, 8],
+            
+            // DARK GRASS STAIRS - Western stairs walkable tiles (+11 column offset)
+            [14, 13], [14, 14], [15, 13], [15, 14],
+            // DARK GRASS STAIRS - Top edge stairs walkable tiles (+11 column offset)
+            [13, 16], [13, 17], [14, 16], [14, 17],
+            // DARK GRASS STAIRS - Bottom edge stairs walkable tiles (+11 column offset)
+            [15, 16], [15, 17], [16, 16], [16, 17], [17, 16], [17, 17],
+            // DARK GRASS STAIRS - Eastern stairs walkable tiles (+11 column offset)
+            [14, 18], [14, 19], [15, 18], [15, 19]
         ];
         
         return walkableStairs.some(([row, col]) => row === tileY && col === tileX);
