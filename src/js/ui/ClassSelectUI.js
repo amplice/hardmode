@@ -99,7 +99,7 @@ export class ClassSelectUI {
             
             // Position the container
             container.position.set(startX + index * 200, startY);
-            container.interactive = true;
+            container.eventMode = 'static';
             container.cursor = 'pointer';
             
             // Add event listeners
@@ -141,7 +141,7 @@ export class ClassSelectUI {
         this.startButton.endFill();
         this.startButton.position.set(window.innerWidth / 2 - 100, startY + 300);
         this.startButton.alpha = 0.5; // Dim until class is selected
-        this.startButton.interactive = false;
+        this.startButton.eventMode = 'none';
         
         const startText = new PIXI.Text('START GAME', {
             fontFamily: 'Arial',
@@ -205,7 +205,7 @@ export class ClassSelectUI {
         
         // Enable start button
         this.startButton.alpha = 1;
-        this.startButton.interactive = true;
+        this.startButton.eventMode = 'static';
         this.startButton.cursor = 'pointer';
     }
 }

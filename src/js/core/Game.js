@@ -26,7 +26,7 @@ import { DebugLogger } from '../debug/DebugLogger.js';
 const SHOW_DEBUG_STATS = true;
 
 // 1) turn off antialias & force pixel‐perfect
-PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
 
 export class Game {
   constructor() {
@@ -40,7 +40,7 @@ export class Game {
       resolution: window.devicePixelRatio
     });
     // ensure HTML canvas uses pixelated rendering
-    this.app.renderer.plugins.interaction.enableCursor = false; // Disable cursor interpolation
+    this.app.renderer.events.cursorStyles.default = 'inherit'; // Use CSS cursor instead of PIXI's
 
     this.app.renderer.roundPixels = true; 
     this.app.view.style.imageRendering = 'pixelated';
