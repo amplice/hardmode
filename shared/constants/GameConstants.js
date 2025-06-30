@@ -13,8 +13,8 @@ export const GAME_CONSTANTS = {
     
     // Spawn system
     SPAWN: {
-        MAX_MONSTERS: 40,
-        INTERVAL: 3, // seconds
+        MAX_MONSTERS: 30, // Reduced from 40 for better performance
+        INTERVAL: 4, // seconds - increased from 3 for better performance
         MIN_DISTANCE_FROM_PLAYER: 700,
         MAX_DISTANCE_FROM_PLAYER: 15000,
         WORLD_EDGE_MARGIN: 500

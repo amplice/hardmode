@@ -62,7 +62,7 @@ export class Game {
       targetX: 0, 
       targetY: 0, 
       zoom: 1,
-      smoothing: 0.15 // Lower = smoother but more lag, Higher = more responsive but less smooth
+      smoothing: 0.25 // Increased for better responsiveness on slower hardware
     };
 
     this.systems = {
@@ -571,6 +571,10 @@ export class Game {
     p.isAttacking = true;
     p.attackHitFrameReached = false;
     p.currentAttackType = type;
+    
+    // Store current position for effect positioning (fixes effects appearing at wrong location)
+    p.startPositionForAttack = { x: p.position.x, y: p.position.y };
+    
     if (p.animation) {
       p.animation.playAttackAnimation(type);
     }

@@ -196,6 +196,16 @@ export class CombatSystem {
                                      (entity.startPositionForAttack || entity.position)
                                      : entity.position;
 
+                // Debug: Warn about large position discrepancies that could cause misplaced effects
+                if (shouldUseStartPos && entity.startPositionForAttack && entity.position) {
+                    const dx = Math.abs(entity.startPositionForAttack.x - entity.position.x);
+                    const dy = Math.abs(entity.startPositionForAttack.y - entity.position.y);
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance > 200) {
+                        console.warn(`[CombatSystem] Large position delta (${distance.toFixed(1)}px) for effect ${effectParams.type}. Start: (${entity.startPositionForAttack.x}, ${entity.startPositionForAttack.y}), Current: (${entity.position.x}, ${entity.position.y})`);
+                    }
+                }
+
                 const effectDistance = effectParams.hasOwnProperty('distance')
                                    ? effectParams.distance
                                    : (baseEffectConfig.offsetDistance || 0);
