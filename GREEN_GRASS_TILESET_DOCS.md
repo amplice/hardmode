@@ -220,37 +220,73 @@ Small dark grass patches surrounded by green grass:
 - **(31,4)**: Tiny dark patch in top-right corner
 - **(31,5)**: Tiny dark patch in top-left corner
 
-### Green to Dark Transitions (Rows 30-34, Columns 0-4)
-5x5 autotiling set where green grass transitions to dark grass:
-- **(30,0)**: NW outer corner (green outside, dark inside)
-- **(30,1)**: N edge (green north, dark south)
-- **(30,2)**: N edge center variant
-- **(30,3)**: N edge variant
-- **(30,4)**: NE outer corner (green outside, dark inside)
-- **(31,0)**: W edge (green west, dark east)
-- **(31,1-31,3)**: Center/fill tiles
-- **(31,4)**: E edge (green east, dark west)
-- **(32,0-32,4)**: Center row transition patterns
-- **(33,0)**: W edge variant
-- **(33,4)**: E edge variant
-- **(34,0)**: SW outer corner (green outside, dark inside)
-- **(34,1-34,3)**: S edge variants (green south, dark north)
-- **(34,4)**: SE outer corner (green outside, dark inside)
+### Green to Dark Transitions (Rows 30-36, Columns 0-4)
+Biome transition autotiling set where green grass transitions to dark grass:
 
-### Dark to Green Transitions (Rows 30-34, Columns 5-9)
-5x5 autotiling set where dark grass transitions to green grass:
-- **(30,5)**: NW outer corner (dark outside, green inside)
-- **(30,6-30,8)**: N edge (dark north, green south)
-- **(30,9)**: NE outer corner (dark outside, green inside)
-- **(31,5)**: W edge (dark west, green east)
-- **(31,6-31,8)**: Center/fill tiles
-- **(31,9)**: E edge (dark east, green west)
-- **(32,5-32,9)**: Center row transition patterns
-- **(33,5)**: W edge variant
-- **(33,9)**: E edge variant
-- **(34,5)**: SW outer corner (dark outside, green inside)
-- **(34,6-34,8)**: S edge (dark south, green north)
-- **(34,9)**: SE outer corner (dark outside, green inside)
+**Row 30 - Inner Diagonal Corners:**
+- **(30,2)**: NW inner corner for diagonal edge
+- **(30,3)**: NE inner corner for diagonal edge
+
+**Row 31 - Inner Diagonal Corners:**  
+- **(31,2)**: SW inner corner for diagonal edge
+- **(31,3)**: SE inner corner for diagonal edge
+
+**Row 32 - North Edge & Outer Diagonal Corners:**
+- **(32,0)**: NW outer corner/diagonal edge (green outside, dark inside)
+- **(32,1)**: N edge (green north, dark south)
+- **(32,4)**: NE outer corner/diagonal edge (green outside, dark inside)
+
+**Row 33 - West Edge:**
+- **(33,0)**: W edge (green west, dark east)
+
+**Row 34 - West Edge & East Edge:**
+- **(34,0)**: W edge variant (green west, dark east)
+- **(34,4)**: E edge (green east, dark west)
+
+**Row 35 - West Edge & East Edge:**
+- **(35,0)**: W edge variant (green west, dark east)  
+- **(35,4)**: E edge variant (green east, dark west)
+
+**Row 36 - South Edge & Outer Diagonal Corners:**
+- **(36,0)**: SW outer corner/diagonal edge (green outside, dark inside)
+- **(36,1)**: S edge (green south, dark north)
+- **(36,2)**: S edge variant (green south, dark north)
+- **(36,3)**: S edge variant (green south, dark north)
+- **(36,4)**: SE outer corner/diagonal edge (green outside, dark inside)
+
+### Dark to Green Transitions (Rows 30-36, Columns 5-9)  
+Biome transition autotiling set where dark grass transitions to green grass (mirrors green-to-dark):
+
+**Row 30 - Inner Diagonal Corners:**
+- **(30,7)**: NW inner corner for diagonal edge
+- **(30,8)**: NE inner corner for diagonal edge
+
+**Row 31 - Inner Diagonal Corners:**
+- **(31,7)**: SW inner corner for diagonal edge  
+- **(31,8)**: SE inner corner for diagonal edge
+
+**Row 32 - North Edge & Outer Diagonal Corners:**
+- **(32,5)**: NW outer corner/diagonal edge (dark outside, green inside)
+- **(32,6)**: N edge (dark north, green south)
+- **(32,9)**: NE outer corner/diagonal edge (dark outside, green inside)
+
+**Row 33 - West Edge:**
+- **(33,5)**: W edge (dark west, green east)
+
+**Row 34 - West Edge & East Edge:**
+- **(34,5)**: W edge variant (dark west, green east)
+- **(34,9)**: E edge (dark east, green west)
+
+**Row 35 - West Edge & East Edge:**
+- **(35,5)**: W edge variant (dark west, green east)
+- **(35,9)**: E edge variant (dark east, green west)
+
+**Row 36 - South Edge & Outer Diagonal Corners:**
+- **(36,5)**: SW outer corner/diagonal edge (dark outside, green inside)
+- **(36,6)**: S edge (dark south, green north)
+- **(36,7)**: S edge variant (dark south, green north)
+- **(36,8)**: S edge variant (dark south, green north)
+- **(36,9)**: SE outer corner/diagonal edge (dark outside, green inside)
 
 ### Transition Section (Rows 31-37) - LEGACY
 Legacy green grass transitioning to dark grass (may be superseded by new transition system above).
