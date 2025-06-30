@@ -137,8 +137,15 @@ export class CliffAutotiler {
       console.log(`[CliffAutotiler] Tile (${x},${y}): biome=${isDarkGrass ? 'dark' : 'green'}, elevation=${currentElevation}`);
     }
     
-    // Ground level tiles - use grass variations based on biome
+    // Ground level tiles - check for biome transitions first
     if (currentElevation === 0) {
+      // Check if this tile is at a biome boundary and needs transition tiles
+      const transitionTile = this.getBiomeTransitionTile(x, y, biomeData);
+      if (transitionTile) {
+        return transitionTile;
+      }
+      
+      // No transition needed - use pure biome tiles
       return { 
         texture: isDarkGrass ? this.tilesets.getRandomPureDarkGrass() : this.tilesets.getRandomPureGrass(),
         type: 'grass'
@@ -231,5 +238,119 @@ export class CliffAutotiler {
     }
     
     return null;
+  }
+  
+  /**
+   * Get biome transition tile if this position is at a biome boundary
+   * @param {number} x - Tile X coordinate
+   * @param {number} y - Tile Y coordinate
+   * @param {Array} biomeData - 2D biome map (0=green, 1=dark)
+   * @returns {Object|null} Transition tile or null if no transition needed
+   */
+  getBiomeTransitionTile(x, y, biomeData) {
+    if (!biomeData || !biomeData[y]) return null;
+    
+    const width = biomeData[0].length;
+    const height = biomeData.length;
+    const currentBiome = biomeData[y][x];
+    
+    // Calculate biome bitmask (similar to elevation bitmask but for biomes)
+    let biomeBitmask = 0;
+    
+    // Helper function to check neighbor biome
+    const isOtherBiome = (nx, ny) => {
+      if (nx < 0 || nx >= width || ny < 0 || ny >= height) {
+        return false; // World edge - treat as same biome
+      }
+      return biomeData[ny][nx] !== currentBiome;
+    };
+    
+    // Check all 8 directions for biome differences
+    if (isOtherBiome(x, y - 1)) biomeBitmask |= this.BITS.NORTH;       // North
+    if (isOtherBiome(x + 1, y - 1)) biomeBitmask |= this.BITS.NORTHEAST; // Northeast
+    if (isOtherBiome(x + 1, y)) biomeBitmask |= this.BITS.EAST;        // East
+    if (isOtherBiome(x + 1, y + 1)) biomeBitmask |= this.BITS.SOUTHEAST; // Southeast
+    if (isOtherBiome(x, y + 1)) biomeBitmask |= this.BITS.SOUTH;       // South
+    if (isOtherBiome(x - 1, y + 1)) biomeBitmask |= this.BITS.SOUTHWEST; // Southwest
+    if (isOtherBiome(x - 1, y)) biomeBitmask |= this.BITS.WEST;        // West
+    if (isOtherBiome(x - 1, y - 1)) biomeBitmask |= this.BITS.NORTHWEST; // Northwest
+    
+    // If no neighbors are different biomes, no transition needed
+    if (biomeBitmask === 0) return null;
+    
+    // Determine transition tile based on bitmask
+    const transitionCoords = this.determineBiomeTransitionType(biomeBitmask, currentBiome);
+    if (!transitionCoords) return null;
+    
+    // Get the transition texture
+    const texture = this.tilesets.textures.terrain[transitionCoords.row][transitionCoords.col];
+    if (!texture) return null;
+    
+    return {
+      texture: texture,
+      type: `transition_${transitionCoords.row},${transitionCoords.col}`
+    };
+  }
+  
+  /**
+   * Determine the appropriate transition tile based on biome bitmask
+   * @param {number} bitmask - 8-bit neighbor bitmask for biome differences
+   * @param {number} currentBiome - Current tile's biome (0=green, 1=dark)
+   * @returns {Object|null} Transition tile coordinates or null
+   */
+  determineBiomeTransitionType(bitmask, currentBiome) {
+    // Check cardinal directions
+    const hasNorth = (bitmask & this.BITS.NORTH) !== 0;
+    const hasEast = (bitmask & this.BITS.EAST) !== 0;
+    const hasSouth = (bitmask & this.BITS.SOUTH) !== 0;
+    const hasWest = (bitmask & this.BITS.WEST) !== 0;
+    
+    // Check diagonals
+    const hasNortheast = (bitmask & this.BITS.NORTHEAST) !== 0;
+    const hasNorthwest = (bitmask & this.BITS.NORTHWEST) !== 0;
+    const hasSoutheast = (bitmask & this.BITS.SOUTHEAST) !== 0;
+    const hasSouthwest = (bitmask & this.BITS.SOUTHWEST) !== 0;
+    
+    // Determine which transition set to use based on current biome
+    // Green grass (0) uses rows 0-4 (green outside, dark inside)
+    // Dark grass (1) uses rows 5-9 (dark outside, green inside)
+    const baseRow = currentBiome === 0 ? 0 : 5;
+    
+    // Priority 1: Outer corners (two adjacent cardinals)
+    if (hasNorth && hasWest) return { row: baseRow + 0, col: 30, type: "NW outer corner" };
+    if (hasNorth && hasEast) return { row: baseRow + 0, col: 34, type: "NE outer corner" };
+    if (hasSouth && hasWest) return { row: baseRow + 4, col: 30, type: "SW outer corner" };
+    if (hasSouth && hasEast) return { row: baseRow + 4, col: 34, type: "SE outer corner" };
+    
+    // Priority 2: Inner corners (diagonal but NO adjacent cardinals)
+    if (hasNorthwest && !hasNorth && !hasWest) return { row: baseRow + 0, col: 35, type: "NW inner corner" };
+    if (hasNortheast && !hasNorth && !hasEast) return { row: baseRow + 0, col: 36, type: "NE inner corner" };
+    if (hasSouthwest && !hasSouth && !hasWest) return { row: baseRow + 4, col: 35, type: "SW inner corner" };
+    if (hasSoutheast && !hasSouth && !hasEast) return { row: baseRow + 4, col: 36, type: "SE inner corner" };
+    
+    // Priority 3: Single cardinal edges
+    if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: baseRow + 0, col: 32, type: "N edge" };
+    if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: baseRow + 1, col: 34, type: "E edge" };
+    if (hasSouth && !hasNorth && !hasEast && !hasWest) return { row: baseRow + 4, col: 32, type: "S edge" };
+    if (hasWest && !hasNorth && !hasEast && !hasSouth) return { row: baseRow + 1, col: 30, type: "W edge" };
+    
+    // Priority 4: Edge variations (cardinal + diagonal)
+    if (hasNorth && hasNortheast && !hasEast && !hasWest) return { row: baseRow + 0, col: 33, type: "N edge with NE" };
+    if (hasNorth && hasNorthwest && !hasEast && !hasWest) return { row: baseRow + 0, col: 31, type: "N edge with NW" };
+    if (hasSouth && hasSoutheast && !hasEast && !hasWest) return { row: baseRow + 4, col: 33, type: "S edge with SE" };
+    if (hasSouth && hasSouthwest && !hasEast && !hasWest) return { row: baseRow + 4, col: 31, type: "S edge with SW" };
+    if (hasWest && hasNorthwest && !hasNorth && !hasSouth) return { row: baseRow + 2, col: 30, type: "W edge with NW" };
+    if (hasWest && hasSouthwest && !hasNorth && !hasSouth) return { row: baseRow + 3, col: 30, type: "W edge with SW" };
+    if (hasEast && hasNortheast && !hasNorth && !hasSouth) return { row: baseRow + 2, col: 34, type: "E edge with NE" };
+    if (hasEast && hasSoutheast && !hasNorth && !hasSouth) return { row: baseRow + 3, col: 34, type: "E edge with SE" };
+    
+    // Priority 5: Fallback edges (any cardinal direction)
+    if (hasNorth) return { row: baseRow + 0, col: 32, type: "N edge fallback" };
+    if (hasEast) return { row: baseRow + 1, col: 34, type: "E edge fallback" };
+    if (hasSouth) return { row: baseRow + 4, col: 32, type: "S edge fallback" };
+    if (hasWest) return { row: baseRow + 1, col: 30, type: "W edge fallback" };
+    
+    // Priority 6: Center fill tiles for complex transitions
+    return { row: baseRow + 2, col: 32, type: "center fill" };
   }
 }

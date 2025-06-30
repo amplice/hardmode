@@ -2,8 +2,8 @@
 export const GAME_CONSTANTS = {
     // World settings
     WORLD: {
-        WIDTH: 200,
-        HEIGHT: 200,
+        WIDTH: 100,
+        HEIGHT: 100,
         TILE_SIZE: 64,
         SEED: 42 // Default seed, server will override with generated seed
     },
@@ -13,10 +13,10 @@ export const GAME_CONSTANTS = {
     
     // Spawn system
     SPAWN: {
-        MAX_MONSTERS: 25, // Adjusted for 200x200 world
+        MAX_MONSTERS: 15, // Adjusted for 100x100 world
         INTERVAL: 4, // seconds
         MIN_DISTANCE_FROM_PLAYER: 700,
-        MAX_DISTANCE_FROM_PLAYER: 12000, // Reduced for smaller world
+        MAX_DISTANCE_FROM_PLAYER: 6000, // Reduced for smaller world
         WORLD_EDGE_MARGIN: 500
     },
     

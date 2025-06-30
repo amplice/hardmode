@@ -51,49 +51,101 @@ export class SharedWorldGenerator {
             }
         }
 
-        // Generate 2-4 dark grass biomes
-        const biomeCount = 2 + Math.floor(this.random() * 3);
-        console.log(`[SharedWorldGenerator] Generating ${biomeCount} dark grass biomes`);
+        // Generate 2-4 large dark grass zones (zone-based approach)
+        const zoneCount = 2 + Math.floor(this.random() * 3);
+        console.log(`[SharedWorldGenerator] Generating ${zoneCount} dark grass zones`);
 
-        for (let i = 0; i < biomeCount; i++) {
-            this.generateDarkGrassBiome(biomeData, i);
-        }
+        this.generateLargeBiomeZones(biomeData, zoneCount);
 
         return biomeData;
     }
 
-    generateDarkGrassBiome(biomeData, biomeIndex) {
-        // Choose a random center point with margin from edges
-        const margin = 20;
-        const centerX = margin + Math.floor(this.random() * (this.width - 2 * margin));
-        const centerY = margin + Math.floor(this.random() * (this.height - 2 * margin));
+    generateLargeBiomeZones(biomeData, zoneCount) {
+        // Create large zones that divide the world into distinct regions
+        // Think of this as splitting the world into 2-4 major territories
         
-        // Determine biome size (large chunks as requested)
-        const baseSize = 15 + Math.floor(this.random() * 15); // 15-30 tile radius
+        // Create zone centers that are far apart
+        const zoneCenters = [];
+        const minDistance = Math.min(this.width, this.height) * 0.3; // Zones must be 30% of world size apart
         
-        console.log(`[SharedWorldGenerator] Dark biome ${biomeIndex}: center (${centerX}, ${centerY}), size ${baseSize}`);
-
-        // Use organic noise-based shape
+        for (let i = 0; i < zoneCount; i++) {
+            let attempts = 0;
+            let validCenter = null;
+            
+            // Try to find a good center position
+            while (attempts < 50 && !validCenter) {
+                const centerX = 15 + Math.floor(this.random() * (this.width - 30));
+                const centerY = 15 + Math.floor(this.random() * (this.height - 30));
+                
+                // Check distance from existing centers
+                let tooClose = false;
+                for (const existing of zoneCenters) {
+                    const dx = centerX - existing.x;
+                    const dy = centerY - existing.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < minDistance) {
+                        tooClose = true;
+                        break;
+                    }
+                }
+                
+                if (!tooClose) {
+                    validCenter = { x: centerX, y: centerY };
+                }
+                attempts++;
+            }
+            
+            if (validCenter) {
+                zoneCenters.push(validCenter);
+            }
+        }
+        
+        console.log(`[SharedWorldGenerator] Generated ${zoneCenters.length} zone centers`);
+        
+        // Now create large zones using Voronoi-like regions with noise
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                const dx = x - centerX;
-                const dy = y - centerY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+                // Find closest zone center
+                let closestDistance = Infinity;
+                let closestZone = -1;
                 
-                // Base circular influence
-                let influence = Math.max(0, 1 - (distance / baseSize));
+                for (let i = 0; i < zoneCenters.length; i++) {
+                    const dx = x - zoneCenters[i].x;
+                    const dy = y - zoneCenters[i].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        closestZone = i;
+                    }
+                }
                 
-                // Add noise for organic boundaries
-                const noiseScale = 0.1;
+                // Add noise to create organic boundaries
+                const noiseScale = 0.05; // Large scale noise for big zones
                 const noiseValue = this.noise2D(x * noiseScale, y * noiseScale);
-                influence += noiseValue * 0.3;
+                const boundary = 0.3 + noiseValue * 0.4; // Dynamic boundary threshold
                 
-                // Apply biome if influence is strong enough
-                if (influence > 0.4) {
+                // Calculate influence of the closest zone
+                const maxInfluenceDistance = Math.min(this.width, this.height) * 0.4;
+                const influence = Math.max(0, 1 - (closestDistance / maxInfluenceDistance));
+                
+                // Apply dark grass if this zone should be dark and has enough influence
+                if (closestZone >= 0 && closestZone % 2 === 1 && influence > boundary) {
                     biomeData[y][x] = 1; // Dark grass
                 }
             }
         }
+        
+        // Log zone statistics
+        let darkTiles = 0;
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (biomeData[y][x] === 1) darkTiles++;
+            }
+        }
+        const totalTiles = this.width * this.height;
+        const darkPercentage = (darkTiles / totalTiles * 100).toFixed(1);
+        console.log(`[SharedWorldGenerator] Dark grass zones cover ${darkPercentage}% of world (${darkTiles}/${totalTiles} tiles)`);
     }
 
     generateProperElevatedAreas(elevationData) {
