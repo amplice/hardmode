@@ -18,7 +18,36 @@ export class SharedWorldGenerator {
     }
 
     /**
-     * Generate elevation data using the same algorithm as client
+     * Generate complete world data in proper order: biomes → elevation → stairs
+     * Returns object with { elevationData, biomeData, stairsData }
+     */
+    generateWorld() {
+        console.log('[SharedWorldGenerator] Starting world generation with new order: biomes → elevation → stairs');
+        
+        // STEP 1: Generate biomes FIRST
+        console.log('[SharedWorldGenerator] Step 1: Generating biomes...');
+        const biomeData = this.generateBiomeDataOnly();
+        this.biomeData = biomeData;
+        
+        // STEP 2: Generate elevation with biome buffer constraints
+        console.log('[SharedWorldGenerator] Step 2: Generating elevation with biome buffers...');
+        const elevationData = this.generateElevationDataWithBiomeBuffers(biomeData);
+        this.elevationData = elevationData;
+        
+        // STEP 3: Generate stairs with both biome and elevation data available
+        console.log('[SharedWorldGenerator] Step 3: Generating biome-aware stairs...');
+        this.generateStairsData(elevationData);
+        
+        console.log('[SharedWorldGenerator] World generation complete');
+        return {
+            elevationData,
+            biomeData,
+            stairsData: this.stairsData
+        };
+    }
+
+    /**
+     * LEGACY: Generate elevation data using the same algorithm as client
      * Returns 2D array with 0 = ground, 1 = elevated
      */
     generateElevationData() {
@@ -65,10 +94,49 @@ export class SharedWorldGenerator {
         // Store biome data for later use
         this.biomeData = biomeData;
 
-        // Update stairs to use biome-appropriate tiles
-        this.updateStairsForBiomes(biomeData);
+        return biomeData;
+    }
+
+    /**
+     * Generate biome data only (without any elevation dependencies)
+     * This is the FIRST step in the new generation order
+     */
+    generateBiomeDataOnly() {
+        const biomeData = [];
+        for (let y = 0; y < this.height; y++) {
+            biomeData[y] = [];
+            for (let x = 0; x < this.width; x++) {
+                biomeData[y][x] = 0; // Default to green grass
+            }
+        }
+
+        // Generate 2-4 large dark grass zones (zone-based approach)
+        const zoneCount = 2 + Math.floor(this.random() * 3);
+        console.log(`[SharedWorldGenerator] Generating ${zoneCount} dark grass zones`);
+
+        this.generateLargeBiomeZones(biomeData, zoneCount);
 
         return biomeData;
+    }
+
+    /**
+     * Generate elevation data with 1-tile buffer from biome edges
+     * This ensures cliffs are contained within single biomes
+     */
+    generateElevationDataWithBiomeBuffers(biomeData) {
+        // Initialize elevation data
+        const elevationData = [];
+        for (let y = 0; y < this.height; y++) {
+            elevationData[y] = [];
+            for (let x = 0; x < this.width; x++) {
+                elevationData[y][x] = 0;
+            }
+        }
+
+        // Generate elevated areas with biome constraints
+        this.generateProperElevatedAreasWithBiomeBuffers(elevationData, biomeData);
+
+        return elevationData;
     }
 
     generateLargeBiomeZones(biomeData, zoneCount) {
@@ -179,6 +247,35 @@ export class SharedWorldGenerator {
             }
         }
         console.log(`[SharedWorldGenerator] Final elevated tiles: ${elevatedCount}`);
+    }
+
+    /**
+     * Generate elevated areas with 1-tile buffer from biome edges
+     * Ensures all cliffs are contained within single biomes
+     */
+    generateProperElevatedAreasWithBiomeBuffers(elevationData, biomeData) {
+        console.log("Generating elevated areas with biome buffer constraints...");
+        
+        // Generate plateau candidates with biome constraints
+        this.generatePlateauCandidatesWithBiomeBuffers(elevationData, biomeData);
+        
+        // Enforce minimum plateau sizes
+        this.enforceMinimumPlateauSizes(elevationData);
+        
+        // Remove any formations that violate biome boundaries
+        this.removebiomeBoundaryViolations(elevationData, biomeData);
+        
+        // Final cleanup
+        this.finalCleanup(elevationData);
+        
+        // Count elevated tiles
+        let elevatedCount = 0;
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (elevationData[y][x] > 0) elevatedCount++;
+            }
+        }
+        console.log(`[SharedWorldGenerator] Final elevated tiles with biome buffers: ${elevatedCount}`);
     }
 
     generatePlateauCandidates(elevationData) {
@@ -524,17 +621,22 @@ export class SharedWorldGenerator {
     placeStairs(startPos, direction) {
         const {x, y} = startPos;
         
-        // Initially place green grass stairs - biome update happens later
+        // Check biome at stair location (biome data is now available)
+        const stairBiome = this.biomeData && this.biomeData[y] && this.biomeData[y][x] ? this.biomeData[y][x] : 0;
+        const isDarkGrassStairs = stairBiome === 1;
+        const colOffset = isDarkGrassStairs ? 11 : 0;
+        
         switch (direction) {
             case 'west':
-                // Place west stairs: rows 13-16, columns 2-3
+                // Place west stairs with biome-appropriate tiles
                 for (let dy = 0; dy < 4; dy++) {
                     for (let dx = 0; dx < 2; dx++) {
                         if (x + dx >= 0 && y + dy < this.height) {
                             this.stairsData[y + dy][x + dx] = {
                                 type: 'west',
-                                tileX: 2 + dx,
-                                tileY: 13 + dy
+                                tileX: 2 + dx + colOffset,
+                                tileY: 13 + dy,
+                                biome: stairBiome
                             };
                         }
                     }
@@ -542,14 +644,15 @@ export class SharedWorldGenerator {
                 break;
                 
             case 'east':
-                // Place east stairs: rows 13-16, columns 7-8
+                // Place east stairs with biome-appropriate tiles
                 for (let dy = 0; dy < 4; dy++) {
                     for (let dx = 0; dx < 2; dx++) {
                         if (x + dx < this.width && y + dy < this.height) {
                             this.stairsData[y + dy][x + dx] = {
                                 type: 'east',
-                                tileX: 7 + dx,
-                                tileY: 13 + dy
+                                tileX: 7 + dx + colOffset,
+                                tileY: 13 + dy,
+                                biome: stairBiome
                             };
                         }
                     }
@@ -557,14 +660,15 @@ export class SharedWorldGenerator {
                 break;
                 
             case 'north':
-                // Place north stairs: rows 13-14, columns 4-6
+                // Place north stairs with biome-appropriate tiles
                 for (let dy = 0; dy < 2; dy++) {
                     for (let dx = 0; dx < 3; dx++) {
                         if (x + dx < this.width && y + dy >= 0) {
                             this.stairsData[y + dy][x + dx] = {
                                 type: 'north',
-                                tileX: 4 + dx,
-                                tileY: 13 + dy
+                                tileX: 4 + dx + colOffset,
+                                tileY: 13 + dy,
+                                biome: stairBiome
                             };
                         }
                     }
@@ -572,14 +676,15 @@ export class SharedWorldGenerator {
                 break;
                 
             case 'south':
-                // Place south stairs: rows 15-17, columns 4-6
+                // Place south stairs with biome-appropriate tiles
                 for (let dy = 0; dy < 3; dy++) {
                     for (let dx = 0; dx < 3; dx++) {
                         if (x + dx < this.width && y + dy < this.height) {
                             this.stairsData[y + dy][x + dx] = {
                                 type: 'south',
-                                tileX: 4 + dx,
-                                tileY: 15 + dy
+                                tileX: 4 + dx + colOffset,
+                                tileY: 15 + dy,
+                                biome: stairBiome
                             };
                         }
                     }
@@ -664,5 +769,148 @@ export class SharedWorldGenerator {
      */
     getStairsData() {
         return this.stairsData;
+    }
+
+    /**
+     * Generate plateau candidates with biome buffer constraints
+     * Ensures plateaus stay within biome boundaries with 1-tile buffer
+     */
+    generatePlateauCandidatesWithBiomeBuffers(elevationData, biomeData) {
+        const plateauCount = 4 + Math.floor(this.random() * 3);
+        
+        for (let i = 0; i < plateauCount; i++) {
+            // Choose center point with buffer for 3x3 minimum + 1 tile biome buffer
+            const cx = 12 + Math.floor(this.random() * (this.width - 24)); // Extra buffer for biome constraints
+            const cy = 12 + Math.floor(this.random() * (this.height - 24));
+            
+            // Check if this area is suitable (single biome with buffer)
+            if (!this.isSuitableForPlateau(cx, cy, biomeData)) {
+                continue; // Skip this plateau if it would violate biome boundaries
+            }
+            
+            // Get the biome for this plateau
+            const plateauBiome = biomeData[cy][cx];
+            
+            // Generate plateau within biome constraints
+            const size = 6 + Math.floor(this.random() * 8); // 6-13 tile radius
+            this.generateConstrainedPlateau(elevationData, biomeData, cx, cy, size, plateauBiome);
+        }
+    }
+
+    /**
+     * Check if a location is suitable for plateau placement
+     * Ensures 1-tile buffer from biome edges
+     */
+    isSuitableForPlateau(centerX, centerY, biomeData) {
+        const checkRadius = 8; // Check larger area for biome consistency
+        const centerBiome = biomeData[centerY][centerX];
+        
+        // Check if the entire area (including buffer) is the same biome
+        for (let dy = -checkRadius; dy <= checkRadius; dy++) {
+            for (let dx = -checkRadius; dx <= checkRadius; dx++) {
+                const x = centerX + dx;
+                const y = centerY + dy;
+                
+                if (x < 0 || x >= this.width || y < 0 || y >= this.height) continue;
+                
+                if (biomeData[y][x] !== centerBiome) {
+                    return false; // Different biome found - not suitable
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    /**
+     * Generate a plateau constrained to stay within a single biome
+     */
+    generateConstrainedPlateau(elevationData, biomeData, centerX, centerY, maxRadius, plateauBiome) {
+        const noiseScale = 0.1;
+        
+        for (let dy = -maxRadius; dy <= maxRadius; dy++) {
+            for (let dx = -maxRadius; dx <= maxRadius; dx++) {
+                const x = centerX + dx;
+                const y = centerY + dy;
+                
+                if (x < 1 || x >= this.width - 1 || y < 1 || y >= this.height - 1) continue;
+                
+                // Only place elevated tiles in the same biome with 1-tile buffer from edges
+                if (!this.isValidPlateauPosition(x, y, biomeData, plateauBiome)) continue;
+                
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const noiseValue = this.noise2D(x * noiseScale, y * noiseScale);
+                const threshold = maxRadius * (0.4 + noiseValue * 0.3);
+                
+                if (distance < threshold) {
+                    elevationData[y][x] = 1;
+                }
+            }
+        }
+    }
+
+    /**
+     * Check if a position is valid for plateau placement (respects biome buffers)
+     */
+    isValidPlateauPosition(x, y, biomeData, plateauBiome) {
+        // Check that this position and all adjacent positions are the same biome
+        for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+                const checkX = x + dx;
+                const checkY = y + dy;
+                
+                if (checkX < 0 || checkX >= this.width || checkY < 0 || checkY >= this.height) {
+                    return false; // Near world edge
+                }
+                
+                if (biomeData[checkY][checkX] !== plateauBiome) {
+                    return false; // Adjacent to different biome
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    /**
+     * Remove any elevated areas that violate biome boundaries
+     */
+    removebiomeBoundaryViolations(elevationData, biomeData) {
+        let removedCount = 0;
+        
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (elevationData[y][x] === 0) continue; // Not elevated
+                
+                const currentBiome = biomeData[y][x];
+                
+                // Check if this elevated tile violates biome buffer rules
+                let hasAdjacentDifferentBiome = false;
+                
+                for (let dy = -1; dy <= 1; dy++) {
+                    for (let dx = -1; dx <= 1; dx++) {
+                        const checkX = x + dx;
+                        const checkY = y + dy;
+                        
+                        if (checkX < 0 || checkX >= this.width || checkY < 0 || checkY >= this.height) continue;
+                        
+                        if (biomeData[checkY][checkX] !== currentBiome) {
+                            hasAdjacentDifferentBiome = true;
+                            break;
+                        }
+                    }
+                    if (hasAdjacentDifferentBiome) break;
+                }
+                
+                if (hasAdjacentDifferentBiome) {
+                    elevationData[y][x] = 0; // Remove this elevated tile
+                    removedCount++;
+                }
+            }
+        }
+        
+        if (removedCount > 0) {
+            console.log(`[SharedWorldGenerator] Removed ${removedCount} elevated tiles that violated biome boundaries`);
+        }
     }
 }
