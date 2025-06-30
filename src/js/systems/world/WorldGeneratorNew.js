@@ -343,21 +343,19 @@ export class WorldGenerator {
           // Mark tile walkability based on collision mask
           tile.isCliffEdge = !this.collisionMask.isTileWalkable(x, y);
           
-          // FOR ELEVATED TILES: Create base ground sprite first, then cliff tile on top
+          // FOR ELEVATED TILES: Create base color fill first, then cliff tile on top
           if (this.elevationData[y][x] > 0) {
             // Get the biome for this elevated tile
             const cliffBiome = this.biomeData && this.biomeData[y] ? this.biomeData[y][x] : 0;
             const isDarkGrassCliff = cliffBiome === 1;
             
-            // Create base ground sprite (what shows through transparent areas)
-            const baseGroundTexture = isDarkGrassCliff ? 
-              this.tilesets.getRandomPureDarkGrass() : 
-              this.tilesets.getRandomPureGrass();
-            
-            const baseSprite = new PIXI.Sprite(baseGroundTexture);
-            baseSprite.position.set(0, 0);
-            baseSprite.scale.set(this.tileSize / 32);
-            tile.container.addChild(baseSprite);
+            // Create base color fill (what shows through transparent areas)
+            const baseColor = isDarkGrassCliff ? 0x2a3a1c : 0x3e5b24; // dark grass : green grass
+            const colorFill = new PIXI.Graphics();
+            colorFill.beginFill(baseColor);
+            colorFill.drawRect(0, 0, this.tileSize, this.tileSize);
+            colorFill.endFill();
+            tile.container.addChild(colorFill);
             
             // Create cliff tile sprite on top
             const cliffSprite = new PIXI.Sprite(tileResult.texture);
