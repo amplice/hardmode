@@ -1,3 +1,31 @@
+/**
+ * @fileoverview Game - Main client-side game orchestrator and network integration
+ * 
+ * ARCHITECTURE ROLE:
+ * - Central client coordinator managing all game systems and entities
+ * - Creates and owns NetworkClient instance for multiplayer communication
+ * - Implements main game loop with client-side prediction and reconciliation
+ * - Handles PIXI.js rendering pipeline and world/entity management
+ * 
+ * NETWORK INTEGRATION PATTERN:
+ * - this.network = new NetworkClient(this) creates bidirectional relationship
+ * - processPlayerUpdate() integrates with client prediction (Reconciler)
+ * - addOrUpdateMonster() processes delta-merged monster states
+ * - Game loop runs client prediction while network syncs authoritative state
+ * 
+ * CLIENT PREDICTION FLOW:
+ * 1. User input → InputBuffer → MovementPredictor (optimistic updates)
+ * 2. Network sends input to server for validation
+ * 3. Server sends authoritative state with lastProcessedSeq
+ * 4. Reconciler corrects client prediction if server disagrees
+ * 5. Visual smoothness maintained while ensuring server authority
+ * 
+ * MULTIPLAYER ENTITY MANAGEMENT:
+ * - Local player: Full prediction + reconciliation system
+ * - Remote players: Direct position updates from server state
+ * - Monsters: Server-authoritative with delta compression optimization
+ */
+
 // src/js/core/Game.js
 import * as PIXI from 'pixi.js';
 import { Player }         from '../entities/Player.js';
@@ -170,7 +198,10 @@ export class Game {
   // Modified to accept selectedClass parameter
   startGame(selectedClass) {
     if (!this.network) {
+      // NETWORK INITIALIZATION: Create bidirectional Game ↔ NetworkClient relationship
+      // NetworkClient(this) allows network to call back into game systems
       this.network = new NetworkClient(this);
+      
       // Initialize latency tracker after network client
       this.latencyTracker = new LatencyTracker(this.network);
       
@@ -572,6 +603,21 @@ export class Game {
     this.remotePlayers.delete(id);
   }
 
+  /**
+   * CRITICAL NETWORK INTEGRATION: Process delta-merged monster state from NetworkClient
+   * 
+   * DELTA COMPRESSION CONTEXT:
+   * This method receives monster states that have been processed through:
+   * 1. Server NetworkOptimizer creates delta (changed fields only)
+   * 2. Client StateCache.applyDelta() merges with cached complete state
+   * 3. NetworkClient calls this method with reconstructed full state
+   * 
+   * ESSENTIAL FIELDS GUARANTEE:
+   * NetworkOptimizer always includes critical fields (id, state, hp, facing, type)
+   * This prevents 'undefined' errors that would break monster AI and rendering
+   * 
+   * @param {Object} info - Complete monster state (delta-merged on client)
+   */
   addOrUpdateMonster(info) {
     if (!this.remoteMonsters) this.remoteMonsters = new Map();
     let monster = this.remoteMonsters.get(info.id);

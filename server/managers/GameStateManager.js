@@ -1,3 +1,30 @@
+/**
+ * @fileoverview GameStateManager - Server-side authoritative player state management
+ * 
+ * ARCHITECTURE ROLE:
+ * - Authoritative source of truth for all player state (position, HP, level, etc.)
+ * - Handles player lifecycle: creation, respawn, stat progression, death
+ * - Integrates with client prediction through lastProcessedSeq tracking
+ * - Provides serialized state for network transmission with delta compression
+ * 
+ * CRITICAL RELATIONSHIPS:
+ * - InputProcessor validates and applies client inputs to player state
+ * - NetworkOptimizer uses getSerializedPlayers() output for delta compression
+ * - Client Reconciler uses lastProcessedSeq for prediction correction
+ * - MonsterManager reads player positions for AI targeting and spawning
+ * 
+ * STATE AUTHORITY PATTERN:
+ * Server maintains canonical player state, clients predict locally:
+ * 1. Client sends input with sequence number
+ * 2. Server validates and applies to authoritative state
+ * 3. Server sends state with lastProcessedSeq for reconciliation
+ * 4. Client corrects prediction if server state differs
+ * 
+ * DELTA COMPRESSION INTEGRATION:
+ * getSerializedPlayers() produces the baseline state for NetworkOptimizer
+ * Includes essential reconciliation data (lastProcessedSeq) for client prediction
+ */
+
 import { GAME_CONSTANTS, PLAYER_STATS } from '../../shared/constants/GameConstants.js';
 
 export class GameStateManager {
