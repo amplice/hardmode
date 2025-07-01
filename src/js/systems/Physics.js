@@ -1,3 +1,48 @@
+/**
+ * @fileoverview PhysicsSystem - Client-side collision detection and movement validation
+ * 
+ * ARCHITECTURE ROLE:
+ * - Provides client-side collision detection for smooth movement
+ * - Integrates with shared CollisionMask for consistent physics
+ * - Handles wall sliding and partial movement for better feel
+ * - Maintains world boundaries and prevents out-of-bounds movement
+ * 
+ * CLIENT-SERVER COORDINATION:
+ * Physics runs on both client and server with identical logic:
+ * - Client PhysicsSystem provides immediate collision feedback
+ * - Server InputProcessor validates movement with same CollisionMask
+ * - Identical collision logic prevents prediction mismatches
+ * - Client-side smoothness with server-side authority
+ * 
+ * COLLISION DETECTION:
+ * Uses CollisionMask for efficient tile-based collision:
+ * - O(1) collision lookup per movement attempt
+ * - Supports partial movement when direct path blocked
+ * - Wall sliding for smooth navigation around obstacles
+ * - World boundary enforcement as final constraint
+ * 
+ * MOVEMENT VALIDATION:
+ * Pre-validates movement before position updates:
+ * 1. Calculate intended new position from velocity
+ * 2. Check CollisionMask.canMove() for path validity
+ * 3. Apply movement if valid, otherwise try alternatives
+ * 4. Handle blocked movement with sliding or partial steps
+ * 5. Enforce world boundaries as final safety check
+ * 
+ * PERFORMANCE OPTIMIZATION:
+ * - Efficient collision mask integration
+ * - Minimal coordinate transformations
+ * - Direct sprite position synchronization
+ * - Fallback boundary collision for edge cases
+ * 
+ * WALL SLIDING ALGORITHM:
+ * When direct movement blocked, try alternative paths:
+ * - X-only movement: slide along vertical walls
+ * - Y-only movement: slide along horizontal walls
+ * - Prevents getting stuck on geometry corners
+ * - Maintains movement fluidity around obstacles
+ */
+
 export class PhysicsSystem {
     constructor() {
         this.worldBounds = {

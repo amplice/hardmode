@@ -1,3 +1,45 @@
+/**
+ * @fileoverview Monster - Client-side monster entity for server-driven AI
+ * 
+ * ARCHITECTURE ROLE:
+ * - Client-side representation of server-authoritative monsters
+ * - Handles visual updates, animation, and smooth movement interpolation
+ * - Receives state updates via delta compression from server MonsterManager
+ * - Provides visual feedback for combat interactions and state changes
+ * 
+ * SERVER-CLIENT PATTERN:
+ * Monsters are fully server-authoritative for anti-cheat and consistency:
+ * - Server MonsterManager runs all AI logic (pathfinding, targeting, attacks)
+ * - Client Monster entities only handle visual representation
+ * - Position updates smoothly interpolated for visual smoothness
+ * - State changes (idle→chasing→attacking) drive animation transitions
+ * 
+ * DELTA COMPRESSION INTEGRATION:
+ * updateFromServer() receives optimized state updates:
+ * - NetworkOptimizer sends only changed fields (position, hp, state)
+ * - Critical fields (id, state, hp, facing, type) always included
+ * - StateCache merges deltas with cached state before processing
+ * - Smooth interpolation maintains visual quality despite compressed updates
+ * 
+ * MONSTER AI STATES (Server-Driven):
+ * - 'dormant': Far from players, AI sleeping for performance
+ * - 'idle': Near players, wandering randomly
+ * - 'chasing': Player in aggro range, pathfinding toward target
+ * - 'attacking': In attack range, executing attack sequence
+ * - 'stunned': Hit by player attack, temporary movement disable
+ * - 'dying': Death animation playing, soon to be removed
+ * 
+ * VISUAL SMOOTHING:
+ * Server sends discrete position updates at 30 FPS
+ * Client interpolates between positions for 60 FPS visual smoothness
+ * Prevents jittery movement while maintaining server authority
+ * 
+ * PERFORMANCE OPTIMIZATIONS:
+ * - LOD system: Distant monsters update less frequently
+ * - Animation pooling: Reuse sprite objects when possible
+ * - State-based updates: Only process relevant state changes
+ */
+
 // src/js/entities/monsters/Monster.js
 import * as PIXI from 'pixi.js';
 import { MONSTER_CONFIG } from '../../config/GameConfig.js';

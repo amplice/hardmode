@@ -1,9 +1,45 @@
 /**
- * InputBuffer - Stores and manages input commands with sequence numbers and timestamps
+ * @fileoverview InputBuffer - Input sequencing and replay for client prediction
  * 
- * This is the foundation of client-side prediction. It buffers all player inputs
- * so they can be replayed during reconciliation if the server state differs
- * from the client's prediction.
+ * ARCHITECTURE ROLE:
+ * - Foundation of client-side prediction system
+ * - Sequences all player inputs with timestamps for deterministic replay
+ * - Stores input history for reconciliation rollback-and-replay
+ * - Manages confirmed vs unconfirmed input tracking
+ * 
+ * SEQUENCE NUMBERING:
+ * Each input gets monotonically increasing sequence number:
+ * - Ensures deterministic order for replay operations
+ * - Server acknowledges processing up to specific sequence
+ * - Client can replay all unconfirmed inputs during reconciliation
+ * - Prevents input loss during network corrections
+ * 
+ * PREDICTION INTEGRATION:
+ * Core component of responsive movement system:
+ * 1. Input captured with sequence number and timestamp
+ * 2. MovementPredictor processes input for immediate visual feedback
+ * 3. Input sent to server with sequence for validation
+ * 4. If server disagrees, Reconciler replays unconfirmed inputs
+ * 
+ * INPUT CONFIRMATION SYSTEM:
+ * Tracks which inputs server has processed:
+ * - confirmProcessed() updates lastProcessedSequence
+ * - Inputs before this sequence can be safely discarded
+ * - Unconfirmed inputs kept for potential replay
+ * - Memory management prevents unlimited growth
+ * 
+ * REPLAY FUNCTIONALITY:
+ * getInputsAfter() enables rollback-and-replay:
+ * - Returns all inputs after a specific sequence
+ * - Sorted by sequence for deterministic replay order
+ * - Used when server corrects client prediction
+ * - Maintains input responsiveness during corrections
+ * 
+ * PERFORMANCE CONSIDERATIONS:
+ * - Map operations for O(1) sequence lookup
+ * - Periodic cleanup prevents memory bloat
+ * - Conservative history size (1000 inputs ≈ 16 seconds)
+ * - High-precision timestamps for accurate replay timing
  */
 export class InputBuffer {
     constructor(maxHistorySize = 1000) {

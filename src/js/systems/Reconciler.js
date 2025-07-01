@@ -1,8 +1,46 @@
 /**
- * Reconciler - Client-side server reconciliation for prediction corrections
+ * @fileoverview Reconciler - Server state correction for client prediction
  * 
- * This system compares server-authoritative state with client predictions
- * and performs rollback + replay when mismatches are detected.
+ * ARCHITECTURE ROLE:
+ * - Corrects client prediction when server state differs significantly
+ * - Maintains smooth gameplay while ensuring server authority
+ * - Implements rollback-and-replay for accurate state correction
+ * - Prevents prediction drift from accumulating over time
+ * 
+ * RECONCILIATION ALGORITHM:
+ * When server state differs from client prediction:
+ * 1. Compare server position vs predicted position at same sequence
+ * 2. If difference exceeds tolerance, perform reconciliation
+ * 3. Set player position to authoritative server state
+ * 4. Replay all unconfirmed inputs from corrected position
+ * 5. Smooth visual correction to prevent jarring jumps
+ * 
+ * TOLERANCE SYSTEM:
+ * Prevents micro-corrections that would cause jitter:
+ * - Position tolerance: 50 pixels (tuned for large world performance)
+ * - Small differences ignored for smooth gameplay
+ * - Large differences immediately corrected
+ * - Balance between accuracy and visual smoothness
+ * 
+ * ANTI-CHEAT INTEGRATION:
+ * Server authority always maintained:
+ * - Client predictions are optimistic, never authoritative
+ * - Server validates all movement and sends corrections
+ * - Impossible to override server position checks
+ * - Speed limits and collision enforced server-side
+ * 
+ * INPUT REPLAY SYSTEM:
+ * Maintains responsive feel during corrections:
+ * 1. InputBuffer tracks unconfirmed inputs by sequence
+ * 2. When server corrects position, replay unconfirmed inputs
+ * 3. Player continues from corrected position without lost inputs
+ * 4. Seamless correction with minimal visual disruption
+ * 
+ * PERFORMANCE OPTIMIZATIONS:
+ * - Tolerance prevents unnecessary corrections
+ * - Smooth interpolation for small corrections
+ * - Statistics tracking for tuning tolerance values
+ * - Efficient sequence-based state lookup
  */
 export class Reconciler {
     constructor(inputBuffer, predictor) {

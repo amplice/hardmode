@@ -1,9 +1,46 @@
 /**
- * MovementPredictor - Client-side movement prediction
+ * @fileoverview MovementPredictor - Client-side prediction for responsive movement
  * 
- * This mirrors the server's movement logic exactly to predict where the player
- * will be when the server processes their inputs. This eliminates input lag
- * while maintaining server authority for anti-cheat.
+ * ARCHITECTURE ROLE:
+ * - Eliminates input lag by predicting player movement client-side
+ * - Maintains server authority while providing responsive feel
+ * - Stores prediction history for server reconciliation
+ * - Mirrors server movement logic exactly for accurate predictions
+ * 
+ * CLIENT PREDICTION PATTERN:
+ * Optimistic movement updates with server validation:
+ * 1. Player input processed immediately on client
+ * 2. MovementPredictor calculates predicted position
+ * 3. Visual update applied instantly (responsive feel)
+ * 4. Input sent to server with sequence number
+ * 5. Server validates and returns authoritative state
+ * 6. Reconciler corrects if prediction was wrong
+ * 
+ * PREDICTION ACCURACY:
+ * Mirrors server logic exactly to minimize mispredictions:
+ * - Identical movement speed calculations per class
+ * - Same collision detection and world bounds
+ * - Matching diagonal movement normalization
+ * - Latency compensation for high-ping scenarios
+ * 
+ * SEQUENCE TRACKING:
+ * Each prediction stored with sequence number for reconciliation:
+ * - Map<sequence, predictedState> maintains prediction history
+ * - Reconciler uses this history to replay mispredicted inputs
+ * - Cleanup prevents memory growth from old predictions
+ * 
+ * ANTI-CHEAT INTEGRATION:
+ * Client prediction never overrides server authority:
+ * - Predictions are optimistic, not authoritative
+ * - Server validates all movement and corrects violations
+ * - Speed hacking and teleportation impossible
+ * - Visual responsiveness without security compromise
+ * 
+ * PERFORMANCE CONSIDERATIONS:
+ * - Conservative prediction window (10ms max adjustment)
+ * - Efficient Map operations for sequence lookup
+ * - Periodic cleanup prevents memory bloat
+ * - Minimal prediction logic matching server exactly
  */
 export class MovementPredictor {
     constructor(latencyTracker = null, collisionMask = null) {

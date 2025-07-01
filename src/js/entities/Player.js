@@ -1,3 +1,40 @@
+/**
+ * @fileoverview Player - Core player entity with component-based architecture
+ * 
+ * ARCHITECTURE ROLE:
+ * - Primary player character managing movement, combat, health, and progression
+ * - Component-based design for modular gameplay systems (movement, combat, health, stats)
+ * - Integrates with client prediction, server reconciliation, and multiplayer synchronization
+ * - Handles both local player (with prediction) and remote players (server-authoritative)
+ * 
+ * COMPONENT PATTERN:
+ * Modular design with specialized components:
+ * - MovementComponent: Input processing, velocity calculation, facing direction
+ * - CombatComponent: Attack execution, ability management, damage dealing
+ * - HealthComponent: HP management, damage taking, death/respawn cycle
+ * - StatsComponent: Level progression, experience, stat bonuses
+ * - AnimationComponent: Sprite animation coordination
+ * 
+ * CLIENT PREDICTION INTEGRATION:
+ * Local player uses optimistic updates:
+ * 1. Input processed immediately for responsive feel
+ * 2. MovementPredictor calculates predicted position
+ * 3. Server validates and sends authoritative state
+ * 4. Reconciler corrects prediction if server disagrees
+ * 
+ * MULTIPLAYER COORDINATION:
+ * - Local player: Full component systems + prediction
+ * - Remote players: Visual updates only, server drives state
+ * - Attack synchronization via network events
+ * - Health/damage coordination through server authority
+ * 
+ * SKILL-BASED COMBAT DESIGN:
+ * - Level differences provide advantages but skill can overcome
+ * - Movement speed bonuses, attack recovery improvements
+ * - Roll ability unlocked at level 5 for advanced tactics
+ * - Permadeath mechanics with full stat reset on death
+ */
+
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js';
 import { 

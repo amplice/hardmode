@@ -1,3 +1,46 @@
+/**
+ * @fileoverview CombatSystem - Skill-based hitbox combat with visual feedback
+ * 
+ * ARCHITECTURE ROLE:
+ * - Provides hitbox-based combat for player attacks and abilities
+ * - Manages attack execution, hit detection, and damage application
+ * - Supports multiple hitbox types (rectangle, cone, circle) for varied abilities
+ * - Integrates with multiplayer through server-authoritative damage validation
+ * 
+ * SKILL-BASED DESIGN PHILOSOPHY:
+ * Combat emphasizes positioning, timing, and spacing over stats:
+ * - Precise hitbox collision detection for skill-based combat
+ * - Movement abilities (dash, jump) for tactical positioning
+ * - Visual hitbox feedback for learning and mastery
+ * - Level advantages exist but skill can overcome them
+ * 
+ * HITBOX SYSTEM:
+ * Geometric hit detection with rotation and facing support:
+ * - RectangleHitbox: Melee attacks (sword swings, thrusts)
+ * - ConeHitbox: Area attacks (sweeping abilities)
+ * - CircleHitbox: Point abilities (projectile impacts)
+ * - All hitboxes respect facing direction and collision physics
+ * 
+ * MULTIPLAYER INTEGRATION:
+ * Client-side visual feedback with server authority:
+ * 1. Client creates hitbox and shows visual effect immediately
+ * 2. Client sends attack data to server for validation
+ * 3. Server performs authoritative hit detection and damage
+ * 4. Server broadcasts damage results to all clients
+ * 5. Prevents cheating while maintaining responsive feel
+ * 
+ * ATTACK EXECUTION FLOW:
+ * 1. executeAttack() creates hitbox based on ability configuration
+ * 2. applyHitEffects() handles collision detection and damage
+ * 3. Visual effects (graphics, screen shake) provide immediate feedback
+ * 4. Network synchronization ensures multiplayer consistency
+ * 
+ * PERFORMANCE CONSIDERATIONS:
+ * - Hitboxes are temporary objects with short lifetime
+ * - Graphics disposal prevents memory leaks
+ * - Hit detection optimized for common combat scenarios
+ */
+
 // src/js/systems/CombatSystem.js
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG } from '../config/GameConfig.js';
