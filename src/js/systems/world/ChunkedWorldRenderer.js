@@ -105,12 +105,21 @@ export class ChunkedWorldRenderer {
         const endX = Math.min(startX + this.chunkSize, this.worldRenderer.width);
         const endY = Math.min(startY + this.chunkSize, this.worldRenderer.height);
         
-        // Render tiles in this chunk
+        // Track processed tiles for this chunk (for autotiling)
+        const processedTiles = [];
+        for (let y = 0; y < this.worldRenderer.height; y++) {
+            processedTiles[y] = [];
+        }
+        
+        // First pass: Render tiles in this chunk
         for (let y = startY; y < endY; y++) {
             for (let x = startX; x < endX; x++) {
-                this.renderTile(x, y, chunkContainer);
+                this.renderTile(x, y, chunkContainer, processedTiles);
             }
         }
+        
+        // Second pass: Add cliff extensions for this chunk
+        this.addChunkCliffExtensions(chunkContainer, startX, startY, endX, endY, processedTiles);
         
         // Position the chunk container
         chunkContainer.x = startX * this.worldRenderer.tileSize;
@@ -121,7 +130,8 @@ export class ChunkedWorldRenderer {
             container: chunkContainer,
             chunkX,
             chunkY,
-            tileCount: (endX - startX) * (endY - startY)
+            tileCount: (endX - startX) * (endY - startY),
+            processedTiles: processedTiles
         };
         
         this.loadedChunks.set(chunkKey, chunkData);
@@ -149,82 +159,104 @@ export class ChunkedWorldRenderer {
     }
     
     /**
-     * Render a single tile using the world renderer's logic
+     * Render a single tile using the full world renderer logic
      */
-    renderTile(x, y, container) {
-        // Get the appropriate texture for this tile
-        const texture = this.worldRenderer.getTileTexture(x, y);
+    renderTile(x, y, container, processedTiles) {
+        // Create a tile container for layering
+        const tileContainer = new PIXI.Container();
+        const localX = (x % this.chunkSize) * this.worldRenderer.tileSize;
+        const localY = (y % this.chunkSize) * this.worldRenderer.tileSize;
+        tileContainer.position.set(localX, localY);
         
-        if (!texture) {
-            console.warn(`[ChunkedWorldRenderer] No texture for tile at (${x},${y})`);
-            return;
-        }
-        
-        // Validate texture has required properties
-        if (!texture.width || !texture.height) {
-            console.error(`[ChunkedWorldRenderer] Invalid texture at (${x},${y}):`, texture);
-            return;
-        }
-        
-        try {
-            // Create sprite
-            const sprite = new PIXI.Sprite(texture);
-            sprite.x = (x % this.chunkSize) * this.worldRenderer.tileSize;
-            sprite.y = (y % this.chunkSize) * this.worldRenderer.tileSize;
-            sprite.scale.set(this.worldRenderer.tileSize / texture.width);
+        // Check if this position has stairs
+        if (this.worldRenderer.stairsData && this.worldRenderer.stairsData[y] && this.worldRenderer.stairsData[y][x]) {
+            const stairInfo = this.worldRenderer.stairsData[y][x];
+            const stairTexture = this.worldRenderer.tilesets.textures.terrain[stairInfo.tileY] && 
+                               this.worldRenderer.tilesets.textures.terrain[stairInfo.tileY][stairInfo.tileX];
             
-            container.addChild(sprite);
+            if (stairTexture) {
+                // Create base color fill for stairs
+                const stairBiome = stairInfo.biome || 0;
+                const isDarkGrassStair = stairBiome === 1;
+                const baseColor = isDarkGrassStair ? 0x2a3a1c : 0x3e5b24;
+                
+                const colorFill = new PIXI.Graphics();
+                colorFill.beginFill(baseColor);
+                colorFill.drawRect(0, 0, this.worldRenderer.tileSize, this.worldRenderer.tileSize);
+                colorFill.endFill();
+                tileContainer.addChild(colorFill);
+                
+                // Create stair sprite on top
+                const sprite = new PIXI.Sprite(stairTexture);
+                sprite.scale.set(this.worldRenderer.tileSize / 32);
+                tileContainer.addChild(sprite);
+            }
             
-            // Handle special cases (stairs with base colors, cliff extensions, etc.)
-            this.handleSpecialTileFeatures(x, y, container);
-        } catch (error) {
-            console.error(`[ChunkedWorldRenderer] Error creating sprite at (${x},${y}):`, error);
+            processedTiles[y][x] = 'stairs';
+        } else {
+            // Normal tile processing with autotiler
+            const tileResult = this.worldRenderer.cliffAutotiler.getTileTexture(
+                x, y, 
+                this.worldRenderer.elevationData, 
+                processedTiles, 
+                this.worldRenderer.biomeData
+            );
+            
+            processedTiles[y][x] = tileResult.type;
+            
+            // For elevated tiles, add base color first
+            if (this.worldRenderer.elevationData[y][x] > 0) {
+                const cliffBiome = (this.worldRenderer.biomeData && this.worldRenderer.biomeData[y]) ? 
+                                   this.worldRenderer.biomeData[y][x] : 0;
+                const isDarkGrassCliff = cliffBiome === 1;
+                const baseColor = isDarkGrassCliff ? 0x2a3a1c : 0x3e5b24;
+                
+                const colorFill = new PIXI.Graphics();
+                colorFill.beginFill(baseColor);
+                colorFill.drawRect(0, 0, this.worldRenderer.tileSize, this.worldRenderer.tileSize);
+                colorFill.endFill();
+                tileContainer.addChild(colorFill);
+            }
+            
+            // Add the main tile sprite
+            const sprite = new PIXI.Sprite(tileResult.texture);
+            sprite.scale.set(this.worldRenderer.tileSize / 32);
+            tileContainer.addChild(sprite);
         }
+        
+        container.addChild(tileContainer);
     }
     
     /**
-     * Handle special tile features like base colors for stairs, cliff extensions
+     * Add cliff extensions for a chunk
      */
-    handleSpecialTileFeatures(x, y, container) {
-        // Add base color for stairs (same logic as ClientWorldRenderer)
-        if (this.worldRenderer.stairsData && this.worldRenderer.stairsData[y] && this.worldRenderer.stairsData[y][x]) {
-            const stairInfo = this.worldRenderer.stairsData[y][x];
-            const stairBiome = stairInfo.biome || 0;
-            const isDarkGrassStair = stairBiome === 1;
-            const baseColor = isDarkGrassStair ? 0x2a3a1c : 0x3e5b24;
-            
-            const colorFill = new PIXI.Graphics();
-            colorFill.beginFill(baseColor);
-            colorFill.drawRect(
-                (x % this.chunkSize) * this.worldRenderer.tileSize,
-                (y % this.chunkSize) * this.worldRenderer.tileSize,
-                this.worldRenderer.tileSize,
-                this.worldRenderer.tileSize
-            );
-            colorFill.endFill();
-            
-            // Add base color before the stair sprite
-            container.addChildAt(colorFill, container.children.length - 1);
-        }
-        
-        // Add cliff base colors for elevated tiles
-        if (this.worldRenderer.elevationData && this.worldRenderer.elevationData[y] && this.worldRenderer.elevationData[y][x] > 0) {
-            const cliffBiome = (this.worldRenderer.biomeData && this.worldRenderer.biomeData[y]) ? this.worldRenderer.biomeData[y][x] : 0;
-            const isDarkGrassCliff = cliffBiome === 1;
-            const baseColor = isDarkGrassCliff ? 0x2a3a1c : 0x3e5b24;
-            
-            const colorFill = new PIXI.Graphics();
-            colorFill.beginFill(baseColor);
-            colorFill.drawRect(
-                (x % this.chunkSize) * this.worldRenderer.tileSize,
-                (y % this.chunkSize) * this.worldRenderer.tileSize,
-                this.worldRenderer.tileSize,
-                this.worldRenderer.tileSize
-            );
-            colorFill.endFill();
-            
-            // Add base color before the cliff sprite
-            container.addChildAt(colorFill, container.children.length - 1);
+    addChunkCliffExtensions(container, startX, startY, endX, endY, processedTiles) {
+        // Check each elevated tile in the chunk for extensions
+        for (let y = startY; y < endY; y++) {
+            for (let x = startX; x < endX; x++) {
+                if (this.worldRenderer.elevationData[y][x] === 0) continue;
+                
+                const extensionTexture = this.worldRenderer.cliffAutotiler.getCliffExtensionTexture(
+                    x, y, 
+                    this.worldRenderer.elevationData, 
+                    processedTiles,
+                    this.worldRenderer.biomeData
+                );
+                
+                if (extensionTexture && y + 1 < this.worldRenderer.height) {
+                    // Create extension sprite positioned below the cliff
+                    const extensionSprite = new PIXI.Sprite(extensionTexture);
+                    const localX = (x % this.chunkSize) * this.worldRenderer.tileSize;
+                    const localY = ((y + 1) % this.chunkSize) * this.worldRenderer.tileSize;
+                    
+                    // Only add if the extension is within this chunk
+                    if (y + 1 >= startY && y + 1 < endY) {
+                        extensionSprite.position.set(localX, localY);
+                        extensionSprite.scale.set(this.worldRenderer.tileSize / 32);
+                        container.addChild(extensionSprite);
+                    }
+                }
+            }
         }
     }
     
