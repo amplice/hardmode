@@ -38,6 +38,41 @@ function preventZoom() {
     document.addEventListener('gestureend', (e) => {
         e.preventDefault();
     });
+    
+    // ANTI-CHEAT: Detect and prevent browser zoom changes
+    let lastDevicePixelRatio = window.devicePixelRatio;
+    let lastWidth = window.innerWidth;
+    
+    function detectZoomChange() {
+        const currentRatio = window.devicePixelRatio;
+        const currentWidth = window.innerWidth;
+        
+        // Detect zoom via devicePixelRatio change or suspicious width changes
+        if (currentRatio !== lastDevicePixelRatio || 
+            (Math.abs(currentWidth - lastWidth) > 50 && !document.hidden)) {
+            
+            console.warn('[AntiCheat] Browser zoom detected! Reloading to enforce fair play.');
+            // Force reload to reset any zoom
+            window.location.reload();
+        }
+        
+        lastDevicePixelRatio = currentRatio;
+        lastWidth = currentWidth;
+    }
+    
+    // Check for zoom changes every second
+    setInterval(detectZoomChange, 1000);
+    
+    // Also check on visibility change (when tab becomes active)
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            detectZoomChange();
+        }
+    });
+    
+    // Log warning to console
+    console.log('%c⚠️ FOV ANTI-CHEAT ACTIVE ⚠️', 'color: red; font-weight: bold; font-size: 16px;');
+    console.log('%cBrowser zoom will cause automatic page reload to ensure fair play.', 'color: orange; font-size: 12px;');
 }
 
 window.addEventListener('DOMContentLoaded', () => {

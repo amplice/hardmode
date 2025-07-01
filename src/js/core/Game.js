@@ -90,7 +90,7 @@ export class Game {
       y: 0, 
       targetX: 0, 
       targetY: 0, 
-      zoom: 1,
+      zoom: 0.85, // Decreased to show more FOV (0.85 = 15% more visible area)
       smoothing: 0.25 // Increased for better responsiveness on slower hardware
     };
 
@@ -420,12 +420,16 @@ export class Game {
     this.camera.x += (this.camera.targetX - this.camera.x) * this.camera.smoothing;
     this.camera.y += (this.camera.targetY - this.camera.y) * this.camera.smoothing;
     
-    // Apply camera position to containers
-    const camX = Math.floor(this.app.screen.width / 2 - this.camera.x);
-    const camY = Math.floor(this.app.screen.height / 2 - this.camera.y);
+    // Apply camera position to containers with zoom
+    const camX = Math.floor(this.app.screen.width / 2 - this.camera.x * this.camera.zoom);
+    const camY = Math.floor(this.app.screen.height / 2 - this.camera.y * this.camera.zoom);
     
     this.worldContainer.position.set(camX, camY);
     this.entityContainer.position.set(camX, camY);
+    
+    // Apply zoom scale to world
+    this.worldContainer.scale.set(this.camera.zoom, this.camera.zoom);
+    this.entityContainer.scale.set(this.camera.zoom, this.camera.zoom);
     
     // CHUNKED RENDERING INTEGRATION: Notify chunked renderer of camera movement
     // This triggers chunk loading/unloading based on player's current position
