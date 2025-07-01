@@ -83,12 +83,14 @@ const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensa
 const networkOptimizer = new NetworkOptimizer();
 const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
 
-// Spawn initial monsters for immediate action
-console.log(`[Server] Spawning ${GAME_CONSTANTS.SPAWN.INITIAL_MONSTERS} initial monsters...`);
+// Spawn initial monsters for immediate stress testing
+console.log(`[Server] 🔥 EXTREME STRESS TEST: Spawning ${GAME_CONSTANTS.SPAWN.INITIAL_MONSTERS} initial monsters...`);
+console.log(`[Server] ⚡ Lightning spawn rate: ${GAME_CONSTANTS.SPAWN.INTERVAL}s (one monster every 50ms!)`);
+console.log(`[Server] 🎯 Target: ${GAME_CONSTANTS.SPAWN.MAX_MONSTERS} total monsters`);
 for (let i = 0; i < GAME_CONSTANTS.SPAWN.INITIAL_MONSTERS; i++) {
     monsterManager.createMonster();
 }
-console.log(`[Server] Initial monster spawn complete. World starts with action!`);
+console.log(`[Server] 🚀 Stress test initialized! Watch performance as monsters rapidly spawn to 500...`);
 
 // Feature flag for delta compression (re-enabled with bug fixes)
 const ENABLE_DELTA_COMPRESSION = true;

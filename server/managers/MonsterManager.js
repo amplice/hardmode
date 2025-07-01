@@ -48,8 +48,17 @@ export class MonsterManager {
         this.spawnTimer += deltaTime;
         if (this.spawnTimer >= GAME_CONSTANTS.SPAWN.INTERVAL && 
             this.monsters.size < GAME_CONSTANTS.SPAWN.MAX_MONSTERS) {
+            
             this.spawnMonster(players);
             this.spawnTimer = 0;
+            
+            // Log progress during rapid spawning stress test
+            if (this.monsters.size % 50 === 0 || this.monsters.size === GAME_CONSTANTS.SPAWN.MAX_MONSTERS) {
+                console.log(`[MonsterManager] 🎯 Stress test progress: ${this.monsters.size}/${GAME_CONSTANTS.SPAWN.MAX_MONSTERS} monsters spawned`);
+                if (this.monsters.size === GAME_CONSTANTS.SPAWN.MAX_MONSTERS) {
+                    console.log(`[MonsterManager] 🏁 STRESS TEST COMPLETE! All ${GAME_CONSTANTS.SPAWN.MAX_MONSTERS} monsters spawned. Monitor performance now.`);
+                }
+            }
         }
 
         // Monster AI LOD System: Conservative distances to ensure monsters near players always update
