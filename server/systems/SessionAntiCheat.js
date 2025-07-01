@@ -153,12 +153,12 @@ export class SessionAntiCheat {
         const maxDistance = this.maxDistancePerSecond[playerClass] || 300;
         
         // Add buffer for abilities and network latency
-        const bufferMultiplier = 1.5;
+        const bufferMultiplier = 2.0; // Increased from 1.5 to 2.0 for more tolerance
         const allowedDistance = maxDistance * bufferMultiplier;
         
         // Check if player is in an ability (gets extra allowance)
         const isInAbility = this.abilityManager && this.abilityManager.activeAbilities.has(playerId);
-        const finalAllowedDistance = isInAbility ? allowedDistance * 2 : allowedDistance;
+        const finalAllowedDistance = isInAbility ? allowedDistance * 3 : allowedDistance; // Increased from 2x to 3x
         
         // Only flag if significantly over the limit
         if (distance > finalAllowedDistance) {

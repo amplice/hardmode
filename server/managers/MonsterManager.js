@@ -53,9 +53,9 @@ export class MonsterManager {
         }
 
         // Monster AI LOD System: Different update frequencies based on distance
-        const nearDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 0.6; // 900px
-        const mediumDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE; // 1500px
-        const farDistance = GAME_CONSTANTS.SPAWN.MAX_DISTANCE_FROM_PLAYER; // 8000px
+        const nearDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 0.8; // 1200px (increased from 900px)
+        const mediumDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 1.5; // 2250px (increased from 1500px)
+        const farDistance = GAME_CONSTANTS.SPAWN.MAX_DISTANCE_FROM_PLAYER * 0.5; // 4000px (reduced from 8000px)
         
         let nearCount = 0;
         let mediumCount = 0;
@@ -78,10 +78,18 @@ export class MonsterManager {
             // Determine LOD level and update frequency
             if (closestDistance < nearDistance) {
                 // NEAR: Full update every frame (highest priority)
+                // Wake up dormant monsters
+                if (monster.state === 'dormant') {
+                    monster.state = 'idle';
+                }
                 this.updateMonster(monster, deltaTime, players);
                 nearCount++;
             } else if (closestDistance < mediumDistance) {
                 // MEDIUM: Update every 2 frames (skip 50% of updates)
+                // Wake up dormant monsters
+                if (monster.state === 'dormant') {
+                    monster.state = 'idle';
+                }
                 if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
                 monster.lodSkipCounter++;
                 if (monster.lodSkipCounter % 2 === 0) {
@@ -90,6 +98,10 @@ export class MonsterManager {
                 mediumCount++;
             } else if (closestDistance < farDistance) {
                 // FAR: Update every 4 frames (skip 75% of updates) 
+                // Wake up dormant monsters
+                if (monster.state === 'dormant') {
+                    monster.state = 'idle';
+                }
                 if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
                 monster.lodSkipCounter++;
                 if (monster.lodSkipCounter % 4 === 0) {
@@ -98,9 +110,12 @@ export class MonsterManager {
                 farCount++;
             } else {
                 // DORMANT: No updates, minimal state
-                monster.state = 'dormant';
-                monster.velocity = { x: 0, y: 0 };
-                monster.target = null;
+                if (monster.state !== 'dormant') {
+                    // Newly becoming dormant
+                    monster.state = 'dormant';
+                    monster.velocity = { x: 0, y: 0 };
+                    monster.target = null;
+                }
                 dormantCount++;
             }
         }

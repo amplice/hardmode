@@ -364,14 +364,14 @@ getAnimationForMovement(facingDirection, movementDirection, characterClass) {
     const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight' if not found
 
     // Convert 8-way direction to the animation suffix (e, se, s, etc.)
-    const facingSuffix = directionStringToAnimationSuffix(facingDirection);
+    const facingSuffix = directionStringToAnimationSuffix(facingDirection || 'down');
     
     // If not moving, return idle animation
     if (!movementDirection) {
         return `${classPrefix}_idle_${facingSuffix}`;
     }
     
-    const movementSuffix = directionStringToAnimationSuffix(movementDirection);
+    const movementSuffix = directionStringToAnimationSuffix(movementDirection || 'down');
     
     if (!facingSuffix || !movementSuffix) {
         // Default to south-facing idle if direction string is invalid
@@ -433,7 +433,7 @@ getAttackAnimation(facingDirection, attackType, characterClass) {
     const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
 
     // Convert 8-way direction string to animation suffix
-    const facingSuffix = directionStringToAnimationSuffix(facingDirection);
+    const facingSuffix = directionStringToAnimationSuffix(facingDirection || 'down');
     
     if (!facingSuffix) {
         return attackType === 'roll'
@@ -474,7 +474,7 @@ getAttackAnimation(facingDirection, attackType, characterClass) {
     
     getMonsterAnimationForDirection(monsterType, directionString, state = 'walk') {
         // Convert 8-way direction string to animation suffix
-        const facingSuffix = directionStringToAnimationSuffix(directionString);
+        const facingSuffix = directionStringToAnimationSuffix(directionString || 'down');
         
         if (monsterType === 'skeleton' || monsterType === 'elemental' ||
             monsterType === 'ogre' || monsterType === 'ghoul' || monsterType === 'wildarcher') {
