@@ -288,7 +288,8 @@ export class Game {
           x: this.entities.player.position.x,
           y: this.entities.player.position.y,
           facing: this.entities.player.facing,
-          class: this.entities.player.characterClass
+          class: this.entities.player.characterClass,
+          moveSpeed: this.entities.player.moveSpeed // Include level bonuses for accurate prediction
         };
 
         const predictedState = this.systems.predictor.predictMovement(currentState, networkInput);

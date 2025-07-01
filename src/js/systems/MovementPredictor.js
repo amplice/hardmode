@@ -149,9 +149,8 @@ export class MovementPredictor {
      * @param {number} deltaTime - Frame delta time
      */
     applyMovement(state, movement, deltaTime) {
-        // Get player stats for movement speed
-        const baseSpeed = this.classSpeeds[state.class] || 5;
-        const totalSpeed = baseSpeed; // TODO: Add bonuses when server supports them
+        // Use actual player moveSpeed (includes level bonuses) instead of base speed
+        const totalSpeed = state.moveSpeed || this.classSpeeds[state.class] || 5;
 
         // Apply speed modifiers based on facing vs movement direction
         const speedModifier = this.calculateSpeedModifier(state, movement);
