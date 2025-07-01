@@ -1,3 +1,29 @@
+/**
+ * @fileoverview ClientWorldRenderer - High-performance world rendering system
+ * 
+ * ARCHITECTURE ROLE:
+ * - Separates visual rendering from world generation logic (performance pattern)
+ * - Accepts pre-generated world data from SharedWorldGenerator for rendering
+ * - Implements two rendering strategies: full (small worlds) vs chunked (large worlds)
+ * - Manages PIXI.js sprite creation, collision mask integration, and visual optimization
+ * 
+ * PERFORMANCE PATTERN:
+ * Rendering is the bottleneck for large worlds (>20,000 tiles), not generation
+ * Chunked rendering loads only visible 3x3 chunk grid, reducing memory by 90%+
+ * Full rendering for small worlds (<20k tiles) provides simpler, faster code path
+ * 
+ * CHUNKED RENDERING ALGORITHM:
+ * - World divided into 32x32 tile chunks for efficient loading/unloading
+ * - Player viewport tracks 3x3 chunk grid around current position
+ * - Chunks loaded on-demand, unloaded when outside view distance
+ * - Cliff autotiling works seamlessly across chunk boundaries
+ * 
+ * CRITICAL SEPARATION:
+ * This class ONLY handles visual rendering - no game logic
+ * SharedWorldGenerator provides authoritative world data (elevation, biomes, stairs)
+ * CollisionMask generated from same data ensures client-server consistency
+ */
+
 // Complete rewrite of world generation with proper 3x3 minimum enforcement
 // Focus on generating correct terrain from the start rather than fixing it later
 

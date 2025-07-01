@@ -1,6 +1,35 @@
 /**
- * Shared world generation logic used by both client and server
- * Ensures identical world generation for collision consistency
+ * @fileoverview SharedWorldGenerator - Deterministic world generation for client-server sync
+ * 
+ * ARCHITECTURE ROLE:
+ * - Authoritative world generation shared between client and server
+ * - Ensures identical terrain, collision, and biome data across all instances
+ * - Uses seeded noise generation for deterministic, reproducible worlds
+ * - Provides foundational data for ClientWorldRenderer and server collision systems
+ * 
+ * DETERMINISTIC GENERATION PATTERN:
+ * Seed-based generation guarantees identical worlds:
+ * 1. Server generates world seed on startup
+ * 2. All clients receive same seed via network init
+ * 3. SharedWorldGenerator(seed) produces identical terrain
+ * 4. No world data transmission needed - each instance generates locally
+ * 
+ * GENERATION PIPELINE:
+ * Three-phase generation order prevents data dependencies:
+ * 1. Biomes: Dark grass mini-biomes using simplex noise
+ * 2. Elevation: Cliff plateaus with biome-aware buffer zones
+ * 3. Stairs: Connects elevation levels while respecting biome boundaries
+ * 
+ * CRITICAL CONSISTENCY:
+ * Client and server must generate identical collision data
+ * Server uses this for authoritative physics and pathfinding
+ * Client uses for prediction and rendering
+ * Any deviation breaks multiplayer collision synchronization
+ * 
+ * PERFORMANCE OPTIMIZATION:
+ * Generation is fast (~50ms for 200x200 world)
+ * Rendering is the bottleneck, not generation
+ * Data structure optimized for ClientWorldRenderer consumption
  */
 import { createNoise2D } from 'simplex-noise';
 import { createSeededRandom } from '../utils/MathUtils.js';

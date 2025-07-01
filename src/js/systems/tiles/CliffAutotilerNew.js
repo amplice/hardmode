@@ -1,3 +1,34 @@
+/**
+ * @fileoverview CliffAutotiler - Advanced tile autotiling for seamless terrain
+ * 
+ * ARCHITECTURE ROLE:
+ * - Converts elevation data to visually seamless cliff/transition tiles
+ * - Implements 8-directional neighbor analysis with diagonal support
+ * - Manages biome-aware tile selection (green vs dark grass variants)
+ * - Provides smooth visual transitions across chunk boundaries
+ * 
+ * AUTOTILING ALGORITHM:
+ * 8-bit neighbor bitmask system:
+ * - Each of 8 directions (4 cardinal + 4 diagonal) = 1 bit
+ * - 256 possible combinations mapped to appropriate tile variants
+ * - Priority-based selection: corners → inner corners → edges → fallbacks
+ * 
+ * BIOME INTEGRATION:
+ * Tileset structure: Green tiles columns 0-10, Dark grass columns 11-21
+ * Same autotiling logic applies to both biomes with column offset
+ * Biome transitions handled by checking neighbor biome data
+ * 
+ * CHUNK COMPATIBILITY:
+ * Autotiler works across chunk boundaries seamlessly
+ * Each tile considers neighbors in all 8 directions regardless of chunk
+ * ChunkedWorldRenderer calls autotiler per tile with world-wide neighbor data
+ * 
+ * PERFORMANCE CONSIDERATIONS:
+ * Priority-based evaluation stops at first match (faster than lookup tables)
+ * Bitmask calculation optimized for common cases (corners, edges)
+ * Compatible with both full rendering and chunked rendering modes
+ */
+
 // Complete rewrite of cliff autotiling system
 // Based on comprehensive understanding of MainLev2.0 tileset
 

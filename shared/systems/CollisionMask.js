@@ -1,8 +1,35 @@
 /**
- * CollisionMask - Simple, robust collision detection system
+ * @fileoverview CollisionMask - Shared collision detection for client-server physics sync
  * 
- * Uses a 2D boolean array for fast collision checks.
- * Shared between client and server to ensure consistent physics.
+ * ARCHITECTURE ROLE:
+ * - Provides unified collision detection for both client and server
+ * - Generated from identical world data to ensure physics consistency
+ * - Optimized for fast player/monster movement validation
+ * - Integrates with world generation for dynamic collision boundaries
+ * 
+ * CLIENT-SERVER SYNCHRONIZATION:
+ * Critical for multiplayer consistency:
+ * 1. Server generates authoritative CollisionMask from world elevation data
+ * 2. Client generates identical mask from same elevation data (via shared seed)
+ * 3. Both use same collision checking logic for movement validation
+ * 4. Prevents client-server physics desynchronization issues
+ * 
+ * COLLISION ALGORITHM:
+ * Cliff edge detection system:
+ * - Plateau interiors: walkable (players can walk on top of cliffs)
+ * - Cliff edges: unwalkable (prevents falling off edges)
+ * - Ground level: walkable unless directly below cliff edge
+ * - Stairs: walkable transitions between elevation levels
+ * 
+ * PERFORMANCE OPTIMIZATION:
+ * 2D boolean array for O(1) collision lookups
+ * Memory usage: ~1 byte per tile (acceptable for 200x200 = 40KB)
+ * Alternative spatial structures would add complexity without benefit
+ * 
+ * WALKABILITY RULES:
+ * - false = solid/unwalkable (cliff edges, obstacle tiles)
+ * - true = walkable (ground, plateau tops, stairs)
+ * Compatible with both player physics and monster AI pathfinding
  */
 export class CollisionMask {
     constructor(width, height, tileSize = 64) {

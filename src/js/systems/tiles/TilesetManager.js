@@ -1,3 +1,35 @@
+/**
+ * @fileoverview TilesetManager - Asset loading and texture management for world rendering
+ * 
+ * ARCHITECTURE ROLE:
+ * - Loads and slices sprite sheets into individual tile textures
+ * - Provides structured access to terrain and decoration textures
+ * - Manages biome variants (green vs dark grass) within same tileset
+ * - Integrates with PIXI.js asset loading pipeline and texture caching
+ * 
+ * TILESET STRUCTURE:
+ * MainLev2.0.png (2048x1408 pixels, 64x44 tiles):
+ * - Rows 0-10: Cliff/transition tiles (green: cols 0-10, dark: cols 11-21)
+ * - Rows 13-17: Stair tiles (green: cols 0-10, dark: cols 11-21)
+ * - Rows 27-28: Decorative grass variations
+ * 
+ * BIOME TEXTURE ORGANIZATION:
+ * Biome variants stored as column offsets in same tileset:
+ * - Green grass: columns 0-10 (base biome)
+ * - Dark grass: columns 11-21 (+11 column offset)
+ * This pattern enables efficient biome switching in autotiler
+ * 
+ * PERFORMANCE OPTIMIZATION:
+ * Texture slicing done once at startup, not per-tile
+ * PIXI.js Rectangle creates texture views without memory duplication
+ * 2D array structure provides O(1) access by [row][col] coordinates
+ * Asset bundles enable preloading and efficient memory management
+ * 
+ * DEBUG SUPPORT:
+ * Separate debug tileset with visual markers for tile boundaries
+ * Controlled by GAME_CONSTANTS.DEBUG.USE_DEBUG_TILESET flag
+ */
+
 // src/systems/tiles/TilesetManager.js
 import { Assets, Texture, Rectangle } from 'pixi.js';
 import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
