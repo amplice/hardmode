@@ -52,10 +52,10 @@ export class MonsterManager {
             this.spawnTimer = 0;
         }
 
-        // Monster AI LOD System: Different update frequencies based on distance
-        const nearDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 0.8; // 1200px (increased from 900px)
-        const mediumDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 1.5; // 2250px (increased from 1500px)
-        const farDistance = GAME_CONSTANTS.SPAWN.MAX_DISTANCE_FROM_PLAYER * 0.5; // 4000px (reduced from 8000px)
+        // Monster AI LOD System: Conservative distances to ensure monsters near players always update
+        const nearDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 1.2; // 1800px (very generous near range)
+        const mediumDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 2.0; // 3000px (generous medium range)
+        const farDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 3.0; // 4500px (only very distant monsters affected)
         
         let nearCount = 0;
         let mediumCount = 0;

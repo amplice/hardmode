@@ -84,30 +84,22 @@ setInterval(() => {
         projectileManager.cleanup();
     }
     
-    // Send optimized state updates per client for better bandwidth efficiency
+    // Send per-client optimized state (monsters only, full objects for client compatibility)
     for (const [socketId, socket] of io.sockets.sockets) {
         const player = gameState.getPlayerBySocket(socketId);
         if (!player) continue;
         
-        // Get monsters visible to this specific player
+        // Get monsters visible to this specific player (performance optimization)
         const visibleMonsters = monsterManager.getVisibleMonsters(new Map([[player.id, player]]));
         
-        // CRITICAL: Get properly serialized players with lastProcessedSeq for client prediction
-        const serializedPlayers = gameState.getSerializedPlayers(inputProcessor);
+        // Send full objects (client expects complete state, not deltas)
+        const state = {
+            players: gameState.getSerializedPlayers(inputProcessor),
+            monsters: monsterManager.getSerializedMonsters(visibleMonsters),
+            projectiles: projectileManager.getSerializedProjectiles()
+        };
         
-        // Create optimized state update for this client
-        const optimizedState = networkOptimizer.optimizeStateUpdate(
-            socketId, // client ID for delta tracking
-            serializedPlayers,
-            visibleMonsters,
-            player // viewer position for distance calculations
-        );
-        
-        // Add projectiles (these are already optimized by area of interest)
-        optimizedState.projectiles = projectileManager.getSerializedProjectiles();
-        
-        // Send personalized state to this client
-        socket.emit('state', optimizedState);
+        socket.emit('state', state);
     }
     
 }, 1000 / GAME_CONSTANTS.TICK_RATE);
