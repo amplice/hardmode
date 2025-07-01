@@ -57,8 +57,9 @@ export const GAME_CONSTANTS = {
     
     // Spawn system - adjusted for 500x500 world
     SPAWN: {
-        MAX_MONSTERS: 75, // Increased 3x with LOD system handling distant monsters efficiently
-        INTERVAL: 4, // seconds
+        MAX_MONSTERS: 150, // Aggressive 6x increase - LOD system should handle it
+        INITIAL_MONSTERS: 30, // Start with some monsters already in world
+        INTERVAL: 2, // Faster spawning - every 2 seconds instead of 4
         MIN_DISTANCE_FROM_PLAYER: 700,
         MAX_DISTANCE_FROM_PLAYER: 8000, // Sufficient for larger world
         WORLD_EDGE_MARGIN: 2000 // Increased proportionally for 500x500 world

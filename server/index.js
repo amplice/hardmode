@@ -83,6 +83,13 @@ const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensa
 const networkOptimizer = new NetworkOptimizer();
 const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
 
+// Spawn initial monsters for immediate action
+console.log(`[Server] Spawning ${GAME_CONSTANTS.SPAWN.INITIAL_MONSTERS} initial monsters...`);
+for (let i = 0; i < GAME_CONSTANTS.SPAWN.INITIAL_MONSTERS; i++) {
+    monsterManager.createMonster();
+}
+console.log(`[Server] Initial monster spawn complete. World starts with action!`);
+
 // Feature flag for delta compression (re-enabled with bug fixes)
 const ENABLE_DELTA_COMPRESSION = true;
 
