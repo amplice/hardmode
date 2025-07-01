@@ -57,7 +57,7 @@ export const GAME_CONSTANTS = {
     
     // Spawn system - adjusted for 500x500 world
     SPAWN: {
-        MAX_MONSTERS: 25, // Keeping current count to test world scaling first
+        MAX_MONSTERS: 75, // Increased 3x with LOD system handling distant monsters efficiently
         INTERVAL: 4, // seconds
         MIN_DISTANCE_FROM_PLAYER: 700,
         MAX_DISTANCE_FROM_PLAYER: 8000, // Sufficient for larger world
