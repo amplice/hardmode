@@ -141,7 +141,7 @@ export class NetworkClient {
                 this.game.applyServerConfig(data.config);
             }
             
-            this.game.initMultiplayerWorld(data.world);
+            this.game.initializeGameWorld(data.world);
             data.players.forEach(p => {
                 if (p.id !== this.id) this.game.addRemotePlayer(p);
             });

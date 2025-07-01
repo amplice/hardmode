@@ -197,6 +197,15 @@ export class Game {
   
   // Modified to accept selectedClass parameter
   startGame(selectedClass) {
+    // Remove class selection UI
+    if (this.classSelectUI) {
+      this.uiContainer.removeChild(this.classSelectUI.container);
+      this.classSelectUI = null;
+    }
+    
+    // Store selected class for when we get server world data
+    this.selectedClass = selectedClass;
+    
     if (!this.network) {
       // NETWORK INITIALIZATION: Create bidirectional Game ↔ NetworkClient relationship
       // NetworkClient(this) allows network to call back into game systems
@@ -204,94 +213,36 @@ export class Game {
       
       // Initialize latency tracker after network client
       this.latencyTracker = new LatencyTracker(this.network);
-      
-      // Jitter buffer disabled - caused laggy behavior
-      
-      // Note: predictor and reconciler will be initialized after world generation
-    }
-    // Remove class selection UI
-    if (this.classSelectUI) {
-      this.uiContainer.removeChild(this.classSelectUI.container);
-      this.classSelectUI = null;
     }
     
-    // Initialize the game world using server's seed if available
-    const worldSeed = this.network ? this.network.serverWorldSeed || GAME_CONSTANTS.WORLD.SEED : GAME_CONSTANTS.WORLD.SEED;
-    console.log('[Game] Initializing world with seed:', worldSeed);
+    // Show connecting message instead of immediately generating world
+    this.showConnectingMessage();
+    console.log('[Game] Waiting for server world data...');
     
-    // Generate world data once using SharedWorldGenerator
-    const worldGenerator = new SharedWorldGenerator(
-      GAME_CONSTANTS.WORLD.WIDTH,
-      GAME_CONSTANTS.WORLD.HEIGHT, 
-      worldSeed
-    );
-    const worldData = worldGenerator.generateWorld();
-    
-    // Create renderer and render the world data
-    this.systems.world = new ClientWorldRenderer({
-      width:    GAME_CONSTANTS.WORLD.WIDTH,
-      height:   GAME_CONSTANTS.WORLD.HEIGHT,
-      tileSize: GAME_CONSTANTS.WORLD.TILE_SIZE,
-      seed:     worldSeed,
-      tilesets: this.tilesets
+    // Game initialization will happen in initializeGameWorld() when server sends world data
+  }
+  
+  showConnectingMessage() {
+    // Create simple connecting text
+    const connectingText = new PIXI.Text('Connecting to server...', {
+      fontFamily: 'Arial',
+      fontSize: 24,
+      fill: 0xffffff,
+      align: 'center'
     });
-
-    // Determine if we should use chunked rendering for performance
-    const totalTiles = GAME_CONSTANTS.WORLD.WIDTH * GAME_CONSTANTS.WORLD.HEIGHT;
-    const useChunkedRendering = totalTiles > 20000; // Use chunked rendering for worlds larger than 20k tiles
+    connectingText.anchor.set(0.5);
+    connectingText.position.set(this.app.screen.width / 2, this.app.screen.height / 2);
+    connectingText.zIndex = 1000; // Ensure it's on top
     
-    console.log(`[Game] World size: ${GAME_CONSTANTS.WORLD.WIDTH}x${GAME_CONSTANTS.WORLD.HEIGHT} (${totalTiles} tiles)`);
-    console.log(`[Game] Using ${useChunkedRendering ? 'chunked' : 'full'} rendering`);
-
-    const worldView = this.systems.world.render(worldData, worldGenerator, { useChunkedRendering });
-    this.worldContainer.addChild(worldView);
-    
-    // Now initialize predictor and reconciler with collision mask from generated world
-    if (this.network) {
-      this.systems.predictor = new MovementPredictor(this.latencyTracker, this.systems.world.collisionMask);
-      this.systems.reconciler = new Reconciler(this.systems.inputBuffer, this.systems.predictor);
+    this.connectingMessage = connectingText;
+    this.uiContainer.addChild(connectingText);
+  }
+  
+  hideConnectingMessage() {
+    if (this.connectingMessage && this.connectingMessage.parent) {
+      this.uiContainer.removeChild(this.connectingMessage);
+      this.connectingMessage = null;
     }
-    
-
-    // Create player with selected class
-    this.entities.player = new Player({
-      x: (this.systems.world.width  / 2) * this.systems.world.tileSize,
-      y: (this.systems.world.height / 2) * this.systems.world.tileSize,
-      class:         selectedClass || 'bladedancer', // Use selected or default
-      combatSystem:  this.systems.combat,
-      spriteManager: this.systems.sprites
-    });
-    this.entityContainer.addChild(this.entities.player.sprite);
-
-    if (this.network) {
-      this.network.setClass(this.entities.player.characterClass);
-      // No need to send collision mask - server generates same world with same seed
-    }
-
-    // Add health and stats UI
-    this.healthUI = new HealthUI(this.entities.player);
-    this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
-    this.uiContainer.addChild(this.healthUI.container);
-    this.uiContainer.addChild(this.statsUI.container);
-    
-    // Initialize projectile renderer
-    this.projectileRenderer = new ProjectileRenderer(this);
-
-    // Monsters are now always handled by server
-    // if (!this.network) {
-    //   this.systems.monsters = new MonsterSystem(this.systems.world);
-    // }
-
-    // Initialize camera position to player position (prevents initial camera jump)
-    this.camera.x = this.entities.player.position.x;
-    this.camera.y = this.entities.player.position.y;
-    this.camera.targetX = this.entities.player.position.x;
-    this.camera.targetY = this.entities.player.position.y;
-    
-    this.updateCamera();
-    this.app.ticker.add(this.update.bind(this));
-    this.gameStarted = true;
-    // Game initialized with player class
   }
 
   update(delta) {
@@ -484,13 +435,11 @@ export class Game {
   }
 
   // Multiplayer helpers
-  initMultiplayerWorld(data) {
-    // Replace local world with server-defined world using deterministic seed
-    if (this.systems.world) {
-      this.worldContainer.removeChildren();
-    }
+  initializeGameWorld(data) {
+    console.log('[Game] Initializing game world with server seed:', data.seed);
     
-    console.log('[Game] Initializing multiplayer world with server seed:', data.seed);
+    // Hide connecting message
+    this.hideConnectingMessage();
     
     // Generate world data once using SharedWorldGenerator with server's seed
     const worldGenerator = new SharedWorldGenerator(
@@ -513,12 +462,51 @@ export class Game {
     const totalTiles = data.width * data.height;
     const useChunkedRendering = totalTiles > 20000; // Use chunked rendering for worlds larger than 20k tiles
     
-    console.log(`[Game] Multiplayer world size: ${data.width}x${data.height} (${totalTiles} tiles)`);
-    console.log(`[Game] Using ${useChunkedRendering ? 'chunked' : 'full'} rendering for multiplayer`);
+    console.log(`[Game] World size: ${data.width}x${data.height} (${totalTiles} tiles)`);
+    console.log(`[Game] Using ${useChunkedRendering ? 'chunked' : 'full'} rendering`);
     
     const worldView = this.systems.world.render(worldData, worldGenerator, { useChunkedRendering });
     this.worldContainer.addChild(worldView);
-    console.log('[Game] Connected to multiplayer server - world synchronized');
+    
+    // Now initialize prediction systems with collision mask
+    this.systems.predictor = new MovementPredictor(this.latencyTracker, this.systems.world.collisionMask);
+    this.systems.reconciler = new Reconciler(this.systems.inputBuffer, this.systems.predictor);
+    
+    // Create player with selected class
+    this.entities.player = new Player({
+      x: (data.width / 2) * data.tileSize,
+      y: (data.height / 2) * data.tileSize,
+      class: this.selectedClass || 'bladedancer',
+      combatSystem: this.systems.combat,
+      spriteManager: this.systems.sprites
+    });
+    this.entityContainer.addChild(this.entities.player.sprite);
+
+    // Set player class on network
+    if (this.network) {
+      this.network.setClass(this.entities.player.characterClass);
+    }
+
+    // Add health and stats UI
+    this.healthUI = new HealthUI(this.entities.player);
+    this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
+    this.uiContainer.addChild(this.healthUI.container);
+    this.uiContainer.addChild(this.statsUI.container);
+    
+    // Initialize projectile renderer
+    this.projectileRenderer = new ProjectileRenderer(this);
+
+    // Initialize camera position to player position (prevents initial camera jump)
+    this.camera.x = this.entities.player.position.x;
+    this.camera.y = this.entities.player.position.y;
+    this.camera.targetX = this.entities.player.position.x;
+    this.camera.targetY = this.entities.player.position.y;
+    
+    this.updateCamera();
+    this.app.ticker.add(this.update.bind(this));
+    this.gameStarted = true;
+    
+    console.log('[Game] Game initialized with server world data');
   }
 
   addRemotePlayer(info) {
