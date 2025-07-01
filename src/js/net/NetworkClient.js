@@ -11,7 +11,7 @@ export class NetworkClient {
         // Add state caches for delta compression (Phase 1)
         this.playerStateCache = new StateCache();
         this.monsterStateCache = new StateCache();
-        this.ENABLE_DELTA_COMPRESSION = false; // Feature flag - disabled while fixing bugs
+        this.ENABLE_DELTA_COMPRESSION = true; // Feature flag - re-enabled with bug fixes
 
         this.setupHandlers();
         // NetworkClient initialized
