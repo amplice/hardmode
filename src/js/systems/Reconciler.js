@@ -46,7 +46,7 @@ export class Reconciler {
     constructor(inputBuffer, predictor) {
         this.inputBuffer = inputBuffer;
         this.predictor = predictor;
-        this.positionTolerance = 50; // pixels - temporarily increased to fix bouncing after world expansion
+        this.positionTolerance = 100; // pixels - increased to prevent bouncing in 500x500 world
         this.smoothingFactor = 0.3; // For small corrections
         
         // Debug statistics
