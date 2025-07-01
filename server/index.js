@@ -92,10 +92,13 @@ setInterval(() => {
         // Get monsters visible to this specific player
         const visibleMonsters = monsterManager.getVisibleMonsters(new Map([[player.id, player]]));
         
+        // CRITICAL: Get properly serialized players with lastProcessedSeq for client prediction
+        const serializedPlayers = gameState.getSerializedPlayers(inputProcessor);
+        
         // Create optimized state update for this client
         const optimizedState = networkOptimizer.optimizeStateUpdate(
             socketId, // client ID for delta tracking
-            gameState.players,
+            serializedPlayers,
             visibleMonsters,
             player // viewer position for distance calculations
         );

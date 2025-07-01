@@ -55,10 +55,22 @@ export class NetworkOptimizer {
         };
 
         // Process player updates with delta compression
-        for (const [id, player] of players) {
-            const delta = this.createDeltaUpdate(clientId, `player_${id}`, player);
-            if (delta) {
-                optimizedState.players.push(delta);
+        // Handle both Map (old format) and Array (serialized format) of players
+        if (Array.isArray(players)) {
+            // Serialized players array
+            for (const player of players) {
+                const delta = this.createDeltaUpdate(clientId, `player_${player.id}`, player);
+                if (delta) {
+                    optimizedState.players.push(delta);
+                }
+            }
+        } else {
+            // Map of players (old format)
+            for (const [id, player] of players) {
+                const delta = this.createDeltaUpdate(clientId, `player_${id}`, player);
+                if (delta) {
+                    optimizedState.players.push(delta);
+                }
             }
         }
 
