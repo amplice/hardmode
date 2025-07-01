@@ -3,7 +3,7 @@ import { SERVER_CONFIG } from '../config/ServerConfig.js';
 import { getDistance } from '../../shared/utils/MathUtils.js';
 
 export class SocketHandler {
-    constructor(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, worldSeed) {
+    constructor(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, worldSeed, networkOptimizer) {
         this.io = io;
         this.gameState = gameState;
         this.monsterManager = monsterManager;
@@ -13,6 +13,7 @@ export class SocketHandler {
         this.lagCompensation = lagCompensation;
         this.sessionAntiCheat = sessionAntiCheat;
         this.worldSeed = worldSeed;
+        this.networkOptimizer = networkOptimizer;
         this.setupEventHandlers();
     }
 
@@ -215,6 +216,9 @@ export class SocketHandler {
         this.inputProcessor.removePlayer(socket.id); // This also cleans up anti-cheat data
         this.lagCompensation.removePlayer(socket.id);
         this.gameState.removePlayer(socket.id);
+        if (this.networkOptimizer) {
+            this.networkOptimizer.resetClient(socket.id); // Clean up delta compression state
+        }
         socket.broadcast.emit('playerLeft', socket.id);
     }
 }

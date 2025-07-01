@@ -43,6 +43,11 @@ export class GameStateManager {
         return this.players.get(id);
     }
 
+    getPlayerBySocket(socketId) {
+        // Player ID is the same as socket ID in this implementation
+        return this.players.get(socketId);
+    }
+
     setPlayerClass(id, className) {
         const player = this.players.get(id);
         if (!player) return;

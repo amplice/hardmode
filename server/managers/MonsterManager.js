@@ -52,13 +52,62 @@ export class MonsterManager {
             this.spawnTimer = 0;
         }
 
-        // Update all monsters
+        // Monster AI LOD System: Different update frequencies based on distance
+        const nearDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 0.6; // 900px
+        const mediumDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE; // 1500px
+        const farDistance = GAME_CONSTANTS.SPAWN.MAX_DISTANCE_FROM_PLAYER; // 8000px
+        
+        let nearCount = 0;
+        let mediumCount = 0;
+        let farCount = 0;
+        let dormantCount = 0;
+        
         for (const monster of this.monsters.values()) {
             if (monster.state === 'dead') {
                 this.monsters.delete(monster.id);
                 continue;
             }
-            this.updateMonster(monster, deltaTime, players);
+            
+            // Find closest player distance
+            let closestDistance = Infinity;
+            for (const player of players.values()) {
+                const dist = getDistance(monster, player);
+                closestDistance = Math.min(closestDistance, dist);
+            }
+            
+            // Determine LOD level and update frequency
+            if (closestDistance < nearDistance) {
+                // NEAR: Full update every frame (highest priority)
+                this.updateMonster(monster, deltaTime, players);
+                nearCount++;
+            } else if (closestDistance < mediumDistance) {
+                // MEDIUM: Update every 2 frames (skip 50% of updates)
+                if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
+                monster.lodSkipCounter++;
+                if (monster.lodSkipCounter % 2 === 0) {
+                    this.updateMonster(monster, deltaTime * 2, players); // Compensate for skipped frame
+                }
+                mediumCount++;
+            } else if (closestDistance < farDistance) {
+                // FAR: Update every 4 frames (skip 75% of updates) 
+                if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
+                monster.lodSkipCounter++;
+                if (monster.lodSkipCounter % 4 === 0) {
+                    this.updateMonster(monster, deltaTime * 4, players); // Compensate for skipped frames
+                }
+                farCount++;
+            } else {
+                // DORMANT: No updates, minimal state
+                monster.state = 'dormant';
+                monster.velocity = { x: 0, y: 0 };
+                monster.target = null;
+                dormantCount++;
+            }
+        }
+        
+        // Log LOD stats occasionally for monitoring
+        if (Math.random() < 0.01) { // 1% chance per update (roughly every 3 seconds at 30 FPS)
+            console.log(`[MonsterManager] AI LOD: ${nearCount} near (100%), ${mediumCount} medium (50%), ${farCount} far (25%), ${dormantCount} dormant (0%)`);
         }
     }
 
@@ -185,6 +234,10 @@ export class MonsterManager {
                 break;
             case 'attacking':
                 this.handleAttackingState(monster, stats, players);
+                break;
+            case 'dormant':
+                // Dormant monsters wake up when players get close (handled in main update loop)
+                this.handleIdleState(monster, stats, players);
                 break;
             case 'dying':
                 // Animation state - no logic needed
@@ -622,7 +675,7 @@ export class MonsterManager {
             y: Math.round(monster.y),
             hp: monster.hp,
             maxHp: monster.maxHp,
-            state: monster.state,
+            state: monster.state === 'dormant' ? 'idle' : monster.state, // Send dormant as idle to clients
             facing: monster.facing,
             target: monster.target,
             isStunned: monster.isStunned || false,

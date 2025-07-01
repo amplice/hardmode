@@ -2,18 +2,20 @@ import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 
 export class NetworkOptimizer {
     constructor() {
-        this.lastSentState = new Map(); // Track last sent state per entity
+        this.lastSentState = new Map(); // Track last sent state per client per entity
         this.updatePriorities = new Map(); // Track update priorities
     }
 
-    // Create delta updates by comparing current state with last sent state
-    createDeltaUpdate(entityId, currentState, forceFullUpdate = false) {
-        if (forceFullUpdate || !this.lastSentState.has(entityId)) {
-            this.lastSentState.set(entityId, JSON.parse(JSON.stringify(currentState)));
+    // Create delta updates by comparing current state with last sent state for specific client
+    createDeltaUpdate(clientId, entityId, currentState, forceFullUpdate = false) {
+        const stateKey = `${clientId}_${entityId}`;
+        
+        if (forceFullUpdate || !this.lastSentState.has(stateKey)) {
+            this.lastSentState.set(stateKey, JSON.parse(JSON.stringify(currentState)));
             return { id: entityId, full: true, ...currentState };
         }
 
-        const lastState = this.lastSentState.get(entityId);
+        const lastState = this.lastSentState.get(stateKey);
         const delta = { id: entityId };
         let hasChanges = false;
 
@@ -44,23 +46,23 @@ export class NetworkOptimizer {
         return oldValue !== newValue;
     }
 
-    // Optimize state updates by batching and prioritizing
-    optimizeStateUpdate(players, monsters, viewerPosition) {
+    // Optimize state updates by batching and prioritizing for specific client
+    optimizeStateUpdate(clientId, players, monsters, viewerPosition) {
         const optimizedState = {
             players: [],
             monsters: [],
             timestamp: Date.now()
         };
 
-        // Process player updates
+        // Process player updates with delta compression
         for (const [id, player] of players) {
-            const delta = this.createDeltaUpdate(`player_${id}`, player);
+            const delta = this.createDeltaUpdate(clientId, `player_${id}`, player);
             if (delta) {
                 optimizedState.players.push(delta);
             }
         }
 
-        // Process monster updates with distance-based priority
+        // Process monster updates with distance-based priority and delta compression
         const monsterUpdates = [];
         for (const [id, monster] of monsters) {
             const distance = this.getDistance(viewerPosition, monster);
@@ -68,7 +70,7 @@ export class NetworkOptimizer {
             // Skip very distant monsters
             if (distance > GAME_CONSTANTS.NETWORK.VIEW_DISTANCE) continue;
             
-            const delta = this.createDeltaUpdate(`monster_${id}`, monster);
+            const delta = this.createDeltaUpdate(clientId, `monster_${id}`, monster);
             if (delta) {
                 monsterUpdates.push({ delta, distance });
             }
@@ -87,17 +89,22 @@ export class NetworkOptimizer {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    // Reset tracking for disconnected entities
+    // Reset tracking for disconnected entities across all clients
     clearEntity(entityId) {
-        this.lastSentState.delete(entityId);
+        // Clear this entity for all clients
+        for (const key of this.lastSentState.keys()) {
+            if (key.includes(`_${entityId}`)) {
+                this.lastSentState.delete(key);
+            }
+        }
         this.updatePriorities.delete(entityId);
     }
 
-    // Force full update for new connections
+    // Force full update for new connections or clear all data for disconnected client
     resetClient(clientId) {
         // Clear all tracked states for this client
         for (const key of this.lastSentState.keys()) {
-            if (key.startsWith(clientId)) {
+            if (key.startsWith(`${clientId}_`)) {
                 this.lastSentState.delete(key);
             }
         }

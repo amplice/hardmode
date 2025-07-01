@@ -53,8 +53,8 @@ const abilityManager = new AbilityManager(io, gameState, projectileManager);
 const lagCompensation = new LagCompensation();
 const sessionAntiCheat = new SessionAntiCheat(abilityManager);
 const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation, sessionAntiCheat, serverWorldManager);
-const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED);
 const networkOptimizer = new NetworkOptimizer();
+const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
 
 // Setup debug endpoint with access to systems
 setupDebugEndpoint(app, { sessionAntiCheat });
@@ -84,18 +84,28 @@ setInterval(() => {
         projectileManager.cleanup();
     }
     
-    // Get visible monsters for all players
-    const visibleMonsters = monsterManager.getVisibleMonsters(gameState.players);
-    
-    // Prepare and send optimized state updates
-    const state = {
-        players: gameState.getSerializedPlayers(inputProcessor),
-        monsters: monsterManager.getSerializedMonsters(visibleMonsters),
-        projectiles: projectileManager.getSerializedProjectiles()
-    };
-    
-    // TODO: Implement per-client optimization
-    io.emit('state', state);
+    // Send optimized state updates per client for better bandwidth efficiency
+    for (const [socketId, socket] of io.sockets.sockets) {
+        const player = gameState.getPlayerBySocket(socketId);
+        if (!player) continue;
+        
+        // Get monsters visible to this specific player
+        const visibleMonsters = monsterManager.getVisibleMonsters(new Map([[player.id, player]]));
+        
+        // Create optimized state update for this client
+        const optimizedState = networkOptimizer.optimizeStateUpdate(
+            socketId, // client ID for delta tracking
+            gameState.players,
+            visibleMonsters,
+            player // viewer position for distance calculations
+        );
+        
+        // Add projectiles (these are already optimized by area of interest)
+        optimizedState.projectiles = projectileManager.getSerializedProjectiles();
+        
+        // Send personalized state to this client
+        socket.emit('state', optimizedState);
+    }
     
 }, 1000 / GAME_CONSTANTS.TICK_RATE);
 
