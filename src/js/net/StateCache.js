@@ -51,14 +51,18 @@ export class StateCache {
     applyDelta(entityId, delta) {
         const cached = this.cache.get(entityId);
         if (!cached) {
-            // No cached state - treat as full update
+            // No cached state - this shouldn't happen but handle gracefully
             console.warn(`No cached state for entity ${entityId}, treating delta as full update`);
             this.setFull(entityId, delta);
             return delta;
         }
 
-        // Merge delta with cached state
+        // Merge delta with cached state, ensuring critical fields are preserved
         const merged = { ...cached, ...delta };
+        
+        // Validate merged state has essential fields
+        if (!merged.id) merged.id = entityId.split('_').slice(1).join('_'); // Extract ID from entityId
+        
         this.cache.set(entityId, merged);
         this.updateStats.deltaUpdates++;
         return merged;

@@ -19,8 +19,21 @@ export class NetworkOptimizer {
         const delta = { id: entityId, _updateType: 'delta' };
         let hasChanges = false;
 
-        // Check each property for changes
+        // Critical fields that should always be included (client expects these)
+        const criticalFields = ['id', 'state', 'hp', 'facing', 'type'];
+        
+        // Always include critical fields
+        for (const field of criticalFields) {
+            if (currentState[field] !== undefined) {
+                delta[field] = currentState[field];
+                lastState[field] = JSON.parse(JSON.stringify(currentState[field]));
+            }
+        }
+
+        // Check other properties for changes
         for (const key in currentState) {
+            if (criticalFields.includes(key)) continue; // Already handled
+            
             if (this.hasPropertyChanged(lastState[key], currentState[key])) {
                 delta[key] = currentState[key];
                 lastState[key] = JSON.parse(JSON.stringify(currentState[key]));
@@ -28,13 +41,14 @@ export class NetworkOptimizer {
             }
         }
 
-        return hasChanges ? delta : null;
+        // Always send update if we have critical fields, even if no other changes
+        return delta;
     }
 
     hasPropertyChanged(oldValue, newValue) {
-        // Handle position changes with threshold
+        // Handle position changes with threshold (reduced for movement abilities)
         if (typeof oldValue === 'number' && typeof newValue === 'number') {
-            return Math.abs(oldValue - newValue) > 0.5;
+            return Math.abs(oldValue - newValue) > 0.1; // Reduced from 0.5 to 0.1
         }
         
         // Handle object properties
@@ -120,6 +134,20 @@ export class NetworkOptimizer {
                 this.lastSentState.delete(key);
             }
         }
+        console.log(`[NetworkOptimizer] Reset state tracking for client ${clientId}`);
+    }
+    
+    // Force full updates for a client (use when recovering from desync)
+    forceFullUpdatesForClient(clientId) {
+        let count = 0;
+        for (const key of this.lastSentState.keys()) {
+            if (key.startsWith(`${clientId}_`)) {
+                this.lastSentState.delete(key);
+                count++;
+            }
+        }
+        console.log(`[NetworkOptimizer] Forced full updates for ${count} entities for client ${clientId}`);
+        return count;
     }
 
     // Get network statistics

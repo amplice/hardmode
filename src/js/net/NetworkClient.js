@@ -11,7 +11,7 @@ export class NetworkClient {
         // Add state caches for delta compression (Phase 1)
         this.playerStateCache = new StateCache();
         this.monsterStateCache = new StateCache();
-        this.ENABLE_DELTA_COMPRESSION = true; // Feature flag - enabled for testing
+        this.ENABLE_DELTA_COMPRESSION = false; // Feature flag - disabled while fixing bugs
 
         this.setupHandlers();
         // NetworkClient initialized
@@ -36,6 +36,7 @@ export class NetworkClient {
     /**
      * Enable or disable delta compression for testing
      * @param {boolean} enabled 
+     * @returns {Object} Current delta compression status
      */
     setDeltaCompression(enabled) {
         this.ENABLE_DELTA_COMPRESSION = enabled;
@@ -43,6 +44,27 @@ export class NetworkClient {
         // Reset cache stats when toggling
         this.playerStateCache.resetStats();
         this.monsterStateCache.resetStats();
+        
+        return {
+            deltaCompressionEnabled: this.ENABLE_DELTA_COMPRESSION,
+            message: `Delta compression ${enabled ? 'enabled' : 'disabled'}`
+        };
+    }
+    
+    /**
+     * Request full updates from server (recovery from desync)
+     */
+    requestFullUpdates() {
+        console.log('[NetworkClient] Requesting full updates from server...');
+        this.playerStateCache.clear();
+        this.monsterStateCache.clear();
+        // The next updates from server will be full updates since we cleared cache
+        
+        return {
+            message: 'Requested full updates - caches cleared',
+            playerCacheSize: this.playerStateCache.size(),
+            monsterCacheSize: this.monsterStateCache.size()
+        };
     }
     
     sendCollisionMask(collisionMask) {
