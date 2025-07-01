@@ -518,25 +518,6 @@ export class Game {
     
     const worldView = this.systems.world.render(worldData, worldGenerator, { useChunkedRendering });
     this.worldContainer.addChild(worldView);
-    
-    // CRITICAL FIX: Update local player position to match server world spawn position
-    // Player was positioned for old world (seed 42), but collision mask is now for server world
-    if (this.entities.player) {
-      const correctSpawnX = (data.width / 2) * data.tileSize;
-      const correctSpawnY = (data.height / 2) * data.tileSize;
-      console.log(`[Game] Fixing player spawn position from (${this.entities.player.position.x}, ${this.entities.player.position.y}) to (${correctSpawnX}, ${correctSpawnY})`);
-      
-      this.entities.player.position.x = correctSpawnX;
-      this.entities.player.position.y = correctSpawnY;
-      this.entities.player.sprite.position.set(correctSpawnX, correctSpawnY);
-      
-      // Update camera to follow corrected position
-      this.camera.x = correctSpawnX;
-      this.camera.y = correctSpawnY;
-      this.camera.targetX = correctSpawnX;
-      this.camera.targetY = correctSpawnY;
-    }
-    
     console.log('[Game] Connected to multiplayer server - world synchronized');
   }
 
