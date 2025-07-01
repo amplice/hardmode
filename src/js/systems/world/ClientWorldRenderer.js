@@ -99,10 +99,9 @@ export class ClientWorldRenderer {
     
     console.log(`[ClientWorldRenderer] Chunked rendering enabled for ${this.width}x${this.height} world`);
     
-    // Start with chunks around world center (will be updated when player position is set)
-    const centerX = (this.width / 2) * this.tileSize;
-    const centerY = (this.height / 2) * this.tileSize;
-    this.chunkedRenderer.updatePlayerPosition(centerX, centerY);
+    // Don't load chunks yet - wait for player position to be set
+    // This avoids trying to render before everything is initialized
+    console.log(`[ClientWorldRenderer] Chunked renderer ready - waiting for player position`);
   }
   
   /**
@@ -119,23 +118,37 @@ export class ClientWorldRenderer {
    * Used by ChunkedWorldRenderer for efficient rendering
    */
   getTileTexture(x, y) {
+    // Safety check bounds
+    if (!this.tilesets || x < 0 || y < 0 || x >= this.width || y >= this.height) {
+      console.warn(`[ClientWorldRenderer] getTileTexture called with invalid params: x=${x}, y=${y}`);
+      return null;
+    }
+    
     // Check if this position has stairs first
     if (this.stairsData && this.stairsData[y] && this.stairsData[y][x]) {
       const stairInfo = this.stairsData[y][x];
-      return this.tilesets.textures.terrain[stairInfo.tileY][stairInfo.tileX];
+      const stairTexture = this.tilesets.textures.terrain[stairInfo.tileY] && 
+                          this.tilesets.textures.terrain[stairInfo.tileY][stairInfo.tileX];
+      if (stairTexture) {
+        return stairTexture;
+      }
+      console.warn(`[ClientWorldRenderer] Missing stair texture at (${stairInfo.tileY},${stairInfo.tileX})`);
     }
     
     // Check if this is an elevated tile (cliff)
     if (this.elevationData && this.elevationData[y] && this.elevationData[y][x] > 0) {
-      return this.cliffAutotiler.getTileTexture(x, y, this.elevationData, null, this.biomeData);
+      const cliffTexture = this.cliffAutotiler.getTileTexture(x, y, this.elevationData, null, this.biomeData);
+      if (cliffTexture) {
+        return cliffTexture;
+      }
     }
     
-    // Regular ground tile based on biome
+    // Regular ground tile based on biome - always return a valid texture
     const biome = (this.biomeData && this.biomeData[y] && this.biomeData[y][x]) || 0;
     if (biome === 1) {
-      return this.tilesets.getRandomPureDarkGrass();
+      return this.tilesets.getRandomPureDarkGrass() || this.tilesets.basicDarkGrassTile || this.tilesets.basicGrassTile;
     } else {
-      return this.tilesets.getRandomPureGrass();
+      return this.tilesets.getRandomPureGrass() || this.tilesets.basicGrassTile;
     }
   }
   

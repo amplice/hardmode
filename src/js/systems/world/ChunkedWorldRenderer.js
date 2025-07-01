@@ -155,7 +155,18 @@ export class ChunkedWorldRenderer {
         // Get the appropriate texture for this tile
         const texture = this.worldRenderer.getTileTexture(x, y);
         
-        if (texture) {
+        if (!texture) {
+            console.warn(`[ChunkedWorldRenderer] No texture for tile at (${x},${y})`);
+            return;
+        }
+        
+        // Validate texture has required properties
+        if (!texture.width || !texture.height) {
+            console.error(`[ChunkedWorldRenderer] Invalid texture at (${x},${y}):`, texture);
+            return;
+        }
+        
+        try {
             // Create sprite
             const sprite = new PIXI.Sprite(texture);
             sprite.x = (x % this.chunkSize) * this.worldRenderer.tileSize;
@@ -166,6 +177,8 @@ export class ChunkedWorldRenderer {
             
             // Handle special cases (stairs with base colors, cliff extensions, etc.)
             this.handleSpecialTileFeatures(x, y, container);
+        } catch (error) {
+            console.error(`[ChunkedWorldRenderer] Error creating sprite at (${x},${y}):`, error);
         }
     }
     
