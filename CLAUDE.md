@@ -50,6 +50,7 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
 - When making major changes, do them one by one, e.g., don't do three big changes at once, especially when it's things like feature additions or new architecture
 - When you make a plan with phases, implement in phases
 - Write and/or update documentation as you make code changes so that we continue to have 100% documentation coverage and fully up to date documentation at all times
+- **Always pay close attention to how the code works when editing, including reading all documentation. Generally we want to try and avoid bugs that break the gameplay totally, especially when the bugs are SIMPLE things that should not have been missed in the first place**
 
 ## ✅ **FULLY IMPLEMENTED FEATURES**
 
