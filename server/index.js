@@ -56,8 +56,8 @@ const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensa
 const networkOptimizer = new NetworkOptimizer();
 const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
 
-// Feature flag for delta compression (start disabled for safety)
-const ENABLE_DELTA_COMPRESSION = false;
+// Feature flag for delta compression (Phase 3: enabled for testing)
+const ENABLE_DELTA_COMPRESSION = true;
 
 // Setup debug endpoint with access to systems
 setupDebugEndpoint(app, { sessionAntiCheat });
