@@ -27,7 +27,7 @@
  * Any deviation breaks multiplayer collision synchronization
  * 
  * PERFORMANCE OPTIMIZATION:
- * Generation is fast (~50ms for 200x200 world)
+ * Generation is fast (~50ms for 200x200 world, ~300ms for 500x500 world)
  * Rendering is the bottleneck, not generation
  * Data structure optimized for ClientWorldRenderer consumption
  */

@@ -23,7 +23,7 @@
  * 
  * PERFORMANCE OPTIMIZATION:
  * 2D boolean array for O(1) collision lookups
- * Memory usage: ~1 byte per tile (acceptable for 200x200 = 40KB)
+ * Memory usage: ~1 byte per tile (acceptable for 500x500 = 250KB)
  * Alternative spatial structures would add complexity without benefit
  * 
  * WALKABILITY RULES:
