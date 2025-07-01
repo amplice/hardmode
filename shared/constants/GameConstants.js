@@ -1,9 +1,9 @@
 // Shared game constants used by both client and server
 export const GAME_CONSTANTS = {
-    // World settings
+    // World settings - increased for testing chunked rendering
     WORLD: {
-        WIDTH: 100,
-        HEIGHT: 100,
+        WIDTH: 200,  // Increased from 100 to test chunked rendering
+        HEIGHT: 200, // Increased from 100 to test chunked rendering
         TILE_SIZE: 64,
         SEED: 42 // Default seed, server will override with generated seed
     },
@@ -11,13 +11,13 @@ export const GAME_CONSTANTS = {
     // Server tick rate
     TICK_RATE: 30,
     
-    // Spawn system
+    // Spawn system - adjusted for 200x200 world
     SPAWN: {
-        MAX_MONSTERS: 15, // Adjusted for 100x100 world
+        MAX_MONSTERS: 25, // Increased for larger world but not proportionally
         INTERVAL: 4, // seconds
         MIN_DISTANCE_FROM_PLAYER: 700,
-        MAX_DISTANCE_FROM_PLAYER: 6000, // Reduced for smaller world
-        WORLD_EDGE_MARGIN: 500
+        MAX_DISTANCE_FROM_PLAYER: 8000, // Increased for larger world
+        WORLD_EDGE_MARGIN: 800 // Increased for larger world
     },
     
     // Network settings

@@ -9,6 +9,7 @@ import { createSeededRandom } from '../../utils/Random.js';
 import { CliffAutotiler } from '../tiles/CliffAutotilerNew.js';
 import { CollisionMask } from '../../../shared/systems/CollisionMask.js';
 import { SharedWorldGenerator } from '../../../shared/systems/WorldGenerator.js';
+import { ChunkedWorldRenderer } from './ChunkedWorldRenderer.js';
 
 export class ClientWorldRenderer {
   constructor(options = {}) {
@@ -36,8 +37,9 @@ export class ClientWorldRenderer {
    * Render world visuals from provided world data
    * @param {Object} worldData - Pre-generated world data {elevationData, biomeData, stairsData}
    * @param {SharedWorldGenerator} sharedWorldGen - World generator instance for collision/utility
+   * @param {Object} options - Rendering options {useChunkedRendering: boolean}
    */
-  render(worldData, sharedWorldGen) {
+  render(worldData, sharedWorldGen, options = {}) {
     console.log('[ClientWorldRenderer] Rendering world visuals from provided data');
     
     // Store world data for rendering
@@ -48,25 +50,93 @@ export class ClientWorldRenderer {
     
     console.log('[ClientWorldRenderer] World data received - biomes:', this.biomeData.length, 'rows');
     
-    // Create world boundary
-    this.createWorldBoundary();
-    
-    // Generate base terrain (all grass initially)
-    this.generateBaseTerrain();
-    
     // Generate collision mask from provided elevation data and stairs
     this.collisionMask.generateFromElevationData(this.elevationData, this.sharedWorldGen);
-    
     console.log('[ClientWorldRenderer] Client collision mask generated from shared data');
     
-    // Create visual tiles using autotiler
-    this.createTileSprites();
+    // Choose rendering method based on world size and options
+    if (options.useChunkedRendering || this.shouldUseChunkedRendering()) {
+      console.log('[ClientWorldRenderer] Using chunked rendering for large world optimization');
+      this.setupChunkedRendering();
+    } else {
+      console.log('[ClientWorldRenderer] Using full world rendering');
+      // Create world boundary
+      this.createWorldBoundary();
+      // Generate base terrain (all grass initially)
+      this.generateBaseTerrain();
+      // Create visual tiles using autotiler
+      this.createTileSprites();
+    }
     
     // Create debug overlay for collision boundaries
     this.createCollisionDebugOverlay();
     
     console.log('[ClientWorldRenderer] World rendering complete');
     return this.container;
+  }
+  
+  /**
+   * Determine if chunked rendering should be used based on world size
+   */
+  shouldUseChunkedRendering() {
+    const totalTiles = this.width * this.height;
+    const CHUNKED_THRESHOLD = 20000; // Use chunked rendering for worlds larger than 20k tiles
+    return totalTiles > CHUNKED_THRESHOLD;
+  }
+  
+  /**
+   * Setup chunked rendering system
+   */
+  setupChunkedRendering() {
+    this.isChunkedMode = true;
+    
+    // Create world boundary for large worlds
+    this.createWorldBoundary();
+    
+    // Initialize chunked renderer
+    this.chunkedRenderer = new ChunkedWorldRenderer(this);
+    this.container.addChild(this.chunkedRenderer.container);
+    
+    console.log(`[ClientWorldRenderer] Chunked rendering enabled for ${this.width}x${this.height} world`);
+    
+    // Start with chunks around world center (will be updated when player position is set)
+    const centerX = (this.width / 2) * this.tileSize;
+    const centerY = (this.height / 2) * this.tileSize;
+    this.chunkedRenderer.updatePlayerPosition(centerX, centerY);
+  }
+  
+  /**
+   * Update chunked rendering based on player position
+   */
+  updatePlayerPosition(playerX, playerY) {
+    if (this.chunkedRenderer) {
+      this.chunkedRenderer.updatePlayerPosition(playerX, playerY);
+    }
+  }
+  
+  /**
+   * Get the appropriate texture for a tile at given coordinates
+   * Used by ChunkedWorldRenderer for efficient rendering
+   */
+  getTileTexture(x, y) {
+    // Check if this position has stairs first
+    if (this.stairsData && this.stairsData[y] && this.stairsData[y][x]) {
+      const stairInfo = this.stairsData[y][x];
+      return this.tilesets.textures.terrain[stairInfo.tileY][stairInfo.tileX];
+    }
+    
+    // Check if this is an elevated tile (cliff)
+    if (this.elevationData && this.elevationData[y] && this.elevationData[y][x] > 0) {
+      return this.cliffAutotiler.getTileTexture(x, y, this.elevationData, null, this.biomeData);
+    }
+    
+    // Regular ground tile based on biome
+    const biome = (this.biomeData && this.biomeData[y] && this.biomeData[y][x]) || 0;
+    if (biome === 1) {
+      return this.tilesets.getRandomPureDarkGrass();
+    } else {
+      return this.tilesets.getRandomPureGrass();
+    }
   }
   
   /**

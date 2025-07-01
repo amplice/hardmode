@@ -205,7 +205,14 @@ export class Game {
       tilesets: this.tilesets
     });
 
-    const worldView = this.systems.world.render(worldData, worldGenerator);
+    // Determine if we should use chunked rendering for performance
+    const totalTiles = GAME_CONSTANTS.WORLD.WIDTH * GAME_CONSTANTS.WORLD.HEIGHT;
+    const useChunkedRendering = totalTiles > 20000; // Use chunked rendering for worlds larger than 20k tiles
+    
+    console.log(`[Game] World size: ${GAME_CONSTANTS.WORLD.WIDTH}x${GAME_CONSTANTS.WORLD.HEIGHT} (${totalTiles} tiles)`);
+    console.log(`[Game] Using ${useChunkedRendering ? 'chunked' : 'full'} rendering`);
+
+    const worldView = this.systems.world.render(worldData, worldGenerator, { useChunkedRendering });
     this.worldContainer.addChild(worldView);
     
     // Now initialize predictor and reconciler with collision mask from generated world
@@ -416,6 +423,11 @@ export class Game {
     
     this.worldContainer.position.set(camX, camY);
     this.entityContainer.position.set(camX, camY);
+    
+    // Update chunked renderer with player position if using chunked rendering
+    if (this.systems.world && this.systems.world.isChunkedMode) {
+      this.systems.world.updatePlayerPosition(this.entities.player.position.x, this.entities.player.position.y);
+    }
   }
 
   // Multiplayer helpers
@@ -444,7 +456,14 @@ export class Game {
       seed: data.seed
     });
     
-    const worldView = this.systems.world.render(worldData, worldGenerator);
+    // Determine if we should use chunked rendering for performance
+    const totalTiles = data.width * data.height;
+    const useChunkedRendering = totalTiles > 20000; // Use chunked rendering for worlds larger than 20k tiles
+    
+    console.log(`[Game] Multiplayer world size: ${data.width}x${data.height} (${totalTiles} tiles)`);
+    console.log(`[Game] Using ${useChunkedRendering ? 'chunked' : 'full'} rendering for multiplayer`);
+    
+    const worldView = this.systems.world.render(worldData, worldGenerator, { useChunkedRendering });
     this.worldContainer.addChild(worldView);
     console.log('[Game] Connected to multiplayer server - world synchronized');
   }
