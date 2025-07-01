@@ -1,8 +1,52 @@
 /**
- * SessionAntiCheat - Simple session-based anti-cheat system
+ * @fileoverview SessionAntiCheat - Server-side cheat detection and prevention
  * 
- * Focuses on catching obvious cheaters without false positives.
- * Uses warnings before kicks to be more forgiving.
+ * ARCHITECTURE ROLE:
+ * - Validates player inputs for speed/timing violations
+ * - Tracks movement patterns to detect teleportation/speed hacks
+ * - Monitors ability usage for cooldown violations
+ * - Implements progressive punishment system (warnings → kicks)
+ * 
+ * ANTI-CHEAT STRATEGY:
+ * Focus on obvious violations to avoid false positives:
+ * - Input frequency limits prevent automation/scripting
+ * - Movement speed validation per character class
+ * - Ability cooldown enforcement server-side
+ * - Grace periods and burst tolerance for network variations
+ * 
+ * VALIDATION SYSTEMS:
+ * Multi-layer cheat detection:
+ * 1. Input Timing: Rate limiting with burst tolerance
+ * 2. Movement Speed: Per-class speed limits with position tracking
+ * 3. Ability Cooldowns: Server-authoritative ability validation
+ * 4. Timestamp Validation: Prevents future/manipulated timestamps
+ * 
+ * PROGRESSIVE PUNISHMENT:
+ * Escalating response to violations:
+ * - Strike system: 10 strikes before kick
+ * - Warnings before punishment for borderline cases
+ * - Grace periods for new connections
+ * - Session-based tracking (resets on reconnect)
+ * 
+ * FALSE POSITIVE PREVENTION:
+ * Tolerances for legitimate edge cases:
+ * - Network latency compensation
+ * - Input burst tolerance (3 fast inputs allowed)
+ * - Grace period for connection establishment
+ * - Movement speed buffers for lag compensation
+ * 
+ * MONITORING INTEGRATION:
+ * Statistics and debugging support:
+ * - Violation tracking per player and type
+ * - Real-time statistics via debug endpoint
+ * - Detailed logging for admin review
+ * - Development tuning based on false positive rates
+ * 
+ * PERFORMANCE CONSIDERATIONS:
+ * - Lightweight validation per input
+ * - Session-based tracking (memory resets on disconnect)
+ * - Periodic movement validation (1-second intervals)
+ * - Minimal impact on legitimate players
  */
 export class SessionAntiCheat {
     constructor(abilityManager) {

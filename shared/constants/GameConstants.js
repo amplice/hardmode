@@ -1,3 +1,47 @@
+/**
+ * @fileoverview GameConstants - Shared configuration for client-server consistency
+ * 
+ * ARCHITECTURE ROLE:
+ * - Central configuration shared between client and server
+ * - Ensures identical game behavior across all instances
+ * - Provides tunable parameters for balance and performance
+ * - Maintains deterministic gameplay constants
+ * 
+ * CONFIGURATION CATEGORIES:
+ * - World: Map size, tile dimensions, generation seeds
+ * - Network: Tick rates, view distances, optimization settings
+ * - Gameplay: Spawn rates, level progression, combat timing
+ * - Debug: Development flags and logging controls
+ * 
+ * CLIENT-SERVER SYNCHRONIZATION:
+ * Critical for multiplayer consistency:
+ * - Identical constants ensure matching game logic
+ * - World generation uses same parameters
+ * - Timing constants prevent desynchronization
+ * - Balance values consistent across all players
+ * 
+ * PERFORMANCE TUNING:
+ * Constants enable performance optimization:
+ * - World size affects chunked rendering decisions
+ * - Network settings optimize bandwidth usage
+ * - Spawn limits prevent server overload
+ * - Debug flags control logging overhead
+ * 
+ * DEVELOPMENT SUPPORT:
+ * Configuration for testing and debugging:
+ * - Debug tileset for visual development
+ * - Playtest mode for rapid progression testing
+ * - Logging controls for specific system debugging
+ * - Performance monitoring flags
+ * 
+ * BALANCE CONFIGURATION:
+ * Game balance through data-driven design:
+ * - Monster stats centralized for easy tuning
+ * - Level progression formulas configurable
+ * - Combat timing and damage values adjustable
+ * - Spawn rates and distributions modifiable
+ */
+
 // Shared game constants used by both client and server
 export const GAME_CONSTANTS = {
     // World settings - increased for testing chunked rendering

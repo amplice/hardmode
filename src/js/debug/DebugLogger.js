@@ -1,3 +1,53 @@
+/**
+ * @fileoverview DebugLogger - Development debugging and state analysis
+ * 
+ * ARCHITECTURE ROLE:
+ * - Captures game state snapshots for debugging gameplay issues
+ * - Provides ASCII visualization of game world for quick analysis
+ * - Logs critical events (deaths, attacks, errors) with context
+ * - Maintains frame-by-frame history for issue reproduction
+ * 
+ * DEBUGGING WORKFLOW:
+ * Development debugging pipeline:
+ * 1. captureGameState() takes snapshot of all entities and world state
+ * 2. generateAsciiMap() creates visual representation of game world
+ * 3. logEvent() records critical gameplay events with timestamps
+ * 4. dumpStateHistory() outputs complete state for issue analysis
+ * 
+ * STATE CAPTURE SYSTEM:
+ * Comprehensive game state tracking:
+ * - Player positions, health, states, and velocities
+ * - Monster locations, AI states, and target information
+ * - Projectile tracking and collision data
+ * - ASCII map visualization for spatial debugging
+ * 
+ * EVENT LOGGING:
+ * Critical event tracking with auto-dump triggers:
+ * - Player deaths: Full state dump for balance analysis
+ * - Attack events: Combat validation and hit detection debugging
+ * - Error conditions: State capture for bug reproduction
+ * - Network events: Latency and prediction issue tracking
+ * 
+ * ASCII VISUALIZATION:
+ * Quick visual debugging without graphics:
+ * - P = Players, M = Monsters, . = walkable, # = walls
+ * - Shows spatial relationships and collision boundaries
+ * - Identifies pathfinding and positioning issues quickly
+ * - Console-friendly format for server-side debugging
+ * 
+ * PERFORMANCE CONSIDERATIONS:
+ * - Configurable enable/disable for production
+ * - Frame-limited capture to prevent memory bloat
+ * - Efficient state serialization for large worlds
+ * - Event-triggered dumps rather than continuous logging
+ * 
+ * DEVELOPMENT INTEGRATION:
+ * - Automatic triggers for common debugging scenarios
+ * - Console-accessible methods for manual investigation
+ * - State history for frame-by-frame analysis
+ * - Integration with prediction and reconciliation systems
+ */
+
 // Debug logger for better feedback during development
 export class DebugLogger {
     constructor() {

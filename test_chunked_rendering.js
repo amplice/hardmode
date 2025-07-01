@@ -1,3 +1,49 @@
+/**
+ * @fileoverview Automated testing for chunked rendering system
+ * 
+ * TESTING PURPOSE:
+ * - Validates chunked rendering performance and visual quality
+ * - Tests chunk loading/unloading during player movement
+ * - Captures screenshots for visual regression testing
+ * - Monitors browser console for rendering errors
+ * 
+ * TEST AUTOMATION WORKFLOW:
+ * End-to-end testing with Puppeteer:
+ * 1. Launch browser and navigate to production deployment
+ * 2. Select character class and spawn player
+ * 3. Execute movement patterns to trigger chunk boundaries
+ * 4. Capture screenshots at key movement points
+ * 5. Monitor console logs for chunk loading/unloading events
+ * 
+ * CHUNK BOUNDARY TESTING:
+ * Movement patterns designed to test chunked rendering:
+ * - Horizontal movement: Tests X-axis chunk transitions
+ * - Vertical movement: Tests Y-axis chunk transitions  
+ * - Diagonal movement: Tests corner chunk loading
+ * - Extended movement: Validates chunk unloading behavior
+ * 
+ * VISUAL VALIDATION:
+ * Screenshot-based verification:
+ * - Initial spawn: Baseline chunk loading
+ * - Movement sequences: Chunk transition smoothness
+ * - Visual regression: Compare against reference images
+ * - Error detection: Missing tiles or rendering artifacts
+ * 
+ * MONITORING INTEGRATION:
+ * Browser console monitoring:
+ * - Chunk loading/unloading events
+ * - Texture loading performance
+ * - Error detection and reporting
+ * - Memory usage tracking
+ * 
+ * PRODUCTION TESTING:
+ * Tests against live deployment:
+ * - Real network conditions
+ * - Full server integration
+ * - Actual performance characteristics
+ * - Continuous integration validation
+ */
+
 import puppeteer from 'puppeteer';
 
 async function testChunkedRendering() {

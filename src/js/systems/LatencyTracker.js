@@ -1,8 +1,52 @@
 /**
- * LatencyTracker - Measures and tracks network round-trip time (RTT) for lag compensation
+ * @fileoverview LatencyTracker - Network latency measurement for prediction tuning
  * 
- * This system continuously measures latency by sending ping requests to the server
- * and maintains a rolling average for smooth lag compensation calculations.
+ * ARCHITECTURE ROLE:
+ * - Continuously measures round-trip time (RTT) for lag compensation
+ * - Provides latency statistics for prediction system optimization
+ * - Tracks connection quality metrics (jitter, packet loss)
+ * - Enables adaptive prediction based on network conditions
+ * 
+ * LATENCY MEASUREMENT SYSTEM:
+ * Active ping-pong measurement:
+ * 1. Send ping with sequence number and timestamp
+ * 2. Server responds with same sequence/timestamp
+ * 3. Calculate RTT and update statistics
+ * 4. Maintain rolling average for stable measurements
+ * 
+ * PREDICTION INTEGRATION:
+ * Latency data used for prediction tuning:
+ * - MovementPredictor adjusts prediction window based on RTT
+ * - Higher latency = more aggressive prediction
+ * - Lower latency = more conservative prediction
+ * - Jitter measurements help tune reconciliation tolerance
+ * 
+ * CONNECTION QUALITY METRICS:
+ * Comprehensive network health tracking:
+ * - Average RTT: Smoothed latency measurement
+ * - Min/Max RTT: Range of network conditions
+ * - Jitter: Variation in RTT for stability assessment
+ * - Packet Loss: Failed ping percentage
+ * 
+ * STATISTICAL SMOOTHING:
+ * Noise reduction for stable measurements:
+ * - Exponential smoothing for average RTT
+ * - Rolling window of recent measurements
+ * - Outlier detection and filtering
+ * - Connection establishment grace period
+ * 
+ * ADAPTIVE BEHAVIOR:
+ * Network condition awareness:
+ * - High latency: Increase prediction aggressiveness
+ * - High jitter: Increase reconciliation tolerance
+ * - Packet loss: Adjust retry and timeout behavior
+ * - Connection quality indicators for debugging
+ * 
+ * PERFORMANCE CONSIDERATIONS:
+ * - Lightweight ping protocol (minimal data)
+ * - Reasonable ping frequency (1 second intervals)
+ * - Efficient statistics calculation
+ * - Automatic cleanup of stale measurements
  */
 export class LatencyTracker {
     constructor(networkClient) {
