@@ -1,3 +1,5 @@
+import { StateCache } from './StateCache.js';
+
 export class NetworkClient {
     constructor(game) {
         this.game = game;
@@ -6,12 +8,41 @@ export class NetworkClient {
         this.monsters = new Map();
         this.connected = false; // Initialize connected state
 
+        // Add state caches for delta compression (Phase 1)
+        this.playerStateCache = new StateCache();
+        this.monsterStateCache = new StateCache();
+        this.ENABLE_DELTA_COMPRESSION = false; // Feature flag - start disabled
+
         this.setupHandlers();
         // NetworkClient initialized
     }
 
     setClass(cls) {
         this.socket.emit('setClass', cls);
+    }
+    
+    /**
+     * Get cache statistics for debugging
+     * @returns {Object} Cache performance stats
+     */
+    getCacheStats() {
+        return {
+            playerCache: this.playerStateCache.getStats(),
+            monsterCache: this.monsterStateCache.getStats(),
+            deltaCompressionEnabled: this.ENABLE_DELTA_COMPRESSION
+        };
+    }
+    
+    /**
+     * Enable or disable delta compression for testing
+     * @param {boolean} enabled 
+     */
+    setDeltaCompression(enabled) {
+        this.ENABLE_DELTA_COMPRESSION = enabled;
+        console.log(`Delta compression ${enabled ? 'enabled' : 'disabled'} on client`);
+        // Reset cache stats when toggling
+        this.playerStateCache.resetStats();
+        this.monsterStateCache.resetStats();
     }
     
     sendCollisionMask(collisionMask) {
@@ -60,14 +91,45 @@ export class NetworkClient {
 
         this.socket.on('playerLeft', id => {
             this.game.removeRemotePlayer(id);
+            // Clean up cached state
+            this.playerStateCache.remove(id);
         });
 
         this.socket.on('state', state => {
-            // Process state updates directly for immediate responsiveness
+            // Process state updates with delta compression support
             state.players.forEach(p => {
-                this.processPlayerUpdate(p);
+                if (this.ENABLE_DELTA_COMPRESSION && p._updateType) {
+                    // Handle delta compression
+                    if (p._updateType === 'full') {
+                        this.playerStateCache.setFull(p.id, p);
+                        this.processPlayerUpdate(p);
+                    } else if (p._updateType === 'delta') {
+                        const mergedState = this.playerStateCache.applyDelta(p.id, p);
+                        this.processPlayerUpdate(mergedState);
+                    }
+                } else {
+                    // Legacy full update path
+                    this.playerStateCache.setFull(p.id, p);
+                    this.processPlayerUpdate(p);
+                }
             });
-            state.monsters.forEach(m => this.game.addOrUpdateMonster(m));
+            
+            state.monsters.forEach(m => {
+                if (this.ENABLE_DELTA_COMPRESSION && m._updateType) {
+                    // Handle delta compression
+                    if (m._updateType === 'full') {
+                        this.monsterStateCache.setFull(m.id, m);
+                        this.game.addOrUpdateMonster(m);
+                    } else if (m._updateType === 'delta') {
+                        const mergedState = this.monsterStateCache.applyDelta(m.id, m);
+                        this.game.addOrUpdateMonster(mergedState);
+                    }
+                } else {
+                    // Legacy full update path
+                    this.monsterStateCache.setFull(m.id, m);
+                    this.game.addOrUpdateMonster(m);
+                }
+            });
             
             // Update projectiles
             if (state.projectiles && this.game.projectileRenderer) {
@@ -108,6 +170,10 @@ export class NetworkClient {
             const monster = this.game.remoteMonsters?.get(data.monsterId);
             if (monster) {
                 monster.playDeathAnimation?.();
+                // Clean up cached state after death animation
+                setTimeout(() => {
+                    this.monsterStateCache.remove(data.monsterId);
+                }, 1000);
                 
                 // Show XP gain if we killed it
                 if (data.killedBy === this.socket.id) {
@@ -244,6 +310,9 @@ export class NetworkClient {
         // Handle disconnection
         this.socket.on('disconnect', () => {
             this.connected = false;
+            // Clear caches on disconnect
+            this.playerStateCache.clear();
+            this.monsterStateCache.clear();
             // Disconnected from server
         });
         

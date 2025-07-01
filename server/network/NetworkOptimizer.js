@@ -12,11 +12,11 @@ export class NetworkOptimizer {
         
         if (forceFullUpdate || !this.lastSentState.has(stateKey)) {
             this.lastSentState.set(stateKey, JSON.parse(JSON.stringify(currentState)));
-            return { id: entityId, full: true, ...currentState };
+            return { id: entityId, _updateType: 'full', ...currentState };
         }
 
         const lastState = this.lastSentState.get(stateKey);
-        const delta = { id: entityId };
+        const delta = { id: entityId, _updateType: 'delta' };
         let hasChanges = false;
 
         // Check each property for changes

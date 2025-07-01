@@ -56,6 +56,9 @@ const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensa
 const networkOptimizer = new NetworkOptimizer();
 const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
 
+// Feature flag for delta compression (start disabled for safety)
+const ENABLE_DELTA_COMPRESSION = false;
+
 // Setup debug endpoint with access to systems
 setupDebugEndpoint(app, { sessionAntiCheat });
 
@@ -84,7 +87,7 @@ setInterval(() => {
         projectileManager.cleanup();
     }
     
-    // Send per-client optimized state (monsters only, full objects for client compatibility)
+    // Send per-client optimized state
     for (const [socketId, socket] of io.sockets.sockets) {
         const player = gameState.getPlayerBySocket(socketId);
         if (!player) continue;
@@ -92,14 +95,26 @@ setInterval(() => {
         // Get monsters visible to this specific player (performance optimization)
         const visibleMonsters = monsterManager.getVisibleMonsters(new Map([[player.id, player]]));
         
-        // Send full objects (client expects complete state, not deltas)
-        const state = {
-            players: gameState.getSerializedPlayers(inputProcessor),
-            monsters: monsterManager.getSerializedMonsters(visibleMonsters),
-            projectiles: projectileManager.getSerializedProjectiles()
-        };
-        
-        socket.emit('state', state);
+        if (ENABLE_DELTA_COMPRESSION) {
+            // Use NetworkOptimizer for delta compression
+            const serializedPlayers = gameState.getSerializedPlayers(inputProcessor);
+            const optimizedState = networkOptimizer.optimizeStateUpdate(
+                socketId,
+                serializedPlayers,
+                visibleMonsters,
+                player
+            );
+            optimizedState.projectiles = projectileManager.getSerializedProjectiles();
+            socket.emit('state', optimizedState);
+        } else {
+            // Send full objects (current behavior)
+            const state = {
+                players: gameState.getSerializedPlayers(inputProcessor),
+                monsters: monsterManager.getSerializedMonsters(visibleMonsters),
+                projectiles: projectileManager.getSerializedProjectiles()
+            };
+            socket.emit('state', state);
+        }
     }
     
 }, 1000 / GAME_CONSTANTS.TICK_RATE);
