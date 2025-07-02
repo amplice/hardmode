@@ -154,6 +154,11 @@ export class MovementPredictor {
     applyMovement(state, movement, deltaTime) {
         // Use actual player moveSpeed (includes level bonuses) instead of base speed
         const totalSpeed = state.moveSpeed || this.classSpeeds[state.class] || 5;
+        
+        // DEBUG: Log speed calculations when player is level 6+
+        if (state.level >= 6 && Math.random() < 0.01) {
+            console.log(`[MovementPredictor] Level ${state.level}: moveSpeed=${state.moveSpeed}, classSpeeds=${this.classSpeeds[state.class]}, totalSpeed=${totalSpeed}`);
+        }
 
         // Apply speed modifiers based on facing vs movement direction
         const speedModifier = this.calculateSpeedModifier(state, movement);

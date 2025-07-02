@@ -289,6 +289,7 @@ export class Game {
           y: this.entities.player.position.y,
           facing: this.entities.player.facing,
           class: this.entities.player.characterClass,
+          level: this.entities.player.level, // Include level for debug logging
           moveSpeed: this.entities.player.moveSpeed // Include level bonuses for accurate prediction
         };
 
