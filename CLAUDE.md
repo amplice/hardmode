@@ -213,6 +213,69 @@ export class WorldGenerator {
 
 - github access credentials and railway api access credentials are in ".claude\credentials.json"
 
+## Railway API Interactions
+
+### Prerequisites
+
+- Railway project token in .claude/credentials.json
+- Project ID: ac3d373a-6e60-488c-9577-d6e10e86eaea
+- Environment ID: 8b270a70-f65e-4cc8-8a14-971f238559af
+
+### Deployment and Logging Queries
+
+1. How to Get Build Logs for Latest Deployment
+
+Step 1: Get the latest deployment ID
+
+```bash
+curl --request POST \
+  --url https://backboard.railway.com/graphql/v2 \
+  --header 'Project-Access-Token: YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{"query":"query { environment(id: \"8b270a70-f65e-4cc8-8a14-971f238559af\") { deployments(first: 1) { edges { node { id status createdAt }
+} } } }"}'
+```
+
+Step 2: Get build logs using the deployment ID
+
+```bash
+curl --request POST \
+  --url https://backboard.railway.com/graphql/v2 \
+  --header 'Project-Access-Token: YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{"query":"query { buildLogs(deploymentId: \"DEPLOYMENT_ID_HERE\") { message timestamp severity } }"}'
+```
+
+2. How to Get Deployment Logs for Latest Deployment
+
+Step 1: Get the latest deployment ID (same as above)
+
+Step 2: Get deployment logs using the deployment ID
+
+```bash
+curl --request POST \
+  --url https://backboard.railway.com/graphql/v2 \
+  --header 'Project-Access-Token: YOUR_TOKEN_HERE' \
+  --header 'Content-Type: application/json' \
+  --data '{"query":"query { deploymentLogs(deploymentId: \"DEPLOYMENT_ID_HERE\") { message timestamp severity } }"}'
+```
+
+### Key GraphQL Queries
+
+- Latest deployments: environment(id: "ENV_ID") { deployments(first: N) { ... } }
+- Build logs: buildLogs(deploymentId: "DEPLOYMENT_ID") { message timestamp severity }
+- Deployment logs: deploymentLogs(deploymentId: "DEPLOYMENT_ID") { message timestamp severity }
+
+### Authentication
+
+- Use Project-Access-Token header (not Authorization: Bearer)
+- Token from .claude/credentials.json -> railway.token
+
+### Notes
+
+- Build logs show the build process (npm install, docker build, etc.)
+- Deployment logs show the running application logs (only if deployment succeeds)
+
 ---
 
 *This documentation reflects the actual implementation verified through comprehensive source code analysis. All claims are backed by specific code references and measured performance results.*
