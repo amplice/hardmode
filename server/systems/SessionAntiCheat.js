@@ -60,9 +60,9 @@ export class SessionAntiCheat {
         
         // Configuration - Simple and effective
         this.maxStrikes = 10; // Strikes before kick
-        this.minInputInterval = 5; // Minimum 5ms between inputs (200 inputs/sec max)
+        this.minInputInterval = 8; // Minimum 8ms between inputs (125 inputs/sec max) - allows 144Hz displays
         this.inputGracePeriod = 3000; // Grace period at start (ms)
-        this.inputBurstTolerance = 3; // Allow 3 fast inputs in a row before flagging
+        this.inputBurstTolerance = 6; // Allow 6 fast inputs in a row before flagging - more tolerance for high refresh rate
         
         // Movement validation over time windows
         this.movementCheckInterval = 1000; // Check movement every 1 second
