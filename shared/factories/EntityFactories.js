@@ -98,10 +98,8 @@ export function createMonsterState(options) {
         // Core identity
         id: options.id,
         type: options.type,
-        position: { 
-            x: options.x, 
-            y: options.y 
-        },
+        x: options.x,
+        y: options.y,
         facing: options.facing || 'down',
         
         // Health
@@ -214,7 +212,7 @@ export function validatePlayerState(playerState) {
 }
 
 export function validateMonsterState(monsterState) {
-    const required = ['id', 'type', 'position', 'facing', 'hp', 'maxHp', 'state', 
+    const required = ['id', 'type', 'x', 'y', 'facing', 'hp', 'maxHp', 'state', 
                      'lastAttackTime', 'damage', 'attackRange', 'aggroRange', 'moveSpeed'];
     
     for (const field of required) {

@@ -61,7 +61,8 @@ export interface PlayerState {
 export interface MonsterState {
     id: string;
     type: MonsterType;
-    position: Position;
+    x: number;
+    y: number;
     facing: Direction;
     
     // Health
