@@ -874,27 +874,32 @@ class StatsComponent extends Component {
     }
 
     applyLevelBonus(level) {
+        // CLIENT-SIDE LEVEL BONUSES DISABLED
+        // Let server handle all level bonuses to prevent desync with movement prediction
+        // Server will send playerLevelUp event with correct bonuses
+        
+        // Only apply visual/local effects that don't affect server authority
         switch (level) {
             case 2:
             case 6:
-                this.owner.moveSpeed += 0.25;
+                // moveSpeed bonus applied by server
                 break;
             case 3:
             case 7:
-                this.modifyAttackRecovery(-25);
+                // attack recovery bonus applied by server
                 break;
             case 4:
             case 8:
-                this.modifyAttackCooldown(-100);
+                // attack cooldown bonus applied by server
                 break;
             case 5:
-                this.owner.rollUnlocked = true;
+                // roll unlock applied by server
                 break;
             case 9:
                 // Future move unlock placeholder
                 break;
             case 10:
-                this.owner.maxHitPoints += 1;
+                // maxHP bonus applied by server
                 break;
         }
     }
