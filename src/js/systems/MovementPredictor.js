@@ -42,6 +42,9 @@
  * - Periodic cleanup prevents memory bloat
  * - Minimal prediction logic matching server exactly
  */
+
+import { directionStringToAngleRadians } from '../utils/DirectionUtils.js';
+
 export class MovementPredictor {
     constructor(latencyTracker = null, collisionMask = null) {
         this.predictedStates = new Map(); // sequence -> predicted state
@@ -207,9 +210,37 @@ export class MovementPredictor {
      * @returns {number} Speed modifier
      */
     calculateSpeedModifier(state, movement) {
-        // For now, use simple logic matching server
-        // TODO: Implement facing-based speed modifiers when server does
-        return 1.0;
+        // Match server and client Player.js logic exactly for consistent prediction
+        
+        // Get facing angle from player's facing direction string
+        const facingAngle = directionStringToAngleRadians(state.facing);
+        
+        // Get movement angle from movement vector (same as client's atan2(vy, vx))
+        const movementAngle = (movement.x !== 0 || movement.y !== 0) ? 
+            Math.atan2(movement.y, movement.x) : facingAngle;
+        
+        // Calculate angle difference (in radians) - exact same logic as client and server
+        let angleDiff = Math.abs(facingAngle - movementAngle);
+        // Normalize to be between 0 and π
+        if (angleDiff > Math.PI) {
+            angleDiff = 2 * Math.PI - angleDiff;
+        }
+        
+        // Apply direction-based speed modifiers - exact same thresholds
+        let speedModifier = 1.0;
+        
+        if (angleDiff < Math.PI / 4) {
+            // Moving forward (within 45 degrees of facing)
+            speedModifier = 1.0;
+        } else if (angleDiff > 3 * Math.PI / 4) {
+            // Moving backward (more than 135 degrees from facing)
+            speedModifier = 0.5;
+        } else {
+            // Strafing (between 45 and 135 degrees from facing)
+            speedModifier = 0.7;
+        }
+        
+        return speedModifier;
     }
 
     /**

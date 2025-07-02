@@ -8,6 +8,7 @@
 import { CollisionMask } from '../../shared/systems/CollisionMask.js';
 import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
 import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
+import { directionStringToAngleRadians } from '../../src/js/utils/DirectionUtils.js';
 
 export class InputProcessor {
     constructor(gameState, abilityManager = null, lagCompensation = null, sessionAntiCheat = null, serverWorldManager) {
@@ -275,9 +276,37 @@ export class InputProcessor {
      * @returns {number} Speed modifier (0.5 to 1.0)
      */
     calculateSpeedModifier(player, movement) {
-        // For now, use simple logic. Can be enhanced later.
-        // This should match the client-side calculation for consistency
-        return 1.0; // TODO: Implement facing-based speed modifiers
+        // Match client-side speed modifier logic exactly (Player.js MovementComponent)
+        
+        // Get facing angle from player's facing direction string
+        const facingAngle = directionStringToAngleRadians(player.facing);
+        
+        // Get movement angle from movement vector (same as client's atan2(vy, vx))
+        const movementAngle = (movement.x !== 0 || movement.y !== 0) ? 
+            Math.atan2(movement.y, movement.x) : facingAngle;
+        
+        // Calculate angle difference (in radians) - exact same logic as client
+        let angleDiff = Math.abs(facingAngle - movementAngle);
+        // Normalize to be between 0 and π
+        if (angleDiff > Math.PI) {
+            angleDiff = 2 * Math.PI - angleDiff;
+        }
+        
+        // Apply direction-based speed modifiers - exact same thresholds as client
+        let speedModifier = 1.0;
+        
+        if (angleDiff < Math.PI / 4) {
+            // Moving forward (within 45 degrees of facing)
+            speedModifier = 1.0;
+        } else if (angleDiff > 3 * Math.PI / 4) {
+            // Moving backward (more than 135 degrees from facing)
+            speedModifier = 0.5;
+        } else {
+            // Strafing (between 45 and 135 degrees from facing)
+            speedModifier = 0.7;
+        }
+        
+        return speedModifier;
     }
 
     /**
