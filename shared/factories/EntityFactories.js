@@ -11,8 +11,16 @@
  * 4. Factory functions return complete, valid objects
  */
 
-import { PLAYER_CONFIG } from '../../src/js/config/GameConfig.js';
 import { MONSTER_STATS } from '../constants/GameConstants.js';
+
+// Shared player class configuration for factories
+// Note: This duplicates some data from GameConfig.js but ensures shared access
+const PLAYER_CLASS_STATS = {
+    bladedancer: { hitPoints: 3, moveSpeed: 5 },
+    guardian: { hitPoints: 4, moveSpeed: 3.5 },
+    hunter: { hitPoints: 1, moveSpeed: 5 },
+    rogue: { hitPoints: 2, moveSpeed: 6 }
+};
 
 /**
  * Creates a complete PlayerState object with all required fields
@@ -26,7 +34,7 @@ export function createPlayerState(options) {
     if (typeof options.y !== 'number') throw new Error('Player y position is required');
     
     // Get class configuration
-    const classConfig = PLAYER_CONFIG.classes[options.characterClass];
+    const classConfig = PLAYER_CLASS_STATS[options.characterClass];
     if (!classConfig) {
         throw new Error(`Unknown character class: ${options.characterClass}`);
     }
