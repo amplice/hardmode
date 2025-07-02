@@ -94,14 +94,16 @@ export class MovementPredictor {
             return currentState;
         }
         
-        // Create new predicted state
+        // Create new predicted state (copy ALL relevant fields)
         const newState = {
             x: currentState.x,
             y: currentState.y,
             facing: input.data.facing || currentState.facing,
             sequence: input.sequence,
             timestamp: input.timestamp,
-            class: currentState.class
+            class: currentState.class,
+            level: currentState.level,           // CRITICAL: Include level for bonus calculation
+            moveSpeed: currentState.moveSpeed    // CRITICAL: Include moveSpeed to avoid fallback
         };
 
         // Extract movement from keys (match server logic exactly)

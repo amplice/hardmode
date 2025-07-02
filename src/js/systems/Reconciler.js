@@ -145,7 +145,9 @@ export class Reconciler {
             x: serverState.x,
             y: serverState.y,
             facing: serverState.facing || localPlayer.facing,
-            class: localPlayer.characterClass
+            class: localPlayer.characterClass,
+            level: localPlayer.level,           // CRITICAL: Include level for bonus calculation
+            moveSpeed: localPlayer.moveSpeed    // CRITICAL: Include moveSpeed to avoid fallback
         };
 
         for (const input of unprocessedInputs) {
