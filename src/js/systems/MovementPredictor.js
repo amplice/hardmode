@@ -68,6 +68,18 @@ export class MovementPredictor {
         // Minimal prediction adjustment for high latency
         this.maxPredictionAdjustment = 10; // Conservative max 10ms adjustment
     }
+    
+    /**
+     * Calculate movement speed bonus based on level (matches server logic)
+     * @param {number} level - Player level
+     * @returns {number} Movement speed bonus
+     */
+    calculateMoveSpeedBonus(level) {
+        let bonus = 0;
+        if (level >= 2) bonus += 0.25; // Level 2 bonus
+        if (level >= 6) bonus += 0.25; // Level 6 bonus (total 0.5)
+        return bonus;
+    }
 
     /**
      * Predict movement from an input command
@@ -152,17 +164,22 @@ export class MovementPredictor {
      * @param {number} deltaTime - Frame delta time
      */
     applyMovement(state, movement, deltaTime) {
-        // Use actual player moveSpeed (includes level bonuses) instead of base speed
-        const totalSpeed = state.moveSpeed || this.classSpeeds[state.class] || 5;
+        // Calculate speed the same way the server does for consistency
+        const baseSpeed = this.classSpeeds[state.class] || 5;
+        const moveSpeedBonus = this.calculateMoveSpeedBonus(state.level || 1);
+        const calculatedSpeed = baseSpeed + moveSpeedBonus;
+        
+        // Use calculated speed, but prefer state.moveSpeed if available and reasonable
+        const totalSpeed = (state.moveSpeed && state.moveSpeed > 0) ? state.moveSpeed : calculatedSpeed;
         
         // DEBUG: Log speed calculations for analysis
         if (Math.random() < 0.02) { // 2% sample rate
-            console.log(`[MovementPredictor] state.moveSpeed=${state.moveSpeed}, totalSpeed=${totalSpeed}, class=${state.class}, level=${state.level}`);
+            console.log(`[MovementPredictor] level=${state.level}, baseSpeed=${baseSpeed}, moveSpeedBonus=${moveSpeedBonus}, calculatedSpeed=${calculatedSpeed}, state.moveSpeed=${state.moveSpeed}, totalSpeed=${totalSpeed}`);
         }
         
-        // DEBUG: Log speed mismatch when fallback is used
-        if (!state.moveSpeed && state.class) {
-            console.warn(`[MovementPredictor] Using fallback speed! state.moveSpeed=${state.moveSpeed}, using classSpeeds[${state.class}]=${this.classSpeeds[state.class]}`);
+        // DEBUG: Log when using calculated vs state speed
+        if (totalSpeed !== state.moveSpeed && state.moveSpeed) {
+            console.warn(`[MovementPredictor] Speed mismatch! Using calculated=${calculatedSpeed} instead of state.moveSpeed=${state.moveSpeed}`);
         }
 
         // Apply speed modifiers based on facing vs movement direction
