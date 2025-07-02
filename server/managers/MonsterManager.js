@@ -2,6 +2,7 @@ import { GAME_CONSTANTS, MONSTER_STATS, MONSTER_SPAWN_WEIGHTS } from '../../shar
 import { getDistance, selectWeightedRandom } from '../../shared/utils/MathUtils.js';
 import { CollisionMask } from '../../shared/systems/CollisionMask.js';
 import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
+import { createMonsterState, validateMonsterState } from '../../shared/factories/EntityFactories.js';
 
 export class MonsterManager {
     constructor(io, serverWorldManager) {
@@ -152,26 +153,31 @@ export class MonsterManager {
         const pos = position || this.findValidSpawnPosition(players ? Array.from(players.values()) : []);
         const id = this.nextMonsterId++;
         
-        const monster = {
+        // Use factory to create complete monster state with all required fields
+        // This prevents missing field bugs that could cause AI or combat issues
+        const monster = createMonsterState({
             id,
             type,
             x: pos.x,
             y: pos.y,
-            hp: stats.hp,
-            maxHp: stats.hp,
-            state: 'idle',
-            target: null,
-            lastAttack: 0,
-            attackAnimationStarted: 0,
-            isAttackAnimating: false,
-            velocity: { x: 0, y: 0 },
-            facing: 'down',
-            spawnTime: Date.now(),
-            lastUpdate: Date.now(),
-            collisionRadius: stats.collisionRadius || 20,  // Add collision radius
-            stunTimer: 0,  // Track stun duration
-            isStunned: false
-        };
+            facing: 'down'
+            // hp, maxHp, damage, attackRange, aggroRange, moveSpeed come from factory defaults
+        });
+        
+        // Validate the created state has all required fields
+        validateMonsterState(monster);
+        
+        // Add server-specific properties not in the core state
+        monster.target = null;
+        monster.lastAttack = 0;
+        monster.attackAnimationStarted = 0;
+        monster.isAttackAnimating = false;
+        monster.velocity = { x: 0, y: 0 };
+        monster.spawnTime = Date.now();
+        monster.lastUpdate = Date.now();
+        monster.collisionRadius = stats.collisionRadius || 20;
+        monster.stunTimer = 0;
+        monster.isStunned = false;
 
         this.monsters.set(id, monster);
         // Monster created and added to map

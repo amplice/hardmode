@@ -43,6 +43,7 @@ import {
     velocityToDirectionString,
     directionStringToAnimationSuffix
 } from '../utils/DirectionUtils.js';
+import { createPlayerState, validatePlayerState } from '../../../shared/factories/EntityFactories.js';
 
 // Base Component class
 class Component {
@@ -921,17 +922,34 @@ class StatsComponent extends Component {
 
 export class Player {
     constructor(options) {
-        // Core properties
-        this.position = { x: options.x, y: options.y };
-        this.facing = 'down';
-        this.characterClass = options.class || 'bladedancer';
+        // Use factory to create complete state with all required fields
+        // This prevents the undefined moveSpeed/level bugs we experienced
+        const playerState = createPlayerState({
+            id: options.id || 'local-player',
+            characterClass: options.class || 'bladedancer',
+            x: options.x,
+            y: options.y,
+            level: options.level || 1,
+            experience: options.experience || 0,
+            hp: options.hp,
+            maxHp: options.maxHp,
+            moveSpeed: options.moveSpeed,
+            moveSpeedBonus: options.moveSpeedBonus || 0,
+            attackRecoveryBonus: options.attackRecoveryBonus || 0,
+            attackCooldownBonus: options.attackCooldownBonus || 0,
+            rollUnlocked: options.rollUnlocked || false,
+            facing: options.facing || 'down'
+        });
+        
+        // Validate the created state has all required fields
+        validatePlayerState(playerState);
+        
+        // Apply the complete state to this instance
+        Object.assign(this, playerState);
+        
+        // Non-state properties for rendering and systems
         this.combatSystem = options.combatSystem;
         this.spriteManager = options.spriteManager;
-        
-        // Get class stats from config
-        const classConfig = PLAYER_CONFIG.classes[this.characterClass];
-        this.moveSpeed = classConfig.moveSpeed;
-        this.rollUnlocked = false;
         
         // Create sprite container
         this.sprite = new PIXI.Container();
