@@ -86,22 +86,33 @@ export class SessionAntiCheat {
         const now = Date.now();
         let playerData = this.getPlayerData(playerId);
         
+        // Use client timestamp if available and reasonable, otherwise use server time
+        // This prevents false positives from input batching
+        let inputTime = now;
+        if (input.timestamp && typeof input.timestamp === 'number') {
+            // Validate client timestamp is reasonable (not too far in past/future)
+            const timeDiff = Math.abs(input.timestamp - now);
+            if (timeDiff < 30000) { // Allow 30 second clock skew
+                inputTime = input.timestamp;
+            }
+        }
+        
         // Grace period for new connections
         if (!playerData.firstInputTime) {
-            playerData.firstInputTime = now;
+            playerData.firstInputTime = inputTime;
             playerData.fastInputCount = 0;
         }
         
-        const timeSinceFirstInput = now - playerData.firstInputTime;
+        const timeSinceFirstInput = inputTime - playerData.firstInputTime;
         if (timeSinceFirstInput < this.inputGracePeriod) {
             // Skip validation during grace period
-            playerData.lastInputTime = now;
+            playerData.lastInputTime = inputTime;
             return true;
         }
         
         // Check input frequency with burst tolerance
         if (playerData.lastInputTime) {
-            const timeDiff = now - playerData.lastInputTime;
+            const timeDiff = inputTime - playerData.lastInputTime;
             
             // Track fast inputs
             if (timeDiff < this.minInputInterval) {
@@ -120,15 +131,16 @@ export class SessionAntiCheat {
             }
         }
         
-        // Check timestamp validity (inputs can't be from future)
+        // Check timestamp validity (inputs can't be from future) - this is now redundant with above check
+        // but keeping for extra safety
         if (input.timestamp && input.timestamp > now + 5000) { // 5 second tolerance
             this.addViolation(playerId, 'invalid_timestamp', 
                 `Input timestamp too far in future: ${input.timestamp} vs ${now}`);
             return false;
         }
         
-        // Update tracking
-        playerData.lastInputTime = now;
+        // Update tracking with the input time we used for validation
+        playerData.lastInputTime = inputTime;
         
         return true;
     }
