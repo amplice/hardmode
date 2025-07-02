@@ -56,6 +56,10 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
 
 - When typing "q" before a prompt, it means asking a question and Claude should answer the question but NOT do anything in the code
 
+## AI Development Insights
+
+- Don't think about how the code is written for human developers, literally all the code is written by AI. So, for example, "VScode gives hints immediately" doesn't matter AT ALL because VScode is not being used by you or other AIs.
+
 ## ✅ **FULLY IMPLEMENTED FEATURES**
 
 ### **Core Gameplay** *(Production Quality)*
