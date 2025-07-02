@@ -209,6 +209,10 @@ export class WorldGenerator {
 - **State reconciliation**: lastProcessedSeq links client predictions to server authority
 - **Component architecture**: Consistent entity structure across client/server boundaries
 
+## Credential Storage
+
+- github access credentials and railway api access credentials are in ".claude\credentials.json"
+
 ---
 
 *This documentation reflects the actual implementation verified through comprehensive source code analysis. All claims are backed by specific code references and measured performance results.*
