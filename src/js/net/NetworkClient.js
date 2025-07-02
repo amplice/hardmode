@@ -620,6 +620,11 @@ export class NetworkClient {
                     // Update move speed if it changed
                     const baseSpeed = player.getClassMoveSpeed();
                     player.moveSpeed = baseSpeed + player.moveSpeedBonus;
+                    
+                    // DEBUG: Log client speed updates
+                    if (Math.random() < 0.1) { // 10% sample rate for speed updates
+                        console.log(`[NetworkClient] Updated moveSpeed: baseSpeed=${baseSpeed}, bonus=${player.moveSpeedBonus}, total=${player.moveSpeed}, level=${player.level}`);
+                    }
                 }
                 
                 // Also sync max HP if it changed

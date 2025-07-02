@@ -292,6 +292,12 @@ export class Game {
           level: this.entities.player.level, // Include level for debug logging
           moveSpeed: this.entities.player.moveSpeed // Include level bonuses for accurate prediction
         };
+        
+        // DEBUG: Log prediction state occasionally
+        if (Math.random() < 0.01) { // 1% sample rate
+            console.log(`[Game] Prediction state: moveSpeed=${currentState.moveSpeed}, level=${currentState.level}, class=${currentState.class}`);
+            console.log(`[Game] Player object: moveSpeed=${this.entities.player.moveSpeed}, moveSpeedBonus=${this.entities.player.moveSpeedBonus}`);
+        }
 
         const predictedState = this.systems.predictor.predictMovement(currentState, networkInput);
         

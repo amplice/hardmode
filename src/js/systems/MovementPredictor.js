@@ -154,6 +154,16 @@ export class MovementPredictor {
     applyMovement(state, movement, deltaTime) {
         // Use actual player moveSpeed (includes level bonuses) instead of base speed
         const totalSpeed = state.moveSpeed || this.classSpeeds[state.class] || 5;
+        
+        // DEBUG: Log speed calculations for analysis
+        if (Math.random() < 0.02) { // 2% sample rate
+            console.log(`[MovementPredictor] state.moveSpeed=${state.moveSpeed}, totalSpeed=${totalSpeed}, class=${state.class}, level=${state.level}`);
+        }
+        
+        // DEBUG: Log speed mismatch when fallback is used
+        if (!state.moveSpeed && state.class) {
+            console.warn(`[MovementPredictor] Using fallback speed! state.moveSpeed=${state.moveSpeed}, using classSpeeds[${state.class}]=${this.classSpeeds[state.class]}`);
+        }
 
         // Apply speed modifiers based on facing vs movement direction
         const speedModifier = this.calculateSpeedModifier(state, movement);
