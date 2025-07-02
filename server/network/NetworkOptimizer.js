@@ -49,11 +49,16 @@ export class NetworkOptimizer {
      * - 'hp': Health for damage calculations and death detection
      * - 'facing': Animation direction and combat targeting
      * - 'type': Monster type for behavior and rendering
+     * - 'moveSpeedBonus': Movement speed bonuses (prevents prediction desync)
+     * - 'attackRecoveryBonus': Attack recovery bonuses (prevents combat desync)
+     * - 'attackCooldownBonus': Attack cooldown bonuses (prevents combat desync)
+     * - 'rollUnlocked': Roll ability availability (prevents ability desync)
      * 
      * BUG PREVENTION:
      * Always include critical fields even if "unchanged" because:
      * - Client might have incomplete cached state
      * - Prevents 'undefined' errors that break monster AI
+     * - Ensures movement bonuses stay synchronized for client prediction
      * - Small bandwidth cost for major stability gain
      * 
      * @param {string} clientId - Socket ID for per-client state tracking
@@ -78,7 +83,7 @@ export class NetworkOptimizer {
 
         // STABILITY GUARANTEE: Always include critical fields
         // Prevents client-side 'undefined' errors that break game logic
-        const criticalFields = ['id', 'state', 'hp', 'facing', 'type'];
+        const criticalFields = ['id', 'state', 'hp', 'facing', 'type', 'moveSpeedBonus', 'attackRecoveryBonus', 'attackCooldownBonus', 'rollUnlocked'];
         for (const field of criticalFields) {
             if (currentState[field] !== undefined) {
                 delta[field] = currentState[field];

@@ -52,6 +52,10 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
 - Write and/or update documentation as you make code changes so that we continue to have 100% documentation coverage and fully up to date documentation at all times
 - **Always pay close attention to how the code works when editing, including reading all documentation. Generally we want to try and avoid bugs that break the gameplay totally, especially when the bugs are SIMPLE things that should not have been missed in the first place**
 
+## Interaction Guidelines
+
+- When typing "q" before a prompt, it means asking a question and Claude should answer the question but NOT do anything in the code
+
 ## ✅ **FULLY IMPLEMENTED FEATURES**
 
 ### **Core Gameplay** *(Production Quality)*
