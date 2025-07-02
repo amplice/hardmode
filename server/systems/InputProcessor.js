@@ -228,7 +228,7 @@ export class InputProcessor {
         const totalSpeed = baseSpeed + (player.moveSpeedBonus || 0);
         
         // DEBUG: Log speed calculations when player is level 6+
-        if (player.level >= 6 && Math.random() < 0.01) {
+        if (player.level >= 6 && Math.random() < 0.1) {
             console.log(`[InputProcessor] Player ${player.id} Level ${player.level}: baseSpeed=${baseSpeed}, moveSpeedBonus=${player.moveSpeedBonus}, totalSpeed=${totalSpeed}`);
         }
 

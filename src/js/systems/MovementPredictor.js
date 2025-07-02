@@ -156,7 +156,7 @@ export class MovementPredictor {
         const totalSpeed = state.moveSpeed || this.classSpeeds[state.class] || 5;
         
         // DEBUG: Log speed calculations when player is level 6+
-        if (state.level >= 6 && Math.random() < 0.01) {
+        if (state.level >= 2 && Math.random() < 0.1) {
             console.log(`[MovementPredictor] Level ${state.level}: moveSpeed=${state.moveSpeed}, classSpeeds=${this.classSpeeds[state.class]}, totalSpeed=${totalSpeed}`);
         }
 

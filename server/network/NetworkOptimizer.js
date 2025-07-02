@@ -49,6 +49,7 @@ export class NetworkOptimizer {
      * - 'hp': Health for damage calculations and death detection
      * - 'facing': Animation direction and combat targeting
      * - 'type': Monster type for behavior and rendering
+     * - 'level': Player level (required for client prediction debug and state sync)
      * - 'moveSpeedBonus': Movement speed bonuses (prevents prediction desync)
      * - 'attackRecoveryBonus': Attack recovery bonuses (prevents combat desync)
      * - 'attackCooldownBonus': Attack cooldown bonuses (prevents combat desync)
@@ -83,7 +84,7 @@ export class NetworkOptimizer {
 
         // STABILITY GUARANTEE: Always include critical fields
         // Prevents client-side 'undefined' errors that break game logic
-        const criticalFields = ['id', 'state', 'hp', 'facing', 'type', 'moveSpeedBonus', 'attackRecoveryBonus', 'attackCooldownBonus', 'rollUnlocked'];
+        const criticalFields = ['id', 'state', 'hp', 'facing', 'type', 'level', 'moveSpeedBonus', 'attackRecoveryBonus', 'attackCooldownBonus', 'rollUnlocked'];
         for (const field of criticalFields) {
             if (currentState[field] !== undefined) {
                 delta[field] = currentState[field];
