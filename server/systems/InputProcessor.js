@@ -226,11 +226,6 @@ export class InputProcessor {
         // Get player stats for movement speed
         const baseSpeed = this.getPlayerMoveSpeed(player);
         const totalSpeed = baseSpeed + (player.moveSpeedBonus || 0);
-        
-        // DEBUG: Log server speed calculations
-        if (Math.random() < 0.01) { // 1% sample rate
-            console.log(`[InputProcessor] Player ${player.id}: baseSpeed=${baseSpeed}, moveSpeedBonus=${player.moveSpeedBonus}, totalSpeed=${totalSpeed}, level=${player.level}`);
-        }
 
         // Apply speed modifiers based on facing vs movement direction
         const speedModifier = this.calculateSpeedModifier(player, movement);

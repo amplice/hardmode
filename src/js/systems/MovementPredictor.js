@@ -173,16 +173,6 @@ export class MovementPredictor {
         
         // Use calculated speed, but prefer state.moveSpeed if available and reasonable
         const totalSpeed = (state.moveSpeed && state.moveSpeed > 0) ? state.moveSpeed : calculatedSpeed;
-        
-        // DEBUG: Log speed calculations for analysis
-        if (Math.random() < 0.02) { // 2% sample rate
-            console.log(`[MovementPredictor] level=${state.level}, baseSpeed=${baseSpeed}, moveSpeedBonus=${moveSpeedBonus}, calculatedSpeed=${calculatedSpeed}, state.moveSpeed=${state.moveSpeed}, totalSpeed=${totalSpeed}`);
-        }
-        
-        // DEBUG: Log when using calculated vs state speed
-        if (totalSpeed !== state.moveSpeed && state.moveSpeed) {
-            console.warn(`[MovementPredictor] Speed mismatch! Using calculated=${calculatedSpeed} instead of state.moveSpeed=${state.moveSpeed}`);
-        }
 
         // Apply speed modifiers based on facing vs movement direction
         const speedModifier = this.calculateSpeedModifier(state, movement);
