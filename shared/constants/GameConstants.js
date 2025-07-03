@@ -197,3 +197,164 @@ export const PLAYER_STATS = {
         baseColor: 0x9b59b6
     }
 };
+
+/**
+ * Phase 4.1: Centralized attack definitions for server-client consistency
+ * 
+ * ARCHITECTURE ROLE:
+ * - Single source of truth for all attack gameplay data
+ * - Server references these for damage calculations
+ * - Client references these for timing and hitbox validation
+ * - Visual effects remain client-side in GameConfig.js
+ * 
+ * ATTACK ARCHETYPES:
+ * - standard_melee: Basic melee attacks with hitbox
+ * - projectile: Ranged attacks that create projectiles
+ * - jump_attack: Movement ability with damage on landing
+ * - dash_attack: Movement ability with damage during dash
+ * 
+ * CRITICAL FIELDS:
+ * - damage: Base damage dealt by the attack
+ * - cooldown: Time before attack can be used again (ms)
+ * - windupTime: Delay before damage is dealt (ms)
+ * - recoveryTime: Time after attack before control returns (ms)
+ * - hitboxType: Shape of damage area (rectangle/cone/circle)
+ * - hitboxParams: Size parameters for the hitbox
+ */
+export const ATTACK_DEFINITIONS = {
+    // Default attacks (used by Bladedancer)
+    primary: {
+        archetype: 'standard_melee',
+        damage: 1,
+        windupTime: 133,
+        recoveryTime: 200,
+        cooldown: 100,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 45,
+            length: 85
+        }
+    },
+    secondary: {
+        archetype: 'standard_melee',
+        damage: 2,
+        windupTime: 500,
+        recoveryTime: 300,
+        cooldown: 800,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 70,
+            length: 110
+        }
+    },
+    
+    // Bladedancer attacks (same as defaults)
+    bladedancer_primary: {
+        archetype: 'standard_melee',
+        damage: 1,
+        windupTime: 133,
+        recoveryTime: 200,
+        cooldown: 100,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 45,
+            length: 85
+        }
+    },
+    bladedancer_secondary: {
+        archetype: 'standard_melee',
+        damage: 2,
+        windupTime: 500,
+        recoveryTime: 300,
+        cooldown: 800,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 70,
+            length: 110
+        }
+    },
+    
+    // Guardian attacks
+    guardian_primary: {
+        archetype: 'standard_melee',
+        damage: 1,
+        windupTime: 250,
+        recoveryTime: 300,
+        cooldown: 200,
+        hitboxType: 'cone',
+        hitboxParams: {
+            range: 110,
+            angle: 110
+        }
+    },
+    guardian_secondary: {
+        archetype: 'jump_attack',
+        damage: 2,
+        windupTime: 150,
+        jumpDuration: 325,
+        recoveryTime: 200,
+        cooldown: 1250,
+        dashDistance: 200,
+        invulnerable: true,
+        hitboxType: 'circle',
+        hitboxParams: {
+            radius: 75
+        }
+    },
+    
+    // Hunter attacks
+    hunter_primary: {
+        archetype: 'projectile',
+        damage: 1,
+        windupTime: 83,
+        recoveryTime: 250,
+        cooldown: 0,
+        projectileSpeed: 800,
+        projectileRange: 1000
+    },
+    hunter_secondary: {
+        archetype: 'jump_attack',
+        damage: 2,
+        windupTime: 150,
+        jumpDuration: 400,
+        recoveryTime: 200,
+        cooldown: 1600,
+        dashDistance: 300,
+        backwardJump: true,
+        attackFromStart: true,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 60,
+            length: 100
+        }
+    },
+    
+    // Rogue attacks
+    rogue_primary: {
+        archetype: 'standard_melee',
+        damage: 1,
+        windupTime: 83,
+        recoveryTime: 150,
+        cooldown: 50,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 40,
+            length: 70
+        }
+    },
+    rogue_secondary: {
+        archetype: 'dash_attack',
+        damage: 1, // Unique: only secondary that deals 1 damage
+        windupTime: 100,
+        dashDuration: 250,
+        recoveryTime: 150,
+        cooldown: 1000,
+        dashDistance: 250,
+        invulnerable: true,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 50,
+            length: 80
+        }
+    }
+};

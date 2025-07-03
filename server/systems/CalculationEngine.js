@@ -13,8 +13,8 @@
  * CONSISTENCY: Single location for all combat math ensures uniform behavior
  */
 
-// Verified imports - both are from same file
-import { GAME_CONSTANTS, PLAYER_STATS, MONSTER_STATS } from '../../shared/constants/GameConstants.js';
+// Phase 4.1: Updated imports to include ATTACK_DEFINITIONS
+import { GAME_CONSTANTS, PLAYER_STATS, MONSTER_STATS, ATTACK_DEFINITIONS } from '../../shared/constants/GameConstants.js';
 
 export class CalculationEngine {
     /**
@@ -49,40 +49,51 @@ export class CalculationEngine {
     
     /**
      * Get base attack damage for a class and attack type
-     * These values match current client-side configs for consistency
+     * Phase 4.1: Now uses shared ATTACK_DEFINITIONS from GameConstants
      * 
      * @param {string} characterClass - Character class
      * @param {string} attackType - 'primary' or 'secondary'
      * @returns {number} Base damage value
      */
     static getBaseAttackDamage(characterClass, attackType) {
-        // Based on client GameConfig.js attack damage values
-        const attackDamages = {
-            bladedancer: {
-                primary: 1,    // Quick slash
-                secondary: 2   // Whirlwind
-            },
-            guardian: {
-                primary: 1,    // Heavy strike  
-                secondary: 2   // Shield bash (with jump)
-            },
-            hunter: {
-                primary: 1,    // Bow shot (projectile)
-                secondary: 2   // Power shot
-            },
-            rogue: {
-                primary: 1,    // Dagger strike
-                secondary: 1   // Shadow strike (with dash) - uniquely deals 1 damage
-            }
-        };
+        // First try class-specific attack definition
+        const classAttackKey = `${characterClass}_${attackType}`;
+        let attackDef = ATTACK_DEFINITIONS[classAttackKey];
         
-        const classDamage = attackDamages[characterClass];
-        if (!classDamage) {
-            console.warn('[CalculationEngine] Unknown character class:', characterClass);
+        // Fall back to default attack if no class-specific one exists
+        if (!attackDef) {
+            attackDef = ATTACK_DEFINITIONS[attackType];
+        }
+        
+        // Final fallback if still no definition found
+        if (!attackDef) {
+            console.warn('[CalculationEngine] No attack definition found for:', characterClass, attackType);
             return 1; // Default damage
         }
         
-        return classDamage[attackType] || 1;
+        return attackDef.damage || 1;
+    }
+    
+    /**
+     * Get full attack configuration for server-side processing
+     * Phase 4.1: Provides attack timing, hitbox, and archetype info
+     * 
+     * @param {string} characterClass - Character class
+     * @param {string} attackType - 'primary' or 'secondary'
+     * @returns {Object} Complete attack definition
+     */
+    static getAttackDefinition(characterClass, attackType) {
+        // First try class-specific attack definition
+        const classAttackKey = `${characterClass}_${attackType}`;
+        let attackDef = ATTACK_DEFINITIONS[classAttackKey];
+        
+        // Fall back to default attack if no class-specific one exists
+        if (!attackDef) {
+            attackDef = ATTACK_DEFINITIONS[attackType];
+        }
+        
+        // Return clone to prevent accidental modifications
+        return attackDef ? {...attackDef} : null;
     }
     
     /**
