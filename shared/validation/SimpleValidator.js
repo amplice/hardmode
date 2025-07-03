@@ -40,8 +40,8 @@ export class SimpleValidator {
         // Must have monster ID
         if (!data.monsterId || typeof data.monsterId !== 'string') return false;
         
-        // Damage can be undefined (server will use fallback), but if present must be reasonable
-        if (data.damage !== undefined && (typeof data.damage !== 'number' || data.damage < 0 || data.damage > 1000)) return false;
+        // Damage must be a reasonable number (prevent infinite damage exploits)
+        if (typeof data.damage !== 'number' || data.damage < 0 || data.damage > 1000) return false;
         
         return true;
     }

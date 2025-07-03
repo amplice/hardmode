@@ -411,6 +411,12 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
   applyHitEffects(entity, hitbox, damage) {
     if (!hitbox) return;
     
+    // Ensure damage is a valid number (safety check for Phase 2.1 validation)
+    if (typeof damage !== 'number' || isNaN(damage)) {
+      console.warn(`CombatSystem: Invalid damage value ${damage}, defaulting to 1`);
+      damage = 1;
+    }
+    
     // Check PvP damage against other players
     if (PLAYER_CONFIG.pvpEnabled) {
       // Check local player
