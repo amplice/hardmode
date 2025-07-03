@@ -724,8 +724,8 @@ class HealthComponent extends Component {
           return;
         }
         
-        // Player took damage
-        this.owner.hitPoints -= amount;
+        // Phase 3.2: Server updates HP via playerDamaged event
+        // Client only handles visual feedback - no HP modification
         
         // Don't play take damage animation if already dead or dying
         if (this.owner.hitPoints <= 0 || this.owner.isDying || this.owner.isDead) {
@@ -848,29 +848,29 @@ class StatsComponent extends Component {
     }
 
     addExperience(amount) {
-        this.owner.experience += amount;
+        // Phase 3.2: Server updates XP via monsterKilled event
+        // Client only checks for visual effects
         this.checkLevelUp();
     }
 
     recordKill(monsterType) {
-        this.owner.killCount++;
-        const xpGain = MONSTER_CONFIG.stats[monsterType]?.xp || 0;
-        this.addExperience(xpGain);
+        // Phase 3.2: Server tracks kills and XP
+        // Client only needs to trigger level check for visual effects
+        this.checkLevelUp();
     }
 
     checkLevelUp() {
+        // Phase 3.2: Server handles all level and stat updates
+        // Client only checks if we should play level up effect
+        // Server will send playerLevelUp event with actual level/stats
         const maxLevel = PLAYER_CONFIG.levels?.maxLevel || 10;
-        let leveledUp = false;
-        while (this.owner.level < maxLevel && this.owner.experience >= this.getTotalXpForLevel(this.owner.level + 1)) {
-            this.owner.level++;
-            leveledUp = true;
-            this.applyLevelBonus(this.owner.level);
-            // Restore health to full on level up
-            this.owner.hitPoints = this.owner.health.getClassHitPoints();
-        }
-
-        if (leveledUp && this.owner.playLevelUpEffect) {
-            this.owner.playLevelUpEffect();
+        const shouldBeLevelUp = this.owner.level < maxLevel && 
+                               this.owner.experience >= this.getTotalXpForLevel(this.owner.level + 1);
+        
+        // Note: We don't modify level here - server will update it
+        // This just triggers the visual effect if server confirms level up
+        if (shouldBeLevelUp && this.owner.playLevelUpEffect) {
+            // Effect will play when server confirms level up via event
         }
     }
 
