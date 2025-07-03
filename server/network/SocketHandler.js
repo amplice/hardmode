@@ -1,6 +1,7 @@
 import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 import { SERVER_CONFIG } from '../config/ServerConfig.js';
 import { getDistance } from '../../shared/utils/MathUtils.js';
+import { SimpleValidator } from '../../shared/validation/SimpleValidator.js';
 
 export class SocketHandler {
     constructor(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, worldSeed, networkOptimizer) {
@@ -96,8 +97,12 @@ export class SocketHandler {
     }
 
     handlePlayerInput(socket, data) {
+        // Phase 2.1: Validate critical fields only
+        const validatedData = SimpleValidator.validateMessage('playerInput', data, socket.id);
+        if (!validatedData) return; // Reject dangerous messages
+        
         // Queue input command for processing (with anti-cheat validation)
-        const accepted = this.inputProcessor.queueInput(socket.id, data);
+        const accepted = this.inputProcessor.queueInput(socket.id, validatedData);
         
         // Check if player should be kicked for violations
         if (this.sessionAntiCheat && this.sessionAntiCheat.shouldKickPlayer(socket.id)) {
@@ -108,32 +113,43 @@ export class SocketHandler {
     }
 
     handleExecuteAbility(socket, data) {
+        // Phase 2.1: Validate critical fields only
+        const validatedData = SimpleValidator.validateMessage('executeAbility', data, socket.id);
+        if (!validatedData) return; // Reject dangerous messages
+        
         // Use the AbilityManager to execute abilities server-side
-        this.abilityManager.executeAbility(socket.id, data.abilityType, data);
+        this.abilityManager.executeAbility(socket.id, validatedData.abilityType, validatedData);
     }
 
     handleAttackMonster(socket, data) {
+        // Phase 2.1: Validate critical fields only (damage bounds, monster ID)
+        const validatedData = SimpleValidator.validateMessage('attackMonster', data, socket.id);
+        if (!validatedData) return; // Reject dangerous messages
+        
         const player = this.gameState.getPlayer(socket.id);
         if (!player || player.hp <= 0) return;
         
-        const monster = this.monsterManager.monsters.get(data.monsterId);
+        const monster = this.monsterManager.monsters.get(validatedData.monsterId);
         if (!monster || monster.hp <= 0) return;
         
         // Validate attack range
         const distance = getDistance(player, monster);
-        const attackRange = data.attackType === 'primary' ? 150 : 200;
+        const attackRange = validatedData.attackType === 'primary' ? 150 : 200;
         
         if (distance > attackRange) {
             // Attack out of range
             return;
         }
         
-        // Apply damage
-        const damage = data.damage || 1;
-        this.monsterManager.handleMonsterDamage(data.monsterId, damage, player);
+        // Apply damage (already validated to be reasonable bounds)
+        this.monsterManager.handleMonsterDamage(validatedData.monsterId, validatedData.damage, player);
     }
 
     handleCreateProjectile(socket, data) {
+        // Phase 2.1: Validate critical fields only (position, angle, speed bounds)
+        const validatedData = SimpleValidator.validateMessage('createProjectile', data, socket.id);
+        if (!validatedData) return; // Reject dangerous messages
+        
         // Received createProjectile request
         const player = this.gameState.getPlayer(socket.id);
         if (!player || player.hp <= 0) {
@@ -141,23 +157,15 @@ export class SocketHandler {
             return;
         }
         
-        // Player creating projectile
-        
-        // Validate the request
-        if (data.x === undefined || data.y === undefined || data.angle === undefined) {
-            // Rejected projectile: invalid data
-            return;
-        }
-        
-        // Create projectile on server
+        // Create projectile on server using validated data
         this.projectileManager.createProjectile(player, {
-            x: data.x,
-            y: data.y,
-            angle: data.angle,
-            speed: data.speed || 700,
-            damage: data.damage || 1,
-            range: data.range || 600,
-            effectType: data.effectType || 'bow_shot_effect'
+            x: validatedData.x,
+            y: validatedData.y,
+            angle: validatedData.angle,
+            speed: validatedData.speed || 700,
+            damage: validatedData.damage || 1,
+            range: validatedData.range || 600,
+            effectType: validatedData.effectType || 'bow_shot_effect'
         });
     }
 
@@ -190,11 +198,15 @@ export class SocketHandler {
      * @param {Object} data - Ping data {sequence, clientTime}
      */
     handlePing(socket, data) {
+        // Phase 2.1: Validate critical fields only (prevent ping flood)
+        const validatedData = SimpleValidator.validateMessage('ping', data, socket.id);
+        if (!validatedData) return; // Reject dangerous messages
+        
         const serverTime = Date.now();
         
         // Calculate RTT if we have client time
-        if (data.clientTime) {
-            const rtt = serverTime - data.clientTime;
+        if (validatedData.clientTime) {
+            const rtt = serverTime - validatedData.clientTime;
             
             // Update lag compensation with this latency measurement
             if (this.lagCompensation && rtt > 0 && rtt < 2000) { // Sanity check
@@ -204,8 +216,8 @@ export class SocketHandler {
         
         // Respond immediately with pong containing server time
         socket.emit('pong', {
-            sequence: data.sequence,
-            clientTime: data.clientTime,
+            sequence: validatedData.sequence,
+            clientTime: validatedData.clientTime,
             serverTime: serverTime
         });
     }
