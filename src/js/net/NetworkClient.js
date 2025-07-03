@@ -508,9 +508,9 @@ export class NetworkClient {
 
     sendMonsterDamage(monsterId, damage, attackType) {
         if (this.socket && this.socket.connected) {
+            // Phase 3.1: Damage removed - server calculates damage based on attack type
             const message = {
                 monsterId,
-                damage,
                 attackType,
                 timestamp: Date.now(),
                 position: {
@@ -549,13 +549,12 @@ export class NetworkClient {
             return;
         }
         
-        // Sending createProjectile to server
+        // Phase 3.1: Damage removed - server calculates projectile damage
         this.socket.emit('createProjectile', {
             x: data.x,
             y: data.y,
             angle: data.angle,
             speed: data.speed,
-            damage: data.damage,
             range: data.range,
             effectType: data.effectType
         });

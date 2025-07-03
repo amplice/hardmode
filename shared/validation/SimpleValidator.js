@@ -33,6 +33,7 @@ export class SimpleValidator {
     
     /**
      * Validate attackMonster message (critical for combat balance)
+     * Phase 3.1: Damage field removed - server calculates damage
      */
     static validateAttackMonster(data) {
         if (!data || typeof data !== 'object') return false;
@@ -43,8 +44,9 @@ export class SimpleValidator {
             return false;
         }
         
-        // Damage must be a reasonable number (prevent infinite damage exploits)
-        if (typeof data.damage !== 'number' || data.damage < 0 || data.damage > 1000) {
+        // Must have attack type for damage calculation
+        if (typeof data.attackType !== 'string' || 
+            (data.attackType !== 'primary' && data.attackType !== 'secondary')) {
             return false;
         }
         
@@ -66,8 +68,7 @@ export class SimpleValidator {
         // Speed must be reasonable (prevent super-fast projectiles)
         if (data.speed !== undefined && (typeof data.speed !== 'number' || data.speed < 0 || data.speed > 5000)) return false;
         
-        // Damage must be reasonable (prevent infinite damage exploits)
-        if (data.damage !== undefined && (typeof data.damage !== 'number' || data.damage < 0 || data.damage > 1000)) return false;
+        // Phase 3.1: Damage removed - server calculates projectile damage
         
         // Range must be reasonable (prevent infinite range projectiles)
         if (data.range !== undefined && (typeof data.range !== 'number' || data.range < 0 || data.range > 10000)) return false;

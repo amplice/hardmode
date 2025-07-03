@@ -2,6 +2,7 @@ import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 import { SERVER_CONFIG } from '../config/ServerConfig.js';
 import { getDistance } from '../../shared/utils/MathUtils.js';
 import { SimpleValidator } from '../../shared/validation/SimpleValidator.js';
+import { CalculationEngine } from '../systems/CalculationEngine.js';
 
 export class SocketHandler {
     constructor(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, worldSeed, networkOptimizer) {
@@ -145,8 +146,16 @@ export class SocketHandler {
         if (distance > attackRange) {
             return;
         }
-        // Apply damage (validation ensures damage is present and reasonable)
-        this.monsterManager.handleMonsterDamage(validatedData.monsterId, validatedData.damage, player);
+        // Phase 3.1: Calculate damage server-side instead of trusting client
+        const calculatedDamage = CalculationEngine.calculateAttackDamage(
+            player,
+            validatedData.attackType,
+            monster,
+            player.class
+        );
+        
+        // Apply calculated damage (server-authoritative)
+        this.monsterManager.handleMonsterDamage(validatedData.monsterId, calculatedDamage, player);
     }
 
     handleCreateProjectile(socket, data) {
@@ -161,13 +170,16 @@ export class SocketHandler {
             return;
         }
         
-        // Create projectile on server using validated data
+        // Phase 3.1: Calculate projectile damage server-side
+        const calculatedDamage = CalculationEngine.calculateProjectileDamage(player, 'player_projectile');
+        
+        // Create projectile on server with calculated damage
         this.projectileManager.createProjectile(player, {
             x: validatedData.x,
             y: validatedData.y,
             angle: validatedData.angle,
             speed: validatedData.speed || 700,
-            damage: validatedData.damage || 1,
+            damage: calculatedDamage,  // Server-calculated damage
             range: validatedData.range || 600,
             effectType: validatedData.effectType || 'bow_shot_effect'
         });

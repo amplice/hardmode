@@ -3,6 +3,7 @@ import { getDistance, selectWeightedRandom } from '../../shared/utils/MathUtils.
 import { CollisionMask } from '../../shared/systems/CollisionMask.js';
 import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
 import { createMonsterState, validateMonsterState } from '../../shared/factories/EntityFactories.js';
+import { CalculationEngine } from '../systems/CalculationEngine.js';
 
 export class MonsterManager {
     constructor(io, serverWorldManager) {
@@ -598,33 +599,22 @@ export class MonsterManager {
         const isPlaytestMode = GAME_CONSTANTS.LEVELS.PLAYTEST_MODE;
         const playtestXpPerLevel = GAME_CONSTANTS.LEVELS.PLAYTEST_XP_PER_LEVEL;
         
-        // Calculate what level the player should be based on current XP
-        let newLevel = player.level;
-        
-        if (isPlaytestMode) {
-            // Playtest mode: simple linear progression (20 XP per level)
-            newLevel = Math.min(maxLevel, Math.floor(player.xp / playtestXpPerLevel) + 1);
-        } else {
-            // Normal mode: triangular progression
-            // Using formula: getTotalXpForLevel(level) = (level - 1) * level / 2 * growth
-            for (let level = player.level + 1; level <= maxLevel; level++) {
-                const requiredXp = (level - 1) * level / 2 * xpGrowth;
-                if (player.xp >= requiredXp) {
-                    newLevel = level;
-                } else {
-                    break;
-                }
-            }
-        }
+        // Phase 3.1: Use CalculationEngine for level calculation
+        const newLevel = CalculationEngine.calculateLevelFromXP(player.xp, isPlaytestMode);
         
         if (newLevel > player.level) {
             const oldLevel = player.level;
             player.level = newLevel;
             player.hp = player.maxHp;
             
-            // Apply level bonuses for each level gained
-            for (let level = oldLevel + 1; level <= newLevel; level++) {
-                this.applyLevelBonus(player, level);
+            // Phase 3.1: Use CalculationEngine to apply level bonuses
+            CalculationEngine.applyLevelBonuses(player, oldLevel, newLevel);
+            
+            // Update max HP if it changed (level 10 bonus)
+            const newMaxHp = CalculationEngine.calculateMaxHP(player.class, newLevel);
+            if (newMaxHp > player.maxHp) {
+                player.maxHp = newMaxHp;
+                player.hp = player.maxHp; // Full heal when max HP increases
             }
             
             // Player leveled up
@@ -642,45 +632,7 @@ export class MonsterManager {
         }
     }
 
-    applyLevelBonus(player, level) {
-        // Applying level bonus
-        
-        switch (level) {
-            case 2:
-            case 6:
-                // Move speed bonus
-                player.moveSpeedBonus += 0.25;
-                // Move speed bonus applied
-                break;
-            case 3:
-            case 7:
-                // Attack recovery reduction
-                player.attackRecoveryBonus += 25; // 25ms reduction
-                // Attack recovery bonus applied
-                break;
-            case 4:
-            case 8:
-                // Attack cooldown reduction
-                player.attackCooldownBonus += 100; // 100ms reduction
-                // Attack cooldown bonus applied
-                break;
-            case 5:
-                // Roll unlock
-                player.rollUnlocked = true;
-                // Roll ability unlocked
-                break;
-            case 9:
-                // Future move unlock placeholder
-                // Future ability unlock
-                break;
-            case 10:
-                // Max HP increase
-                player.maxHp += 1;
-                player.hp = player.maxHp; // Heal to full with new max HP
-                // Max HP bonus applied
-                break;
-        }
-    }
+    // Phase 3.1: applyLevelBonus method removed - replaced by CalculationEngine.applyLevelBonuses
 
     getVisibleMonsters(players, viewDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE) {
         const visibleMonsters = new Map();

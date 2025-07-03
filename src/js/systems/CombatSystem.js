@@ -183,12 +183,12 @@ export class CombatSystem {
     
     // Now we just request the server to create the projectile
     if (window.game?.network) {
+      // Phase 3.1: Damage removed - server calculates projectile damage
       window.game.network.createProjectile({
         x,
         y,
         angle,
         speed: options.speed || 600,
-        damage: options.damage || 1,
         range: options.range || 400,
         effectType: options.effectType || 'bow_shot_effect'
       });

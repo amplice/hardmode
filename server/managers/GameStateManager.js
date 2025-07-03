@@ -26,6 +26,7 @@
  */
 
 import { GAME_CONSTANTS, PLAYER_STATS } from '../../shared/constants/GameConstants.js';
+import { CalculationEngine } from '../systems/CalculationEngine.js';
 
 export class GameStateManager {
     constructor(io) {
@@ -43,8 +44,8 @@ export class GameStateManager {
             y: GAME_CONSTANTS.WORLD.HEIGHT * GAME_CONSTANTS.WORLD.TILE_SIZE / 2,
             facing: 'down',
             class: playerClass,
-            hp: stats.hp,
-            maxHp: stats.hp,
+            hp: CalculationEngine.calculateMaxHP(playerClass, 1),
+            maxHp: CalculationEngine.calculateMaxHP(playerClass, 1),
             xp: 0,
             level: 1,
             kills: 0,
@@ -79,10 +80,10 @@ export class GameStateManager {
         const player = this.players.get(id);
         if (!player) return;
         
-        const stats = PLAYER_STATS[className] || PLAYER_STATS.bladedancer;
         player.class = className;
-        player.maxHp = stats.hp;
-        player.hp = stats.hp;
+        // Phase 3.1: Use CalculationEngine for HP calculation
+        player.maxHp = CalculationEngine.calculateMaxHP(className, player.level);
+        player.hp = player.maxHp;
     }
 
     update(deltaTime) {
@@ -113,9 +114,8 @@ export class GameStateManager {
         player.level = 1;
         player.xp = 0;
         
-        // Reset max HP to base class HP (no level 10 bonus after respawn)
-        const stats = PLAYER_STATS[player.class];
-        player.maxHp = stats.hp;
+        // Phase 3.1: Use CalculationEngine for respawn HP (level 1, no bonuses)
+        player.maxHp = CalculationEngine.calculateMaxHP(player.class, 1);
         player.hp = player.maxHp;
         
         // Reset all level bonuses
