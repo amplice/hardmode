@@ -7,12 +7,18 @@
  * - Reduces bandwidth by 70-80% through intelligent field-level compression
  * - Ensures critical fields are always present for game stability
  * 
+ * PHASE 2.2 IMPLEMENTATION:
+ * - Auto-includes critical fields in all network updates
+ * - Validates field presence to prevent undefined errors
+ * - Maintains consistent state representation across client-server boundary
+ * - Critical fields are entity-type specific and match serialization
+ * 
  * CRITICAL ALGORITHM:
  * For each entity per client, tracks "last sent state" and compares with current:
  * - First contact: Send full state, mark as baseline
  * - Subsequent: Send only changed fields + critical fields
  * - Position threshold (0.1px) prevents micro-movement spam
- * - Always include: id, state, hp, facing, type (game logic dependencies)
+ * - Critical fields vary by entity type (see getCriticalFields method)
  * 
  * STATE TRACKING PATTERN:
  * Map key: "${clientId}_${entityType}_${entityId}" 
@@ -34,6 +40,28 @@ export class NetworkOptimizer {
         this.updatePriorities = new Map(); // Future: Priority-based updates
     }
 
+    /**
+     * Validate that critical fields are present in state object
+     * Logs warnings in development mode to catch serialization issues early
+     * 
+     * @param {string} entityId - Entity identifier for type detection
+     * @param {Object} state - State object to validate
+     * @returns {boolean} True if all critical fields present
+     */
+    validateCriticalFields(entityId, state) {
+        const criticalFields = this.getCriticalFields(entityId);
+        let allFieldsPresent = true;
+        
+        for (const field of criticalFields) {
+            if (state[field] === undefined) {
+                console.warn(`[NetworkOptimizer] Missing critical field '${field}' for entity ${entityId}`);
+                allFieldsPresent = false;
+            }
+        }
+        
+        return allFieldsPresent;
+    }
+    
     /**
      * Core delta generation algorithm - compares current vs last-sent state
      * 
@@ -71,6 +99,11 @@ export class NetworkOptimizer {
     createDeltaUpdate(clientId, entityId, currentState, forceFullUpdate = false) {
         const stateKey = `${clientId}_${entityId}`;
         
+        // Validate critical fields in development/debug mode
+        if (process.env.NODE_ENV !== 'production') {
+            this.validateCriticalFields(entityId, currentState);
+        }
+        
         // FULL UPDATE PATH: First contact or forced refresh
         if (forceFullUpdate || !this.lastSentState.has(stateKey)) {
             this.lastSentState.set(stateKey, JSON.parse(JSON.stringify(currentState)));
@@ -84,7 +117,8 @@ export class NetworkOptimizer {
 
         // STABILITY GUARANTEE: Always include critical fields
         // Prevents client-side 'undefined' errors that break game logic
-        const criticalFields = ['id', 'state', 'hp', 'facing', 'type', 'level', 'moveSpeedBonus', 'attackRecoveryBonus', 'attackCooldownBonus', 'rollUnlocked'];
+        // Note: Fields must match what's actually serialized in MonsterManager/GameStateManager
+        const criticalFields = this.getCriticalFields(entityId);
         for (const field of criticalFields) {
             if (currentState[field] !== undefined) {
                 delta[field] = currentState[field];
@@ -122,6 +156,55 @@ export class NetworkOptimizer {
         return oldValue !== newValue;
     }
 
+    /**
+     * Ensure state object has minimum required fields before serialization
+     * This prevents undefined errors on the client side
+     * 
+     * @param {Object} state - State object to ensure fields for
+     * @param {string} entityType - Type of entity ('player' or 'monster')
+     * @returns {Object} State with ensured critical fields
+     */
+    ensureCriticalFields(state, entityType) {
+        const entityId = `${entityType}_${state.id}`;
+        const criticalFields = this.getCriticalFields(entityId);
+        
+        // Create a new object with all critical fields guaranteed
+        const ensuredState = { ...state };
+        
+        for (const field of criticalFields) {
+            if (ensuredState[field] === undefined) {
+                // Set reasonable defaults for missing critical fields
+                switch (field) {
+                    case 'hp':
+                        ensuredState[field] = 0;
+                        break;
+                    case 'facing':
+                        ensuredState[field] = 0;
+                        break;
+                    case 'level':
+                        ensuredState[field] = 1;
+                        break;
+                    case 'moveSpeedBonus':
+                    case 'attackRecoveryBonus':
+                    case 'attackCooldownBonus':
+                        ensuredState[field] = 0;
+                        break;
+                    case 'rollUnlocked':
+                        ensuredState[field] = false;
+                        break;
+                    case 'state':
+                        ensuredState[field] = 'idle';
+                        break;
+                    default:
+                        // For unknown fields, log warning but don't break
+                        console.warn(`[NetworkOptimizer] No default for missing critical field '${field}'`);
+                }
+            }
+        }
+        
+        return ensuredState;
+    }
+    
     // Optimize state updates by batching and prioritizing for specific client
     optimizeStateUpdate(clientId, players, monsters, viewerPosition) {
         const optimizedState = {
@@ -223,5 +306,43 @@ export class NetworkOptimizer {
     calculateAverageDeltaSize() {
         // This would track actual delta sizes in production
         return 0;
+    }
+    
+    /**
+     * Get critical fields based on entity type
+     * These fields are always included in delta updates to prevent client errors
+     * 
+     * @param {string} entityId - Entity identifier (player_123, monster_456)
+     * @returns {string[]} Array of critical field names
+     */
+    getCriticalFields(entityId) {
+        if (entityId.startsWith('player_')) {
+            // Player critical fields - must match GameStateManager serialization
+            // Note: 'state' not included as player animations are client-side only
+            return [
+                'id',          // Entity identification
+                'hp',          // Health for UI and death detection
+                'facing',      // Direction for rendering and combat
+                'class',       // Character class (note: serialized as 'class' not 'type')
+                'level',       // Player level for UI and abilities
+                'moveSpeedBonus',      // Movement prediction sync
+                'attackRecoveryBonus', // Combat timing sync
+                'attackCooldownBonus', // Ability timing sync
+                'rollUnlocked'         // Ability availability
+            ];
+        } else if (entityId.startsWith('monster_')) {
+            // Monster critical fields - must match MonsterManager.getSerializedMonsters()
+            // Note: 'damage' removed as it's not serialized (server-authoritative)
+            return [
+                'id',          // Entity identification
+                'state',       // AI state (idle/chasing/attacking)
+                'hp',          // Health for UI and death detection
+                'facing',      // Direction for rendering
+                'type'         // Monster type for behavior/visuals
+            ];
+        }
+        
+        // Unknown entity type - include minimal fields
+        return ['id', 'state', 'hp'];
     }
 }
