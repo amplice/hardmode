@@ -303,7 +303,6 @@ export class MovementPredictor {
      * @param {number} confirmedSequence - Last confirmed sequence
      */
     confirmStatesUpTo(confirmedSequence) {
-        console.log(`[MovementPredictor] Confirming states up to sequence ${confirmedSequence}`);
         let deletedCount = 0;
         for (const [sequence, state] of this.predictedStates) {
             // Keep the confirmed sequence for reconciliation, only delete older ones
@@ -312,7 +311,6 @@ export class MovementPredictor {
                 deletedCount++;
             }
         }
-        console.log(`[MovementPredictor] Deleted ${deletedCount} confirmed predictions, ${this.predictedStates.size} remaining`);
     }
 
     /**

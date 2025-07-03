@@ -508,7 +508,7 @@ export class NetworkClient {
 
     sendMonsterDamage(monsterId, damage, attackType) {
         if (this.socket && this.socket.connected) {
-            this.socket.emit('attackMonster', {
+            const message = {
                 monsterId,
                 damage,
                 attackType,
@@ -517,7 +517,11 @@ export class NetworkClient {
                     x: Math.round(this.game.entities.player.position.x),
                     y: Math.round(this.game.entities.player.position.y)
                 }
-            });
+            };
+            console.log('[DEBUG] NetworkClient.sendMonsterDamage - sending message:', message);
+            this.socket.emit('attackMonster', message);
+        } else {
+            console.log('[DEBUG] NetworkClient.sendMonsterDamage - socket not connected, cannot send');
         }
     }
 

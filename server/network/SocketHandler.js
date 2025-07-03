@@ -122,25 +122,38 @@ export class SocketHandler {
     }
 
     handleAttackMonster(socket, data) {
+        console.log('[DEBUG] SocketHandler.handleAttackMonster - received data:', data);
+        
         // Phase 2.1: Validate critical fields only (damage bounds, monster ID)
         const validatedData = SimpleValidator.validateMessage('attackMonster', data, socket.id);
-        if (!validatedData) return; // Reject dangerous messages
+        if (!validatedData) {
+            console.log('[DEBUG] SocketHandler.handleAttackMonster - validation FAILED, rejecting');
+            return; // Reject dangerous messages
+        }
+        console.log('[DEBUG] SocketHandler.handleAttackMonster - validation PASSED, validated data:', validatedData);
         
         const player = this.gameState.getPlayer(socket.id);
-        if (!player || player.hp <= 0) return;
+        if (!player || player.hp <= 0) {
+            console.log('[DEBUG] SocketHandler.handleAttackMonster - player not found or dead');
+            return;
+        }
         
         const monster = this.monsterManager.monsters.get(validatedData.monsterId);
-        if (!monster || monster.hp <= 0) return;
+        if (!monster || monster.hp <= 0) {
+            console.log('[DEBUG] SocketHandler.handleAttackMonster - monster not found or dead');
+            return;
+        }
         
         // Validate attack range
         const distance = getDistance(player, monster);
         const attackRange = validatedData.attackType === 'primary' ? 150 : 200;
         
         if (distance > attackRange) {
-            // Attack out of range
+            console.log('[DEBUG] SocketHandler.handleAttackMonster - attack out of range:', distance, 'vs', attackRange);
             return;
         }
         
+        console.log('[DEBUG] SocketHandler.handleAttackMonster - applying damage:', validatedData.damage, 'to monster:', validatedData.monsterId);
         // Apply damage (validation ensures damage is present and reasonable)
         this.monsterManager.handleMonsterDamage(validatedData.monsterId, validatedData.damage, player);
     }

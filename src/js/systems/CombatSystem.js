@@ -444,6 +444,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
       for (const [id, monster] of window.game.remoteMonsters) {
         if (!monster.alive) continue;
         if (hitbox.testHit(monster, monster.collisionRadius || 20)) {
+          console.log('[DEBUG] CombatSystem.applyHitEffects - hit detected, sending damage:', damage, 'to monster:', id);
           // Send damage to server instead of applying directly
           if (window.game.network) {
             window.game.network.sendMonsterDamage(id, damage, entity.currentAttackType || 'primary');

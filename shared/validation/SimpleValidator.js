@@ -35,14 +35,26 @@ export class SimpleValidator {
      * Validate attackMonster message (critical for combat balance)
      */
     static validateAttackMonster(data) {
-        if (!data || typeof data !== 'object') return false;
+        console.log('[DEBUG] SimpleValidator.attackMonster - incoming data:', data);
+        
+        if (!data || typeof data !== 'object') {
+            console.log('[DEBUG] SimpleValidator.attackMonster - FAILED: not an object');
+            return false;
+        }
         
         // Must have monster ID
-        if (!data.monsterId || typeof data.monsterId !== 'string') return false;
+        if (!data.monsterId || typeof data.monsterId !== 'string') {
+            console.log('[DEBUG] SimpleValidator.attackMonster - FAILED: invalid monsterId');
+            return false;
+        }
         
         // Damage must be a reasonable number (prevent infinite damage exploits)
-        if (typeof data.damage !== 'number' || data.damage < 0 || data.damage > 1000) return false;
+        if (typeof data.damage !== 'number' || data.damage < 0 || data.damage > 1000) {
+            console.log('[DEBUG] SimpleValidator.attackMonster - FAILED: invalid damage:', data.damage);
+            return false;
+        }
         
+        console.log('[DEBUG] SimpleValidator.attackMonster - PASSED validation');
         return true;
     }
     
