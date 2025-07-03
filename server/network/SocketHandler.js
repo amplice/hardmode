@@ -141,8 +141,9 @@ export class SocketHandler {
             return;
         }
         
-        // Apply damage (already validated to be reasonable bounds)
-        this.monsterManager.handleMonsterDamage(validatedData.monsterId, validatedData.damage, player);
+        // Apply damage - use fallback if damage not provided (original logic preserved)
+        const damage = validatedData.damage || 1;
+        this.monsterManager.handleMonsterDamage(validatedData.monsterId, damage, player);
     }
 
     handleCreateProjectile(socket, data) {
