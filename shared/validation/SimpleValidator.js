@@ -42,8 +42,9 @@ export class SimpleValidator {
             return false;
         }
         
-        // Must have monster ID
-        if (!data.monsterId || typeof data.monsterId !== 'string') {
+        // Must have monster ID (can be number or string)
+        if (data.monsterId === undefined || data.monsterId === null || 
+            (typeof data.monsterId !== 'string' && typeof data.monsterId !== 'number')) {
             console.log('[DEBUG] SimpleValidator.attackMonster - FAILED: invalid monsterId');
             return false;
         }
