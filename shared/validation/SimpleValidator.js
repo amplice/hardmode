@@ -35,27 +35,19 @@ export class SimpleValidator {
      * Validate attackMonster message (critical for combat balance)
      */
     static validateAttackMonster(data) {
-        console.log('[DEBUG] SimpleValidator.attackMonster - incoming data:', data);
-        
-        if (!data || typeof data !== 'object') {
-            console.log('[DEBUG] SimpleValidator.attackMonster - FAILED: not an object');
-            return false;
-        }
+        if (!data || typeof data !== 'object') return false;
         
         // Must have monster ID (can be number or string)
         if (data.monsterId === undefined || data.monsterId === null || 
             (typeof data.monsterId !== 'string' && typeof data.monsterId !== 'number')) {
-            console.log('[DEBUG] SimpleValidator.attackMonster - FAILED: invalid monsterId');
             return false;
         }
         
         // Damage must be a reasonable number (prevent infinite damage exploits)
         if (typeof data.damage !== 'number' || data.damage < 0 || data.damage > 1000) {
-            console.log('[DEBUG] SimpleValidator.attackMonster - FAILED: invalid damage:', data.damage);
             return false;
         }
         
-        console.log('[DEBUG] SimpleValidator.attackMonster - PASSED validation');
         return true;
     }
     
@@ -73,6 +65,15 @@ export class SimpleValidator {
         
         // Speed must be reasonable (prevent super-fast projectiles)
         if (data.speed !== undefined && (typeof data.speed !== 'number' || data.speed < 0 || data.speed > 5000)) return false;
+        
+        // Damage must be reasonable (prevent infinite damage exploits)
+        if (data.damage !== undefined && (typeof data.damage !== 'number' || data.damage < 0 || data.damage > 1000)) return false;
+        
+        // Range must be reasonable (prevent infinite range projectiles)
+        if (data.range !== undefined && (typeof data.range !== 'number' || data.range < 0 || data.range > 10000)) return false;
+        
+        // Effect type must be reasonable length if provided
+        if (data.effectType !== undefined && (typeof data.effectType !== 'string' || data.effectType.length > 50)) return false;
         
         return true;
     }
@@ -100,6 +101,9 @@ export class SimpleValidator {
         
         // Sequence must be reasonable
         if (typeof data.sequence !== 'number' || data.sequence < 0 || data.sequence > 999999) return false;
+        
+        // Client time must be reasonable if provided (used for RTT calculation)
+        if (data.clientTime !== undefined && (typeof data.clientTime !== 'number' || data.clientTime < 0)) return false;
         
         return true;
     }
