@@ -321,6 +321,7 @@ export class MonsterManager {
         }
         
         if (nearestPlayer) {
+            console.log(`[MonsterManager] Monster ${monster.id} (${monster.type}) detected player ${nearestPlayer} at distance ${nearestDistance}`);
             monster.state = 'chasing';
             monster.target = nearestPlayer;
         }
@@ -348,6 +349,7 @@ export class MonsterManager {
         
         // In attack range
         if (distance <= stats.attackRange) {
+            console.log(`[MonsterManager] Monster ${monster.id} (${monster.type}) in attack range of player ${monster.target}, distance: ${distance}, attackRange: ${stats.attackRange}`);
             monster.state = 'attacking';
             monster.velocity = { x: 0, y: 0 };
             return;
@@ -400,6 +402,7 @@ export class MonsterManager {
         
         // Start a new attack if cooldown is ready
         if (now - monster.lastAttack >= stats.attackCooldown) {
+            console.log(`[MonsterManager] Monster ${monster.id} (${monster.type}) starting attack on player ${monster.target}`);
             monster.lastAttack = now;
             monster.attackAnimationStarted = now;
             monster.isAttackAnimating = true;
@@ -412,7 +415,9 @@ export class MonsterManager {
                 }, stats.attackDelay);
             } else {
                 // Schedule melee damage application
+                console.log(`[MonsterManager] Scheduling damage in ${stats.attackDelay}ms for monster ${monster.id}`);
                 setTimeout(() => {
+                    console.log(`[MonsterManager] Applying scheduled damage for monster ${monster.id}`);
                     // Re-fetch current players from gameState to ensure we have latest data
                     const currentPlayers = this.io.gameState ? this.io.gameState.players : players;
                     this.applyMonsterDamage(monster, stats, currentPlayers);
@@ -425,15 +430,30 @@ export class MonsterManager {
     }
 
     applyMonsterDamage(monster, stats, players) {
+        console.log(`[MonsterManager] applyMonsterDamage called for monster ${monster.id}, target: ${monster.target}`);
+        console.log(`[MonsterManager] Players map size: ${players.size}, Players:`, Array.from(players.keys()));
+        
         const target = players.get(monster.target);
-        if (!target || target.hp <= 0) return;
+        if (!target) {
+            console.log(`[MonsterManager] Target ${monster.target} not found in players map!`);
+            return;
+        }
+        if (target.hp <= 0) {
+            console.log(`[MonsterManager] Target ${monster.target} is dead (hp=${target.hp})`);
+            return;
+        }
         
         const distance = getDistance(monster, target);
-        if (distance > stats.attackRange * 1.2) return;
+        console.log(`[MonsterManager] Distance check: ${distance} vs ${stats.attackRange * 1.2}`);
+        if (distance > stats.attackRange * 1.2) {
+            console.log(`[MonsterManager] Target too far away`);
+            return;
+        }
         
         // Use DamageProcessor for all damage application
         if (this.damageProcessor) {
-            console.log(`[MonsterManager] Applying damage: ${monster.type} -> ${target.id}, damage=${stats.damage}`);
+            console.log(`[MonsterManager] Calling damageProcessor.applyDamage: ${monster.type} -> ${target.id}, damage=${stats.damage}`);
+            console.log(`[MonsterManager] Target state: hp=${target.hp}, spawnProtectionTimer=${target.spawnProtectionTimer}, invulnerable=${target.invulnerable}`);
             const result = this.damageProcessor.applyDamage(
                 monster,
                 target,

@@ -92,6 +92,7 @@ export class GameStateManager {
             if (player.spawnProtectionTimer > 0) {
                 player.spawnProtectionTimer -= deltaTime;
                 if (player.spawnProtectionTimer <= 0) {
+                    console.log(`[GameStateManager] Spawn protection expired for player ${player.id}`);
                     player.invulnerable = false;
                     player.spawnProtectionTimer = 0;
                 }

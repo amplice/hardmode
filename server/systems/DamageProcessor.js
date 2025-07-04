@@ -60,8 +60,11 @@ export class DamageProcessor {
     }
 
     _applyDamageToPlayer(source, player, damage, damageType, metadata) {
+        console.log(`[DamageProcessor] _applyDamageToPlayer called: player=${player.id}, hp=${player.hp}, spawnProtectionTimer=${player.spawnProtectionTimer}, invulnerable=${player.invulnerable}`);
+        
         // Check spawn protection (using timer and invulnerable flag)
         if (player.spawnProtectionTimer > 0 || player.invulnerable) {
+            console.log(`[DamageProcessor] Damage blocked by protection: spawnProtectionTimer=${player.spawnProtectionTimer}, invulnerable=${player.invulnerable}`);
             return { success: false, error: 'Player has spawn protection' };
         }
 
@@ -69,6 +72,7 @@ export class DamageProcessor {
         const previousHp = player.hp;
         player.hp = Math.max(0, player.hp - damage);
         const actualDamage = previousHp - player.hp;
+        console.log(`[DamageProcessor] Damage applied! Previous HP: ${previousHp}, New HP: ${player.hp}, Actual damage: ${actualDamage}`);
 
         // Emit damage event with proper source format
         let sourceString;
