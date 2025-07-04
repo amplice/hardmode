@@ -101,6 +101,7 @@ const ENABLE_DELTA_COMPRESSION = true;
 setupDebugEndpoint(app, { sessionAntiCheat });
 
 // Cross-reference managers
+io.gameState = gameState;
 io.monsterManager = monsterManager;
 io.projectileManager = projectileManager;
 

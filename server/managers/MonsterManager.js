@@ -413,7 +413,9 @@ export class MonsterManager {
             } else {
                 // Schedule melee damage application
                 setTimeout(() => {
-                    this.applyMonsterDamage(monster, stats, players);
+                    // Re-fetch current players from gameState to ensure we have latest data
+                    const currentPlayers = this.io.gameState ? this.io.gameState.players : players;
+                    this.applyMonsterDamage(monster, stats, currentPlayers);
                 }, stats.attackDelay);
             }
         } else {

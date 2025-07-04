@@ -19,6 +19,8 @@ export class DamageProcessor {
      * @returns {Object} Result of damage application
      */
     applyDamage(source, target, damage, damageType, metadata = {}) {
+        console.log(`[DamageProcessor] Damage attempt: ${this._getEntityType(source)} -> ${this._getEntityType(target)}, damage=${damage}`);
+        
         // Validate inputs
         if (!source || !target) {
             console.error('DamageProcessor: Invalid source or target', { source, target });
