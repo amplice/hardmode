@@ -58,15 +58,9 @@ export class DamageProcessor {
     }
 
     _applyDamageToPlayer(source, player, damage, damageType, metadata) {
-        // Check spawn protection
-        const currentTime = Date.now();
-        if (player.spawnProtectionUntil && currentTime < player.spawnProtectionUntil) {
+        // Check spawn protection (using timer and invulnerable flag)
+        if (player.spawnProtectionTimer > 0 || player.invulnerable) {
             return { success: false, error: 'Player has spawn protection' };
-        }
-
-        // Check invulnerability
-        if (player.invulnerable) {
-            return { success: false, error: 'Player is invulnerable' };
         }
 
         // Apply damage

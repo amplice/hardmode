@@ -431,13 +431,17 @@ export class MonsterManager {
         
         // Use DamageProcessor for all damage application
         if (this.damageProcessor) {
-            this.damageProcessor.applyDamage(
+            console.log(`[MonsterManager] Applying damage: ${monster.type} -> ${target.id}, damage=${stats.damage}`);
+            const result = this.damageProcessor.applyDamage(
                 monster,
                 target,
                 stats.damage,
                 'melee',
                 { attackType: 'monster_melee' }
             );
+            console.log(`[MonsterManager] Damage result:`, result);
+        } else {
+            console.log(`[MonsterManager] WARNING: No damageProcessor available!`);
         }
     }
 
