@@ -41,6 +41,68 @@ npm test:watch      # Watch mode for development
 
 Open `http://localhost:3000` to play. Supports multiple browser windows for local multiplayer testing.
 
+## TypeScript Development Notes
+
+### Railway Deployment TypeScript Requirements
+
+**⚠️ CRITICAL**: Railway uses stricter TypeScript compilation settings than local development. All TypeScript code must satisfy these requirements to deploy successfully:
+
+**Strict Requirements:**
+1. **All function parameters must have explicit types** - No implicit `any` allowed
+   ```typescript
+   // ❌ Will fail on Railway
+   function myFunction(data) { }
+   
+   // ✅ Required for Railway
+   function myFunction(data: any): void { }
+   ```
+
+2. **All function return types must be explicit**
+   ```typescript
+   // ❌ Will fail on Railway  
+   function getData() { return { x: 1 }; }
+   
+   // ✅ Required for Railway
+   function getData(): { x: number } { return { x: 1 }; }
+   ```
+
+3. **Array types must be explicitly declared**
+   ```typescript
+   // ❌ Will fail on Railway
+   const edges = { north: [], south: [] };
+   
+   // ✅ Required for Railway
+   const edges = { north: [] as Vector2D[], south: [] as Vector2D[] };
+   ```
+
+4. **Null possibilities must be handled**
+   ```typescript
+   // ❌ Will fail on Railway
+   this.stairsData[y][x] = value;
+   
+   // ✅ Required for Railway  
+   this.stairsData![y][x] = value;  // or proper null checking
+   ```
+
+5. **Method signatures must match actual usage patterns**
+   ```typescript
+   // ❌ Type mismatch will fail
+   function process(items: Vector2D[]): Vector2D { } // but actually returns { start: Vector2D, length: number }
+   
+   // ✅ Must match actual return
+   function process(items: Vector2D[]): { start: Vector2D, length: number } { }
+   ```
+
+**Testing Strategy:**
+- Always test TypeScript compilation locally before pushing to Railway
+- Use `npx tsc --noEmit --skipLibCheck` to check individual files
+- Railway will fail the entire build on any TypeScript error
+
+**Migration Pattern:**
+- Local development can be more lenient with TypeScript
+- Railway deployment requires 100% explicit typing
+- Add type annotations incrementally and test frequently
+
 ## Commit Message Guidelines
 
 - Don't put emojis and don't emote so much in the commit messages
