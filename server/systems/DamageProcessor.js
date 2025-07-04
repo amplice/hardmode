@@ -1,5 +1,5 @@
 // server/systems/DamageProcessor.js
-import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
+import { GAME_CONSTANTS, PLAYER_STATS } from '../../shared/constants/GameConstants.js';
 
 export class DamageProcessor {
     constructor(gameState, monsterManager, socketHandler, io) {
@@ -19,8 +19,6 @@ export class DamageProcessor {
      * @returns {Object} Result of damage application
      */
     applyDamage(source, target, damage, damageType, metadata = {}) {
-        console.log(`[DamageProcessor] Damage attempt: ${this._getEntityType(source)} -> ${this._getEntityType(target)}, damage=${damage}`);
-        
         // Validate inputs
         if (!source || !target) {
             console.error('DamageProcessor: Invalid source or target', { source, target });
@@ -60,11 +58,8 @@ export class DamageProcessor {
     }
 
     _applyDamageToPlayer(source, player, damage, damageType, metadata) {
-        console.log(`[DamageProcessor] _applyDamageToPlayer called: player=${player.id}, hp=${player.hp}, spawnProtectionTimer=${player.spawnProtectionTimer}, invulnerable=${player.invulnerable}`);
-        
         // Check spawn protection (using timer and invulnerable flag)
         if (player.spawnProtectionTimer > 0 || player.invulnerable) {
-            console.log(`[DamageProcessor] Damage blocked by protection: spawnProtectionTimer=${player.spawnProtectionTimer}, invulnerable=${player.invulnerable}`);
             return { success: false, error: 'Player has spawn protection' };
         }
 
@@ -72,7 +67,6 @@ export class DamageProcessor {
         const previousHp = player.hp;
         player.hp = Math.max(0, player.hp - damage);
         const actualDamage = previousHp - player.hp;
-        console.log(`[DamageProcessor] Damage applied! Previous HP: ${previousHp}, New HP: ${player.hp}, Actual damage: ${actualDamage}`);
 
         // Emit damage event with proper source format
         let sourceString;
@@ -165,18 +159,20 @@ export class DamageProcessor {
 
     _handleMonsterDeath(monster, source) {
         // Award XP if killed by player
-        if (source.socketId !== undefined) { // It's a player
+        if (source.class !== undefined) { // It's a player (players have class field)
             const xpReward = this._getMonsterXpReward(monster.type);
             source.xp = (source.xp || 0) + xpReward;
 
             // Check for level up
             this._checkPlayerLevelUp(source);
 
-            // Emit monster killed event
+            // Emit monster killed event with all expected fields
             this.io.emit('monsterKilled', {
-                monsterId: monster.monsterId,
-                killerId: source.id,
-                xpReward: xpReward
+                monsterId: monster.id,  // Use monster.id not monster.monsterId
+                killedBy: source.id,    // Client expects 'killedBy' not 'killerId'
+                xpReward: xpReward,
+                killerXp: source.xp,    // Client needs current XP
+                killerLevel: source.level // Client needs current level
             });
         }
 
@@ -203,20 +199,60 @@ export class DamageProcessor {
         const previousLevel = player.level || 1;
         const xpForNextLevel = this._getXpForLevel(previousLevel + 1);
 
-        if (player.xp >= xpForNextLevel && previousLevel < GAME_CONSTANTS.PLAYER.MAX_LEVEL) {
+        if (player.xp >= xpForNextLevel && previousLevel < GAME_CONSTANTS.LEVELS.MAX_LEVEL) {
             player.level = previousLevel + 1;
             
-            // Update max HP based on level
-            player.maxHp = this._getMaxHpForLevel(player.level);
-            
-            // Full heal on level up
-            player.hp = player.maxHp;
 
-            // Emit level up event
+            // Apply level bonuses using CalculationEngine
+            const oldLevel = previousLevel;
+            const newLevel = player.level;
+            
+            // Calculate bonuses for the new level
+            const levelBonuses = {
+                moveSpeedBonus: 0,
+                attackRecoveryBonus: 0,
+                attackCooldownBonus: 0,
+                rollUnlocked: false
+            };
+            
+            // Apply bonuses based on level
+            if (newLevel >= 2) levelBonuses.moveSpeedBonus = 50;
+            if (newLevel >= 3) levelBonuses.attackCooldownBonus = 0.1;
+            if (newLevel >= 4) levelBonuses.moveSpeedBonus = 100;
+            if (newLevel >= 5) levelBonuses.rollUnlocked = true;
+            if (newLevel >= 6) levelBonuses.attackRecoveryBonus = 0.15;
+            if (newLevel >= 7) levelBonuses.moveSpeedBonus = 150;
+            if (newLevel >= 8) levelBonuses.attackCooldownBonus = 0.2;
+            if (newLevel >= 9) levelBonuses.attackRecoveryBonus = 0.25;
+            if (newLevel >= 10) levelBonuses.moveSpeedBonus = 200;
+            
+            // Apply bonuses to player
+            player.moveSpeedBonus = levelBonuses.moveSpeedBonus;
+            player.attackRecoveryBonus = levelBonuses.attackRecoveryBonus;
+            player.attackCooldownBonus = levelBonuses.attackCooldownBonus;
+            player.rollUnlocked = levelBonuses.rollUnlocked;
+            
+            // Update max HP based on class and level
+            if (player.class) {
+                const classStats = PLAYER_STATS[player.class] || PLAYER_STATS.bladedancer;
+                const baseHp = classStats.hitPoints || 20;
+                player.maxHp = baseHp + (player.level - 1);
+                if (player.level === 10) player.maxHp += 5; // Level 10 bonus
+                
+                // Full heal on level up
+                player.hp = player.maxHp;
+            }
+            
+            // Emit level up event with all expected fields
             this.io.emit('playerLevelUp', {
                 playerId: player.id,
-                newLevel: player.level,
-                maxHp: player.maxHp
+                level: player.level,        // Client expects 'level' not 'newLevel'
+                hp: player.hp,              // Current HP (full heal)
+                maxHp: player.maxHp,
+                moveSpeedBonus: player.moveSpeedBonus,
+                attackRecoveryBonus: player.attackRecoveryBonus,
+                attackCooldownBonus: player.attackCooldownBonus,
+                rollUnlocked: player.rollUnlocked
             });
 
             console.log(`Player ${player.id} leveled up to ${player.level}`);
@@ -240,9 +276,4 @@ export class DamageProcessor {
         return xpTable[level] || 0;
     }
 
-    _getMaxHpForLevel(level) {
-        // HP progression from existing code
-        if (level === 10) return 35; // Special case for level 10
-        return 18 + level; // Base HP + level
-    }
 }
