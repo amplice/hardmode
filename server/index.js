@@ -57,10 +57,10 @@ const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
 
-// Serve static files
-app.use(express.static(path.join(__dirname, '..', 'src')));
-app.use('/node_modules', express.static(path.join(__dirname, '..', 'node_modules')));
-app.use('/shared', express.static(path.join(__dirname, '..', 'shared')));
+// Serve static files - paths adjusted for TypeScript compilation to dist/
+app.use(express.static(path.join(__dirname, '..', '..', 'src')));
+app.use('/node_modules', express.static(path.join(__dirname, '..', '..', 'node_modules')));
+app.use('/shared', express.static(path.join(__dirname, '..', '..', 'shared')));
 
 // Generate server-authoritative world seed
 const SERVER_WORLD_SEED = Math.floor(Math.random() * 1000000);
