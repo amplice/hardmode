@@ -103,6 +103,13 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
 - Railway deployment requires 100% explicit typing
 - Add type annotations incrementally and test frequently
 
+### Railway Build Configuration
+
+**Build Command:** `npm install --omit=dev && npm run build`  
+**Start Command:** `npm start`
+
+**Issue:** Railway may have npm cache locking issues with `npm ci --only=production`. Use the newer `--omit=dev` syntax instead.
+
 ## Commit Message Guidelines
 
 - Don't put emojis and don't emote so much in the commit messages
