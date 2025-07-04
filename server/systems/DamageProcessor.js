@@ -52,10 +52,10 @@ export class DamageProcessor {
     }
 
     _getEntityType(entity) {
-        // Players have socketId, monsters have id and type
-        if (entity.socketId !== undefined) return 'player';
-        if (entity.id !== undefined && entity.type && entity.hp !== undefined && !entity.socketId) return 'monster';
+        // Players have class field, monsters have type field
+        if (entity.class !== undefined) return 'player';
         if (entity.type === 'projectile') return 'projectile';
+        if (entity.type !== undefined && entity.hp !== undefined) return 'monster';
         return 'unknown';
     }
 
