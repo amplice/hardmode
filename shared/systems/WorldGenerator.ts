@@ -141,9 +141,9 @@ export class SharedWorldGenerator {
      * This is the FIRST step in the new generation order
      */
     generateBiomeDataOnly(): number[][] {
-        const biomeData = [];
+        const biomeData: number[][] = [];
         for (let y = 0; y < this.height; y++) {
-            biomeData[y] = [];
+            biomeData[y] = [] as number[];
             for (let x = 0; x < this.width; x++) {
                 biomeData[y][x] = 0; // Default to green grass
             }
@@ -164,9 +164,9 @@ export class SharedWorldGenerator {
      */
     generateElevationDataWithBiomeBuffers(biomeData: number[][]): number[][] {
         // Initialize elevation data
-        const elevationData = [];
+        const elevationData: number[][] = [];
         for (let y = 0; y < this.height; y++) {
-            elevationData[y] = [];
+            elevationData[y] = [] as number[];
             for (let x = 0; x < this.width; x++) {
                 elevationData[y][x] = 0;
             }
@@ -178,7 +178,7 @@ export class SharedWorldGenerator {
         return elevationData;
     }
 
-    generateLargeBiomeZones(biomeData, zoneCount) {
+    generateLargeBiomeZones(biomeData: number[][], zoneCount: number): void {
         // Create large zones that divide the world into distinct regions
         // Think of this as splitting the world into 2-4 major territories
         
@@ -266,7 +266,7 @@ export class SharedWorldGenerator {
         console.log(`[SharedWorldGenerator] Dark grass zones cover ${darkPercentage}% of world (${darkTiles}/${totalTiles} tiles)`);
     }
 
-    generateProperElevatedAreas(elevationData) {
+    generateProperElevatedAreas(elevationData: number[][]): void {
         console.log("Generating proper elevated areas with noise constraints...");
         
         // Generate plateau candidates
@@ -292,7 +292,7 @@ export class SharedWorldGenerator {
      * Generate elevated areas with 1-tile buffer from biome edges
      * Ensures all cliffs are contained within single biomes
      */
-    generateProperElevatedAreasWithBiomeBuffers(elevationData, biomeData) {
+    generateProperElevatedAreasWithBiomeBuffers(elevationData: number[][], biomeData: number[][]): void {
         console.log("Generating elevated areas with biome buffer constraints...");
         
         // Generate plateau candidates with biome constraints
@@ -332,7 +332,7 @@ export class SharedWorldGenerator {
         }
     }
 
-    createNoisyPlateau(elevationData, centerX, centerY, radius) {
+    createNoisyPlateau(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
         const noiseScale = 0.1;
         const threshold = 0.2;
         

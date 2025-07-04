@@ -241,7 +241,7 @@ export function createNetworkPlayerUpdate(playerState: PlayerState): NetworkPlay
 /**
  * Creates a complete InputCommand with all required fields
  */
-export function createInputCommand(options) {
+export function createInputCommand(options: any): any {
     if (!Array.isArray(options.keys)) throw new Error('Input keys array is required');
     if (!options.facing) throw new Error('Input facing direction is required');
     if (typeof options.deltaTime !== 'number') throw new Error('Input deltaTime is required');
@@ -259,7 +259,7 @@ export function createInputCommand(options) {
 /**
  * Validation helpers for existing objects
  */
-export function validatePlayerState(playerState) {
+export function validatePlayerState(playerState: any): void {
     const required = ['id', 'position', 'facing', 'characterClass', 'level', 'experience', 
                      'hp', 'maxHp', 'moveSpeed', 'moveSpeedBonus', 'attackRecoveryBonus', 
                      'attackCooldownBonus', 'rollUnlocked', 'isAttacking', 'isDead'];
@@ -273,7 +273,7 @@ export function validatePlayerState(playerState) {
     return true;
 }
 
-export function validateMonsterState(monsterState) {
+export function validateMonsterState(monsterState: any): void {
     const required = ['id', 'type', 'x', 'y', 'facing', 'hp', 'maxHp', 'state', 
                      'lastAttackTime', 'damage', 'attackRange', 'aggroRange', 'moveSpeed'];
     
