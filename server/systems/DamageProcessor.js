@@ -220,13 +220,6 @@ export class DamageProcessor {
             // Full heal on level up
             player.hp = player.maxHp;
             
-            // Debug logging to see what bonuses we're sending
-            console.log(`[DamageProcessor] Player ${player.id} leveled up to ${player.level}, bonuses:`, {
-                moveSpeedBonus: player.moveSpeedBonus,
-                attackRecoveryBonus: player.attackRecoveryBonus,
-                attackCooldownBonus: player.attackCooldownBonus,
-                rollUnlocked: player.rollUnlocked
-            });
             
             // Emit level up event with all expected fields
             this.io.emit('playerLevelUp', {

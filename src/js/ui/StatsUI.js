@@ -69,14 +69,6 @@ export class StatsUI {
             const recoveryBonus = this.player.attackRecoveryBonus || 0;
             const cooldownBonus = this.player.attackCooldownBonus || 0;
             
-            // Debug logging to see what bonuses the UI is reading
-            if (recoveryBonus !== 0 || cooldownBonus !== 0) {
-                console.log(`[StatsUI] Player bonuses:`, {
-                    attackRecoveryBonus: recoveryBonus,
-                    attackCooldownBonus: cooldownBonus,
-                    level: this.player.level
-                });
-            }
             
             const attack1Recovery = Math.max(50, attack1.recoveryTime + recoveryBonus);
             const attack1Cooldown = Math.max(100, attack1.cooldown + cooldownBonus);
