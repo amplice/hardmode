@@ -60,7 +60,6 @@ export class GameStateManager {
         };
         
         this.players.set(id, player);
-        console.log(`[GameStateManager] Created player ${id}, players map now has ${this.players.size} players`);
         return player;
     }
 
@@ -93,7 +92,6 @@ export class GameStateManager {
             if (player.spawnProtectionTimer > 0) {
                 player.spawnProtectionTimer -= deltaTime;
                 if (player.spawnProtectionTimer <= 0) {
-                    console.log(`[GameStateManager] Spawn protection expired for player ${player.id}`);
                     player.invulnerable = false;
                     player.spawnProtectionTimer = 0;
                 }
