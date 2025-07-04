@@ -66,10 +66,22 @@ export class StatsUI {
             this.moveSpeedText.text = `Move Speed: ${this.player.moveSpeed.toFixed(2)}`;
             
             // Calculate actual recovery and cooldown with bonuses
-            const attack1Recovery = Math.max(50, attack1.recoveryTime + (this.player.attackRecoveryBonus || 0));
-            const attack1Cooldown = Math.max(100, attack1.cooldown + (this.player.attackCooldownBonus || 0));
-            const attack2Recovery = Math.max(50, attack2.recoveryTime + (this.player.attackRecoveryBonus || 0));
-            const attack2Cooldown = Math.max(100, attack2.cooldown + (this.player.attackCooldownBonus || 0));
+            const recoveryBonus = this.player.attackRecoveryBonus || 0;
+            const cooldownBonus = this.player.attackCooldownBonus || 0;
+            
+            // Debug logging to see what bonuses the UI is reading
+            if (recoveryBonus !== 0 || cooldownBonus !== 0) {
+                console.log(`[StatsUI] Player bonuses:`, {
+                    attackRecoveryBonus: recoveryBonus,
+                    attackCooldownBonus: cooldownBonus,
+                    level: this.player.level
+                });
+            }
+            
+            const attack1Recovery = Math.max(50, attack1.recoveryTime + recoveryBonus);
+            const attack1Cooldown = Math.max(100, attack1.cooldown + cooldownBonus);
+            const attack2Recovery = Math.max(50, attack2.recoveryTime + recoveryBonus);
+            const attack2Cooldown = Math.max(100, attack2.cooldown + cooldownBonus);
             
             this.attack1RecoveryText.text = `A1 Recovery: ${attack1Recovery}ms`;
             this.attack1CooldownText.text = `A1 Cooldown: ${attack1Cooldown}ms`;

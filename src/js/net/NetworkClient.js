@@ -322,6 +322,14 @@ export class NetworkClient {
                     player.attackCooldownBonus = data.attackCooldownBonus || 0;
                     player.rollUnlocked = data.rollUnlocked || false;
                     
+                    // Debug logging to see what bonuses we're receiving
+                    console.log(`[NetworkClient] Level ${data.level} bonuses:`, {
+                        moveSpeedBonus: player.moveSpeedBonus,
+                        attackRecoveryBonus: player.attackRecoveryBonus,
+                        attackCooldownBonus: player.attackCooldownBonus,
+                        rollUnlocked: player.rollUnlocked
+                    });
+                    
                     // Update actual move speed
                     const baseSpeed = player.getClassMoveSpeed();
                     player.moveSpeed = baseSpeed + player.moveSpeedBonus;
@@ -339,6 +347,11 @@ export class NetworkClient {
                         if (this.game.healthUI) {
                             this.game.healthUI.update();
                         }
+                    }
+                    
+                    // Update StatsUI to reflect new bonuses
+                    if (this.game.statsUI) {
+                        this.game.statsUI.update();
                     }
                     
                     // Play level up effect
