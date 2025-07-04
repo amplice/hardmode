@@ -168,7 +168,7 @@ export class CollisionMask {
      * Checks entire path to prevent teleporting through walls
      * Enhanced to provide more solid collision detection
      */
-    canMove(fromX, fromY, toX, toY) {
+    canMove(fromX: number, fromY: number, toX: number, toY: number): boolean {
         // Add small buffer around player position for solid collision
         const buffer = 8; // Small buffer to prevent edge clipping
         
@@ -195,7 +195,7 @@ export class CollisionMask {
      * Check if path between two points is clear
      * Uses simple line traversal to prevent teleporting
      */
-    isPathClear(fromX, fromY, toX, toY) {
+    isPathClear(fromX: number, fromY: number, toX: number, toY: number): boolean {
         const dx = toX - fromX;
         const dy = toY - fromY;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -272,7 +272,7 @@ export class CollisionMask {
     /**
      * Load collision mask from serialized data
      */
-    deserialize(data) {
+    deserialize(data: any): void {
         this.width = data.width;
         this.height = data.height;
         this.tileSize = data.tileSize;
