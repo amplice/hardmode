@@ -416,11 +416,17 @@ export class MonsterManager {
             } else {
                 // Schedule melee damage application
                 console.log(`[MonsterManager] Scheduling damage in ${stats.attackDelay}ms for monster ${monster.id}`);
+                const targetId = monster.target; // Capture target ID
                 setTimeout(() => {
-                    console.log(`[MonsterManager] Applying scheduled damage for monster ${monster.id}`);
+                    console.log(`[MonsterManager] Applying scheduled damage for monster ${monster.id}, targetId: ${targetId}`);
                     // Re-fetch current players from gameState to ensure we have latest data
-                    const currentPlayers = this.io.gameState ? this.io.gameState.players : players;
-                    this.applyMonsterDamage(monster, stats, currentPlayers);
+                    if (this.io && this.io.gameState && this.io.gameState.players) {
+                        console.log(`[MonsterManager] Using gameState.players (size: ${this.io.gameState.players.size})`);
+                        this.applyMonsterDamage(monster, stats, this.io.gameState.players);
+                    } else {
+                        console.log(`[MonsterManager] WARNING: gameState not available, using stale players map`);
+                        this.applyMonsterDamage(monster, stats, players);
+                    }
                 }, stats.attackDelay);
             }
         } else {

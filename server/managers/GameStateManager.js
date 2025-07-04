@@ -60,6 +60,7 @@ export class GameStateManager {
         };
         
         this.players.set(id, player);
+        console.log(`[GameStateManager] Created player ${id}, players map now has ${this.players.size} players`);
         return player;
     }
 
