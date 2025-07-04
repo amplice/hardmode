@@ -287,10 +287,10 @@ export class CombatSystem {
     // Apply level bonuses to attack config
     const modifiedConfig = { ...attackConfig };
     if (entity.attackRecoveryBonus) {
-      modifiedConfig.recoveryTime = Math.max(0, attackConfig.recoveryTime - entity.attackRecoveryBonus);
+      modifiedConfig.recoveryTime = Math.max(50, attackConfig.recoveryTime + entity.attackRecoveryBonus);
     }
     if (entity.attackCooldownBonus) {
-      modifiedConfig.cooldown = Math.max(100, attackConfig.cooldown - entity.attackCooldownBonus);
+      modifiedConfig.cooldown = Math.max(100, attackConfig.cooldown + entity.attackCooldownBonus);
     }
         
     // Executing attack

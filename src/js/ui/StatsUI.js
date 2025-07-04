@@ -64,10 +64,17 @@ export class StatsUI {
             const attack2 = PLAYER_CONFIG.attacks[classKeySecondary];
 
             this.moveSpeedText.text = `Move Speed: ${this.player.moveSpeed.toFixed(2)}`;
-            this.attack1RecoveryText.text = `A1 Recovery: ${attack1.recoveryTime}`;
-            this.attack1CooldownText.text = `A1 Cooldown: ${attack1.cooldown}`;
-            this.attack2RecoveryText.text = `A2 Recovery: ${attack2.recoveryTime}`;
-            this.attack2CooldownText.text = `A2 Cooldown: ${attack2.cooldown}`;
+            
+            // Calculate actual recovery and cooldown with bonuses
+            const attack1Recovery = Math.max(50, attack1.recoveryTime + (this.player.attackRecoveryBonus || 0));
+            const attack1Cooldown = Math.max(100, attack1.cooldown + (this.player.attackCooldownBonus || 0));
+            const attack2Recovery = Math.max(50, attack2.recoveryTime + (this.player.attackRecoveryBonus || 0));
+            const attack2Cooldown = Math.max(100, attack2.cooldown + (this.player.attackCooldownBonus || 0));
+            
+            this.attack1RecoveryText.text = `A1 Recovery: ${attack1Recovery}ms`;
+            this.attack1CooldownText.text = `A1 Cooldown: ${attack1Cooldown}ms`;
+            this.attack2RecoveryText.text = `A2 Recovery: ${attack2Recovery}ms`;
+            this.attack2CooldownText.text = `A2 Cooldown: ${attack2Cooldown}ms`;
             this.rollAvailableText.text = `Roll Available: ${this.player.rollUnlocked ? 'Yes' : 'No'}`;
         }
     }
