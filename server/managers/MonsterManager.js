@@ -429,27 +429,15 @@ export class MonsterManager {
         const distance = getDistance(monster, target);
         if (distance > stats.attackRange * 1.2) return;
         
-        // Check invulnerability
-        if (!target.invulnerable) {
-            target.hp = Math.max(0, target.hp - stats.damage);
-            
-            // Monster attack processed
-            
-            // Notify clients
-            this.io.emit('playerDamaged', {
-                playerId: monster.target,
-                damage: stats.damage,
-                hp: target.hp,
-                source: `${monster.type}_${monster.id}`
-            });
-            
-            if (target.hp <= 0) {
-                // Player killed by monster
-                this.io.emit('playerKilled', {
-                    playerId: monster.target,
-                    killedBy: monster.type
-                });
-            }
+        // Use DamageProcessor for all damage application
+        if (this.damageProcessor) {
+            this.damageProcessor.applyDamage(
+                monster,
+                target,
+                stats.damage,
+                'melee',
+                { attackType: 'monster_melee' }
+            );
         }
     }
 
@@ -529,40 +517,19 @@ export class MonsterManager {
         const monster = this.monsters.get(monsterId);
         if (!monster || monster.hp <= 0) return false;
         
-        monster.hp = Math.max(0, monster.hp - damage);
-        
-        // Apply stun when taking damage (interrupt attacks)
-        const stunDuration = GAME_CONSTANTS.MONSTER?.DAMAGE_STUN_DURATION || 0.5;
-        if (stunDuration > 0) {
-            monster.stunTimer = stunDuration;
-            monster.isStunned = true;
-            
-            // Set state to stunned for visual feedback
-            monster.state = 'stunned';
-            
-            // Interrupt any ongoing attack
-            if (monster.isAttackAnimating) {
-                monster.isAttackAnimating = false;
-            }
+        // Use DamageProcessor for all damage application
+        if (this.damageProcessor) {
+            const result = this.damageProcessor.applyDamage(
+                attacker,
+                monster,
+                damage,
+                'melee',
+                { attackType: 'player_attack' }
+            );
+            return result.success;
         }
         
-        // Monster damaged and stunned
-        
-        // Broadcast damage
-        this.io.emit('monsterDamaged', {
-            monsterId: monster.id,
-            damage: damage,
-            hp: monster.hp,
-            attacker: attacker.id,
-            stunned: true
-        });
-        
-        // Handle death
-        if (monster.hp <= 0) {
-            this.handleMonsterDeath(monster, attacker);
-        }
-        
-        return true;
+        return false;
     }
 
     handleMonsterDeath(monster, killer) {

@@ -141,40 +141,43 @@ export class ProjectileManager {
         // Projectile hit target
         
         if (targetType === 'monster') {
-            // Apply damage to monster
-            const monsterManager = this.io.monsterManager; // Assume this is passed in
-            // Apply damage to monster
-            if (monsterManager) {
+            // Apply damage to monster using DamageProcessor
+            if (this.damageProcessor) {
                 const owner = players.get(projectile.ownerId);
                 if (owner) {
-                    monsterManager.handleMonsterDamage(target.id, projectile.damage, owner);
+                    this.damageProcessor.applyDamage(
+                        owner,
+                        target,
+                        projectile.damage,
+                        'projectile',
+                        { 
+                            attackType: 'player_projectile',
+                            projectileId: projectile.id 
+                        }
+                    );
                 }
             }
         } else if (targetType === 'player') {
-            // Apply damage to player
-            if (!target.invulnerable) {
-                target.hp = Math.max(0, target.hp - projectile.damage);
+            // Apply damage to player using DamageProcessor
+            if (this.damageProcessor) {
+                // For monster projectiles, the source is the projectile itself
+                // We'll pass the projectile with ownerType info
+                const projectileSource = {
+                    ...projectile,
+                    type: 'projectile',
+                    id: projectile.ownerType // For proper source identification
+                };
                 
-                // Get monster type for kill message
-                const monsterType = projectile.ownerType;
-                
-                // Player hit by projectile
-                
-                // Notify clients
-                this.io.emit('playerDamaged', {
-                    playerId: target.id,
-                    damage: projectile.damage,
-                    hp: target.hp,
-                    source: `${monsterType}_projectile`
-                });
-                
-                if (target.hp <= 0) {
-                    // Player killed by projectile
-                    this.io.emit('playerKilled', {
-                        playerId: target.id,
-                        killedBy: monsterType
-                    });
-                }
+                this.damageProcessor.applyDamage(
+                    projectileSource,
+                    target,
+                    projectile.damage,
+                    'projectile',
+                    { 
+                        attackType: 'monster_projectile',
+                        projectileId: projectile.id 
+                    }
+                );
             }
         }
         

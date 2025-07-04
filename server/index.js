@@ -41,6 +41,7 @@ import { ServerWorldManager } from './managers/ServerWorldManager.js';
 import { InputProcessor } from './systems/InputProcessor.js';
 import { LagCompensation } from './systems/LagCompensation.js';
 import { SessionAntiCheat } from './systems/SessionAntiCheat.js';
+import { DamageProcessor } from './systems/DamageProcessor.js';
 // Hit detection rollback removed - caused visual issues
 import { SocketHandler } from './network/SocketHandler.js';
 import { NetworkOptimizer } from './network/NetworkOptimizer.js';
@@ -82,6 +83,7 @@ const sessionAntiCheat = new SessionAntiCheat(abilityManager);
 const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation, sessionAntiCheat, serverWorldManager);
 const networkOptimizer = new NetworkOptimizer();
 const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
+const damageProcessor = new DamageProcessor(gameState, monsterManager, socketHandler, io);
 
 // Spawn initial monsters for immediate stress testing
 console.log(`[Server] 🔥 EXTREME STRESS TEST: Spawning ${GAME_CONSTANTS.SPAWN.INITIAL_MONSTERS} initial monsters...`);
@@ -101,6 +103,11 @@ setupDebugEndpoint(app, { sessionAntiCheat });
 // Cross-reference managers
 io.monsterManager = monsterManager;
 io.projectileManager = projectileManager;
+
+// Set damage processor reference in managers after initialization
+monsterManager.damageProcessor = damageProcessor;
+projectileManager.damageProcessor = damageProcessor;
+socketHandler.damageProcessor = damageProcessor;
 
 // Main game loop
 let lastUpdateTime = Date.now();
