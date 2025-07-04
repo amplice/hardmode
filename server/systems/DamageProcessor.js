@@ -1,5 +1,6 @@
 // server/systems/DamageProcessor.js
 import { GAME_CONSTANTS, PLAYER_STATS } from '../../shared/constants/GameConstants.js';
+import { CalculationEngine } from './CalculationEngine.js';
 
 export class DamageProcessor {
     constructor(gameState, monsterManager, socketHandler, io) {
@@ -158,15 +159,10 @@ export class DamageProcessor {
     }
 
     _handleMonsterDeath(monster, source) {
-        console.log(`[DamageProcessor] Monster death: ${monster.type} killed by source with class: ${source.class}`);
-        
         // Award XP if killed by player
         if (source.class !== undefined) { // It's a player (players have class field)
             const xpReward = this._getMonsterXpReward(monster.type);
-            const oldXp = source.xp || 0;
-            source.xp = oldXp + xpReward;
-            
-            console.log(`[DamageProcessor] XP awarded: ${oldXp} + ${xpReward} = ${source.xp} for player ${source.id}`);
+            source.xp = (source.xp || 0) + xpReward;
 
             // Check for level up
             this._checkPlayerLevelUp(source);
@@ -203,53 +199,26 @@ export class DamageProcessor {
     _checkPlayerLevelUp(player) {
         const previousLevel = player.level || 1;
         const xpForNextLevel = this._getXpForLevel(previousLevel + 1);
-        
-        console.log(`[DamageProcessor] Level check for ${player.id}: level=${previousLevel}, xp=${player.xp}, needed=${xpForNextLevel}`);
 
         if (player.xp >= xpForNextLevel && previousLevel < GAME_CONSTANTS.LEVELS.MAX_LEVEL) {
-            console.log(`[DamageProcessor] LEVEL UP! Player ${player.id} leveling from ${previousLevel} to ${previousLevel + 1}`);
             player.level = previousLevel + 1;
             
 
-            // Apply level bonuses using CalculationEngine
+            // Apply level bonuses using CalculationEngine (the correct way)
             const oldLevel = previousLevel;
             const newLevel = player.level;
             
-            // Calculate bonuses for the new level
-            const levelBonuses = {
-                moveSpeedBonus: 0,
-                attackRecoveryBonus: 0,
-                attackCooldownBonus: 0,
-                rollUnlocked: false
-            };
+            // Use the proper CalculationEngine method for level bonuses
+            CalculationEngine.applyLevelBonuses(player, oldLevel, newLevel);
             
-            // Apply bonuses based on level
-            if (newLevel >= 2) levelBonuses.moveSpeedBonus = 50;
-            if (newLevel >= 3) levelBonuses.attackCooldownBonus = 0.1;
-            if (newLevel >= 4) levelBonuses.moveSpeedBonus = 100;
-            if (newLevel >= 5) levelBonuses.rollUnlocked = true;
-            if (newLevel >= 6) levelBonuses.attackRecoveryBonus = 0.15;
-            if (newLevel >= 7) levelBonuses.moveSpeedBonus = 150;
-            if (newLevel >= 8) levelBonuses.attackCooldownBonus = 0.2;
-            if (newLevel >= 9) levelBonuses.attackRecoveryBonus = 0.25;
-            if (newLevel >= 10) levelBonuses.moveSpeedBonus = 200;
-            
-            // Apply bonuses to player
-            player.moveSpeedBonus = levelBonuses.moveSpeedBonus;
-            player.attackRecoveryBonus = levelBonuses.attackRecoveryBonus;
-            player.attackCooldownBonus = levelBonuses.attackCooldownBonus;
-            player.rollUnlocked = levelBonuses.rollUnlocked;
-            
-            // Update max HP based on class and level
-            if (player.class) {
-                const classStats = PLAYER_STATS[player.class] || PLAYER_STATS.bladedancer;
-                const baseHp = classStats.hitPoints || 20;
-                player.maxHp = baseHp + (player.level - 1);
-                if (player.level === 10) player.maxHp += 5; // Level 10 bonus
-                
-                // Full heal on level up
-                player.hp = player.maxHp;
+            // Update max HP using CalculationEngine (only +1 at level 10)
+            const newMaxHp = CalculationEngine.calculateMaxHP(player.class, newLevel);
+            if (newMaxHp > player.maxHp) {
+                player.maxHp = newMaxHp;
             }
+            
+            // Full heal on level up
+            player.hp = player.maxHp;
             
             // Emit level up event with all expected fields
             this.io.emit('playerLevelUp', {
@@ -263,33 +232,30 @@ export class DamageProcessor {
                 rollUnlocked: player.rollUnlocked
             });
 
-            console.log(`[DamageProcessor] Player ${player.id} leveled up to ${player.level} - event emitted`);
-        } else {
-            console.log(`[DamageProcessor] No level up for ${player.id}: needs ${xpForNextLevel - player.xp} more XP`);
+            console.log(`Player ${player.id} leveled up to ${player.level}`);
         }
     }
 
     _getXpForLevel(level) {
-        // Check if playtest mode is enabled for easy leveling
-        if (GAME_CONSTANTS.LEVELS.PLAYTEST_MODE) {
-            // In playtest mode, each level needs only 20 XP
-            return (level - 1) * GAME_CONSTANTS.LEVELS.PLAYTEST_XP_PER_LEVEL;
+        // Use CalculationEngine to calculate XP requirements properly
+        if (level <= 1) return 0;
+        
+        const usePlaytestMode = GAME_CONSTANTS.LEVELS.PLAYTEST_MODE;
+        const maxLevel = GAME_CONSTANTS.LEVELS.MAX_LEVEL;
+        const xpGrowth = GAME_CONSTANTS.LEVELS.XP_GROWTH;
+        const playtestXpPerLevel = GAME_CONSTANTS.LEVELS.PLAYTEST_XP_PER_LEVEL;
+        
+        if (usePlaytestMode) {
+            // Playtest mode: (level - 1) * 20 XP
+            return (level - 1) * playtestXpPerLevel;
         }
         
-        // Normal XP requirements
-        const xpTable = {
-            1: 0,
-            2: 100,
-            3: 250,
-            4: 500,
-            5: 1000,
-            6: 1750,
-            7: 2750,
-            8: 4000,
-            9: 5500,
-            10: 7500
-        };
-        return xpTable[level] || 0;
+        // Normal mode: Triangular progression (same as CalculationEngine)
+        let totalXPRequired = 0;
+        for (let i = 1; i < level; i++) {
+            totalXPRequired += i * xpGrowth;
+        }
+        return totalXPRequired;
     }
 
 }
