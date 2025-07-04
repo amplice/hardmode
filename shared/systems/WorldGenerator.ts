@@ -575,12 +575,12 @@ export class SharedWorldGenerator {
         }
     }
 
-    findPlateauEdges(elevationData, plateau) {
+    findPlateauEdges(elevationData: number[][], plateau: Vector2D[]): { north: Vector2D[], south: Vector2D[], east: Vector2D[], west: Vector2D[] } {
         const edges = {
-            north: [],
-            south: [],
-            east: [],
-            west: []
+            north: [] as Vector2D[],
+            south: [] as Vector2D[],
+            east: [] as Vector2D[],
+            west: [] as Vector2D[]
         };
         
         // Create a set for fast lookup
@@ -602,7 +602,7 @@ export class SharedWorldGenerator {
         return edges;
     }
 
-    findValidStairPositions(edgeTiles, direction, minLength) {
+    findValidStairPositions(edgeTiles: Vector2D[], direction: string, minLength: number): Vector2D[][] {
         if (edgeTiles.length < minLength) return [];
         
         // Sort tiles by primary axis
@@ -642,7 +642,7 @@ export class SharedWorldGenerator {
         return validRuns;
     }
 
-    selectBestEdgePosition(validRuns) {
+    selectBestEdgePosition(validRuns: Vector2D[][]): { start: Vector2D, length: number } {
         // Select the longest run
         let bestRun = validRuns[0];
         for (const run of validRuns) {
@@ -657,7 +657,7 @@ export class SharedWorldGenerator {
         };
     }
 
-    placeStairs(startPos, direction) {
+    placeStairs(startPos: Vector2D, direction: string): void {
         const {x, y} = startPos;
         
         // Check biome at stair location (biome data is now available)
@@ -677,7 +677,7 @@ export class SharedWorldGenerator {
                         if (x + dx >= 0 && y + dy < this.height) {
                             const tileX = 2 + dx + colOffset;
                             const tileY = 13 + dy;
-                            this.stairsData[y + dy][x + dx] = {
+                            this.stairsData![y + dy][x + dx] = {
                                 type: 'west',
                                 tileX: tileX,
                                 tileY: tileY,
@@ -697,7 +697,7 @@ export class SharedWorldGenerator {
                 for (let dy = 0; dy < 4; dy++) {
                     for (let dx = 0; dx < 2; dx++) {
                         if (x + dx < this.width && y + dy < this.height) {
-                            this.stairsData[y + dy][x + dx] = {
+                            this.stairsData![y + dy][x + dx] = {
                                 type: 'east',
                                 tileX: 7 + dx + colOffset,
                                 tileY: 13 + dy,
@@ -713,7 +713,7 @@ export class SharedWorldGenerator {
                 for (let dy = 0; dy < 2; dy++) {
                     for (let dx = 0; dx < 3; dx++) {
                         if (x + dx < this.width && y + dy >= 0) {
-                            this.stairsData[y + dy][x + dx] = {
+                            this.stairsData![y + dy][x + dx] = {
                                 type: 'north',
                                 tileX: 4 + dx + colOffset,
                                 tileY: 13 + dy,
@@ -729,7 +729,7 @@ export class SharedWorldGenerator {
                 for (let dy = 0; dy < 3; dy++) {
                     for (let dx = 0; dx < 3; dx++) {
                         if (x + dx < this.width && y + dy < this.height) {
-                            this.stairsData[y + dy][x + dx] = {
+                            this.stairsData![y + dy][x + dx] = {
                                 type: 'south',
                                 tileX: 4 + dx + colOffset,
                                 tileY: 15 + dy,
@@ -746,7 +746,7 @@ export class SharedWorldGenerator {
      * Check if a stair tile is walkable
      * Used by collision system to mark specific stair tiles as walkable
      */
-    isStairTileWalkable(tileY, tileX) {
+    isStairTileWalkable(tileY: number, tileX: number): boolean {
         const walkableStairs = [
             // GREEN GRASS STAIRS - Western stairs walkable tiles
             [14, 2], [14, 3], [15, 2], [15, 3],
@@ -774,7 +774,7 @@ export class SharedWorldGenerator {
      * Update stairs tile coordinates based on biome data
      * This is called after biomes are generated to ensure stairs use correct tileset
      */
-    updateStairsForBiomes(biomeData) {
+    updateStairsForBiomes(biomeData: number[][]): void {
         if (!this.stairsData || !biomeData) return;
         
         let updatedCount = 0;
@@ -824,7 +824,7 @@ export class SharedWorldGenerator {
      * Generate plateau candidates with biome buffer constraints
      * Ensures plateaus stay within biome boundaries with 1-tile buffer
      */
-    generatePlateauCandidatesWithBiomeBuffers(elevationData, biomeData) {
+    generatePlateauCandidatesWithBiomeBuffers(elevationData: number[][], biomeData: number[][]): void {
         const plateauCount = 2 + Math.floor(this.random() * 2); // 2-3 large plateaus
         
         for (let i = 0; i < plateauCount; i++) {
@@ -842,7 +842,7 @@ export class SharedWorldGenerator {
     /**
      * Generate an unconstrained plateau (normal generation, no biome checking)
      */
-    generateUnconstrainedPlateau(elevationData, centerX, centerY, maxRadius) {
+    generateUnconstrainedPlateau(elevationData: number[][], centerX: number, centerY: number, maxRadius: number): void {
         const noiseScale = 0.1;
         
         for (let dy = -maxRadius; dy <= maxRadius; dy++) {
@@ -867,7 +867,7 @@ export class SharedWorldGenerator {
      * Trim elevated areas to respect biome boundaries with 1-tile buffer
      * Instead of removing entire plateaus, just trim the edges that violate boundaries
      */
-    removebiomeBoundaryViolations(elevationData, biomeData) {
+    removebiomeBoundaryViolations(elevationData: number[][], biomeData: number[][]): void {
         let removedCount = 0;
         let iterations = 0;
         const maxIterations = 5; // Prevent infinite loops
@@ -901,7 +901,7 @@ export class SharedWorldGenerator {
     /**
      * Check if an elevated tile violates the 1-tile biome buffer rule
      */
-    violatesBiomeBuffer(x, y, biomeData) {
+    violatesBiomeBuffer(x: number, y: number, biomeData: number[][]): boolean {
         const currentBiome = biomeData[y][x];
         
         // Check all adjacent tiles (8-direction)

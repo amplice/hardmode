@@ -56,7 +56,7 @@ export class SimpleValidator {
     /**
      * Validate createProjectile message (prevent projectile spam)
      */
-    static validateCreateProjectile(data) {
+    static validateCreateProjectile(data: any): boolean {
         if (!data || typeof data !== 'object') return false;
         
         // Must have position
