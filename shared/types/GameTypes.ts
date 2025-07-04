@@ -154,3 +154,135 @@ export interface EffectDefinition {
     timing: number;
     distance?: number;
 }
+
+/**
+ * Vector2D utility type
+ */
+export interface Vector2D {
+    x: number;
+    y: number;
+}
+
+/**
+ * Rectangle bounds
+ */
+export interface Rectangle {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+/**
+ * Game world tile data
+ */
+export interface TileData {
+    x: number;
+    y: number;
+    tileType: number;
+    biome: number;
+    isElevated: boolean;
+    isWalkable: boolean;
+}
+
+/**
+ * Chunk data for world rendering
+ */
+export interface ChunkData {
+    x: number;
+    y: number;
+    size: number;
+    tiles: TileData[];
+    loaded: boolean;
+}
+
+/**
+ * Game state update from server
+ */
+export interface GameStateUpdate {
+    players: NetworkPlayerUpdate[];
+    monsters: MonsterState[];
+    projectiles: ProjectileState[];
+    timestamp: number;
+    sequence: number;
+}
+
+/**
+ * Network message validation schema
+ */
+export interface ValidationSchema {
+    required: string[];
+    optional: string[];
+    types: Record<string, string>;
+    ranges?: Record<string, [number, number]>;
+}
+
+/**
+ * Entity factory validation result
+ */
+export interface ValidationResult {
+    isValid: boolean;
+    errors: string[];
+    warnings: string[];
+}
+
+/**
+ * Biome types for world generation
+ */
+export type BiomeType = 'normal' | 'dark_grass' | 'desert' | 'marsh' | 'snow';
+
+/**
+ * World generation parameters
+ */
+export interface WorldGenParams {
+    seed: number;
+    width: number;
+    height: number;
+    biomeConfig: BiomeConfig;
+    elevationConfig: ElevationConfig;
+}
+
+export interface BiomeConfig {
+    darkGrassZones: number;
+    zoneRadius: number;
+    coverage: number;
+}
+
+export interface ElevationConfig {
+    plateauCount: number;
+    plateauSize: number;
+    cliffThreshold: number;
+}
+
+/**
+ * Combat calculation parameters
+ */
+export interface CombatParams {
+    baseDamage: number;
+    levelModifier: number;
+    attackRecoveryBonus: number;
+    attackCooldownBonus: number;
+    stunDuration: number;
+}
+
+/**
+ * Network optimization delta data
+ */
+export interface DeltaData {
+    playerId: string;
+    changes: Record<string, any>;
+    timestamp: number;
+    sequence: number;
+}
+
+/**
+ * Session validation parameters
+ */
+export interface SessionValidation {
+    playerId: string;
+    timestamp: number;
+    position: Position;
+    facing: Direction;
+    isValid: boolean;
+    violations: string[];
+}
