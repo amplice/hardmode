@@ -283,10 +283,6 @@ export class CalculationEngine {
                 case 5:
                     player.rollUnlocked = true;
                     break;
-                case 9:
-                    // Level 9 gets moveSpeed bonus (same as levels 2 and 6)
-                    player.moveSpeedBonus += 0.25;
-                    break;
                 case 10:
                     // Max HP bonus handled separately in calculateMaxHP
                     player.maxHp = this.calculateMaxHP(player.class, level);
