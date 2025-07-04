@@ -122,22 +122,22 @@ export class CalculationEngine {
      * Calculate attack cooldown with bonuses applied
      * 
      * @param {number} baseCooldown - Base cooldown in milliseconds
-     * @param {number} cooldownBonus - Bonus reduction in milliseconds
+     * @param {number} cooldownBonus - Bonus (negative values reduce cooldown)
      * @returns {number} Final cooldown value
      */
     static calculateCooldown(baseCooldown, cooldownBonus = 0) {
-        return Math.max(100, baseCooldown - cooldownBonus); // Minimum 100ms cooldown
+        return Math.max(100, baseCooldown + cooldownBonus); // Minimum 100ms cooldown
     }
     
     /**
      * Calculate attack recovery with bonuses applied
      * 
      * @param {number} baseRecovery - Base recovery in milliseconds
-     * @param {number} recoveryBonus - Bonus reduction in milliseconds
+     * @param {number} recoveryBonus - Bonus (negative values reduce recovery)
      * @returns {number} Final recovery value
      */
     static calculateRecovery(baseRecovery, recoveryBonus = 0) {
-        return Math.max(50, baseRecovery - recoveryBonus); // Minimum 50ms recovery
+        return Math.max(50, baseRecovery + recoveryBonus); // Minimum 50ms recovery
     }
     
     /**
@@ -274,14 +274,18 @@ export class CalculationEngine {
                     break;
                 case 3:
                 case 7:
-                    player.attackRecoveryBonus += 25;
+                    player.attackRecoveryBonus -= 25; // Negative = reduction (faster recovery)
                     break;
                 case 4:
                 case 8:
-                    player.attackCooldownBonus += 100;
+                    player.attackCooldownBonus -= 100; // Negative = reduction (faster cooldown)
                     break;
                 case 5:
                     player.rollUnlocked = true;
+                    break;
+                case 9:
+                    // Level 9 gets moveSpeed bonus (same as levels 2 and 6)
+                    player.moveSpeedBonus += 0.25;
                     break;
                 case 10:
                     // Max HP bonus handled separately in calculateMaxHP
