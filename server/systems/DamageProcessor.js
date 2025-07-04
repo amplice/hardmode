@@ -158,10 +158,15 @@ export class DamageProcessor {
     }
 
     _handleMonsterDeath(monster, source) {
+        console.log(`[DamageProcessor] Monster death: ${monster.type} killed by source with class: ${source.class}`);
+        
         // Award XP if killed by player
         if (source.class !== undefined) { // It's a player (players have class field)
             const xpReward = this._getMonsterXpReward(monster.type);
-            source.xp = (source.xp || 0) + xpReward;
+            const oldXp = source.xp || 0;
+            source.xp = oldXp + xpReward;
+            
+            console.log(`[DamageProcessor] XP awarded: ${oldXp} + ${xpReward} = ${source.xp} for player ${source.id}`);
 
             // Check for level up
             this._checkPlayerLevelUp(source);
@@ -198,8 +203,11 @@ export class DamageProcessor {
     _checkPlayerLevelUp(player) {
         const previousLevel = player.level || 1;
         const xpForNextLevel = this._getXpForLevel(previousLevel + 1);
+        
+        console.log(`[DamageProcessor] Level check for ${player.id}: level=${previousLevel}, xp=${player.xp}, needed=${xpForNextLevel}`);
 
         if (player.xp >= xpForNextLevel && previousLevel < GAME_CONSTANTS.LEVELS.MAX_LEVEL) {
+            console.log(`[DamageProcessor] LEVEL UP! Player ${player.id} leveling from ${previousLevel} to ${previousLevel + 1}`);
             player.level = previousLevel + 1;
             
 
@@ -255,12 +263,21 @@ export class DamageProcessor {
                 rollUnlocked: player.rollUnlocked
             });
 
-            console.log(`Player ${player.id} leveled up to ${player.level}`);
+            console.log(`[DamageProcessor] Player ${player.id} leveled up to ${player.level} - event emitted`);
+        } else {
+            console.log(`[DamageProcessor] No level up for ${player.id}: needs ${xpForNextLevel - player.xp} more XP`);
         }
+    }
     }
 
     _getXpForLevel(level) {
-        // XP requirements from existing code
+        // Check if playtest mode is enabled for easy leveling
+        if (GAME_CONSTANTS.LEVELS.PLAYTEST_MODE) {
+            // In playtest mode, each level needs only 20 XP
+            return (level - 1) * GAME_CONSTANTS.LEVELS.PLAYTEST_XP_PER_LEVEL;
+        }
+        
+        // Normal XP requirements
         const xpTable = {
             1: 0,
             2: 100,
