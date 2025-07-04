@@ -268,7 +268,6 @@ export class DamageProcessor {
             console.log(`[DamageProcessor] No level up for ${player.id}: needs ${xpForNextLevel - player.xp} more XP`);
         }
     }
-    }
 
     _getXpForLevel(level) {
         // Check if playtest mode is enabled for easy leveling
