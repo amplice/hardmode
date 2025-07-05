@@ -179,8 +179,11 @@ export class Monster {
         // Handle animation completion based on state
         switch (this.state) {
             case 'stunned':
-                // For stunned, we can change locally since it's a client effect
-                this.changeState('idle');
+                // DON'T change state locally - server is authoritative for monster states
+                // Hold on last frame until server updates state
+                if (this.animatedSprite) {
+                    this.animatedSprite.gotoAndStop(this.animatedSprite.totalFrames - 1);
+                }
                 break;
                 
             case 'attacking':
