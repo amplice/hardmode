@@ -279,8 +279,8 @@ export class Monster {
     }
     
     update(deltaTime = 0) {
-        // In multiplayer, always trust server state - don't skip updates based on client-side alive flag
-        // The server is authoritative about whether the monster is alive or dead
+        // Don't do any updates if dead
+        if (!this.alive) return;
         
         // Smooth interpolation to target position (for network sync)
         this.position.x += (this.targetPosition.x - this.position.x) * this.interpolationSpeed;
