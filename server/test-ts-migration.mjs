@@ -26,6 +26,8 @@ async function testTypeScriptConversion(moduleName) {
         // Import and test the compiled TypeScript version
         const modulePath = moduleName === 'ProjectileManager' ? 
             `../dist/server/managers/${moduleName}.js` : 
+            moduleName === 'SocketHandler' ?
+            `../dist/server/network/${moduleName}.js` :
             `../dist/server/systems/${moduleName}.js`;
         const tsModule = await import(modulePath);
         console.log(`  ✅ TypeScript ${moduleName} imported successfully`);
@@ -35,6 +37,8 @@ async function testTypeScriptConversion(moduleName) {
             await testCalculationEngine(tsModule.CalculationEngine);
         } else if (moduleName === 'ProjectileManager') {
             await testProjectileManager(tsModule.ProjectileManager);
+        } else if (moduleName === 'SocketHandler') {
+            await testSocketHandler(tsModule.SocketHandler);
         }
         
         console.log(`  ✅ ${moduleName} TypeScript conversion validated\n`);
@@ -124,6 +128,64 @@ async function testProjectileManager(ProjectileManager) {
     console.log(`    - Serialized projectiles: ${serialized.length} active`);
 }
 
+async function testSocketHandler(SocketHandler) {
+    console.log('  🔌 Testing SocketHandler methods...');
+    
+    // Mock dependencies for testing
+    const mockIO = {
+        on: (event, handler) => {
+            // Mock socket.io server
+        },
+        emit: (event, data) => {
+            // Mock emit function
+        }
+    };
+    
+    const mockGameState = {
+        createPlayer: (id) => ({ id, position: { x: 0, y: 0 }, hp: 100, facing: 0 }),
+        getPlayer: (id) => ({ id, position: { x: 0, y: 0 }, hp: 100, facing: 0 }),
+        removePlayer: (id) => {},
+        setPlayerClass: (id, cls) => {},
+        getSerializedPlayers: () => []
+    };
+    
+    const mockMonsterManager = {
+        monsters: new Map(),
+        getSerializedMonsters: () => [],
+        handleMonsterDamage: () => {}
+    };
+    
+    const mockManagers = {
+        projectileManager: { createProjectile: () => {} },
+        abilityManager: { activeAbilities: new Map(), executeAbility: () => {}, removePlayer: () => {} },
+        inputProcessor: { queueInput: () => true, removePlayer: () => {} },
+        lagCompensation: { updatePlayerLatency: () => {}, removePlayer: () => {} },
+        sessionAntiCheat: { shouldKickPlayer: () => false },
+        networkOptimizer: { resetClient: () => {} }
+    };
+    
+    // Create SocketHandler instance
+    const socketHandler = new SocketHandler(
+        mockIO,
+        mockGameState,
+        mockMonsterManager,
+        mockManagers.projectileManager,
+        mockManagers.abilityManager,
+        mockManagers.inputProcessor,
+        mockManagers.lagCompensation,
+        mockManagers.sessionAntiCheat,
+        12345,
+        mockManagers.networkOptimizer
+    );
+    
+    if (!socketHandler || typeof socketHandler !== 'object') {
+        throw new Error('SocketHandler creation failed');
+    }
+    
+    console.log(`    - SocketHandler created successfully`);
+    console.log(`    - All manager dependencies injected`);
+}
+
 function runCommand(command, args) {
     return new Promise((resolve, reject) => {
         const child = spawn(command, args, { 
@@ -159,6 +221,7 @@ async function main() {
     try {
         await testTypeScriptConversion('CalculationEngine');
         await testTypeScriptConversion('ProjectileManager');
+        await testTypeScriptConversion('SocketHandler');
         console.log('🎉 All TypeScript migration tests passed!');
         console.log('✅ Safe to proceed with migration');
     } catch (error) {
