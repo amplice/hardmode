@@ -335,6 +335,8 @@ export class NetworkOptimizer {
             // Note: 'state' not included as player animations are client-side only
             return [
                 'id',          // Entity identification
+                'x',           // X position - CRITICAL for movement sync
+                'y',           // Y position - CRITICAL for movement sync
                 'hp',          // Health for UI and death detection
                 'facing',      // Direction for rendering and combat
                 'class',       // Character class (note: serialized as 'class' not 'type')
@@ -349,6 +351,8 @@ export class NetworkOptimizer {
             // Note: 'damage' removed as it's not serialized (server-authoritative)
             return [
                 'id',          // Entity identification
+                'x',           // X position - CRITICAL for visual sync
+                'y',           // Y position - CRITICAL for visual sync
                 'state',       // AI state (idle/chasing/attacking)
                 'hp',          // Health for UI and death detection
                 'facing',      // Direction for rendering
