@@ -243,7 +243,13 @@ export class NetworkOptimizer {
 
         // Process monster updates with distance-based priority and delta compression
         const monsterUpdates = [];
-        for (const [id, monster] of monsters) {
+        
+        // Handle both Map (legacy) and Array (serialized) formats
+        const monsterIterator = Array.isArray(monsters) ? 
+            monsters.map(m => [m.id, m]) : // Array format: [id, monster]
+            monsters; // Map format: [id, monster] from Map.entries()
+            
+        for (const [id, monster] of monsterIterator) {
             const distance = this.getDistance(viewerPosition, monster);
             
             // Skip very distant monsters

@@ -146,13 +146,14 @@ setInterval(() => {
             
             // Step 1: Get authoritative serialized state with client prediction data
             const serializedPlayers = gameState.getSerializedPlayers(inputProcessor);
+            const serializedMonsters = monsterManager.getSerializedMonsters(visibleMonsters);
             
             // Step 2: NetworkOptimizer compares current vs last-sent per this client
             // Creates deltas containing only changed fields + critical stability fields
             const optimizedState = networkOptimizer.optimizeStateUpdate(
                 socketId,
                 serializedPlayers,
-                visibleMonsters,
+                serializedMonsters,
                 player
             );
             
