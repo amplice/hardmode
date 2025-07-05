@@ -24,12 +24,17 @@ async function testTypeScriptConversion(moduleName) {
         }
         
         // Import and test the compiled TypeScript version
-        const tsModule = await import(`../dist/server/systems/${moduleName}.js`);
+        const modulePath = moduleName === 'ProjectileManager' ? 
+            `../dist/server/managers/${moduleName}.js` : 
+            `../dist/server/systems/${moduleName}.js`;
+        const tsModule = await import(modulePath);
         console.log(`  ✅ TypeScript ${moduleName} imported successfully`);
         
         // Run basic functionality tests
         if (moduleName === 'CalculationEngine') {
             await testCalculationEngine(tsModule.CalculationEngine);
+        } else if (moduleName === 'ProjectileManager') {
+            await testProjectileManager(tsModule.ProjectileManager);
         }
         
         console.log(`  ✅ ${moduleName} TypeScript conversion validated\n`);
@@ -72,6 +77,53 @@ async function testCalculationEngine(CalculationEngine) {
     console.log(`    - HP calculations: ${hp1}, ${hp2}`);
 }
 
+async function testProjectileManager(ProjectileManager) {
+    console.log('  🎯 Testing ProjectileManager methods...');
+    
+    // Mock SocketIO for testing
+    const mockIO = {
+        emit: (event, data) => {
+            // Mock emit function for testing
+        }
+    };
+    
+    // Create ProjectileManager instance
+    const projectileManager = new ProjectileManager(mockIO);
+    
+    // Test projectile creation
+    const owner = { id: 'player1', class: 'hunter' };
+    const projectileData = {
+        x: 100,
+        y: 100,
+        angle: 0,
+        speed: 600,
+        damage: 10,
+        range: 400
+    };
+    
+    const projectile = projectileManager.createProjectile(owner, projectileData);
+    
+    if (!projectile || typeof projectile !== 'object') {
+        throw new Error('Projectile creation failed');
+    }
+    
+    if (projectile.x !== 100 || projectile.y !== 100) {
+        throw new Error('Projectile position incorrect');
+    }
+    
+    // Test serialization
+    const serialized = projectileManager.getSerializedProjectiles();
+    if (!Array.isArray(serialized)) {
+        throw new Error('Serialization failed');
+    }
+    
+    // Test cleanup function
+    projectileManager.cleanup();
+    
+    console.log(`    - Projectile creation: ${projectile.id} at (${projectile.x}, ${projectile.y})`);
+    console.log(`    - Serialized projectiles: ${serialized.length} active`);
+}
+
 function runCommand(command, args) {
     return new Promise((resolve, reject) => {
         const child = spawn(command, args, { 
@@ -106,6 +158,7 @@ function runCommand(command, args) {
 async function main() {
     try {
         await testTypeScriptConversion('CalculationEngine');
+        await testTypeScriptConversion('ProjectileManager');
         console.log('🎉 All TypeScript migration tests passed!');
         console.log('✅ Safe to proceed with migration');
     } catch (error) {

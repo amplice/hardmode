@@ -112,6 +112,14 @@ export class NetworkOptimizer {
 
         // DELTA UPDATE PATH: Compare with last-sent state
         const lastState = this.lastSentState.get(stateKey);
+        
+        // Ensure lastState is an object - defensive programming
+        if (!lastState || typeof lastState !== 'object') {
+            console.warn(`[NetworkOptimizer] Invalid lastState for ${stateKey}, forcing full update`);
+            this.lastSentState.set(stateKey, JSON.parse(JSON.stringify(currentState)));
+            return { id: entityId, _updateType: 'full', ...currentState };
+        }
+        
         const delta = { id: entityId, _updateType: 'delta' };
         let hasChanges = false;
 
@@ -255,8 +263,14 @@ export class NetworkOptimizer {
     }
 
     getDistance(a, b) {
-        const dx = a.x - b.x;
-        const dy = a.y - b.y;
+        // Handle both legacy (x,y) and TypeScript (position.x, position.y) formats
+        const aX = a.x !== undefined ? a.x : (a.position ? a.position.x : 0);
+        const aY = a.y !== undefined ? a.y : (a.position ? a.position.y : 0);
+        const bX = b.x !== undefined ? b.x : (b.position ? b.position.x : 0);
+        const bY = b.y !== undefined ? b.y : (b.position ? b.position.y : 0);
+        
+        const dx = aX - bX;
+        const dy = aY - bY;
         return Math.sqrt(dx * dx + dy * dy);
     }
 
