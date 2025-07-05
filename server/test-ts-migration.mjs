@@ -26,7 +26,7 @@ async function testTypeScriptConversion(moduleName) {
         // Import and test the compiled TypeScript version
         const modulePath = moduleName === 'ProjectileManager' ? 
             `../dist/server/managers/${moduleName}.js` : 
-            moduleName === 'SocketHandler' ?
+            (moduleName === 'SocketHandler' || moduleName === 'NetworkOptimizer') ?
             `../dist/server/network/${moduleName}.js` :
             `../dist/server/systems/${moduleName}.js`;
         const tsModule = await import(modulePath);
@@ -39,6 +39,8 @@ async function testTypeScriptConversion(moduleName) {
             await testProjectileManager(tsModule.ProjectileManager);
         } else if (moduleName === 'SocketHandler') {
             await testSocketHandler(tsModule.SocketHandler);
+        } else if (moduleName === 'NetworkOptimizer') {
+            await testNetworkOptimizer(tsModule.NetworkOptimizer);
         }
         
         console.log(`  ✅ ${moduleName} TypeScript conversion validated\n`);
@@ -186,6 +188,71 @@ async function testSocketHandler(SocketHandler) {
     console.log(`    - All manager dependencies injected`);
 }
 
+async function testNetworkOptimizer(NetworkOptimizer) {
+    console.log('  📡 Testing NetworkOptimizer methods...');
+    
+    // Create NetworkOptimizer instance
+    const networkOptimizer = new NetworkOptimizer();
+    
+    if (!networkOptimizer || typeof networkOptimizer !== 'object') {
+        throw new Error('NetworkOptimizer creation failed');
+    }
+    
+    // Test delta update creation
+    const mockPlayer = {
+        id: 'player1',
+        x: 100,
+        y: 100,
+        hp: 100,
+        facing: 0,
+        class: 'hunter',
+        level: 1,
+        moveSpeedBonus: 0,
+        attackRecoveryBonus: 0,
+        attackCooldownBonus: 0,
+        rollUnlocked: false
+    };
+    
+    // First update should be full
+    const fullUpdate = networkOptimizer.createDeltaUpdate('client1', 'player_player1', mockPlayer, false);
+    if (!fullUpdate || fullUpdate._updateType !== 'full') {
+        throw new Error('Full update creation failed');
+    }
+    
+    // Second update should be delta
+    const deltaUpdate = networkOptimizer.createDeltaUpdate('client1', 'player_player1', mockPlayer, false);
+    if (!deltaUpdate || deltaUpdate._updateType !== 'delta') {
+        throw new Error('Delta update creation failed');
+    }
+    
+    // Test critical fields
+    const criticalFields = networkOptimizer.getCriticalFields('player_player1');
+    if (!Array.isArray(criticalFields) || !criticalFields.includes('x') || !criticalFields.includes('y')) {
+        throw new Error('Critical fields test failed');
+    }
+    
+    // Test distance calculation with coordinate compatibility
+    const distance = networkOptimizer.getDistance(
+        { x: 0, y: 0 },
+        { position: { x: 3, y: 4 } }
+    );
+    if (Math.abs(distance - 5) > 0.01) { // Should be 5 (3-4-5 triangle)
+        throw new Error('Distance calculation failed');
+    }
+    
+    // Test network stats
+    const stats = networkOptimizer.getNetworkStats();
+    if (typeof stats.trackedEntities !== 'number') {
+        throw new Error('Network stats failed');
+    }
+    
+    console.log(`    - Full update: ${fullUpdate._updateType}`);
+    console.log(`    - Delta update: ${deltaUpdate._updateType}`);
+    console.log(`    - Critical fields: ${criticalFields.length} for players`);
+    console.log(`    - Distance calculation: ${distance.toFixed(1)}`);
+    console.log(`    - Tracked entities: ${stats.trackedEntities}`);
+}
+
 function runCommand(command, args) {
     return new Promise((resolve, reject) => {
         const child = spawn(command, args, { 
@@ -222,6 +289,7 @@ async function main() {
         await testTypeScriptConversion('CalculationEngine');
         await testTypeScriptConversion('ProjectileManager');
         await testTypeScriptConversion('SocketHandler');
+        await testTypeScriptConversion('NetworkOptimizer');
         console.log('🎉 All TypeScript migration tests passed!');
         console.log('✅ Safe to proceed with migration');
     } catch (error) {
