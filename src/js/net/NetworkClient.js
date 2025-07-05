@@ -230,7 +230,8 @@ export class NetworkClient {
         this.socket.on('monsterDamaged', (data) => {
             const monster = this.game.remoteMonsters?.get(data.monsterId);
             if (monster) {
-                monster.hp = data.hp;
+                // Update HP but don't modify other state - server is authoritative
+                monster.hitPoints = data.hp;
                 monster.showDamageEffect?.();
                 
                 // Show damage number if we attacked it
@@ -238,12 +239,9 @@ export class NetworkClient {
                     this.game.showDamageNumber?.(monster.position, data.damage);
                 }
                 
-                // If monster was stunned, show visual feedback
-                if (data.stunned) {
-                    // Monster stunned by hit
-                    // Trigger stun animation
-                    monster.changeState('stunned');
-                }
+                // Don't change state client-side - the server will send the state update
+                // The stunned state will come through the normal state update pipeline
+                // This prevents client-server state desync
             }
         });
 

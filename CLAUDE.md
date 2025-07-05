@@ -274,6 +274,7 @@ export class WorldGenerator {
 3. **Monster damage applies 0.36s stun** matching animation timing
 4. **Critical fields always included** in deltas to prevent undefined errors
 5. **Pathfinding uses 500-step BFS limit** with line-of-sight optimization
+6. **Monster client-side state sync fixed** - Removed client-side state changes that conflicted with server authority
 
 ## 🔗 **INTEGRATION POINTS**
 

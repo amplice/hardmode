@@ -276,8 +276,8 @@ export class Monster {
     }
     
     update(deltaTime = 0) {
-        // Don't do any updates if dead
-        if (!this.alive) return;
+        // In multiplayer, always trust server state - don't skip updates based on client-side alive flag
+        // The server is authoritative about whether the monster is alive or dead
         
         // Smooth interpolation to target position (for network sync)
         this.position.x += (this.targetPosition.x - this.position.x) * this.interpolationSpeed;
@@ -298,6 +298,16 @@ export class Monster {
         // Update health
         this.hitPoints = data.hp;
         this.maxHitPoints = data.maxHp;
+        
+        // Server is authoritative - update alive status based on HP
+        // This ensures client-side alive flag stays in sync with server
+        if (this.hitPoints > 0 && !this.alive) {
+            // Monster was revived or client was out of sync
+            this.alive = true;
+        } else if (this.hitPoints <= 0 && this.alive) {
+            // Monster died but client didn't know
+            this.alive = false;
+        }
         
         // Prevent facing changes from restarting attack animations
         const wasAttacking = this.state === 'attacking';
