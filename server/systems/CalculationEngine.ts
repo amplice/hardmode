@@ -262,7 +262,7 @@ export class CalculationEngine {
      * @param oldLevel - Previous level
      * @param newLevel - New level
      */
-    static applyLevelBonuses(player: PlayerState, oldLevel: number, newLevel: number): void {
+    static applyLevelBonuses(player: any, oldLevel: number, newLevel: number): void {
         // Validate inputs
         if (!player || typeof oldLevel !== 'number' || typeof newLevel !== 'number') {
             console.warn('[CalculationEngine] Invalid inputs to applyLevelBonuses');
@@ -298,7 +298,7 @@ export class CalculationEngine {
                     break;
                 case 10:
                     // Max HP bonus handled separately in calculateMaxHP
-                    player.maxHp = this.calculateMaxHP(player.characterClass, level);
+                    player.maxHp = this.calculateMaxHP(player.class, level);
                     player.hp = player.maxHp; // Full heal at level 10
                     break;
             }
