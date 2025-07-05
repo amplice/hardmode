@@ -259,7 +259,7 @@ export function createInputCommand(options: any): any {
 /**
  * Validation helpers for existing objects
  */
-export function validatePlayerState(playerState: any): void {
+export function validatePlayerState(playerState: any): boolean {
     const required = ['id', 'position', 'facing', 'characterClass', 'level', 'experience', 
                      'hp', 'maxHp', 'moveSpeed', 'moveSpeedBonus', 'attackRecoveryBonus', 
                      'attackCooldownBonus', 'rollUnlocked', 'isAttacking', 'isDead'];
@@ -273,7 +273,7 @@ export function validatePlayerState(playerState: any): void {
     return true;
 }
 
-export function validateMonsterState(monsterState: any): void {
+export function validateMonsterState(monsterState: any): boolean {
     const required = ['id', 'type', 'x', 'y', 'facing', 'hp', 'maxHp', 'state', 
                      'lastAttackTime', 'damage', 'attackRange', 'aggroRange', 'moveSpeed'];
     

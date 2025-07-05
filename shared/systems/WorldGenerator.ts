@@ -81,7 +81,7 @@ export class SharedWorldGenerator {
         return {
             elevationData,
             biomeData,
-            stairsData: this.stairsData
+            stairsData: this.stairsData!
         };
     }
 
@@ -91,9 +91,9 @@ export class SharedWorldGenerator {
      */
     generateElevationData() {
         // Initialize elevation data
-        const elevationData = [];
+        const elevationData: number[][] = [];
         for (let y = 0; y < this.height; y++) {
-            elevationData[y] = [];
+            elevationData[y] = [] as number[];
             for (let x = 0; x < this.width; x++) {
                 elevationData[y][x] = 0;
             }
@@ -116,9 +116,9 @@ export class SharedWorldGenerator {
      * Returns 2D array with 0 = green grass, 1 = dark grass
      */
     generateBiomeData() {
-        const biomeData = [];
+        const biomeData: number[][] = [];
         for (let y = 0; y < this.height; y++) {
-            biomeData[y] = [];
+            biomeData[y] = [] as number[];
             for (let x = 0; x < this.width; x++) {
                 biomeData[y][x] = 0; // Default to green grass
             }
@@ -317,7 +317,7 @@ export class SharedWorldGenerator {
         console.log(`[SharedWorldGenerator] Final elevated tiles with biome buffers: ${elevatedCount}`);
     }
 
-    generatePlateauCandidates(elevationData) {
+    generatePlateauCandidates(elevationData: number[][]): void {
         // Create fewer but much larger plateaus 
         const plateauCount = 2 + Math.floor(this.random() * 2); // 2-3 large plateaus
         
@@ -391,12 +391,13 @@ export class SharedWorldGenerator {
         }
     }
 
-    floodFillRegion(elevationData, visited, startX, startY) {
+    floodFillRegion(elevationData: number[][], visited: boolean[][], startX: number, startY: number): Vector2D[] {
         const region = [];
         const stack = [{ x: startX, y: startY }];
         
         while (stack.length > 0) {
-            const { x, y } = stack.pop();
+            const point = stack.pop()!;
+            const { x, y } = point;
             
             if (x < 0 || x >= this.width || y < 0 || y >= this.height) continue;
             if (visited[y][x] || elevationData[y][x] === 0) continue;
@@ -414,7 +415,7 @@ export class SharedWorldGenerator {
         return region;
     }
 
-    finalCleanup(elevationData) {
+    finalCleanup(elevationData: number[][]): void {
         console.log("Running final cleanup to remove isolated tiles and single protrusions...");
         let cleanedCount = 0;
         
@@ -447,11 +448,11 @@ export class SharedWorldGenerator {
      * Generate stairs data that both client and server can use
      * This ensures stairs are placed identically on both sides
      */
-    generateStairsData(elevationData) {
+    generateStairsData(elevationData: number[][]): void {
         // Initialize stairs data
-        this.stairsData = [];
+        this.stairsData = [] as any[][];
         for (let y = 0; y < this.height; y++) {
-            this.stairsData[y] = [];
+            this.stairsData[y] = [] as any[];
             for (let x = 0; x < this.width; x++) {
                 this.stairsData[y][x] = null;
             }
@@ -467,9 +468,9 @@ export class SharedWorldGenerator {
         }
     }
 
-    findAllPlateaus(elevationData) {
-        const visited = [];
-        const plateaus = [];
+    findAllPlateaus(elevationData: number[][]): Vector2D[][] {
+        const visited: boolean[][] = [];
+        const plateaus: Vector2D[][] = [];
         
         // Initialize visited array
         for (let y = 0; y < this.height; y++) {
@@ -491,13 +492,14 @@ export class SharedWorldGenerator {
         return plateaus;
     }
 
-    floodFillPlateau(elevationData, startX, startY, visited) {
+    floodFillPlateau(elevationData: number[][], startX: number, startY: number, visited: boolean[][]): Vector2D[] {
         const plateau = [];
         const queue = [{x: startX, y: startY}];
         visited[startY][startX] = true;
         
         while (queue.length > 0) {
-            const {x, y} = queue.shift();
+            const point = queue.shift()!;
+            const {x, y} = point;
             plateau.push({x, y});
             
             // Check 4-connected neighbors
@@ -520,7 +522,7 @@ export class SharedWorldGenerator {
         return plateau;
     }
 
-    placeStairsOnPlateau(elevationData, plateau, plateauIndex) {
+    placeStairsOnPlateau(elevationData: number[][], plateau: Vector2D[], plateauIndex: number): void {
         // Find all valid edge positions for stairs
         const edges = this.findPlateauEdges(elevationData, plateau);
         
