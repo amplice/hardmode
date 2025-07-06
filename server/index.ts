@@ -52,6 +52,23 @@ interface ExtendedSocketIO extends Server {
     projectileManager?: ProjectileManager;
 }
 
+// Temporary interface to resolve type compatibility until full migration
+interface CompatibleGameStateManager {
+    getPlayer(id: string): any;
+    getSerializedPlayers(inputProcessor?: any): any[];
+    [key: string]: any;
+}
+
+interface CompatibleAbilityManager {
+    activeAbilities?: any;
+    [key: string]: any;
+}
+
+interface CompatibleMonsterManager {
+    getSerializedMonsters(monsters: any): any[];
+    [key: string]: any;
+}
+
 // Use __dirname directly since we're in a TypeScript context
 const __dirname = process.cwd();
 
@@ -63,9 +80,20 @@ const io: ExtendedSocketIO = new Server(server);
 const PORT: number = parseInt(process.env.PORT || '3000', 10);
 
 // Serve static files - paths adjusted for TypeScript compilation to dist/
-app.use(express.static(path.join(__dirname, 'src')));
-app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
-app.use('/shared', express.static(path.join(__dirname, 'shared')));
+const staticPaths = {
+    src: path.join(__dirname, '..', '..', 'src'),
+    nodeModules: path.join(__dirname, '..', '..', 'node_modules'),
+    shared: path.join(__dirname, '..', '..', 'shared')
+};
+
+console.log('[Migration] Static file paths:');
+console.log(`  - src: ${staticPaths.src}`);
+console.log(`  - node_modules: ${staticPaths.nodeModules}`);
+console.log(`  - shared: ${staticPaths.shared}`);
+
+app.use(express.static(staticPaths.src));
+app.use('/node_modules', express.static(staticPaths.nodeModules));
+app.use('/shared', express.static(staticPaths.shared));
 
 // Generate server-authoritative world seed
 const SERVER_WORLD_SEED: number = Math.floor(Math.random() * 1000000);
@@ -75,8 +103,10 @@ console.log(`[Server] Generated world seed: ${SERVER_WORLD_SEED}`);
 (GAME_CONSTANTS.WORLD as any).SEED = SERVER_WORLD_SEED;
 
 // Initialize centralized world generation (SINGLE world generation for entire server)
+console.log('[Migration] Initializing ServerWorldManager...');
 const serverWorldManager = new ServerWorldManager(SERVER_WORLD_SEED);
 serverWorldManager.initialize();
+console.log('[Migration] ServerWorldManager initialized successfully');
 
 // Initialize game systems with shared world data
 const gameState = new GameStateManager(io);
