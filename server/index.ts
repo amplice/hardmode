@@ -25,7 +25,7 @@
  * Game systems run in specific order to prevent race conditions
  */
 
-import * as express from 'express';
+import express from 'express';
 import * as http from 'http';
 import { Server } from 'socket.io';
 import * as path from 'path';
@@ -56,7 +56,7 @@ interface ExtendedSocketIO extends Server {
 const __dirname = process.cwd();
 
 // Initialize server
-const app: express.Application = express();
+const app = express();
 const server = http.createServer(app);
 const io: ExtendedSocketIO = new Server(server);
 
@@ -85,9 +85,9 @@ const projectileManager = new ProjectileManager(io);
 const abilityManager = new AbilityManager(io, gameState, projectileManager);
 const lagCompensation = new LagCompensation();
 const sessionAntiCheat = new SessionAntiCheat(abilityManager as any);
-const inputProcessor = new InputProcessor(gameState, abilityManager, lagCompensation, sessionAntiCheat, serverWorldManager);
+const inputProcessor = new InputProcessor(gameState as any, abilityManager as any, lagCompensation as any, sessionAntiCheat as any, serverWorldManager);
 const networkOptimizer = new NetworkOptimizer();
-const socketHandler = new SocketHandler(io, gameState, monsterManager, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
+const socketHandler = new SocketHandler(io, gameState as any, monsterManager as any, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
 const damageProcessor = new DamageProcessor(gameState, monsterManager, socketHandler, io);
 
 // Spawn initial monsters for immediate stress testing
