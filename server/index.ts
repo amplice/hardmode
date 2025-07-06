@@ -29,6 +29,8 @@ import express from 'express';
 import * as http from 'http';
 import { Server } from 'socket.io';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 import { GAME_CONSTANTS } from '../shared/constants/GameConstants.js';
 import { GameStateManager } from './managers/GameStateManager.js';
@@ -69,8 +71,9 @@ interface CompatibleMonsterManager {
     [key: string]: any;
 }
 
-// Use __dirname directly since we're in a TypeScript context
-const __dirname = process.cwd();
+// Get proper __dirname for compiled TypeScript (will be in dist/server/)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Initialize server
 const app = express();
@@ -94,6 +97,11 @@ console.log(`  - shared: ${staticPaths.shared}`);
 app.use(express.static(staticPaths.src));
 app.use('/node_modules', express.static(staticPaths.nodeModules));
 app.use('/shared', express.static(staticPaths.shared));
+
+// Root route handler - serve index.html explicitly
+app.get('/', (req, res) => {
+    res.sendFile(path.join(staticPaths.src, 'index.html'));
+});
 
 // Generate server-authoritative world seed
 const SERVER_WORLD_SEED: number = Math.floor(Math.random() * 1000000);
