@@ -120,12 +120,12 @@ console.log('[Migration] ServerWorldManager initialized successfully');
 const gameState = new GameStateManager(io);
 const monsterManager = new MonsterManager(io, serverWorldManager);
 const projectileManager = new ProjectileManager(io);
-const abilityManager = new AbilityManager(io, gameState, projectileManager);
+const abilityManager = new AbilityManager(io, gameState as any, projectileManager);
 const lagCompensation = new LagCompensation();
 const sessionAntiCheat = new SessionAntiCheat(abilityManager as any);
-const inputProcessor = new InputProcessor(gameState as any, abilityManager as any, lagCompensation as any, sessionAntiCheat as any, serverWorldManager);
+const inputProcessor = new InputProcessor(gameState as any, abilityManager as any, lagCompensation as any, sessionAntiCheat as any, serverWorldManager as any);
 const networkOptimizer = new NetworkOptimizer();
-const socketHandler = new SocketHandler(io, gameState as any, monsterManager as any, projectileManager, abilityManager, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
+const socketHandler = new SocketHandler(io, gameState as any, monsterManager as any, projectileManager, abilityManager as any, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
 const damageProcessor = new DamageProcessor(gameState, monsterManager, socketHandler, io);
 
 // Spawn initial monsters for immediate stress testing
