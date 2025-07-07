@@ -10,7 +10,7 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "./dist/client",
-    "rootDir": "./src",
+    "rootDir": "./",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -36,7 +36,8 @@
   "include": [
     "src/js/**/*",
     "src/js/**/*.ts",
-    "src/js/**/*.tsx"
+    "src/js/**/*.tsx",
+    "shared/**/*"
   ],
   "exclude": [
     "node_modules",
