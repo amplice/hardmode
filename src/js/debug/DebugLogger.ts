@@ -50,44 +50,18 @@ interface GameState {
     asciiMap: string;
 }
 
-interface DebugEvent {
-    timestamp: number;
-    frame: number;
-    type: string;
-    message: string;
-    data?: any;
-}
-
-interface AutoDumpTriggers {
-    playerDeath: boolean;
-    attackLanded: boolean;
-    error: boolean;
-}
-
-// Minimal game interface to avoid circular dependencies
-interface GameInterface {
-    entities?: {
-        player?: any;
-    };
-    remotePlayers?: Map<string, any>;
-    remoteMonsters?: Map<string, any>;
-    systems?: {
-        combat?: {
-            projectiles?: any[];
-        };
-        world?: {
-            worldRenderer?: any;
-        };
-    };
-}
-
+// Debug logger for better feedback during development
 export class DebugLogger {
     private enabled: boolean;
     private stateHistory: GameState[];
-    private eventLog: DebugEvent[];
+    private eventLog: Array<{
+        timestamp: number;
+        frame: number;
+        type: string;
+        data: any;
+    }>;
     private maxHistorySize: number;
     private frameCount: number;
-    private autoDumpTriggers: AutoDumpTriggers;
 
     constructor() {
         this.enabled = true;
@@ -95,17 +69,26 @@ export class DebugLogger {
         this.eventLog = [];
         this.maxHistorySize = 100;
         this.frameCount = 0;
-        
-        // Auto-dump on certain events
-        this.autoDumpTriggers = {
-            playerDeath: true,
-            attackLanded: false,
-            error: true
-        };
     }
-    
-    captureGameState(game: GameInterface): GameState | undefined {
-        if (!this.enabled) return;
+
+    setupConsoleCommands(): void {
+        (window as any).debugDump = () => this.dumpDebugState();
+        (window as any).debugToggle = () => {
+            this.enabled = !this.enabled;
+            console.log(`Debug logging ${this.enabled ? 'enabled' : 'disabled'}`);
+        };
+        (window as any).debugClear = () => {
+            this.stateHistory = [];
+            this.eventLog = [];
+            this.frameCount = 0;
+            console.log('Debug history cleared');
+        };
+        
+        console.log('Debug commands available: debugDump(), debugToggle(), debugClear()');
+    }
+
+    captureGameState(game: any): GameState | null {
+        if (!this.enabled) return null;
         
         this.frameCount++;
         
@@ -114,7 +97,7 @@ export class DebugLogger {
             frame: this.frameCount,
             players: this.capturePlayerStates(game),
             monsters: this.captureMonsterStates(game),
-            projectiles: this.captureProjectiles(game),
+            projectiles: this.captureProjectileStates(game),
             asciiMap: this.generateAsciiMap(game)
         };
         
@@ -125,8 +108,8 @@ export class DebugLogger {
         
         return state;
     }
-    
-    private capturePlayerStates(game: GameInterface): PlayerState[] {
+
+    private capturePlayerStates(game: any): PlayerState[] {
         const players: PlayerState[] = [];
         
         // Local player
@@ -134,12 +117,12 @@ export class DebugLogger {
             const p = game.entities.player;
             players.push({
                 id: 'local',
-                class: p.characterClass || 'unknown',
-                pos: { x: Math.round(p.position?.x || 0), y: Math.round(p.position?.y || 0) },
+                class: p.characterClass,
+                pos: { x: Math.round(p.position.x), y: Math.round(p.position.y) },
                 hp: `${p.hitPoints || 0}/${p.maxHitPoints || 100}`,
-                state: this.getPlayerState(p),
+                state: p.isDead ? 'dead' : (p.isAttacking ? 'attacking' : 'alive'),
                 facing: p.facing || 'down',
-                velocity: { x: p.velocity?.x || 0, y: p.velocity?.y || 0 }
+                velocity: { x: Math.round((p.velocity?.x || 0) * 10) / 10, y: Math.round((p.velocity?.y || 0) * 10) / 10 }
             });
         }
         
@@ -148,174 +131,187 @@ export class DebugLogger {
             for (const [id, p] of game.remotePlayers) {
                 players.push({
                     id: id,
-                    class: p.characterClass || 'unknown',
-                    pos: { x: Math.round(p.position?.x || 0), y: Math.round(p.position?.y || 0) },
-                    hp: `${p.hitPoints || 0}/${p.maxHitPoints || 100}`,
-                    state: this.getPlayerState(p),
+                    class: p.characterClass,
+                    pos: { x: Math.round(p.position.x), y: Math.round(p.position.y) },
+                    hp: `${p.hp || 0}/${p.maxHp || 100}`,
+                    state: p.isDead ? 'dead' : (p.isAttacking ? 'attacking' : 'alive'),
                     facing: p.facing || 'down',
-                    velocity: { x: p.velocity?.x || 0, y: p.velocity?.y || 0 }
+                    velocity: { x: 0, y: 0 } // Remote players don't have local velocity
                 });
             }
         }
         
         return players;
     }
-    
-    private captureMonsterStates(game: GameInterface): MonsterState[] {
+
+    private captureMonsterStates(game: any): MonsterState[] {
         const monsters: MonsterState[] = [];
         
-        // Only server-controlled monsters now
-        if (game.remoteMonsters) {
-            for (const [id, m] of game.remoteMonsters) {
+        if (game.monsters) {
+            for (const [id, m] of game.monsters) {
                 monsters.push({
-                    type: m.type || 'unknown',
+                    type: m.type,
                     id: id,
-                    pos: { x: Math.round(m.position?.x || 0), y: Math.round(m.position?.y || 0) },
-                    hp: `${m.hitPoints || 0}/${m.maxHitPoints || 1}`,
-                    state: m.state || 'idle',
-                    target: m.target || 'none'
+                    pos: { x: Math.round(m.x), y: Math.round(m.y) },
+                    hp: `${m.hp || 0}/${m.maxHp || 100}`,
+                    state: m.state || 'unknown',
+                    target: m.targetPlayerId || 'none'
                 });
             }
         }
         
         return monsters;
     }
-    
-    private captureProjectiles(game: GameInterface): ProjectileState[] {
+
+    private captureProjectileStates(game: any): ProjectileState[] {
         const projectiles: ProjectileState[] = [];
         
         if (game.systems?.combat?.projectiles) {
             game.systems.combat.projectiles.forEach((p: any, i: number) => {
-                projectiles.push({
-                    id: i,
-                    owner: p.owner || 'unknown',
-                    pos: { x: Math.round(p.position?.x || 0), y: Math.round(p.position?.y || 0) },
-                    velocity: { x: p.velocity?.x || 0, y: p.velocity?.y || 0 }
-                });
+                if (p.active) {
+                    projectiles.push({
+                        id: i,
+                        owner: p.ownerId || 'unknown',
+                        pos: { x: Math.round(p.position.x), y: Math.round(p.position.y) },
+                        velocity: { x: Math.round(p.velocity.x * 10) / 10, y: Math.round(p.velocity.y * 10) / 10 }
+                    });
+                }
             });
         }
         
         return projectiles;
     }
-    
-    private getPlayerState(player: any): string {
-        if (player.isAttacking) return 'attacking';
-        if (player.isRolling) return 'rolling';
-        if (player.velocity && (player.velocity.x !== 0 || player.velocity.y !== 0)) return 'moving';
-        return 'idle';
-    }
-    
-    private generateAsciiMap(game: GameInterface): string {
-        // Simplified ASCII map generation
-        const mapSize = 20;
-        const tileSize = 64;
-        const grid: string[][] = [];
+
+    private generateAsciiMap(game: any): string {
+        if (!game.entities?.player) return 'No player data';
         
-        // Initialize grid
-        for (let y = 0; y < mapSize; y++) {
-            grid[y] = [];
-            for (let x = 0; x < mapSize; x++) {
-                grid[y][x] = '.';
-            }
+        const centerX = game.entities.player.position.x;
+        const centerY = game.entities.player.position.y;
+        const radius = 15;
+        const width = radius * 2;
+        const height = radius * 2;
+        
+        // Initialize map
+        const map: string[][] = [];
+        for (let y = 0; y < height; y++) {
+            map[y] = new Array(width).fill('·');
         }
         
-        // Mark player position
-        if (game.entities?.player) {
-            const p = game.entities.player;
-            const px = Math.floor((p.position?.x || 0) / tileSize);
-            const py = Math.floor((p.position?.y || 0) / tileSize);
-            if (px >= 0 && px < mapSize && py >= 0 && py < mapSize) {
-                grid[py][px] = 'P';
+        // Helper to place entities
+        const placeEntity = (worldX: number, worldY: number, char: string) => {
+            const mapX = Math.round(worldX - centerX + radius);
+            const mapY = Math.round(worldY - centerY + radius);
+            if (mapX >= 0 && mapX < width && mapY >= 0 && mapY < height) {
+                map[mapY][mapX] = char;
             }
-        }
-        
-        // Mark monsters
-        if (game.remoteMonsters) {
-            for (const [_, m] of game.remoteMonsters) {
-                const mx = Math.floor((m.position?.x || 0) / tileSize);
-                const my = Math.floor((m.position?.y || 0) / tileSize);
-                if (mx >= 0 && mx < mapSize && my >= 0 && my < mapSize) {
-                    grid[my][mx] = 'M';
-                }
-            }
-        }
-        
-        // Convert to string
-        return grid.map(row => row.join(' ')).join('\n');
-    }
-    
-    logEvent(type: string, message: string, data?: any): void {
-        if (!this.enabled) return;
-        
-        const event: DebugEvent = {
-            timestamp: Date.now(),
-            frame: this.frameCount,
-            type,
-            message,
-            data
         };
         
-        this.eventLog.push(event);
-        
-        // Check for auto-dump triggers
-        if ((type === 'playerDeath' && this.autoDumpTriggers.playerDeath) ||
-            (type === 'attackLanded' && this.autoDumpTriggers.attackLanded) ||
-            (type === 'error' && this.autoDumpTriggers.error)) {
-            this.dumpStateHistory();
+        // Place walls/terrain (if available)
+        if (game.systems?.collision) {
+            // This would need access to collision system data
         }
+        
+        // Place monsters
+        if (game.monsters) {
+            for (const m of game.monsters.values()) {
+                const char = m.type.charAt(0).toUpperCase();
+                placeEntity(m.x, m.y, char);
+            }
+        }
+        
+        // Place projectiles
+        if (game.systems?.combat?.projectiles) {
+            game.systems.combat.projectiles.forEach((p: any) => {
+                if (p.active) {
+                    placeEntity(p.position.x, p.position.y, '*');
+                }
+            });
+        }
+        
+        // Place remote players
+        if (game.remotePlayers) {
+            let remoteNum = 2;
+            for (const p of game.remotePlayers.values()) {
+                placeEntity(p.position.x, p.position.y, String(remoteNum));
+                remoteNum++;
+            }
+        }
+        
+        // Place local player (overwrites others)
+        placeEntity(centerX, centerY, '@');
+        
+        // Add border and legend
+        const border = '+' + '-'.repeat(width) + '+';
+        const legend = 'Legend: @ = You, 2-9 = Remote players, OGSE = Monsters, * = Projectiles, · = Empty';
+        
+        return [
+            border,
+            ...map.map(row => '|' + row.join('') + '|'),
+            border,
+            legend
+        ].join('\n');
     }
     
-    dumpStateHistory(): void {
-        console.log('=== DEBUG STATE DUMP ===');
-        console.log(`Total frames: ${this.frameCount}`);
-        console.log(`History size: ${this.stateHistory.length}`);
-        console.log(`Events logged: ${this.eventLog.length}`);
+    logEvent(eventType: string, data: any): void {
+        if (!this.enabled) return;
         
-        // Dump recent events
-        console.log('\n=== RECENT EVENTS ===');
-        const recentEvents = this.eventLog.slice(-10);
-        recentEvents.forEach(event => {
-            console.log(`[${event.frame}] ${event.type}: ${event.message}`);
-            if (event.data) {
-                console.log('  Data:', event.data);
-            }
+        this.eventLog.push({
+            timestamp: Date.now(),
+            frame: this.frameCount,
+            type: eventType,
+            data: data
         });
         
-        // Dump last game state
-        if (this.stateHistory.length > 0) {
-            const lastState = this.stateHistory[this.stateHistory.length - 1];
-            console.log('\n=== LAST GAME STATE ===');
-            console.log(`Frame: ${lastState.frame}`);
-            console.log(`Players: ${lastState.players.length}`);
-            lastState.players.forEach(p => {
-                console.log(`  ${p.id} (${p.class}): ${p.pos.x},${p.pos.y} HP:${p.hp} State:${p.state}`);
-            });
-            console.log(`Monsters: ${lastState.monsters.length}`);
-            console.log(`Projectiles: ${lastState.projectiles.length}`);
-            console.log('\nASCII Map:');
-            console.log(lastState.asciiMap);
+        // Keep event log size reasonable
+        if (this.eventLog.length > 500) {
+            this.eventLog.splice(0, 100);
+        }
+        
+        // Check for auto-dump triggers
+        if (eventType === 'player_death' || eventType === 'error') {
+            console.log(`[DebugLogger] Auto-dumping state due to ${eventType}`);
+            this.dumpDebugState();
         }
     }
     
-    setEnabled(enabled: boolean): void {
-        this.enabled = enabled;
-    }
-    
-    getEnabled(): boolean {
-        return this.enabled;
-    }
-    
-    clearHistory(): void {
-        this.stateHistory = [];
-        this.eventLog = [];
-        this.frameCount = 0;
-    }
-    
-    getStateHistory(): GameState[] {
-        return [...this.stateHistory];
-    }
-    
-    getEventLog(): DebugEvent[] {
-        return [...this.eventLog];
+    dumpDebugState(): void {
+        console.log('=== DEBUG STATE DUMP ===');
+        console.log(`Captured ${this.stateHistory.length} frames, ${this.eventLog.length} events`);
+        
+        if (this.stateHistory.length > 0) {
+            const latest = this.stateHistory[this.stateHistory.length - 1];
+            console.log('\n=== LATEST GAME STATE ===');
+            console.log(`Frame ${latest.frame} at ${new Date(latest.timestamp).toISOString()}`);
+            console.log(`Players: ${latest.players.length}, Monsters: ${latest.monsters.length}, Projectiles: ${latest.projectiles.length}`);
+            
+            console.log('\n=== PLAYERS ===');
+            latest.players.forEach(p => {
+                console.log(`${p.id} (${p.class}): pos(${p.pos.x},${p.pos.y}) hp:${p.hp} ${p.state} facing:${p.facing} vel(${p.velocity.x},${p.velocity.y})`);
+            });
+            
+            console.log('\n=== MONSTERS ===');
+            latest.monsters.forEach(m => {
+                console.log(`${m.id} (${m.type}): pos(${m.pos.x},${m.pos.y}) hp:${m.hp} ${m.state} target:${m.target}`);
+            });
+            
+            if (latest.projectiles.length > 0) {
+                console.log('\n=== PROJECTILES ===');
+                latest.projectiles.forEach(p => {
+                    console.log(`${p.id} (${p.owner}): pos(${p.pos.x},${p.pos.y}) vel(${p.velocity.x},${p.velocity.y})`);
+                });
+            }
+            
+            console.log('\n=== ASCII MAP ===');
+            console.log(latest.asciiMap);
+        }
+        
+        if (this.eventLog.length > 0) {
+            console.log('\n=== RECENT EVENTS ===');
+            this.eventLog.slice(-10).forEach(e => {
+                console.log(`[${e.frame}] ${e.type}:`, e.data);
+            });
+        }
+        
+        console.log('\n=== END DEBUG DUMP ===');
     }
 }

@@ -400,6 +400,11 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
   }
   
   createHitbox(position, facing, type, params, visualConfig) {
+    // Handle null hitbox type (for movement abilities like roll that don't deal damage)
+    if (type === null || type === undefined) {
+      return null;
+    }
+    
     switch (type) {
       case 'rectangle': return new RectangleHitbox(position, facing, params, visualConfig);
       case 'cone': return new ConeHitbox(position, facing, params, visualConfig);
