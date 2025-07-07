@@ -105,6 +105,16 @@ interface PlayerAttackConfig {
   };
 }
 
+interface EffectConfig {
+  scale: number;
+  offsetDistance: number;
+  rotationOffset: number;
+  animationSpeed: number;
+  followDuration: number;
+  flipX: boolean;
+  flipY: boolean;
+}
+
 // Monster configuration with proper typing
 export const MONSTER_CONFIG = {
   // Base stats for each monster type
@@ -551,13 +561,116 @@ export const PLAYER_CONFIG = {
       },
       effectSequence: [
         { 
-          type: 'hunter_backroll_effect', 
+          type: 'hunter_cone_effect', 
           timing: 450,
           useStartPosition: false
         }
       ],
       actionPointDelay: 300
     } as PlayerAttackConfig
+  },
+
+  // Effects configuration for combat visual effects
+  effects: {
+    slash_effect: {
+      scale: 1.5,
+      offsetDistance: 60, // Default offset if not overridden in effectSequence
+      rotationOffset: 0 * Math.PI / 4,
+      animationSpeed: 0.5,
+      followDuration: 0,
+      flipX: false,
+      flipY: true 
+    },
+    strike_windup: {
+      scale: 1.5,
+      offsetDistance: 10,
+      rotationOffset: 0,
+      animationSpeed: 0.4,
+      followDuration: 0,
+      flipX: false,
+      flipY: false 
+    },
+    strike_cast: { // This effect appears at an offset
+      scale: 1.3,
+      offsetDistance: 70,
+      rotationOffset: 2 * Math.PI / 4,
+      animationSpeed: 0.4,
+      followDuration: 0,
+      flipX: false,
+      flipY: false 
+    },
+    guardian_slash_effect: {
+      scale: 2,
+      offsetDistance: 70,
+      rotationOffset: 2 * Math.PI /4 ,
+      animationSpeed: 0.6,
+      followDuration: 0,
+      flipX: true,
+      flipY: true
+    },
+    guardian_jump_effect: { // Appears at player's current position during jump
+      scale: 3.5,
+      offsetDistance: 0, 
+      rotationOffset: 0 * Math.PI / 4,
+      animationSpeed: 0.5,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    rogue_thrust_effect: {
+      scale: 1.8,
+      offsetDistance: 50,
+      rotationOffset: -1 * Math.PI / 4,
+      animationSpeed: 0.4,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    rogue_dash_effect: { // Appears at player's current position during dash
+      scale: 1.0,
+      offsetDistance: 0,
+      rotationOffset: 1 * Math.PI / 4,
+      animationSpeed: 0.8,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    bow_shot_effect: { // Projectile visual / launch effect
+      scale: 1.0,
+      offsetDistance: 30, // Offset from player at launch
+      rotationOffset: 0 * Math.PI / 4, // Adjust as needed for sprite orientation
+      animationSpeed: 0.3,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    wildarcher_shot_effect: {
+      scale: 1.0,
+      offsetDistance: 30,
+      rotationOffset: 0,
+      animationSpeed: 0.3,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    hunter_cone_effect: { // For Retreat Shot
+      scale: 1.5,
+      offsetDistance: 0, // To be used with useStartPosition:true and distance:0 in sequence
+      rotationOffset: 1 * Math.PI / 4,
+      animationSpeed: 0.4,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    level_up_effect: {
+      scale: 1.5,
+      offsetDistance: 0, // Center on player
+      rotationOffset: 0,
+      animationSpeed: 0.2,
+      followDuration: 1000,
+      flipX: false,
+      flipY: false
+    }
   }
 } as const;
 
