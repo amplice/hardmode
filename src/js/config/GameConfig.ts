@@ -81,8 +81,12 @@ interface PlayerAttackConfig {
   cooldown: number;
   dashDuration?: number;
   dashDistance?: number;
+  jumpDuration?: number;
+  jumpHeight?: number;
+  backwardJump?: boolean;
+  attackFromStartPosition?: boolean;
   invulnerable?: boolean;
-  hitboxType?: string;
+  hitboxType?: string | null;
   hitboxParams?: any;
   hitboxVisual?: {
     color: number;
@@ -437,7 +441,7 @@ export const PLAYER_CONFIG = {
       archetype: 'jump_attack',
       damage: 2,
       windupTime: 150,
-      dashDuration: 325, // jumpDuration
+      jumpDuration: 325,
       recoveryTime: 200,
       cooldown: 1250,
       dashDistance: 200,
@@ -543,30 +547,49 @@ export const PLAYER_CONFIG = {
       archetype: 'jump_attack',
       damage: 2,
       windupTime: 150,
-      dashDuration: 300, // jumpDuration
+      jumpDuration: 300,
       recoveryTime: 200,
       cooldown: 800,
       dashDistance: 200,
+      jumpHeight: 50,
+      backwardJump: true,
+      attackFromStartPosition: true,
       invulnerable: true,
-      hitboxType: 'circle',
+      hitboxType: 'cone',
       hitboxParams: {
-        radius: 50
+        range: 90,
+        angle: 70
       },
       hitboxVisual: {
-        color: 0x00FF00,
-        fillAlpha: 0.0,
+        color: 0x2ECC71,
+        fillAlpha: 0.5,
         lineAlpha: 0.0,
         lineWidth: 3,
-        duration: 0.2
+        duration: 0.25
       },
       effectSequence: [
         { 
           type: 'hunter_cone_effect', 
-          timing: 450,
-          useStartPosition: false
+          timing: 250,
+          useStartPosition: true
         }
       ],
-      actionPointDelay: 300
+      actionPointDelay: 50
+    } as PlayerAttackConfig,
+    roll: {
+      name: "Roll",
+      archetype: 'dash_attack',
+      damage: 0,
+      windupTime: 50,
+      dashDuration: 300,
+      recoveryTime: 150,
+      cooldown: 1000,
+      dashDistance: 150,
+      invulnerable: false,
+      hitboxType: null,
+      hitboxParams: null,
+      hitboxVisual: { color: 0xffffff, fillAlpha: 0.0, lineAlpha: 0.0, lineWidth: 0, duration: 0.1 },
+      effectSequence: []
     } as PlayerAttackConfig
   },
 
