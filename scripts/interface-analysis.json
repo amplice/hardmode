@@ -1,0 +1,41 @@
+{
+  "timestamp": "2025-07-07T15:58:52.715Z",
+  "interfaces": {},
+  "analysisResults": {
+    "config/GameConfig.js": {
+      "exports": [],
+      "methods": [],
+      "constructors": []
+    },
+    "utils/DirectionUtils.js": {
+      "exports": [],
+      "methods": [],
+      "constructors": []
+    },
+    "entities/Player.js": {
+      "exports": [],
+      "methods": [],
+      "constructors": []
+    },
+    "systems/Input.js": {
+      "exports": [],
+      "methods": [],
+      "constructors": []
+    },
+    "systems/animation/SpriteManager.js": {
+      "exports": [],
+      "methods": [],
+      "constructors": []
+    },
+    "net/NetworkClient.js": {
+      "exports": [],
+      "methods": [],
+      "constructors": []
+    },
+    "core/Game.js": {
+      "exports": [],
+      "methods": [],
+      "constructors": []
+    }
+  }
+}

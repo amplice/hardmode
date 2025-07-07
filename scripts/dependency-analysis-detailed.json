@@ -1,0 +1,1086 @@
+{
+  "summary": {
+    "totalFiles": 34,
+    "totalDependencies": 42,
+    "circularDependencies": 0,
+    "timestamp": "2025-07-07T15:55:50.655Z"
+  },
+  "files": {
+    "config/GameConfig.js": {
+      "lines": 533,
+      "imports": [],
+      "exports": [
+        {
+          "type": "const",
+          "name": "MONSTER_CONFIG",
+          "line": "export const MONSTER_CONFIG = {"
+        },
+        {
+          "type": "const",
+          "name": "PLAYER_CONFIG",
+          "line": "export const PLAYER_CONFIG = {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "entities/Player.js",
+        "entities/monsters/Monster.js",
+        "systems/CombatSystem.js",
+        "systems/MonsterSystem.js",
+        "systems/animation/SpriteManager.js",
+        "ui/ClassSelectUI.js",
+        "ui/StatsUI.js"
+      ]
+    },
+    "core/Game.js": {
+      "lines": 692,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { Player }         from '../entities/Player.js'",
+          "path": "entities/Player.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { InputSystem }    from '../systems/Input.js'",
+          "path": "systems/Input.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { InputBuffer }    from '../systems/InputBuffer.js'",
+          "path": "systems/InputBuffer.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { MovementPredictor } from '../systems/MovementPredictor.js'",
+          "path": "systems/MovementPredictor.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { Reconciler } from '../systems/Reconciler.js'",
+          "path": "systems/Reconciler.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { PhysicsSystem }  from '../systems/Physics.js'",
+          "path": "systems/Physics.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { ClientWorldRenderer } from '../systems/world/ClientWorldRenderer.js'",
+          "path": "systems/world/ClientWorldRenderer.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js'",
+          "path": "../shared/systems/WorldGenerator.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { CombatSystem }   from '../systems/CombatSystem.js'",
+          "path": "systems/CombatSystem.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { MonsterSystem }  from '../systems/MonsterSystem.js'",
+          "path": "systems/MonsterSystem.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { Monster } from '../entities/monsters/Monster.js'",
+          "path": "entities/monsters/Monster.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { SpriteManager }  from '../systems/animation/SpriteManager.js'",
+          "path": "systems/animation/SpriteManager.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { TilesetManager } from '../systems/tiles/TilesetManager.js'",
+          "path": "systems/tiles/TilesetManager.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { HealthUI } from '../ui/HealthUI.js'",
+          "path": "ui/HealthUI.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { StatsUI } from '../ui/StatsUI.js'",
+          "path": "ui/StatsUI.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { ClassSelectUI } from '../ui/ClassSelectUI.js'",
+          "path": "ui/ClassSelectUI.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { NetworkClient } from '../net/NetworkClient.js'",
+          "path": "net/NetworkClient.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { LatencyTracker } from '../systems/LatencyTracker.js'",
+          "path": "systems/LatencyTracker.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { ProjectileRenderer } from '../systems/ProjectileRenderer.js'",
+          "path": "systems/ProjectileRenderer.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js'",
+          "path": "../../shared/constants/GameConstants.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { velocityToDirectionString } from '../utils/DirectionUtils.js'",
+          "path": "utils/DirectionUtils.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { DebugLogger } from '../debug/DebugLogger.js'",
+          "path": "debug/DebugLogger.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "Game",
+          "line": "export class Game {"
+        }
+      ],
+      "dependencies": [
+        "entities/Player.js",
+        "systems/Input.js",
+        "systems/InputBuffer.js",
+        "systems/MovementPredictor.js",
+        "systems/Reconciler.js",
+        "systems/Physics.js",
+        "systems/world/ClientWorldRenderer.js",
+        "systems/CombatSystem.js",
+        "systems/MonsterSystem.js",
+        "entities/monsters/Monster.js",
+        "systems/animation/SpriteManager.js",
+        "systems/tiles/TilesetManager.js",
+        "ui/HealthUI.js",
+        "ui/StatsUI.js",
+        "ui/ClassSelectUI.js",
+        "net/NetworkClient.js",
+        "systems/LatencyTracker.js",
+        "systems/ProjectileRenderer.js",
+        "utils/DirectionUtils.js",
+        "debug/DebugLogger.js"
+      ],
+      "dependents": [
+        "main.js"
+      ]
+    },
+    "debug/DebugLogger.js": {
+      "lines": 394,
+      "imports": [],
+      "exports": [
+        {
+          "type": "class",
+          "name": "DebugLogger",
+          "line": "export class DebugLogger {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "entities/Player.js": {
+      "lines": 1093,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js'",
+          "path": "config/GameConfig.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { createPlayerState, validatePlayerState } from '../../../shared/factories/EntityFactories.js'",
+          "path": "../../shared/factories/EntityFactories.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "Player",
+          "line": "export class Player {"
+        }
+      ],
+      "dependencies": [
+        "config/GameConfig.js"
+      ],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "entities/Projectile.js": {
+      "lines": 106,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "Projectile",
+          "line": "export class Projectile {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": []
+    },
+    "entities/monsters/Monster.js": {
+      "lines": 630,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { MONSTER_CONFIG } from '../../config/GameConfig.js'",
+          "path": "config/GameConfig.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { MONSTER_STATS } from '../../../../shared/constants/GameConstants.js'",
+          "path": "../../shared/constants/GameConstants.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { bfsPath, hasLineOfSight } from '../../utils/Pathfinding.js'",
+          "path": "utils/Pathfinding.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "Monster",
+          "line": "export class Monster {"
+        }
+      ],
+      "dependencies": [
+        "config/GameConfig.js",
+        "utils/Pathfinding.js"
+      ],
+      "dependents": [
+        "core/Game.js",
+        "systems/MonsterSystem.js"
+      ]
+    },
+    "main.js": {
+      "lines": 85,
+      "imports": [
+        {
+          "original": "import { Game } from './core/Game.js'",
+          "path": "core/Game.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [],
+      "dependencies": [
+        "core/Game.js"
+      ],
+      "dependents": []
+    },
+    "net/NetworkClient.js": {
+      "lines": 644,
+      "imports": [
+        {
+          "original": "import { StateCache } from './StateCache.js'",
+          "path": "net/StateCache.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "NetworkClient",
+          "line": "export class NetworkClient {"
+        }
+      ],
+      "dependencies": [
+        "net/StateCache.js"
+      ],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "net/StateCache.js": {
+      "lines": 168,
+      "imports": [],
+      "exports": [
+        {
+          "type": "class",
+          "name": "StateCache",
+          "line": "export class StateCache {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "net/NetworkClient.js"
+      ]
+    },
+    "network/StateReconciler.js": {
+      "lines": 88,
+      "imports": [],
+      "exports": [
+        {
+          "type": "class",
+          "name": "StateReconciler",
+          "line": "export class StateReconciler {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": []
+    },
+    "systems/CombatSystem.js": {
+      "lines": 570,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { PLAYER_CONFIG } from '../config/GameConfig.js'",
+          "path": "config/GameConfig.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "CombatSystem",
+          "line": "export class CombatSystem {"
+        }
+      ],
+      "dependencies": [
+        "config/GameConfig.js"
+      ],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/Input.js": {
+      "lines": 86,
+      "imports": [],
+      "exports": [
+        {
+          "type": "class",
+          "name": "InputSystem",
+          "line": "export class InputSystem {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/InputBuffer.js": {
+      "lines": 195,
+      "imports": [],
+      "exports": [
+        {
+          "type": "class",
+          "name": "InputBuffer",
+          "line": "export class InputBuffer {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/LatencyTracker.js": {
+      "lines": 376,
+      "imports": [],
+      "exports": [
+        {
+          "type": "class",
+          "name": "LatencyTracker",
+          "line": "export class LatencyTracker {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/MonsterSystem.js": {
+      "lines": 133,
+      "imports": [
+        {
+          "original": "import { Monster } from '../entities/monsters/Monster.js'",
+          "path": "entities/monsters/Monster.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { MONSTER_CONFIG } from '../config/GameConfig.js'",
+          "path": "config/GameConfig.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "MonsterSystem",
+          "line": "export class MonsterSystem {"
+        }
+      ],
+      "dependencies": [
+        "entities/monsters/Monster.js",
+        "config/GameConfig.js"
+      ],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/MovementPredictor.js": {
+      "lines": 393,
+      "imports": [
+        {
+          "original": "import { directionStringToAngleRadians } from '../utils/DirectionUtils.js'",
+          "path": "utils/DirectionUtils.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "MovementPredictor",
+          "line": "export class MovementPredictor {"
+        }
+      ],
+      "dependencies": [
+        "utils/DirectionUtils.js"
+      ],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/Physics.js": {
+      "lines": 139,
+      "imports": [],
+      "exports": [
+        {
+          "type": "class",
+          "name": "PhysicsSystem",
+          "line": "export class PhysicsSystem {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/ProjectileRenderer.js": {
+      "lines": 141,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "ProjectileRenderer",
+          "line": "export class ProjectileRenderer {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/Reconciler.js": {
+      "lines": 263,
+      "imports": [],
+      "exports": [
+        {
+          "type": "class",
+          "name": "Reconciler",
+          "line": "export class Reconciler {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/animation/SpriteManager.js": {
+      "lines": 516,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { PLAYER_CONFIG, MONSTER_CONFIG } from '../../config/GameConfig.js'",
+          "path": "config/GameConfig.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { directionStringToAnimationSuffix } from '../../utils/DirectionUtils.js'",
+          "path": "utils/DirectionUtils.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "SpriteManager",
+          "line": "export class SpriteManager {"
+        }
+      ],
+      "dependencies": [
+        "config/GameConfig.js",
+        "utils/DirectionUtils.js"
+      ],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/tiles/CliffAutotiler.js": {
+      "lines": 539,
+      "imports": [
+        {
+          "original": "import { GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js'",
+          "path": "../../shared/constants/GameConstants.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "CliffAutotiler",
+          "line": "export class CliffAutotiler {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "systems/world/WorldGenerator.js"
+      ]
+    },
+    "systems/tiles/CliffAutotilerNew.js": {
+      "lines": 411,
+      "imports": [
+        {
+          "original": "import { GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js'",
+          "path": "../../shared/constants/GameConstants.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "CliffAutotiler",
+          "line": "export class CliffAutotiler {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "systems/world/ClientWorldRenderer.js"
+      ]
+    },
+    "systems/tiles/DecorationManager.js": {
+      "lines": 92,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "DecorationManager",
+          "line": "export class DecorationManager {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "systems/world/ClientWorldRenderer.js",
+        "systems/world/WorldGenerator.js"
+      ]
+    },
+    "systems/tiles/TilesetManager.js": {
+      "lines": 340,
+      "imports": [
+        {
+          "original": "import { Assets, Texture, Rectangle } from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js'",
+          "path": "../shared/constants/GameConstants.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "TilesetManager",
+          "line": "export class TilesetManager {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/world/ChunkedWorldRenderer.js": {
+      "lines": 315,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "ChunkedWorldRenderer",
+          "line": "export class ChunkedWorldRenderer {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "systems/world/ClientWorldRenderer.js"
+      ]
+    },
+    "systems/world/ClientWorldRenderer.js": {
+      "lines": 694,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { Tile } from './Tile.js'",
+          "path": "systems/world/Tile.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { createNoise2D } from 'simplex-noise'",
+          "path": "simplex-noise",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { DecorationManager } from '../tiles/DecorationManager.js'",
+          "path": "systems/tiles/DecorationManager.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { createSeededRandom } from '../../utils/Random.js'",
+          "path": "utils/Random.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { CliffAutotiler } from '../tiles/CliffAutotilerNew.js'",
+          "path": "systems/tiles/CliffAutotilerNew.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { CollisionMask } from '../../../shared/systems/CollisionMask.js'",
+          "path": "../shared/systems/CollisionMask.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { SharedWorldGenerator } from '../../../shared/systems/WorldGenerator.js'",
+          "path": "../shared/systems/WorldGenerator.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { ChunkedWorldRenderer } from './ChunkedWorldRenderer.js'",
+          "path": "systems/world/ChunkedWorldRenderer.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "ClientWorldRenderer",
+          "line": "export class ClientWorldRenderer {"
+        }
+      ],
+      "dependencies": [
+        "systems/world/Tile.js",
+        "systems/tiles/DecorationManager.js",
+        "utils/Random.js",
+        "systems/tiles/CliffAutotilerNew.js",
+        "systems/world/ChunkedWorldRenderer.js"
+      ],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "systems/world/Tile.js": {
+      "lines": 170,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "Tile",
+          "line": "export class Tile {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "systems/world/ClientWorldRenderer.js",
+        "systems/world/WorldGenerator.js"
+      ]
+    },
+    "systems/world/WorldGenerator.js": {
+      "lines": 688,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { Tile } from './Tile.js'",
+          "path": "systems/world/Tile.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { createNoise2D } from 'simplex-noise'",
+          "path": "simplex-noise",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { DecorationManager } from '../tiles/DecorationManager.js'",
+          "path": "systems/tiles/DecorationManager.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { createSeededRandom } from '../../utils/Random.js'",
+          "path": "utils/Random.js",
+          "isRelative": true,
+          "isExternal": false
+        },
+        {
+          "original": "import { CliffAutotiler } from '../tiles/CliffAutotiler.js'",
+          "path": "systems/tiles/CliffAutotiler.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "WorldGenerator",
+          "line": "export class WorldGenerator {"
+        }
+      ],
+      "dependencies": [
+        "systems/world/Tile.js",
+        "systems/tiles/DecorationManager.js",
+        "utils/Random.js",
+        "systems/tiles/CliffAutotiler.js"
+      ],
+      "dependents": []
+    },
+    "ui/ClassSelectUI.js": {
+      "lines": 402,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { PLAYER_CONFIG } from '../config/GameConfig.js'",
+          "path": "config/GameConfig.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "ClassSelectUI",
+          "line": "export class ClassSelectUI {"
+        }
+      ],
+      "dependencies": [
+        "config/GameConfig.js"
+      ],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "ui/HealthUI.js": {
+      "lines": 64,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "HealthUI",
+          "line": "export class HealthUI {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "ui/StatsUI.js": {
+      "lines": 86,
+      "imports": [
+        {
+          "original": "import * as PIXI from 'pixi.js'",
+          "path": "pixi.js",
+          "isRelative": false,
+          "isExternal": true
+        },
+        {
+          "original": "import { PLAYER_CONFIG } from '../config/GameConfig.js'",
+          "path": "config/GameConfig.js",
+          "isRelative": true,
+          "isExternal": false
+        }
+      ],
+      "exports": [
+        {
+          "type": "class",
+          "name": "StatsUI",
+          "line": "export class StatsUI {"
+        }
+      ],
+      "dependencies": [
+        "config/GameConfig.js"
+      ],
+      "dependents": [
+        "core/Game.js"
+      ]
+    },
+    "utils/DirectionUtils.js": {
+      "lines": 120,
+      "imports": [],
+      "exports": [
+        {
+          "type": "const",
+          "name": "EIGHT_WAY_DIRECTIONS",
+          "line": "export const EIGHT_WAY_DIRECTIONS = ['right', 'down-right', 'down', 'down-left', 'left', 'up-left', 'up', 'up-right'];"
+        },
+        {
+          "type": "function",
+          "name": "angleToDirectionString",
+          "line": "export function angleToDirectionString(angleInDegrees) {"
+        },
+        {
+          "type": "function",
+          "name": "directionStringToAngleRadians",
+          "line": "export function directionStringToAngleRadians(directionString) {"
+        },
+        {
+          "type": "function",
+          "name": "directionStringToAngleDegrees",
+          "line": "export function directionStringToAngleDegrees(directionString) {"
+        },
+        {
+          "type": "function",
+          "name": "directionStringToVector",
+          "line": "export function directionStringToVector(directionString) {"
+        },
+        {
+          "type": "function",
+          "name": "directionStringToAnimationSuffix",
+          "line": "export function directionStringToAnimationSuffix(directionString) {"
+        },
+        {
+          "type": "function",
+          "name": "velocityToDirectionString",
+          "line": "export function velocityToDirectionString(vx, vy) {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "core/Game.js",
+        "systems/MovementPredictor.js",
+        "systems/animation/SpriteManager.js"
+      ]
+    },
+    "utils/Pathfinding.js": {
+      "lines": 57,
+      "imports": [],
+      "exports": [
+        {
+          "type": "function",
+          "name": "bfsPath",
+          "line": "export function bfsPath(world, start, goal, maxSteps = 500) {"
+        },
+        {
+          "type": "function",
+          "name": "hasLineOfSight",
+          "line": "export function hasLineOfSight(world, start, goal) {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "entities/monsters/Monster.js"
+      ]
+    },
+    "utils/Random.js": {
+      "lines": 9,
+      "imports": [],
+      "exports": [
+        {
+          "type": "function",
+          "name": "createSeededRandom",
+          "line": "export function createSeededRandom(seed) {"
+        }
+      ],
+      "dependencies": [],
+      "dependents": [
+        "systems/world/ClientWorldRenderer.js",
+        "systems/world/WorldGenerator.js"
+      ]
+    }
+  },
+  "conversionOrder": [
+    "config/GameConfig.js",
+    "debug/DebugLogger.js",
+    "entities/Projectile.js",
+    "net/StateCache.js",
+    "network/StateReconciler.js",
+    "systems/Input.js",
+    "systems/InputBuffer.js",
+    "systems/LatencyTracker.js",
+    "systems/Physics.js",
+    "systems/ProjectileRenderer.js",
+    "systems/Reconciler.js",
+    "systems/tiles/CliffAutotiler.js",
+    "systems/tiles/CliffAutotilerNew.js",
+    "systems/tiles/DecorationManager.js",
+    "systems/tiles/TilesetManager.js",
+    "systems/world/ChunkedWorldRenderer.js",
+    "systems/world/Tile.js",
+    "ui/HealthUI.js",
+    "utils/DirectionUtils.js",
+    "utils/Pathfinding.js",
+    "utils/Random.js",
+    "entities/Player.js",
+    "systems/CombatSystem.js",
+    "ui/ClassSelectUI.js",
+    "ui/StatsUI.js",
+    "net/NetworkClient.js",
+    "systems/MovementPredictor.js",
+    "systems/animation/SpriteManager.js",
+    "entities/monsters/Monster.js",
+    "systems/world/ClientWorldRenderer.js",
+    "systems/world/WorldGenerator.js",
+    "systems/MonsterSystem.js",
+    "core/Game.js",
+    "main.js"
+  ],
+  "circularDependencies": []
+}
