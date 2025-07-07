@@ -6,8 +6,11 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "build": "tsc",
-    "dev": "tsc && node dist/server/index.js",
+    "build": "npm run build:server && npm run build:client",
+    "build:server": "tsc",
+    "build:client": "tsc -p tsconfig.client.json",
+    "dev": "npm run build && node dist/server/index.js",
+    "dev:server": "tsc && node dist/server/index.js",
     "start": "node dist/server/index.js"
   },
   "keywords": [],

@@ -85,15 +85,21 @@ const PORT: number = parseInt(process.env.PORT || '3000', 10);
 // Serve static files - paths adjusted for TypeScript compilation to dist/
 const staticPaths = {
     src: path.join(__dirname, '..', '..', 'src'),
+    compiledSrc: path.join(__dirname, '..', '..', 'dist', 'client', 'src'),
     nodeModules: path.join(__dirname, '..', '..', 'node_modules'),
     shared: path.join(__dirname, '..', '..', 'shared')
 };
 
 console.log('[Migration] Static file paths:');
 console.log(`  - src: ${staticPaths.src}`);
+console.log(`  - compiledSrc: ${staticPaths.compiledSrc}`);
 console.log(`  - node_modules: ${staticPaths.nodeModules}`);
 console.log(`  - shared: ${staticPaths.shared}`);
 
+// CRITICAL: Serve compiled JavaScript files first (takes precedence)
+app.use('/js', express.static(path.join(staticPaths.compiledSrc, 'js')));
+
+// Then serve original source files
 app.use(express.static(staticPaths.src));
 app.use('/node_modules', express.static(staticPaths.nodeModules));
 app.use('/shared', express.static(staticPaths.shared));
