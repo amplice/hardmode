@@ -6,8 +6,8 @@
  */
 
 // Import PIXI types
-import type { PIXIContainer, PIXIAnimatedSprite, PIXIGraphics } from './pixi-extensions.js';
-export type { PIXIContainer, PIXIAnimatedSprite, PIXIGraphics } from './pixi-extensions.js';
+import type { PIXIContainer, PIXIAnimatedSprite, PIXIGraphics, PIXIApplication } from './pixi-extensions.js';
+export type { PIXIContainer, PIXIAnimatedSprite, PIXIGraphics, PIXIApplication } from './pixi-extensions.js';
 
 // InputSystem return type - VERIFIED in Phase 1.2
 export interface InputState {
@@ -315,4 +315,80 @@ export interface WorldData {
     height: number;
     tileSize: number;
     seed: number;
+}
+
+// Combat System interfaces
+export interface HitboxParams {
+    width?: number;
+    length?: number;
+    radius?: number;
+    angle?: number;
+}
+
+export interface HitboxVisualConfig {
+    color: number;
+    fillAlpha: number;
+    lineAlpha: number;
+    lineWidth: number;
+    duration: number;
+}
+
+export interface AttackConfig {
+    name: string;
+    archetype: string;
+    damage: number;
+    windupTime: number;
+    dashDuration?: number;
+    jumpDuration?: number;
+    recoveryTime: number;
+    cooldown: number;
+    dashDistance?: number;
+    jumpDistance?: number;
+    invulnerable?: boolean;
+    hitboxType: string | null;
+    hitboxParams: HitboxParams | null;
+    hitboxVisual: HitboxVisualConfig;
+    effectSequence: EffectSequenceItem[];
+    projectileSpeed?: number;
+    projectileRange?: number;
+}
+
+export interface EffectSequenceItem {
+    type: string;
+    timing: number;
+    distance?: number;
+    useStartPosition?: boolean;
+}
+
+export interface EffectConfig {
+    scale?: number;
+    animationSpeed?: number;
+    offsetDistance?: number;
+    rotationOffset?: number;
+    flipX?: boolean;
+    flipY?: boolean;
+    followDuration?: number;
+}
+
+export interface ActiveAttack {
+    attacker: any; // Entity
+    hitbox: Hitbox | null;
+    config: AttackConfig;
+    lifetime: number;
+    hasHitFrameOccurred: boolean;
+    attackType?: string;
+    entity?: any;
+    damage?: number;
+}
+
+export interface Hitbox {
+    position: Position;
+    facing: string;
+    params: HitboxParams;
+    visualConfig: HitboxVisualConfig;
+    graphics: PIXIGraphics | null;
+    draw(): PIXIGraphics;
+    testHit(target: any, targetRadius?: number): boolean;
+    getFacingRadians(): number;
+    getFacingDegrees(): number;
 }

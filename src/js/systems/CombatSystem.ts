@@ -1,6 +1,12 @@
 /**
  * @fileoverview CombatSystem - Skill-based hitbox combat with visual feedback
  * 
+ * MIGRATION NOTES:
+ * - Converted from CombatSystem.js following CLIENT_TYPESCRIPT_MIGRATION_PLAN Phase 3, Round 4
+ * - Maintains 100% API compatibility with existing JavaScript callers
+ * - Added comprehensive type definitions for hitbox system and attack configuration
+ * - Preserved all combat mechanics and visual feedback systems
+ * 
  * ARCHITECTURE ROLE:
  * - Provides hitbox-based combat for player attacks and abilities
  * - Manages attack execution, hit detection, and damage application
@@ -41,52 +47,73 @@
  * - Hit detection optimized for common combat scenarios
  */
 
-// src/js/systems/CombatSystem.js
+// src/js/systems/CombatSystem.ts
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG } from '../config/GameConfig.js';
 import { 
     directionStringToAngleRadians, 
     directionStringToAngleDegrees 
 } from '../utils/DirectionUtils.js';
+import type {
+    Position,
+    Hitbox as IHitbox,
+    HitboxParams,
+    HitboxVisualConfig,
+    AttackConfig,
+    EffectConfig,
+    EffectSequenceItem,
+    ActiveAttack,
+    PIXIGraphics,
+    PIXIAnimatedSprite,
+    PIXIApplication
+} from '../types/index.js';
 
 // Base Hitbox class
-class Hitbox {
-  constructor(position, facing, params, visualConfig) {
+abstract class Hitbox implements IHitbox {
+  position: Position;
+  facing: string;
+  params: HitboxParams;
+  visualConfig: HitboxVisualConfig;
+  graphics: PIXIGraphics | null;
+  
+  constructor(position: Position, facing: string, params: HitboxParams, visualConfig: HitboxVisualConfig) {
     this.position = position;
     this.facing = facing;
     this.params = params;
     this.visualConfig = visualConfig;
     this.graphics = null;
   }
-  draw() { throw new Error("Method 'draw' must be implemented"); }
-  testHit(target, targetRadius = 0) { throw new Error("Method 'testHit' must be implemented"); }
-  getFacingRadians() { return directionStringToAngleRadians(this.facing); }
-  getFacingDegrees() { return directionStringToAngleDegrees(this.facing); }
+  
+  abstract draw(): PIXIGraphics;
+  abstract testHit(target: any, targetRadius?: number): boolean;
+  
+  getFacingRadians(): number { return directionStringToAngleRadians(this.facing); }
+  getFacingDegrees(): number { return directionStringToAngleDegrees(this.facing); }
 }
 
 // Rectangle hitbox implementation
 class RectangleHitbox extends Hitbox {
-  draw() {
+  draw(): PIXIGraphics {
     const graphics = new PIXI.Graphics();
     graphics.position.set(this.position.x, this.position.y);
     graphics.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
     graphics.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
-    graphics.drawRect(-this.params.width / 2, -this.params.length, this.params.width, this.params.length);
+    graphics.drawRect(-this.params.width! / 2, -this.params.length!, this.params.width!, this.params.length!);
     graphics.rotation = this.getFacingRadians() + Math.PI / 2;
     graphics.endFill();
     this.graphics = graphics;
     return graphics;
   }
-  testHit(target, targetRadius = 0) {
+  testHit(target: any, targetRadius: number = 0): boolean {
     const dx = target.position.x - this.position.x;
     const dy = target.position.y - this.position.y;
     const facingRadians = this.getFacingRadians() + Math.PI / 2;
     const rotX = dx * Math.cos(-facingRadians) - dy * Math.sin(-facingRadians);
     const rotY = dx * Math.sin(-facingRadians) + dy * Math.cos(-facingRadians);
     return (
-      rotX >= -this.params.width / 2 - targetRadius && 
-      rotX <= this.params.width / 2 + targetRadius && 
-      rotY >= -this.params.length - targetRadius && 
+      rotX >= -this.params.width! / 2 - targetRadius && 
+      rotX <= this.params.width! / 2 + targetRadius && 
+      rotY >= -this.params.length! - targetRadius && 
       rotY <= 0 + targetRadius
     );
   }
@@ -94,72 +121,76 @@ class RectangleHitbox extends Hitbox {
 
 // Cone hitbox implementation
 class ConeHitbox extends Hitbox {
-  draw() {
+  draw(): PIXIGraphics {
     const graphics = new PIXI.Graphics();
     graphics.position.set(this.position.x, this.position.y);
     const facingAngle = this.getFacingRadians();
-    const halfArcAngle = (this.params.angle / 2) * (Math.PI / 180);
+    const halfArcAngle = (this.params.angle! / 2) * (Math.PI / 180);
     const startAngle = facingAngle - halfArcAngle;
     const endAngle = facingAngle + halfArcAngle;
     graphics.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
     graphics.moveTo(0, 0);
-    graphics.arc(0, 0, this.params.range, startAngle, endAngle);
+    graphics.arc(0, 0, (this.params as any).range, startAngle, endAngle);
     graphics.lineTo(0, 0);
     graphics.endFill();
     graphics.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
-    graphics.arc(0, 0, this.params.range, startAngle, endAngle);
+    graphics.arc(0, 0, (this.params as any).range, startAngle, endAngle);
     graphics.moveTo(0, 0);
-    graphics.lineTo(Math.cos(startAngle) * this.params.range, Math.sin(startAngle) * this.params.range);
+    graphics.lineTo(Math.cos(startAngle) * (this.params as any).range, Math.sin(startAngle) * (this.params as any).range);
     graphics.moveTo(0, 0);
-    graphics.lineTo(Math.cos(endAngle) * this.params.range, Math.sin(endAngle) * this.params.range);
+    graphics.lineTo(Math.cos(endAngle) * (this.params as any).range, Math.sin(endAngle) * (this.params as any).range);
     this.graphics = graphics;
     return graphics;
   }
-  testHit(target, targetRadius = 0) {
+  testHit(target: any, targetRadius: number = 0): boolean {
     const dx = target.position.x - this.position.x;
     const dy = target.position.y - this.position.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
     const adjustedDistance = distance - targetRadius;
-    if (adjustedDistance > this.params.range) return false;
+    if (adjustedDistance > (this.params as any).range) return false;
     let angle = Math.atan2(dy, dx) * 180 / Math.PI;
     if (angle < 0) angle += 360;
     const facingAngle = this.getFacingDegrees();
     let angleDiff = Math.abs(angle - facingAngle);
     if (angleDiff > 180) angleDiff = 360 - angleDiff;
-    return angleDiff <= this.params.angle / 2;
+    return angleDiff <= this.params.angle! / 2;
   }
 }
 
 // Circle hitbox implementation
 class CircleHitbox extends Hitbox {
-  draw() {
+  draw(): PIXIGraphics {
     const graphics = new PIXI.Graphics();
     graphics.position.set(this.position.x, this.position.y);
     graphics.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
     graphics.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
-    graphics.drawCircle(0, 0, this.params.radius);
+    graphics.drawCircle(0, 0, this.params.radius!);
     graphics.endFill();
     this.graphics = graphics;
     return graphics;
   }
-  testHit(target, targetRadius = 0) {
+  testHit(target: any, targetRadius: number = 0): boolean {
     const dx = target.position.x - this.position.x;
     const dy = target.position.y - this.position.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    return distance <= this.params.radius + targetRadius;
+    return distance <= this.params.radius! + targetRadius;
   }
 }
 
 export class CombatSystem {
-  constructor(app) {
+  app: PIXIApplication;
+  activeAttacks: ActiveAttack[];
+  effectConfigs: Record<string, EffectConfig>;
+  
+  constructor(app: PIXIApplication) {
     this.app = app;
     this.activeAttacks = [];
     // Projectiles now handled server-side
-    this.effectConfigs = PLAYER_CONFIG.effects;
+    this.effectConfigs = (PLAYER_CONFIG as any).effects;
     // this.attackConfigs = PLAYER_CONFIG.attacks; // No longer needed if passed directly
   }
   
-  update(deltaTime) {
+  update(deltaTime: number): void {
     for (let i = this.activeAttacks.length - 1; i >= 0; i--) {
       const attack = this.activeAttacks[i];
       attack.lifetime -= deltaTime;
@@ -173,18 +204,18 @@ export class CombatSystem {
     this.updateProjectiles(deltaTime);
   }
   
-  updateProjectiles(deltaTime) {
+  updateProjectiles(deltaTime: number): void {
     // Projectiles are now handled server-side
     // Client just renders them via ProjectileRenderer
   }
 
-  createProjectile(x, y, angle, owner, options = {}) {
+  createProjectile(x: number, y: number, angle: number, owner: any, options: any = {}): void {
     // Creating projectile
     
     // Now we just request the server to create the projectile
-    if (window.game?.network) {
+    if ((window as any).game?.network) {
       // Phase 3.1: Damage removed - server calculates projectile damage
-      window.game.network.createProjectile({
+      (window as any).game.network.createProjectile({
         x,
         y,
         angle,
@@ -198,8 +229,8 @@ export class CombatSystem {
     // No local projectile creation anymore
   }
 
-  createProjectileVisualEffect(projectile, effectType, angle) {
-    const spriteManager = window.game.systems.sprites; // Consider alternative to window.game
+  createProjectileVisualEffect(projectile: any, effectType: string, angle: number): PIXIAnimatedSprite | null {
+    const spriteManager = (window as any).game.systems.sprites; // Consider alternative to (window as any).game
     const sprite = spriteManager.createAnimatedSprite(effectType);
     if (!sprite) {
         console.error(`CombatSystem: Failed to create effect ${effectType}`);
@@ -213,7 +244,7 @@ export class CombatSystem {
     return sprite;
   }
 
-  scheduleAllAttackEffects(entity, attackConfig, attackType) {
+  scheduleAllAttackEffects(entity: any, attackConfig: AttackConfig, attackType: string): void {
     if (!attackConfig.effectSequence || !Array.isArray(attackConfig.effectSequence)) {
         return;
     }
@@ -250,7 +281,7 @@ export class CombatSystem {
                 }
 
                 const effectDistance = effectParams.hasOwnProperty('distance')
-                                   ? effectParams.distance
+                                   ? effectParams.distance!
                                    : (baseEffectConfig.offsetDistance || 0);
 
                 const finalEffectPosition = this.calculateEffectPosition(
@@ -271,14 +302,14 @@ export class CombatSystem {
     });
   }
 
-  executeAttack(entity, attackType) {
+  executeAttack(entity: any, attackType: string): number {
     let attackConfig;
     const classSpecificAttackKey = `${entity.characterClass}_${attackType}`;
   
-    if (PLAYER_CONFIG.attacks[classSpecificAttackKey]) {
-      attackConfig = PLAYER_CONFIG.attacks[classSpecificAttackKey];
-    } else if (PLAYER_CONFIG.attacks[attackType]) { // Fallback to default attack type if class-specific doesn't exist
-      attackConfig = PLAYER_CONFIG.attacks[attackType];
+    if ((PLAYER_CONFIG as any).attacks[classSpecificAttackKey]) {
+      attackConfig = (PLAYER_CONFIG as any).attacks[classSpecificAttackKey];
+    } else if ((PLAYER_CONFIG as any).attacks[attackType]) { // Fallback to default attack type if class-specific doesn't exist
+      attackConfig = (PLAYER_CONFIG as any).attacks[attackType];
     } else {
       console.error(`CombatSystem: Attack type ${attackType} (or ${classSpecificAttackKey}) not configured for ${entity.characterClass}`);
       return 0; // No cooldown if attack not found
@@ -313,7 +344,7 @@ export class CombatSystem {
     // Cooldown is returned by individual _execute methods
   }
 
-  _executeStandardMeleeAttack(entity, attackConfig, attackType) {
+  _executeStandardMeleeAttack(entity: any, attackConfig: AttackConfig, attackType: string): number {
     setTimeout(() => {
       if (entity.isAttacking && entity.currentAttackType === attackType) {
         const hitbox = this.createHitbox(
@@ -322,10 +353,16 @@ export class CombatSystem {
         );
         if (hitbox) {
           const graphics = hitbox.draw();
-          window.game.entityContainer.addChild(graphics); // Consider alternative to window.game
+          (window as any).game.entityContainer.addChild(graphics); // Consider alternative to (window as any).game
           this.activeAttacks.push({
-            hitbox, lifetime: attackConfig.hitboxVisual.duration,
-            attackType, entity, damage: attackConfig.damage
+            attacker: entity,
+            hitbox,
+            config: attackConfig,
+            lifetime: attackConfig.hitboxVisual.duration,
+            hasHitFrameOccurred: false,
+            attackType,
+            entity,
+            damage: attackConfig.damage
           });
           this.applyHitEffects(entity, hitbox, attackConfig.damage);
         }
@@ -334,12 +371,12 @@ export class CombatSystem {
     return attackConfig.cooldown;
   }
 
-_executeProjectileAttack(entity, attackConfig, attackType) {
+_executeProjectileAttack(entity: any, attackConfig: AttackConfig, attackType: string): number {
     // For local player, send ability request to server
-    if (entity === window.game.entities.player) {
+    if (entity === (window as any).game.entities.player) {
         // For Hunter, include mouse angle for precise aiming
         if (entity.characterClass === 'hunter' && attackType === 'primary') {
-            const inputSystem = window.game?.systems?.input;
+            const inputSystem = (window as any).game?.systems?.input;
             if (inputSystem) {
                 const mousePosition = inputSystem.mouse.position;
                 const playerScreenX = window.innerWidth / 2;
@@ -349,13 +386,13 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
                 const angle = Math.atan2(dy, dx);
                 
                 // Send ability request with precise angle
-                window.game.network.sendAbilityRequest(attackType, { angle });
+                (window as any).game.network.sendAbilityRequest(attackType, { angle });
             } else {
                 // Fallback to regular ability request
-                window.game.network.sendAbilityRequest(attackType);
+                (window as any).game.network.sendAbilityRequest(attackType);
             }
         } else {
-            window.game.network.sendAbilityRequest(attackType);
+            (window as any).game.network.sendAbilityRequest(attackType);
         }
         
         // Clear attack state immediately for projectile attacks
@@ -373,10 +410,10 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     return attackConfig.cooldown;
   }
 
-  _executeJumpAttack(entity, attackConfig, attackType) {
+  _executeJumpAttack(entity: any, attackConfig: AttackConfig, attackType: string): number {
     // For local player, send ability request to server
-    if (entity === window.game.entities.player) {
-        window.game.network.sendAbilityRequest(attackType);
+    if (entity === (window as any).game.entities.player) {
+        (window as any).game.network.sendAbilityRequest(attackType);
         // Don't execute locally - wait for server response
         return attackConfig.cooldown;
     }
@@ -386,10 +423,10 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     return attackConfig.cooldown;
   }
 
-  _executeDashAttack(entity, attackConfig, attackType) {
+  _executeDashAttack(entity: any, attackConfig: AttackConfig, attackType: string): number {
     // For local player, send ability request to server
-    if (entity === window.game.entities.player) {
-        window.game.network.sendAbilityRequest(attackType);
+    if (entity === (window as any).game.entities.player) {
+        (window as any).game.network.sendAbilityRequest(attackType);
         // Don't execute locally - wait for server response
         return attackConfig.cooldown;
     }
@@ -399,21 +436,21 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     return attackConfig.cooldown;
   }
   
-  createHitbox(position, facing, type, params, visualConfig) {
+  createHitbox(position: Position, facing: string, type: string | null, params: HitboxParams | null, visualConfig: HitboxVisualConfig): Hitbox | null {
     // Handle null hitbox type (for movement abilities like roll that don't deal damage)
     if (type === null || type === undefined) {
       return null;
     }
     
     switch (type) {
-      case 'rectangle': return new RectangleHitbox(position, facing, params, visualConfig);
-      case 'cone': return new ConeHitbox(position, facing, params, visualConfig);
-      case 'circle': return new CircleHitbox(position, facing, params, visualConfig);
+      case 'rectangle': return new RectangleHitbox(position, facing, params!, visualConfig);
+      case 'cone': return new ConeHitbox(position, facing, params!, visualConfig);
+      case 'circle': return new CircleHitbox(position, facing, params!, visualConfig);
       default: console.error(`CombatSystem: Unknown hitbox type: ${type}`); return null;
     }
   }
   
-  applyHitEffects(entity, hitbox, damage) {
+  applyHitEffects(entity: any, hitbox: Hitbox | null, damage: number): void {
     if (!hitbox) return;
     
     // Ensure damage is a valid number (safety check for Phase 2.1 validation)
@@ -425,16 +462,16 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     // Check PvP damage against other players
     if (PLAYER_CONFIG.pvpEnabled) {
       // Check local player
-      if (window.game.entities.player && window.game.entities.player !== entity) {
-        const player = window.game.entities.player;
+      if ((window as any).game.entities.player && (window as any).game.entities.player !== entity) {
+        const player = (window as any).game.entities.player;
         if (hitbox.testHit(player, 20)) { // Player collision radius
           player.takeDamage(damage);
         }
       }
       
       // Check remote players
-      if (window.game.remotePlayers) {
-        for (const remotePlayer of window.game.remotePlayers.values()) {
+      if ((window as any).game.remotePlayers) {
+        for (const remotePlayer of (window as any).game.remotePlayers.values()) {
           if (remotePlayer !== entity && hitbox.testHit(remotePlayer, 20)) {
             // For now, just log it - actual damage will be handled server-side later
             // Would damage remote player (PvP disabled)
@@ -445,13 +482,13 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     
     // Check monster collisions (PvE always enabled)
     // Now using server-controlled monsters
-    if (window.game.remoteMonsters) {
-      for (const [id, monster] of window.game.remoteMonsters) {
+    if ((window as any).game.remoteMonsters) {
+      for (const [id, monster] of (window as any).game.remoteMonsters) {
         if (!monster.alive) continue;
         if (hitbox.testHit(monster, monster.collisionRadius || 20)) {
           // Send damage to server instead of applying directly
-          if (window.game.network) {
-            window.game.network.sendMonsterDamage(id, damage, entity.currentAttackType || 'primary');
+          if ((window as any).game.network) {
+            (window as any).game.network.sendMonsterDamage(id, damage, entity.currentAttackType || 'primary');
           }
           
           // Show immediate visual feedback
@@ -461,8 +498,8 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     }
   }
   
-  createEffect(effectType, position, facing, attacker = null, useRawPosition = false) {
-    const spriteManager = window.game.systems.sprites; // Consider alternative
+  createEffect(effectType: string, position: Position, facing: string, attacker: any = null, useRawPosition: boolean = false): PIXIAnimatedSprite | null {
+    const spriteManager = (window as any).game.systems.sprites; // Consider alternative
     const config = this.effectConfigs[effectType];
     if (!config) {
       console.error(`CombatSystem: Effect configuration not found for ${effectType}`);
@@ -474,7 +511,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
       return null;
     }
     
-    let finalPosition = useRawPosition ? { ...position } : this.calculateEffectPosition(position, facing, config.offsetDistance);
+    let finalPosition = useRawPosition ? { ...position } : this.calculateEffectPosition(position, facing, config.offsetDistance || 0);
     sprite.position.set(finalPosition.x, finalPosition.y);
     sprite.loop = false; // Most effects play once
     sprite.animationSpeed = config.animationSpeed || 0.2;
@@ -488,9 +525,9 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     sprite.rotation = this.calculateEffectRotation(facing, config.rotationOffset || 0);
     sprite.play();
     
-    window.game.entityContainer.addChild(sprite); // Consider alternative
+    (window as any).game.entityContainer.addChild(sprite); // Consider alternative
     
-    if (config.followDuration > 0 && attacker) {
+    if (config.followDuration && config.followDuration > 0 && attacker) {
       this.setupEffectFollowBehavior(sprite, attacker, config.followDuration);
     }
     
@@ -503,32 +540,32 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
   }
 
   // Method to create effects with custom angles (if still needed, or integrate into main createEffect/sequence)
-  createEffectWithAngle(effectType, position, facing, attacker = null, useRawPosition = false, offsetAngleDegrees = 0) {
-    const spriteManager = window.game.systems.sprites;
+  createEffectWithAngle(effectType: string, position: Position, facing: string, attacker: any = null, useRawPosition: boolean = false, offsetAngleDegrees: number = 0): PIXIAnimatedSprite | null {
+    const spriteManager = (window as any).game.systems.sprites;
     const config = this.effectConfigs[effectType];
     if (!config) { /* ... error ... */ return null; }
     const sprite = spriteManager.createAnimatedSprite(effectType);
     if (!sprite) { /* ... error ... */ return null; }
 
-    let finalPosition = useRawPosition ? { ...position } : this.calculateEffectPosition(position, facing, config.offsetDistance);
+    let finalPosition = useRawPosition ? { ...position } : this.calculateEffectPosition(position, facing, config.offsetDistance || 0);
     sprite.position.set(finalPosition.x, finalPosition.y);
     sprite.loop = false;
     sprite.animationSpeed = config.animationSpeed || 0.2;
 
-    let scaleX = config.scale; let scaleY = config.scale;
+    let scaleX = config.scale || 1.0; let scaleY = config.scale || 1.0;
     if (config.flipX) scaleX = -scaleX; if (config.flipY) scaleY = -scaleY;
     sprite.scale.set(scaleX, scaleY);
 
-    const baseRotation = this.calculateEffectRotation(facing, config.rotationOffset);
+    const baseRotation = this.calculateEffectRotation(facing, config.rotationOffset || 0);
     sprite.rotation = baseRotation + (offsetAngleDegrees * (Math.PI / 180)); // Add custom angle
 
     sprite.play();
-    window.game.entityContainer.addChild(sprite);
+    (window as any).game.entityContainer.addChild(sprite);
     sprite.onComplete = () => { if (sprite.parent) sprite.parent.removeChild(sprite); };
     return sprite;
   }
   
-  calculateEffectPosition(basePosition, facing, distance) {
+  calculateEffectPosition(basePosition: Position, facing: string, distance: number): Position {
     if (distance === 0) return { ...basePosition };
     const angle = directionStringToAngleRadians(facing);
     return {
@@ -537,7 +574,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     };
   }
 
-  calculateJumpDestination(position, facing, distance) {
+  calculateJumpDestination(position: Position, facing: string, distance: number): Position {
     const angle = directionStringToAngleRadians(facing);
     return {
       x: position.x + Math.cos(angle) * distance,
@@ -545,12 +582,12 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     };
   }
   
-  calculateEffectRotation(facing, baseRotationOffsetRadians) {
+  calculateEffectRotation(facing: string, baseRotationOffsetRadians: number): number {
     const facingAngleRadians = directionStringToAngleRadians(facing);
     return facingAngleRadians + baseRotationOffsetRadians;
   }
   
-  setupEffectFollowBehavior(sprite, target, duration) {
+  setupEffectFollowBehavior(sprite: PIXIAnimatedSprite, target: any, duration: number): void {
     // This implementation might need PIXI.Ticker for smoother follow if deltaTime is erratic
     let elapsedTime = 0;
     const initialOffset = {
@@ -559,7 +596,7 @@ _executeProjectileAttack(entity, attackConfig, attackType) {
     };
     const ticker = PIXI.Ticker.shared; // Or app.ticker
     
-    function followUpdate(deltaTime) {
+    function followUpdate(deltaTime: number): void {
         elapsedTime += ticker.deltaMS / 1000; // Convert ms to seconds
         if (elapsedTime < duration && sprite.parent && target.alive) { // Check sprite.parent and target.alive
             sprite.position.set(
