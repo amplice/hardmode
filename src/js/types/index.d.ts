@@ -156,6 +156,8 @@ export interface HealthComponent extends Component {
     takeDamage(amount: number): void;
     heal(amount: number): void;
     isDead(): boolean;
+    die(): void;
+    respawn(): void;
 }
 
 export interface StatsComponent extends Component {
@@ -240,6 +242,9 @@ export interface Player extends PlayerState {
     health: HealthComponent;
     stats: StatsComponent;
     
+    // Additional runtime properties
+    serverPosition?: { x: number; y: number };
+    
     // Methods
     addComponent(name: string, component: Component): void;
     update(deltaTime: number, inputState: InputState): void;
@@ -249,4 +254,65 @@ export interface Player extends PlayerState {
     getClassHitPoints(): number;
     getClassMoveSpeed(): number;
     playLevelUpEffect(): void;
+}
+
+// Game class interfaces
+export interface GameSystems {
+    input: any; // InputSystem
+    inputBuffer: any; // InputBuffer
+    predictor: any; // MovementPredictor
+    reconciler: any; // Reconciler
+    physics: any; // PhysicsSystem
+    world: any; // ClientWorldRenderer
+    sprites: any; // SpriteManager
+    tilesets?: any; // TilesetManager
+    combat: any; // CombatSystem
+    monsters?: any; // MonsterSystem
+}
+
+export interface GameEntities {
+    player: Player;
+}
+
+export interface Camera {
+    x: number;
+    y: number;
+    targetX: number;
+    targetY: number;
+    zoom: number;
+    smoothing: number;
+}
+
+export interface NetworkInput {
+    seq: number;
+    keys: string[];
+    facing: string;
+    deltaTime: number;
+}
+
+export interface MonsterInfo {
+    id: string;
+    x: number;
+    y: number;
+    type: string;
+    hp: number;
+    maxHp: number;
+    state?: string;
+    facing?: string;
+}
+
+export interface PlayerInfo {
+    id: string;
+    x: number;
+    y: number;
+    class: string;
+    hp: number;
+    facing?: string;
+}
+
+export interface WorldData {
+    width: number;
+    height: number;
+    tileSize: number;
+    seed: number;
 }

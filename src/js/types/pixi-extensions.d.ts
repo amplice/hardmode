@@ -25,5 +25,8 @@ export type PIXIApplication = PIXI.Application;
 declare global {
     interface Window {
         game?: any; // Will be typed when Game.ts is migrated
+        setCameraSmoothing?: (value: number) => void;
+        getLatencyStats?: () => any;
+        getAntiCheatStats?: () => any;
     }
 }

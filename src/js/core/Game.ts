@@ -1,6 +1,12 @@
 /**
  * @fileoverview Game - Main client-side game orchestrator and network integration
  * 
+ * MIGRATION NOTES:
+ * - Converted from Game.js following CLIENT_TYPESCRIPT_MIGRATION_PLAN Phase 3, Round 4
+ * - Maintains 100% API compatibility with existing JavaScript callers
+ * - Added comprehensive type definitions for all game systems and entities
+ * - Preserved all network integration and client prediction logic
+ * 
  * ARCHITECTURE ROLE:
  * - Central client coordinator managing all game systems and entities
  * - Creates and owns NetworkClient instance for multiplayer communication
@@ -26,7 +32,7 @@
  * - Monsters: Server-authoritative with delta compression optimization
  */
 
-// src/js/core/Game.js
+// src/js/core/Game.ts
 import * as PIXI from 'pixi.js';
 import { Player }         from '../entities/Player.js';
 import { InputSystem }    from '../systems/Input.js';
@@ -35,7 +41,7 @@ import { MovementPredictor } from '../systems/MovementPredictor.js';
 import { Reconciler } from '../systems/Reconciler.js';
 import { PhysicsSystem }  from '../systems/Physics.js';
 import { ClientWorldRenderer } from '../systems/world/ClientWorldRenderer.js';
-import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
+import { SharedWorldGenerator } from '../../../shared/systems/WorldGenerator.js';
 import { CombatSystem }   from '../systems/CombatSystem.js';
 import { MonsterSystem }  from '../systems/MonsterSystem.js';
 import { Monster } from '../entities/monsters/Monster.js';
@@ -50,6 +56,17 @@ import { ProjectileRenderer } from '../systems/ProjectileRenderer.js';
 import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 import { DebugLogger } from '../debug/DebugLogger.js';
+import type {
+    GameSystems,
+    GameEntities,
+    Camera,
+    NetworkInput,
+    MonsterInfo,
+    PlayerInfo,
+    WorldData,
+    InputState,
+    PIXIContainer
+} from '../types/index.js';
 
 // Toggle display of extra stat information in the Stats UI
 const SHOW_DEBUG_STATS = true;
@@ -58,6 +75,28 @@ const SHOW_DEBUG_STATS = true;
 PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
 
 export class Game {
+  app: PIXI.Application;
+  worldContainer: PIXIContainer;
+  entityContainer: PIXIContainer;
+  uiContainer: PIXIContainer;
+  camera: Camera;
+  systems: GameSystems;
+  entities: GameEntities;
+  remotePlayers?: Map<string, Player>;
+  remoteMonsters?: Map<string, any>; // Monster type
+  network?: any; // NetworkClient
+  latencyTracker?: any; // LatencyTracker
+  tilesets?: any; // TilesetManager.TilesetData
+  spriteManager?: any; // SpriteManager
+  gameStarted: boolean = false;
+  selectedClass?: string;
+  classSelectUI?: any; // ClassSelectUI
+  connectingMessage?: PIXI.Text;
+  healthUI?: any; // HealthUI
+  statsUI?: any; // StatsUI
+  projectileRenderer?: any; // ProjectileRenderer
+  debugLogger: DebugLogger;
+  
   constructor() {
     this.app = new PIXI.Application({
       width: window.innerWidth,
@@ -69,12 +108,12 @@ export class Game {
       resolution: window.devicePixelRatio
     });
     // ensure HTML canvas uses pixelated rendering
-    this.app.renderer.events.cursorStyles.default = 'inherit'; // Use CSS cursor instead of PIXI's
+    (this.app.renderer as any).events.cursorStyles.default = 'inherit'; // Use CSS cursor instead of PIXI's
 
-    this.app.renderer.roundPixels = true; 
-    this.app.view.style.imageRendering = 'pixelated';
+    (this.app.renderer as any).roundPixels = true; 
+    (this.app.view as any).style.imageRendering = 'pixelated';
 
-    document.body.appendChild(this.app.view);
+    document.body.appendChild(this.app.view as any);
 
     this.worldContainer  = new PIXI.Container();
     this.worldContainer.sortableChildren = true; // Enable zIndex sorting for debug overlay
@@ -105,8 +144,8 @@ export class Game {
       sprites: new SpriteManager()
     };
 
-    this.entities = { player: null };
-    window.game = this;
+    this.entities = { player: null } as any;
+    (window as any).game = this;
     
     // Add camera smoothing controls for testing
     window.setCameraSmoothing = (value) => {
@@ -159,7 +198,7 @@ export class Game {
   }
 
   // Apply server configuration to override client defaults
-  applyServerConfig(config) {
+  applyServerConfig(config: any): void {
     if (config.debug) {
       // Update debug settings from server
       GAME_CONSTANTS.DEBUG.USE_DEBUG_TILESET = config.debug.USE_DEBUG_TILESET;
@@ -177,7 +216,7 @@ export class Game {
     // Applied server configuration
   }
 
-  async loadAndInit() {
+  async loadAndInit(): Promise<void> {
     try {
       await this.tilesets.load();               // load & slice all sheets
       await this.systems.sprites.loadSprites(); // then other art
@@ -190,13 +229,13 @@ export class Game {
   }
   
   // Add new method to show class selection
-  showClassSelection() {
+  showClassSelection(): void {
     this.classSelectUI = new ClassSelectUI(this.startGame.bind(this));
     this.uiContainer.addChild(this.classSelectUI.container);
   }
   
   // Modified to accept selectedClass parameter
-  startGame(selectedClass) {
+  startGame(selectedClass: string): void {
     // Remove class selection UI
     if (this.classSelectUI) {
       this.uiContainer.removeChild(this.classSelectUI.container);
@@ -222,7 +261,7 @@ export class Game {
     // Game initialization will happen in initializeGameWorld() when server sends world data
   }
   
-  showConnectingMessage() {
+  showConnectingMessage(): void {
     // Create simple connecting text
     const connectingText = new PIXI.Text('Connecting to server...', {
       fontFamily: 'Arial',
@@ -238,21 +277,21 @@ export class Game {
     this.uiContainer.addChild(connectingText);
   }
   
-  hideConnectingMessage() {
+  hideConnectingMessage(): void {
     if (this.connectingMessage && this.connectingMessage.parent) {
       this.uiContainer.removeChild(this.connectingMessage);
-      this.connectingMessage = null;
+      this.connectingMessage = undefined;
     }
   }
 
-  update(delta) {
+  update(delta: number): void {
     // Only update game if it has started
     if (!this.gameStarted) return;
     
     const deltaTimeSeconds = delta / 60;
 
     // 1. Capture and process input
-    const inputState = this.systems.input.update();
+    const inputState = this.systems.input.update() as InputState;
     const prevPlayerState = this.entities.player.isAttacking ? 'attacking' : 'idle';
     const prevPlayerHP = this.entities.player.hitPoints;
 
@@ -266,7 +305,7 @@ export class Game {
         allKeys; // Keep all keys when not attacking
       
       // Create input command for network
-      const inputData = {
+      const inputData: Omit<NetworkInput, 'seq'> = {
         keys: keys,
         facing: this.entities.player.facing,
         deltaTime: deltaTimeSeconds
@@ -378,7 +417,7 @@ export class Game {
   /**
    * Extract active keys from input state for network transmission
    */
-  getActiveKeys(inputState) {
+  getActiveKeys(inputState: InputState): string[] {
     const keys = [];
     if (inputState.up) keys.push('w');
     if (inputState.down) keys.push('s');
@@ -411,7 +450,7 @@ export class Game {
    * entityContainer: Dynamic entities (players, monsters, projectiles)
    * Both containers move together maintaining perfect visual alignment
    */
-  updateCamera() {
+  updateCamera(): void {
     if (!this.gameStarted) return;
     
     // Set target position to current player position
@@ -441,7 +480,7 @@ export class Game {
   }
 
   // Multiplayer helpers
-  initializeGameWorld(data) {
+  initializeGameWorld(data: WorldData): void {
     console.log('[Game] Initializing game world with server seed:', data.seed);
     
     // Hide connecting message
@@ -515,7 +554,7 @@ export class Game {
     console.log('[Game] Game initialized with server world data');
   }
 
-  addRemotePlayer(info) {
+  addRemotePlayer(info: PlayerInfo): void {
     const p = new Player({
       x: info.x,
       y: info.y,
@@ -530,15 +569,16 @@ export class Game {
     this.remotePlayers.set(info.id, p);
   }
 
-  updateRemotePlayer(info) {
+  updateRemotePlayer(info: PlayerInfo & { movementDirection?: string | null; spawnProtectionTimer?: number }): void {
     if (!this.remotePlayers || !this.remotePlayers.has(info.id)) return;
     const p = this.remotePlayers.get(info.id);
+    if (!p) return;
     if (info.class && info.class !== p.characterClass) {
       p.characterClass = info.class;
       p.currentAnimation = null;
       if (p.animatedSprite && p.animatedSprite.parent) {
         p.sprite.removeChild(p.animatedSprite);
-        p.animatedSprite = null;
+        p.animatedSprite = undefined;
       }
       p.animation.setupAnimations();
     }
@@ -549,7 +589,7 @@ export class Game {
     p.lastFacing = p.facing;
     p.position.x = info.x;
     p.position.y = info.y;
-    p.facing = info.facing;
+    p.facing = info.facing || p.facing;
     p.sprite.position.set(p.position.x, p.position.y);
 
     const dx = info.x - prevX;
@@ -582,25 +622,25 @@ export class Game {
     }
   }
 
-  updateRemotePlayers(delta) {
+  updateRemotePlayers(delta: number): void {
     if (!this.remotePlayers) return;
     for (const p of this.remotePlayers.values()) {
       p.animation.update();
     }
   }
 
-  updateRemoteMonsters(delta) {
+  updateRemoteMonsters(delta: number): void {
     if (!this.remoteMonsters) return;
     for (const monster of this.remoteMonsters.values()) {
       monster.update(delta);
     }
   }
 
-  updateLocalPlayerState(info) {
+  updateLocalPlayerState(info: PlayerInfo): void {
     if (!this.entities.player) return;
     this.entities.player.position.x = info.x;
     this.entities.player.position.y = info.y;
-    this.entities.player.facing = info.facing;
+    this.entities.player.facing = info.facing || this.entities.player.facing;
     if (typeof info.hp === 'number') {
       this.entities.player.hitPoints = info.hp;
       if (info.hp <= 0 && !this.entities.player.isDead) {
@@ -612,9 +652,10 @@ export class Game {
     this.entities.player.sprite.position.set(info.x, info.y);
   }
 
-  removeRemotePlayer(id) {
+  removeRemotePlayer(id: string): void {
     if (!this.remotePlayers || !this.remotePlayers.has(id)) return;
     const p = this.remotePlayers.get(id);
+    if (!p) return;
     if (p.sprite.parent) p.sprite.parent.removeChild(p.sprite);
     this.remotePlayers.delete(id);
   }
@@ -632,9 +673,9 @@ export class Game {
    * NetworkOptimizer always includes critical fields (id, state, hp, facing, type)
    * This prevents 'undefined' errors that would break monster AI and rendering
    * 
-   * @param {Object} info - Complete monster state (delta-merged on client)
+   * @param info - Complete monster state (delta-merged on client)
    */
-  addOrUpdateMonster(info) {
+  addOrUpdateMonster(info: MonsterInfo): void {
     if (!this.remoteMonsters) this.remoteMonsters = new Map();
     let monster = this.remoteMonsters.get(info.id);
     
@@ -659,25 +700,26 @@ export class Game {
     // Remove dead/dying monsters after animation
     if (info.state === 'dying' || info.hp <= 0) {
       setTimeout(() => {
-        if (monster.sprite.parent) {
+        if (monster && monster.sprite && monster.sprite.parent) {
           monster.sprite.parent.removeChild(monster.sprite);
         }
-        this.remoteMonsters.delete(info.id);
+        this.remoteMonsters?.delete(info.id);
         // Removed monster
       }, 1000); // Wait for death animation
     }
   }
 
-  remotePlayerAttack(id, type, facing) {
+  remotePlayerAttack(id: string, type: string, facing?: string): void {
     if (!this.remotePlayers || !this.remotePlayers.has(id)) return;
     const p = this.remotePlayers.get(id);
+    if (!p) return;
     p.facing = facing || p.facing;
     p.isAttacking = true;
     p.attackHitFrameReached = false;
     p.currentAttackType = type;
     
     // Store current position for effect positioning (fixes effects appearing at wrong location)
-    p.startPositionForAttack = { x: p.position.x, y: p.position.y };
+    (p as any).startPositionForAttack = { x: p.position.x, y: p.position.y };
     
     if (p.animation) {
       p.animation.playAttackAnimation(type);
