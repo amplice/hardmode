@@ -1,6 +1,12 @@
 /**
  * @fileoverview Player - Core player entity with component-based architecture
  * 
+ * MIGRATION NOTES:
+ * - Converted from Player.js following CLIENT_TYPESCRIPT_MIGRATION_PLAN Phase 3, Round 4
+ * - Maintains 100% API compatibility with existing JavaScript callers
+ * - Added comprehensive type definitions for all component classes
+ * - Preserved all client prediction and multiplayer coordination logic
+ * 
  * ARCHITECTURE ROLE:
  * - Primary player character managing movement, combat, health, and progression
  * - Component-based design for modular gameplay systems (movement, combat, health, stats)
@@ -44,28 +50,61 @@ import {
     directionStringToAnimationSuffix
 } from '../utils/DirectionUtils.js';
 import { createPlayerState, validatePlayerState } from '../../../shared/factories/EntityFactories.js';
+import type { 
+    InputState, 
+    PlayerOptions, 
+    Component, 
+    Position, 
+    Velocity,
+    AnimationType,
+    CharacterClass,
+    Direction,
+    Player as PlayerInterface,
+    PlayerComponents,
+    PlayerState,
+    MovementComponent as IMovementComponent,
+    AnimationComponent as IAnimationComponent,
+    CombatComponent as ICombatComponent,
+    HealthComponent as IHealthComponent,
+    StatsComponent as IStatsComponent,
+    PIXIContainer,
+    PIXIAnimatedSprite,
+    PIXIGraphics
+} from '../types/index.js';
 
 // Base Component class
-class Component {
-    constructor(owner) {
+abstract class BaseComponent implements Component {
+    owner: any; // Will be Player when we complete the circular dependency
+    
+    constructor(owner: any) {
         this.owner = owner;
     }
     
-    init() {}
-    update(deltaTime, inputState) {}
+    init(): void {}
+    update(deltaTime: number, inputState?: InputState): void {}
 }
 
 // Controls player movement and facing direction
-class MovementComponent extends Component {
-    init() {
+class MovementComponent extends BaseComponent implements IMovementComponent {
+    velocity!: Velocity;
+    position!: Position;
+    moveSpeed!: number;
+    init(): void {
         // Initialize properties on owner
         this.owner.velocity = { x: 0, y: 0 };
         this.owner.isMoving = false;
         this.owner.movementDirection = null;
         this.owner.lastFacing = this.owner.facing;
+        
+        // Copy references from owner
+        this.velocity = this.owner.velocity;
+        this.position = this.owner.position;
+        this.moveSpeed = this.owner.moveSpeed;
     }
     
-    update(deltaTime, inputState) {
+    update(deltaTime: number, inputState?: InputState): void {
+        if (!inputState) return;
+        
         if (this.owner.isAttacking || this.owner.isTakingDamage || 
             this.owner.isDying || this.owner.isDead) {
             return;
@@ -83,7 +122,7 @@ class MovementComponent extends Component {
         this.owner.lastFacing = this.owner.facing;
     }
     
-    processMovementInput(inputState) {
+    processMovementInput(inputState: InputState): void {
         // Reset velocity
         this.owner.velocity.x = 0;
         this.owner.velocity.y = 0;
@@ -149,19 +188,19 @@ class MovementComponent extends Component {
         }
     }
     
-    updatePosition() {
+    updatePosition(): void {
         // Update position
         this.owner.position.x = Math.round(this.owner.position.x + this.owner.velocity.x);
         this.owner.position.y = Math.round(this.owner.position.y + this.owner.velocity.y);
         this.owner.sprite.position.set(this.owner.position.x, this.owner.position.y);
     }
     
-    getFacingAngle() {
+    getFacingAngle(): number {
         // Use the utility function to convert facing string to radians
         return directionStringToAngleRadians(this.owner.facing);
     }
     
-    updateMovementDirection() {
+    updateMovementDirection(): void {
         const vx = this.owner.velocity.x;
         const vy = this.owner.velocity.y;
         
@@ -169,7 +208,7 @@ class MovementComponent extends Component {
         this.owner.movementDirection = velocityToDirectionString(vx, vy);
     }
     
-    updateFacingFromMouse(mousePosition) {
+    updateFacingFromMouse(mousePosition: { x: number; y: number }): void {
         // Calculate angle to mouse cursor relative to camera
         const dx = mousePosition.x - window.innerWidth / 2;
         const dy = mousePosition.y - window.innerHeight / 2;
@@ -181,9 +220,12 @@ class MovementComponent extends Component {
 }
 
 // Handles player animations
-class AnimationComponent extends Component {
-    init() {
+class AnimationComponent extends BaseComponent implements IAnimationComponent {
+    currentAnimation!: string | null;
+    private tintDebugLogged?: boolean;
+    init(): void {
         this.owner.currentAnimation = null;
+        this.currentAnimation = null;
         
         // Initialize with a placeholder while we prepare the real sprites
         this.owner.placeholder = new PIXI.Graphics();
@@ -196,7 +238,7 @@ class AnimationComponent extends Component {
         }
     }
     
-    update() {
+    update(): void {
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
             if (!this.owner.animatedSprite) {
                 this.setupAnimations();
@@ -228,7 +270,7 @@ class AnimationComponent extends Component {
         }
     }
     
-    setupAnimations() {
+    setupAnimations(): void {
         // Remove placeholder if it exists
         if (this.owner.placeholder && this.owner.placeholder.parent) {
             this.owner.sprite.removeChild(this.owner.placeholder);
@@ -257,7 +299,7 @@ class AnimationComponent extends Component {
         }
     }
     
-    changeAnimation(animationName) {
+    changeAnimation(animationName: string): void {
         // Remove old sprite and create new one
         if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
             this.owner.sprite.removeChild(this.owner.animatedSprite);
@@ -280,7 +322,7 @@ class AnimationComponent extends Component {
     }
     
     // Helper function to apply tints to the current sprite
-    applyCurrentTints() {
+    applyCurrentTints(): void {
         if (!this.owner.animatedSprite) return;
         
         // Apply spawn protection tint
@@ -297,7 +339,19 @@ class AnimationComponent extends Component {
         }
     }
     
-    onAnimationComplete() {
+    playAnimation(animationName: string): void {
+        this.changeAnimation(animationName);
+    }
+    
+    setAnimation(animationType: AnimationType, direction: string): void {
+        const suffix = directionStringToAnimationSuffix(direction);
+        const classConfig = (PLAYER_CONFIG.classes as any)[this.owner.characterClass];
+        const classPrefix = classConfig?.spritePrefix || 'knight';
+        const animationName = `${classPrefix}_${animationType}_${suffix}`;
+        this.changeAnimation(animationName);
+    }
+    
+    onAnimationComplete(): void {
         // If we just finished an attack animation, return to idle
         if (this.owner.isAttacking) {
             // Attack animation completed
@@ -321,11 +375,11 @@ class AnimationComponent extends Component {
         }
     }
     
-    drawPlaceholder() {
+    drawPlaceholder(): void {
         this.owner.placeholder.clear();
         
         // Get color from config
-        const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
+        const classConfig = (PLAYER_CONFIG.classes as any)[this.owner.characterClass];
         const color = classConfig.placeholderColor;
         
         // Draw character body
@@ -359,9 +413,9 @@ class AnimationComponent extends Component {
         this.owner.placeholder.endFill();
     }
     
-    playAttackAnimation(attackType) {
+    playAttackAnimation(attackType: string): void {
         // Get the character class prefix from PLAYER_CONFIG
-        const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
+        const classConfig = (PLAYER_CONFIG.classes as any)[this.owner.characterClass];
         const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
         
         if (attackType === 'roll') {
@@ -435,10 +489,10 @@ class AnimationComponent extends Component {
         }
     }
     
-      playDamageAnimation() {
+    playDamageAnimation(): void {
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
             // Get the character class prefix from PLAYER_CONFIG
-            const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
+            const classConfig = (PLAYER_CONFIG.classes as any)[this.owner.characterClass];
             const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
             
             // Get take damage animation for current facing direction
@@ -488,7 +542,7 @@ class AnimationComponent extends Component {
         }
     }
     
-    playDeathAnimation() {
+    playDeathAnimation(): void {
         // Don't restart death animation if already playing
         if (this.owner.currentAnimation && this.owner.currentAnimation.includes('_die_')) {
             return;
@@ -496,7 +550,7 @@ class AnimationComponent extends Component {
         
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
             // Get the character class prefix from PLAYER_CONFIG
-            const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
+            const classConfig = (PLAYER_CONFIG.classes as any)[this.owner.characterClass];
             const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
             
             // Get death animation for current facing direction
@@ -530,15 +584,17 @@ class AnimationComponent extends Component {
         }
     }
     
-    getFacingAnimationKey() {
+    getFacingAnimationKey(): string {
         // Use the utility function to convert facing string to animation suffix
         return directionStringToAnimationSuffix(this.owner.facing);
     }
 }
 
 // Handles player combat abilities
-class CombatComponent extends Component {
-    init() {
+class CombatComponent extends BaseComponent implements ICombatComponent {
+    isAttacking!: boolean;
+    attackCooldown!: number;
+    init(): void {
         this.owner.isAttacking = false;
         this.owner.primaryAttackCooldown = 0;
         this.owner.secondaryAttackCooldown = 0;
@@ -548,7 +604,17 @@ class CombatComponent extends Component {
         this.owner.isInvulnerable = false;
       }
     
-      update(deltaTime, inputState) {
+    update(deltaTime: number, inputState?: InputState): void {
+        if (!inputState) return;
+        
+        // Copy isAttacking state
+        this.isAttacking = this.owner.isAttacking;
+        this.attackCooldown = Math.max(
+            this.owner.primaryAttackCooldown || 0,
+            this.owner.secondaryAttackCooldown || 0,
+            this.owner.rollCooldown || 0
+        );
+        
         // Decrease attack cooldowns
         if (this.owner.primaryAttackCooldown > 0) {
           this.owner.primaryAttackCooldown -= deltaTime;
@@ -578,7 +644,20 @@ class CombatComponent extends Component {
         }
       }
     
-    performPrimaryAttack() {
+    canAttack(): boolean {
+        return !this.owner.isAttacking && 
+               !this.owner.isTakingDamage && 
+               !this.owner.isDying && 
+               !this.owner.isDead;
+    }
+    
+    startAttack(attackType: string): void {
+        this.owner.isAttacking = true;
+        this.owner.attackHitFrameReached = false;
+        this.owner.currentAttackType = attackType;
+    }
+    
+    performPrimaryAttack(): void {
       let attackName = 'primary attack';
       switch(this.owner.characterClass) {
         case 'guardian': attackName = 'sweeping axe'; break;
@@ -592,7 +671,7 @@ class CombatComponent extends Component {
       this.owner.currentAttackType = 'primary';
       
       // Log attack event
-      if (window.game?.debugLogger) {
+      if ((window as any).game?.debugLogger) {
         window.game.debugLogger.logEvent('playerAttack', {
           type: 'primary',
           class: this.owner.characterClass,
@@ -610,19 +689,19 @@ class CombatComponent extends Component {
         this.owner.primaryAttackCooldown = cooldown / 1000; // Store in the correct variable
         // Primary attack cooldown set
       }
-      if (window.game?.network) {
+      if ((window as any).game?.network) {
         window.game.network.sendAttack(this.owner, 'primary');
       }
     }
     
-    performSecondaryAttack() {
+    performSecondaryAttack(): void {
       // Secondary attack started
       this.owner.isAttacking = true;
       this.owner.attackHitFrameReached = false;
       this.owner.currentAttackType = 'secondary';
       
       // Log attack event
-      if (window.game?.debugLogger) {
+      if ((window as any).game?.debugLogger) {
         window.game.debugLogger.logEvent('playerAttack', {
           type: 'secondary',
           class: this.owner.characterClass,
@@ -639,12 +718,12 @@ class CombatComponent extends Component {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'secondary');
         this.owner.secondaryAttackCooldown = cooldown / 1000; // Store in the correct variable
       }
-      if (window.game?.network) {
+      if ((window as any).game?.network) {
         window.game.network.sendAttack(this.owner, 'secondary');
       }
     }
 
-    performRoll() {
+    performRoll(): void {
       // Roll started
       this.owner.isAttacking = true;
       this.owner.attackHitFrameReached = false;
@@ -656,13 +735,13 @@ class CombatComponent extends Component {
         const cooldown = this.owner.combatSystem.executeAttack(this.owner, 'roll');
         this.owner.rollCooldown = cooldown / 1000;
       }
-      if (window.game?.network) {
+      if ((window as any).game?.network) {
         window.game.network.sendAttack(this.owner, 'roll');
       }
     }
     
     // Add method to manually end attack state
-    endAttack() {
+    endAttack(): void {
       this.owner.isAttacking = false;
       this.owner.attackHitFrameReached = false;
       this.owner.currentAttackType = null;
@@ -675,10 +754,13 @@ class CombatComponent extends Component {
   }
 
 // Handles player health, damage, and death
-class HealthComponent extends Component {
-    init() {
+class HealthComponent extends BaseComponent implements IHealthComponent {
+    hitPoints!: number;
+    maxHitPoints!: number;
+    
+    init(): void {
         // Get class stats from config
-        const classConfig = PLAYER_CONFIG.classes[this.owner.characterClass];
+        const classConfig = (PLAYER_CONFIG.classes as any)[this.owner.characterClass];
         this.owner.maxHitPoints = classConfig.hitPoints;
         this.owner.hitPoints = this.owner.maxHitPoints;
         
@@ -694,7 +776,7 @@ class HealthComponent extends Component {
         // Player spawned with initial protection
     }
     
-    update(deltaTime) {
+    update(deltaTime: number): void {
         // Process spawn protection timer
         if (this.owner.spawnProtectionTimer > 0) {
             this.owner.spawnProtectionTimer -= deltaTime;
@@ -717,7 +799,7 @@ class HealthComponent extends Component {
         }
     }
     
-    takeDamage(amount) {
+    takeDamage(amount: number): void {
         // Check for invulnerability
         if (this.owner.isInvulnerable) {
           // Attack blocked by invulnerability
@@ -743,7 +825,16 @@ class HealthComponent extends Component {
         this.owner.animation.playDamageAnimation();
       }
     
-    die() {
+    heal(amount: number): void {
+        this.owner.hitPoints = Math.min(this.owner.hitPoints + amount, this.owner.maxHitPoints);
+        this.hitPoints = this.owner.hitPoints;
+    }
+    
+    isDead(): boolean {
+        return this.owner.isDead;
+    }
+    
+    die(): void {
         // Prevent multiple death triggers
         if (this.owner.isDying || this.owner.isDead) {
             return;
@@ -757,7 +848,7 @@ class HealthComponent extends Component {
         this.owner.animation.playDeathAnimation();
     }
     
-    respawn() {
+    respawn(): void {
         // Prevent multiple respawn calls
         if (!this.owner.isDead) {
             return;
@@ -770,8 +861,8 @@ class HealthComponent extends Component {
         this.owner.hitPoints = this.owner.maxHitPoints;
         
         // Reset position to center of map
-        this.owner.position.x = window.game.systems.world.width / 2 * window.game.systems.world.tileSize;
-        this.owner.position.y = window.game.systems.world.height / 2 * window.game.systems.world.tileSize;
+        this.owner.position.x = (window as any).game.systems.world.width / 2 * (window as any).game.systems.world.tileSize;
+        this.owner.position.y = (window as any).game.systems.world.height / 2 * (window as any).game.systems.world.tileSize;
         
         // Reset state
         this.owner.isDying = false;
@@ -795,15 +886,20 @@ class HealthComponent extends Component {
         this.owner.animation.update();
     }
     
-    getClassHitPoints() {
+    getClassHitPoints(): number {
         return this.owner.maxHitPoints ||
-               PLAYER_CONFIG.classes[this.owner.characterClass]?.hitPoints || 2;
+               (PLAYER_CONFIG.classes as any)[this.owner.characterClass]?.hitPoints || 2;
     }
 }
 
 // Tracks player statistics like kills, experience and level
-class StatsComponent extends Component {
-    init() {
+class StatsComponent extends BaseComponent implements IStatsComponent {
+    level!: number;
+    experience!: number;
+    moveSpeedBonus!: number;
+    attackRecoveryBonus!: number;
+    attackCooldownBonus!: number;
+    init(): void {
         this.owner.killCount = 0;
         this.owner.experience = 0; // total accumulated XP
         this.owner.level = 1;
@@ -815,7 +911,7 @@ class StatsComponent extends Component {
     }
 
     // XP needed to go from (level-1) to level
-    getXpForNextLevel() {
+    getXpForNextLevel(): number {
         const growth = PLAYER_CONFIG.levels?.xpGrowth || 20;
         const isPlaytestMode = true; // Match server setting
         const xpPerLevel = 20;
@@ -828,7 +924,7 @@ class StatsComponent extends Component {
     }
 
     // Total XP required to reach a specific level
-    getTotalXpForLevel(level) {
+    getTotalXpForLevel(level: number): number {
         const growth = PLAYER_CONFIG.levels?.xpGrowth || 20;
         const isPlaytestMode = true; // Match server setting
         const xpPerLevel = 20;
@@ -840,26 +936,26 @@ class StatsComponent extends Component {
         }
     }
 
-    getXpUntilNextLevel() {
+    getXpUntilNextLevel(): number {
         const maxLevel = PLAYER_CONFIG.levels?.maxLevel || 10;
         if (this.owner.level >= maxLevel) return 0;
         const nextLevelXp = this.getTotalXpForLevel(this.owner.level + 1);
         return Math.max(0, nextLevelXp - this.owner.experience);
     }
 
-    addExperience(amount) {
+    addExperience(amount: number): void {
         // Phase 3.2: Server updates XP via monsterKilled event
         // Client only checks for visual effects
         this.checkLevelUp();
     }
 
-    recordKill(monsterType) {
+    recordKill(monsterType: string): void {
         // Phase 3.2: Server tracks kills and XP
         // Client only needs to trigger level check for visual effects
         this.checkLevelUp();
     }
 
-    checkLevelUp() {
+    checkLevelUp(): void {
         // Phase 3.2: Server handles all level and stat updates
         // Client only checks if we should play level up effect
         // Server will send playerLevelUp event with actual level/stats
@@ -874,7 +970,7 @@ class StatsComponent extends Component {
         }
     }
 
-    applyLevelBonus(level) {
+    applyLevelBonus(level: number): void {
         // CLIENT-SIDE LEVEL BONUSES DISABLED
         // Let server handle all level bonuses to prevent desync with movement prediction
         // Server will send playerLevelUp event with correct bonuses
@@ -905,30 +1001,81 @@ class StatsComponent extends Component {
         }
     }
 
-    modifyAttackRecovery(amount) {
-        const key = PLAYER_CONFIG.attacks[`${this.owner.characterClass}_primary`] ?
+    modifyAttackRecovery(amount: number): void {
+        const key = (PLAYER_CONFIG.attacks as any)[`${this.owner.characterClass}_primary`] ?
                     `${this.owner.characterClass}_primary` : 'primary';
-        const attack = PLAYER_CONFIG.attacks[key];
+        const attack = (PLAYER_CONFIG.attacks as any)[key];
         attack.recoveryTime = Math.max(0, (attack.recoveryTime || 0) + amount);
     }
 
-    modifyAttackCooldown(amount) {
-        const key = PLAYER_CONFIG.attacks[`${this.owner.characterClass}_secondary`] ?
+    modifyAttackCooldown(amount: number): void {
+        const key = (PLAYER_CONFIG.attacks as any)[`${this.owner.characterClass}_secondary`] ?
                     `${this.owner.characterClass}_secondary` : 'secondary';
-        const attack = PLAYER_CONFIG.attacks[key];
+        const attack = (PLAYER_CONFIG.attacks as any)[key];
         attack.cooldown = Math.max(0, (attack.cooldown || 0) + amount);
     }
 }
 
-export class Player {
-    constructor(options) {
+export class Player implements PlayerInterface {
+    // State properties
+    id!: string;
+    characterClass!: string;
+    position!: Position;
+    velocity!: Velocity;
+    facing!: string;
+    lastFacing!: string;
+    isMoving!: boolean;
+    movementDirection!: string | null;
+    moveSpeed!: number;
+    isAttacking!: boolean;
+    primaryAttackCooldown!: number;
+    secondaryAttackCooldown!: number;
+    rollCooldown!: number;
+    currentAttackType!: string | null;
+    attackHitFrameReached!: boolean;
+    isInvulnerable!: boolean;
+    rollUnlocked!: boolean;
+    hitPoints!: number;
+    maxHitPoints!: number;
+    isDying!: boolean;
+    isDead!: boolean;
+    isTakingDamage!: boolean;
+    damageStunDuration!: number;
+    damageStunTimer!: number;
+    spawnProtectionTimer!: number;
+    level!: number;
+    experience!: number;
+    killCount!: number;
+    moveSpeedBonus!: number;
+    attackRecoveryBonus!: number;
+    attackCooldownBonus!: number;
+    currentAnimation!: string | null;
+    
+    // Systems
+    combatSystem: any;
+    spriteManager: any;
+    
+    // PIXI Elements
+    sprite: PIXIContainer;
+    animatedSprite?: PIXIAnimatedSprite;
+    placeholder?: PIXIGraphics;
+    
+    // Components
+    components: PlayerComponents;
+    movement!: MovementComponent;
+    animation!: AnimationComponent;
+    combat!: CombatComponent;
+    health!: HealthComponent;
+    stats!: StatsComponent;
+    
+    constructor(options: PlayerOptions) {
         // Use factory to create complete state with all required fields
         // This prevents the undefined moveSpeed/level bugs we experienced
         const playerState = createPlayerState({
             id: options.id || 'local-player',
-            characterClass: options.class || 'bladedancer',
-            x: options.x,
-            y: options.y,
+            characterClass: (options.class || 'bladedancer') as CharacterClass,
+            x: options.x || 0,
+            y: options.y || 0,
             level: options.level || 1,
             experience: options.experience || 0,
             hp: options.hp,
@@ -938,7 +1085,7 @@ export class Player {
             attackRecoveryBonus: options.attackRecoveryBonus || 0,
             attackCooldownBonus: options.attackCooldownBonus || 0,
             rollUnlocked: options.rollUnlocked || false,
-            facing: options.facing || 'down'
+            facing: (options.facing || 'down') as Direction
         });
         
         // Validate the created state has all required fields
@@ -956,7 +1103,7 @@ export class Player {
         this.sprite.position.set(this.position.x, this.position.y);
         
         // Initialize components
-        this.components = {};
+        this.components = {} as PlayerComponents;
         
         // Add components and provide direct access
         this.addComponent('movement', new MovementComponent(this));
@@ -969,12 +1116,12 @@ export class Player {
         Object.values(this.components).forEach(component => component.init());
     }
     
-    addComponent(name, component) {
-        this.components[name] = component;
-        this[name] = component; // Provide direct access, e.g., player.animation
+    addComponent(name: keyof PlayerComponents, component: Component): void {
+        this.components[name] = component as any;
+        (this as any)[name] = component; // Provide direct access, e.g., player.animation
     }
     
-    update(deltaTime, inputState) {
+    update(deltaTime: number, inputState: InputState): void {
         // Update health component first
         this.health.update(deltaTime);
         
@@ -1008,7 +1155,7 @@ export class Player {
      * Handle non-movement updates during client prediction
      * Used when client prediction handles movement but other systems still need updates
      */
-    handleNonMovementUpdate(deltaTime, inputState) {
+    handleNonMovementUpdate(deltaTime: number, inputState: InputState): void {
         // Update health component first
         this.health.update(deltaTime);
         
@@ -1040,7 +1187,7 @@ export class Player {
     /**
      * Update movement state for animation without changing position
      */
-    updateMovementStateForAnimation(inputState) {
+    updateMovementStateForAnimation(inputState: InputState): void {
         // Check if we're moving based on input
         const isMoving = inputState.up || inputState.down || inputState.left || inputState.right;
         this.isMoving = isMoving;
@@ -1064,20 +1211,20 @@ export class Player {
     }
     
     // Public API methods (accessible to other systems)
-    takeDamage(amount) {
+    takeDamage(amount: number): void {
         this.health.takeDamage(amount);
     }
     
-    getClassHitPoints() {
+    getClassHitPoints(): number {
         return this.health.getClassHitPoints();
     }
     
-    getClassMoveSpeed() {
-        return PLAYER_CONFIG.classes[this.characterClass]?.moveSpeed || 4;
+    getClassMoveSpeed(): number {
+        return (PLAYER_CONFIG.classes as any)[this.characterClass]?.moveSpeed || 4;
     }
 
-playLevelUpEffect() {
-    // Use the combat system to create the level-up effect
+    playLevelUpEffect(): void {
+        // Use the combat system to create the level-up effect
     if (this.combatSystem) {
         this.combatSystem.createEffect(
             'level_up_effect',

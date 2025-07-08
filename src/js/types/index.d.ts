@@ -5,6 +5,10 @@
  * They MUST match the actual implementation to prevent migration failures
  */
 
+// Import PIXI types
+import type { PIXIContainer, PIXIAnimatedSprite, PIXIGraphics } from './pixi-extensions.js';
+export type { PIXIContainer, PIXIAnimatedSprite, PIXIGraphics } from './pixi-extensions.js';
+
 // InputSystem return type - VERIFIED in Phase 1.2
 export interface InputState {
     up: boolean;
@@ -41,6 +45,10 @@ export interface PlayerOptions {
 export type AnimationType = 'idle' | 'run' | 'run_backward' | 'strafe_left' | 'strafe_right' | 
                            'attack1' | 'attack2' | 'roll' | 'take_damage' | 'die';
 export type DirectionSuffix = 'n' | 'ne' | 'e' | 'se' | 's' | 'sw' | 'w' | 'nw';
+
+// Character classes and directions
+export type CharacterClass = 'bladedancer' | 'guardian' | 'hunter' | 'rogue';
+export type Direction = 'up' | 'down' | 'left' | 'right' | 'up-left' | 'up-right' | 'down-left' | 'down-right';
 
 // Player Config structure from GameConfig.js
 export interface PlayerClassConfig {
@@ -130,7 +138,7 @@ export interface MovementComponent extends Component {
 }
 
 export interface AnimationComponent extends Component {
-    currentAnimation: string;
+    currentAnimation: string | null;
     playAnimation(animationName: string): void;
     setAnimation(animationType: AnimationType, direction: string): void;
 }
@@ -157,4 +165,88 @@ export interface StatsComponent extends Component {
     attackRecoveryBonus: number;
     attackCooldownBonus: number;
     addExperience(amount: number): void;
+}
+
+// Player entity interfaces - for TypeScript migration
+export interface PlayerComponents {
+    movement: MovementComponent;
+    animation: AnimationComponent;
+    combat: CombatComponent;
+    health: HealthComponent;
+    stats: StatsComponent;
+}
+
+export interface PlayerState {
+    // Identity
+    id: string;
+    characterClass: CharacterClass | string;
+    
+    // Position & Movement
+    position: Position;
+    velocity: Velocity;
+    facing: Direction | string;
+    lastFacing: Direction | string;
+    isMoving: boolean;
+    movementDirection: Direction | string | null;
+    moveSpeed: number;
+    
+    // Combat State
+    isAttacking: boolean;
+    primaryAttackCooldown: number;
+    secondaryAttackCooldown: number;
+    rollCooldown: number;
+    currentAttackType: string | null;
+    attackHitFrameReached: boolean;
+    isInvulnerable: boolean;
+    rollUnlocked: boolean;
+    
+    // Health & Status
+    hitPoints: number;
+    maxHitPoints: number;
+    isDying: boolean;
+    isDead: boolean;
+    isTakingDamage: boolean;
+    damageStunDuration: number;
+    damageStunTimer: number;
+    spawnProtectionTimer: number;
+    
+    // Stats & Progression
+    level: number;
+    experience: number;
+    killCount: number;
+    moveSpeedBonus: number;
+    attackRecoveryBonus: number;
+    attackCooldownBonus: number;
+    
+    // Animation
+    currentAnimation: string | null;
+}
+
+export interface Player extends PlayerState {
+    // Systems
+    combatSystem: any; // Will be typed in CombatSystem migration
+    spriteManager: any; // Will be typed in SpriteManager migration
+    
+    // PIXI Elements
+    sprite: PIXIContainer;
+    animatedSprite?: PIXIAnimatedSprite;
+    placeholder?: PIXIGraphics;
+    
+    // Components
+    components: PlayerComponents;
+    movement: MovementComponent;
+    animation: AnimationComponent;
+    combat: CombatComponent;
+    health: HealthComponent;
+    stats: StatsComponent;
+    
+    // Methods
+    addComponent(name: string, component: Component): void;
+    update(deltaTime: number, inputState: InputState): void;
+    handleNonMovementUpdate(deltaTime: number, inputState: InputState): void;
+    updateMovementStateForAnimation(inputState: InputState): void;
+    takeDamage(amount: number): void;
+    getClassHitPoints(): number;
+    getClassMoveSpeed(): number;
+    playLevelUpEffect(): void;
 }

@@ -20,3 +20,10 @@ export type PIXIAnimatedSprite = PIXI.AnimatedSprite;
 export type PIXIGraphics = PIXI.Graphics;
 export type PIXITexture = PIXI.Texture;
 export type PIXIApplication = PIXI.Application;
+
+// Global game instance
+declare global {
+    interface Window {
+        game?: any; // Will be typed when Game.ts is migrated
+    }
+}
