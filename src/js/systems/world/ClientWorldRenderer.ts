@@ -221,27 +221,14 @@ export class ClientWorldRenderer {
             console.warn(`[ClientWorldRenderer] Missing stair texture at (${stairInfo.tileY},${stairInfo.tileX})`);
         }
         
-        // Check if this is an elevated tile (cliff)
-        if (this.elevationData && this.elevationData[y] && this.elevationData[y][x] > 0) {
-            const cliffTexture = this.cliffAutotiler.getTileTexture(x, y, this.elevationData, this.stairsData || [], this.biomeData || undefined);
-            if (cliffTexture) {
-                return cliffTexture as PIXI.Texture;
-            }
+        // For all non-stair tiles, use the autotiler (it handles both cliff and biome transitions)
+        const tileResult = (this.cliffAutotiler as any).getTileTexture(x, y, this.elevationData || [], null, this.biomeData || undefined);
+        if (tileResult && tileResult.texture) {
+            return tileResult.texture;
         }
         
-        // Check for biome transitions first
-        const transitionTile = (this.cliffAutotiler as any).getBiomeTransitionTile(x, y, this.biomeData || undefined);
-        if (transitionTile && transitionTile.texture) {
-            return transitionTile.texture as PIXI.Texture;
-        }
-        
-        // Regular ground tile based on biome - always return a valid texture
-        const biome = (this.biomeData && this.biomeData[y] && this.biomeData[y][x]) || 0;
-        if (biome === 1) {
-            return this.tilesets.getRandomPureDarkGrass() || this.tilesets.basicDarkGrassTile || this.tilesets.basicGrassTile;
-        } else {
-            return this.tilesets.getRandomPureGrass() || this.tilesets.basicGrassTile;
-        }
+        // Fallback to basic grass if something goes wrong
+        return this.tilesets.basicGrassTile || PIXI.Texture.WHITE;
     }
     
     /**
@@ -492,6 +479,11 @@ export class ClientWorldRenderer {
     private createTileSprites(): void {
         if (!this.elevationData || !this.biomeData) return;
         
+        const processedTiles: any[][] = [];
+        for (let y = 0; y < this.height; y++) {
+            processedTiles[y] = [];
+        }
+        
         // Process all tiles to apply cliff edges and grass variations
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
@@ -504,37 +496,45 @@ export class ClientWorldRenderer {
                                         this.tilesets.textures.terrain[stairInfo.tileY][stairInfo.tileX];
                     if (stairTexture) {
                         tile.baseSprite.texture = stairTexture;
+                        processedTiles[y][x] = 'stairs';
                         continue;
                     }
                 }
                 
-                // Check if this is an elevated tile (cliff)
-                if (this.elevationData[y][x] > 0) {
-                    const cliffTexture = this.cliffAutotiler.getTileTexture(x, y, this.elevationData, this.stairsData || [], this.biomeData || undefined);
-                    if (cliffTexture) {
-                        tile.baseSprite.texture = cliffTexture as PIXI.Texture;
-                    }
-                    continue;
-                }
+                // Normal tile processing - pass biome data to autotiler
+                const tileResult = (this.cliffAutotiler as any).getTileTexture(x, y, this.elevationData || [], processedTiles, this.biomeData || undefined) as any;
+                processedTiles[y][x] = tileResult.type;
                 
-                // Check for biome transitions first
-                const transitionTile = (this.cliffAutotiler as any).getBiomeTransitionTile(x, y, this.biomeData || undefined);
-                if (transitionTile && transitionTile.texture) {
-                    tile.baseSprite.texture = transitionTile.texture as PIXI.Texture;
+                // Mark tile walkability based on collision mask
+                tile.isCliffEdge = !this.collisionMask.isTileWalkable(x, y);
+                
+                // FOR ELEVATED TILES: Create base color fill first, then cliff tile on top
+                if (this.elevationData[y][x] > 0) {
+                    // Get the biome for this elevated tile
+                    const cliffBiome = this.biomeData && this.biomeData[y] ? this.biomeData[y][x] : 0;
+                    const isDarkGrassCliff = cliffBiome === 1;
+                    
+                    // Create base color fill (what shows through transparent areas)
+                    const baseColor = isDarkGrassCliff ? 0x2a3a1c : 0x3e5b24; // dark grass : green grass
+                    const colorFill = new PIXI.Graphics();
+                    colorFill.beginFill(baseColor);
+                    colorFill.drawRect(0, 0, this.tileSize, this.tileSize);
+                    colorFill.endFill();
+                    tile.container.addChild(colorFill);
+                    
+                    // Create cliff tile sprite on top
+                    const cliffSprite = new PIXI.Sprite(tileResult.texture);
+                    cliffSprite.position.set(0, 0);
+                    cliffSprite.scale.set(this.tileSize / 32, this.tileSize / 32);
+                    tile.sprite = cliffSprite; // Keep reference to main sprite
+                    tile.container.addChild(cliffSprite);
                 } else {
-                    // Regular ground tile - apply biome-based variation
-                    const biome = this.biomeData[y][x] || 0;
-                    if (biome === 1) {
-                        const darkGrass = this.tilesets.getRandomPureDarkGrass();
-                        if (darkGrass) {
-                            tile.baseSprite.texture = darkGrass;
-                        }
-                    } else {
-                        const grass = this.tilesets.getRandomPureGrass();
-                        if (grass) {
-                            tile.baseSprite.texture = grass;
-                        }
-                    }
+                    // Ground level tiles - single sprite as before
+                    const sprite = new PIXI.Sprite(tileResult.texture);
+                    sprite.position.set(0, 0);
+                    sprite.scale.set(this.tileSize / 32, this.tileSize / 32);
+                    tile.sprite = sprite;
+                    tile.container.addChild(sprite);
                 }
             }
         }
@@ -547,6 +547,9 @@ export class ClientWorldRenderer {
                 }
             }
         }
+        
+        // Second pass: Add cliff extensions
+        this.addCliffExtensions(processedTiles);
     }
     
     private isCliffTileWalkable(row: number, col: number): boolean {
@@ -583,6 +586,43 @@ export class ClientWorldRenderer {
     
     isTileWalkable(worldX: number, worldY: number): boolean {
         return this.collisionMask.isWalkable(worldX, worldY);
+    }
+    
+    private addCliffExtensions(processedTiles: any[][]): void {
+        if (!this.elevationData || !this.biomeData) return;
+        
+        let extensionCount = 0;
+        
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (this.elevationData[y][x] === 0) continue;
+                
+                const extensionTexture = (this.cliffAutotiler as any).getCliffExtensionTexture(x, y, this.elevationData, processedTiles, this.biomeData);
+                
+                if (extensionTexture && y + 1 < this.height) {
+                    // Update the ground tile underneath to match the cliff's biome
+                    const cliffBiome = this.biomeData && this.biomeData[y] ? this.biomeData[y][x] : 0;
+                    const groundTile = this.tiles[y + 1][x];
+                    
+                    // Replace the ground tile sprite with the appropriate biome grass
+                    if (groundTile && groundTile.sprite) {
+                        const newGroundTexture = cliffBiome === 1 ? 
+                            this.tilesets.getRandomPureDarkGrass() : 
+                            this.tilesets.getRandomPureGrass();
+                        
+                        groundTile.sprite.texture = newGroundTexture;
+                    }
+                    
+                    const extensionSprite = new PIXI.Sprite(extensionTexture);
+                    extensionSprite.x = x * this.tileSize;
+                    extensionSprite.y = (y + 1) * this.tileSize;
+                    extensionSprite.scale.set(this.tileSize / 32, this.tileSize / 32);
+                    
+                    this.container.addChild(extensionSprite);
+                    extensionCount++;
+                }
+            }
+        }
     }
     
     private createCollisionDebugOverlay(): void {

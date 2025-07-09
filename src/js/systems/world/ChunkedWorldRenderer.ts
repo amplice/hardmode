@@ -248,16 +248,36 @@ export class ChunkedWorldRenderer {
             }
         }
         
-        // Get appropriate texture using world renderer's logic
-        const texture = this.worldRenderer.getTileTexture(x, y);
-        if (texture) {
-            const sprite = new PIXI.Sprite(texture);
-            sprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
-            tileContainer.addChild(sprite);
+        // Normal tile processing with autotiler
+        const tileResult = (this.worldRenderer.cliffAutotiler as any).getTileTexture(
+            x, y, 
+            this.worldRenderer.elevationData || [], 
+            processedTiles, 
+            this.worldRenderer.biomeData || undefined
+        ) as any;
+        
+        processedTiles[y][x] = tileResult.type;
+        
+        // FOR ELEVATED TILES: Create base color fill first
+        if (this.worldRenderer.elevationData && this.worldRenderer.elevationData[y][x] > 0) {
+            const cliffBiome = this.worldRenderer.biomeData && this.worldRenderer.biomeData[y] ? 
+                this.worldRenderer.biomeData[y][x] : 0;
+            const isDarkGrassCliff = cliffBiome === 1;
+            const baseColor = isDarkGrassCliff ? 0x2a3a1c : 0x3e5b24;
+            
+            const colorFill = new PIXI.Graphics();
+            colorFill.beginFill(baseColor, 1.0);
+            colorFill.drawRect(0, 0, this.worldRenderer.tileSize, this.worldRenderer.tileSize);
+            colorFill.endFill();
+            tileContainer.addChild(colorFill);
         }
         
+        // Add the tile sprite
+        const sprite = new PIXI.Sprite(tileResult.texture);
+        sprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
+        tileContainer.addChild(sprite);
+        
         container.addChild(tileContainer);
-        processedTiles[y][x] = true;
     }
     
     /**
