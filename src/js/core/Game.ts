@@ -685,7 +685,7 @@ export class Game {
         id: info.id,
         x: info.x,
         y: info.y,
-        type: info.type,
+        type: info.type as any, // Server sends valid monster types
         hp: info.hp,
         maxHp: info.maxHp
       });
