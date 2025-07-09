@@ -280,18 +280,21 @@ export class ChunkedWorldRenderer {
                     continue;
                 }
                 
-                // Check if we need to add cliff top extension
-                if (this.needsCliffTopExtension(x, y)) {
-                    const localX = (x % this.chunkSize) * this.worldRenderer.tileSize;
-                    const localY = (y % this.chunkSize) * this.worldRenderer.tileSize;
+                // Get cliff extension texture from autotiler
+                const extensionTexture = (this.worldRenderer.cliffAutotiler as any).getCliffExtensionTexture(
+                    x, y, this.worldRenderer.elevationData, processedTiles, this.worldRenderer.biomeData
+                );
+                
+                if (extensionTexture && y + 1 < this.worldRenderer.height) {
+                    // Calculate position for extension (it goes on the tile below)
+                    const extensionX = x % this.chunkSize;
+                    const extensionY = (y + 1) % this.chunkSize;
                     
-                    // Get the texture from autotiler
-                    const extensionRow = 8;
-                    const extensionCol = this.getExtensionColumn(x, y);
-                    const extensionTexture = this.worldRenderer.tilesets.textures.terrain[extensionRow] &&
-                                           this.worldRenderer.tilesets.textures.terrain[extensionRow][extensionCol];
-                    
-                    if (extensionTexture) {
+                    // Only add if the extension is within this chunk
+                    if (y + 1 < endY) {
+                        const localX = extensionX * this.worldRenderer.tileSize;
+                        const localY = extensionY * this.worldRenderer.tileSize;
+                        
                         const extensionSprite = new PIXI.Sprite(extensionTexture);
                         extensionSprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
                         extensionSprite.position.set(localX, localY);
@@ -299,49 +302,6 @@ export class ChunkedWorldRenderer {
                     }
                 }
             }
-        }
-    }
-    
-    /**
-     * Check if a tile needs a cliff top extension
-     */
-    private needsCliffTopExtension(x: number, y: number): boolean {
-        if (!this.worldRenderer.elevationData) return false;
-        
-        // A tile needs a cliff top extension if:
-        // 1. It is elevated
-        // 2. The tile below (y+1) is not elevated
-        // 3. It's not a bottom edge or corner piece
-        
-        if (y >= this.worldRenderer.height - 1) return false;
-        
-        const currentElevated = this.worldRenderer.elevationData[y][x] > 0;
-        const belowElevated = this.worldRenderer.elevationData[y + 1] && 
-                            this.worldRenderer.elevationData[y + 1][x] > 0;
-        
-        return currentElevated && !belowElevated;
-    }
-    
-    /**
-     * Determine which extension column to use based on neighboring tiles
-     */
-    private getExtensionColumn(x: number, y: number): number {
-        if (!this.worldRenderer.elevationData) return 1;
-        
-        const leftElevated = x > 0 && 
-                           this.worldRenderer.elevationData[y][x - 1] > 0;
-        const rightElevated = x < this.worldRenderer.width - 1 && 
-                            this.worldRenderer.elevationData[y][x + 1] > 0;
-        
-        // Choose extension based on neighbors
-        if (leftElevated && rightElevated) {
-            return 1; // Middle extension
-        } else if (!leftElevated && rightElevated) {
-            return 0; // Left edge extension
-        } else if (leftElevated && !rightElevated) {
-            return 2; // Right edge extension
-        } else {
-            return 3; // Standalone extension
         }
     }
     

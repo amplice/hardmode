@@ -229,6 +229,12 @@ export class ClientWorldRenderer {
             }
         }
         
+        // Check for biome transitions first
+        const transitionTile = (this.cliffAutotiler as any).getBiomeTransitionTile(x, y, this.biomeData || undefined);
+        if (transitionTile && transitionTile.texture) {
+            return transitionTile.texture as PIXI.Texture;
+        }
+        
         // Regular ground tile based on biome - always return a valid texture
         const biome = (this.biomeData && this.biomeData[y] && this.biomeData[y][x]) || 0;
         if (biome === 1) {
@@ -511,17 +517,23 @@ export class ClientWorldRenderer {
                     continue;
                 }
                 
-                // Regular ground tile - apply biome-based variation
-                const biome = this.biomeData[y][x] || 0;
-                if (biome === 1) {
-                    const darkGrass = this.tilesets.getRandomPureDarkGrass();
-                    if (darkGrass) {
-                        tile.baseSprite.texture = darkGrass;
-                    }
+                // Check for biome transitions first
+                const transitionTile = (this.cliffAutotiler as any).getBiomeTransitionTile(x, y, this.biomeData || undefined);
+                if (transitionTile && transitionTile.texture) {
+                    tile.baseSprite.texture = transitionTile.texture as PIXI.Texture;
                 } else {
-                    const grass = this.tilesets.getRandomPureGrass();
-                    if (grass) {
-                        tile.baseSprite.texture = grass;
+                    // Regular ground tile - apply biome-based variation
+                    const biome = this.biomeData[y][x] || 0;
+                    if (biome === 1) {
+                        const darkGrass = this.tilesets.getRandomPureDarkGrass();
+                        if (darkGrass) {
+                            tile.baseSprite.texture = darkGrass;
+                        }
+                    } else {
+                        const grass = this.tilesets.getRandomPureGrass();
+                        if (grass) {
+                            tile.baseSprite.texture = grass;
+                        }
                     }
                 }
             }
