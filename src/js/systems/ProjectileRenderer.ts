@@ -141,7 +141,7 @@ export class ProjectileRenderer {
         if (effect) {
             effect.play();
             effect.anchor.set(0.5, 0.5);
-            effect.scale.set(1.5); // Make projectiles more visible
+            effect.scale.set(1.5, 1.5); // Make projectiles more visible
             effect.animationSpeed = 0.5;
             effect.loop = true; // Keep looping for projectile lifetime
         }

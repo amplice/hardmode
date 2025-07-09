@@ -239,7 +239,7 @@ export class ChunkedWorldRenderer {
                 
                 // Add stair sprite
                 const stairSprite = new PIXI.Sprite(stairTexture);
-                stairSprite.scale.set(this.worldRenderer.tileSize / 32);
+                stairSprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
                 tileContainer.addChild(stairSprite);
                 
                 container.addChild(tileContainer);
@@ -252,7 +252,7 @@ export class ChunkedWorldRenderer {
         const texture = this.worldRenderer.getTileTexture(x, y);
         if (texture) {
             const sprite = new PIXI.Sprite(texture);
-            sprite.scale.set(this.worldRenderer.tileSize / 32);
+            sprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
             tileContainer.addChild(sprite);
         }
         
@@ -293,7 +293,7 @@ export class ChunkedWorldRenderer {
                     
                     if (extensionTexture) {
                         const extensionSprite = new PIXI.Sprite(extensionTexture);
-                        extensionSprite.scale.set(this.worldRenderer.tileSize / 32);
+                        extensionSprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
                         extensionSprite.position.set(localX, localY);
                         container.addChild(extensionSprite);
                     }
