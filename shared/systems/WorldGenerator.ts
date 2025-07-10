@@ -318,16 +318,16 @@ export class SharedWorldGenerator {
     }
 
     generatePlateauCandidates(elevationData: number[][]): void {
-        // Create more plateaus for increased cliff density
-        const largePlateauCount = 4 + Math.floor(this.random() * 4); // 4-7 large plateaus (was 2-3)
-        const mediumPlateauCount = 3 + Math.floor(this.random() * 3); // 3-5 additional medium plateaus
+        // Create many more plateaus with much larger sizes for big worlds
+        const largePlateauCount = 6 + Math.floor(this.random() * 6); // 6-11 large plateaus (was 4-7)
+        const mediumPlateauCount = 8 + Math.floor(this.random() * 8); // 8-15 medium plateaus (was 3-5)
         
         // Generate large plateaus
         for (let i = 0; i < largePlateauCount; i++) {
             // Choose center point with larger buffer for big plateaus
             const cx = 20 + Math.floor(this.random() * (this.width - 40));
             const cy = 20 + Math.floor(this.random() * (this.height - 40));
-            const baseRadius = 15 + Math.floor(this.random() * 12); // Large: 15-26 radius
+            const baseRadius = 25 + Math.floor(this.random() * 20); // Large: 25-44 radius (much bigger)
             
             // Use noise to create organic shape with larger plateaus
             this.createNoisyPlateau(elevationData, cx, cy, baseRadius);
@@ -337,7 +337,7 @@ export class SharedWorldGenerator {
         for (let i = 0; i < mediumPlateauCount; i++) {
             const cx = 15 + Math.floor(this.random() * (this.width - 30));
             const cy = 15 + Math.floor(this.random() * (this.height - 30));
-            const baseRadius = 8 + Math.floor(this.random() * 8); // Medium: 8-15 radius
+            const baseRadius = 15 + Math.floor(this.random() * 15); // Medium: 15-29 radius (much bigger)
             
             this.createNoisyPlateau(elevationData, cx, cy, baseRadius);
         }
@@ -838,8 +838,8 @@ export class SharedWorldGenerator {
      * Ensures plateaus stay within biome boundaries with 1-tile buffer
      */
     generatePlateauCandidatesWithBiomeBuffers(elevationData: number[][], biomeData: number[][]): void {
-        const largePlateauCount = 4 + Math.floor(this.random() * 4); // 4-7 large plateaus (was 2-3)
-        const mediumPlateauCount = 3 + Math.floor(this.random() * 3); // 3-5 additional medium plateaus
+        const largePlateauCount = 6 + Math.floor(this.random() * 6); // 6-11 large plateaus (was 4-7)
+        const mediumPlateauCount = 8 + Math.floor(this.random() * 8); // 8-15 medium plateaus (was 3-5)
         
         // Generate large plateaus
         for (let i = 0; i < largePlateauCount; i++) {
@@ -848,7 +848,7 @@ export class SharedWorldGenerator {
             const cy = 20 + Math.floor(this.random() * (this.height - 40));
             
             // Generate large plateaus (ignoring biome constraints initially)
-            const size = 15 + Math.floor(this.random() * 12); // 15-26 tile radius
+            const size = 25 + Math.floor(this.random() * 20); // 25-44 tile radius (much bigger)
             this.generateUnconstrainedPlateau(elevationData, cx, cy, size);
         }
         
@@ -857,7 +857,7 @@ export class SharedWorldGenerator {
             const cx = 15 + Math.floor(this.random() * (this.width - 30));
             const cy = 15 + Math.floor(this.random() * (this.height - 30));
             
-            const size = 8 + Math.floor(this.random() * 8); // 8-15 tile radius
+            const size = 15 + Math.floor(this.random() * 15); // 15-29 tile radius (much bigger)
             this.generateUnconstrainedPlateau(elevationData, cx, cy, size);
         }
     }
