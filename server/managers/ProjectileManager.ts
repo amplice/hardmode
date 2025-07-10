@@ -1,5 +1,6 @@
 import { getDistance } from '../../shared/utils/MathUtils.js';
 import { MONSTER_STATS } from '../../shared/constants/GameConstants.js';
+import { Projectile, type ProjectileConfig, type ProjectileTarget } from '../entities/Projectile.js';
 import type { 
     PlayerState, 
     MonsterState,
@@ -75,7 +76,7 @@ interface ProjectileData {
 
 export class ProjectileManager {
     private io: SocketIO;
-    public projectiles: Map<string, ServerProjectileState>;
+    public projectiles: Map<string, Projectile>;
     private nextProjectileId: number;
     public damageProcessor?: DamageProcessor;
 
@@ -108,47 +109,27 @@ export class ProjectileManager {
         this.nextProjectileId = 1;
     }
 
-    createProjectile(owner: ProjectileOwner, data: ProjectileData): ServerProjectileState {
+    createProjectile(owner: ProjectileOwner, data: ProjectileData): Projectile {
         const id = String(this.nextProjectileId++);
         
-        const projectile: ServerProjectileState = {
+        // Phase 6.1: Create projectile using class-based approach
+        const config: ProjectileConfig = {
             id,
             ownerId: owner.id,
-            ownerType: owner.class || owner.type || 'player', // Player class or monster type
-            x: data.x,
-            y: data.y,
-            startX: data.x,
-            startY: data.y,
+            ownerType: owner.class || owner.type || 'player',
+            startPosition: { x: data.x, y: data.y },
             angle: data.angle,
-            speed: data.speed || 700,
-            damage: data.damage || 1,
-            maxRange: data.range || 600,
-            effectType: data.effectType || 'bow_shot_effect',
-            velocity: {
-                x: Math.cos(data.angle) * (data.speed || 700),
-                y: Math.sin(data.angle) * (data.speed || 700)
-            },
-            active: true,
-            createdAt: Date.now(),
-            // ProjectileState interface compatibility
-            position: { x: data.x, y: data.y },
-            target: { x: data.x + Math.cos(data.angle) * (data.range || 600), y: data.y + Math.sin(data.angle) * (data.range || 600) },
-            type: data.effectType || 'bow_shot_effect'
+            speed: data.speed,
+            damage: data.damage,
+            range: data.range,
+            effectType: data.effectType
         };
         
+        const projectile = new Projectile(config);
         this.projectiles.set(id, projectile);
         
         // Notify all clients about new projectile
-        this.io.emit('projectileCreated', {
-            id: projectile.id,
-            ownerId: projectile.ownerId,
-            ownerType: projectile.ownerType,
-            x: projectile.x,
-            y: projectile.y,
-            angle: projectile.angle,
-            speed: projectile.speed,
-            effectType: projectile.effectType
-        });
+        this.io.emit('projectileCreated', projectile.getCreationData());
         
         return projectile;
     }
@@ -156,70 +137,53 @@ export class ProjectileManager {
     update(deltaTime: number, players: Map<string, PlayerState>, monsters: Map<string, ServerMonsterState>): void {
         const projectilesToRemove: string[] = [];
         
+        // Phase 6.1: Use class-based update and collision detection
         this.projectiles.forEach((projectile, id) => {
-            if (!projectile.active) {
+            // Update projectile position and check range
+            const stillActive = projectile.update(deltaTime);
+            
+            if (!stillActive) {
                 projectilesToRemove.push(id);
-                return;
-            }
-            
-            // Update position
-            projectile.x += projectile.velocity.x * deltaTime;
-            projectile.y += projectile.velocity.y * deltaTime;
-            
-            // Update position interface for compatibility
-            projectile.position.x = projectile.x;
-            projectile.position.y = projectile.y;
-            
-            // Check distance traveled
-            const distanceTraveled = getDistance(
-                { x: projectile.startX, y: projectile.startY },
-                { x: projectile.x, y: projectile.y }
-            );
-            
-            if (distanceTraveled >= projectile.maxRange) {
                 this.destroyProjectile(id, 'maxRange');
                 return;
             }
             
-            // Check collisions based on owner type
-            // Player classes (hunter, guardian, etc.) should hit monsters
-            const isPlayerProjectile = projectile.ownerType !== 'skeleton' && 
-                                     projectile.ownerType !== 'elemental' && 
-                                     projectile.ownerType !== 'ghoul' && 
-                                     projectile.ownerType !== 'ogre' && 
-                                     projectile.ownerType !== 'wildarcher';
-            
-            if (isPlayerProjectile) {
+            // Check collisions based on projectile type
+            if (projectile.shouldHitMonsters()) {
                 // Player projectiles hit monsters
-                let hitDetected = false;
-                monsters.forEach((monster, monsterId) => {
-                    if (hitDetected || monster.hp <= 0) return;
+                for (const [monsterId, monster] of Array.from(monsters.entries())) {
+                    const target: ProjectileTarget = {
+                        id: monsterId,
+                        position: { x: monster.x, y: monster.y },
+                        hp: monster.hp,
+                        collisionRadius: monster.collisionRadius
+                    };
                     
-                    const distance = getDistance(projectile, monster);
-                    const hitRadius = monster.collisionRadius || 20;
-                    
-                    if (distance <= hitRadius) {
+                    const hitResult = projectile.checkCollision(target);
+                    if (hitResult.hit) {
                         this.handleProjectileHit(projectile, monster, 'monster', players, monsters);
                         projectilesToRemove.push(id);
-                        hitDetected = true;
+                        break; // Stop checking after first hit
                     }
-                });
+                }
             } else {
                 // Monster projectiles hit players
-                let hitDetected = false;
-                players.forEach((player, playerId) => {
-                    if (hitDetected || player.hp <= 0 || playerId === projectile.ownerId) return;
-                    
+                for (const [playerId, player] of Array.from(players.entries())) {
                     const playerCoords = this.playerToCoords(player);
-                    const distance = getDistance(projectile, playerCoords);
-                    const hitRadius = 20; // Player collision radius
+                    const target: ProjectileTarget = {
+                        id: playerId,
+                        position: playerCoords,
+                        hp: player.hp,
+                        collisionRadius: 20 // Player collision radius
+                    };
                     
-                    if (distance <= hitRadius) {
+                    const hitResult = projectile.checkCollision(target);
+                    if (hitResult.hit) {
                         this.handleProjectileHit(projectile, player, 'player', players, monsters);
                         projectilesToRemove.push(id);
-                        hitDetected = true;
+                        break; // Stop checking after first hit
                     }
-                });
+                }
             }
         });
         
@@ -230,7 +194,7 @@ export class ProjectileManager {
     }
 
     handleProjectileHit(
-        projectile: ServerProjectileState, 
+        projectile: Projectile, 
         target: PlayerState | ServerMonsterState, 
         targetType: 'player' | 'monster', 
         players: Map<string, PlayerState>, 
@@ -241,10 +205,11 @@ export class ProjectileManager {
             if (this.damageProcessor) {
                 const owner = players.get(projectile.ownerId);
                 if (owner) {
+                    const projectileData = projectile.serialize();
                     this.damageProcessor.applyDamage(
                         owner,
                         target,
-                        projectile.damage,
+                        projectileData.damage,
                         'projectile',
                         { 
                             attackType: 'player_projectile',
@@ -257,9 +222,10 @@ export class ProjectileManager {
             // Apply damage to player using DamageProcessor
             if (this.damageProcessor) {
                 // For monster projectiles, the source is the projectile itself
-                // We'll pass the projectile with ownerType info
+                // We'll pass the projectile data with ownerType info
+                const projectileData = projectile.serialize();
                 const projectileSource = {
-                    ...projectile,
+                    ...projectileData,
                     type: 'projectile',
                     id: projectile.ownerType // For proper source identification
                 };
@@ -267,7 +233,7 @@ export class ProjectileManager {
                 this.damageProcessor.applyDamage(
                     projectileSource,
                     target,
-                    projectile.damage,
+                    projectileData.damage,
                     'projectile',
                     { 
                         attackType: 'monster_projectile',
@@ -284,27 +250,31 @@ export class ProjectileManager {
         const projectile = this.projectiles.get(id);
         if (!projectile) return;
         
-        projectile.active = false;
+        projectile.deactivate();
         
         // Notify all clients
+        const position = projectile.getPosition();
         this.io.emit('projectileDestroyed', {
             id,
             reason,
-            x: projectile.x,
-            y: projectile.y
+            x: position.x,
+            y: position.y
         });
     }
 
     getSerializedProjectiles(): any[] {
         return Array.from(this.projectiles.values())
-            .filter(p => p.active)
-            .map(p => ({
-                id: p.id,
-                ownerId: p.ownerId,
-                x: Math.round(p.x),
-                y: Math.round(p.y),
-                angle: p.angle
-            }));
+            .filter(p => p.isActive())
+            .map(p => {
+                const data = p.serialize();
+                return {
+                    id: data.id,
+                    ownerId: data.ownerId,
+                    x: Math.round(data.x),
+                    y: Math.round(data.y),
+                    angle: data.angle
+                };
+            });
     }
 
     // Clean up old projectiles
@@ -313,8 +283,9 @@ export class ProjectileManager {
         const maxAge = 10000; // 10 seconds max lifetime
         
         this.projectiles.forEach((projectile, id) => {
-            if (now - projectile.createdAt > maxAge) {
-                this.destroyProjectile(id, 'timeout');
+            // Clean up inactive projectiles
+            if (!projectile.isActive()) {
+                this.projectiles.delete(id);
             }
         });
     }
