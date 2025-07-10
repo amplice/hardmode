@@ -407,8 +407,11 @@ export class MonsterManager {
         if (monster.stunTimer > 0) {
             monster.stunTimer -= deltaTime;
             if (monster.stunTimer <= 0) {
+                // Stun has ended
                 monster.isStunned = false;
                 monster.stunTimer = 0;
+                
+                console.log(`[MonsterManager] Monster ${monster.id} stun ended, attempting recovery. State: ${monster.state}, PreStunState: ${monster.preStunState}`);
                 
                 // Smart stun recovery: resume previous behavior if target is still valid
                 this.recoverFromStun(monster, stats, players);
@@ -417,7 +420,10 @@ export class MonsterManager {
                 if (monster.isAttackAnimating) {
                     monster.isAttackAnimating = false;
                 }
+                
+                console.log(`[MonsterManager] Monster ${monster.id} recovery complete. New state: ${monster.state}, HasTarget: ${!!monster.target}`);
             } else {
+                // Still stunned
                 monster.isStunned = true;
                 // Clear any velocity to stop movement
                 monster.velocity = { x: 0, y: 0 };
@@ -439,6 +445,11 @@ export class MonsterManager {
                 break;
             case 'stunned':
                 // Stunned monsters don't process AI logic - stun timer handles state transition
+                // Safety check: if stunTimer is 0 but we're still in stunned state, force recovery
+                if (monster.stunTimer <= 0 && !monster.isStunned) {
+                    console.log(`[MonsterManager] SAFETY: Monster ${monster.id} stuck in stunned state with no timer, forcing recovery`);
+                    this.recoverFromStun(monster, stats, players);
+                }
                 break;
             default:
                 // Handle 'dormant' and other states
@@ -735,7 +746,11 @@ export class MonsterManager {
      * Smart recovery from stun - attempts to resume previous behavior
      */
     recoverFromStun(monster: ServerMonsterState, stats: any, players: Map<string, PlayerState>): void {
-        console.log(`[MonsterManager] Monster ${monster.id} recovering from stun. PreStunState: ${monster.preStunState}, HasTarget: ${!!monster.preStunTarget}`);
+        console.log(`[MonsterManager] Monster ${monster.id} recovering from stun. PreStunState: ${monster.preStunState}, HasTarget: ${!!monster.preStunTarget}, CurrentState: ${monster.state}`);
+        
+        // CRITICAL: Clear stun state first
+        monster.isStunned = false;
+        monster.stunTimer = 0;
         
         // Check if we can resume previous state with previous target
         if (monster.preStunState && monster.preStunTarget) {
@@ -776,18 +791,16 @@ export class MonsterManager {
         monster.preStunState = undefined;
         monster.preStunTarget = null;
         monster.velocity = { x: 0, y: 0 }; // Clear any residual movement
+        monster.isStunned = false; // Ensure not stunned
+        monster.stunTimer = 0; // Ensure timer is cleared
         
         // Force state transition to idle
         this.transitionMonsterState(monster, 'idle');
         
-        // As a safety net, immediately trigger idle state logic to find new targets
-        // This prevents monsters from getting stuck even if there's an edge case
-        setTimeout(() => {
-            if (monster.state === 'idle' && !monster.target && monster.hp > 0) {
-                console.log(`[MonsterManager] Safety check: Monster ${monster.id} still idle after recovery, forcing target search`);
-                this.handleIdleState(monster, stats, players);
-            }
-        }, 100); // Small delay to allow state transition to complete
+        // IMMEDIATE trigger idle state logic (no timeout needed)
+        // This ensures monsters start looking for targets right away
+        console.log(`[MonsterManager] Monster ${monster.id} immediately searching for new targets`);
+        this.handleIdleState(monster, stats, players);
     }
 
     /**
