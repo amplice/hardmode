@@ -25,6 +25,7 @@
 
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG } from '../config/GameConfig.js';
+import { ATTACK_DEFINITIONS } from '../../../shared/constants/GameConstants.js';
 
 // Type definitions
 interface PlayerInterface {
@@ -119,12 +120,13 @@ export class StatsUI {
         this.levelText.text = `Level: ${this.player.level}`;
 
         if (this.showDebug) {
-            const classKeyPrimary = (PLAYER_CONFIG.attacks as any)[`${this.player.characterClass}_primary`] ?
+            // Phase 4.1: Use centralized ATTACK_DEFINITIONS
+            const classKeyPrimary = (ATTACK_DEFINITIONS as any)[`${this.player.characterClass}_primary`] ?
                 `${this.player.characterClass}_primary` : 'primary';
-            const classKeySecondary = (PLAYER_CONFIG.attacks as any)[`${this.player.characterClass}_secondary`] ?
+            const classKeySecondary = (ATTACK_DEFINITIONS as any)[`${this.player.characterClass}_secondary`] ?
                 `${this.player.characterClass}_secondary` : 'secondary';
-            const attack1 = (PLAYER_CONFIG.attacks as any)[classKeyPrimary];
-            const attack2 = (PLAYER_CONFIG.attacks as any)[classKeySecondary];
+            const attack1 = (ATTACK_DEFINITIONS as any)[classKeyPrimary];
+            const attack2 = (ATTACK_DEFINITIONS as any)[classKeySecondary];
 
             this.moveSpeedText.text = `Move Speed: ${this.player.moveSpeed.toFixed(2)}`;
             

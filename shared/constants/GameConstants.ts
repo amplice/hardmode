@@ -366,5 +366,74 @@ export const ATTACK_DEFINITIONS = {
             width: 50,
             length: 80
         }
+    },
+    
+    // Phase 4.1: Monster attack definitions - centralized for consistency
+    monster_ogre_primary: {
+        archetype: 'standard_melee',
+        damage: 2,
+        windupTime: 750, // attackDelay from MONSTER_STATS
+        recoveryTime: 250, // Remaining animation time
+        cooldown: 2500,
+        range: 90,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 120,
+            length: 120
+        }
+    },
+    monster_skeleton_primary: {
+        archetype: 'standard_melee',
+        damage: 1,
+        windupTime: 625,
+        recoveryTime: 208, // Remaining animation time
+        cooldown: 1800,
+        range: 70,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 80,
+            length: 80
+        }
+    },
+    monster_elemental_primary: {
+        archetype: 'standard_melee',
+        damage: 2,
+        windupTime: 625,
+        recoveryTime: 208,
+        cooldown: 3000,
+        range: 100,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 100,
+            length: 100
+        }
+    },
+    monster_ghoul_primary: {
+        archetype: 'standard_melee',
+        damage: 1,
+        windupTime: 469,
+        recoveryTime: 156,
+        cooldown: 1200,
+        range: 70,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 80,
+            length: 80
+        }
+    },
+    monster_wildarcher_primary: {
+        archetype: 'projectile',
+        damage: 1,
+        windupTime: 536,
+        recoveryTime: 178,
+        cooldown: 3000,
+        range: 500,
+        projectileSpeed: 400,
+        projectileRange: 500,
+        hitboxType: 'projectile',
+        hitboxParams: {
+            width: 8,
+            length: 20
+        }
     }
 };

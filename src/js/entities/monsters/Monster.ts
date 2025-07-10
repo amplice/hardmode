@@ -358,9 +358,8 @@ export class Monster {
         
         console.log(`Monster ${this.type} has been defeated!`);
         this.alive = false;
-        if (attacker && attacker.stats && attacker.stats.recordKill) {
-            attacker.stats.recordKill(this.type);
-        }
+        // Phase 3.2: Server handles all kill tracking and stat updates
+        // Client no longer updates stats directly - server sends updates via events
         this.changeState('dying');
         this.velocity = { x: 0, y: 0 };
         

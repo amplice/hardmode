@@ -43,6 +43,7 @@
 
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js';
+import { ATTACK_DEFINITIONS } from '../../../shared/constants/GameConstants.js';
 import { 
     angleToDirectionString, 
     directionStringToAngleRadians,
@@ -944,30 +945,21 @@ class StatsComponent extends BaseComponent implements IStatsComponent {
     }
 
     addExperience(amount: number): void {
-        // Phase 3.2: Server updates XP via monsterKilled event
-        // Client only checks for visual effects
-        this.checkLevelUp();
+        // Phase 3.2 COMPLETE: Server handles ALL experience and stat updates
+        // Client receives updates via network events only - no client-side stat calculations
+        // This method is kept for interface compatibility but performs no operations
     }
 
     recordKill(monsterType: string): void {
-        // Phase 3.2: Server tracks kills and XP
-        // Client only needs to trigger level check for visual effects
-        this.checkLevelUp();
+        // Phase 3.2 COMPLETE: Server handles ALL kill tracking and stat updates
+        // Client receives updates via network events only - no client-side stat calculations  
+        // This method is kept for interface compatibility but performs no operations
     }
 
     checkLevelUp(): void {
-        // Phase 3.2: Server handles all level and stat updates
-        // Client only checks if we should play level up effect
-        // Server will send playerLevelUp event with actual level/stats
-        const maxLevel = PLAYER_CONFIG.levels?.maxLevel || 10;
-        const shouldBeLevelUp = this.owner.level < maxLevel && 
-                               this.owner.experience >= this.getTotalXpForLevel(this.owner.level + 1);
-        
-        // Note: We don't modify level here - server will update it
-        // This just triggers the visual effect if server confirms level up
-        if (shouldBeLevelUp && this.owner.playLevelUpEffect) {
-            // Effect will play when server confirms level up via event
-        }
+        // Phase 3.2 COMPLETE: Server handles ALL level progression and stat updates
+        // Client receives updates via network events only - no client-side level calculations
+        // Level up effects are triggered by server-sent playerLevelUp events
     }
 
     applyLevelBonus(level: number): void {
@@ -1002,16 +994,18 @@ class StatsComponent extends BaseComponent implements IStatsComponent {
     }
 
     modifyAttackRecovery(amount: number): void {
-        const key = (PLAYER_CONFIG.attacks as any)[`${this.owner.characterClass}_primary`] ?
+        // Phase 4.1: Use centralized ATTACK_DEFINITIONS
+        const key = (ATTACK_DEFINITIONS as any)[`${this.owner.characterClass}_primary`] ?
                     `${this.owner.characterClass}_primary` : 'primary';
-        const attack = (PLAYER_CONFIG.attacks as any)[key];
+        const attack = (ATTACK_DEFINITIONS as any)[key];
         attack.recoveryTime = Math.max(0, (attack.recoveryTime || 0) + amount);
     }
 
     modifyAttackCooldown(amount: number): void {
-        const key = (PLAYER_CONFIG.attacks as any)[`${this.owner.characterClass}_secondary`] ?
+        // Phase 4.1: Use centralized ATTACK_DEFINITIONS
+        const key = (ATTACK_DEFINITIONS as any)[`${this.owner.characterClass}_secondary`] ?
                     `${this.owner.characterClass}_secondary` : 'secondary';
-        const attack = (PLAYER_CONFIG.attacks as any)[key];
+        const attack = (ATTACK_DEFINITIONS as any)[key];
         attack.cooldown = Math.max(0, (attack.cooldown || 0) + amount);
     }
 }

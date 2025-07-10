@@ -468,13 +468,11 @@ export class NetworkClient {
                 // Show XP gain if we killed it
                 if (data.killedBy === this.socket.id) {
                     this.game.showXpGain?.(monster.position, data.xpReward!);
-                    // Update local player XP and level through the stats component
-                    if (this.game.entities.player && this.game.entities.player.stats) {
+                    // Phase 3.2: Update local player XP and level from server authority
+                    if (this.game.entities.player) {
                         this.game.entities.player.experience = data.killerXp!;
                         this.game.entities.player.level = data.killerLevel!;
-                        // Force the stats component to update by calling addExperience with 0
-                        this.game.entities.player.stats.owner.experience = data.killerXp!;
-                        this.game.entities.player.stats.owner.level = data.killerLevel!;
+                        // Stats component references player object - no separate update needed
                     }
                 }
             }
@@ -536,10 +534,7 @@ export class NetworkClient {
                     const baseSpeed = player.getClassMoveSpeed();
                     player.moveSpeed = baseSpeed + player.moveSpeedBonus;
                     
-                    // Update stats component
-                    if (player.stats) {
-                        player.stats.owner.level = data.level;
-                    }
+                    // Phase 3.2: Stats component references player object - no separate update needed
                     
                     // Update max HP from server (important for level 10 bonus)
                     if (data.maxHp !== undefined) {
@@ -587,11 +582,7 @@ export class NetworkClient {
                     const baseSpeed = player.getClassMoveSpeed();
                     player.moveSpeed = baseSpeed + player.moveSpeedBonus;
                     
-                    // Update stats component
-                    if (player.stats) {
-                        player.stats.owner.level = data.level;
-                        player.stats.owner.experience = data.xp;
-                    }
+                    // Phase 3.2: Stats component references player object - no separate update needed
                     
                     // Trigger respawn in the player component
                     player.health.respawn();

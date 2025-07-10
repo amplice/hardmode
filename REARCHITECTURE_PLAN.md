@@ -30,19 +30,19 @@
 - Create unified damage/healing/stat calculation system
 - Ensure consistent math across all game systems
 
-### Phase 3.2: Server-Only Stat Updates ⏳ PENDING
+### Phase 3.2: Server-Only Stat Updates ✅ COMPLETED
 - Make server the single source of truth for all player stats
 - Remove client-side stat modifications
 - Prevent stat manipulation exploits
 
 ## Phase 4: Combat System Unification
 
-### Phase 4.1: Attack Definition System ⏳ PENDING
+### Phase 4.1: Attack Definition System ✅ COMPLETED
 - Centralize all attack configurations in shared constants
 - Standardize attack archetypes (melee, projectile, movement)
 - Ensure consistent attack behavior across client-server
 
-### Phase 4.2: Unified Damage System ⏳ PENDING
+### Phase 4.2: Unified Damage System ✅ COMPLETED
 - Consolidate all damage sources into single system
 - Handle player damage, monster damage, environmental damage uniformly
 - Simplify damage application and resistance calculations
