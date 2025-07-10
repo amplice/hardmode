@@ -82,32 +82,22 @@ const io: ExtendedSocketIO = new Server(server);
 
 const PORT: number = parseInt(process.env.PORT || '3000', 10);
 
-// Serve static files - paths adjusted for TypeScript compilation to dist/
+// Serve static files from compiled TypeScript output (JavaScript files removed)
 const staticPaths = {
-    src: path.join(__dirname, '..', '..', 'src'),
-    compiledSrc: path.join(__dirname, '..', '..', 'dist', 'client', 'src'),
+    clientRoot: path.join(__dirname, '..', 'client'),
     nodeModules: path.join(__dirname, '..', '..', 'node_modules'),
-    shared: path.join(__dirname, '..', '..', 'shared')
+    shared: path.join(__dirname, '..', 'shared')
 };
 
-console.log('[Migration] Static file paths:');
-console.log(`  - src: ${staticPaths.src}`);
-console.log(`  - compiledSrc: ${staticPaths.compiledSrc}`);
+console.log('[TypeScript Migration Complete] Static file paths:');
+console.log(`  - clientRoot: ${staticPaths.clientRoot}`);
 console.log(`  - node_modules: ${staticPaths.nodeModules}`);
 console.log(`  - shared: ${staticPaths.shared}`);
 
-// CRITICAL: Serve compiled JavaScript files first (takes precedence)
-app.use('/js', express.static(path.join(staticPaths.compiledSrc, 'js')));
-
-// Then serve original source files
-app.use(express.static(staticPaths.src));
+// Serve compiled TypeScript files (JavaScript originals removed)
+app.use(express.static(staticPaths.clientRoot));
 app.use('/node_modules', express.static(staticPaths.nodeModules));
 app.use('/shared', express.static(staticPaths.shared));
-
-// Root route handler - serve index.html explicitly
-app.get('/', (req, res) => {
-    res.sendFile(path.join(staticPaths.src, 'index.html'));
-});
 
 // Generate server-authoritative world seed
 const SERVER_WORLD_SEED: number = Math.floor(Math.random() * 1000000);
