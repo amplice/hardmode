@@ -180,10 +180,17 @@ export class DamageProcessor {
         if (stunDuration > 0) {
             const monsterWithStun = monster as any; // Allow access to stun fields
             
-            // Store pre-stun state for recovery
-            if (monster.state !== 'stunned') { // Don't overwrite if already stunned
+            // Store/refresh pre-stun state for recovery
+            // Always refresh context to prevent stale references on multi-hit scenarios
+            if (monster.state !== 'stunned') {
+                // First stun: store current state
                 monsterWithStun.preStunState = monster.state;
                 monsterWithStun.preStunTarget = monsterWithStun.target;
+                console.log(`[DamageProcessor] Monster ${monster.id} first stun: storing state '${monster.state}', target: ${monsterWithStun.target?.id || 'none'}`);
+            } else {
+                // Already stunned: refresh target but keep original state to maintain behavior intent
+                monsterWithStun.preStunTarget = monsterWithStun.target;
+                console.log(`[DamageProcessor] Monster ${monster.id} re-stunned: refreshing target to ${monsterWithStun.target?.id || 'none'}, keeping state '${monsterWithStun.preStunState}'`);
             }
             
             monsterWithStun.stunTimer = stunDuration;

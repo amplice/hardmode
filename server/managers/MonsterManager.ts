@@ -735,6 +735,8 @@ export class MonsterManager {
      * Smart recovery from stun - attempts to resume previous behavior
      */
     recoverFromStun(monster: ServerMonsterState, stats: any, players: Map<string, PlayerState>): void {
+        console.log(`[MonsterManager] Monster ${monster.id} recovering from stun. PreStunState: ${monster.preStunState}, HasTarget: ${!!monster.preStunTarget}`);
+        
         // Check if we can resume previous state with previous target
         if (monster.preStunState && monster.preStunTarget) {
             const target = players.get(monster.preStunTarget.id);
@@ -742,15 +744,19 @@ export class MonsterManager {
                 const targetCoords = this.playerToCoords(target);
                 const distance = getDistance(monster, targetCoords);
                 
+                console.log(`[MonsterManager] Monster ${monster.id} target distance: ${distance.toFixed(1)}, aggroRange: ${stats.aggroRange}, attackRange: ${stats.attackRange}`);
+                
                 // If target is still in aggro range, resume chasing or attacking
                 if (distance <= stats.aggroRange) {
                     monster.target = this.playerToLegacy(target); // Restore target
                     
                     if (distance <= stats.attackRange && monster.preStunState === 'attacking') {
                         // Resume attacking if still in range
+                        console.log(`[MonsterManager] Monster ${monster.id} resuming attack`);
                         this.transitionMonsterState(monster, 'attacking');
                     } else {
-                        // Resume chasing if target moved out of attack range
+                        // Resume chasing if target moved out of attack range or was previously chasing
+                        console.log(`[MonsterManager] Monster ${monster.id} resuming chase`);
                         this.transitionMonsterState(monster, 'chasing');
                     }
                     
@@ -762,11 +768,26 @@ export class MonsterManager {
             }
         }
         
-        // Fallback: target lost or invalid, go to idle
-        this.transitionMonsterState(monster, 'idle');
+        // Fallback: target lost or invalid, go to idle and look for new targets
+        console.log(`[MonsterManager] Monster ${monster.id} falling back to idle - will search for new targets`);
+        
+        // Ensure clean state for fallback
         monster.target = null;
         monster.preStunState = undefined;
         monster.preStunTarget = null;
+        monster.velocity = { x: 0, y: 0 }; // Clear any residual movement
+        
+        // Force state transition to idle
+        this.transitionMonsterState(monster, 'idle');
+        
+        // As a safety net, immediately trigger idle state logic to find new targets
+        // This prevents monsters from getting stuck even if there's an edge case
+        setTimeout(() => {
+            if (monster.state === 'idle' && !monster.target && monster.hp > 0) {
+                console.log(`[MonsterManager] Safety check: Monster ${monster.id} still idle after recovery, forcing target search`);
+                this.handleIdleState(monster, stats, players);
+            }
+        }, 100); // Small delay to allow state transition to complete
     }
 
     /**
