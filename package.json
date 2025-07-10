@@ -6,9 +6,10 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "build": "npm run build:server && npm run build:client",
+    "build": "npm run build:server && npm run build:client && npm run build:copy-assets",
     "build:server": "tsc",
     "build:client": "tsc -p tsconfig.client.json",
+    "build:copy-assets": "cp src/index.html dist/client/",
     "dev": "npm run build && node dist/server/index.js",
     "dev:server": "tsc && node dist/server/index.js",
     "start": "node dist/server/index.js"

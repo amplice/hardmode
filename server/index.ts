@@ -99,6 +99,11 @@ app.use(express.static(staticPaths.clientRoot));
 app.use('/node_modules', express.static(staticPaths.nodeModules));
 app.use('/shared', express.static(staticPaths.shared));
 
+// Explicit root route handler for index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(staticPaths.clientRoot, 'index.html'));
+});
+
 // Generate server-authoritative world seed
 const SERVER_WORLD_SEED: number = Math.floor(Math.random() * 1000000);
 console.log(`[Server] Generated world seed: ${SERVER_WORLD_SEED}`);
