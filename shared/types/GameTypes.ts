@@ -15,7 +15,7 @@ export type CharacterClass = 'bladedancer' | 'guardian' | 'hunter' | 'rogue';
 
 export type MonsterType = 'ogre' | 'skeleton' | 'elemental' | 'ghoul' | 'wildarcher';
 
-export type MonsterStateType = 'idle' | 'chasing' | 'attacking' | 'dying';
+export type MonsterStateType = 'idle' | 'chasing' | 'attacking' | 'dying' | 'stunned';
 
 export type AttackType = 'primary' | 'secondary';
 

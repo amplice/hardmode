@@ -181,7 +181,7 @@ export class DamageProcessor {
             const monsterWithStun = monster as any; // Allow access to stun fields
             monsterWithStun.stunTimer = stunDuration;
             monsterWithStun.isStunned = true;
-            monster.state = 'idle'; // Reset to idle instead of 'stunned' which isn't in the type
+            monster.state = 'stunned'; // Set to stunned state for visual feedback
             
             // CRITICAL: Interrupt any pending attacks (scheduled with setTimeout)
             // This prevents monsters from dealing damage after being hit

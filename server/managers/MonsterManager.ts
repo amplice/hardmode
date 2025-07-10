@@ -429,6 +429,9 @@ export class MonsterManager {
             case 'attacking':
                 this.handleAttackingState(monster, stats, players);
                 break;
+            case 'stunned':
+                // Stunned monsters don't process AI logic - stun timer handles state transition
+                break;
             default:
                 // Handle 'dormant' and other states
                 if ((monster as any).state === 'dormant') {
