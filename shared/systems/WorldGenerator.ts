@@ -318,23 +318,34 @@ export class SharedWorldGenerator {
     }
 
     generatePlateauCandidates(elevationData: number[][]): void {
-        // Create fewer but much larger plateaus 
-        const plateauCount = 2 + Math.floor(this.random() * 2); // 2-3 large plateaus
+        // Create more plateaus for increased cliff density
+        const largePlateauCount = 4 + Math.floor(this.random() * 4); // 4-7 large plateaus (was 2-3)
+        const mediumPlateauCount = 3 + Math.floor(this.random() * 3); // 3-5 additional medium plateaus
         
-        for (let i = 0; i < plateauCount; i++) {
+        // Generate large plateaus
+        for (let i = 0; i < largePlateauCount; i++) {
             // Choose center point with larger buffer for big plateaus
             const cx = 20 + Math.floor(this.random() * (this.width - 40));
             const cy = 20 + Math.floor(this.random() * (this.height - 40));
-            const baseRadius = 15 + Math.floor(this.random() * 12); // Much larger: 15-26 radius
+            const baseRadius = 15 + Math.floor(this.random() * 12); // Large: 15-26 radius
             
             // Use noise to create organic shape with larger plateaus
+            this.createNoisyPlateau(elevationData, cx, cy, baseRadius);
+        }
+        
+        // Generate medium plateaus for more variety
+        for (let i = 0; i < mediumPlateauCount; i++) {
+            const cx = 15 + Math.floor(this.random() * (this.width - 30));
+            const cy = 15 + Math.floor(this.random() * (this.height - 30));
+            const baseRadius = 8 + Math.floor(this.random() * 8); // Medium: 8-15 radius
+            
             this.createNoisyPlateau(elevationData, cx, cy, baseRadius);
         }
     }
 
     createNoisyPlateau(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
         const noiseScale = 0.1;
-        const threshold = 0.2;
+        const threshold = 0.15; // Lowered from 0.2 to make plateaus more dense
         
         // Create the core 3x3 area first (guaranteed)
         for (let dy = -1; dy <= 1; dy++) {
@@ -827,15 +838,26 @@ export class SharedWorldGenerator {
      * Ensures plateaus stay within biome boundaries with 1-tile buffer
      */
     generatePlateauCandidatesWithBiomeBuffers(elevationData: number[][], biomeData: number[][]): void {
-        const plateauCount = 2 + Math.floor(this.random() * 2); // 2-3 large plateaus
+        const largePlateauCount = 4 + Math.floor(this.random() * 4); // 4-7 large plateaus (was 2-3)
+        const mediumPlateauCount = 3 + Math.floor(this.random() * 3); // 3-5 additional medium plateaus
         
-        for (let i = 0; i < plateauCount; i++) {
+        // Generate large plateaus
+        for (let i = 0; i < largePlateauCount; i++) {
             // Choose center point with larger buffer for big plateaus
             const cx = 20 + Math.floor(this.random() * (this.width - 40));
             const cy = 20 + Math.floor(this.random() * (this.height - 40));
             
-            // Generate much larger plateaus (ignoring biome constraints initially)
-            const size = 15 + Math.floor(this.random() * 12); // 15-26 tile radius (much larger)
+            // Generate large plateaus (ignoring biome constraints initially)
+            const size = 15 + Math.floor(this.random() * 12); // 15-26 tile radius
+            this.generateUnconstrainedPlateau(elevationData, cx, cy, size);
+        }
+        
+        // Generate medium plateaus for more variety
+        for (let i = 0; i < mediumPlateauCount; i++) {
+            const cx = 15 + Math.floor(this.random() * (this.width - 30));
+            const cy = 15 + Math.floor(this.random() * (this.height - 30));
+            
+            const size = 8 + Math.floor(this.random() * 8); // 8-15 tile radius
             this.generateUnconstrainedPlateau(elevationData, cx, cy, size);
         }
     }
@@ -856,7 +878,7 @@ export class SharedWorldGenerator {
                 
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 const noiseValue = this.noise2D(x * noiseScale, y * noiseScale);
-                const threshold = maxRadius * (0.4 + noiseValue * 0.3);
+                const threshold = maxRadius * (0.35 + noiseValue * 0.3); // Lowered from 0.4 to increase density
                 
                 if (distance < threshold) {
                     elevationData[y][x] = 1;
