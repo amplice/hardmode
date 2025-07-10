@@ -278,14 +278,14 @@ export class MonsterStateMachine {
         this.context = { monster };
         
         // Initialize all available states
-        this.states = new Map([
+        this.states = new Map<string, BaseMonsterState>([
             ['dormant', new DormantState()],
             ['idle', new IdleState()],
             ['chasing', new ChasingState()],
             ['attacking', new AttackingState()],
             ['stunned', new StunnedState()],
             ['dying', new DyingState()]
-        ]);
+        ] as [string, BaseMonsterState][]);
         
         // Start in idle state by default
         this.currentState = this.states.get('idle')!;

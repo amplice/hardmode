@@ -163,7 +163,7 @@ export class MonsterManager {
         let farCount = 0;
         let dormantCount = 0;
         
-        for (const monster of this.monsters.values()) {
+        for (const monster of Array.from(this.monsters.values())) {
             if (monster.state === 'dying') {
                 this.monsters.delete(monster.id);
                 continue;
@@ -171,7 +171,7 @@ export class MonsterManager {
             
             // Find closest player distance
             let closestDistance = Infinity;
-            for (const player of players.values()) {
+            for (const player of Array.from(players.values())) {
                 const playerCoords = this.playerToCoords(player);
                 const dist = getDistance(monster, playerCoords);
                 closestDistance = Math.min(closestDistance, dist);
@@ -251,7 +251,7 @@ export class MonsterManager {
             });
             
             // Convert to ServerMonsterState (factory already includes all necessary fields)
-            const monster = factoryMonster as ServerMonsterState;
+            const monster = factoryMonster as unknown as ServerMonsterState;
             
             this.monsters.set(id, monster);
             console.log(`[MonsterManager] Created ${monster.type} ${monster.id} with factory validation`);
@@ -469,7 +469,7 @@ export class MonsterManager {
         let nearestPlayer: PlayerState | null = null;
         let nearestDistance = stats.aggroRange;
         
-        for (const [id, player] of players) {
+        for (const [id, player] of Array.from(players.entries())) {
             if (player.hp <= 0) continue;
             
             const playerCoords = this.playerToCoords(player);
@@ -778,8 +778,8 @@ export class MonsterManager {
     getVisibleMonsters(players: Map<string, PlayerState>, viewDistance: number = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE): Set<string> {
         const visibleMonsters = new Set<string>();
         
-        for (const [playerId, player] of players) {
-            for (const [monsterId, monster] of this.monsters) {
+        for (const [playerId, player] of Array.from(players.entries())) {
+            for (const [monsterId, monster] of Array.from(this.monsters.entries())) {
                 const playerCoords = this.playerToCoords(player);
                 const dist = getDistance(playerCoords, monster);
                 if (dist < viewDistance) {

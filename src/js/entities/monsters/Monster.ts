@@ -177,7 +177,7 @@ export class Monster {
         this.sprite.position.set(this.position.x, this.position.y);
         
         // Get sprite manager
-        this.spriteManager = window.game.systems.sprites;
+        this.spriteManager = (window as any).game.systems.sprites;
         
         // Phase 5.1: Initialize state machine with current monster data
         const monsterData: MonsterStateData = {
