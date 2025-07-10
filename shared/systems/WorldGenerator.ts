@@ -272,11 +272,7 @@ export class SharedWorldGenerator {
         // Generate plateau candidates
         this.generatePlateauCandidates(elevationData);
         
-        // Enforce minimum plateau sizes
-        this.enforceMinimumPlateauSizes(elevationData);
-        
-        // Remove any remaining problematic formations
-        this.finalCleanup(elevationData);
+        // Template plateaus are solid and don't need size enforcement or cleanup
         
         // Count elevated tiles
         let elevatedCount = 0;
@@ -298,14 +294,9 @@ export class SharedWorldGenerator {
         // Generate plateau candidates with biome constraints
         this.generatePlateauCandidatesWithBiomeBuffers(elevationData, biomeData);
         
-        // Enforce minimum plateau sizes
-        this.enforceMinimumPlateauSizes(elevationData);
-        
-        // Remove any formations that violate biome boundaries
+        // Template plateaus are solid, so minimal cleanup needed
+        // Only remove any formations that violate biome boundaries
         this.removebiomeBoundaryViolations(elevationData, biomeData);
-        
-        // Final cleanup
-        this.finalCleanup(elevationData);
         
         // Count elevated tiles
         let elevatedCount = 0;
@@ -329,8 +320,8 @@ export class SharedWorldGenerator {
             const cy = 20 + Math.floor(this.random() * (this.height - 40));
             const baseRadius = 25 + Math.floor(this.random() * 20); // Large: 25-44 radius (much bigger)
             
-            // Use noise to create organic shape with larger plateaus
-            this.createNoisyPlateau(elevationData, cx, cy, baseRadius);
+            // Use template to create solid, interesting plateaus
+            this.createTemplatePlateau(elevationData, cx, cy, baseRadius);
         }
         
         // Generate medium plateaus for more variety
@@ -339,43 +330,236 @@ export class SharedWorldGenerator {
             const cy = 15 + Math.floor(this.random() * (this.height - 30));
             const baseRadius = 15 + Math.floor(this.random() * 15); // Medium: 15-29 radius (much bigger)
             
-            this.createNoisyPlateau(elevationData, cx, cy, baseRadius);
+            this.createTemplatePlateau(elevationData, cx, cy, baseRadius);
         }
     }
 
-    createNoisyPlateau(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
-        const noiseScale = 0.1;
-        const threshold = 0.15; // Lowered from 0.2 to make plateaus more dense
+    createTemplatePlateau(elevationData: number[][], centerX: number, centerY: number, size: number): void {
+        // Choose a random template shape
+        const templates = ['oval', 'lshape', 'cross', 'tshape', 'ushape', 'diamond', 'arrow', 'plus'];
+        const templateType = templates[Math.floor(this.random() * templates.length)];
         
-        // Create the core 3x3 area first (guaranteed)
-        for (let dy = -1; dy <= 1; dy++) {
-            for (let dx = -1; dx <= 1; dx++) {
-                const x = centerX + dx;
-                const y = centerY + dy;
-                if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-                    elevationData[y][x] = 1;
+        console.log(`[WorldGenerator] Creating ${templateType} plateau at (${centerX}, ${centerY}) with size ${size}`);
+        
+        // Generate the template shape
+        const shape = this.generatePlateauTemplate(templateType, size);
+        
+        // Place the shape at the center position
+        this.placePlateauShape(elevationData, centerX, centerY, shape);
+    }
+    
+    generatePlateauTemplate(templateType: string, size: number): boolean[][] {
+        const templateSize = size * 2 + 1; // Make it odd for center alignment
+        const template: boolean[][] = Array(templateSize).fill(null).map(() => Array(templateSize).fill(false));
+        const center = size;
+        
+        switch (templateType) {
+            case 'oval':
+                return this.generateOvalTemplate(template, center, size);
+            case 'lshape':
+                return this.generateLShapeTemplate(template, center, size);
+            case 'cross':
+                return this.generateCrossTemplate(template, center, size);
+            case 'tshape':
+                return this.generateTShapeTemplate(template, center, size);
+            case 'ushape':
+                return this.generateUShapeTemplate(template, center, size);
+            case 'diamond':
+                return this.generateDiamondTemplate(template, center, size);
+            case 'arrow':
+                return this.generateArrowTemplate(template, center, size);
+            case 'plus':
+                return this.generatePlusTemplate(template, center, size);
+            default:
+                return this.generateOvalTemplate(template, center, size); // Fallback
+        }
+    }
+    
+    generateOvalTemplate(template: boolean[][], center: number, size: number): boolean[][] {
+        const radiusX = size * 0.8;
+        const radiusY = size * 0.6; // Make it more elongated
+        
+        for (let dy = -size; dy <= size; dy++) {
+            for (let dx = -size; dx <= size; dx++) {
+                const normalizedX = dx / radiusX;
+                const normalizedY = dy / radiusY;
+                if (normalizedX * normalizedX + normalizedY * normalizedY <= 1) {
+                    template[center + dy][center + dx] = true;
+                }
+            }
+        }
+        return template;
+    }
+    
+    generateLShapeTemplate(template: boolean[][], center: number, size: number): boolean[][] {
+        const thickness = Math.max(3, Math.floor(size * 0.4));
+        const armLength = Math.floor(size * 0.8);
+        
+        // Horizontal arm (bottom)
+        for (let dx = -armLength; dx <= armLength; dx++) {
+            for (let dy = 0; dy <= thickness; dy++) {
+                if (center + dx >= 0 && center + dx < template[0].length && 
+                    center + dy >= 0 && center + dy < template.length) {
+                    template[center + dy][center + dx] = true;
                 }
             }
         }
         
-        // Then expand outward with noise
-        for (let dy = -radius; dy <= radius; dy++) {
-            for (let dx = -radius; dx <= radius; dx++) {
-                if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) continue; // Skip core area
-                
-                const x = centerX + dx;
-                const y = centerY + dy;
-                
-                if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance <= radius) {
-                        const noise = this.noise2D(x * noiseScale, y * noiseScale);
-                        const falloff = 1 - (distance / radius);
-                        const value = (noise + 1) / 2 * falloff;
-                        
-                        if (value > threshold) {
-                            elevationData[y][x] = 1;
-                        }
+        // Vertical arm (left)
+        for (let dy = -armLength; dy <= 0; dy++) {
+            for (let dx = -armLength; dx <= -armLength + thickness; dx++) {
+                if (center + dx >= 0 && center + dx < template[0].length && 
+                    center + dy >= 0 && center + dy < template.length) {
+                    template[center + dy][center + dx] = true;
+                }
+            }
+        }
+        return template;
+    }
+    
+    generateCrossTemplate(template: boolean[][], center: number, size: number): boolean[][] {
+        const thickness = Math.max(3, Math.floor(size * 0.3));
+        const halfThickness = Math.floor(thickness / 2);
+        
+        // Horizontal bar
+        for (let dx = -size; dx <= size; dx++) {
+            for (let dy = -halfThickness; dy <= halfThickness; dy++) {
+                template[center + dy][center + dx] = true;
+            }
+        }
+        
+        // Vertical bar
+        for (let dy = -size; dy <= size; dy++) {
+            for (let dx = -halfThickness; dx <= halfThickness; dx++) {
+                template[center + dy][center + dx] = true;
+            }
+        }
+        return template;
+    }
+    
+    generateTShapeTemplate(template: boolean[][], center: number, size: number): boolean[][] {
+        const thickness = Math.max(3, Math.floor(size * 0.3));
+        const halfThickness = Math.floor(thickness / 2);
+        
+        // Horizontal bar (top)
+        for (let dx = -size; dx <= size; dx++) {
+            for (let dy = -size; dy <= -size + thickness; dy++) {
+                if (center + dy >= 0 && center + dy < template.length) {
+                    template[center + dy][center + dx] = true;
+                }
+            }
+        }
+        
+        // Vertical stem (center)
+        for (let dy = -size; dy <= size * 0.6; dy++) {
+            for (let dx = -halfThickness; dx <= halfThickness; dx++) {
+                template[center + dy][center + dx] = true;
+            }
+        }
+        return template;
+    }
+    
+    generateUShapeTemplate(template: boolean[][], center: number, size: number): boolean[][] {
+        const thickness = Math.max(3, Math.floor(size * 0.3));
+        const innerWidth = Math.floor(size * 0.6);
+        
+        // Left wall
+        for (let dy = -size; dy <= size; dy++) {
+            for (let dx = -size; dx <= -size + thickness; dx++) {
+                if (center + dx >= 0 && center + dx < template[0].length) {
+                    template[center + dy][center + dx] = true;
+                }
+            }
+        }
+        
+        // Right wall
+        for (let dy = -size; dy <= size; dy++) {
+            for (let dx = size - thickness; dx <= size; dx++) {
+                if (center + dx >= 0 && center + dx < template[0].length) {
+                    template[center + dy][center + dx] = true;
+                }
+            }
+        }
+        
+        // Bottom connection
+        for (let dx = -size; dx <= size; dx++) {
+            for (let dy = size - thickness; dy <= size; dy++) {
+                if (center + dy >= 0 && center + dy < template.length) {
+                    template[center + dy][center + dx] = true;
+                }
+            }
+        }
+        return template;
+    }
+    
+    generateDiamondTemplate(template: boolean[][], center: number, size: number): boolean[][] {
+        for (let dy = -size; dy <= size; dy++) {
+            for (let dx = -size; dx <= size; dx++) {
+                if (Math.abs(dx) + Math.abs(dy) <= size) {
+                    template[center + dy][center + dx] = true;
+                }
+            }
+        }
+        return template;
+    }
+    
+    generateArrowTemplate(template: boolean[][], center: number, size: number): boolean[][] {
+        const thickness = Math.max(3, Math.floor(size * 0.3));
+        const halfThickness = Math.floor(thickness / 2);
+        const arrowHeadSize = Math.floor(size * 0.4);
+        
+        // Arrow shaft
+        for (let dx = -size; dx <= size - arrowHeadSize; dx++) {
+            for (let dy = -halfThickness; dy <= halfThickness; dy++) {
+                template[center + dy][center + dx] = true;
+            }
+        }
+        
+        // Arrow head
+        for (let dx = size - arrowHeadSize; dx <= size; dx++) {
+            const headWidth = Math.floor((size - dx) * 1.5);
+            for (let dy = -headWidth; dy <= headWidth; dy++) {
+                if (center + dy >= 0 && center + dy < template.length) {
+                    template[center + dy][center + dx] = true;
+                }
+            }
+        }
+        return template;
+    }
+    
+    generatePlusTemplate(template: boolean[][], center: number, size: number): boolean[][] {
+        const thickness = Math.max(4, Math.floor(size * 0.4)); // Thicker than cross
+        const halfThickness = Math.floor(thickness / 2);
+        
+        // Horizontal bar
+        for (let dx = -size; dx <= size; dx++) {
+            for (let dy = -halfThickness; dy <= halfThickness; dy++) {
+                template[center + dy][center + dx] = true;
+            }
+        }
+        
+        // Vertical bar
+        for (let dy = -size; dy <= size; dy++) {
+            for (let dx = -halfThickness; dx <= halfThickness; dx++) {
+                template[center + dy][center + dx] = true;
+            }
+        }
+        return template;
+    }
+    
+    placePlateauShape(elevationData: number[][], centerX: number, centerY: number, shape: boolean[][]): void {
+        const shapeSize = shape.length;
+        const offset = Math.floor(shapeSize / 2);
+        
+        for (let dy = 0; dy < shapeSize; dy++) {
+            for (let dx = 0; dx < shapeSize; dx++) {
+                if (shape[dy][dx]) {
+                    const worldX = centerX - offset + dx;
+                    const worldY = centerY - offset + dy;
+                    
+                    // Bounds check
+                    if (worldX >= 0 && worldX < this.width && worldY >= 0 && worldY < this.height) {
+                        elevationData[worldY][worldX] = 1;
                     }
                 }
             }
@@ -838,27 +1022,27 @@ export class SharedWorldGenerator {
      * Ensures plateaus stay within biome boundaries with 1-tile buffer
      */
     generatePlateauCandidatesWithBiomeBuffers(elevationData: number[][], biomeData: number[][]): void {
-        const largePlateauCount = 6 + Math.floor(this.random() * 6); // 6-11 large plateaus (was 4-7)
-        const mediumPlateauCount = 8 + Math.floor(this.random() * 8); // 8-15 medium plateaus (was 3-5)
+        const largePlateauCount = 6 + Math.floor(this.random() * 6); // 6-11 large plateaus
+        const mediumPlateauCount = 8 + Math.floor(this.random() * 8); // 8-15 medium plateaus
         
-        // Generate large plateaus
+        // Generate large plateaus using template system
         for (let i = 0; i < largePlateauCount; i++) {
             // Choose center point with larger buffer for big plateaus
             const cx = 20 + Math.floor(this.random() * (this.width - 40));
             const cy = 20 + Math.floor(this.random() * (this.height - 40));
+            const baseRadius = 25 + Math.floor(this.random() * 20); // Large: 25-44 radius
             
-            // Generate large plateaus (ignoring biome constraints initially)
-            const size = 25 + Math.floor(this.random() * 20); // 25-44 tile radius (much bigger)
-            this.generateUnconstrainedPlateau(elevationData, cx, cy, size);
+            // Use template to create solid, interesting plateaus
+            this.createTemplatePlateau(elevationData, cx, cy, baseRadius);
         }
         
         // Generate medium plateaus for more variety
         for (let i = 0; i < mediumPlateauCount; i++) {
             const cx = 15 + Math.floor(this.random() * (this.width - 30));
             const cy = 15 + Math.floor(this.random() * (this.height - 30));
+            const baseRadius = 15 + Math.floor(this.random() * 15); // Medium: 15-29 radius
             
-            const size = 15 + Math.floor(this.random() * 15); // 15-29 tile radius (much bigger)
-            this.generateUnconstrainedPlateau(elevationData, cx, cy, size);
+            this.createTemplatePlateau(elevationData, cx, cy, baseRadius);
         }
     }
 
