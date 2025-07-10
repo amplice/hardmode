@@ -47,6 +47,8 @@ interface ServerMonsterState extends MonsterState {
     stunTimer: number;
     isStunned: boolean;
     lodSkipCounter?: number;
+    // Attack interruption system
+    pendingAttackTimeout?: NodeJS.Timeout | null;
 }
 
 interface ServerWorldManager {
@@ -293,6 +295,7 @@ export class MonsterManager {
         monster.collisionRadius = stats.collisionRadius || 20;
         monster.stunTimer = 0;
         monster.isStunned = false;
+        monster.pendingAttackTimeout = null; // Initialize attack interruption system
         
         // Initialize state machine
         const monsterData: MonsterStateData = {
@@ -566,13 +569,15 @@ export class MonsterManager {
             
             // Handle projectile attacks differently
             if (monster.type === 'wildarcher') {
-                // Schedule projectile creation
-                setTimeout(() => {
+                // Schedule projectile creation and track timeout for interruption
+                monster.pendingAttackTimeout = setTimeout(() => {
+                    monster.pendingAttackTimeout = null; // Clear reference when executing
                     this.createMonsterProjectile(monster, target, stats);
                 }, stats.attackDelay);
             } else {
-                // Schedule melee damage application
-                setTimeout(() => {
+                // Schedule melee damage application and track timeout for interruption
+                monster.pendingAttackTimeout = setTimeout(() => {
+                    monster.pendingAttackTimeout = null; // Clear reference when executing
                     // Re-fetch current players from gameState to ensure we have latest data
                     if (this.io && (this.io as any).gameState && (this.io as any).gameState.players) {
                         this.applyMonsterDamage(monster, stats, (this.io as any).gameState.players);
@@ -593,6 +598,8 @@ export class MonsterManager {
         if (!monster || monster.hp <= 0 || monster.state === 'dying') {
             return;
         }
+        
+        // Note: Stun validation removed - attacks are now interrupted at source via clearTimeout
         
         const target = monster.target;
         if (!target || target.hp <= 0) return;
@@ -618,6 +625,8 @@ export class MonsterManager {
         if (!monster || monster.hp <= 0 || monster.state === 'dying') {
             return;
         }
+        
+        // Note: Stun validation removed - attacks are now interrupted at source via clearTimeout
         
         if (!target || target.hp <= 0) return;
         
@@ -709,6 +718,22 @@ export class MonsterManager {
         }
         
         return false;
+    }
+
+    /**
+     * Interrupt any pending attack when monster takes damage
+     * This prevents stunned/dead monsters from dealing damage via setTimeout
+     */
+    interruptMonsterAttack(monster: ServerMonsterState): void {
+        if (monster.pendingAttackTimeout) {
+            clearTimeout(monster.pendingAttackTimeout);
+            monster.pendingAttackTimeout = null;
+            
+            // Reset attack animation state since attack was interrupted
+            monster.isAttackAnimating = false;
+            
+            console.log(`[MonsterManager] Interrupted pending attack for monster ${monster.id}`);
+        }
     }
 
     handleMonsterDeath(monster: ServerMonsterState, killer: PlayerState): void {

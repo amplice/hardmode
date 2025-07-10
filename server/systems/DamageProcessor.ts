@@ -183,7 +183,13 @@ export class DamageProcessor {
             monsterWithStun.isStunned = true;
             monster.state = 'idle'; // Reset to idle instead of 'stunned' which isn't in the type
             
-            // Interrupt any ongoing attack
+            // CRITICAL: Interrupt any pending attacks (scheduled with setTimeout)
+            // This prevents monsters from dealing damage after being hit
+            if (this.monsterManager && typeof (this.monsterManager as any).interruptMonsterAttack === 'function') {
+                (this.monsterManager as any).interruptMonsterAttack(monster);
+            }
+            
+            // Interrupt any ongoing attack animation
             if (monsterWithStun.isAttackAnimating) {
                 monsterWithStun.isAttackAnimating = false;
             }
@@ -230,6 +236,10 @@ export class DamageProcessor {
     }
 
     private _handleMonsterDeath(monster: MonsterState, source: PlayerState | MonsterState | ProjectileState): void {
+        // CRITICAL: Interrupt any pending attacks when monster dies
+        if (this.monsterManager && typeof (this.monsterManager as any).interruptMonsterAttack === 'function') {
+            (this.monsterManager as any).interruptMonsterAttack(monster);
+        }
         // Award XP if killed by player
         if ('characterClass' in source || 'class' in source) { // It's a player
             const player = source as PlayerState;
