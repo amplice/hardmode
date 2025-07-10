@@ -49,12 +49,12 @@
 
 ## Phase 5: Advanced Entity Management
 
-### Phase 5.1: Explicit State Classes for Monsters ⏳ PENDING
+### Phase 5.1: Explicit State Classes for Monsters ✅ COMPLETED
 - Create formal monster state machines
 - Replace string-based states with type-safe state classes
 - Improve monster AI predictability and debugging
 
-### Phase 5.2: Monster Factory ⏳ PENDING
+### Phase 5.2: Monster Factory ✅ COMPLETED
 - Centralize monster creation with validation
 - Ensure consistent monster initialization
 - Prevent missing properties in monster entities

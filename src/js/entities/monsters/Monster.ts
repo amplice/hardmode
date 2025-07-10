@@ -54,6 +54,11 @@ import {
     directionStringToAngleRadians
 } from '../../utils/DirectionUtils.js';
 import { bfsPath, hasLineOfSight } from '../../utils/Pathfinding.js';
+import { 
+    MonsterStateMachine, 
+    type MonsterStateData,
+    createStateMachineFromLegacy 
+} from '../../../../shared/systems/MonsterStateMachine.js';
 
 // Type definitions
 type MonsterType = 'skeleton' | 'ogre' | 'ghoul' | 'elemental' | 'wildarcher';
@@ -114,6 +119,9 @@ export class Monster {
     public state: MonsterState;
     public alive: boolean;
     
+    // Phase 5.1: State machine for type-safe state management
+    private stateMachine: MonsterStateMachine;
+    
     // Network sync properties
     private targetPosition: Position;
     private interpolationSpeed: number;
@@ -171,8 +179,46 @@ export class Monster {
         // Get sprite manager
         this.spriteManager = window.game.systems.sprites;
         
+        // Phase 5.1: Initialize state machine with current monster data
+        const monsterData: MonsterStateData = {
+            id: this.id,
+            type: this.type as any,
+            x: this.position.x,
+            y: this.position.y,
+            facing: this.facing,
+            hp: this.hitPoints,
+            maxHp: this.maxHitPoints,
+            velocity: { x: 0, y: 0 }
+        };
+        this.stateMachine = createStateMachineFromLegacy(monsterData, this.state);
+        
         // Initialize animation
         this.setupAnimation();
+    }
+    
+    /**
+     * Phase 5.1: Get valid state transitions from current state
+     * @returns Array of valid state names
+     */
+    public getValidTransitions(): string[] {
+        return this.stateMachine.getValidTransitions();
+    }
+    
+    /**
+     * Phase 5.1: Check if transition to target state is valid
+     * @param targetState - Target state name
+     * @returns true if transition is allowed
+     */
+    public canTransitionTo(targetState: string): boolean {
+        return this.stateMachine.canTransitionTo(targetState);
+    }
+    
+    /**
+     * Phase 5.1: Get current state from state machine
+     * @returns Current state name
+     */
+    public getCurrentStateName(): string {
+        return this.stateMachine.getCurrentState();
     }
     
     private setupAnimation(): void {
@@ -289,13 +335,28 @@ export class Monster {
         }
     }
     
-    private changeState(newState: MonsterState): void {
-        // Store previous state
-        this.previousState = this.state;
-        // Set new state
-        this.state = newState;
-        // Force animation update
-        this.updateAnimation();
+    private changeState(newState: MonsterState, contextData: any = {}): void {
+        // Phase 5.1: Use state machine for type-safe state transitions
+        const result = this.stateMachine.transition(newState, contextData);
+        
+        if (result.success) {
+            // Store previous state for legacy compatibility
+            this.previousState = this.state;
+            // Update legacy state property
+            this.state = newState;
+            // Update state machine context with current monster data
+            this.stateMachine.updateContext({
+                x: this.position.x,
+                y: this.position.y,
+                facing: this.facing,
+                hp: this.hitPoints,
+                velocity: this.velocity || { x: 0, y: 0 }
+            });
+            // Force animation update
+            this.updateAnimation();
+        } else {
+            console.warn(`[Monster ${this.id}] Invalid state transition: ${result.error}`);
+        }
     }
     
     private startFadeOut(): void {
@@ -348,8 +409,8 @@ export class Monster {
         
         // Cancel any attack in progress (removed attack indicator - server controlled)
         
-        // Apply stun - always changes to stunned state regardless of current state
-        this.changeState('stunned');
+        // Phase 5.1: Apply stun with fixed duration (matches original behavior)
+        this.changeState('stunned', { stunDuration: 360 }); // Fixed 360ms stun duration
         this.velocity = { x: 0, y: 0 }; // Stop movement
     }
     

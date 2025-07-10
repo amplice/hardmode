@@ -4,6 +4,16 @@ import { CollisionMask } from '../../shared/systems/CollisionMask.js';
 import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
 import { createMonsterState, validateMonsterState } from '../../shared/factories/EntityFactories.js';
 import { CalculationEngine } from '../systems/CalculationEngine.js';
+import { 
+    MonsterStateMachine, 
+    type MonsterStateData, 
+    createStateMachineFromLegacy 
+} from '../../shared/systems/MonsterStateMachine.js';
+import { 
+    MonsterFactory, 
+    type FactoryMonsterData,
+    createRandomMonster 
+} from '../../shared/factories/MonsterFactory.js';
 import type { 
     MonsterState, 
     PlayerState, 
@@ -28,6 +38,8 @@ interface ServerMonsterState extends MonsterState {
     lastAttack: number;
     attackAnimationStarted: number;
     isAttackAnimating: boolean;
+    // Phase 5.1: State machine for type-safe state management
+    stateMachine?: MonsterStateMachine;
     velocity: Position;
     spawnTime: number;
     lastUpdate: number;
@@ -168,17 +180,17 @@ export class MonsterManager {
             // Determine LOD level and update frequency
             if (closestDistance < nearDistance) {
                 // NEAR: Full update every frame (highest priority)
-                // Wake up dormant monsters
+                // Phase 5.1: Wake up dormant monsters using state machine
                 if ((monster as any).state === 'dormant') {
-                    monster.state = 'idle';
+                    this.transitionMonsterState(monster, 'idle');
                 }
                 this.updateMonster(monster, deltaTime, players);
                 nearCount++;
             } else if (closestDistance < mediumDistance) {
                 // MEDIUM: Update every 2 frames (skip 50% of updates)
-                // Wake up dormant monsters
+                // Phase 5.1: Wake up dormant monsters using state machine
                 if ((monster as any).state === 'dormant') {
-                    monster.state = 'idle';
+                    this.transitionMonsterState(monster, 'idle');
                 }
                 if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
                 monster.lodSkipCounter++;
@@ -188,9 +200,9 @@ export class MonsterManager {
                 mediumCount++;
             } else if (closestDistance < farDistance) {
                 // FAR: Update every 4 frames (skip 75% of updates) 
-                // Wake up dormant monsters
+                // Phase 5.1: Wake up dormant monsters using state machine
                 if ((monster as any).state === 'dormant') {
-                    monster.state = 'idle';
+                    this.transitionMonsterState(monster, 'idle');
                 }
                 if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
                 monster.lodSkipCounter++;
@@ -217,37 +229,60 @@ export class MonsterManager {
     }
 
     createMonster(type: MonsterType | null = null, position: Position | null = null, players: Map<string, PlayerState> | null = null): ServerMonsterState {
+        // Phase 5.2: Use MonsterFactory for centralized, validated monster creation
         if (!type) {
             const types = Object.keys(MONSTER_SPAWN_WEIGHTS) as MonsterType[];
             const weights = Object.values(MONSTER_SPAWN_WEIGHTS);
             type = selectWeightedRandom(types, weights);
         }
         
-        let stats = MONSTER_STATS[type];
-        if (!stats) {
-            console.warn(`Unknown monster type: ${type}, defaulting to skeleton`);
-            type = 'skeleton';
-            stats = MONSTER_STATS.skeleton;
-        }
-        
         const pos = position || this.findValidSpawnPosition(players ? Array.from(players.values()) : []);
         const id = String(this.nextMonsterId++);
         
-        // Use factory to create complete monster state with all required fields
-        // This prevents missing field bugs that could cause AI or combat issues
+        try {
+            // Create monster using factory for complete initialization and validation
+            const factoryMonster = MonsterFactory.create({
+                type: type,
+                position: pos,
+                id: id,
+                facing: 'down',
+                isServerSide: true,
+                spawnTime: Date.now()
+            });
+            
+            // Convert to ServerMonsterState (factory already includes all necessary fields)
+            const monster = factoryMonster as ServerMonsterState;
+            
+            this.monsters.set(id, monster);
+            console.log(`[MonsterManager] Created ${monster.type} ${monster.id} with factory validation`);
+            return monster;
+            
+        } catch (error) {
+            console.error(`[MonsterManager] Factory creation failed for ${type}:`, error);
+            
+            // Fallback to legacy creation
+            console.warn(`[MonsterManager] Falling back to legacy creation for ${type}`);
+            return this.createMonsterLegacy(type, pos, id);
+        }
+    }
+    
+    /**
+     * Phase 5.2: Legacy monster creation method (fallback only)
+     */
+    private createMonsterLegacy(type: MonsterType, pos: Position, id: string): ServerMonsterState {
+        const stats = MONSTER_STATS[type];
+        
         const monster = createMonsterState({
             id,
             type,
             x: pos.x,
             y: pos.y,
             facing: 'down' as Direction
-            // hp, maxHp, damage, attackRange, aggroRange, moveSpeed come from factory defaults
         }) as ServerMonsterState;
         
-        // Validate the created state has all required fields
         validateMonsterState(monster);
         
-        // Add server-specific properties not in the core state
+        // Add server-specific properties
         monster.target = null;
         monster.lastAttack = 0;
         monster.attackAnimationStarted = 0;
@@ -258,10 +293,56 @@ export class MonsterManager {
         monster.collisionRadius = stats.collisionRadius || 20;
         monster.stunTimer = 0;
         monster.isStunned = false;
+        
+        // Initialize state machine
+        const monsterData: MonsterStateData = {
+            id: monster.id,
+            type: monster.type,
+            x: monster.x,
+            y: monster.y,
+            facing: monster.facing,
+            hp: monster.hp,
+            maxHp: monster.maxHp,
+            velocity: monster.velocity
+        };
+        monster.stateMachine = createStateMachineFromLegacy(monsterData, monster.state);
 
         this.monsters.set(id, monster);
-        // Monster created and added to map
         return monster;
+    }
+    
+    /**
+     * Phase 5.1: Safe state transition using state machine
+     * @param monster - Monster to transition
+     * @param newState - Target state name
+     * @param contextData - Additional context for transition
+     * @returns true if transition was successful
+     */
+    private transitionMonsterState(monster: ServerMonsterState, newState: string, contextData: any = {}): boolean {
+        if (!monster.stateMachine) {
+            // Fallback for monsters without state machines (legacy)
+            monster.state = newState as any;
+            return true;
+        }
+        
+        const result = monster.stateMachine.transition(newState, contextData);
+        if (result.success) {
+            // Update legacy state property for network compatibility
+            monster.state = newState as any;
+            // Update state machine context with current monster data
+            monster.stateMachine.updateContext({
+                x: monster.x,
+                y: monster.y,
+                facing: monster.facing,
+                hp: monster.hp,
+                velocity: monster.velocity,
+                target: monster.target
+            });
+            return true;
+        } else {
+            console.warn(`[MonsterManager] Monster ${monster.id}: ${result.error}`);
+            return false;
+        }
     }
 
     spawnMonster(players: Map<string, PlayerState>): void {
@@ -319,8 +400,8 @@ export class MonsterManager {
             if (monster.stunTimer <= 0) {
                 monster.isStunned = false;
                 monster.stunTimer = 0;
-                // Return to idle state when stun ends
-                monster.state = 'idle';
+                // Phase 5.1: Return to idle state when stun ends
+                this.transitionMonsterState(monster, 'idle');
                 // Clear any attack animation state
                 if (monster.isAttackAnimating) {
                     monster.isAttackAnimating = false;
@@ -638,8 +719,8 @@ export class MonsterManager {
             killerLevel: killer.level || 1
         });
         
-        // Set monster state to dying
-        monster.state = 'dying';
+        // Phase 5.1: Set monster state to dying using state machine
+        this.transitionMonsterState(monster, 'dying');
         
         // Remove from monsters map after a delay
         setTimeout(() => {
