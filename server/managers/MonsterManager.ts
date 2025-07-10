@@ -558,8 +558,8 @@ export class MonsterManager {
             return;
         }
         
-        // Start a new attack if cooldown is ready
-        if (now - monster.lastAttack >= stats.attackCooldown) {
+        // Start a new attack if cooldown is ready and monster is alive
+        if (now - monster.lastAttack >= stats.attackCooldown && monster.hp > 0 && monster.state !== 'dying') {
             monster.lastAttack = now;
             monster.attackAnimationStarted = now;
             monster.isAttackAnimating = true;
@@ -588,6 +588,12 @@ export class MonsterManager {
     }
 
     applyMonsterDamage(monster: ServerMonsterState, stats: any, players: Map<string, PlayerState>): void {
+        // CRITICAL: Validate monster is alive and not dying before applying damage
+        // Prevents dead monsters from dealing damage due to setTimeout race conditions
+        if (!monster || monster.hp <= 0 || monster.state === 'dying') {
+            return;
+        }
+        
         const target = monster.target;
         if (!target || target.hp <= 0) return;
         
@@ -607,6 +613,12 @@ export class MonsterManager {
     }
 
     createMonsterProjectile(monster: ServerMonsterState, target: PlayerState, stats: any): void {
+        // CRITICAL: Validate monster is alive before creating projectiles
+        // Prevents dead monsters from shooting projectiles due to setTimeout race conditions
+        if (!monster || monster.hp <= 0 || monster.state === 'dying') {
+            return;
+        }
+        
         if (!target || target.hp <= 0) return;
         
         // Calculate angle to target
