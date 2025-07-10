@@ -179,6 +179,13 @@ export class DamageProcessor {
         const stunDuration = GAME_CONSTANTS.MONSTER?.DAMAGE_STUN_DURATION || 0.5;
         if (stunDuration > 0) {
             const monsterWithStun = monster as any; // Allow access to stun fields
+            
+            // Store pre-stun state for recovery
+            if (monster.state !== 'stunned') { // Don't overwrite if already stunned
+                monsterWithStun.preStunState = monster.state;
+                monsterWithStun.preStunTarget = monsterWithStun.target;
+            }
+            
             monsterWithStun.stunTimer = stunDuration;
             monsterWithStun.isStunned = true;
             monster.state = 'stunned'; // Set to stunned state for visual feedback

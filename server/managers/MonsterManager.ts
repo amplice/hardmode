@@ -18,6 +18,7 @@ import type {
     MonsterState, 
     PlayerState, 
     MonsterType, 
+    MonsterStateType,
     CharacterClass,
     Position, 
     Direction 
@@ -49,6 +50,9 @@ interface ServerMonsterState extends MonsterState {
     lodSkipCounter?: number;
     // Attack interruption system
     pendingAttackTimeout?: NodeJS.Timeout | null;
+    // Stun recovery system
+    preStunState?: MonsterStateType;
+    preStunTarget?: ServerPlayerState | null;
 }
 
 interface ServerWorldManager {
@@ -296,6 +300,8 @@ export class MonsterManager {
         monster.stunTimer = 0;
         monster.isStunned = false;
         monster.pendingAttackTimeout = null; // Initialize attack interruption system
+        monster.preStunState = undefined; // Initialize stun recovery system
+        monster.preStunTarget = null;
         
         // Initialize state machine
         const monsterData: MonsterStateData = {
@@ -403,8 +409,10 @@ export class MonsterManager {
             if (monster.stunTimer <= 0) {
                 monster.isStunned = false;
                 monster.stunTimer = 0;
-                // Phase 5.1: Return to idle state when stun ends
-                this.transitionMonsterState(monster, 'idle');
+                
+                // Smart stun recovery: resume previous behavior if target is still valid
+                this.recoverFromStun(monster, stats, players);
+                
                 // Clear any attack animation state
                 if (monster.isAttackAnimating) {
                     monster.isAttackAnimating = false;
@@ -721,6 +729,44 @@ export class MonsterManager {
         }
         
         return false;
+    }
+
+    /**
+     * Smart recovery from stun - attempts to resume previous behavior
+     */
+    recoverFromStun(monster: ServerMonsterState, stats: any, players: Map<string, PlayerState>): void {
+        // Check if we can resume previous state with previous target
+        if (monster.preStunState && monster.preStunTarget) {
+            const target = players.get(monster.preStunTarget.id);
+            if (target && target.hp > 0) {
+                const targetCoords = this.playerToCoords(target);
+                const distance = getDistance(monster, targetCoords);
+                
+                // If target is still in aggro range, resume chasing or attacking
+                if (distance <= stats.aggroRange) {
+                    monster.target = this.playerToLegacy(target); // Restore target
+                    
+                    if (distance <= stats.attackRange && monster.preStunState === 'attacking') {
+                        // Resume attacking if still in range
+                        this.transitionMonsterState(monster, 'attacking');
+                    } else {
+                        // Resume chasing if target moved out of attack range
+                        this.transitionMonsterState(monster, 'chasing');
+                    }
+                    
+                    // Clear pre-stun data
+                    monster.preStunState = undefined;
+                    monster.preStunTarget = null;
+                    return;
+                }
+            }
+        }
+        
+        // Fallback: target lost or invalid, go to idle
+        this.transitionMonsterState(monster, 'idle');
+        monster.target = null;
+        monster.preStunState = undefined;
+        monster.preStunTarget = null;
     }
 
     /**
