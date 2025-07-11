@@ -238,10 +238,10 @@ export class SharedWorldGenerator {
                     }
                 }
                 
-                // Add noise to create organic boundaries
+                // Add noise to create organic boundaries (reduced for plateau-friendly biomes)
                 const noiseScale = 0.05; // Large scale noise for big zones
                 const noiseValue = this.noise2D(x * noiseScale, y * noiseScale);
-                const boundary = 0.3 + noiseValue * 0.4; // Dynamic boundary threshold
+                const boundary = 0.3 + noiseValue * 0.2; // Balanced boundaries - not too smooth, not too jagged
                 
                 // Calculate influence of the closest zone
                 const maxInfluenceDistance = Math.min(this.width, this.height) * 0.4;
@@ -1022,28 +1022,87 @@ export class SharedWorldGenerator {
      * Ensures plateaus stay within biome boundaries with 1-tile buffer
      */
     generatePlateauCandidatesWithBiomeBuffers(elevationData: number[][], biomeData: number[][]): void {
-        const largePlateauCount = 6 + Math.floor(this.random() * 6); // 6-11 large plateaus
-        const mediumPlateauCount = 8 + Math.floor(this.random() * 8); // 8-15 medium plateaus
+        console.log('[PlateauGeneration] Starting biome-aware plateau placement...');
         
-        // Generate large plateaus using template system
-        for (let i = 0; i < largePlateauCount; i++) {
-            // Choose center point with larger buffer for big plateaus
-            const cx = 20 + Math.floor(this.random() * (this.width - 40));
-            const cy = 20 + Math.floor(this.random() * (this.height - 40));
-            const baseRadius = 25 + Math.floor(this.random() * 20); // Large: 25-44 radius
+        // PHASE 3: Use biome analysis for smart placement
+        const regions = this.analyzeBiomeRegions(biomeData);
+        
+        // Filter regions suitable for plateaus
+        const largeRegions = regions.filter(r => r.suitableForLargePlateau);
+        const mediumRegions = regions.filter(r => r.suitableForMediumPlateau);
+        
+        console.log(`[PlateauGeneration] Found ${largeRegions.length} regions suitable for large plateaus`);
+        console.log(`[PlateauGeneration] Found ${mediumRegions.length} regions suitable for medium plateaus`);
+        
+        // Target plateau counts (same as before)
+        const largePlateauTarget = 6 + Math.floor(this.random() * 6); // 6-11 large plateaus
+        const mediumPlateauTarget = 8 + Math.floor(this.random() * 8); // 8-15 medium plateaus
+        
+        let largePlateausPlaced = 0;
+        let mediumPlateausPlaced = 0;
+        
+        // Place large plateaus in suitable regions
+        for (const region of largeRegions) {
+            if (largePlateausPlaced >= largePlateauTarget) break;
             
-            // Use template to create solid, interesting plateaus
-            this.createTemplatePlateau(elevationData, cx, cy, baseRadius);
+            const plateauSize = 25 + Math.floor(this.random() * 20); // 25-44 radius
+            const sites = this.findOptimalPlateauSites(region, plateauSize);
+            
+            if (sites.length > 0) {
+                // Place 1-2 plateaus per large region, depending on region size
+                const plateausInRegion = region.tiles.length > 15000 ? 2 : 1;
+                
+                for (let i = 0; i < Math.min(plateausInRegion, sites.length, largePlateauTarget - largePlateausPlaced); i++) {
+                    const site = sites[i];
+                    console.log(`[PlateauGeneration] Placing large plateau (size ${plateauSize}) at (${site.x}, ${site.y}) in biome ${region.biomeType} region`);
+                    this.createTemplatePlateau(elevationData, site.x, site.y, plateauSize);
+                    largePlateausPlaced++;
+                }
+            }
         }
         
-        // Generate medium plateaus for more variety
-        for (let i = 0; i < mediumPlateauCount; i++) {
-            const cx = 15 + Math.floor(this.random() * (this.width - 30));
-            const cy = 15 + Math.floor(this.random() * (this.height - 30));
-            const baseRadius = 15 + Math.floor(this.random() * 15); // Medium: 15-29 radius
+        // Place medium plateaus in suitable regions
+        for (const region of mediumRegions) {
+            if (mediumPlateausPlaced >= mediumPlateauTarget) break;
             
-            this.createTemplatePlateau(elevationData, cx, cy, baseRadius);
+            const plateauSize = 15 + Math.floor(this.random() * 15); // 15-29 radius
+            const sites = this.findOptimalPlateauSites(region, plateauSize);
+            
+            if (sites.length > 0) {
+                // Place 1-3 plateaus per medium region, depending on region size
+                const plateausInRegion = region.tiles.length > 10000 ? 3 : region.tiles.length > 5000 ? 2 : 1;
+                
+                for (let i = 0; i < Math.min(plateausInRegion, sites.length, mediumPlateauTarget - mediumPlateausPlaced); i++) {
+                    const site = sites[i];
+                    console.log(`[PlateauGeneration] Placing medium plateau (size ${plateauSize}) at (${site.x}, ${site.y}) in biome ${region.biomeType} region`);
+                    this.createTemplatePlateau(elevationData, site.x, site.y, plateauSize);
+                    mediumPlateausPlaced++;
+                }
+            }
         }
+        
+        // Fallback: If we didn't place enough plateaus, use random placement for remaining
+        if (largePlateausPlaced < largePlateauTarget || mediumPlateausPlaced < mediumPlateauTarget) {
+            console.log(`[PlateauGeneration] Using fallback placement for remaining plateaus (${largePlateauTarget - largePlateausPlaced} large, ${mediumPlateauTarget - mediumPlateausPlaced} medium)`);
+            
+            // Fallback large plateaus
+            for (let i = largePlateausPlaced; i < largePlateauTarget; i++) {
+                const cx = 20 + Math.floor(this.random() * (this.width - 40));
+                const cy = 20 + Math.floor(this.random() * (this.height - 40));
+                const baseRadius = 25 + Math.floor(this.random() * 20);
+                this.createTemplatePlateau(elevationData, cx, cy, baseRadius);
+            }
+            
+            // Fallback medium plateaus
+            for (let i = mediumPlateausPlaced; i < mediumPlateauTarget; i++) {
+                const cx = 15 + Math.floor(this.random() * (this.width - 30));
+                const cy = 15 + Math.floor(this.random() * (this.height - 30));
+                const baseRadius = 15 + Math.floor(this.random() * 15);
+                this.createTemplatePlateau(elevationData, cx, cy, baseRadius);
+            }
+        }
+        
+        console.log(`[PlateauGeneration] Placed ${largePlateausPlaced} large and ${mediumPlateausPlaced} medium plateaus using biome-aware placement`);
     }
 
 
@@ -1134,4 +1193,213 @@ export class SharedWorldGenerator {
         
         return false; // No violations found
     }
+
+    /**
+     * PHASE 2: Biome Analysis System
+     * Analyze biome layout to find optimal plateau placement locations
+     */
+
+    /**
+     * Analyze biome data to find large contiguous regions suitable for plateau placement
+     */
+    analyzeBiomeRegions(biomeData: number[][]): BiomeRegion[] {
+        const regions: BiomeRegion[] = [];
+        const visited: boolean[][] = Array(this.height).fill(null).map(() => Array(this.width).fill(false));
+
+        console.log('[BiomeAnalysis] Analyzing biome regions for plateau placement...');
+
+        // Find all contiguous biome regions
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (!visited[y][x]) {
+                    const region = this.floodFillBiomeRegion(biomeData, x, y, visited);
+                    if (region.tiles.length > 0) {
+                        regions.push(region);
+                    }
+                }
+            }
+        }
+
+        // Sort regions by size (largest first)
+        regions.sort((a, b) => b.tiles.length - a.tiles.length);
+
+        console.log(`[BiomeAnalysis] Found ${regions.length} biome regions`);
+        for (let i = 0; i < Math.min(5, regions.length); i++) {
+            const r = regions[i];
+            console.log(`  Region ${i}: ${r.tiles.length} tiles, biome ${r.biomeType}, center (${r.center.x}, ${r.center.y})`);
+        }
+
+        return regions;
+    }
+
+    /**
+     * Flood fill to find all tiles in a contiguous biome region
+     */
+    floodFillBiomeRegion(biomeData: number[][], startX: number, startY: number, visited: boolean[][]): BiomeRegion {
+        const biomeType = biomeData[startY][startX];
+        const tiles: Vector2D[] = [];
+        const queue: Vector2D[] = [{ x: startX, y: startY }];
+        visited[startY][startX] = true;
+
+        while (queue.length > 0) {
+            const point = queue.shift()!;
+            const { x, y } = point;
+            tiles.push({ x, y });
+
+            // Check 4-connected neighbors
+            const neighbors = [
+                { x: x + 1, y: y },
+                { x: x - 1, y: y },
+                { x: x, y: y + 1 },
+                { x: x, y: y - 1 }
+            ];
+
+            for (const { x: nx, y: ny } of neighbors) {
+                if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height &&
+                    !visited[ny][nx] && biomeData[ny][nx] === biomeType) {
+                    visited[ny][nx] = true;
+                    queue.push({ x: nx, y: ny });
+                }
+            }
+        }
+
+        // Calculate region center and bounds
+        const bounds = this.calculateRegionBounds(tiles);
+        const center = {
+            x: Math.floor((bounds.minX + bounds.maxX) / 2),
+            y: Math.floor((bounds.minY + bounds.maxY) / 2)
+        };
+
+        return {
+            biomeType,
+            tiles,
+            center,
+            bounds,
+            suitableForLargePlateau: this.isRegionSuitableForLargePlateau(tiles, bounds),
+            suitableForMediumPlateau: this.isRegionSuitableForMediumPlateau(tiles, bounds)
+        };
+    }
+
+    /**
+     * Calculate bounding box for a region
+     */
+    calculateRegionBounds(tiles: Vector2D[]): RegionBounds {
+        let minX = Infinity, maxX = -Infinity;
+        let minY = Infinity, maxY = -Infinity;
+
+        for (const tile of tiles) {
+            minX = Math.min(minX, tile.x);
+            maxX = Math.max(maxX, tile.x);
+            minY = Math.min(minY, tile.y);
+            maxY = Math.max(maxY, tile.y);
+        }
+
+        return { minX, maxX, minY, maxY };
+    }
+
+    /**
+     * Check if a region can accommodate large plateaus (25-44 radius)
+     */
+    isRegionSuitableForLargePlateau(tiles: Vector2D[], bounds: RegionBounds): boolean {
+        const width = bounds.maxX - bounds.minX + 1;
+        const height = bounds.maxY - bounds.minY + 1;
+        const area = tiles.length;
+
+        // Need roughly 90x90 area for a 44-radius plateau with buffer
+        const minDimension = 90;
+        const minArea = 6000; // Large regions only
+
+        return width >= minDimension && height >= minDimension && area >= minArea;
+    }
+
+    /**
+     * Check if a region can accommodate medium plateaus (15-29 radius)
+     */
+    isRegionSuitableForMediumPlateau(tiles: Vector2D[], bounds: RegionBounds): boolean {
+        const width = bounds.maxX - bounds.minX + 1;
+        const height = bounds.maxY - bounds.minY + 1;
+        const area = tiles.length;
+
+        // Need roughly 60x60 area for a 29-radius plateau with buffer
+        const minDimension = 60;
+        const minArea = 2500; // Medium regions
+
+        return width >= minDimension && height >= minDimension && area >= minArea;
+    }
+
+    /**
+     * Find optimal placement locations within a biome region
+     */
+    findOptimalPlateauSites(region: BiomeRegion, plateauSize: number): Vector2D[] {
+        const sites: Vector2D[] = [];
+        const requiredRadius = plateauSize + 5; // Add buffer for safety
+        const step = Math.max(10, Math.floor(plateauSize / 2)); // Don't place too close together
+
+        // Sample potential locations within the region bounds
+        for (let y = region.bounds.minY + requiredRadius; y <= region.bounds.maxY - requiredRadius; y += step) {
+            for (let x = region.bounds.minX + requiredRadius; x <= region.bounds.maxX - requiredRadius; x += step) {
+                // Check if this location has enough clear space around it
+                if (this.hasEnoughClearSpace(region, x, y, requiredRadius)) {
+                    sites.push({ x, y });
+                }
+            }
+        }
+
+        // Sort by distance from region center (prefer central locations)
+        sites.sort((a, b) => {
+            const distA = Math.sqrt(Math.pow(a.x - region.center.x, 2) + Math.pow(a.y - region.center.y, 2));
+            const distB = Math.sqrt(Math.pow(b.x - region.center.x, 2) + Math.pow(b.y - region.center.y, 2));
+            return distA - distB;
+        });
+
+        return sites;
+    }
+
+    /**
+     * Check if a location has enough clear space for a plateau
+     */
+    hasEnoughClearSpace(region: BiomeRegion, centerX: number, centerY: number, radius: number): boolean {
+        // Create a set for fast lookup of region tiles
+        const regionTileSet = new Set(region.tiles.map(tile => `${tile.x},${tile.y}`));
+
+        // Check if all tiles in the required radius are within this biome region
+        for (let dy = -radius; dy <= radius; dy++) {
+            for (let dx = -radius; dx <= radius; dx++) {
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance <= radius) {
+                    const x = centerX + dx;
+                    const y = centerY + dy;
+
+                    // Check bounds
+                    if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+                        return false;
+                    }
+
+                    // Check if this tile is in the same biome region
+                    if (!regionTileSet.has(`${x},${y}`)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+}
+
+// Type definitions for biome analysis
+interface BiomeRegion {
+    biomeType: number;
+    tiles: Vector2D[];
+    center: Vector2D;
+    bounds: RegionBounds;
+    suitableForLargePlateau: boolean;
+    suitableForMediumPlateau: boolean;
+}
+
+interface RegionBounds {
+    minX: number;
+    maxX: number;
+    minY: number;
+    maxY: number;
 }
