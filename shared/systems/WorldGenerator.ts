@@ -701,12 +701,12 @@ export class SharedWorldGenerator {
     }
 
     createNoisyPlateau(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
-        // Create larger, more interesting plateaus with cleaner edges
-        const noiseScale = 0.04;  // Slightly smoother noise for cleaner shapes
-        const threshold = 0.4;    // Higher threshold to eliminate sticky bits
+        // Create natural, organic plateaus with good variation
+        const noiseScale = 0.06;  // More detailed noise for organic shapes
+        const threshold = 0.25;   // Lower threshold for more natural edges
         
-        // Create a much larger guaranteed core for substantial plateaus
-        const coreSize = Math.max(4, Math.floor(radius * 0.3)); // Scale core with plateau size
+        // Create a moderate core that's not too square
+        const coreSize = Math.max(3, Math.floor(radius * 0.2)); // Smaller core ratio for more organic shapes
         for (let dy = -coreSize; dy <= coreSize; dy++) {
             for (let dx = -coreSize; dx <= coreSize; dx++) {
                 const x = centerX + dx;
@@ -717,7 +717,7 @@ export class SharedWorldGenerator {
             }
         }
         
-        // Then expand outward with interesting shapes but clean edges
+        // Expand outward with organic, natural shapes
         for (let dy = -radius; dy <= radius; dy++) {
             for (let dx = -radius; dx <= radius; dx++) {
                 if (Math.abs(dx) <= coreSize && Math.abs(dy) <= coreSize) continue; // Skip core area
@@ -728,18 +728,19 @@ export class SharedWorldGenerator {
                 if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance <= radius) {
-                        // Create interesting shapes with multiple noise octaves
+                        // Natural falloff - not too steep to avoid square edges
                         const falloff = 1 - (distance / radius);
-                        const smoothFalloff = falloff * falloff * falloff; // Even smoother for cleaner edges
+                        const naturalFalloff = Math.pow(falloff, 1.5); // Moderate smoothing
                         
-                        // Multi-octave noise for more interesting shapes
+                        // Rich multi-octave noise for organic shapes
                         const noise1 = this.noise2D(x * noiseScale, y * noiseScale);
                         const noise2 = this.noise2D(x * noiseScale * 2, y * noiseScale * 2) * 0.5;
-                        const combinedNoise = (noise1 + noise2) / 1.5;
+                        const noise3 = this.noise2D(x * noiseScale * 4, y * noiseScale * 4) * 0.25;
+                        const combinedNoise = (noise1 + noise2 + noise3) / 1.75;
                         
-                        // Blend noise and distance for interesting but clean shapes
-                        const noiseInfluence = (combinedNoise + 1) / 2 * 0.3; // 30% noise for variety
-                        const distanceInfluence = smoothFalloff * 0.7; // 70% distance for cleaner edges
+                        // Balance noise and distance for natural but substantial shapes
+                        const noiseInfluence = (combinedNoise + 1) / 2 * 0.6; // 60% noise for organic shapes
+                        const distanceInfluence = naturalFalloff * 0.4; // 40% distance for structure
                         
                         const value = distanceInfluence + noiseInfluence;
                         
@@ -751,16 +752,16 @@ export class SharedWorldGenerator {
             }
         }
         
-        // Post-process to eliminate single-tile protrusions (sticky bits)
-        this.cleanupPlateauEdges(elevationData, centerX, centerY, radius);
+        // Very light cleanup - only remove truly isolated single tiles
+        this.lightCleanupPlateauEdges(elevationData, centerX, centerY, radius);
     }
 
     /**
-     * Remove single-tile protrusions and isolated elevated tiles to clean up plateau edges
+     * Very light cleanup - only remove truly isolated single tiles
      */
-    cleanupPlateauEdges(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
-        // Check area around the plateau for cleanup
-        const cleanupRadius = radius + 2;
+    lightCleanupPlateauEdges(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
+        // Only check area around the plateau for truly isolated tiles
+        const cleanupRadius = radius + 1;
         
         for (let dy = -cleanupRadius; dy <= cleanupRadius; dy++) {
             for (let dx = -cleanupRadius; dx <= cleanupRadius; dx++) {
@@ -768,23 +769,25 @@ export class SharedWorldGenerator {
                 const y = centerY + dy;
                 
                 if (x >= 0 && x < this.width && y >= 0 && y < this.height && elevationData[y][x] > 0) {
-                    // Count elevated neighbors in 3x3 area
+                    // Count elevated neighbors (only immediate 4-connected neighbors)
                     let elevatedNeighbors = 0;
-                    for (let ndy = -1; ndy <= 1; ndy++) {
-                        for (let ndx = -1; ndx <= 1; ndx++) {
-                            if (ndx === 0 && ndy === 0) continue; // Skip center
-                            const nx = x + ndx;
-                            const ny = y + ndy;
-                            if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
-                                if (elevationData[ny][nx] > 0) {
-                                    elevatedNeighbors++;
-                                }
+                    const neighbors = [
+                        {x: x + 1, y: y},
+                        {x: x - 1, y: y},
+                        {x: x, y: y + 1},
+                        {x: x, y: y - 1}
+                    ];
+                    
+                    for (const {x: nx, y: ny} of neighbors) {
+                        if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
+                            if (elevationData[ny][nx] > 0) {
+                                elevatedNeighbors++;
                             }
                         }
                     }
                     
-                    // Remove tiles with too few elevated neighbors (sticky bits)
-                    if (elevatedNeighbors < 3) {
+                    // Only remove completely isolated single tiles (no connected neighbors)
+                    if (elevatedNeighbors === 0) {
                         elevationData[y][x] = 0;
                     }
                 }
