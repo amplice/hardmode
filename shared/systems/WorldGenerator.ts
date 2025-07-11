@@ -753,6 +753,9 @@ export class SharedWorldGenerator {
         
         // Moderate cleanup to remove sticky bits but preserve interesting features
         this.moderateCleanupPlateauEdges(elevationData, centerX, centerY, radius);
+        
+        // Geometric cleanup to fix cliff edge issues
+        this.cleanupSingleDiagonalProtrusions(elevationData, centerX, centerY, radius);
     }
 
     /**
@@ -802,6 +805,96 @@ export class SharedWorldGenerator {
                 }
             }
         }
+    }
+
+    /**
+     * Remove single diagonal protrusions from cliff edges for clean geometry
+     */
+    cleanupSingleDiagonalProtrusions(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
+        const cleanupRadius = radius + 2;
+        const tilesToRemove: {x: number, y: number}[] = [];
+        
+        for (let dy = -cleanupRadius; dy <= cleanupRadius; dy++) {
+            for (let dx = -cleanupRadius; dx <= cleanupRadius; dx++) {
+                const x = centerX + dx;
+                const y = centerY + dy;
+                
+                if (x >= 0 && x < this.width && y >= 0 && y < this.height && elevationData[y][x] > 0) {
+                    // Check each diagonal direction for single protrusions
+                    const diagonals = [
+                        {dx: 1, dy: -1, name: "NE", cardinals: [{dx: 1, dy: 0}, {dx: 0, dy: -1}]}, // NE
+                        {dx: 1, dy: 1, name: "SE", cardinals: [{dx: 1, dy: 0}, {dx: 0, dy: 1}]},   // SE  
+                        {dx: -1, dy: 1, name: "SW", cardinals: [{dx: -1, dy: 0}, {dx: 0, dy: 1}]}, // SW
+                        {dx: -1, dy: -1, name: "NW", cardinals: [{dx: -1, dy: 0}, {dx: 0, dy: -1}]} // NW
+                    ];
+                    
+                    for (const diag of diagonals) {
+                        const diagX = x + diag.dx;
+                        const diagY = y + diag.dy;
+                        
+                        // Check if diagonal neighbor exists and is elevated
+                        if (diagX >= 0 && diagX < this.width && diagY >= 0 && diagY < this.height && 
+                            elevationData[diagY][diagX] > 0) {
+                            
+                            // Check if both cardinal neighbors that would complete the corner are elevated
+                            const card1X = x + diag.cardinals[0].dx;
+                            const card1Y = y + diag.cardinals[0].dy;
+                            const card2X = x + diag.cardinals[1].dx;
+                            const card2Y = y + diag.cardinals[1].dy;
+                            
+                            const card1Elevated = (card1X >= 0 && card1X < this.width && card1Y >= 0 && card1Y < this.height) ? 
+                                                  elevationData[card1Y][card1X] > 0 : false;
+                            const card2Elevated = (card2X >= 0 && card2X < this.width && card2Y >= 0 && card2Y < this.height) ? 
+                                                  elevationData[card2Y][card2X] > 0 : false;
+                            
+                            // If we have a diagonal connection but not both cardinals, it's a single diagonal protrusion
+                            if (!(card1Elevated && card2Elevated)) {
+                                // Check if this is really a single protrusion by seeing if the diagonal tile itself
+                                // forms a single protrusion from its perspective
+                                if (this.isSingleDiagonalProtrusion(elevationData, diagX, diagY, x, y)) {
+                                    tilesToRemove.push({x: diagX, y: diagY});
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Remove identified single diagonal protrusions
+        for (const {x, y} of tilesToRemove) {
+            elevationData[y][x] = 0;
+        }
+        
+        console.log(`[PlateauGeneration] Removed ${tilesToRemove.length} single diagonal protrusions for cleaner cliff edges`);
+    }
+
+    /**
+     * Check if a tile forms a single diagonal protrusion
+     */
+    isSingleDiagonalProtrusion(elevationData: number[][], x: number, y: number, fromX: number, fromY: number): boolean {
+        // Count how many elevated neighbors this diagonal tile has
+        let elevatedNeighbors = 0;
+        let connectedToOrigin = false;
+        
+        for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+                if (dx === 0 && dy === 0) continue;
+                
+                const nx = x + dx;
+                const ny = y + dy;
+                
+                if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height && elevationData[ny][nx] > 0) {
+                    elevatedNeighbors++;
+                    if (nx === fromX && ny === fromY) {
+                        connectedToOrigin = true;
+                    }
+                }
+            }
+        }
+        
+        // It's a single diagonal protrusion if it has very few connections and one of them is to the origin
+        return connectedToOrigin && elevatedNeighbors <= 2;
     }
 
     createTemplatePlateau(elevationData: number[][], centerX: number, centerY: number, size: number): void {
