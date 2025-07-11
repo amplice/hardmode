@@ -57,24 +57,28 @@ export class SharedWorldGenerator {
     }
 
     /**
-     * Generate complete world data in proper order: biomes → elevation → stairs
+     * Generate complete world data in new order: plateaus → climate → biomes → stairs
      * Returns object with { elevationData, biomeData, stairsData }
      */
     generateWorld(): { elevationData: number[][], biomeData: number[][], stairsData: any[][] } {
-        console.log('[SharedWorldGenerator] Starting world generation with new order: biomes → elevation → stairs');
+        console.log('[SharedWorldGenerator] Starting world generation with new order: plateaus → climate → biomes → stairs');
         
-        // STEP 1: Generate biomes FIRST
-        console.log('[SharedWorldGenerator] Step 1: Generating biomes...');
-        const biomeData = this.generateBiomeDataOnly();
-        this.biomeData = biomeData;
-        
-        // STEP 2: Generate elevation with biome buffer constraints
-        console.log('[SharedWorldGenerator] Step 2: Generating elevation with biome buffers...');
-        const elevationData = this.generateElevationDataWithBiomeBuffers(biomeData);
+        // STEP 1: Generate plateaus FIRST (they define the major terrain features)
+        console.log('[SharedWorldGenerator] Step 1: Generating plateaus...');
+        const elevationData = this.generateElevationDataFirst();
         this.elevationData = elevationData;
         
-        // STEP 3: Generate stairs with both biome and elevation data available
-        console.log('[SharedWorldGenerator] Step 3: Generating biome-aware stairs...');
+        // STEP 2: Generate climate maps
+        console.log('[SharedWorldGenerator] Step 2: Generating climate...');
+        const climate = this.generateClimateData();
+        
+        // STEP 3: Generate biomes from climate, respecting existing plateaus
+        console.log('[SharedWorldGenerator] Step 3: Generating biomes around plateaus...');
+        const biomeData = this.generateBiomesAroundPlateaus(climate, elevationData);
+        this.biomeData = biomeData;
+        
+        // STEP 4: Generate stairs on the existing plateaus
+        console.log('[SharedWorldGenerator] Step 4: Generating stairs...');
         this.generateStairsData(elevationData);
         
         console.log('[SharedWorldGenerator] World generation complete');
@@ -140,6 +144,39 @@ export class SharedWorldGenerator {
      * Generate biome data only (without any elevation dependencies)
      * This is the FIRST step in the new generation order
      */
+    /**
+     * Generate elevation data FIRST - plateaus define the terrain
+     */
+    generateElevationDataFirst(): number[][] {
+        console.log('[PlateauGeneration] Generating plateaus without biome constraints...');
+        
+        // Initialize elevation data
+        const elevationData: number[][] = [];
+        for (let y = 0; y < this.height; y++) {
+            elevationData[y] = [];
+            for (let x = 0; x < this.width; x++) {
+                elevationData[y][x] = 0;
+            }
+        }
+        
+        // Use the clean plateau generation (no biome conflicts!)
+        this.generatePlateauCandidates(elevationData);
+        
+        // Only minimal cleanup needed since there are no biome conflicts
+        this.enforceMinimumPlateauSizes(elevationData);
+        
+        // Count final plateaus
+        let elevatedCount = 0;
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (elevationData[y][x] > 0) elevatedCount++;
+            }
+        }
+        console.log(`[PlateauGeneration] Generated ${elevatedCount} elevated tiles`);
+        
+        return elevationData;
+    }
+
     generateBiomeDataOnly(): number[][] {
         console.log('[SharedWorldGenerator] Generating climate-based biomes...');
         
@@ -148,6 +185,42 @@ export class SharedWorldGenerator {
         
         // Convert climate to biomes
         const biomeData = this.generateBiomesFromClimate(climate);
+        
+        // Log biome statistics
+        this.logBiomeStatistics(biomeData);
+        
+        return biomeData;
+    }
+
+    /**
+     * Generate biomes around existing plateaus
+     * Climate drives biome placement but plateaus are already fixed
+     */
+    generateBiomesAroundPlateaus(climate: { temperature: number[][], moisture: number[][] }, elevationData: number[][]): number[][] {
+        const biomeData: number[][] = [];
+        
+        console.log('[BiomeGeneration] Generating biomes around existing plateaus...');
+        
+        for (let y = 0; y < this.height; y++) {
+            biomeData[y] = [];
+            for (let x = 0; x < this.width; x++) {
+                const temp = climate.temperature[y][x];
+                const moisture = climate.moisture[y][x];
+                const isElevated = elevationData[y][x] > 0;
+                
+                // Plateaus can modify local climate slightly
+                let adjustedTemp = temp;
+                let adjustedMoisture = moisture;
+                
+                if (isElevated) {
+                    // Plateaus are slightly cooler and drier
+                    adjustedTemp -= 0.1;
+                    adjustedMoisture -= 0.05;
+                }
+                
+                biomeData[y][x] = this.determineBiomeType(adjustedTemp, adjustedMoisture);
+            }
+        }
         
         // Log biome statistics
         this.logBiomeStatistics(biomeData);
