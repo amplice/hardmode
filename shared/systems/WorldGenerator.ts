@@ -35,6 +35,13 @@ import { createNoise2D } from 'simplex-noise';
 import { createSeededRandom } from '../utils/MathUtils.js';
 import type { BiomeConfig, ElevationConfig, Vector2D } from '../types/GameTypes.js';
 
+// Plateau region for biome assignment
+interface PlateauRegion {
+    id: number;
+    plateauTiles: Vector2D[];  // Original plateau tiles
+    tiles: Vector2D[];         // Plateau + buffer tiles
+}
+
 export class SharedWorldGenerator {
     public width: number;
     public height: number;
@@ -193,26 +200,53 @@ export class SharedWorldGenerator {
     }
 
     /**
-     * Generate biomes around existing plateaus
-     * Climate drives biome placement but plateaus are already fixed
+     * Generate biomes around existing plateaus with buffer zones
+     * Ensures each plateau + buffer is a single consistent biome
      */
     generateBiomesAroundPlateaus(climate: { temperature: number[][], moisture: number[][] }, elevationData: number[][]): number[][] {
+        console.log('[BiomeGeneration] Generating biomes with plateau-first approach...');
+        
+        // Initialize biome data (will be filled in two phases)
         const biomeData: number[][] = [];
-        
-        console.log('[BiomeGeneration] Generating biomes around existing plateaus...');
-        
-        // First, generate base biomes from climate
         for (let y = 0; y < this.height; y++) {
-            biomeData[y] = [];
+            biomeData[y] = new Array(this.width).fill(-1); // -1 = unassigned
+        }
+        
+        // PHASE 1: Assign biomes to plateau regions (plateau + buffer zones)
+        console.log('[BiomeGeneration] Phase 1: Assigning biomes to plateau regions...');
+        const plateauRegions = this.getPlateauRegionsWithBuffers(elevationData);
+        
+        for (const region of plateauRegions) {
+            // Pick biome based on climate at plateau center
+            const centerPoint = this.findRegionCenter(region);
+            const temp = climate.temperature[centerPoint.y][centerPoint.x];
+            const moisture = climate.moisture[centerPoint.y][centerPoint.x];
+            const plateauBiome = this.determineBiomeType(temp, moisture);
+            
+            // Apply this single biome to entire plateau region (plateau + buffer)
+            for (const {x, y} of region.tiles) {
+                biomeData[y][x] = plateauBiome;
+            }
+            
+            console.log(`[BiomeGeneration] Plateau region ${region.id}: ${region.tiles.length} tiles → biome ${plateauBiome} (temp=${temp.toFixed(2)}, moisture=${moisture.toFixed(2)})`);
+        }
+        
+        // PHASE 2: Fill remaining unassigned areas with climate-based biomes
+        console.log('[BiomeGeneration] Phase 2: Filling remaining areas with climate-based biomes...');
+        let unassignedFilled = 0;
+        
+        for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                const temp = climate.temperature[y][x];
-                const moisture = climate.moisture[y][x];
-                biomeData[y][x] = this.determineBiomeType(temp, moisture);
+                if (biomeData[y][x] === -1) { // Unassigned
+                    const temp = climate.temperature[y][x];
+                    const moisture = climate.moisture[y][x];
+                    biomeData[y][x] = this.determineBiomeType(temp, moisture);
+                    unassignedFilled++;
+                }
             }
         }
         
-        // Then ensure each plateau has a consistent biome
-        this.ensurePlateauBiomeConsistency(biomeData, elevationData);
+        console.log(`[BiomeGeneration] Filled ${unassignedFilled} non-plateau tiles with climate-based biomes`);
         
         // Log biome statistics
         this.logBiomeStatistics(biomeData);
@@ -343,50 +377,89 @@ export class SharedWorldGenerator {
         }
     }
 
+
     /**
-     * Ensure each plateau has a consistent biome type
-     * Fixes plateau-biome overlaps by applying dominant biome to entire plateau
+     * Get all plateau regions with buffer zones for biome assignment
+     * Each region includes the plateau tiles + 2-tile buffer around edges
      */
-    ensurePlateauBiomeConsistency(biomeData: number[][], elevationData: number[][]): void {
-        console.log('[BiomeGeneration] Ensuring plateau biome consistency...');
-        
-        // Find all plateaus
+    getPlateauRegionsWithBuffers(elevationData: number[][]): PlateauRegion[] {
         const plateaus = this.findAllPlateaus(elevationData);
+        const regions: PlateauRegion[] = [];
+        const BUFFER_SIZE = 2; // 2-tile buffer around plateaus
         
-        let plateausFixed = 0;
-        for (const plateau of plateaus) {
-            // Count biome types in this plateau
-            const biomeCounts: { [key: number]: number } = {};
+        console.log(`[BiomeGeneration] Creating buffer zones for ${plateaus.length} plateaus...`);
+        
+        for (let i = 0; i < plateaus.length; i++) {
+            const plateau = plateaus[i];
+            const regionTiles = new Set<string>();
             
+            // Add all plateau tiles
             for (const {x, y} of plateau) {
-                const biomeId = biomeData[y][x];
-                biomeCounts[biomeId] = (biomeCounts[biomeId] || 0) + 1;
+                regionTiles.add(`${x},${y}`);
             }
             
-            // Find dominant biome
-            let dominantBiome = 0;
-            let maxCount = 0;
-            for (const [biomeIdStr, count] of Object.entries(biomeCounts)) {
-                const biomeId = parseInt(biomeIdStr);
-                if (count > maxCount) {
-                    maxCount = count;
-                    dominantBiome = biomeId;
+            // Add buffer tiles around plateau edges
+            for (const {x, y} of plateau) {
+                for (let dy = -BUFFER_SIZE; dy <= BUFFER_SIZE; dy++) {
+                    for (let dx = -BUFFER_SIZE; dx <= BUFFER_SIZE; dx++) {
+                        const bufferX = x + dx;
+                        const bufferY = y + dy;
+                        
+                        // Check bounds
+                        if (bufferX >= 0 && bufferX < this.width && 
+                            bufferY >= 0 && bufferY < this.height) {
+                            regionTiles.add(`${bufferX},${bufferY}`);
+                        }
+                    }
                 }
             }
             
-            // Only apply fix if there are multiple biomes on this plateau
-            const biomeTypes = Object.keys(biomeCounts).length;
-            if (biomeTypes > 1) {
-                // Apply dominant biome to entire plateau
-                for (const {x, y} of plateau) {
-                    biomeData[y][x] = dominantBiome;
-                }
-                plateausFixed++;
-                console.log(`[BiomeGeneration] Fixed plateau with ${plateau.length} tiles (${biomeTypes} biomes → 1 biome: ${dominantBiome})`);
+            // Convert set back to coordinate array
+            const tiles: Vector2D[] = [];
+            for (const coordStr of regionTiles) {
+                const [x, y] = coordStr.split(',').map(Number);
+                tiles.push({x, y});
             }
+            
+            regions.push({
+                id: i,
+                plateauTiles: plateau,
+                tiles: tiles
+            });
+            
+            console.log(`[BiomeGeneration] Region ${i}: ${plateau.length} plateau tiles + ${tiles.length - plateau.length} buffer tiles = ${tiles.length} total`);
         }
         
-        console.log(`[BiomeGeneration] Biome consistency complete. Fixed ${plateausFixed} plateaus with mixed biomes.`);
+        return regions;
+    }
+
+    /**
+     * Find the center point of a plateau region for climate sampling
+     */
+    findRegionCenter(region: PlateauRegion): Vector2D {
+        const plateauTiles = region.plateauTiles;
+        
+        if (plateauTiles.length === 0) {
+            return {x: Math.floor(this.width / 2), y: Math.floor(this.height / 2)};
+        }
+        
+        // Calculate centroid of plateau tiles (not buffer)
+        let sumX = 0;
+        let sumY = 0;
+        
+        for (const {x, y} of plateauTiles) {
+            sumX += x;
+            sumY += y;
+        }
+        
+        const centerX = Math.round(sumX / plateauTiles.length);
+        const centerY = Math.round(sumY / plateauTiles.length);
+        
+        // Ensure center is within bounds
+        return {
+            x: Math.max(0, Math.min(this.width - 1, centerX)),
+            y: Math.max(0, Math.min(this.height - 1, centerY))
+        };
     }
 
     /**
