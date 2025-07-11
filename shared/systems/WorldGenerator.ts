@@ -1025,19 +1025,14 @@ export class SharedWorldGenerator {
         console.log('[PlateauGeneration] Starting biome-aware plateau placement...');
         
         // PHASE 3: Use biome analysis for smart placement
-        // OPTIMIZATION: Only analyze if world is small enough to avoid timeout
-        const skipBiomeAnalysis = this.width * this.height > 40000; // Skip for worlds larger than 200x200
+        // OPTIMIZATION: Use faster analysis for large worlds
+        const isLargeWorld = this.width * this.height > 40000; // Worlds larger than 200x200
         
-        if (skipBiomeAnalysis) {
-            console.log('[PlateauGeneration] Skipping biome analysis for large world - using random placement');
-            this.generatePlateauCandidatesRandomly(elevationData, 
-                6 + Math.floor(this.random() * 6),  // 6-11 large plateaus
-                8 + Math.floor(this.random() * 8)   // 8-15 medium plateaus
-            );
-            return;
+        if (isLargeWorld) {
+            console.log('[PlateauGeneration] Using optimized biome analysis for large world');
         }
         
-        const regions = this.analyzeBiomeRegions(biomeData);
+        const regions = this.analyzeBiomeRegions(biomeData, isLargeWorld);
         
         // Filter regions suitable for plateaus
         const largeRegions = regions.filter(r => r.suitableForLargePlateau);
@@ -1234,18 +1229,22 @@ export class SharedWorldGenerator {
 
     /**
      * Analyze biome data to find large contiguous regions suitable for plateau placement
+     * @param isLargeWorld - If true, use optimized sampling to avoid timeout
      */
-    analyzeBiomeRegions(biomeData: number[][]): BiomeRegion[] {
+    analyzeBiomeRegions(biomeData: number[][], isLargeWorld: boolean = false): BiomeRegion[] {
         const regions: BiomeRegion[] = [];
         const visited: boolean[][] = Array(this.height).fill(null).map(() => Array(this.width).fill(false));
 
         console.log('[BiomeAnalysis] Analyzing biome regions for plateau placement...');
 
+        // For large worlds, use sampling to avoid analyzing every tile
+        const step = isLargeWorld ? 10 : 1; // Sample every 10th tile for large worlds
+
         // Find all contiguous biome regions
-        for (let y = 0; y < this.height; y++) {
-            for (let x = 0; x < this.width; x++) {
+        for (let y = 0; y < this.height; y += step) {
+            for (let x = 0; x < this.width; x += step) {
                 if (!visited[y][x]) {
-                    const region = this.floodFillBiomeRegion(biomeData, x, y, visited);
+                    const region = this.floodFillBiomeRegion(biomeData, x, y, visited, isLargeWorld);
                     if (region.tiles.length > 0) {
                         regions.push(region);
                     }
@@ -1267,31 +1266,86 @@ export class SharedWorldGenerator {
 
     /**
      * Flood fill to find all tiles in a contiguous biome region
+     * @param isLargeWorld - If true, use approximate bounds instead of all tiles
      */
-    floodFillBiomeRegion(biomeData: number[][], startX: number, startY: number, visited: boolean[][]): BiomeRegion {
+    floodFillBiomeRegion(biomeData: number[][], startX: number, startY: number, visited: boolean[][], isLargeWorld: boolean = false): BiomeRegion {
         const biomeType = biomeData[startY][startX];
         const tiles: Vector2D[] = [];
-        const queue: Vector2D[] = [{ x: startX, y: startY }];
-        visited[startY][startX] = true;
+        
+        // For large worlds, just estimate bounds instead of collecting all tiles
+        if (isLargeWorld) {
+            // Quick bounds estimation by sampling
+            let minX = startX, maxX = startX, minY = startY, maxY = startY;
+            const sampleStep = 5;
+            
+            // Sample in expanding rectangles to find approximate bounds
+            for (let radius = sampleStep; radius < 100; radius += sampleStep) {
+                let foundEdge = false;
+                
+                // Check rectangle perimeter
+                for (let i = -radius; i <= radius; i += sampleStep) {
+                    // Top and bottom edges
+                    if (startY - radius >= 0 && biomeData[startY - radius][Math.max(0, Math.min(this.width - 1, startX + i))] === biomeType) {
+                        minY = Math.min(minY, startY - radius);
+                        foundEdge = true;
+                    }
+                    if (startY + radius < this.height && biomeData[startY + radius][Math.max(0, Math.min(this.width - 1, startX + i))] === biomeType) {
+                        maxY = Math.max(maxY, startY + radius);
+                        foundEdge = true;
+                    }
+                    
+                    // Left and right edges
+                    if (startX - radius >= 0 && biomeData[Math.max(0, Math.min(this.height - 1, startY + i))][startX - radius] === biomeType) {
+                        minX = Math.min(minX, startX - radius);
+                        foundEdge = true;
+                    }
+                    if (startX + radius < this.width && biomeData[Math.max(0, Math.min(this.height - 1, startY + i))][startX + radius] === biomeType) {
+                        maxX = Math.max(maxX, startX + radius);
+                        foundEdge = true;
+                    }
+                }
+                
+                if (!foundEdge) break; // Stop expanding if we didn't find any more of this biome
+            }
+            
+            // Mark approximate area as visited
+            for (let y = minY; y <= maxY; y += 5) {
+                for (let x = minX; x <= maxX; x += 5) {
+                    if (y < this.height && x < this.width) {
+                        visited[y][x] = true;
+                    }
+                }
+            }
+            
+            // Create approximate tile list (just corners and center for bounds calculation)
+            tiles.push({ x: minX, y: minY });
+            tiles.push({ x: maxX, y: maxY });
+            tiles.push({ x: startX, y: startY });
+            
+        } else {
+            // Original precise flood fill for small worlds
+            const queue: Vector2D[] = [{ x: startX, y: startY }];
+            visited[startY][startX] = true;
 
-        while (queue.length > 0) {
-            const point = queue.shift()!;
-            const { x, y } = point;
-            tiles.push({ x, y });
+            while (queue.length > 0) {
+                const point = queue.shift()!;
+                const { x, y } = point;
+                tiles.push({ x, y });
 
-            // Check 4-connected neighbors
-            const neighbors = [
-                { x: x + 1, y: y },
-                { x: x - 1, y: y },
-                { x: x, y: y + 1 },
-                { x: x, y: y - 1 }
-            ];
+                // Check 4-connected neighbors
+                const neighbors = [
+                    { x: x + 1, y: y },
+                    { x: x - 1, y: y },
+                    { x: x, y: y + 1 },
+                    { x: x, y: y - 1 }
+                ];
 
-            for (const { x: nx, y: ny } of neighbors) {
-                if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height &&
-                    !visited[ny][nx] && biomeData[ny][nx] === biomeType) {
-                    visited[ny][nx] = true;
-                    queue.push({ x: nx, y: ny });
+                for (const { x: nx, y: ny } of neighbors) {
+                    if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height &&
+                        !visited[ny][nx] && biomeData[ny][nx] === biomeType) {
+                        visited[ny][nx] = true;
+                        queue.push({ x: nx, y: ny });
+                    }
                 }
             }
         }
@@ -1302,6 +1356,24 @@ export class SharedWorldGenerator {
             x: Math.floor((bounds.minX + bounds.maxX) / 2),
             y: Math.floor((bounds.minY + bounds.maxY) / 2)
         };
+
+        // For large worlds, estimate tile count from bounds
+        if (isLargeWorld && tiles.length < 100) {
+            // Approximate tile count based on bounds
+            const estimatedArea = (bounds.maxX - bounds.minX + 1) * (bounds.maxY - bounds.minY + 1);
+            // Add estimated tiles for proper suitability calculation
+            const estimatedTiles: Vector2D[] = tiles.slice(); // Keep original tiles
+            estimatedTiles.length = Math.floor(estimatedArea * 0.7); // Assume 70% fill rate
+            
+            return {
+                biomeType,
+                tiles: estimatedTiles,
+                center,
+                bounds,
+                suitableForLargePlateau: this.isRegionSuitableForLargePlateau(estimatedTiles, bounds),
+                suitableForMediumPlateau: this.isRegionSuitableForMediumPlateau(estimatedTiles, bounds)
+            };
+        }
 
         return {
             biomeType,
