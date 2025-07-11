@@ -141,21 +141,139 @@ export class SharedWorldGenerator {
      * This is the FIRST step in the new generation order
      */
     generateBiomeDataOnly(): number[][] {
-        const biomeData: number[][] = [];
+        console.log('[SharedWorldGenerator] Generating climate-based biomes...');
+        
+        // Generate climate maps
+        const climate = this.generateClimateData();
+        
+        // Convert climate to biomes
+        const biomeData = this.generateBiomesFromClimate(climate);
+        
+        // Log biome statistics
+        this.logBiomeStatistics(biomeData);
+        
+        return biomeData;
+    }
+
+    /**
+     * Generate temperature and moisture maps
+     */
+    generateClimateData(): { temperature: number[][], moisture: number[][] } {
+        const temperature: number[][] = [];
+        const moisture: number[][] = [];
+        
+        // Initialize arrays
         for (let y = 0; y < this.height; y++) {
-            biomeData[y] = [] as number[];
+            temperature[y] = [];
+            moisture[y] = [];
+        }
+        
+        console.log('[ClimateGeneration] Generating temperature map...');
+        // Temperature: North=cold (0.2), South=hot (0.8) with noise variation
+        for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                biomeData[y][x] = 0; // Default to green grass
+                // Base temperature from latitude (north to south)
+                const latitudeFactor = y / (this.height - 1); // 0 (north) to 1 (south)
+                const baseTemp = 0.2 + (latitudeFactor * 0.6); // 0.2 to 0.8
+                
+                // Add noise variation
+                const tempNoise = this.noise2D(x * 0.03, y * 0.03);
+                temperature[y][x] = Math.max(0, Math.min(1, baseTemp + tempNoise * 0.3));
             }
         }
+        
+        console.log('[ClimateGeneration] Generating moisture map...');
+        // Moisture: Large-scale noise patterns
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                // Base moisture from large-scale noise
+                const moistureNoise1 = this.noise2D(x * 0.02, y * 0.02);
+                const moistureNoise2 = this.noise2D(x * 0.05, y * 0.05);
+                
+                // Combine different scales for interesting patterns
+                const baseMoisture = (moistureNoise1 + moistureNoise2 * 0.5) / 1.5;
+                moisture[y][x] = Math.max(0, Math.min(1, (baseMoisture + 1) / 2));
+            }
+        }
+        
+        return { temperature, moisture };
+    }
 
-        // Generate 3-5 large dark grass zones to increase coverage to 40-60%
-        const zoneCount = 3 + Math.floor(this.random() * 3);
-        console.log(`[SharedWorldGenerator] Generating ${zoneCount} dark grass zones`);
-
-        this.generateLargeBiomeZones(biomeData, zoneCount);
-
+    /**
+     * Convert climate data to biome types
+     */
+    generateBiomesFromClimate(climate: { temperature: number[][], moisture: number[][] }): number[][] {
+        const biomeData: number[][] = [];
+        
+        for (let y = 0; y < this.height; y++) {
+            biomeData[y] = [];
+            for (let x = 0; x < this.width; x++) {
+                const temp = climate.temperature[y][x];
+                const moisture = climate.moisture[y][x];
+                
+                biomeData[y][x] = this.determineBiomeType(temp, moisture);
+            }
+        }
+        
         return biomeData;
+    }
+
+    /**
+     * Determine biome type from climate conditions
+     */
+    determineBiomeType(temperature: number, moisture: number): number {
+        // Cold + Any moisture = Snow (biome 3)
+        if (temperature < 0.3) {
+            return 3; // Snow
+        }
+        
+        // Hot + Dry = Desert (biome 2)  
+        if (temperature > 0.7 && moisture < 0.3) {
+            return 2; // Desert
+        }
+        
+        // Any temperature + Very Wet = Marsh (biome 4)
+        if (moisture > 0.75) {
+            return 4; // Marsh
+        }
+        
+        // Moderate conditions = Grass
+        // Use moisture to determine light vs dark grass
+        if (moisture > 0.5) {
+            return 1; // Dark grass
+        } else {
+            return 0; // Light grass  
+        }
+    }
+
+    /**
+     * Log statistics about generated biomes
+     */
+    logBiomeStatistics(biomeData: number[][]): void {
+        const counts = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 };
+        const totalTiles = this.width * this.height;
+        
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                counts[biomeData[y][x] as keyof typeof counts]++;
+            }
+        }
+        
+        const biomeNames = {
+            0: 'Light Grass',
+            1: 'Dark Grass', 
+            2: 'Desert',
+            3: 'Snow',
+            4: 'Marsh'
+        };
+        
+        console.log('[BiomeGeneration] Biome distribution:');
+        for (const [biomeIdStr, count] of Object.entries(counts)) {
+            const biomeId = parseInt(biomeIdStr) as keyof typeof biomeNames;
+            const percentage = ((count / totalTiles) * 100).toFixed(1);
+            const name = biomeNames[biomeId];
+            console.log(`  ${name}: ${percentage}% (${count} tiles)`);
+        }
     }
 
     /**
@@ -318,18 +436,82 @@ export class SharedWorldGenerator {
     }
 
     generatePlateauCandidates(elevationData: number[][]): void {
-        // Create fewer but much larger plateaus 
-        const plateauCount = 2 + Math.floor(this.random() * 2); // 2-3 large plateaus
+        console.log('[PlateauGeneration] Using grid-based plateau distribution...');
         
-        for (let i = 0; i < plateauCount; i++) {
-            // Choose center point with larger buffer for big plateaus
-            const cx = 20 + Math.floor(this.random() * (this.width - 40));
-            const cy = 20 + Math.floor(this.random() * (this.height - 40));
-            const baseRadius = 15 + Math.floor(this.random() * 12); // Much larger: 15-26 radius
-            
-            // Use noise to create organic shape with larger plateaus
-            this.createNoisyPlateau(elevationData, cx, cy, baseRadius);
+        // Determine grid size based on world size for consistent distribution
+        const targetPlateauCount = Math.max(4, Math.floor((this.width * this.height) / 15000)); // ~1 per 15k tiles
+        const gridSize = Math.ceil(Math.sqrt(targetPlateauCount));
+        
+        console.log(`[PlateauGeneration] Placing ${targetPlateauCount} plateaus in ${gridSize}x${gridSize} grid`);
+        
+        // Calculate region dimensions
+        const regionWidth = Math.floor(this.width / gridSize);
+        const regionHeight = Math.floor(this.height / gridSize);
+        
+        let plateausPlaced = 0;
+        
+        // Place one plateau per grid region
+        for (let gridY = 0; gridY < gridSize && plateausPlaced < targetPlateauCount; gridY++) {
+            for (let gridX = 0; gridX < gridSize && plateausPlaced < targetPlateauCount; gridX++) {
+                // Calculate region bounds
+                const regionStartX = gridX * regionWidth;
+                const regionStartY = gridY * regionHeight;
+                const regionEndX = Math.min(regionStartX + regionWidth, this.width);
+                const regionEndY = Math.min(regionStartY + regionHeight, this.height);
+                
+                // Find best location within this region
+                const location = this.findBestPlateauLocationInRegion(
+                    regionStartX, regionStartY, regionEndX, regionEndY
+                );
+                
+                if (location) {
+                    // Size varies based on available space
+                    const maxRadius = Math.min(
+                        Math.floor(regionWidth * 0.3),
+                        Math.floor(regionHeight * 0.3),
+                        26  // Maximum size limit
+                    );
+                    const minRadius = Math.max(15, Math.floor(maxRadius * 0.6));
+                    const radius = minRadius + Math.floor(this.random() * (maxRadius - minRadius + 1));
+                    
+                    console.log(`[PlateauGeneration] Placing plateau ${plateausPlaced + 1} at (${location.x}, ${location.y}) with radius ${radius}`);
+                    this.createNoisyPlateau(elevationData, location.x, location.y, radius);
+                    plateausPlaced++;
+                }
+            }
         }
+        
+        console.log(`[PlateauGeneration] Successfully placed ${plateausPlaced} plateaus`);
+    }
+
+    /**
+     * Find the best location for a plateau within a specific region
+     */
+    findBestPlateauLocationInRegion(startX: number, startY: number, endX: number, endY: number): { x: number, y: number } | null {
+        const buffer = 25; // Minimum distance from region edges
+        const effectiveStartX = startX + buffer;
+        const effectiveStartY = startY + buffer;
+        const effectiveEndX = endX - buffer;
+        const effectiveEndY = endY - buffer;
+        
+        // Check if region is large enough
+        if (effectiveEndX <= effectiveStartX || effectiveEndY <= effectiveStartY) {
+            return null; // Region too small
+        }
+        
+        // For now, place at center of region
+        // Future: could add climate-aware scoring here
+        const centerX = Math.floor((effectiveStartX + effectiveEndX) / 2);
+        const centerY = Math.floor((effectiveStartY + effectiveEndY) / 2);
+        
+        // Add some randomness to avoid perfectly regular placement
+        const randomOffsetX = Math.floor((this.random() - 0.5) * Math.min(30, (effectiveEndX - effectiveStartX) * 0.3));
+        const randomOffsetY = Math.floor((this.random() - 0.5) * Math.min(30, (effectiveEndY - effectiveStartY) * 0.3));
+        
+        return {
+            x: Math.max(effectiveStartX, Math.min(effectiveEndX, centerX + randomOffsetX)),
+            y: Math.max(effectiveStartY, Math.min(effectiveEndY, centerY + randomOffsetY))
+        };
     }
 
     createNoisyPlateau(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
@@ -1059,17 +1241,44 @@ export class SharedWorldGenerator {
      * Ensures plateaus stay within biome boundaries with 1-tile buffer
      */
     generatePlateauCandidatesWithBiomeBuffers(elevationData: number[][], biomeData: number[][]): void {
-        const plateauCount = 2 + Math.floor(this.random() * 2); // 2-3 large plateaus
+        console.log('[PlateauGeneration] Using grid-based plateau distribution with biome awareness...');
         
-        for (let i = 0; i < plateauCount; i++) {
-            // Choose center point with larger buffer for big plateaus
-            const cx = 20 + Math.floor(this.random() * (this.width - 40));
-            const cy = 20 + Math.floor(this.random() * (this.height - 40));
-            
-            // Generate much larger plateaus (ignoring biome constraints initially)
-            const size = 15 + Math.floor(this.random() * 12); // 15-26 tile radius (much larger)
-            this.generateUnconstrainedPlateau(elevationData, cx, cy, size);
+        // Use same grid system as regular plateau generation
+        const targetPlateauCount = Math.max(4, Math.floor((this.width * this.height) / 15000));
+        const gridSize = Math.ceil(Math.sqrt(targetPlateauCount));
+        
+        const regionWidth = Math.floor(this.width / gridSize);
+        const regionHeight = Math.floor(this.height / gridSize);
+        
+        let plateausPlaced = 0;
+        
+        for (let gridY = 0; gridY < gridSize && plateausPlaced < targetPlateauCount; gridY++) {
+            for (let gridX = 0; gridX < gridSize && plateausPlaced < targetPlateauCount; gridX++) {
+                const regionStartX = gridX * regionWidth;
+                const regionStartY = gridY * regionHeight;
+                const regionEndX = Math.min(regionStartX + regionWidth, this.width);
+                const regionEndY = Math.min(regionStartY + regionHeight, this.height);
+                
+                const location = this.findBestPlateauLocationInRegion(
+                    regionStartX, regionStartY, regionEndX, regionEndY
+                );
+                
+                if (location) {
+                    const maxRadius = Math.min(
+                        Math.floor(regionWidth * 0.3),
+                        Math.floor(regionHeight * 0.3),
+                        26
+                    );
+                    const minRadius = Math.max(15, Math.floor(maxRadius * 0.6));
+                    const radius = minRadius + Math.floor(this.random() * (maxRadius - minRadius + 1));
+                    
+                    this.generateUnconstrainedPlateau(elevationData, location.x, location.y, radius);
+                    plateausPlaced++;
+                }
+            }
         }
+        
+        console.log(`[PlateauGeneration] Placed ${plateausPlaced} plateaus with biome constraints`);
     }
 
     generatePlateauCandidatesWithBiomeBuffersOld(elevationData: number[][], biomeData: number[][]): void {
