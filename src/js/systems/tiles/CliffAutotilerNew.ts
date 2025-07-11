@@ -253,9 +253,13 @@ export class CliffAutotiler {
         let tileCoords = this.determineTileType(bitmask, isDarkGrass);
         
         // Randomize bottom edge tiles (columns 1-5 for horizontal edges)
-        if (tileCoords.type.includes("bottom edge") && tileCoords.row === 5 && tileCoords.col === 1) {
-            tileCoords = { ...tileCoords }; // Copy to avoid modifying original
-            tileCoords.col = 1 + Math.floor(Math.random() * 5); // Columns 1-5 only
+        if (tileCoords.type.includes("bottom edge") && tileCoords.row === 5) {
+            // Only randomize if it's using the basic bottom edge tile (col 1)
+            // Other variants (cols 2-4) are already properly assigned by determineTileType
+            if (tileCoords.col === 1) {
+                tileCoords = { ...tileCoords }; // Copy to avoid modifying original
+                tileCoords.col = 1 + Math.floor(Math.random() * 5); // Columns 1-5 only
+            }
         }
         
         // Debug logging
@@ -327,6 +331,8 @@ export class CliffAutotiler {
             
             // Add extensions for row 5 tiles (both green and dark grass use same row)
             if (row === 5) {
+                // For extension tiles, we need to handle biome offset correctly
+                // The extension row (6) has the same structure as main tileset
                 const extensionRow = this.tilesets.textures.terrain[6];
                 if (extensionRow && extensionRow[col]) {
                     const extensionTexture = extensionRow[col];
@@ -335,6 +341,14 @@ export class CliffAutotiler {
                             console.log(`[CliffAutotiler] Extension at (${x}, ${y + 1}) using (6, ${col}) below (${row}, ${col})`);
                         }
                         return extensionTexture;
+                    } else {
+                        if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
+                            console.log(`[CliffAutotiler] ❌ No extension texture found at (6, ${col}) for bottom cliff at (${x}, ${y})`);
+                        }
+                    }
+                } else {
+                    if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
+                        console.log(`[CliffAutotiler] ❌ Extension row missing or no texture at column ${col} for bottom cliff at (${x}, ${y})`);
                     }
                 }
             }

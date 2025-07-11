@@ -201,26 +201,18 @@ export class SharedWorldGenerator {
         
         console.log('[BiomeGeneration] Generating biomes around existing plateaus...');
         
+        // First, generate base biomes from climate
         for (let y = 0; y < this.height; y++) {
             biomeData[y] = [];
             for (let x = 0; x < this.width; x++) {
                 const temp = climate.temperature[y][x];
                 const moisture = climate.moisture[y][x];
-                const isElevated = elevationData[y][x] > 0;
-                
-                // Plateaus can modify local climate slightly
-                let adjustedTemp = temp;
-                let adjustedMoisture = moisture;
-                
-                if (isElevated) {
-                    // Plateaus are slightly cooler and drier
-                    adjustedTemp -= 0.1;
-                    adjustedMoisture -= 0.05;
-                }
-                
-                biomeData[y][x] = this.determineBiomeType(adjustedTemp, adjustedMoisture);
+                biomeData[y][x] = this.determineBiomeType(temp, moisture);
             }
         }
+        
+        // Then ensure each plateau has a consistent biome
+        this.ensurePlateauBiomeConsistency(biomeData, elevationData);
         
         // Log biome statistics
         this.logBiomeStatistics(biomeData);
@@ -349,6 +341,52 @@ export class SharedWorldGenerator {
             const name = biomeNames[biomeId];
             console.log(`  ${name}: ${percentage}% (${count} tiles)`);
         }
+    }
+
+    /**
+     * Ensure each plateau has a consistent biome type
+     * Fixes plateau-biome overlaps by applying dominant biome to entire plateau
+     */
+    ensurePlateauBiomeConsistency(biomeData: number[][], elevationData: number[][]): void {
+        console.log('[BiomeGeneration] Ensuring plateau biome consistency...');
+        
+        // Find all plateaus
+        const plateaus = this.findAllPlateaus(elevationData);
+        
+        let plateausFixed = 0;
+        for (const plateau of plateaus) {
+            // Count biome types in this plateau
+            const biomeCounts: { [key: number]: number } = {};
+            
+            for (const {x, y} of plateau) {
+                const biomeId = biomeData[y][x];
+                biomeCounts[biomeId] = (biomeCounts[biomeId] || 0) + 1;
+            }
+            
+            // Find dominant biome
+            let dominantBiome = 0;
+            let maxCount = 0;
+            for (const [biomeIdStr, count] of Object.entries(biomeCounts)) {
+                const biomeId = parseInt(biomeIdStr);
+                if (count > maxCount) {
+                    maxCount = count;
+                    dominantBiome = biomeId;
+                }
+            }
+            
+            // Only apply fix if there are multiple biomes on this plateau
+            const biomeTypes = Object.keys(biomeCounts).length;
+            if (biomeTypes > 1) {
+                // Apply dominant biome to entire plateau
+                for (const {x, y} of plateau) {
+                    biomeData[y][x] = dominantBiome;
+                }
+                plateausFixed++;
+                console.log(`[BiomeGeneration] Fixed plateau with ${plateau.length} tiles (${biomeTypes} biomes → 1 biome: ${dominantBiome})`);
+            }
+        }
+        
+        console.log(`[BiomeGeneration] Biome consistency complete. Fixed ${plateausFixed} plateaus with mixed biomes.`);
     }
 
     /**
@@ -861,23 +899,32 @@ export class SharedWorldGenerator {
     }
 
     enforceMinimumPlateauSizes(elevationData: number[][]): void {
-        // Find all elevated regions and ensure they meet 3x3 minimum
+        // Find all elevated regions and ensure they meet 5x5 minimum (25 tiles)
         const visited = Array(this.height).fill(null).map(() => Array(this.width).fill(false));
+        const MIN_PLATEAU_SIZE = 25; // 5x5 minimum to eliminate tiny plateaus
+        
+        let removedPlateaus = 0;
+        let removedTiles = 0;
         
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 if (elevationData[y][x] > 0 && !visited[y][x]) {
                     const region = this.floodFillRegion(elevationData, visited, x, y);
                     
-                    if (region.length < 9) { // Less than 3x3
+                    if (region.length < MIN_PLATEAU_SIZE) {
                         // Remove small region
                         for (const pos of region) {
                             elevationData[pos.y][pos.x] = 0;
                         }
+                        removedPlateaus++;
+                        removedTiles += region.length;
+                        console.log(`[PlateauGeneration] Removed tiny plateau with ${region.length} tiles (minimum: ${MIN_PLATEAU_SIZE})`);
                     }
                 }
             }
         }
+        
+        console.log(`[PlateauGeneration] Minimum size enforcement complete. Removed ${removedPlateaus} tiny plateaus (${removedTiles} tiles)`);
     }
 
     floodFillRegion(elevationData: number[][], visited: boolean[][], startX: number, startY: number): Vector2D[] {
