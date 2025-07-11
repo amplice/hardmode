@@ -625,7 +625,7 @@ export class SharedWorldGenerator {
         console.log('[PlateauGeneration] Using grid-based plateau distribution...');
         
         // Determine grid size based on world size for consistent distribution
-        const targetPlateauCount = Math.max(4, Math.floor((this.width * this.height) / 15000)); // ~1 per 15k tiles
+        const targetPlateauCount = Math.max(8, Math.floor((this.width * this.height) / 5000)); // ~1 per 5k tiles (3x denser)
         const gridSize = Math.ceil(Math.sqrt(targetPlateauCount));
         
         console.log(`[PlateauGeneration] Placing ${targetPlateauCount} plateaus in ${gridSize}x${gridSize} grid`);
@@ -651,13 +651,13 @@ export class SharedWorldGenerator {
                 );
                 
                 if (location) {
-                    // Size varies based on available space
+                    // Size varies based on available space - make plateaus bigger
                     const maxRadius = Math.min(
-                        Math.floor(regionWidth * 0.3),
-                        Math.floor(regionHeight * 0.3),
-                        26  // Maximum size limit
+                        Math.floor(regionWidth * 0.5),  // Increased from 0.3 to 0.5
+                        Math.floor(regionHeight * 0.5), // Increased from 0.3 to 0.5
+                        40  // Increased maximum size limit from 26 to 40
                     );
-                    const minRadius = Math.max(15, Math.floor(maxRadius * 0.6));
+                    const minRadius = Math.max(20, Math.floor(maxRadius * 0.5)); // Increased min from 15 to 20
                     const radius = minRadius + Math.floor(this.random() * (maxRadius - minRadius + 1));
                     
                     console.log(`[PlateauGeneration] Placing plateau ${plateausPlaced + 1} at (${location.x}, ${location.y}) with radius ${radius}`);
@@ -674,7 +674,7 @@ export class SharedWorldGenerator {
      * Find the best location for a plateau within a specific region
      */
     findBestPlateauLocationInRegion(startX: number, startY: number, endX: number, endY: number): { x: number, y: number } | null {
-        const buffer = 25; // Minimum distance from region edges
+        const buffer = 15; // Reduced buffer to allow bigger plateaus near edges
         const effectiveStartX = startX + buffer;
         const effectiveStartY = startY + buffer;
         const effectiveEndX = endX - buffer;
@@ -705,8 +705,8 @@ export class SharedWorldGenerator {
         const noiseScale = 0.05;  // Slightly increased for more natural variation
         const threshold = 0.35;   // Balanced for natural edges with good cleanup
         
-        // Create a larger guaranteed core (5x5) for more substantial plateaus
-        const coreSize = 2;
+        // Create a larger guaranteed core (7x7) for more substantial plateaus
+        const coreSize = 3;
         for (let dy = -coreSize; dy <= coreSize; dy++) {
             for (let dx = -coreSize; dx <= coreSize; dx++) {
                 const x = centerX + dx;
