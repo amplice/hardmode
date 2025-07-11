@@ -701,9 +701,9 @@ export class SharedWorldGenerator {
     }
 
     createNoisyPlateau(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
-        // Much less noise for chunkier, rounder plateaus
-        const noiseScale = 0.03;  // Reduced from 0.1 for larger, smoother variations
-        const threshold = 0.4;    // Increased from 0.2 for cleaner edges
+        // Moderate noise for natural-looking but chunky plateaus
+        const noiseScale = 0.05;  // Slightly increased for more natural variation
+        const threshold = 0.35;   // Balanced for natural edges with good cleanup
         
         // Create a larger guaranteed core (5x5) for more substantial plateaus
         const coreSize = 2;

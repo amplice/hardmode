@@ -345,6 +345,7 @@ export class CliffAutotiler {
         // Get the current tile type to determine extension
         const currentTile = processedTiles && processedTiles[y] ? processedTiles[y][x] : null;
         
+        // If we have processed tile data, use it
         if (currentTile) {
             const [row, col] = currentTile.split(',').map(Number);
             
@@ -368,6 +369,27 @@ export class CliffAutotiler {
                 } else {
                     if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
                         console.log(`[CliffAutotiler] ❌ Extension row missing or no texture at column ${col} for bottom cliff at (${x}, ${y})`);
+                    }
+                }
+            }
+        } else {
+            // Fallback: if no processed tiles, calculate the tile type directly
+            // This ensures extensions are created even if processed tile data is missing
+            const bitmask = this.calculateBitmask(x, y, elevationData);
+            const tileCoords = this.determineTileType(bitmask, isDarkGrass);
+            
+            if (tileCoords.row === 5) {
+                // This is a bottom edge tile that needs an extension
+                const extensionRow = this.tilesets.textures.terrain[6];
+                if (extensionRow && extensionRow[tileCoords.col]) {
+                    const extensionTexture = extensionRow[tileCoords.col];
+                    if (extensionTexture) {
+                        if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
+                            console.log(`[CliffAutotiler] Fallback extension at (${x}, ${y + 1}) using (6, ${tileCoords.col}) below (${tileCoords.row}, ${tileCoords.col})`);
+                        }
+                        return extensionTexture;
+                    } else if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
+                        console.log(`[CliffAutotiler] ❌ Fallback failed: No extension texture at (6, ${tileCoords.col})`);
                     }
                 }
             }
