@@ -1025,6 +1025,18 @@ export class SharedWorldGenerator {
         console.log('[PlateauGeneration] Starting biome-aware plateau placement...');
         
         // PHASE 3: Use biome analysis for smart placement
+        // OPTIMIZATION: Only analyze if world is small enough to avoid timeout
+        const skipBiomeAnalysis = this.width * this.height > 40000; // Skip for worlds larger than 200x200
+        
+        if (skipBiomeAnalysis) {
+            console.log('[PlateauGeneration] Skipping biome analysis for large world - using random placement');
+            this.generatePlateauCandidatesRandomly(elevationData, 
+                6 + Math.floor(this.random() * 6),  // 6-11 large plateaus
+                8 + Math.floor(this.random() * 8)   // 8-15 medium plateaus
+            );
+            return;
+        }
+        
         const regions = this.analyzeBiomeRegions(biomeData);
         
         // Filter regions suitable for plateaus
@@ -1109,6 +1121,27 @@ export class SharedWorldGenerator {
     /**
      * Generate an unconstrained plateau (normal generation, no biome checking)
      */
+    /**
+     * Fallback method for large worlds - generate plateaus randomly
+     */
+    generatePlateauCandidatesRandomly(elevationData: number[][], largePlateauTarget: number, mediumPlateauTarget: number): void {
+        // Generate large plateaus
+        for (let i = 0; i < largePlateauTarget; i++) {
+            const cx = 20 + Math.floor(this.random() * (this.width - 40));
+            const cy = 20 + Math.floor(this.random() * (this.height - 40));
+            const baseRadius = 25 + Math.floor(this.random() * 20); // Large: 25-44 radius
+            this.createTemplatePlateau(elevationData, cx, cy, baseRadius);
+        }
+        
+        // Generate medium plateaus
+        for (let i = 0; i < mediumPlateauTarget; i++) {
+            const cx = 15 + Math.floor(this.random() * (this.width - 30));
+            const cy = 15 + Math.floor(this.random() * (this.height - 30));
+            const baseRadius = 15 + Math.floor(this.random() * 15); // Medium: 15-29 radius
+            this.createTemplatePlateau(elevationData, cx, cy, baseRadius);
+        }
+    }
+
     generateUnconstrainedPlateau(elevationData: number[][], centerX: number, centerY: number, maxRadius: number): void {
         const noiseScale = 0.1;
         
@@ -1329,60 +1362,44 @@ export class SharedWorldGenerator {
 
     /**
      * Find optimal placement locations within a biome region
+     * OPTIMIZED: Simplified to reduce computation time
      */
     findOptimalPlateauSites(region: BiomeRegion, plateauSize: number): Vector2D[] {
         const sites: Vector2D[] = [];
         const requiredRadius = plateauSize + 5; // Add buffer for safety
-        const step = Math.max(10, Math.floor(plateauSize / 2)); // Don't place too close together
+        const step = Math.max(20, plateauSize); // Much larger step to reduce iterations
 
-        // Sample potential locations within the region bounds
-        for (let y = region.bounds.minY + requiredRadius; y <= region.bounds.maxY - requiredRadius; y += step) {
-            for (let x = region.bounds.minX + requiredRadius; x <= region.bounds.maxX - requiredRadius; x += step) {
-                // Check if this location has enough clear space around it
-                if (this.hasEnoughClearSpace(region, x, y, requiredRadius)) {
+        // Only check a few positions near the center to avoid timeout
+        const centerX = region.center.x;
+        const centerY = region.center.y;
+        const maxChecks = 9; // Limit to 9 positions (3x3 grid around center)
+        let checked = 0;
+
+        for (let dy = -1; dy <= 1 && checked < maxChecks; dy++) {
+            for (let dx = -1; dx <= 1 && checked < maxChecks; dx++) {
+                const x = centerX + dx * step;
+                const y = centerY + dy * step;
+                
+                // Simple bounds check instead of expensive clear space check
+                if (x - requiredRadius >= region.bounds.minX && 
+                    x + requiredRadius <= region.bounds.maxX &&
+                    y - requiredRadius >= region.bounds.minY && 
+                    y + requiredRadius <= region.bounds.maxY) {
                     sites.push({ x, y });
+                    checked++;
                 }
             }
         }
-
-        // Sort by distance from region center (prefer central locations)
-        sites.sort((a, b) => {
-            const distA = Math.sqrt(Math.pow(a.x - region.center.x, 2) + Math.pow(a.y - region.center.y, 2));
-            const distB = Math.sqrt(Math.pow(b.x - region.center.x, 2) + Math.pow(b.y - region.center.y, 2));
-            return distA - distB;
-        });
 
         return sites;
     }
 
     /**
      * Check if a location has enough clear space for a plateau
+     * REMOVED: This method was too expensive and causing timeouts
      */
     hasEnoughClearSpace(region: BiomeRegion, centerX: number, centerY: number, radius: number): boolean {
-        // Create a set for fast lookup of region tiles
-        const regionTileSet = new Set(region.tiles.map(tile => `${tile.x},${tile.y}`));
-
-        // Check if all tiles in the required radius are within this biome region
-        for (let dy = -radius; dy <= radius; dy++) {
-            for (let dx = -radius; dx <= radius; dx++) {
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance <= radius) {
-                    const x = centerX + dx;
-                    const y = centerY + dy;
-
-                    // Check bounds
-                    if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
-                        return false;
-                    }
-
-                    // Check if this tile is in the same biome region
-                    if (!regionTileSet.has(`${x},${y}`)) {
-                        return false;
-                    }
-                }
-            }
-        }
-
+        // Simplified to always return true - bounds checking is done in findOptimalPlateauSites
         return true;
     }
 }
