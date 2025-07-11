@@ -291,6 +291,25 @@ export class CliffAutotiler {
             const row = this.tilesets.textures.terrain[tileCoords.row];
             if (row && row[tileCoords.col]) {
                 texture = row[tileCoords.col];
+            } else {
+                // Better error handling for missing textures
+                if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
+                    console.log(`[CliffAutotiler] ❌ MISSING TEXTURE: No texture at (${tileCoords.row}, ${tileCoords.col}) for tile (${x}, ${y}), type: ${tileCoords.type}`);
+                    if (isDarkGrass) {
+                        console.log(`[CliffAutotiler] Dark grass biome - trying fallback to green grass texture`);
+                        // Try fallback to green grass equivalent
+                        const fallbackCol = tileCoords.col - 11;
+                        if (row && row[fallbackCol]) {
+                            texture = row[fallbackCol];
+                            console.log(`[CliffAutotiler] ✅ Using fallback texture (${tileCoords.row}, ${fallbackCol})`);
+                        }
+                    }
+                }
+                
+                // If still no texture, this will remain null and might cause rendering issues
+                if (!texture && GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
+                    console.log(`[CliffAutotiler] ❌ CRITICAL: No texture available for cliff tile at (${x}, ${y})`);
+                }
             }
         }
         
