@@ -29,25 +29,51 @@
 
 import { Game } from './core/Game.js';
 
+// Global zoom prevention state
+let zoomPreventionEnabled = true;
+
+// Toggle zoom prevention (for debugging terrain)
+function toggleZoomPrevention(): void {
+    zoomPreventionEnabled = !zoomPreventionEnabled;
+    console.log(`%c[Debug] Zoom prevention ${zoomPreventionEnabled ? 'ENABLED' : 'DISABLED'}`, 
+        `color: ${zoomPreventionEnabled ? 'red' : 'green'}; font-weight: bold;`);
+    
+    if (zoomPreventionEnabled) {
+        console.log('%cBrowser zoom will cause automatic page reload.', 'color: orange;');
+    } else {
+        console.log('%cZoom freely for terrain debugging. Press F3 to re-enable protection.', 'color: green;');
+    }
+}
+
 // Prevent zoom via keyboard and mouse
 function preventZoom(): void {
-    // Prevent Ctrl+/- and Ctrl+scroll wheel zoom
+    // Prevent Ctrl+/- and Ctrl+scroll wheel zoom (when enabled)
     document.addEventListener('keydown', (e: KeyboardEvent) => {
-        if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
+        // F3 key toggles zoom prevention
+        if (e.key === 'F3') {
+            e.preventDefault();
+            toggleZoomPrevention();
+            return;
+        }
+        
+        // Block zoom keys only if prevention is enabled
+        if (zoomPreventionEnabled && (e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
             e.preventDefault();
         }
     });
 
-    // Prevent pinch zoom and scroll wheel zoom
+    // Prevent pinch zoom and scroll wheel zoom (when enabled)
     document.addEventListener('wheel', (e: WheelEvent) => {
-        if (e.ctrlKey || e.metaKey) {
+        if (zoomPreventionEnabled && (e.ctrlKey || e.metaKey)) {
             e.preventDefault();
         }
     }, { passive: false });
 
-    // Prevent touch zoom gestures
+    // Prevent touch zoom gestures (when enabled)
     let lastTouchEnd = 0;
     document.addEventListener('touchend', (e: TouchEvent) => {
+        if (!zoomPreventionEnabled) return;
+        
         const now = Date.now();
         if (now - lastTouchEnd <= 300) {
             e.preventDefault();
@@ -55,17 +81,17 @@ function preventZoom(): void {
         lastTouchEnd = now;
     }, false);
 
-    // Prevent double-tap zoom
+    // Prevent double-tap zoom (when enabled)
     document.addEventListener('gesturestart', (e: Event) => {
-        e.preventDefault();
+        if (zoomPreventionEnabled) e.preventDefault();
     });
     
     document.addEventListener('gesturechange', (e: Event) => {
-        e.preventDefault();
+        if (zoomPreventionEnabled) e.preventDefault();
     });
     
     document.addEventListener('gestureend', (e: Event) => {
-        e.preventDefault();
+        if (zoomPreventionEnabled) e.preventDefault();
     });
     
     // ANTI-CHEAT: Detect and prevent browser zoom changes
@@ -73,6 +99,14 @@ function preventZoom(): void {
     let lastWidth = window.innerWidth;
     
     function detectZoomChange(): void {
+        // Only detect zoom changes when prevention is enabled
+        if (!zoomPreventionEnabled) {
+            // Update tracking values even when disabled to avoid false positives when re-enabling
+            lastDevicePixelRatio = window.devicePixelRatio;
+            lastWidth = window.innerWidth;
+            return;
+        }
+        
         const currentRatio = window.devicePixelRatio;
         const currentWidth = window.innerWidth;
         
@@ -102,6 +136,7 @@ function preventZoom(): void {
     // Log warning to console
     console.log('%c⚠️ FOV ANTI-CHEAT ACTIVE ⚠️', 'color: red; font-weight: bold; font-size: 16px;');
     console.log('%cBrowser zoom will cause automatic page reload to ensure fair play.', 'color: orange; font-size: 12px;');
+    console.log('%c[Debug] Press F3 to toggle zoom prevention for terrain debugging', 'color: cyan; font-size: 12px;');
 }
 
 window.addEventListener('DOMContentLoaded', () => {
