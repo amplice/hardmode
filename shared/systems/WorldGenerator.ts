@@ -651,13 +651,13 @@ export class SharedWorldGenerator {
                 );
                 
                 if (location) {
-                    // Size varies based on available space - make plateaus bigger
+                    // Size varies based on available space - make plateaus even bigger
                     const maxRadius = Math.min(
-                        Math.floor(regionWidth * 0.5),  // Increased from 0.3 to 0.5
-                        Math.floor(regionHeight * 0.5), // Increased from 0.3 to 0.5
-                        40  // Increased maximum size limit from 26 to 40
+                        Math.floor(regionWidth * 0.65), // Increased to 0.65 for larger plateaus
+                        Math.floor(regionHeight * 0.65), // Increased to 0.65 for larger plateaus
+                        60  // Increased maximum size limit to 60
                     );
-                    const minRadius = Math.max(20, Math.floor(maxRadius * 0.5)); // Increased min from 15 to 20
+                    const minRadius = Math.max(25, Math.floor(maxRadius * 0.4)); // Increased min to 25, wider size range
                     const radius = minRadius + Math.floor(this.random() * (maxRadius - minRadius + 1));
                     
                     console.log(`[PlateauGeneration] Placing plateau ${plateausPlaced + 1} at (${location.x}, ${location.y}) with radius ${radius}`);
@@ -701,12 +701,12 @@ export class SharedWorldGenerator {
     }
 
     createNoisyPlateau(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
-        // Moderate noise for natural-looking but chunky plateaus
-        const noiseScale = 0.05;  // Slightly increased for more natural variation
-        const threshold = 0.35;   // Balanced for natural edges with good cleanup
+        // Create larger, more interesting plateaus with cleaner edges
+        const noiseScale = 0.04;  // Slightly smoother noise for cleaner shapes
+        const threshold = 0.4;    // Higher threshold to eliminate sticky bits
         
-        // Create a larger guaranteed core (7x7) for more substantial plateaus
-        const coreSize = 3;
+        // Create a much larger guaranteed core for substantial plateaus
+        const coreSize = Math.max(4, Math.floor(radius * 0.3)); // Scale core with plateau size
         for (let dy = -coreSize; dy <= coreSize; dy++) {
             for (let dx = -coreSize; dx <= coreSize; dx++) {
                 const x = centerX + dx;
@@ -717,7 +717,7 @@ export class SharedWorldGenerator {
             }
         }
         
-        // Then expand outward with minimal noise for round, chunky shape
+        // Then expand outward with interesting shapes but clean edges
         for (let dy = -radius; dy <= radius; dy++) {
             for (let dx = -radius; dx <= radius; dx++) {
                 if (Math.abs(dx) <= coreSize && Math.abs(dy) <= coreSize) continue; // Skip core area
@@ -728,20 +728,64 @@ export class SharedWorldGenerator {
                 if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance <= radius) {
-                        // Heavily favor distance over noise for rounder plateaus
+                        // Create interesting shapes with multiple noise octaves
                         const falloff = 1 - (distance / radius);
-                        const smoothFalloff = falloff * falloff; // Smoother edge transition
+                        const smoothFalloff = falloff * falloff * falloff; // Even smoother for cleaner edges
                         
-                        // Minimal noise influence (only 20% vs 80% distance-based)
-                        const noise = this.noise2D(x * noiseScale, y * noiseScale);
-                        const noiseInfluence = (noise + 1) / 2 * 0.2; // Only 20% noise
-                        const distanceInfluence = smoothFalloff * 0.8; // 80% distance
+                        // Multi-octave noise for more interesting shapes
+                        const noise1 = this.noise2D(x * noiseScale, y * noiseScale);
+                        const noise2 = this.noise2D(x * noiseScale * 2, y * noiseScale * 2) * 0.5;
+                        const combinedNoise = (noise1 + noise2) / 1.5;
+                        
+                        // Blend noise and distance for interesting but clean shapes
+                        const noiseInfluence = (combinedNoise + 1) / 2 * 0.3; // 30% noise for variety
+                        const distanceInfluence = smoothFalloff * 0.7; // 70% distance for cleaner edges
                         
                         const value = distanceInfluence + noiseInfluence;
                         
                         if (value > threshold) {
                             elevationData[y][x] = 1;
                         }
+                    }
+                }
+            }
+        }
+        
+        // Post-process to eliminate single-tile protrusions (sticky bits)
+        this.cleanupPlateauEdges(elevationData, centerX, centerY, radius);
+    }
+
+    /**
+     * Remove single-tile protrusions and isolated elevated tiles to clean up plateau edges
+     */
+    cleanupPlateauEdges(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
+        // Check area around the plateau for cleanup
+        const cleanupRadius = radius + 2;
+        
+        for (let dy = -cleanupRadius; dy <= cleanupRadius; dy++) {
+            for (let dx = -cleanupRadius; dx <= cleanupRadius; dx++) {
+                const x = centerX + dx;
+                const y = centerY + dy;
+                
+                if (x >= 0 && x < this.width && y >= 0 && y < this.height && elevationData[y][x] > 0) {
+                    // Count elevated neighbors in 3x3 area
+                    let elevatedNeighbors = 0;
+                    for (let ndy = -1; ndy <= 1; ndy++) {
+                        for (let ndx = -1; ndx <= 1; ndx++) {
+                            if (ndx === 0 && ndy === 0) continue; // Skip center
+                            const nx = x + ndx;
+                            const ny = y + ndy;
+                            if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
+                                if (elevationData[ny][nx] > 0) {
+                                    elevatedNeighbors++;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Remove tiles with too few elevated neighbors (sticky bits)
+                    if (elevatedNeighbors < 3) {
+                        elevationData[y][x] = 0;
                     }
                 }
             }
