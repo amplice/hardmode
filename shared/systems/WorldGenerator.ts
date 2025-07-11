@@ -701,12 +701,14 @@ export class SharedWorldGenerator {
     }
 
     createNoisyPlateau(elevationData: number[][], centerX: number, centerY: number, radius: number): void {
-        const noiseScale = 0.1;
-        const threshold = 0.2;
+        // Much less noise for chunkier, rounder plateaus
+        const noiseScale = 0.03;  // Reduced from 0.1 for larger, smoother variations
+        const threshold = 0.4;    // Increased from 0.2 for cleaner edges
         
-        // Create the core 3x3 area first (guaranteed)
-        for (let dy = -1; dy <= 1; dy++) {
-            for (let dx = -1; dx <= 1; dx++) {
+        // Create a larger guaranteed core (5x5) for more substantial plateaus
+        const coreSize = 2;
+        for (let dy = -coreSize; dy <= coreSize; dy++) {
+            for (let dx = -coreSize; dx <= coreSize; dx++) {
                 const x = centerX + dx;
                 const y = centerY + dy;
                 if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
@@ -715,10 +717,10 @@ export class SharedWorldGenerator {
             }
         }
         
-        // Then expand outward with noise
+        // Then expand outward with minimal noise for round, chunky shape
         for (let dy = -radius; dy <= radius; dy++) {
             for (let dx = -radius; dx <= radius; dx++) {
-                if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) continue; // Skip core area
+                if (Math.abs(dx) <= coreSize && Math.abs(dy) <= coreSize) continue; // Skip core area
                 
                 const x = centerX + dx;
                 const y = centerY + dy;
@@ -726,9 +728,16 @@ export class SharedWorldGenerator {
                 if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance <= radius) {
-                        const noise = this.noise2D(x * noiseScale, y * noiseScale);
+                        // Heavily favor distance over noise for rounder plateaus
                         const falloff = 1 - (distance / radius);
-                        const value = (noise + 1) / 2 * falloff;
+                        const smoothFalloff = falloff * falloff; // Smoother edge transition
+                        
+                        // Minimal noise influence (only 20% vs 80% distance-based)
+                        const noise = this.noise2D(x * noiseScale, y * noiseScale);
+                        const noiseInfluence = (noise + 1) / 2 * 0.2; // Only 20% noise
+                        const distanceInfluence = smoothFalloff * 0.8; // 80% distance
+                        
+                        const value = distanceInfluence + noiseInfluence;
                         
                         if (value > threshold) {
                             elevationData[y][x] = 1;
@@ -972,9 +981,9 @@ export class SharedWorldGenerator {
     }
 
     enforceMinimumPlateauSizes(elevationData: number[][]): void {
-        // Find all elevated regions and ensure they meet 5x5 minimum (25 tiles)
+        // Find all elevated regions and ensure they meet 8x8 minimum (64 tiles)
         const visited = Array(this.height).fill(null).map(() => Array(this.width).fill(false));
-        const MIN_PLATEAU_SIZE = 25; // 5x5 minimum to eliminate tiny plateaus
+        const MIN_PLATEAU_SIZE = 64; // 8x8 minimum for substantial plateaus
         
         let removedPlateaus = 0;
         let removedTiles = 0;
