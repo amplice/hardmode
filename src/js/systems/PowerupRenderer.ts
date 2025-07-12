@@ -64,11 +64,11 @@ export class PowerupRenderer {
     
     // Powerup sprite mappings
     private spriteMap = {
-        'health': 'health_powerup.png',
-        'armor': 'armor_powerup.png',
-        'speed': 'speed_powerup.png',
-        'damage': 'attack_powerup.png',
-        'invulnerability': 'invulnerability_powerup.png'
+        'health': 'assets/sprites/powerups/health_powerup.png',
+        'armor': 'assets/sprites/powerups/armor_powerup.png',
+        'speed': 'assets/sprites/powerups/speed_powerup.png',
+        'damage': 'assets/sprites/powerups/attack_powerup.png',
+        'invulnerability': 'assets/sprites/powerups/invulnerability_powerup.png'
     };
 
     constructor(game: GameInterface) {

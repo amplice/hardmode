@@ -61,13 +61,14 @@ export class PowerupManager {
      * Called from DamageProcessor when monster dies
      */
     createPowerupDrop(x: number, y: number): PowerupState | null {
-        // Check drop rate
-        if (Math.random() > POWERUP_CONFIG.DROP_RATE) {
+        // DEBUG MODE: 100% drop rate for testing
+        const DEBUG_DROP_RATE = 1.0; // 100% for testing
+        if (Math.random() > DEBUG_DROP_RATE) {
             return null;
         }
         
-        // Random powerup type
-        const types: PowerupType[] = ['health', 'armor', 'speed', 'damage', 'invulnerability'];
+        // Only drop implemented powerups (health and armor)
+        const types: PowerupType[] = ['health', 'armor']; // Limited to working powerups
         const type = types[Math.floor(Math.random() * types.length)];
         
         const powerup: PowerupState = {
