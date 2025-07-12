@@ -64,6 +64,7 @@ interface GameInterface {
     remotePlayers?: Map<string, any>; // Remote Player instances
     remoteMonsters?: Map<string, any>; // Remote Monster instances
     projectileRenderer?: any; // ProjectileRenderer instance
+    powerupRenderer?: any; // PowerupRenderer instance
     healthUI?: any; // HealthUI instance
     statsUI?: any; // StatsUI instance
     
@@ -618,6 +619,25 @@ export class NetworkClient {
         this.socket.on('projectileDestroyed', (data: { id: string; reason: string }) => {
             if (this.game.projectileRenderer) {
                 this.game.projectileRenderer.destroyProjectile(data.id, data.reason);
+            }
+        });
+        
+        // Handle powerup events from server
+        this.socket.on('powerupSpawned', (data: any) => {
+            if (this.game.powerupRenderer) {
+                this.game.powerupRenderer.onPowerupSpawned(data);
+            }
+        });
+        
+        this.socket.on('powerupPickedUp', (data: { powerupId: string; playerId: string; type: string }) => {
+            if (this.game.powerupRenderer) {
+                this.game.powerupRenderer.onPowerupPickedUp(data);
+            }
+        });
+        
+        this.socket.on('powerupRemoved', (data: { powerupId: string }) => {
+            if (this.game.powerupRenderer) {
+                this.game.powerupRenderer.onPowerupRemoved(data);
             }
         });
         

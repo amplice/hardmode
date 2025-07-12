@@ -37,6 +37,7 @@ import { GameStateManager } from './managers/GameStateManager.js';
 import { MonsterManager } from './managers/MonsterManager.js';
 import { ProjectileManager } from './managers/ProjectileManager.js';
 import { AbilityManager } from './managers/AbilityManager.js';
+import { PowerupManager } from './managers/PowerupManager.js';
 import { ServerWorldManager } from './managers/ServerWorldManager.js';
 import { InputProcessor } from './systems/InputProcessor.js';
 import { LagCompensation } from './systems/LagCompensation.js';
@@ -122,12 +123,13 @@ const gameState = new GameStateManager(io);
 const monsterManager = new MonsterManager(io, serverWorldManager);
 const projectileManager = new ProjectileManager(io);
 const abilityManager = new AbilityManager(io, gameState as any, projectileManager);
+const powerupManager = new PowerupManager(io, gameState as any);
 const lagCompensation = new LagCompensation();
 const sessionAntiCheat = new SessionAntiCheat(abilityManager as any);
-const inputProcessor = new InputProcessor(gameState as any, abilityManager as any, lagCompensation as any, sessionAntiCheat as any, serverWorldManager as any);
+const inputProcessor = new InputProcessor(gameState as any, abilityManager as any, lagCompensation as any, sessionAntiCheat as any, serverWorldManager as any, powerupManager);
 const networkOptimizer = new NetworkOptimizer();
 const socketHandler = new SocketHandler(io, gameState as any, monsterManager as any, projectileManager, abilityManager as any, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
-const damageProcessor = new DamageProcessor(gameState, monsterManager, socketHandler, io);
+const damageProcessor = new DamageProcessor(gameState, monsterManager, socketHandler, io, powerupManager);
 
 // Spawn initial monsters for immediate stress testing
 console.log(`[Server] 🔥 EXTREME STRESS TEST: Spawning ${GAME_CONSTANTS.SPAWN.INITIAL_MONSTERS} initial monsters...`);
@@ -167,6 +169,7 @@ setInterval(() => {
     inputProcessor.processAllInputs(deltaTime); // Process client inputs
     monsterManager.update(deltaTime, gameState.players);
     projectileManager.update(deltaTime, gameState.players, monsterManager.monsters);
+    powerupManager.update(deltaTime);
     
     // Clean up old projectiles periodically
     if (Math.random() < 0.01) { // ~1% chance per tick

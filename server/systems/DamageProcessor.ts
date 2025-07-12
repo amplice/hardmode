@@ -28,6 +28,11 @@ interface SocketIO {
     emit(event: string, data: any): void;
 }
 
+interface PowerupManager {
+    createPowerupDrop(x: number, y: number): any;
+    applyPowerupEffect(player: any, powerup: any): void;
+}
+
 type DamageType = 'melee' | 'projectile' | 'environmental';
 type EntityType = 'player' | 'monster' | 'projectile' | 'unknown';
 
@@ -48,12 +53,14 @@ export class DamageProcessor {
     private monsterManager: MonsterManager;
     private socketHandler: SocketHandler;
     private io: SocketIO;
+    private powerupManager: PowerupManager;
 
-    constructor(gameState: GameState, monsterManager: MonsterManager, socketHandler: SocketHandler, io: SocketIO) {
+    constructor(gameState: GameState, monsterManager: MonsterManager, socketHandler: SocketHandler, io: SocketIO, powerupManager: PowerupManager) {
         this.gameState = gameState;
         this.monsterManager = monsterManager;
         this.socketHandler = socketHandler;
         this.io = io;
+        this.powerupManager = powerupManager;
     }
 
     /**
@@ -294,6 +301,9 @@ export class DamageProcessor {
                 killerLevel: player.level // Client needs current level
             });
         }
+
+        // Attempt powerup drop at monster death location
+        this.powerupManager.createPowerupDrop(monster.x, monster.y);
 
         // Mark monster as dying and schedule removal
         monster.state = 'dying';

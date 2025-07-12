@@ -74,6 +74,11 @@ interface ServerWorldManager {
     getWorldGenerator(): SharedWorldGenerator;
 }
 
+interface PowerupManager {
+    attemptPickup(playerId: string, playerX: number, playerY: number): any;
+    applyPowerupEffect(player: any, powerup: any): void;
+}
+
 // Position interface
 interface Position {
     x: number;
@@ -115,6 +120,7 @@ export class InputProcessor {
     private lagCompensation: LagCompensation | null;
     private sessionAntiCheat: SessionAntiCheat | null;
     private serverWorldManager: ServerWorldManager;
+    private powerupManager: PowerupManager | null;
     private inputQueues: Map<string, InputCommand[]>;
     private lastProcessedSequence: Map<string, number>;
     private playerPhysics: Map<string, any>;
@@ -125,7 +131,8 @@ export class InputProcessor {
         abilityManager: AbilityManager | null = null,
         lagCompensation: LagCompensation | null = null,
         sessionAntiCheat: SessionAntiCheat | null = null,
-        serverWorldManager: ServerWorldManager
+        serverWorldManager: ServerWorldManager,
+        powerupManager: PowerupManager | null = null
     ) {
         // Defensive parameter validation
         if (!gameState || typeof gameState.getPlayer !== 'function') {
@@ -140,6 +147,7 @@ export class InputProcessor {
         this.lagCompensation = lagCompensation;
         this.sessionAntiCheat = sessionAntiCheat;
         this.serverWorldManager = serverWorldManager;
+        this.powerupManager = powerupManager;
         this.inputQueues = new Map();
         this.lastProcessedSequence = new Map();
         this.playerPhysics = new Map();
@@ -494,8 +502,31 @@ export class InputProcessor {
 
             // Apply world boundaries as final constraint
             this.applyWorldBounds(player);
+            
+            // Check for powerup pickup after movement
+            this.checkPowerupPickup(player);
         } catch (error) {
             console.error('[InputProcessor] Error in applyMovement:', error);
+        }
+    }
+
+    /**
+     * Check for powerup pickup at player position
+     */
+    private checkPowerupPickup(player: Player): void {
+        try {
+            if (!this.powerupManager || !player || typeof player.x !== 'number' || typeof player.y !== 'number') {
+                return;
+            }
+
+            const pickedUpPowerup = this.powerupManager.attemptPickup(player.id, player.x, player.y);
+            if (pickedUpPowerup) {
+                // Apply powerup effect to player
+                this.powerupManager.applyPowerupEffect(player, pickedUpPowerup);
+                console.log(`[InputProcessor] Player ${player.id} picked up ${pickedUpPowerup.type} powerup`);
+            }
+        } catch (error) {
+            console.error('[InputProcessor] Error in checkPowerupPickup:', error);
         }
     }
 
