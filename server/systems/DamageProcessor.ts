@@ -125,10 +125,31 @@ export class DamageProcessor {
             return { success: false, error: 'Player has spawn protection' };
         }
 
-        // Apply damage
-        const previousHp = player.hp;
-        player.hp = Math.max(0, player.hp - damage);
-        const actualDamage = previousHp - player.hp;
+        // Check powerup invulnerability
+        if (player.isInvulnerable) {
+            return { success: false, error: 'Player is invulnerable from powerup' };
+        }
+
+        // Apply damage with armor HP priority
+        let remainingDamage = damage;
+        let armorDamage = 0;
+        let healthDamage = 0;
+        
+        // First, damage armor HP (green HP)
+        if (player.armorHP > 0) {
+            armorDamage = Math.min(remainingDamage, player.armorHP);
+            player.armorHP -= armorDamage;
+            remainingDamage -= armorDamage;
+        }
+        
+        // Then, damage regular HP
+        if (remainingDamage > 0) {
+            const previousHp = player.hp;
+            player.hp = Math.max(0, player.hp - remainingDamage);
+            healthDamage = previousHp - player.hp;
+        }
+        
+        const actualDamage = armorDamage + healthDamage;
 
         // Emit damage event with proper source format
         let sourceString: string;

@@ -21,6 +21,8 @@ export type AttackType = 'primary' | 'secondary';
 
 export type HitboxType = 'rectangle' | 'cone' | 'circle';
 
+export type PowerupType = 'health' | 'armor' | 'speed' | 'damage' | 'invulnerability';
+
 /**
  * Complete player state - all fields required
  * This prevents the undefined field bugs we had with movement prediction
@@ -36,6 +38,7 @@ export interface PlayerState {
     // Health
     hp: number;
     maxHp: number;
+    armorHP: number; // Green HP from armor powerups
     
     // Movement - these fields caused our previous bugs when undefined
     moveSpeed: number;
@@ -44,12 +47,17 @@ export interface PlayerState {
     // Combat
     attackRecoveryBonus: number;
     attackCooldownBonus: number;
+    damageBonus: number; // Temporary damage bonus from powerups
     rollUnlocked: boolean;
     
     // State
     isAttacking: boolean;
     currentAttackType?: AttackType;
     isDead: boolean;
+    isInvulnerable: boolean; // Temporary invincibility from powerups
+    
+    // Powerup tracking
+    activePowerups: string[]; // Array of active powerup effect IDs
     
     // Network
     lastProcessedSeq?: number;
@@ -93,6 +101,30 @@ export interface ProjectileState {
     speed: number;
     createdAt: number;
     type: string;
+}
+
+/**
+ * Powerup state in the world - all fields required
+ */
+export interface PowerupState {
+    id: string;
+    type: PowerupType;
+    x: number;
+    y: number;
+    spawnTime: number;
+    expiresAt: number;
+}
+
+/**
+ * Active powerup effect on a player
+ */
+export interface PowerupEffect {
+    id: string;
+    playerId: string;
+    type: PowerupType;
+    duration: number;
+    startTime: number;
+    data?: any; // Type-specific effect data (multipliers, bonuses, etc.)
 }
 
 /**

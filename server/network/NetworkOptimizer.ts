@@ -219,9 +219,12 @@ export class NetworkOptimizer {
                     case 'moveSpeedBonus':
                     case 'attackRecoveryBonus':
                     case 'attackCooldownBonus':
+                    case 'damageBonus':
+                    case 'armorHP':
                         ensuredState[field] = 0;
                         break;
                     case 'rollUnlocked':
+                    case 'isInvulnerable':
                         ensuredState[field] = false;
                         break;
                     case 'state':
@@ -365,12 +368,15 @@ export class NetworkOptimizer {
                 'x',           // X position - CRITICAL for movement sync
                 'y',           // Y position - CRITICAL for movement sync
                 'hp',          // Health for UI and death detection
+                'armorHP',     // Armor health for UI (green HP)
                 'facing',      // Direction for rendering and combat
                 'class',       // Character class (note: serialized as 'class' not 'type')
                 'level',       // Player level for UI and abilities
                 'moveSpeedBonus',      // Movement prediction sync
                 'attackRecoveryBonus', // Combat timing sync
                 'attackCooldownBonus', // Ability timing sync
+                'damageBonus',         // Damage bonus for combat calculations
+                'isInvulnerable',      // Invulnerability state for damage processing
                 'rollUnlocked'         // Ability availability
             ];
         } else if (entityId.startsWith('monster_')) {

@@ -56,12 +56,16 @@ interface SerializedPlayer {
     class: CharacterClass;
     hp: number;
     maxHp: number;
+    armorHP: number;
     level: number;
     spawnProtectionTimer: number;
     moveSpeedBonus: number;
     attackRecoveryBonus: number;
     attackCooldownBonus: number;
+    damageBonus: number;
     rollUnlocked: boolean;
+    isInvulnerable: boolean;
+    activePowerups: string[];
     lastProcessedSeq?: number;
 }
 
@@ -99,6 +103,7 @@ export class GameStateManager {
             class: playerClass, // Legacy field for backward compatibility
             hp: CalculationEngine.calculateMaxHP(playerClass, 1),
             maxHp: CalculationEngine.calculateMaxHP(playerClass, 1),
+            armorHP: 0, // Green HP from powerups
             xp: 0,
             level: 1,
             experience: 0, // TypeScript interface field
@@ -110,10 +115,13 @@ export class GameStateManager {
             moveSpeedBonus: 0,
             attackRecoveryBonus: 0,
             attackCooldownBonus: 0,
+            damageBonus: 0, // Temporary damage bonus from powerups
             rollUnlocked: false,
             // State
             isAttacking: false,
             isDead: false,
+            isInvulnerable: false, // Temporary invulnerability from powerups
+            activePowerups: [], // Array of active powerup effect IDs
             moveSpeed: stats.moveSpeed
         };
         
@@ -188,6 +196,12 @@ export class GameStateManager {
         player.attackCooldownBonus = 0;
         player.rollUnlocked = false;
         
+        // Reset all powerup effects (permadeath = lose all powerups)
+        player.armorHP = 0;
+        player.damageBonus = 0;
+        player.isInvulnerable = false;
+        player.activePowerups = [];
+        
         player.x = GAME_CONSTANTS.WORLD.WIDTH * GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
         player.y = GAME_CONSTANTS.WORLD.HEIGHT * GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
         player.position.x = player.x;
@@ -225,12 +239,16 @@ export class GameStateManager {
                 class: p.class,
                 hp: p.hp,
                 maxHp: p.maxHp,
+                armorHP: p.armorHP || 0,
                 level: p.level,
                 spawnProtectionTimer: p.spawnProtectionTimer,
                 moveSpeedBonus: p.moveSpeedBonus,
                 attackRecoveryBonus: p.attackRecoveryBonus,
                 attackCooldownBonus: p.attackCooldownBonus,
-                rollUnlocked: p.rollUnlocked
+                damageBonus: p.damageBonus || 0,
+                rollUnlocked: p.rollUnlocked,
+                isInvulnerable: p.isInvulnerable || false,
+                activePowerups: p.activePowerups || []
             };
             
             // Add last processed sequence for client prediction reconciliation

@@ -45,14 +45,18 @@ interface CreatePlayerOptions {
     experience?: number;
     hp?: number;
     maxHp?: number;
+    armorHP?: number;
     moveSpeed?: number;
     moveSpeedBonus?: number;
     attackRecoveryBonus?: number;
     attackCooldownBonus?: number;
+    damageBonus?: number;
     rollUnlocked?: boolean;
     isAttacking?: boolean;
     currentAttackType?: AttackType;
     isDead?: boolean;
+    isInvulnerable?: boolean;
+    activePowerups?: string[];
     lastProcessedSeq?: number;
 }
 
@@ -91,6 +95,7 @@ export function createPlayerState(options: CreatePlayerOptions): PlayerState {
         // Health - these fields must always be present
         hp: options.hp !== undefined ? options.hp : classConfig.hitPoints,
         maxHp: options.maxHp !== undefined ? options.maxHp : classConfig.hitPoints,
+        armorHP: options.armorHP || 0, // Green HP from powerups
         
         // Movement - these caused our previous bugs when undefined
         moveSpeed: options.moveSpeed !== undefined ? options.moveSpeed : classConfig.moveSpeed,
@@ -99,12 +104,17 @@ export function createPlayerState(options: CreatePlayerOptions): PlayerState {
         // Combat bonuses
         attackRecoveryBonus: options.attackRecoveryBonus || 0,
         attackCooldownBonus: options.attackCooldownBonus || 0,
+        damageBonus: options.damageBonus || 0, // Temporary damage bonus from powerups
         rollUnlocked: options.rollUnlocked || false,
         
         // State flags
         isAttacking: options.isAttacking || false,
         currentAttackType: options.currentAttackType || undefined,
         isDead: options.isDead || false,
+        isInvulnerable: options.isInvulnerable || false, // Temporary invulnerability from powerups
+        
+        // Powerup tracking
+        activePowerups: options.activePowerups || [], // Array of active powerup effect IDs
         
         // Network reconciliation
         lastProcessedSeq: options.lastProcessedSeq || undefined

@@ -48,6 +48,7 @@ import type {
     MonsterType, 
     AttackType, 
     HitboxType,
+    PowerupType,
     BiomeConfig,
     ElevationConfig
 } from '../types/GameTypes.js';
@@ -110,6 +111,45 @@ export const GAME_CONSTANTS = {
         ENABLE_COMBAT_LOGGING: false // Toggle for combat debug logs
     }
 };
+
+// Powerup system configuration
+export const POWERUP_CONFIG = {
+    DROP_RATE: 0.15, // 15% chance on monster death
+    DESPAWN_TIME: 30000, // 30 seconds before powerup disappears
+    PICKUP_RADIUS: 32, // Collision radius in pixels for pickup
+    
+    EFFECTS: {
+        health: { 
+            duration: 0, // Instant effect
+            instant: true,
+            healAmount: 1
+        },
+        armor: { 
+            duration: 0, // Instant effect
+            instant: true,
+            armorAmount: 1
+        },
+        speed: { 
+            duration: 10000, // 10 seconds
+            multiplier: 1.5 // +50% speed
+        },
+        damage: { 
+            duration: 15000, // 15 seconds
+            bonus: 1 // +1 damage
+        },
+        invulnerability: { 
+            duration: 3000 // 3 seconds
+        }
+    },
+    
+    SPRITES: {
+        health: '/src/assets/sprites/powerups/health_powerup.png',
+        armor: '/src/assets/sprites/powerups/armor_powerup.png',
+        speed: '/src/assets/sprites/powerups/speed_powerup.png',
+        damage: '/src/assets/sprites/powerups/attack_powerup.png',
+        invulnerability: '/src/assets/sprites/powerups/invulnerability_powerup.png'
+    }
+} as const;
 
 // Monster type weights for spawning
 export const MONSTER_SPAWN_WEIGHTS = {
