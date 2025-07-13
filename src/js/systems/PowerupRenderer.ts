@@ -53,6 +53,7 @@ interface GameInterface {
         sprites?: {
             loaded: boolean;
             createAnimatedSprite(name: string): PIXI.AnimatedSprite | null;
+            getPowerupTexture(powerupType: string): PIXI.Texture | null;
         };
     };
 }
@@ -111,11 +112,24 @@ export class PowerupRenderer {
     }
 
     private createPowerupSprite(powerup: RenderedPowerup): void {
-        const spriteName = this.spriteMap[powerup.type as keyof typeof this.spriteMap];
+        // Try to get preloaded texture from SpriteManager first
+        if (this.game.systems.sprites && this.game.systems.sprites.loaded) {
+            const texture = this.game.systems.sprites.getPowerupTexture(powerup.type);
+            if (texture) {
+                const sprite = new PIXI.Sprite(texture);
+                sprite.anchor.set(0.5, 0.5); // Center the sprite
+                sprite.scale.set(0.8, 0.8); // Scale down slightly for better look
+                powerup.sprite.addChild(sprite);
+                powerup.texture = sprite;
+                console.log(`[PowerupRenderer] Using preloaded sprite for ${powerup.type}`);
+                return;
+            }
+        }
         
+        // Fallback: Try to load sprite directly (should rarely happen now)
+        const spriteName = this.spriteMap[powerup.type as keyof typeof this.spriteMap];
         if (spriteName) {
             try {
-                // Try to create sprite from texture
                 const texture = PIXI.Texture.from(spriteName);
                 if (texture && texture.valid) {
                     const sprite = new PIXI.Sprite(texture);
@@ -123,7 +137,7 @@ export class PowerupRenderer {
                     sprite.scale.set(0.8, 0.8); // Scale down slightly for better look
                     powerup.sprite.addChild(sprite);
                     powerup.texture = sprite;
-                    console.log(`[PowerupRenderer] Loaded sprite for ${powerup.type}: ${spriteName}`);
+                    console.log(`[PowerupRenderer] Loaded sprite on-demand for ${powerup.type}: ${spriteName}`);
                     return;
                 }
             } catch (error) {
@@ -131,7 +145,7 @@ export class PowerupRenderer {
             }
         }
         
-        // Fallback to colored circle graphics
+        // Final fallback to colored circle graphics
         const graphics = new PIXI.Graphics();
         const color = this.getPowerupColor(powerup.type);
         graphics.beginFill(color);

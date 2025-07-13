@@ -208,6 +208,27 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
     {
         keyPrefix: 'level_up_effect', type: 'effect', path: 'assets/sprites/effects/LevelUp.png',
         columns: 23, rows: 9, rowIndex: 0, frameSize: { width: 64, height: 64 }
+    },
+    // Powerups (simple sprites, not animated)
+    {
+        keyPrefix: 'health_powerup', type: 'effect', path: 'assets/sprites/powerups/health_powerup.png',
+        columns: 1, rows: 1, rowIndex: 0, frameSize: { width: 32, height: 32 }
+    },
+    {
+        keyPrefix: 'armor_powerup', type: 'effect', path: 'assets/sprites/powerups/armor_powerup.png',
+        columns: 1, rows: 1, rowIndex: 0, frameSize: { width: 32, height: 32 }
+    },
+    {
+        keyPrefix: 'speed_powerup', type: 'effect', path: 'assets/sprites/powerups/speed_powerup.png',
+        columns: 1, rows: 1, rowIndex: 0, frameSize: { width: 32, height: 32 }
+    },
+    {
+        keyPrefix: 'damage_powerup', type: 'effect', path: 'assets/sprites/powerups/attack_powerup.png',
+        columns: 1, rows: 1, rowIndex: 0, frameSize: { width: 32, height: 32 }
+    },
+    {
+        keyPrefix: 'invulnerability_powerup', type: 'effect', path: 'assets/sprites/powerups/invulnerability_powerup.png',
+        columns: 1, rows: 1, rowIndex: 0, frameSize: { width: 32, height: 32 }
     }
 ];
 
@@ -557,6 +578,18 @@ export class SpriteManager {
             textures: this.textures['slash_effect'],
             speed: 0.5
         };
+    }
+    
+    /**
+     * Get a single texture for powerups (non-animated sprites)
+     */
+    getPowerupTexture(powerupType: string): PIXI.Texture | null {
+        const textureKey = `${powerupType}_powerup`;
+        if (this.textures[textureKey] && this.textures[textureKey].length > 0) {
+            return this.textures[textureKey][0]; // Get the first (and only) frame
+        }
+        console.warn(`Powerup texture not found for type: ${powerupType}`);
+        return null;
     }
 
     createStrikeEffectAnimations(): void {

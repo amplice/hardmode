@@ -335,8 +335,8 @@ export class ClassSelectUI {
     }
     
     private createStartButton(yPosition: number): void {
-        const buttonWidth = 200;
-        const buttonHeight = 50;
+        const buttonWidth = 280;
+        const buttonHeight = 60;
         
         this.startButton = new PIXI.Graphics();
         this.drawStartButton(false, false);
@@ -482,7 +482,7 @@ export class ClassSelectUI {
         });
 
         // Reposition start button
-        const buttonWidth = 200;
+        const buttonWidth = 280;
         const yPosition = window.innerHeight - 100;
         this.startButton.position.set(window.innerWidth / 2 - buttonWidth / 2, yPosition);
     }
