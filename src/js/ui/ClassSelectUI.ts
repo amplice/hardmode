@@ -54,7 +54,9 @@ export class ClassSelectUI {
     private background!: PIXI.Graphics;
     private title!: PIXI.Text;
     private subtitle!: PIXI.Text;
-    private startButton!: PIXI.Graphics;
+    private startButton!: PIXI.Container;
+    private startButtonGraphics!: PIXI.Graphics;
+    private startButtonText!: PIXI.Text;
     private classButtons: ClassButton[];
 
     constructor(onClassSelected: (className: CharacterClass) => void) {
@@ -338,13 +340,21 @@ export class ClassSelectUI {
         const buttonWidth = 280;
         const buttonHeight = 60;
         
-        this.startButton = new PIXI.Graphics();
-        this.drawStartButton(false, false);
+        // Create container for button
+        this.startButton = new PIXI.Container();
         this.startButton.position.set(window.innerWidth / 2 - buttonWidth / 2, yPosition);
         this.startButton.alpha = 0.5; // Dim until class is selected
         this.startButton.eventMode = 'none';
         
-        const startText = new PIXI.Text('BEGIN YOUR JOURNEY', {
+        // Create graphics for the button background
+        this.startButtonGraphics = new PIXI.Graphics();
+        this.startButton.addChild(this.startButtonGraphics);
+        
+        // Draw initial button state
+        this.drawStartButton(false, false);
+        
+        // Create text for the button
+        this.startButtonText = new PIXI.Text('BEGIN YOUR JOURNEY', {
             fontFamily: 'Arial, sans-serif',
             fontSize: 20,
             fontWeight: 'bold',
@@ -354,9 +364,9 @@ export class ClassSelectUI {
             dropShadowColor: '#000000',
             dropShadowBlur: 2
         });
-        startText.anchor.set(0.5, 0.5);
-        startText.position.set(buttonWidth / 2, buttonHeight / 2);
-        this.startButton.addChild(startText);
+        this.startButtonText.anchor.set(0.5, 0.5);
+        this.startButtonText.position.set(buttonWidth / 2, buttonHeight / 2);
+        this.startButton.addChild(this.startButtonText);
         
         this.startButton.on('pointerover', () => {
             if (this.selectedClass) {
@@ -383,25 +393,25 @@ export class ClassSelectUI {
         const buttonWidth = 280;
         const buttonHeight = 60;
         
-        this.startButton.clear();
+        this.startButtonGraphics.clear();
         
         if (this.selectedClass) {
             const baseColor = isHovered ? 0x2ecc71 : 0x27ae60;
-            this.startButton.beginFill(baseColor, 0.9);
-            this.startButton.lineStyle(3, 0x2ecc71, 1);
+            this.startButtonGraphics.beginFill(baseColor, 0.9);
+            this.startButtonGraphics.lineStyle(3, 0x2ecc71, 1);
         } else {
-            this.startButton.beginFill(0x555555, 0.6);
-            this.startButton.lineStyle(2, 0x777777, 0.5);
+            this.startButtonGraphics.beginFill(0x555555, 0.6);
+            this.startButtonGraphics.lineStyle(2, 0x777777, 0.5);
         }
         
-        this.startButton.drawRoundedRect(0, 0, buttonWidth, buttonHeight, 15);
-        this.startButton.endFill();
+        this.startButtonGraphics.drawRoundedRect(0, 0, buttonWidth, buttonHeight, 15);
+        this.startButtonGraphics.endFill();
         
         // Add accent highlight
         if (this.selectedClass) {
-            this.startButton.beginFill(0x2ecc71, 0.3);
-            this.startButton.drawRoundedRect(0, 0, buttonWidth, 6, 3);
-            this.startButton.endFill();
+            this.startButtonGraphics.beginFill(0x2ecc71, 0.3);
+            this.startButtonGraphics.drawRoundedRect(0, 0, buttonWidth, 6, 3);
+            this.startButtonGraphics.endFill();
         }
     }
     
