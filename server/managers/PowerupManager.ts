@@ -238,18 +238,17 @@ export class PowerupManager {
      */
     private applySpeedPowerup(player: any): void {
         const config = POWERUP_CONFIG.EFFECTS.speed;
+        const speedBoost = 1.5; // Fixed +1.5 speed boost (very noticeable)
+        
+        // Cancel any existing speed effects (no stacking)
+        this.cancelExistingSpeedEffects(player);
+        
         const effectId = `speed_${player.id}_${Date.now()}`;
         
-        // Calculate speed boost from multiplier (1.5x = +0.5x = +50% speed)
-        const speedBoost = config.multiplier - 1.0; // 1.5 - 1.0 = 0.5
+        // Set speed bonus to fixed value (don't add, replace)
+        player.moveSpeedBonus = speedBoost;
         
-        // Apply immediate speed bonus
-        if (!player.moveSpeedBonus) {
-            player.moveSpeedBonus = 0;
-        }
-        player.moveSpeedBonus += speedBoost;
-        
-        console.log(`[PowerupManager] Player ${player.id} gained ${speedBoost} speed for ${config.duration}ms (total bonus: ${player.moveSpeedBonus})`);
+        console.log(`[PowerupManager] Player ${player.id} gained ${speedBoost} speed for ${config.duration}ms (replacing any existing boost)`);
         
         // Create temporary effect
         const effect: PowerupEffect = {
@@ -258,7 +257,7 @@ export class PowerupManager {
             type: 'speed',
             startTime: Date.now(),
             duration: config.duration,
-            data: { speedBoost } // Store the calculated boost value
+            data: { speedBoost }
         };
         
         this.activeEffects.set(effectId, effect);
@@ -280,18 +279,37 @@ export class PowerupManager {
     }
     
     /**
+     * Cancel any existing speed effects for a player (prevents stacking)
+     */
+    private cancelExistingSpeedEffects(player: any): void {
+        // Find and cancel existing speed effects for this player
+        const playerSpeedEffects = Array.from(this.activeEffects.values())
+            .filter(effect => effect.playerId === player.id && effect.type === 'speed');
+        
+        for (const effect of playerSpeedEffects) {
+            // Cancel the timeout
+            const timeoutKey = `speed_${effect.id}`;
+            const timeout = this.cleanupTimeouts.get(timeoutKey);
+            if (timeout) {
+                clearTimeout(timeout);
+                this.cleanupTimeouts.delete(timeoutKey);
+            }
+            
+            // Remove from active effects
+            this.activeEffects.delete(effect.id);
+            
+            console.log(`[PowerupManager] Cancelled existing speed effect ${effect.id} for player ${player.id}`);
+        }
+    }
+    
+    /**
      * Remove speed effect from player
      */
     private removeSpeedEffect(player: any, effectId: string, speedBoost: number): void {
-        // Remove speed bonus
-        if (player.moveSpeedBonus) {
-            player.moveSpeedBonus -= speedBoost;
-            if (player.moveSpeedBonus <= 0) {
-                player.moveSpeedBonus = 0;
-            }
-        }
+        // Remove speed bonus completely (since we don't stack)
+        player.moveSpeedBonus = 0;
         
-        console.log(`[PowerupManager] Speed effect ${effectId} expired for player ${player.id} (remaining bonus: ${player.moveSpeedBonus || 0})`);
+        console.log(`[PowerupManager] Speed effect ${effectId} expired for player ${player.id} (speed bonus removed)`);
         
         // Clean up effect tracking
         this.activeEffects.delete(effectId);
@@ -301,7 +319,7 @@ export class PowerupManager {
         this.io.emit('playerSpeedLost', {
             playerId: player.id,
             speedBonus: speedBoost,
-            totalSpeedBonus: player.moveSpeedBonus || 0
+            totalSpeedBonus: 0
         });
     }
     

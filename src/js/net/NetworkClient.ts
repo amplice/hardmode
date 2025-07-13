@@ -662,6 +662,7 @@ export class NetworkClient {
         this.socket.on('playerSpeedGained', (data: { playerId: string; speedBonus: number; duration: number; totalSpeedBonus: number }) => {
             if (data.playerId === this.socket.id && this.game.entities.player) {
                 (this.game.entities.player as any).moveSpeedBonus = data.totalSpeedBonus;
+                (this.game.entities.player as any).speedBoostActive = true;
                 console.log('[NetworkClient] Player gained speed boost:', data.speedBonus, 'Duration:', data.duration, 'Total bonus:', data.totalSpeedBonus);
             }
         });
@@ -669,6 +670,7 @@ export class NetworkClient {
         this.socket.on('playerSpeedLost', (data: { playerId: string; speedBonus: number; totalSpeedBonus: number }) => {
             if (data.playerId === this.socket.id && this.game.entities.player) {
                 (this.game.entities.player as any).moveSpeedBonus = data.totalSpeedBonus;
+                (this.game.entities.player as any).speedBoostActive = false;
                 console.log('[NetworkClient] Player lost speed boost:', data.speedBonus, 'Remaining bonus:', data.totalSpeedBonus);
             }
         });
