@@ -667,6 +667,11 @@ export class Game {
     // Update armor HP from server
     if (typeof info.armorHP === 'number') {
       (this.entities.player as any).armorHP = info.armorHP;
+      console.log('[Game] Updated player armor HP:', info.armorHP);
+    } else if ((this.entities.player as any).armorHP === undefined) {
+      // Initialize armor HP if not present
+      (this.entities.player as any).armorHP = 0;
+      console.log('[Game] Initialized player armor HP to 0');
     }
     this.entities.player.sprite.position.set(info.x, info.y);
   }
