@@ -1031,6 +1031,7 @@ export class Player implements PlayerInterface {
     rollUnlocked!: boolean;
     hitPoints!: number;
     maxHitPoints!: number;
+    armorHP!: number; // Green HP from armor powerups
     isDying!: boolean;
     isDead!: boolean;
     isTakingDamage!: boolean;

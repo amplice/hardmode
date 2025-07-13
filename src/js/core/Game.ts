@@ -126,6 +126,13 @@ export class Game {
     this.app.stage.addChild(this.entityContainer);
     this.app.stage.addChild(this.uiContainer);
 
+    // Handle window resize for UI scaling
+    window.addEventListener('resize', () => {
+      if (this.classSelectUI) {
+        this.classSelectUI.resize();
+      }
+    });
+
     this.camera = { 
       x: 0, 
       y: 0, 
@@ -656,6 +663,10 @@ export class Game {
       } else if (info.hp > 0 && this.entities.player.isDead) {
         this.entities.player.health.respawn();
       }
+    }
+    // Update armor HP from server
+    if (typeof info.armorHP === 'number') {
+      (this.entities.player as any).armorHP = info.armorHP;
     }
     this.entities.player.sprite.position.set(info.x, info.y);
   }

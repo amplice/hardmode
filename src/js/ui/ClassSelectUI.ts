@@ -453,4 +453,37 @@ export class ClassSelectUI {
         this.startButton.cursor = 'pointer';
         this.drawStartButton(false, false);
     }
+
+    /**
+     * Resize the UI to fit the current window dimensions
+     */
+    public resize(): void {
+        // Update background to fill screen
+        this.background.clear();
+        this.background.beginFill(0x0a0a0a, 0.95);
+        this.background.drawRect(0, 0, window.innerWidth, window.innerHeight);
+        this.background.endFill();
+
+        // Reposition title and subtitle
+        this.title.position.set(window.innerWidth / 2, 40);
+        this.subtitle.position.set(window.innerWidth / 2, 95);
+
+        // Recalculate class button positions
+        const cardWidth = 280;
+        const cardSpacing = 30;
+        const totalWidth = (cardWidth * 4) + (cardSpacing * 3);
+        const startX = (window.innerWidth - totalWidth) / 2;
+        const startY = window.innerHeight / 2 - 60;
+
+        // Reposition each class button
+        this.classButtons.forEach((classButton, index) => {
+            const x = startX + (index * (cardWidth + cardSpacing));
+            classButton.container.position.set(x, startY);
+        });
+
+        // Reposition start button
+        const buttonWidth = 200;
+        const yPosition = window.innerHeight - 150;
+        this.startButton.position.set(window.innerWidth / 2 - buttonWidth / 2, yPosition);
+    }
 }

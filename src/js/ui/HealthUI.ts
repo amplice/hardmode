@@ -25,6 +25,7 @@ import * as PIXI from 'pixi.js';
 // Type definitions
 interface PlayerInterface {
     hitPoints: number;
+    armorHP?: number; // Green HP from armor powerups
     getClassHitPoints(): number;
 }
 
@@ -69,7 +70,10 @@ export class HealthUI {
         this.hearts.removeChildren();
         this.heartSprites = [];
         
-        // Create heart circles
+        const armorHP = this.player.armorHP || 0;
+        let heartIndex = 0;
+        
+        // First row: Regular HP hearts (red/gray)
         for (let i = 0; i < max; i++) {
             const heart = new PIXI.Graphics();
             
@@ -89,6 +93,31 @@ export class HealthUI {
             
             this.hearts.addChild(heart);
             this.heartSprites.push(heart);
+            heartIndex++;
+        }
+        
+        // Second row: Armor HP hearts (green) - above regular hearts if any exist
+        if (armorHP > 0) {
+            for (let i = 0; i < armorHP; i++) {
+                const armorHeart = new PIXI.Graphics();
+                
+                // Green armor hearts
+                armorHeart.beginFill(0x2ECC71); // Green for armor HP
+                
+                // Draw heart circle (slightly smaller to distinguish)
+                armorHeart.drawCircle(0, 0, 7);
+                armorHeart.endFill();
+                
+                // Add white border for visibility
+                armorHeart.lineStyle(1, 0xFFFFFF);
+                armorHeart.drawCircle(0, 0, 7);
+                
+                // Position above regular hearts
+                armorHeart.position.set(10 + i * 25, -15);
+                
+                this.hearts.addChild(armorHeart);
+                this.heartSprites.push(armorHeart);
+            }
         }
     }
 }

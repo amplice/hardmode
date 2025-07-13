@@ -307,6 +307,7 @@ export interface PlayerInfo {
     y: number;
     class: string;
     hp: number;
+    armorHP?: number; // Green HP from armor powerups
     facing?: string;
 }
 
