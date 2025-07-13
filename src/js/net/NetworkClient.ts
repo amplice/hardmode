@@ -148,6 +148,7 @@ interface DamageEventData {
     attacker?: string;
     hp: number;
     damage: number;
+    armorHP?: number;
 }
 
 interface KillEventData {
@@ -484,6 +485,7 @@ export class NetworkClient {
                 // We took damage - sync HP and show damage effects
                 if (this.game.entities.player) {
                     this.game.entities.player.hitPoints = data.hp;
+                    (this.game.entities.player as any).armorHP = data.armorHP || 0;
                     // Show damage effects without applying damage again
                     this.game.entities.player.isTakingDamage = true;
                     this.game.entities.player.damageStunTimer = this.game.entities.player.damageStunDuration;
@@ -494,6 +496,7 @@ export class NetworkClient {
                 const remotePlayer = this.game.remotePlayers?.get(data.playerId!);
                 if (remotePlayer) {
                     remotePlayer.hitPoints = data.hp;
+                    (remotePlayer as any).armorHP = data.armorHP || 0;
                     remotePlayer.showDamageEffect?.();
                 }
             }

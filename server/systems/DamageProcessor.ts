@@ -175,6 +175,7 @@ export class DamageProcessor {
             playerId: player.id,
             damage: actualDamage,
             hp: player.hp,
+            armorHP: player.armorHP || 0,
             source: sourceString
         });
 
