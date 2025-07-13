@@ -269,7 +269,7 @@ export class AbilityManager {
                         y: startY,
                         facing: player.facing,
                         config: {
-                            damage: config.damage,
+                            damage: config.damage + ((player as any).damageBonus || 0),
                             hitboxType: config.hitboxType,
                             hitboxParams: config.hitboxParams
                         }
@@ -374,7 +374,7 @@ export class AbilityManager {
                         y: attackPosition.y,
                         facing: player.facing,
                         config: {
-                            damage: config.damage,
+                            damage: config.damage + ((player as any).damageBonus || 0),
                             hitboxType: config.hitboxType,
                             hitboxParams: config.hitboxParams
                         }
@@ -422,7 +422,7 @@ export class AbilityManager {
                         y: player.y,
                         angle: angle,
                         speed: config.projectileSpeed || 700,
-                        damage: config.damage || 1,
+                        damage: (config.damage || 1) + ((player as any).damageBonus || 0),
                         range: config.projectileRange || 600,
                         effectType: config.projectileVisualEffectType || 'bow_shot_effect'
                     });

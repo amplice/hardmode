@@ -326,7 +326,7 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
     applyCurrentTints(): void {
         if (!this.owner.animatedSprite) return;
         
-        // Priority order: spawn protection > speed boost > normal
+        // Priority order: spawn protection > speed boost > damage boost > normal
         if (this.owner.spawnProtectionTimer > 0) {
             this.owner.animatedSprite.tint = 0xFFFF00; // Yellow for spawn protection
             // Debug logging
@@ -337,6 +337,8 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
             }
         } else if ((this.owner as any).speedBoostActive) {
             this.owner.animatedSprite.tint = 0xff8c00; // Bright orange for speed boost
+        } else if ((this.owner as any).damageBoostActive) {
+            this.owner.animatedSprite.tint = 0xff4444; // Bright red for damage boost
         } else {
             this.owner.animatedSprite.tint = 0xFFFFFF; // Normal
         }

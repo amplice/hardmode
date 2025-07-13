@@ -675,6 +675,22 @@ export class NetworkClient {
             }
         });
         
+        this.socket.on('playerDamageGained', (data: { playerId: string; damageBonus: number; duration: number; totalDamageBonus: number }) => {
+            if (data.playerId === this.socket.id && this.game.entities.player) {
+                (this.game.entities.player as any).damageBonus = data.totalDamageBonus;
+                (this.game.entities.player as any).damageBoostActive = true;
+                console.log('[NetworkClient] Player gained damage boost:', data.damageBonus, 'Duration:', data.duration, 'Total bonus:', data.totalDamageBonus);
+            }
+        });
+        
+        this.socket.on('playerDamageLost', (data: { playerId: string; damageBonus: number; totalDamageBonus: number }) => {
+            if (data.playerId === this.socket.id && this.game.entities.player) {
+                (this.game.entities.player as any).damageBonus = data.totalDamageBonus;
+                (this.game.entities.player as any).damageBoostActive = false;
+                console.log('[NetworkClient] Player lost damage boost:', data.damageBonus, 'Remaining bonus:', data.totalDamageBonus);
+            }
+        });
+        
         // Handle ability events from server
         this.socket.on('playerAbilityStart', (data: AbilityEventData) => {
             // Handle movement abilities that need visual updates

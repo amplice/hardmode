@@ -67,8 +67,8 @@ export class PowerupManager {
             return null;
         }
         
-        // Only drop implemented powerups (health, armor, and speed)
-        const types: PowerupType[] = ['health', 'armor', 'speed']; // Phases 1-3 powerups
+        // Only drop implemented powerups (health, armor, speed, and damage)
+        const types: PowerupType[] = ['health', 'armor', 'speed', 'damage']; // Phases 1-4 powerups
         const type = types[Math.floor(Math.random() * types.length)];
         
         const powerup: PowerupState = {
@@ -155,8 +155,7 @@ export class PowerupManager {
                 this.applySpeedPowerup(player);
                 break;
             case 'damage':
-                // TODO: Implement in Phase 4
-                console.log(`[PowerupManager] Damage powerup not yet implemented`);
+                this.applyDamagePowerup(player);
                 break;
             case 'invulnerability':
                 // TODO: Implement in Phase 5
@@ -320,6 +319,99 @@ export class PowerupManager {
             playerId: player.id,
             speedBonus: speedBoost,
             totalSpeedBonus: 0
+        });
+    }
+    
+    /**
+     * Apply damage powerup - temporary damage bonus
+     */
+    private applyDamagePowerup(player: any): void {
+        const config = POWERUP_CONFIG.EFFECTS.damage;
+        const damageBonus = config.bonus; // +1 damage
+        
+        // Cancel any existing damage effects (no stacking)
+        this.cancelExistingDamageEffects(player);
+        
+        const effectId = `damage_${player.id}_${Date.now()}`;
+        
+        // Apply damage bonus (similar to speed, use an existing bonus system)
+        if (!player.damageBonus) {
+            player.damageBonus = 0;
+        }
+        player.damageBonus = damageBonus; // Set to fixed value (don't add)
+        
+        console.log(`[PowerupManager] Player ${player.id} gained ${damageBonus} damage for ${config.duration}ms (replacing any existing boost)`);
+        
+        // Create temporary effect
+        const effect: PowerupEffect = {
+            id: effectId,
+            playerId: player.id,
+            type: 'damage',
+            startTime: Date.now(),
+            duration: config.duration,
+            data: { damageBonus }
+        };
+        
+        this.activeEffects.set(effectId, effect);
+        
+        // Broadcast damage gain to clients
+        this.io.emit('playerDamageGained', {
+            playerId: player.id,
+            damageBonus: damageBonus,
+            duration: config.duration,
+            totalDamageBonus: player.damageBonus
+        });
+        
+        // Schedule effect removal
+        const timeoutId = setTimeout(() => {
+            this.removeDamageEffect(player, effectId, damageBonus);
+        }, config.duration);
+        
+        this.cleanupTimeouts.set(`damage_${effectId}`, timeoutId);
+    }
+    
+    /**
+     * Cancel any existing damage effects for a player (prevents stacking)
+     */
+    private cancelExistingDamageEffects(player: any): void {
+        // Find and cancel existing damage effects for this player
+        const playerDamageEffects = Array.from(this.activeEffects.values())
+            .filter(effect => effect.playerId === player.id && effect.type === 'damage');
+        
+        for (const effect of playerDamageEffects) {
+            // Cancel the timeout
+            const timeoutKey = `damage_${effect.id}`;
+            const timeout = this.cleanupTimeouts.get(timeoutKey);
+            if (timeout) {
+                clearTimeout(timeout);
+                this.cleanupTimeouts.delete(timeoutKey);
+            }
+            
+            // Remove from active effects
+            this.activeEffects.delete(effect.id);
+            
+            console.log(`[PowerupManager] Cancelled existing damage effect ${effect.id} for player ${player.id}`);
+        }
+    }
+    
+    /**
+     * Remove damage effect from player
+     */
+    private removeDamageEffect(player: any, effectId: string, damageBonus: number): void {
+        // Remove damage bonus completely (since we don't stack)
+        player.damageBonus = 0;
+        
+        console.log(`[PowerupManager] Damage effect ${effectId} expired for player ${player.id} (damage bonus removed)`);
+        
+        // Clean up effect tracking
+        this.activeEffects.delete(effectId);
+        this.cleanupTimeouts.delete(`damage_${effectId}`);
+        
+        // Broadcast damage loss to clients
+        this.io.emit('playerDamageLost', {
+            playerId: player.id,
+            damageBonus: damageBonus,
+            totalDamageBonus: 0
         });
     }
     
