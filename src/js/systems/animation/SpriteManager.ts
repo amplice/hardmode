@@ -265,14 +265,19 @@ export class SpriteManager {
                     ));
                 }
             } else if (config.type === 'effect') {
-                promises.push(this.loadEffectSpritesheet(
-                    config.keyPrefix,
-                    config.path,
-                    config.columns,
-                    config.rows,
-                    config.rowIndex,
-                    config.frameSize
-                ));
+                // Special handling for powerups - they're single images, not sprite sheets
+                if (config.keyPrefix.endsWith('_powerup')) {
+                    promises.push(this.loadSingleTexture(config.keyPrefix, config.path));
+                } else {
+                    promises.push(this.loadEffectSpritesheet(
+                        config.keyPrefix,
+                        config.path,
+                        config.columns,
+                        config.rows,
+                        config.rowIndex,
+                        config.frameSize
+                    ));
+                }
             }
         }
 
@@ -355,6 +360,21 @@ export class SpriteManager {
                 resolve();
             }).catch(error => {
                 console.error(`Failed to load effect spritesheet ${path} for key ${name}:`, error);
+                reject(error);
+            });
+        });
+    }
+
+    private async loadSingleTexture(name: string, path: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            PIXI.Assets.load(path).then(texture => {
+                texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+                // Store as single-item array to maintain consistency with the texture storage format
+                this.textures[name] = [texture];
+                console.log(`Loaded single texture ${name} from ${path}`);
+                resolve();
+            }).catch(error => {
+                console.error(`Failed to load texture ${path} for key ${name}:`, error);
                 reject(error);
             });
         });

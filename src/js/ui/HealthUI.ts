@@ -104,24 +104,25 @@ export class HealthUI {
             heartIndex++;
         }
         
-        // Second row: Armor HP hearts (green) - above regular hearts if any exist
+        // Armor HP hearts (green) - to the right of regular hearts
         if (armorHP > 0) {
+            const startX = 10 + maxHp * 25 + 10; // Start after regular hearts with 10px gap
             for (let i = 0; i < armorHP; i++) {
                 const armorHeart = new PIXI.Graphics();
                 
                 // Green armor hearts
                 armorHeart.beginFill(0x2ECC71); // Green for armor HP
                 
-                // Draw heart circle (slightly smaller to distinguish)
-                armorHeart.drawCircle(0, 0, 7);
+                // Draw heart circle (same size as regular hearts)
+                armorHeart.drawCircle(0, 0, 8);
                 armorHeart.endFill();
                 
                 // Add white border for visibility
                 armorHeart.lineStyle(1, 0xFFFFFF);
-                armorHeart.drawCircle(0, 0, 7);
+                armorHeart.drawCircle(0, 0, 8);
                 
-                // Position above regular hearts
-                armorHeart.position.set(10 + i * 25, -15);
+                // Position to the right of regular hearts
+                armorHeart.position.set(startX + i * 25, 10);
                 
                 this.hearts.addChild(armorHeart);
                 this.heartSprites.push(armorHeart);
