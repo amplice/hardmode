@@ -641,6 +641,21 @@ export class NetworkClient {
             }
         });
         
+        // Handle powerup effect events
+        this.socket.on('playerArmorGained', (data: { playerId: string; armorAmount: number; totalArmor: number }) => {
+            if (data.playerId === this.socket.id && this.game.entities.player) {
+                (this.game.entities.player as any).armorHP = data.totalArmor;
+                console.log('[NetworkClient] Player gained armor HP:', data.armorAmount, 'Total:', data.totalArmor);
+            }
+        });
+        
+        this.socket.on('playerHealed', (data: { playerId: string; healAmount: number; newHP: number; maxHP: number }) => {
+            if (data.playerId === this.socket.id && this.game.entities.player) {
+                this.game.entities.player.hitPoints = data.newHP;
+                console.log('[NetworkClient] Player healed:', data.healAmount, 'New HP:', data.newHP);
+            }
+        });
+        
         // Handle ability events from server
         this.socket.on('playerAbilityStart', (data: AbilityEventData) => {
             // Handle movement abilities that need visual updates
