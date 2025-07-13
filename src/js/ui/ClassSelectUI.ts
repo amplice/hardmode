@@ -99,7 +99,7 @@ export class ClassSelectUI {
         // Main title with enhanced styling
         this.title = new PIXI.Text('SELECT YOUR CLASS', {
             fontFamily: 'Arial, sans-serif',
-            fontSize: 48,
+            fontSize: 36,
             fontWeight: 'bold',
             fill: ['#ffffff', '#cccccc'], // Gradient text
             align: 'center',
@@ -143,12 +143,12 @@ export class ClassSelectUI {
         };
         
         // Enhanced positioning for better spacing
-        const cardWidth = 220;
-        const cardHeight = 320;
-        const spacing = 40;
+        const cardWidth = 200;
+        const cardHeight = 260;
+        const spacing = 25;
         const totalWidth = (classes.length * cardWidth) + ((classes.length - 1) * spacing);
         const startX = (window.innerWidth - totalWidth) / 2;
-        const startY = window.innerHeight / 2 - 60;
+        const startY = window.innerHeight / 2 - 100;
         
         classes.forEach((className, index) => {
             const classConfig = PLAYER_CONFIG.classes[className];
@@ -315,7 +315,7 @@ export class ClassSelectUI {
         });
         
         // Enhanced start button
-        this.createStartButton(startY + cardHeight + 80);
+        this.createStartButton(startY + cardHeight + 50);
     }
     
     private drawEnhancedCard(graphics: PIXI.Graphics, color: number, width: number, height: number, isHovered: boolean): void {
@@ -335,8 +335,8 @@ export class ClassSelectUI {
     }
     
     private createStartButton(yPosition: number): void {
-        const buttonWidth = 280;
-        const buttonHeight = 60;
+        const buttonWidth = 200;
+        const buttonHeight = 50;
         
         this.startButton = new PIXI.Graphics();
         this.drawStartButton(false, false);
@@ -469,11 +469,11 @@ export class ClassSelectUI {
         this.subtitle.position.set(window.innerWidth / 2, 95);
 
         // Recalculate class button positions
-        const cardWidth = 280;
-        const cardSpacing = 30;
+        const cardWidth = 200;
+        const cardSpacing = 25;
         const totalWidth = (cardWidth * 4) + (cardSpacing * 3);
         const startX = (window.innerWidth - totalWidth) / 2;
-        const startY = window.innerHeight / 2 - 60;
+        const startY = window.innerHeight / 2 - 100;
 
         // Reposition each class button
         this.classButtons.forEach((classButton, index) => {
@@ -483,7 +483,7 @@ export class ClassSelectUI {
 
         // Reposition start button
         const buttonWidth = 200;
-        const yPosition = window.innerHeight - 150;
+        const yPosition = window.innerHeight - 100;
         this.startButton.position.set(window.innerWidth / 2 - buttonWidth / 2, yPosition);
     }
 }
