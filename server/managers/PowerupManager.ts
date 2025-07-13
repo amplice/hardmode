@@ -67,8 +67,8 @@ export class PowerupManager {
             return null;
         }
         
-        // Only drop implemented powerups (health and armor)
-        const types: PowerupType[] = ['health', 'armor']; // Limited to working powerups
+        // Only drop implemented powerups (health, armor, and speed)
+        const types: PowerupType[] = ['health', 'armor', 'speed']; // Phases 1-3 powerups
         const type = types[Math.floor(Math.random() * types.length)];
         
         const powerup: PowerupState = {
@@ -152,8 +152,7 @@ export class PowerupManager {
                 this.applyArmorPowerup(player);
                 break;
             case 'speed':
-                // TODO: Implement in Phase 3
-                console.log(`[PowerupManager] Speed powerup not yet implemented`);
+                this.applySpeedPowerup(player);
                 break;
             case 'damage':
                 // TODO: Implement in Phase 4
@@ -232,6 +231,78 @@ export class PowerupManager {
         const bonusHP = bonusLevels.filter(lvl => level >= lvl).length;
         
         return baseHP + bonusHP;
+    }
+    
+    /**
+     * Apply speed powerup - temporary move speed increase
+     */
+    private applySpeedPowerup(player: any): void {
+        const config = POWERUP_CONFIG.EFFECTS.speed;
+        const effectId = `speed_${player.id}_${Date.now()}`;
+        
+        // Calculate speed boost from multiplier (1.5x = +0.5x = +50% speed)
+        const speedBoost = config.multiplier - 1.0; // 1.5 - 1.0 = 0.5
+        
+        // Apply immediate speed bonus
+        if (!player.moveSpeedBonus) {
+            player.moveSpeedBonus = 0;
+        }
+        player.moveSpeedBonus += speedBoost;
+        
+        console.log(`[PowerupManager] Player ${player.id} gained ${speedBoost} speed for ${config.duration}ms (total bonus: ${player.moveSpeedBonus})`);
+        
+        // Create temporary effect
+        const effect: PowerupEffect = {
+            id: effectId,
+            playerId: player.id,
+            type: 'speed',
+            startTime: Date.now(),
+            duration: config.duration,
+            data: { speedBoost } // Store the calculated boost value
+        };
+        
+        this.activeEffects.set(effectId, effect);
+        
+        // Broadcast speed gain to clients
+        this.io.emit('playerSpeedGained', {
+            playerId: player.id,
+            speedBonus: speedBoost,
+            duration: config.duration,
+            totalSpeedBonus: player.moveSpeedBonus
+        });
+        
+        // Schedule effect removal
+        const timeoutId = setTimeout(() => {
+            this.removeSpeedEffect(player, effectId, speedBoost);
+        }, config.duration);
+        
+        this.cleanupTimeouts.set(`speed_${effectId}`, timeoutId);
+    }
+    
+    /**
+     * Remove speed effect from player
+     */
+    private removeSpeedEffect(player: any, effectId: string, speedBoost: number): void {
+        // Remove speed bonus
+        if (player.moveSpeedBonus) {
+            player.moveSpeedBonus -= speedBoost;
+            if (player.moveSpeedBonus <= 0) {
+                player.moveSpeedBonus = 0;
+            }
+        }
+        
+        console.log(`[PowerupManager] Speed effect ${effectId} expired for player ${player.id} (remaining bonus: ${player.moveSpeedBonus || 0})`);
+        
+        // Clean up effect tracking
+        this.activeEffects.delete(effectId);
+        this.cleanupTimeouts.delete(`speed_${effectId}`);
+        
+        // Broadcast speed loss to clients
+        this.io.emit('playerSpeedLost', {
+            playerId: player.id,
+            speedBonus: speedBoost,
+            totalSpeedBonus: player.moveSpeedBonus || 0
+        });
     }
     
     /**
