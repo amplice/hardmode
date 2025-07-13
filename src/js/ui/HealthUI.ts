@@ -106,7 +106,7 @@ export class HealthUI {
         
         // Armor HP hearts (green) - to the right of regular hearts
         if (armorHP > 0) {
-            const startX = 10 + maxHp * 25 + 10; // Start after regular hearts with 10px gap
+            const startX = 10 + max * 25 + 10; // Start after regular hearts with 10px gap
             for (let i = 0; i < armorHP; i++) {
                 const armorHeart = new PIXI.Graphics();
                 
