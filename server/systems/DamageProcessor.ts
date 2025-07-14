@@ -126,15 +126,9 @@ export class DamageProcessor {
         damageType: DamageType, 
         metadata: DamageMetadata
     ): DamageResult {
-        // Check spawn protection (using timer and invulnerable flag)
-        const playerWithProtection = player as any; // Allow access to legacy fields
-        if (playerWithProtection.spawnProtectionTimer > 0 || playerWithProtection.invulnerable) {
-            return { success: false, error: 'Player has spawn protection' };
-        }
-
-        // Check powerup invulnerability (check both field names for compatibility)
-        if ((player as any).isInvulnerable || (player as any).invulnerable) {
-            return { success: false, error: 'Player is invulnerable from powerup' };
+        // Check invulnerability (unified: spawn protection, powerups, or any other source)
+        if ((player as any).invulnerable) {
+            return { success: false, error: 'Player is invulnerable' };
         }
 
         // Apply damage with armor HP priority
