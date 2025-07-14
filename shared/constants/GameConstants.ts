@@ -130,11 +130,11 @@ export const POWERUP_CONFIG = {
             armorAmount: 1
         },
         speed: { 
-            duration: 10000, // 10 seconds
+            duration: 12000, // 12 seconds
             multiplier: 1.5 // +50% speed
         },
         damage: { 
-            duration: 15000, // 15 seconds
+            duration: 7000, // 7 seconds
             bonus: 1 // +1 damage
         },
         invulnerability: { 

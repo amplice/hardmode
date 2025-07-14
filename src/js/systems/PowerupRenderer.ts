@@ -118,7 +118,7 @@ export class PowerupRenderer {
             if (texture) {
                 const sprite = new PIXI.Sprite(texture);
                 sprite.anchor.set(0.5, 0.5); // Center the sprite
-                sprite.scale.set(0.8, 0.8); // Scale down slightly for better look
+                sprite.scale.set(0.4, 0.4); // Scale to 50% size
                 powerup.sprite.addChild(sprite);
                 powerup.texture = sprite;
                 console.log(`[PowerupRenderer] Using preloaded sprite for ${powerup.type}`);
@@ -134,7 +134,7 @@ export class PowerupRenderer {
                 if (texture && texture.valid) {
                     const sprite = new PIXI.Sprite(texture);
                     sprite.anchor.set(0.5, 0.5); // Center the sprite
-                    sprite.scale.set(0.8, 0.8); // Scale down slightly for better look
+                    sprite.scale.set(0.4, 0.4); // Scale to 50% size
                     powerup.sprite.addChild(sprite);
                     powerup.texture = sprite;
                     console.log(`[PowerupRenderer] Loaded sprite on-demand for ${powerup.type}: ${spriteName}`);
