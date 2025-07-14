@@ -784,7 +784,33 @@ export class MonsterManager {
             }
         }
         
-        // === STAIR BEELINE LOGIC ===
+        // === A* PATHFINDING SYSTEM ===
+        
+        // Try A* pathfinding first if available
+        if (this.astarPathfinding) {
+            console.log(`[Monster ${monster.id}] Using A* pathfinding`);
+            
+            const pathResult = this.astarPathfinding.findPath(
+                { x: monster.x, y: monster.y },
+                { x: target.x, y: target.y }
+            );
+            
+            if (pathResult.success && pathResult.worldPath.length > 1) {
+                // Get next step in path (skip current position)
+                const nextStep = pathResult.worldPath[1];
+                const moveDirection = {
+                    x: nextStep.x - monster.x,
+                    y: nextStep.y - monster.y
+                };
+                
+                console.log(`[Monster ${monster.id}] A* found path with ${pathResult.worldPath.length} steps, moving to next step`);
+                return moveDirection;
+            } else {
+                console.log(`[Monster ${monster.id}] A* pathfinding failed, falling back to old logic`);
+            }
+        }
+        
+        // === FALLBACK: OLD STAIR BEELINE LOGIC ===
         
         // 1. Can we see the target?
         const hasLOS = this.hasLineOfSight(monster, target);

@@ -230,26 +230,145 @@ export class AStarPathfinding {
     }
     
     /**
-     * Main A* pathfinding method - Phase 2 will implement this
+     * Main A* pathfinding method - Full implementation
      */
     findPath(startWorld: WorldCoord, goalWorld: WorldCoord): PathfindingResult {
-        // TODO: Implement full A* algorithm in Phase 2
-        // For now, return a simple direct path for testing
-        
         const startTile = this.worldToTile(startWorld.x, startWorld.y);
         const goalTile = this.worldToTile(goalWorld.x, goalWorld.y);
         
-        console.log(`[AStarPathfinding] Pathfinding from tile (${startTile.x}, ${startTile.y}) to (${goalTile.x}, ${goalTile.y})`);
+        // Check cache first
+        const cacheKey = `${startTile.x},${startTile.y}->${goalTile.x},${goalTile.y}`;
+        if (this.pathCache.has(cacheKey)) {
+            return this.pathCache.get(cacheKey)!;
+        }
         
-        // Simple direct path for Phase 1 testing
-        const tilePath = [startTile, goalTile];
-        const worldPath = tilePath.map(tile => this.tileToWorld(tile.x, tile.y));
+        console.log(`[AStarPathfinding] A* pathfinding from tile (${startTile.x}, ${startTile.y}) to (${goalTile.x}, ${goalTile.y})`);
         
-        return {
-            success: true,
-            path: tilePath,
-            worldPath: worldPath
+        // Validate start and goal tiles
+        if (!this.isTileWalkable(startTile.x, startTile.y)) {
+            console.warn(`[AStarPathfinding] Start tile (${startTile.x}, ${startTile.y}) is not walkable`);
+            return { success: false, path: [], worldPath: [] };
+        }
+        
+        if (!this.isTileWalkable(goalTile.x, goalTile.y)) {
+            console.warn(`[AStarPathfinding] Goal tile (${goalTile.x}, ${goalTile.y}) is not walkable`);
+            return { success: false, path: [], worldPath: [] };
+        }
+        
+        // If start equals goal, return immediate success
+        if (startTile.x === goalTile.x && startTile.y === goalTile.y) {
+            const result = { success: true, path: [startTile], worldPath: [startWorld] };
+            this.pathCache.set(cacheKey, result);
+            return result;
+        }
+        
+        // A* algorithm implementation
+        const openList: AStarNode[] = [];
+        const closedList: Set<string> = new Set();
+        
+        // Create start node
+        const startNode: AStarNode = {
+            tile: startTile,
+            gCost: 0,
+            hCost: this.calculateHeuristic(startTile, goalTile),
+            fCost: 0,
+            parent: null,
+            elevation: this.getTileElevation(startTile.x, startTile.y)
         };
+        startNode.fCost = startNode.gCost + startNode.hCost;
+        
+        openList.push(startNode);
+        let nodesSearched = 0;
+        
+        while (openList.length > 0 && nodesSearched < this.MAX_SEARCH_NODES) {
+            nodesSearched++;
+            
+            // Find node with lowest F cost
+            let currentNode = openList[0];
+            let currentIndex = 0;
+            
+            for (let i = 1; i < openList.length; i++) {
+                if (openList[i].fCost < currentNode.fCost || 
+                    (openList[i].fCost === currentNode.fCost && openList[i].hCost < currentNode.hCost)) {
+                    currentNode = openList[i];
+                    currentIndex = i;
+                }
+            }
+            
+            // Remove current node from open list and add to closed list
+            openList.splice(currentIndex, 1);
+            const nodeKey = `${currentNode.tile.x},${currentNode.tile.y}`;
+            closedList.add(nodeKey);
+            
+            // Check if we've reached the goal
+            if (currentNode.tile.x === goalTile.x && currentNode.tile.y === goalTile.y) {
+                // Reconstruct path
+                const tilePath: TileCoord[] = [];
+                let pathNode: AStarNode | null = currentNode;
+                
+                while (pathNode !== null) {
+                    tilePath.unshift(pathNode.tile);
+                    pathNode = pathNode.parent;
+                }
+                
+                const worldPath = tilePath.map(tile => this.tileToWorld(tile.x, tile.y));
+                
+                console.log(`[AStarPathfinding] Path found! Length: ${tilePath.length} tiles, searched: ${nodesSearched} nodes`);
+                
+                const result = { success: true, path: tilePath, worldPath: worldPath };
+                this.pathCache.set(cacheKey, result);
+                return result;
+            }
+            
+            // Explore neighbors
+            const neighbors = this.getNeighbors(currentNode.tile);
+            
+            for (const neighbor of neighbors) {
+                const neighborKey = `${neighbor.x},${neighbor.y}`;
+                
+                // Skip if already in closed list
+                if (closedList.has(neighborKey)) {
+                    continue;
+                }
+                
+                // Calculate movement cost (diagonal movement costs more)
+                const isDiagonal = Math.abs(neighbor.x - currentNode.tile.x) === 1 && 
+                                 Math.abs(neighbor.y - currentNode.tile.y) === 1;
+                const movementCost = isDiagonal ? 1.4 : 1.0; // Diagonal costs √2 ≈ 1.4
+                
+                const tentativeGCost = currentNode.gCost + movementCost;
+                
+                // Check if this path to neighbor is better
+                let neighborNode = openList.find(node => 
+                    node.tile.x === neighbor.x && node.tile.y === neighbor.y
+                );
+                
+                if (!neighborNode) {
+                    // Create new neighbor node
+                    neighborNode = {
+                        tile: neighbor,
+                        gCost: tentativeGCost,
+                        hCost: this.calculateHeuristic(neighbor, goalTile),
+                        fCost: 0,
+                        parent: currentNode,
+                        elevation: this.getTileElevation(neighbor.x, neighbor.y)
+                    };
+                    neighborNode.fCost = neighborNode.gCost + neighborNode.hCost;
+                    openList.push(neighborNode);
+                } else if (tentativeGCost < neighborNode.gCost) {
+                    // Update existing neighbor with better path
+                    neighborNode.gCost = tentativeGCost;
+                    neighborNode.fCost = neighborNode.gCost + neighborNode.hCost;
+                    neighborNode.parent = currentNode;
+                }
+            }
+        }
+        
+        // No path found
+        console.warn(`[AStarPathfinding] No path found after searching ${nodesSearched} nodes`);
+        const result = { success: false, path: [], worldPath: [] };
+        this.pathCache.set(cacheKey, result);
+        return result;
     }
     
     /**
