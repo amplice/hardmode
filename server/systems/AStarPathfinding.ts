@@ -43,6 +43,7 @@ export class AStarPathfinding {
     private worldGenerator: SharedWorldGenerator;
     private walkabilityGrid: boolean[][] = [];
     private elevationGrid: number[][] = [];
+    private stairGrid: boolean[][] = [];
     private pathCache: Map<string, PathfindingResult>;
     private readonly TILE_SIZE: number;
     private readonly MAX_SEARCH_NODES = 1000; // Performance limit
@@ -55,6 +56,7 @@ export class AStarPathfinding {
         
         this.buildWalkabilityGrid();
         this.buildElevationGrid();
+        this.buildStairGrid();
     }
     
     /**
@@ -124,6 +126,41 @@ export class AStarPathfinding {
     }
     
     /**
+     * Build stair grid for enhanced stair navigation
+     */
+    private buildStairGrid(): void {
+        console.log('[AStarPathfinding] Building stair grid...');
+        
+        const stairsData = this.worldGenerator.getStairsData();
+        if (!stairsData) {
+            console.warn('[AStarPathfinding] No stairs data available');
+            return;
+        }
+        
+        const tilesX = Math.ceil(GAME_CONSTANTS.WORLD.WIDTH / this.TILE_SIZE);
+        const tilesY = Math.ceil(GAME_CONSTANTS.WORLD.HEIGHT / this.TILE_SIZE);
+        
+        this.stairGrid = [];
+        let stairCount = 0;
+        
+        for (let tileY = 0; tileY < tilesY; tileY++) {
+            this.stairGrid[tileY] = [];
+            for (let tileX = 0; tileX < tilesX; tileX++) {
+                // Check if this tile has stair data
+                const hasStairs = tileY < stairsData.length && 
+                                tileX < stairsData[0].length && 
+                                stairsData[tileY][tileX] !== null &&
+                                stairsData[tileY][tileX] !== undefined;
+                
+                this.stairGrid[tileY][tileX] = hasStairs;
+                if (hasStairs) stairCount++;
+            }
+        }
+        
+        console.log(`[AStarPathfinding] Built stair grid with ${stairCount} stair tiles`);
+    }
+    
+    /**
      * Convert world coordinates to tile coordinates
      */
     worldToTile(worldX: number, worldY: number): TileCoord {
@@ -183,11 +220,34 @@ export class AStarPathfinding {
             return true;
         }
         
-        // Different elevations - only allowed if there are stairs
-        // For now, we'll be permissive and allow adjacent elevation changes
-        // TODO: Add proper stair detection in Phase 3
+        // Different elevations - check for stairs
         const elevationDiff = Math.abs(fromElevation - toElevation);
-        return elevationDiff <= 1; // Only allow 1 level elevation changes for now
+        
+        // Only allow elevation changes if there's a stair connection
+        if (elevationDiff === 1) {
+            // Check if either tile is a stair tile that connects these elevations
+            const fromIsStair = this.isStairTile(fromTile.x, fromTile.y);
+            const toIsStair = this.isStairTile(toTile.x, toTile.y);
+            
+            // Allow movement if either tile is a stair
+            // This handles both entering and exiting stairs
+            return fromIsStair || toIsStair;
+        }
+        
+        // Elevation difference too large or no stairs
+        return false;
+    }
+    
+    /**
+     * Check if a tile is a stair tile
+     */
+    private isStairTile(tileX: number, tileY: number): boolean {
+        // Use cached stair grid for performance
+        if (tileY >= 0 && tileY < this.stairGrid.length &&
+            tileX >= 0 && tileX < this.stairGrid[0].length) {
+            return this.stairGrid[tileY][tileX];
+        }
+        return false;
     }
     
     /**
@@ -334,7 +394,28 @@ export class AStarPathfinding {
                 // Calculate movement cost (diagonal movement costs more)
                 const isDiagonal = Math.abs(neighbor.x - currentNode.tile.x) === 1 && 
                                  Math.abs(neighbor.y - currentNode.tile.y) === 1;
-                const movementCost = isDiagonal ? 1.4 : 1.0; // Diagonal costs √2 ≈ 1.4
+                let movementCost = isDiagonal ? 1.4 : 1.0; // Diagonal costs √2 ≈ 1.4
+                
+                // Stair-specific pathfinding enhancements
+                const currentIsStair = this.isStairTile(currentNode.tile.x, currentNode.tile.y);
+                const neighborIsStair = this.isStairTile(neighbor.x, neighbor.y);
+                const currentElevation = currentNode.elevation;
+                const neighborElevation = this.getTileElevation(neighbor.x, neighbor.y);
+                
+                // Reduce cost for staying on stairs when changing elevation
+                if (currentElevation !== neighborElevation) {
+                    if (currentIsStair && neighborIsStair) {
+                        // Both tiles are stairs - this is the preferred path
+                        movementCost *= 0.5; // Make stair-to-stair movement very attractive
+                    } else if (!currentIsStair && neighborIsStair) {
+                        // Entering stairs from non-stair - good
+                        movementCost *= 0.7;
+                    } else if (currentIsStair && !neighborIsStair) {
+                        // Exiting stairs to reach goal elevation - acceptable
+                        movementCost *= 0.9;
+                    }
+                    // If neither is stair but elevation changes, this path should already be blocked
+                }
                 
                 const tentativeGCost = currentNode.gCost + movementCost;
                 

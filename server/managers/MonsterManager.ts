@@ -66,6 +66,16 @@ interface ServerMonsterState extends MonsterState {
         lastStairCheck: number;
         followingSince: number;
     };
+    // A* pathfinding state
+    currentPath?: WorldCoord[];
+    pathIndex?: number;
+    pathTarget?: WorldCoord;
+}
+
+// World coordinate type for A* pathfinding
+interface WorldCoord {
+    x: number;
+    y: number;
 }
 
 interface ServerWorldManager {
@@ -788,7 +798,52 @@ export class MonsterManager {
         
         // Try A* pathfinding first if available
         if (this.astarPathfinding) {
-            console.log(`[Monster ${monster.id}] Using A* pathfinding`);
+            // Check if we have a valid cached path
+            if (monster.currentPath && monster.pathTarget && 
+                monster.pathIndex !== undefined && monster.pathIndex < monster.currentPath.length) {
+                
+                // Check if target has moved significantly
+                const targetMoved = Math.abs(target.x - monster.pathTarget.x) > 64 || 
+                                  Math.abs(target.y - monster.pathTarget.y) > 64;
+                
+                if (!targetMoved) {
+                    // Use cached path - find next waypoint
+                    let nextWaypoint = monster.currentPath[monster.pathIndex];
+                    
+                    // Skip waypoints we're close to
+                    while (monster.pathIndex < monster.currentPath.length - 1) {
+                        const distToWaypoint = Math.sqrt(
+                            Math.pow(nextWaypoint.x - monster.x, 2) + 
+                            Math.pow(nextWaypoint.y - monster.y, 2)
+                        );
+                        
+                        if (distToWaypoint < 32) {
+                            // Close to waypoint, advance to next
+                            monster.pathIndex++;
+                            nextWaypoint = monster.currentPath[monster.pathIndex];
+                        } else {
+                            break;
+                        }
+                    }
+                    
+                    const moveDirection = {
+                        x: nextWaypoint.x - monster.x,
+                        y: nextWaypoint.y - monster.y
+                    };
+                    
+                    console.log(`[Monster ${monster.id}] Following cached path, waypoint ${monster.pathIndex}/${monster.currentPath.length}`);
+                    return moveDirection;
+                } else {
+                    // Target moved, invalidate path
+                    console.log(`[Monster ${monster.id}] Target moved, recalculating path`);
+                    monster.currentPath = undefined;
+                    monster.pathIndex = undefined;
+                    monster.pathTarget = undefined;
+                }
+            }
+            
+            // Calculate new path
+            console.log(`[Monster ${monster.id}] Calculating new A* path`);
             
             const pathResult = this.astarPathfinding.findPath(
                 { x: monster.x, y: monster.y },
@@ -796,17 +851,26 @@ export class MonsterManager {
             );
             
             if (pathResult.success && pathResult.worldPath.length > 1) {
-                // Get next step in path (skip current position)
+                // Cache the path
+                monster.currentPath = pathResult.worldPath;
+                monster.pathIndex = 1; // Skip current position
+                monster.pathTarget = { x: target.x, y: target.y };
+                
+                // Get next step in path
                 const nextStep = pathResult.worldPath[1];
                 const moveDirection = {
                     x: nextStep.x - monster.x,
                     y: nextStep.y - monster.y
                 };
                 
-                console.log(`[Monster ${monster.id}] A* found path with ${pathResult.worldPath.length} steps, moving to next step`);
+                console.log(`[Monster ${monster.id}] A* found path with ${pathResult.worldPath.length} steps`);
                 return moveDirection;
             } else {
                 console.log(`[Monster ${monster.id}] A* pathfinding failed, falling back to old logic`);
+                // Clear any cached path
+                monster.currentPath = undefined;
+                monster.pathIndex = undefined;
+                monster.pathTarget = undefined;
             }
         }
         
