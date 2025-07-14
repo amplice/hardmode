@@ -753,6 +753,18 @@ export class MonsterManager {
             }
         }
         
+        // Check if we need elevation change and prioritize nearby stairs
+        const monsterElevation = this.getElevationAt(monster.x, monster.y);
+        const targetElevation = this.getElevationAt(target.x, target.y);
+        
+        if (monsterElevation !== targetElevation) {
+            // Different elevations - look for nearby stairs first (within 5 tiles)
+            const nearbyStairDirection = this.findNearbyStairs(monster, 5);
+            if (nearbyStairDirection.x !== 0 || nearbyStairDirection.y !== 0) {
+                return nearbyStairDirection;
+            }
+        }
+        
         // Use BFS pathfinding for complex navigation
         const pathfindingResult = this.findPathToTarget(monster, target);
         if (pathfindingResult.x !== 0 || pathfindingResult.y !== 0) {
@@ -760,11 +772,8 @@ export class MonsterManager {
         }
         
         // Fallback to old behavior if pathfinding fails
-        const monsterElevation = this.getElevationAt(monster.x, monster.y);
-        const targetElevation = this.getElevationAt(target.x, target.y);
-        
         if (monsterElevation !== targetElevation) {
-            // Different elevations - find stairs
+            // Different elevations - find stairs with larger search radius
             const stairDirection = this.findNearestStairs(monster, targetElevation);
             if (stairDirection.x !== 0 || stairDirection.y !== 0) {
                 return stairDirection;
@@ -780,10 +789,47 @@ export class MonsterManager {
 
     /**
      * Check if there's clear line of sight between monster and target
+     * Enhanced to check elevation differences - no LOS through cliff walls
      */
     hasLineOfSight(monster: ServerMonsterState, target: { x: number, y: number }): boolean {
         if (!this.collisionMask) return false;
-        return this.collisionMask.isPathClear(monster.x, monster.y, target.x, target.y);
+        
+        // First check basic collision
+        if (!this.collisionMask.isPathClear(monster.x, monster.y, target.x, target.y)) {
+            return false;
+        }
+        
+        // Check elevation differences along the path - no LOS through cliff walls
+        const monsterElevation = this.getElevationAt(monster.x, monster.y);
+        const targetElevation = this.getElevationAt(target.x, target.y);
+        
+        // If same elevation, and collision check passed, we have LOS
+        if (monsterElevation === targetElevation) {
+            return true;
+        }
+        
+        // Different elevations - check if path crosses cliff edges
+        // Sample points along the line to check for elevation changes
+        const dx = target.x - monster.x;
+        const dy = target.y - monster.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const steps = Math.ceil(distance / 32); // Check every half-tile
+        
+        for (let i = 1; i < steps; i++) {
+            const progress = i / steps;
+            const checkX = monster.x + dx * progress;
+            const checkY = monster.y + dy * progress;
+            const checkElevation = this.getElevationAt(checkX, checkY);
+            
+            // If we hit a different elevation than start/end, and it's not stairs, no LOS
+            if (checkElevation !== monsterElevation && checkElevation !== targetElevation) {
+                if (!this.isOnStairs(checkX, checkY)) {
+                    return false; // Line crosses through cliff - no LOS
+                }
+            }
+        }
+        
+        return true; // Path is clear and doesn't cross cliffs
     }
 
     /**
@@ -885,6 +931,62 @@ export class MonsterManager {
             }
         } catch (error) {
             console.warn('[MonsterManager] Error finding stairs:', error);
+        }
+        
+        return { x: 0, y: 0 };
+    }
+
+    /**
+     * Find stairs within a small radius (for immediate stair detection)
+     */
+    findNearbyStairs(monster: ServerMonsterState, searchRadius: number): { x: number, y: number } {
+        try {
+            const worldGen = this.serverWorldManager.getWorldGenerator();
+            const stairsData = worldGen?.getStairsData();
+            if (!stairsData) return { x: 0, y: 0 };
+            
+            const monsterTileX = Math.floor(monster.x / GAME_CONSTANTS.WORLD.TILE_SIZE);
+            const monsterTileY = Math.floor(monster.y / GAME_CONSTANTS.WORLD.TILE_SIZE);
+            
+            let nearestStair = null;
+            let nearestDistance = Infinity;
+            
+            // Search for walkable stairs in nearby area
+            for (let dy = -searchRadius; dy <= searchRadius; dy++) {
+                for (let dx = -searchRadius; dx <= searchRadius; dx++) {
+                    const checkY = monsterTileY + dy;
+                    const checkX = monsterTileX + dx;
+                    
+                    if (checkY < 0 || checkX < 0 || checkY >= stairsData.length || checkX >= stairsData[0].length) {
+                        continue;
+                    }
+                    
+                    const stairInfo = stairsData[checkY][checkX];
+                    if (stairInfo && worldGen.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX)) {
+                        const stairWorldX = checkX * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+                        const stairWorldY = checkY * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+                        
+                        const distanceToStair = Math.sqrt(
+                            Math.pow(stairWorldX - monster.x, 2) + 
+                            Math.pow(stairWorldY - monster.y, 2)
+                        );
+                        
+                        if (distanceToStair < nearestDistance) {
+                            nearestDistance = distanceToStair;
+                            nearestStair = { x: stairWorldX, y: stairWorldY };
+                        }
+                    }
+                }
+            }
+            
+            if (nearestStair) {
+                return {
+                    x: nearestStair.x - monster.x,
+                    y: nearestStair.y - monster.y
+                };
+            }
+        } catch (error) {
+            console.warn('[MonsterManager] Error finding nearby stairs:', error);
         }
         
         return { x: 0, y: 0 };
