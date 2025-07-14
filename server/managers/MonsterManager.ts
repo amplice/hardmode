@@ -753,7 +753,13 @@ export class MonsterManager {
             }
         }
         
-        // If blocked, check if it's an elevation issue
+        // Use BFS pathfinding for complex navigation
+        const pathfindingResult = this.findPathToTarget(monster, target);
+        if (pathfindingResult.x !== 0 || pathfindingResult.y !== 0) {
+            return pathfindingResult;
+        }
+        
+        // Fallback to old behavior if pathfinding fails
         const monsterElevation = this.getElevationAt(monster.x, monster.y);
         const targetElevation = this.getElevationAt(target.x, target.y);
         
@@ -1078,6 +1084,142 @@ export class MonsterManager {
         }
         
         return { x: 0, y: 0 };
+    }
+
+    /**
+     * BFS pathfinding that understands elevation and stairs
+     */
+    findPathToTarget(monster: ServerMonsterState, target: { x: number, y: number }): { x: number, y: number } {
+        try {
+            const startTile = {
+                x: Math.floor(monster.x / GAME_CONSTANTS.WORLD.TILE_SIZE),
+                y: Math.floor(monster.y / GAME_CONSTANTS.WORLD.TILE_SIZE)
+            };
+            const targetTile = {
+                x: Math.floor(target.x / GAME_CONSTANTS.WORLD.TILE_SIZE),
+                y: Math.floor(target.y / GAME_CONSTANTS.WORLD.TILE_SIZE)
+            };
+            
+            // BFS with elevation awareness
+            const queue: Array<{x: number; y: number; path: {x: number, y: number}[]}> = [];
+            const visited = new Set<string>();
+            const maxSteps = 300; // Limit search to prevent lag
+            
+            queue.push({x: startTile.x, y: startTile.y, path: []});
+            visited.add(`${startTile.x},${startTile.y}`);
+            
+            const directions = [
+                {dx: 1, dy: 0}, {dx: -1, dy: 0}, {dx: 0, dy: 1}, {dx: 0, dy: -1},
+                // Include diagonals for better pathfinding
+                {dx: 1, dy: 1}, {dx: 1, dy: -1}, {dx: -1, dy: 1}, {dx: -1, dy: -1}
+            ];
+            
+            while (queue.length > 0 && visited.size < maxSteps) {
+                const current = queue.shift()!;
+                
+                // Found target
+                if (current.x === targetTile.x && current.y === targetTile.y) {
+                    if (current.path.length > 0) {
+                        const nextStep = current.path[0];
+                        return {
+                            x: nextStep.x - monster.x,
+                            y: nextStep.y - monster.y
+                        };
+                    }
+                }
+                
+                // Explore neighbors
+                for (const dir of directions) {
+                    const nextX = current.x + dir.dx;
+                    const nextY = current.y + dir.dy;
+                    const key = `${nextX},${nextY}`;
+                    
+                    if (visited.has(key)) continue;
+                    
+                    // Check bounds
+                    if (nextX < 0 || nextY < 0 || 
+                        nextX >= GAME_CONSTANTS.WORLD.WIDTH || 
+                        nextY >= GAME_CONSTANTS.WORLD.HEIGHT) {
+                        continue;
+                    }
+                    
+                    // Check if this tile is reachable
+                    if (this.isTileReachable(current.x, current.y, nextX, nextY)) {
+                        visited.add(key);
+                        
+                        const worldX = nextX * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+                        const worldY = nextY * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+                        
+                        const newPath = current.path.length === 0 ? 
+                            [{x: worldX, y: worldY}] : 
+                            [...current.path];
+                        
+                        queue.push({x: nextX, y: nextY, path: newPath});
+                    }
+                }
+            }
+        } catch (error) {
+            console.warn('[MonsterManager] Pathfinding error:', error);
+        }
+        
+        return { x: 0, y: 0 };
+    }
+
+    /**
+     * Check if monster can move from one tile to another (considering elevation and stairs)
+     */
+    isTileReachable(fromX: number, fromY: number, toX: number, toY: number): boolean {
+        // Convert to world coordinates for collision checking
+        const fromWorldX = fromX * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+        const fromWorldY = fromY * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+        const toWorldX = toX * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+        const toWorldY = toY * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+        
+        // Basic collision check
+        if (!this.collisionMask?.isWalkable(toWorldX, toWorldY)) {
+            return false;
+        }
+        
+        // Get elevations
+        const fromElevation = this.getElevationAt(fromWorldX, fromWorldY);
+        const toElevation = this.getElevationAt(toWorldX, toWorldY);
+        
+        // Same elevation - just check walkability
+        if (fromElevation === toElevation) {
+            return true;
+        }
+        
+        // Different elevations - need stairs or to be on stairs
+        const isFromStairs = this.isOnStairs(fromWorldX, fromWorldY);
+        const isToStairs = this.isOnStairs(toWorldX, toWorldY);
+        
+        // Can move between elevations if either position has stairs
+        if (isFromStairs || isToStairs) {
+            return true;
+        }
+        
+        // Check if there are stairs connecting these elevations nearby
+        const stairDistance = 1; // Check immediately adjacent tiles for stairs
+        for (let dy = -stairDistance; dy <= stairDistance; dy++) {
+            for (let dx = -stairDistance; dx <= stairDistance; dx++) {
+                const checkX = fromX + dx;
+                const checkY = fromY + dy;
+                
+                if (checkX >= 0 && checkY >= 0 && 
+                    checkX < GAME_CONSTANTS.WORLD.WIDTH && 
+                    checkY < GAME_CONSTANTS.WORLD.HEIGHT) {
+                    
+                    const checkWorldX = checkX * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+                    const checkWorldY = checkY * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+                    
+                    if (this.isOnStairs(checkWorldX, checkWorldY)) {
+                        return true; // Found stairs nearby
+                    }
+                }
+            }
+        }
+        
+        return false; // Can't reach different elevation without stairs
     }
 
     getFacingDirection(dx: number, dy: number): Direction {
