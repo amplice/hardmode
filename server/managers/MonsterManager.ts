@@ -57,6 +57,14 @@ interface ServerMonsterState extends MonsterState {
     positionHistory?: Position[];
     stuckCounter?: number;
     lastStuckCheck?: number;
+    // Debug logging
+    lastDebugLog?: number;
+    // Wall following state
+    wallFollowState?: {
+        direction: { x: number, y: number };
+        lastStairCheck: number;
+        followingSince: number;
+    };
 }
 
 interface ServerWorldManager {
@@ -725,84 +733,83 @@ export class MonsterManager {
      * Smart stair beeline movement - simple and effective
      */
     calculateSmartMovement(monster: ServerMonsterState, target: { x: number, y: number }): { x: number, y: number } {
+        const dx = target.x - monster.x;
+        const dy = target.y - monster.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const monsterElevation = this.getElevationAt(monster.x, monster.y);
+        const targetElevation = this.getElevationAt(target.x, target.y);
+        
+        // Debug logging every few seconds
+        if (!monster.lastDebugLog || Date.now() - monster.lastDebugLog > 3000) {
+            console.log(`[Monster ${monster.id}] Pos: (${Math.round(monster.x)}, ${Math.round(monster.y)}), Target: (${Math.round(target.x)}, ${Math.round(target.y)}), MonsterElev: ${monsterElevation}, TargetElev: ${targetElevation}, Distance: ${Math.round(distance)}`);
+            monster.lastDebugLog = Date.now();
+        }
+        
         // Check if monster is stuck first
         if (this.isMonsterStuck(monster)) {
+            console.log(`[Monster ${monster.id}] STUCK - attempting escape`);
             const escapeMovement = this.getEscapeMovement(monster, target);
             if (escapeMovement.x !== 0 || escapeMovement.y !== 0) {
                 return escapeMovement;
             }
         }
         
-        const dx = target.x - monster.x;
-        const dy = target.y - monster.y;
-        const monsterElevation = this.getElevationAt(monster.x, monster.y);
-        const targetElevation = this.getElevationAt(target.x, target.y);
-        
         // === STAIR BEELINE LOGIC ===
         
         // 1. Can we see the target?
-        if (this.hasLineOfSight(monster, target)) {
+        const hasLOS = this.hasLineOfSight(monster, target);
+        if (hasLOS) {
             // 2. Are we on the same elevation?
             if (monsterElevation === targetElevation) {
                 // Same elevation and can see - move directly
                 return { x: dx, y: dy };
             } else {
                 // Different elevation but can see - go to nearest stairs!
-                console.log(`[Monster ${monster.id}] Can see target but different elevation, seeking stairs`);
+                console.log(`[Monster ${monster.id}] Can see target but different elevation (${monsterElevation} vs ${targetElevation}), seeking stairs`);
                 const stairDirection = this.findNearestStairs(monster, targetElevation);
                 if (stairDirection.x !== 0 || stairDirection.y !== 0) {
+                    console.log(`[Monster ${monster.id}] Found stairs, moving toward them`);
                     return stairDirection;
                 }
                 
+                console.log(`[Monster ${monster.id}] No elevation-specific stairs found, trying nearby stairs`);
                 // No stairs found - try nearby stairs without elevation filter
-                const nearbyStairs = this.findNearbyStairs(monster, 10);
+                const nearbyStairs = this.findNearbyStairs(monster, 15);
                 if (nearbyStairs.x !== 0 || nearbyStairs.y !== 0) {
+                    console.log(`[Monster ${monster.id}] Found nearby stairs`);
                     return nearbyStairs;
+                } else {
+                    console.log(`[Monster ${monster.id}] NO STAIRS FOUND AT ALL`);
+                }
+            }
+        } else {
+            // No line of sight
+            if (monsterElevation !== targetElevation) {
+                console.log(`[Monster ${monster.id}] No LOS, different elevation, seeking stairs`);
+                const stairDirection = this.findNearestStairs(monster, targetElevation);
+                if (stairDirection.x !== 0 || stairDirection.y !== 0) {
+                    return stairDirection;
                 }
             }
         }
         
         // 3. Are we currently on stairs?
         if (this.isOnStairs(monster.x, monster.y)) {
-            // On stairs - keep moving toward target elevation
             console.log(`[Monster ${monster.id}] On stairs, continuing toward target`);
-            
-            // Check if path ahead is clear
-            const stepSize = 32;
-            const stepX = monster.x + Math.sign(dx) * stepSize;
-            const stepY = monster.y + Math.sign(dy) * stepSize;
-            
-            if (this.collisionMask?.isWalkable(stepX, stepY)) {
-                return { x: dx, y: dy }; // Continue toward target
-            } else {
-                // Blocked on stairs - try slight adjustments
-                const adjustments = [
-                    { x: Math.sign(dx), y: 0 },
-                    { x: 0, y: Math.sign(dy) },
-                    { x: Math.sign(dx), y: Math.sign(dy) }
-                ];
-                
-                for (const adj of adjustments) {
-                    const testX = monster.x + adj.x * stepSize;
-                    const testY = monster.y + adj.y * stepSize;
-                    if (this.collisionMask?.isWalkable(testX, testY)) {
-                        return adj;
-                    }
-                }
-            }
+            return { x: dx, y: dy };
         }
         
-        // 4. Different elevations and can't see target - seek stairs
-        if (monsterElevation !== targetElevation) {
-            console.log(`[Monster ${monster.id}] Different elevation, can't see target, seeking stairs`);
-            const stairDirection = this.findNearestStairs(monster, targetElevation);
-            if (stairDirection.x !== 0 || stairDirection.y !== 0) {
-                return stairDirection;
-            }
+        // 4. Fallback - try to find ANY stairs nearby
+        console.log(`[Monster ${monster.id}] Fallback: looking for any stairs within 20 tiles`);
+        const anyStairs = this.findNearbyStairs(monster, 20);
+        if (anyStairs.x !== 0 || anyStairs.y !== 0) {
+            console.log(`[Monster ${monster.id}] Found fallback stairs`);
+            return anyStairs;
         }
         
-        // 5. Fallback to simple obstacle avoidance
-        return this.findPathAroundObstacle(monster, target);
+        // 5. Final fallback - wall following behavior to find stairs
+        console.log(`[Monster ${monster.id}] No stairs found anywhere, using wall following to search`);
+        return this.followWallToFindStairs(monster, target);
     }
 
     /**
@@ -1043,6 +1050,102 @@ export class MonsterManager {
             if (this.collisionMask?.isWalkable(testX, testY)) {
                 return { x: dir.x, y: dir.y };
             }
+        }
+        
+        return { x: 0, y: 0 };
+    }
+
+    /**
+     * Wall following behavior specifically designed to find stairs
+     */
+    followWallToFindStairs(monster: ServerMonsterState, target: { x: number, y: number }): { x: number, y: number } {
+        const dx = target.x - monster.x;
+        const dy = target.y - monster.y;
+        const stepSize = 32;
+        
+        // Get current elevation
+        const monsterElevation = this.getElevationAt(monster.x, monster.y);
+        
+        // Initialize or use existing wall following state
+        if (!monster.wallFollowState) {
+            monster.wallFollowState = {
+                direction: { x: Math.sign(dx), y: Math.sign(dy) },
+                lastStairCheck: 0,
+                followingSince: Date.now()
+            };
+        }
+        
+        // Check for stairs every 500ms while wall following
+        const now = Date.now();
+        if (now - monster.wallFollowState.lastStairCheck > 500) {
+            monster.wallFollowState.lastStairCheck = now;
+            
+            // Look for stairs in expanded radius while wall following
+            const nearStairs = this.findNearbyStairs(monster, 8);
+            if (nearStairs.x !== 0 || nearStairs.y !== 0) {
+                console.log(`[Monster ${monster.id}] Found stairs during wall following!`);
+                delete monster.wallFollowState; // Reset state
+                return nearStairs;
+            }
+        }
+        
+        // Wall following directions - try to move along cliff edges
+        const directions = [
+            // Continue in current wall-following direction
+            monster.wallFollowState.direction,
+            // Try perpendicular directions (follow wall edge)
+            { x: -monster.wallFollowState.direction.y, y: monster.wallFollowState.direction.x },
+            { x: monster.wallFollowState.direction.y, y: -monster.wallFollowState.direction.x },
+            // Try toward target
+            { x: Math.sign(dx), y: 0 },
+            { x: 0, y: Math.sign(dy) },
+            // Try diagonal toward target
+            { x: Math.sign(dx), y: Math.sign(dy) },
+            // Try any walkable direction
+            { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }
+        ];
+        
+        for (const dir of directions) {
+            const testX = monster.x + dir.x * stepSize;
+            const testY = monster.y + dir.y * stepSize;
+            
+            // Check if position is walkable
+            if (this.collisionMask?.isWalkable(testX, testY)) {
+                // Check if this position might help us find stairs (different elevation nearby)
+                const testElevation = this.getElevationAt(testX, testY);
+                
+                // If we find a position with different elevation nearby, it might lead to stairs
+                const surroundingPositions = [
+                    { x: testX + stepSize, y: testY },
+                    { x: testX - stepSize, y: testY },
+                    { x: testX, y: testY + stepSize },
+                    { x: testX, y: testY - stepSize }
+                ];
+                
+                for (const pos of surroundingPositions) {
+                    const surroundingElevation = this.getElevationAt(pos.x, pos.y);
+                    if (surroundingElevation !== monsterElevation && this.collisionMask?.isWalkable(pos.x, pos.y)) {
+                        // Found elevation difference - might be near stairs
+                        console.log(`[Monster ${monster.id}] Wall following found elevation change, investigating`);
+                        monster.wallFollowState.direction = dir;
+                        return dir;
+                    }
+                }
+                
+                // Otherwise, use this direction for wall following
+                monster.wallFollowState.direction = dir;
+                return dir;
+            }
+        }
+        
+        // If wall following fails after too long, reset and try random direction
+        if (now - monster.wallFollowState.followingSince > 10000) {
+            console.log(`[Monster ${monster.id}] Wall following timeout, trying random movement`);
+            delete monster.wallFollowState;
+            // Try random wandering
+            const wanderX = (Math.random() - 0.5) * 2;
+            const wanderY = (Math.random() - 0.5) * 2;
+            return { x: wanderX, y: wanderY };
         }
         
         return { x: 0, y: 0 };
