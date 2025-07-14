@@ -4,6 +4,7 @@ import { CollisionMask } from '../../shared/systems/CollisionMask.js';
 import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
 import { createMonsterState, validateMonsterState } from '../../shared/factories/EntityFactories.js';
 import { CalculationEngine } from '../systems/CalculationEngine.js';
+import { AStarPathfinding } from '../systems/AStarPathfinding.js';
 import { 
     MonsterStateMachine, 
     type MonsterStateData, 
@@ -90,6 +91,7 @@ export class MonsterManager {
     private serverWorldManager: ServerWorldManager;
     private collisionMask: CollisionMask;
     public damageProcessor?: DamageProcessor;
+    private astarPathfinding?: AStarPathfinding;
 
     // Helper function to convert PlayerState to coordinate format for getDistance
     private playerToCoords(player: PlayerState): { x: number, y: number } {
@@ -128,6 +130,9 @@ export class MonsterManager {
             GAME_CONSTANTS.WORLD.TILE_SIZE
         );
         this.initializeCollisionMask();
+        
+        // Initialize A* pathfinding system after collision mask is ready
+        this.initializeAStarPathfinding();
     }
 
     /**
@@ -143,6 +148,23 @@ export class MonsterManager {
         this.collisionMask.generateFromElevationData(worldData.elevationData, worldGen);
         
         console.log('[MonsterManager] Collision mask initialized using shared world data');
+    }
+    
+    /**
+     * Initialize A* pathfinding system
+     */
+    private initializeAStarPathfinding(): void {
+        try {
+            const worldGen = this.serverWorldManager.getWorldGenerator();
+            if (worldGen && this.collisionMask) {
+                this.astarPathfinding = new AStarPathfinding(this.collisionMask, worldGen);
+                console.log('[MonsterManager] A* pathfinding system initialized');
+            } else {
+                console.warn('[MonsterManager] Could not initialize A* pathfinding - missing dependencies');
+            }
+        } catch (error) {
+            console.error('[MonsterManager] Failed to initialize A* pathfinding:', error);
+        }
     }
     
     /**
@@ -739,9 +761,17 @@ export class MonsterManager {
         const monsterElevation = this.getElevationAt(monster.x, monster.y);
         const targetElevation = this.getElevationAt(target.x, target.y);
         
-        // Debug logging every few seconds
-        if (!monster.lastDebugLog || Date.now() - monster.lastDebugLog > 3000) {
+        // Debug logging every few seconds with A* tile info
+        if (!monster.lastDebugLog || Date.now() - monster.lastDebugLog > 5000) {
             console.log(`[Monster ${monster.id}] Pos: (${Math.round(monster.x)}, ${Math.round(monster.y)}), Target: (${Math.round(target.x)}, ${Math.round(target.y)}), MonsterElev: ${monsterElevation}, TargetElev: ${targetElevation}, Distance: ${Math.round(distance)}`);
+            
+            // Test A* tile system
+            if (this.astarPathfinding) {
+                const monsterTileInfo = this.astarPathfinding.debugWalkabilityAt(monster.x, monster.y);
+                const targetTileInfo = this.astarPathfinding.debugWalkabilityAt(target.x, target.y);
+                console.log(`[Monster ${monster.id}] Tiles - Monster: (${monsterTileInfo.tile.x}, ${monsterTileInfo.tile.y}) walkable=${monsterTileInfo.walkable} elev=${monsterTileInfo.elevation}, Target: (${targetTileInfo.tile.x}, ${targetTileInfo.tile.y}) walkable=${targetTileInfo.walkable} elev=${targetTileInfo.elevation}`);
+            }
+            
             monster.lastDebugLog = Date.now();
         }
         
