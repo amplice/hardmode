@@ -182,7 +182,7 @@ export const MONSTER_STATS = {
         aggroRange: 1200,
         xp: 5,
         attackCooldown: 1800,
-        collisionRadius: 15,
+        collisionRadius: 20,
         attackDelay: 625, // ms delay before damage (75% of 833ms animation)
         attackDuration: 833 // Total animation duration (15 frames at 0.3 speed)
     },
@@ -194,7 +194,7 @@ export const MONSTER_STATS = {
         aggroRange: 800,
         xp: 10,
         attackCooldown: 3000,
-        collisionRadius: 15,
+        collisionRadius: 20,
         attackDelay: 625, // ms delay before damage (75% of 833ms animation)
         attackDuration: 833 // Total animation duration (15 frames at 0.3 speed)
     },
@@ -206,7 +206,7 @@ export const MONSTER_STATS = {
         aggroRange: 3000,
         xp: 15,
         attackCooldown: 1200,
-        collisionRadius: 10,
+        collisionRadius: 15,
         attackDelay: 469, // ms delay before damage (75% of 625ms animation)
         attackDuration: 625 // Total animation duration (15 frames at 0.4 speed)
     },
@@ -218,7 +218,7 @@ export const MONSTER_STATS = {
         aggroRange: 1500,
         xp: 10,
         attackCooldown: 3000,
-        collisionRadius: 15,
+        collisionRadius: 20,
         attackDelay: 536, // ms delay before damage (75% of 714ms animation)
         attackDuration: 714 // Total animation duration (15 frames at 0.35 speed)
     }
