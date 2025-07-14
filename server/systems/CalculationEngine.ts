@@ -55,9 +55,11 @@ export class CalculationEngine {
         // Get base damage from attack definitions
         const baseDamage = this.getBaseAttackDamage(attackerClass, attackType);
         
+        // Apply damage bonus from powerups
+        const damageBonus = (attacker as any).damageBonus || 0;
+        
         // Future: Apply damage modifiers, criticals, resistances here
-        // For now, return base damage to maintain current game balance
-        return baseDamage;
+        return baseDamage + damageBonus;
     }
     
     /**
