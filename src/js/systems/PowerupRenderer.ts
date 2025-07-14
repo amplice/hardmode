@@ -165,9 +165,9 @@ export class PowerupRenderer {
         const colors = {
             'health': 0xFF4444,       // Red
             'armor': 0x44FF44,        // Green
-            'speed': 0x4444FF,        // Blue
-            'damage': 0xFF8844,       // Orange
-            'invulnerability': 0xFF44FF // Purple
+            'speed': 0xFF8844,        // Orange (matching sprite)
+            'damage': 0x44DDFF,       // Light blue (matching sprite)
+            'invulnerability': 0xFFFF44 // Yellow
         };
         return colors[type as keyof typeof colors] || 0xFFFFFF;
     }
