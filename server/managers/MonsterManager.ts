@@ -722,7 +722,7 @@ export class MonsterManager {
     }
 
     /**
-     * Smart movement calculation that understands elevation and stairs
+     * Smart stair beeline movement - simple and effective
      */
     calculateSmartMovement(monster: ServerMonsterState, target: { x: number, y: number }): { x: number, y: number } {
         // Check if monster is stuck first
@@ -735,55 +735,73 @@ export class MonsterManager {
         
         const dx = target.x - monster.x;
         const dy = target.y - monster.y;
+        const monsterElevation = this.getElevationAt(monster.x, monster.y);
+        const targetElevation = this.getElevationAt(target.x, target.y);
         
-        // First check if we have clear line of sight
+        // === STAIR BEELINE LOGIC ===
+        
+        // 1. Can we see the target?
         if (this.hasLineOfSight(monster, target)) {
-            return { x: dx, y: dy };
+            // 2. Are we on the same elevation?
+            if (monsterElevation === targetElevation) {
+                // Same elevation and can see - move directly
+                return { x: dx, y: dy };
+            } else {
+                // Different elevation but can see - go to nearest stairs!
+                console.log(`[Monster ${monster.id}] Can see target but different elevation, seeking stairs`);
+                const stairDirection = this.findNearestStairs(monster, targetElevation);
+                if (stairDirection.x !== 0 || stairDirection.y !== 0) {
+                    return stairDirection;
+                }
+                
+                // No stairs found - try nearby stairs without elevation filter
+                const nearbyStairs = this.findNearbyStairs(monster, 10);
+                if (nearbyStairs.x !== 0 || nearbyStairs.y !== 0) {
+                    return nearbyStairs;
+                }
+            }
         }
         
-        // Check if we're currently on stairs - if so, keep moving toward target
+        // 3. Are we currently on stairs?
         if (this.isOnStairs(monster.x, monster.y)) {
-            // On stairs, move toward target but check if path ahead is clear
-            const stepSize = 32; // One step
+            // On stairs - keep moving toward target elevation
+            console.log(`[Monster ${monster.id}] On stairs, continuing toward target`);
+            
+            // Check if path ahead is clear
+            const stepSize = 32;
             const stepX = monster.x + Math.sign(dx) * stepSize;
             const stepY = monster.y + Math.sign(dy) * stepSize;
             
             if (this.collisionMask?.isWalkable(stepX, stepY)) {
                 return { x: dx, y: dy }; // Continue toward target
+            } else {
+                // Blocked on stairs - try slight adjustments
+                const adjustments = [
+                    { x: Math.sign(dx), y: 0 },
+                    { x: 0, y: Math.sign(dy) },
+                    { x: Math.sign(dx), y: Math.sign(dy) }
+                ];
+                
+                for (const adj of adjustments) {
+                    const testX = monster.x + adj.x * stepSize;
+                    const testY = monster.y + adj.y * stepSize;
+                    if (this.collisionMask?.isWalkable(testX, testY)) {
+                        return adj;
+                    }
+                }
             }
         }
         
-        // Check if we need elevation change and prioritize nearby stairs
-        const monsterElevation = this.getElevationAt(monster.x, monster.y);
-        const targetElevation = this.getElevationAt(target.x, target.y);
-        
+        // 4. Different elevations and can't see target - seek stairs
         if (monsterElevation !== targetElevation) {
-            // Different elevations - look for nearby stairs first (within 5 tiles)
-            const nearbyStairDirection = this.findNearbyStairs(monster, 5);
-            if (nearbyStairDirection.x !== 0 || nearbyStairDirection.y !== 0) {
-                return nearbyStairDirection;
-            }
-        }
-        
-        // Use BFS pathfinding for complex navigation
-        const pathfindingResult = this.findPathToTarget(monster, target);
-        if (pathfindingResult.x !== 0 || pathfindingResult.y !== 0) {
-            return pathfindingResult;
-        }
-        
-        // Fallback to old behavior if pathfinding fails
-        if (monsterElevation !== targetElevation) {
-            // Different elevations - find stairs with larger search radius
+            console.log(`[Monster ${monster.id}] Different elevation, can't see target, seeking stairs`);
             const stairDirection = this.findNearestStairs(monster, targetElevation);
             if (stairDirection.x !== 0 || stairDirection.y !== 0) {
                 return stairDirection;
             }
-            
-            // No stairs found, try wall-following to find a way around
-            return this.followWallTowardTarget(monster, target);
         }
         
-        // Same elevation but blocked - try to move around obstacle
+        // 5. Fallback to simple obstacle avoidance
         return this.findPathAroundObstacle(monster, target);
     }
 
