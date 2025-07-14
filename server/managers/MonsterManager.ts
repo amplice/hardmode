@@ -683,13 +683,14 @@ export class MonsterManager {
 
     moveToward(monster: ServerMonsterState, target: PlayerState, speed: number): void {
         const targetCoords = this.playerToCoords(target);
-        const dx = targetCoords.x - monster.x;
-        const dy = targetCoords.y - monster.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
         
-        if (distance > 0) {
-            monster.velocity.x = (dx / distance) * speed;
-            monster.velocity.y = (dy / distance) * speed;
+        // Use smart pathfinding that understands elevation and stairs
+        const movement = this.calculateSmartMovement(monster, targetCoords);
+        
+        if (movement.x !== 0 || movement.y !== 0) {
+            const distance = Math.sqrt(movement.x * movement.x + movement.y * movement.y);
+            monster.velocity.x = (movement.x / distance) * speed;
+            monster.velocity.y = (movement.y / distance) * speed;
             
             // Calculate intended new position
             const newX = monster.x + monster.velocity.x;
@@ -703,15 +704,182 @@ export class MonsterManager {
             } else {
                 // Movement blocked, try partial movement (sliding along walls)
                 if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, monster.y)) {
-                    // Can move in X direction only
                     monster.x = newX;
                 } else if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, monster.x, newY)) {
-                    // Can move in Y direction only
                     monster.y = newY;
+                } else {
+                    // Completely blocked, try wandering to find better position
+                    this.attemptWandering(monster, speed);
                 }
-                // If both directions blocked, don't move (prevents getting stuck)
             }
             
+            monster.facing = this.getFacingDirection(movement.x, movement.y);
+        }
+    }
+
+    /**
+     * Smart movement calculation that understands elevation and stairs
+     */
+    calculateSmartMovement(monster: ServerMonsterState, target: { x: number, y: number }): { x: number, y: number } {
+        const dx = target.x - monster.x;
+        const dy = target.y - monster.y;
+        
+        // First check if we have clear line of sight
+        if (this.hasLineOfSight(monster, target)) {
+            return { x: dx, y: dy };
+        }
+        
+        // If blocked, check if it's an elevation issue
+        const monsterElevation = this.getElevationAt(monster.x, monster.y);
+        const targetElevation = this.getElevationAt(target.x, target.y);
+        
+        if (monsterElevation !== targetElevation) {
+            // Different elevations - find stairs
+            const stairDirection = this.findNearestStairs(monster, targetElevation);
+            if (stairDirection.x !== 0 || stairDirection.y !== 0) {
+                return stairDirection;
+            }
+        }
+        
+        // Fallback: try to move around obstacle
+        return this.findPathAroundObstacle(monster, target);
+    }
+
+    /**
+     * Check if there's clear line of sight between monster and target
+     */
+    hasLineOfSight(monster: ServerMonsterState, target: { x: number, y: number }): boolean {
+        if (!this.collisionMask) return false;
+        return this.collisionMask.isPathClear(monster.x, monster.y, target.x, target.y);
+    }
+
+    /**
+     * Get elevation level at world coordinates
+     */
+    getElevationAt(worldX: number, worldY: number): number {
+        try {
+            const worldData = this.serverWorldManager.getWorldData();
+            if (!worldData?.elevationData) return 0;
+            
+            const tileX = Math.floor(worldX / GAME_CONSTANTS.WORLD.TILE_SIZE);
+            const tileY = Math.floor(worldY / GAME_CONSTANTS.WORLD.TILE_SIZE);
+            
+            if (tileX < 0 || tileY < 0 || tileY >= worldData.elevationData.length || tileX >= worldData.elevationData[0].length) {
+                return 0;
+            }
+            
+            return worldData.elevationData[tileY][tileX];
+        } catch (error) {
+            return 0;
+        }
+    }
+
+    /**
+     * Find direction toward nearest stairs that connect to target elevation
+     */
+    findNearestStairs(monster: ServerMonsterState, targetElevation: number): { x: number, y: number } {
+        try {
+            const worldGen = this.serverWorldManager.getWorldGenerator();
+            const stairsData = worldGen?.getStairsData();
+            if (!stairsData) return { x: 0, y: 0 };
+            
+            const monsterTileX = Math.floor(monster.x / GAME_CONSTANTS.WORLD.TILE_SIZE);
+            const monsterTileY = Math.floor(monster.y / GAME_CONSTANTS.WORLD.TILE_SIZE);
+            const searchRadius = 10; // Search within 10 tiles
+            
+            let nearestStair = null;
+            let nearestDistance = Infinity;
+            
+            // Search for walkable stairs in nearby area
+            for (let dy = -searchRadius; dy <= searchRadius; dy++) {
+                for (let dx = -searchRadius; dx <= searchRadius; dx++) {
+                    const checkY = monsterTileY + dy;
+                    const checkX = monsterTileX + dx;
+                    
+                    if (checkY < 0 || checkX < 0 || checkY >= stairsData.length || checkX >= stairsData[0].length) {
+                        continue;
+                    }
+                    
+                    const stairInfo = stairsData[checkY][checkX];
+                    if (stairInfo && worldGen.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX)) {
+                        // Check if this stair connects our elevation to target elevation
+                        const stairWorldX = checkX * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+                        const stairWorldY = checkY * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
+                        
+                        const distanceToStair = Math.sqrt(
+                            Math.pow(stairWorldX - monster.x, 2) + 
+                            Math.pow(stairWorldY - monster.y, 2)
+                        );
+                        
+                        if (distanceToStair < nearestDistance) {
+                            nearestDistance = distanceToStair;
+                            nearestStair = { x: stairWorldX, y: stairWorldY };
+                        }
+                    }
+                }
+            }
+            
+            if (nearestStair) {
+                return {
+                    x: nearestStair.x - monster.x,
+                    y: nearestStair.y - monster.y
+                };
+            }
+        } catch (error) {
+            console.warn('[MonsterManager] Error finding stairs:', error);
+        }
+        
+        return { x: 0, y: 0 };
+    }
+
+    /**
+     * Find path around simple obstacles
+     */
+    findPathAroundObstacle(monster: ServerMonsterState, target: { x: number, y: number }): { x: number, y: number } {
+        const dx = target.x - monster.x;
+        const dy = target.y - monster.y;
+        
+        // Try moving primarily in the direction with larger difference
+        if (Math.abs(dx) > Math.abs(dy)) {
+            // Try horizontal movement first
+            if (this.collisionMask?.isWalkable(monster.x + Math.sign(dx) * 32, monster.y)) {
+                return { x: Math.sign(dx), y: 0 };
+            }
+            // Then try vertical movement
+            if (this.collisionMask?.isWalkable(monster.x, monster.y + Math.sign(dy) * 32)) {
+                return { x: 0, y: Math.sign(dy) };
+            }
+        } else {
+            // Try vertical movement first
+            if (this.collisionMask?.isWalkable(monster.x, monster.y + Math.sign(dy) * 32)) {
+                return { x: 0, y: Math.sign(dy) };
+            }
+            // Then try horizontal movement
+            if (this.collisionMask?.isWalkable(monster.x + Math.sign(dx) * 32, monster.y)) {
+                return { x: Math.sign(dx), y: 0 };
+            }
+        }
+        
+        return { x: 0, y: 0 };
+    }
+
+    /**
+     * Wander in a random direction to find better position
+     */
+    attemptWandering(monster: ServerMonsterState, speed: number): void {
+        const wanderDistance = 64; // Try to move 1 tile in random direction
+        const angle = Math.random() * Math.PI * 2;
+        const dx = Math.cos(angle) * wanderDistance;
+        const dy = Math.sin(angle) * wanderDistance;
+        
+        const newX = monster.x + dx;
+        const newY = monster.y + dy;
+        
+        if (this.collisionMask?.canMove(monster.x, monster.y, newX, newY)) {
+            monster.velocity.x = (dx / wanderDistance) * speed;
+            monster.velocity.y = (dy / wanderDistance) * speed;
+            monster.x = newX;
+            monster.y = newY;
             monster.facing = this.getFacingDirection(dx, dy);
         }
     }
