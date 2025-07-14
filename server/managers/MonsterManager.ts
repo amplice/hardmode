@@ -729,6 +729,18 @@ export class MonsterManager {
             return { x: dx, y: dy };
         }
         
+        // Check if we're currently on stairs - if so, keep moving toward target
+        if (this.isOnStairs(monster.x, monster.y)) {
+            // On stairs, move toward target but check if path ahead is clear
+            const stepSize = 32; // One step
+            const stepX = monster.x + Math.sign(dx) * stepSize;
+            const stepY = monster.y + Math.sign(dy) * stepSize;
+            
+            if (this.collisionMask?.isWalkable(stepX, stepY)) {
+                return { x: dx, y: dy }; // Continue toward target
+            }
+        }
+        
         // If blocked, check if it's an elevation issue
         const monsterElevation = this.getElevationAt(monster.x, monster.y);
         const targetElevation = this.getElevationAt(target.x, target.y);
@@ -739,9 +751,12 @@ export class MonsterManager {
             if (stairDirection.x !== 0 || stairDirection.y !== 0) {
                 return stairDirection;
             }
+            
+            // No stairs found, try wall-following to find a way around
+            return this.followWallTowardTarget(monster, target);
         }
         
-        // Fallback: try to move around obstacle
+        // Same elevation but blocked - try to move around obstacle
         return this.findPathAroundObstacle(monster, target);
     }
 
@@ -775,6 +790,29 @@ export class MonsterManager {
     }
 
     /**
+     * Check if monster is currently on stairs
+     */
+    isOnStairs(worldX: number, worldY: number): boolean {
+        try {
+            const worldGen = this.serverWorldManager.getWorldGenerator();
+            const stairsData = worldGen?.getStairsData();
+            if (!stairsData) return false;
+            
+            const tileX = Math.floor(worldX / GAME_CONSTANTS.WORLD.TILE_SIZE);
+            const tileY = Math.floor(worldY / GAME_CONSTANTS.WORLD.TILE_SIZE);
+            
+            if (tileX < 0 || tileY < 0 || tileY >= stairsData.length || tileX >= stairsData[0].length) {
+                return false;
+            }
+            
+            const stairInfo = stairsData[tileY][tileX];
+            return stairInfo && worldGen.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX);
+        } catch (error) {
+            return false;
+        }
+    }
+
+    /**
      * Find direction toward nearest stairs that connect to target elevation
      */
     findNearestStairs(monster: ServerMonsterState, targetElevation: number): { x: number, y: number } {
@@ -785,7 +823,7 @@ export class MonsterManager {
             
             const monsterTileX = Math.floor(monster.x / GAME_CONSTANTS.WORLD.TILE_SIZE);
             const monsterTileY = Math.floor(monster.y / GAME_CONSTANTS.WORLD.TILE_SIZE);
-            const searchRadius = 10; // Search within 10 tiles
+            const searchRadius = 25; // Increased search radius to 25 tiles
             
             let nearestStair = null;
             let nearestDistance = Infinity;
@@ -802,18 +840,20 @@ export class MonsterManager {
                     
                     const stairInfo = stairsData[checkY][checkX];
                     if (stairInfo && worldGen.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX)) {
-                        // Check if this stair connects our elevation to target elevation
                         const stairWorldX = checkX * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
                         const stairWorldY = checkY * GAME_CONSTANTS.WORLD.TILE_SIZE + GAME_CONSTANTS.WORLD.TILE_SIZE / 2;
                         
-                        const distanceToStair = Math.sqrt(
-                            Math.pow(stairWorldX - monster.x, 2) + 
-                            Math.pow(stairWorldY - monster.y, 2)
-                        );
-                        
-                        if (distanceToStair < nearestDistance) {
-                            nearestDistance = distanceToStair;
-                            nearestStair = { x: stairWorldX, y: stairWorldY };
+                        // Check if we can actually reach this stair (rough line-of-sight)
+                        if (this.hasLineOfSight(monster, { x: stairWorldX, y: stairWorldY })) {
+                            const distanceToStair = Math.sqrt(
+                                Math.pow(stairWorldX - monster.x, 2) + 
+                                Math.pow(stairWorldY - monster.y, 2)
+                            );
+                            
+                            if (distanceToStair < nearestDistance) {
+                                nearestDistance = distanceToStair;
+                                nearestStair = { x: stairWorldX, y: stairWorldY };
+                            }
                         }
                     }
                 }
@@ -827,6 +867,44 @@ export class MonsterManager {
             }
         } catch (error) {
             console.warn('[MonsterManager] Error finding stairs:', error);
+        }
+        
+        return { x: 0, y: 0 };
+    }
+
+    /**
+     * Follow walls to eventually find stairs or a way around
+     */
+    followWallTowardTarget(monster: ServerMonsterState, target: { x: number, y: number }): { x: number, y: number } {
+        const dx = target.x - monster.x;
+        const dy = target.y - monster.y;
+        
+        // Determine which direction we want to go
+        const preferredX = Math.sign(dx);
+        const preferredY = Math.sign(dy);
+        
+        // Try moving along walls in the preferred direction
+        const stepSize = 32;
+        const directions = [
+            // Prefer movement toward target
+            { x: preferredX, y: 0 },
+            { x: 0, y: preferredY },
+            { x: preferredX, y: preferredY },
+            // Then try perpendicular directions (wall-following)
+            { x: -preferredY, y: preferredX }, // Rotate 90 degrees
+            { x: preferredY, y: -preferredX }, // Rotate -90 degrees
+            // Finally try any direction
+            { x: -preferredX, y: 0 },
+            { x: 0, y: -preferredY }
+        ];
+        
+        for (const dir of directions) {
+            const testX = monster.x + dir.x * stepSize;
+            const testY = monster.y + dir.y * stepSize;
+            
+            if (this.collisionMask?.isWalkable(testX, testY)) {
+                return { x: dir.x, y: dir.y };
+            }
         }
         
         return { x: 0, y: 0 };
