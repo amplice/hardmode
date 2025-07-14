@@ -1341,14 +1341,49 @@ export class SharedWorldGenerator {
             });
         }
         
-        // Place at least one stair set if possible
+        // Place multiple stairs per plateau (3-4 stairs for better pathfinding)
         if (stairPlacements.length > 0) {
             // Sort by edge length (prefer longer edges)
             stairPlacements.sort((a, b) => b.edge.length - a.edge.length);
             
-            // Place stairs on the best edge
-            const chosen = stairPlacements[0];
-            this.placeStairs(chosen.edge.start, chosen.type);
+            const stairsToPlace = Math.min(4, stairPlacements.length); // Up to 4 stairs
+            let stairsPlaced = 0;
+            
+            for (let i = 0; i < stairPlacements.length && stairsPlaced < stairsToPlace; i++) {
+                const placement = stairPlacements[i];
+                
+                // For the first stairs, place on best edges
+                if (stairsPlaced === 0) {
+                    this.placeStairs(placement.edge.start, placement.type);
+                    stairsPlaced++;
+                } else {
+                    // For additional stairs, try to place on different edge types for coverage
+                    const hasConflict = this.checkStairConflict(placement.edge.start, placement.type);
+                    if (!hasConflict) {
+                        this.placeStairs(placement.edge.start, placement.type);
+                        stairsPlaced++;
+                    }
+                }
+            }
+            
+            // If we have long edges, try to place multiple stairs on same edge type
+            for (const placement of stairPlacements) {
+                if (stairsPlaced >= stairsToPlace) break;
+                
+                // Look for additional valid positions on this edge type
+                const additionalPositions = this.findAdditionalStairPositions(placement.positions, placement.type);
+                for (const pos of additionalPositions) {
+                    if (stairsPlaced >= stairsToPlace) break;
+                    
+                    const hasConflict = this.checkStairConflict(pos.start, placement.type);
+                    if (!hasConflict) {
+                        this.placeStairs(pos.start, placement.type);
+                        stairsPlaced++;
+                    }
+                }
+            }
+            
+            console.log(`[WorldGenerator] Placed ${stairsPlaced} stairs on plateau ${plateauIndex}`);
         }
     }
 
@@ -2094,6 +2129,61 @@ export class SharedWorldGenerator {
     hasEnoughClearSpace(region: BiomeRegion, centerX: number, centerY: number, radius: number): boolean {
         // Simplified to always return true - bounds checking is done in findOptimalPlateauSites
         return true;
+    }
+
+    /**
+     * Check if placing stairs at a position would conflict with existing stairs
+     */
+    checkStairConflict(stairPos: Vector2D, stairType: string): boolean {
+        const minDistance = 8; // Minimum tiles between stairs
+        
+        // Check area around proposed stair position
+        for (let dy = -minDistance; dy <= minDistance; dy++) {
+            for (let dx = -minDistance; dx <= minDistance; dx++) {
+                const checkX = stairPos.x + dx;
+                const checkY = stairPos.y + dy;
+                
+                if (checkX < 0 || checkY < 0 || checkY >= this.height || checkX >= this.width) {
+                    continue;
+                }
+                
+                if (this.stairsData && this.stairsData[checkY][checkX] !== null) {
+                    return true; // Conflict found
+                }
+            }
+        }
+        
+        return false; // No conflict
+    }
+
+    /**
+     * Find additional stair positions on the same edge type
+     */
+    findAdditionalStairPositions(validRuns: Vector2D[][], stairType: string): { start: Vector2D, length: number }[] {
+        const additionalPositions = [];
+        const minDistanceBetweenStairs = 10; // Minimum tiles between stairs on same edge
+        
+        // For each valid run, try to place multiple stairs if it's long enough
+        for (const run of validRuns) {
+            if (run.length >= 15) { // Only consider long edges for multiple stairs
+                // Try to place stairs at 1/3 and 2/3 positions
+                const positions = [
+                    Math.floor(run.length * 0.33),
+                    Math.floor(run.length * 0.66)
+                ];
+                
+                for (const pos of positions) {
+                    if (pos > 0 && pos < run.length - 1) {
+                        additionalPositions.push({
+                            start: run[pos],
+                            length: Math.min(4, run.length - pos) // Minimum stair length
+                        });
+                    }
+                }
+            }
+        }
+        
+        return additionalPositions;
     }
 }
 
