@@ -132,8 +132,8 @@ export class DamageProcessor {
             return { success: false, error: 'Player has spawn protection' };
         }
 
-        // Check powerup invulnerability
-        if (player.isInvulnerable) {
+        // Check powerup invulnerability (check both field names for compatibility)
+        if ((player as any).isInvulnerable || (player as any).invulnerable) {
             return { success: false, error: 'Player is invulnerable from powerup' };
         }
 

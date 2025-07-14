@@ -691,6 +691,22 @@ export class NetworkClient {
             }
         });
         
+        this.socket.on('playerInvulnerabilityGained', (data: { playerId: string; duration: number }) => {
+            if (data.playerId === this.socket.id && this.game.entities.player) {
+                (this.game.entities.player as any).invulnerable = true;
+                (this.game.entities.player as any).invulnerabilityActive = true;
+                console.log('[NetworkClient] Player gained invulnerability for:', data.duration, 'ms');
+            }
+        });
+        
+        this.socket.on('playerInvulnerabilityLost', (data: { playerId: string }) => {
+            if (data.playerId === this.socket.id && this.game.entities.player) {
+                (this.game.entities.player as any).invulnerable = false;
+                (this.game.entities.player as any).invulnerabilityActive = false;
+                console.log('[NetworkClient] Player lost invulnerability');
+            }
+        });
+        
         // Handle ability events from server
         this.socket.on('playerAbilityStart', (data: AbilityEventData) => {
             // Handle movement abilities that need visual updates

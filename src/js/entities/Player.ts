@@ -335,6 +335,8 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
                 this.tintDebugLogged = true;
                 setTimeout(() => { this.tintDebugLogged = false; }, 1000);
             }
+        } else if ((this.owner as any).invulnerabilityActive) {
+            this.owner.animatedSprite.tint = 0xffd700; // Golden yellow for invulnerability
         } else if ((this.owner as any).speedBoostActive) {
             this.owner.animatedSprite.tint = 0xff8c00; // Bright orange for speed boost
         } else if ((this.owner as any).damageBoostActive) {

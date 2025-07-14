@@ -67,8 +67,8 @@ export class PowerupManager {
             return null;
         }
         
-        // Only drop implemented powerups (health, armor, speed, and damage)
-        const types: PowerupType[] = ['health', 'armor', 'speed', 'damage']; // Phases 1-4 powerups
+        // All implemented powerups (Phases 1-5)
+        const types: PowerupType[] = ['health', 'armor', 'speed', 'damage', 'invulnerability'];
         const type = types[Math.floor(Math.random() * types.length)];
         
         const powerup: PowerupState = {
@@ -158,8 +158,7 @@ export class PowerupManager {
                 this.applyDamagePowerup(player);
                 break;
             case 'invulnerability':
-                // TODO: Implement in Phase 5
-                console.log(`[PowerupManager] Invulnerability powerup not yet implemented`);
+                this.applyInvulnerabilityPowerup(player);
                 break;
             default:
                 console.warn(`[PowerupManager] Unknown powerup type: ${powerup.type}`);
@@ -412,6 +411,91 @@ export class PowerupManager {
             playerId: player.id,
             damageBonus: damageBonus,
             totalDamageBonus: 0
+        });
+    }
+    
+    /**
+     * Apply invulnerability powerup - temporary damage immunity
+     */
+    private applyInvulnerabilityPowerup(player: any): void {
+        const config = POWERUP_CONFIG.EFFECTS.invulnerability;
+        
+        // Cancel any existing invulnerability effects (no stacking)
+        this.cancelExistingInvulnerabilityEffects(player);
+        
+        const effectId = `invuln_${player.id}_${Date.now()}`;
+        
+        // Set invulnerability flag
+        player.invulnerable = true;
+        
+        console.log(`[PowerupManager] Player ${player.id} gained invulnerability for ${config.duration}ms`);
+        
+        // Create temporary effect
+        const effect: PowerupEffect = {
+            id: effectId,
+            playerId: player.id,
+            type: 'invulnerability',
+            startTime: Date.now(),
+            duration: config.duration,
+            data: {}
+        };
+        
+        this.activeEffects.set(effectId, effect);
+        
+        // Broadcast invulnerability gain to clients
+        this.io.emit('playerInvulnerabilityGained', {
+            playerId: player.id,
+            duration: config.duration
+        });
+        
+        // Schedule effect removal
+        const timeoutId = setTimeout(() => {
+            this.removeInvulnerabilityEffect(player, effectId);
+        }, config.duration);
+        
+        this.cleanupTimeouts.set(`invuln_${effectId}`, timeoutId);
+    }
+    
+    /**
+     * Cancel any existing invulnerability effects for a player (prevents stacking)
+     */
+    private cancelExistingInvulnerabilityEffects(player: any): void {
+        // Find and cancel existing invulnerability effects for this player
+        const playerInvulnEffects = Array.from(this.activeEffects.values())
+            .filter(effect => effect.playerId === player.id && effect.type === 'invulnerability');
+        
+        for (const effect of playerInvulnEffects) {
+            // Cancel the timeout
+            const timeoutKey = `invuln_${effect.id}`;
+            const timeout = this.cleanupTimeouts.get(timeoutKey);
+            if (timeout) {
+                clearTimeout(timeout);
+                this.cleanupTimeouts.delete(timeoutKey);
+            }
+            
+            // Remove from active effects
+            this.activeEffects.delete(effect.id);
+            
+            console.log(`[PowerupManager] Cancelled existing invulnerability effect ${effect.id} for player ${player.id}`);
+        }
+    }
+    
+    /**
+     * Remove invulnerability effect from player
+     */
+    private removeInvulnerabilityEffect(player: any, effectId: string): void {
+        // Remove invulnerability flag
+        player.invulnerable = false;
+        
+        console.log(`[PowerupManager] Invulnerability effect ${effectId} expired for player ${player.id}`);
+        
+        // Clean up effect tracking
+        this.activeEffects.delete(effectId);
+        this.cleanupTimeouts.delete(`invuln_${effectId}`);
+        
+        // Broadcast invulnerability loss to clients
+        this.io.emit('playerInvulnerabilityLost', {
+            playerId: player.id
         });
     }
     
