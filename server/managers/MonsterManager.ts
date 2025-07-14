@@ -53,6 +53,10 @@ interface ServerMonsterState extends MonsterState {
     // Stun recovery system
     preStunState?: MonsterStateType;
     preStunTarget?: ServerPlayerState | null;
+    // Stuck detection
+    positionHistory?: Position[];
+    stuckCounter?: number;
+    lastStuckCheck?: number;
 }
 
 interface ServerWorldManager {
@@ -721,6 +725,14 @@ export class MonsterManager {
      * Smart movement calculation that understands elevation and stairs
      */
     calculateSmartMovement(monster: ServerMonsterState, target: { x: number, y: number }): { x: number, y: number } {
+        // Check if monster is stuck first
+        if (this.isMonsterStuck(monster)) {
+            const escapeMovement = this.getEscapeMovement(monster, target);
+            if (escapeMovement.x !== 0 || escapeMovement.y !== 0) {
+                return escapeMovement;
+            }
+        }
+        
         const dx = target.x - monster.x;
         const dy = target.y - monster.y;
         
@@ -960,6 +972,112 @@ export class MonsterManager {
             monster.y = newY;
             monster.facing = this.getFacingDirection(dx, dy);
         }
+    }
+
+    /**
+     * Check if monster is stuck (hasn't moved much in recent time)
+     */
+    isMonsterStuck(monster: ServerMonsterState): boolean {
+        const now = Date.now();
+        const checkInterval = 1000; // Check every 1 second
+        
+        // Initialize tracking if needed
+        if (!monster.positionHistory) {
+            monster.positionHistory = [];
+            monster.stuckCounter = 0;
+            monster.lastStuckCheck = now;
+        }
+        
+        // Only check periodically
+        if (now - (monster.lastStuckCheck || 0) < checkInterval) {
+            return (monster.stuckCounter || 0) > 2; // Stuck if counter > 2
+        }
+        
+        monster.lastStuckCheck = now;
+        
+        // Add current position to history
+        monster.positionHistory.push({ x: monster.x, y: monster.y });
+        
+        // Keep only last 5 positions
+        if (monster.positionHistory.length > 5) {
+            monster.positionHistory.shift();
+        }
+        
+        // Need at least 3 positions to check
+        if (monster.positionHistory.length < 3) {
+            return false;
+        }
+        
+        // Check if all positions are within a small radius (stuck)
+        const stuckRadius = 32; // Half a tile
+        const firstPos = monster.positionHistory[0];
+        const allNearby = monster.positionHistory.every(pos => {
+            const dist = Math.sqrt(Math.pow(pos.x - firstPos.x, 2) + Math.pow(pos.y - firstPos.y, 2));
+            return dist < stuckRadius;
+        });
+        
+        if (allNearby) {
+            monster.stuckCounter = (monster.stuckCounter || 0) + 1;
+        } else {
+            monster.stuckCounter = 0;
+        }
+        
+        return monster.stuckCounter > 2; // Stuck if hasn't moved much in 3 checks
+    }
+
+    /**
+     * Get escape movement when monster is stuck
+     */
+    getEscapeMovement(monster: ServerMonsterState, target: { x: number, y: number }): { x: number, y: number } {
+        const stuckLevel = monster.stuckCounter || 0;
+        
+        // Level 1-2: Try diagonal movements
+        if (stuckLevel <= 2) {
+            const diagonals = [
+                { x: 1, y: 1 }, { x: 1, y: -1 },
+                { x: -1, y: 1 }, { x: -1, y: -1 }
+            ];
+            
+            // Sort by distance to target
+            diagonals.sort((a, b) => {
+                const distA = Math.sqrt(Math.pow(target.x - (monster.x + a.x * 32), 2) + 
+                                      Math.pow(target.y - (monster.y + a.y * 32), 2));
+                const distB = Math.sqrt(Math.pow(target.x - (monster.x + b.x * 32), 2) + 
+                                      Math.pow(target.y - (monster.y + b.y * 32), 2));
+                return distA - distB;
+            });
+            
+            for (const dir of diagonals) {
+                const testX = monster.x + dir.x * 32;
+                const testY = monster.y + dir.y * 32;
+                if (this.collisionMask?.isWalkable(testX, testY)) {
+                    return dir;
+                }
+            }
+        }
+        
+        // Level 3+: Random strong push
+        if (stuckLevel >= 3) {
+            const angle = Math.random() * Math.PI * 2;
+            const pushDistance = 64 + (stuckLevel - 3) * 32; // Stronger push with higher stuck level
+            
+            for (let i = 0; i < 8; i++) {
+                const testAngle = angle + (i * Math.PI / 4);
+                const dx = Math.cos(testAngle) * pushDistance;
+                const dy = Math.sin(testAngle) * pushDistance;
+                const testX = monster.x + dx;
+                const testY = monster.y + dy;
+                
+                if (this.collisionMask?.canMove(monster.x, monster.y, testX, testY)) {
+                    // Reset stuck counter after successful escape
+                    monster.stuckCounter = 0;
+                    monster.positionHistory = [];
+                    return { x: dx / pushDistance, y: dy / pushDistance };
+                }
+            }
+        }
+        
+        return { x: 0, y: 0 };
     }
 
     getFacingDirection(dx: number, dy: number): Direction {
