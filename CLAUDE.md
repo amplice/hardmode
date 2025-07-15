@@ -167,6 +167,7 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
 - **Debug Tools**: ASCII visualization and comprehensive state logging
 - **Terrain Generation**: Plateau-first with 40/60 noise/distance balance, 64-tile minimum plateau size
 - **Cliff Cleanup**: Multi-stage geometric cleanup removes single diagonal protrusions
+- **A* Pathfinding**: Intelligent monster navigation with elevation awareness and stair usage
 
 ## 📁 **CODEBASE ARCHITECTURE**
 
@@ -180,7 +181,7 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
 ### **Server-Side** (`server/`)
 - **Core**: index.ts (main game loop at 30 FPS)
 - **Managers**: GameStateManager.ts, MonsterManager.ts (750+ lines), ProjectileManager.ts
-- **Systems**: InputProcessor.ts, LagCompensation.ts, SessionAntiCheat.ts
+- **Systems**: InputProcessor.ts, LagCompensation.ts, SessionAntiCheat.ts, AStarPathfinding.ts
 - **Network**: SocketHandler.ts, NetworkOptimizer.ts
 - **World**: ServerWorldManager.ts
 
@@ -349,6 +350,66 @@ getCliffExtensionTexture(x, y, elevationData, processedTiles, biomeData) {
 }
 ```
 
+### **A* Pathfinding System**
+```typescript
+// server/systems/AStarPathfinding.ts - Intelligent monster navigation
+class AStarPathfinding {
+    constructor(collisionMask: CollisionMask, worldGenerator: WorldGenerator, worldData: WorldData) {
+        this.TILE_SIZE = 64;
+        this.MAX_SEARCH_DISTANCE = 500; // tiles, prevents infinite searches
+        
+        // Build 500x500 grids for pathfinding (matching world size)
+        this.buildWalkabilityGrid();  // Which tiles can be walked on
+        this.buildElevationGrid();    // Elevation data for each tile
+        this.buildStairGrid();        // Where stairs are located
+    }
+    
+    findPath(startWorld: WorldCoord, goalWorld: WorldCoord): PathfindingResult {
+        // A* algorithm that:
+        // 1. Validates start/goal are walkable
+        // 2. Uses heuristic (Manhattan distance) for efficient search
+        // 3. Considers walkability from collision mask
+        // 4. Returns world coordinates for smooth movement
+        // 5. Caches successful paths for performance
+    }
+    
+    canMoveBetweenTiles(fromTile: TileCoord, toTile: TileCoord): boolean {
+        // Simple rule: both tiles must be walkable
+        // Stairs are marked as walkable in the collision mask
+        // This allows seamless navigation across elevation changes
+        return this.isTileWalkable(fromTile.x, fromTile.y) && 
+               this.isTileWalkable(toTile.x, toTile.y);
+    }
+}
+
+// Integration in MonsterManager.ts
+calculateSmartMovement(monster: ServerMonsterState, target: { x: number, y: number }) {
+    // Try A* pathfinding first
+    const pathResult = this.astarPathfinding.findPath(
+        { x: monster.x, y: monster.y },
+        { x: target.x, y: target.y }
+    );
+    
+    if (pathResult.success) {
+        // Follow the path waypoints
+        return followPath(pathResult.worldPath);
+    } else if (distance < 300) {
+        // Close range fallback - direct movement
+        return { x: dx, y: dy };
+    } else {
+        // No path found - wander to explore
+        return this.getWanderDirection(monster);
+    }
+}
+
+// Movement validation uses canMove() not just isWalkable()
+// This checks the entire movement path to prevent wall clipping
+const canMoveToPosition = this.collisionMask.canMove(
+    monster.x, monster.y,  // from
+    newX, newY             // to
+);
+```
+
 ## 🎯 **OPTIMIZATION RESULTS**
 
 ### **Network Performance**
@@ -372,11 +433,13 @@ getCliffExtensionTexture(x, y, elevationData, processedTiles, biomeData) {
 2. **Hunter class gets precise mouse aiming** while others use facing direction  
 3. **Monster damage applies 0.36s stun** matching animation timing
 4. **Critical fields always included** in deltas to prevent undefined errors
-5. **Pathfinding uses 500-step BFS limit** with line-of-sight optimization
+5. **A* pathfinding with fallback** - Uses A* for complex navigation, falls back to direct movement when close (<300px)
 6. **Monster client-side state sync fixed** - Removed client-side state changes that conflicted with server authority
 7. **Plateau-first generation** - Plateaus generate before biomes to prevent overlapping issues
 8. **Minimum plateau size** - 64 tiles (8x8) minimum prevents tiny plateau formations
 9. **Geometric cliff cleanup** - Edge-based detection removes single diagonal protrusions for clean cliff edges
+10. **Monster movement validation** - Uses canMove() instead of isWalkable() to check entire path and prevent wall clipping
+11. **Coordinate system clarity** - GAME_CONSTANTS.WORLD.WIDTH/HEIGHT are in tiles (500), not pixels (32000)
 
 ## 🔗 **INTEGRATION POINTS**
 

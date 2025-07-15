@@ -1,8 +1,21 @@
 /**
  * A* Tile-Based Pathfinding System
  * 
- * Solves the monster pathfinding issues by implementing proper tile-based navigation
- * that understands stair geometry and walkable tile sequences.
+ * Implements intelligent monster navigation that can:
+ * - Find paths around obstacles and cliff edges
+ * - Navigate up/down plateaus using stairs
+ * - Handle 500x500 tile worlds efficiently
+ * - Cache paths for performance
+ * 
+ * Architecture:
+ * - Uses pre-built grids for walkability, elevation, and stairs
+ * - Converts between world coordinates (pixels) and tile coordinates
+ * - Returns paths as world coordinates for smooth movement
+ * 
+ * Integration with MonsterManager:
+ * - Primary pathfinding method for all monsters
+ * - Falls back to direct movement when close to target (<300px)
+ * - Falls back to wandering when no path exists
  */
 
 import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
