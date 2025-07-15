@@ -41,6 +41,7 @@ interface PathfindingResult {
 export class AStarPathfinding {
     private collisionMask: CollisionMask;
     private worldGenerator: SharedWorldGenerator;
+    private worldData: any;
     private walkabilityGrid: boolean[][] = [];
     private elevationGrid: number[][] = [];
     private stairGrid: boolean[][] = [];
@@ -48,9 +49,10 @@ export class AStarPathfinding {
     private readonly TILE_SIZE: number;
     private readonly MAX_SEARCH_NODES = 1000; // Performance limit
     
-    constructor(collisionMask: CollisionMask, worldGenerator: SharedWorldGenerator) {
+    constructor(collisionMask: CollisionMask, worldGenerator: SharedWorldGenerator, worldData: any) {
         this.collisionMask = collisionMask;
         this.worldGenerator = worldGenerator;
+        this.worldData = worldData;
         this.TILE_SIZE = GAME_CONSTANTS.WORLD.TILE_SIZE;
         this.pathCache = new Map();
         
@@ -94,8 +96,8 @@ export class AStarPathfinding {
     private buildElevationGrid(): void {
         console.log('[AStarPathfinding] Building elevation grid...');
         
-        const worldData = this.worldGenerator.generateWorld();
-        const elevationData = worldData.elevationData;
+        // Use the pre-generated world data passed in constructor
+        const elevationData = this.worldData.elevationData;
         
         const tilesX = Math.ceil(GAME_CONSTANTS.WORLD.WIDTH / this.TILE_SIZE);
         const tilesY = Math.ceil(GAME_CONSTANTS.WORLD.HEIGHT / this.TILE_SIZE);

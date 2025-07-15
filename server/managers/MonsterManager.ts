@@ -166,8 +166,9 @@ export class MonsterManager {
     private initializeAStarPathfinding(): void {
         try {
             const worldGen = this.serverWorldManager.getWorldGenerator();
-            if (worldGen && this.collisionMask) {
-                this.astarPathfinding = new AStarPathfinding(this.collisionMask, worldGen);
+            const worldData = this.serverWorldManager.getWorldData();
+            if (worldGen && this.collisionMask && worldData) {
+                this.astarPathfinding = new AStarPathfinding(this.collisionMask, worldGen, worldData);
                 console.log('[MonsterManager] A* pathfinding system initialized');
             } else {
                 console.warn('[MonsterManager] Could not initialize A* pathfinding - missing dependencies');
