@@ -426,17 +426,26 @@ export class MonsterManager {
                 }
             }
             
-            if (!tooClose) {
+            // Check if position is walkable
+            if (!tooClose && this.collisionMask && this.collisionMask.isWalkable(x, y)) {
                 return { x, y };
             }
             attempts++;
         }
         
-        // Fallback - spawn far from center
-        return {
-            x: worldWidth * (Math.random() > 0.5 ? 0.1 : 0.9),
-            y: worldHeight * (Math.random() > 0.5 ? 0.1 : 0.9)
-        };
+        // Fallback - find nearest walkable position to a random edge location
+        const fallbackX = worldWidth * (Math.random() > 0.5 ? 0.1 : 0.9);
+        const fallbackY = worldHeight * (Math.random() > 0.5 ? 0.1 : 0.9);
+        
+        // If fallback position isn't walkable, find nearest walkable tile
+        if (this.collisionMask && !this.collisionMask.isWalkable(fallbackX, fallbackY)) {
+            const nearestWalkable = this.collisionMask.findNearestWalkable(fallbackX, fallbackY);
+            if (nearestWalkable) {
+                return nearestWalkable;
+            }
+        }
+        
+        return { x: fallbackX, y: fallbackY };
     }
 
     updateMonster(monster: ServerMonsterState, deltaTime: number, players: Map<string, PlayerState>): void {
@@ -447,6 +456,21 @@ export class MonsterManager {
         if (monster.state === 'dying') {
             monster.lastUpdate = Date.now();
             return; // Exit early, no updates for dying monsters
+        }
+        
+        // Safety check: If monster is stuck in unwalkable tile, teleport to nearest walkable
+        if (this.collisionMask && !this.collisionMask.isWalkable(monster.x, monster.y)) {
+            console.warn(`[MonsterManager] Monster ${monster.id} stuck in unwalkable tile at (${Math.round(monster.x)}, ${Math.round(monster.y)})`);
+            const nearestWalkable = this.collisionMask.findNearestWalkable(monster.x, monster.y, 256);
+            if (nearestWalkable) {
+                console.log(`[MonsterManager] Teleporting monster ${monster.id} to nearest walkable tile at (${Math.round(nearestWalkable.x)}, ${Math.round(nearestWalkable.y)})`);
+                monster.x = nearestWalkable.x;
+                monster.y = nearestWalkable.y;
+                // Clear any stuck movement state
+                monster.velocity = { x: 0, y: 0 };
+                monster.currentPath = undefined;
+                monster.pathIndex = undefined;
+            }
         }
         
         // Update stun timer
