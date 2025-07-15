@@ -67,10 +67,9 @@ export class AStarPathfinding {
     private buildWalkabilityGrid(): void {
         console.log('[AStarPathfinding] Building walkability grid...');
         
-        const worldWidth = GAME_CONSTANTS.WORLD.WIDTH;
-        const worldHeight = GAME_CONSTANTS.WORLD.HEIGHT;
-        const tilesX = Math.ceil(worldWidth / this.TILE_SIZE);
-        const tilesY = Math.ceil(worldHeight / this.TILE_SIZE);
+        // GAME_CONSTANTS.WORLD.WIDTH/HEIGHT are already in tiles, not pixels!
+        const tilesX = GAME_CONSTANTS.WORLD.WIDTH;
+        const tilesY = GAME_CONSTANTS.WORLD.HEIGHT;
         
         this.walkabilityGrid = [];
         
@@ -128,8 +127,9 @@ export class AStarPathfinding {
         // Use the pre-generated world data passed in constructor
         const elevationData = this.worldData.elevationData;
         
-        const tilesX = Math.ceil(GAME_CONSTANTS.WORLD.WIDTH / this.TILE_SIZE);
-        const tilesY = Math.ceil(GAME_CONSTANTS.WORLD.HEIGHT / this.TILE_SIZE);
+        // GAME_CONSTANTS.WORLD.WIDTH/HEIGHT are already in tiles, not pixels!
+        const tilesX = GAME_CONSTANTS.WORLD.WIDTH;
+        const tilesY = GAME_CONSTANTS.WORLD.HEIGHT;
         
         this.elevationGrid = [];
         
@@ -168,8 +168,9 @@ export class AStarPathfinding {
             return;
         }
         
-        const tilesX = Math.ceil(GAME_CONSTANTS.WORLD.WIDTH / this.TILE_SIZE);
-        const tilesY = Math.ceil(GAME_CONSTANTS.WORLD.HEIGHT / this.TILE_SIZE);
+        // GAME_CONSTANTS.WORLD.WIDTH/HEIGHT are already in tiles, not pixels!
+        const tilesX = GAME_CONSTANTS.WORLD.WIDTH;
+        const tilesY = GAME_CONSTANTS.WORLD.HEIGHT;
         
         this.stairGrid = [];
         let stairCount = 0;
