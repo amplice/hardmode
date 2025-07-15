@@ -70,6 +70,8 @@ interface ServerMonsterState extends MonsterState {
     currentPath?: WorldCoord[];
     pathIndex?: number;
     pathTarget?: WorldCoord;
+    lastPathfindingDecision?: 'astar' | 'wander' | 'direct';
+    decisionCooldown?: number;
 }
 
 // World coordinate type for A* pathfinding
@@ -824,7 +826,18 @@ export class MonsterManager {
         
         // === A* PATHFINDING SYSTEM ===
         
-        // Try A* pathfinding first if available
+        // Check if we should stick with previous decision to prevent oscillation
+        const now = Date.now();
+        if (monster.lastPathfindingDecision && monster.decisionCooldown && now < monster.decisionCooldown) {
+            // Stick with previous decision for at least 500ms to prevent oscillation
+            if (monster.lastPathfindingDecision === 'wander') {
+                return this.getWanderDirection(monster);
+            } else if (monster.lastPathfindingDecision === 'direct' && monsterElevation === targetElevation) {
+                return { x: dx, y: dy };
+            }
+        }
+        
+        // ALWAYS use A* pathfinding if available - no fallback to prevent oscillation
         if (this.astarPathfinding) {
             // Check if we have a valid cached path
             if (monster.currentPath && monster.pathTarget && 
@@ -892,13 +905,31 @@ export class MonsterManager {
                 };
                 
                 console.log(`[Monster ${monster.id}] A* found path with ${pathResult.worldPath.length} steps`);
+                monster.lastPathfindingDecision = 'astar';
+                monster.decisionCooldown = now + 500; // Stick with A* for 500ms
                 return moveDirection;
             } else {
-                console.log(`[Monster ${monster.id}] A* pathfinding failed, falling back to old logic`);
+                console.log(`[Monster ${monster.id}] A* pathfinding failed - no valid path exists`);
                 // Clear any cached path
                 monster.currentPath = undefined;
                 monster.pathIndex = undefined;
                 monster.pathTarget = undefined;
+                
+                // When A* fails, don't oscillate - just stop or wander
+                // This prevents the "facing toward/away" oscillation
+                if (monsterElevation !== targetElevation) {
+                    // Different elevations and no path - wander to find stairs
+                    console.log(`[Monster ${monster.id}] No path to different elevation, wandering`);
+                    monster.lastPathfindingDecision = 'wander';
+                    monster.decisionCooldown = now + 1000; // Wander for 1 second before retrying
+                    return this.getWanderDirection(monster);
+                } else {
+                    // Same elevation but blocked - try to move around obstacle
+                    console.log(`[Monster ${monster.id}] Same elevation but blocked, trying obstacle avoidance`);
+                    monster.lastPathfindingDecision = 'direct';
+                    monster.decisionCooldown = now + 500;
+                    return this.findPathAroundObstacle(monster, target);
+                }
             }
         }
         
@@ -1333,6 +1364,15 @@ export class MonsterManager {
     /**
      * Wander in a random direction to find better position
      */
+    getWanderDirection(monster: ServerMonsterState): { x: number, y: number } {
+        // Simple random wander direction
+        const angle = Math.random() * Math.PI * 2;
+        return {
+            x: Math.cos(angle),
+            y: Math.sin(angle)
+        };
+    }
+    
     attemptWandering(monster: ServerMonsterState, speed: number): void {
         const wanderDistance = 64; // Try to move 1 tile in random direction
         const angle = Math.random() * Math.PI * 2;
