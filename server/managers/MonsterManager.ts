@@ -70,10 +70,7 @@ interface ServerMonsterState extends MonsterState {
     currentPath?: WorldCoord[];
     pathIndex?: number;
     pathTarget?: WorldCoord;
-    lastPathfindingDecision?: 'astar' | 'wander' | 'direct';
-    decisionCooldown?: number;
     wanderDirection?: { x: number, y: number };
-    lastPathLog?: number;
 }
 
 // World coordinate type for A* pathfinding
@@ -745,39 +742,17 @@ export class MonsterManager {
             const newX = monster.x + monster.velocity.x;
             const newY = monster.y + monster.velocity.y;
             
-            // Check if we're on stairs or moving to stairs - be less strict with collision
-            const isOnStairsNow = this.isOnStairs(monster.x, monster.y);
-            const isMovingToStairs = this.isOnStairs(newX, newY);
-            const involveStairs = isOnStairsNow || isMovingToStairs;
-            
-            // Validate movement using collision mask
-            let canMoveToPosition = false;
-            
-            if (involveStairs) {
-                // For stairs, just check if the center is walkable (no buffer)
-                canMoveToPosition = this.collisionMask && this.collisionMask.isWalkable(newX, newY);
-            } else {
-                // For normal movement, use the strict canMove check
-                canMoveToPosition = this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, newY);
-            }
+            // Simple movement validation - just check if walkable
+            const canMoveToPosition = this.collisionMask && this.collisionMask.isWalkable(newX, newY);
             
             if (canMoveToPosition) {
                 // Movement is valid, update position
                 monster.x = newX;
                 monster.y = newY;
             } else {
-                // Debug log when movement is blocked near stairs
-                if (involveStairs) {
-                    console.log(`[Monster ${monster.id}] BLOCKED near stairs: from (${Math.round(monster.x)}, ${Math.round(monster.y)}) to (${Math.round(newX)}, ${Math.round(newY)}), onStairs=${isOnStairsNow}, toStairs=${isMovingToStairs}`);
-                }
                 // Movement blocked, try partial movement (sliding along walls)
-                const canMoveX = involveStairs ? 
-                    this.collisionMask?.isWalkable(newX, monster.y) : 
-                    this.collisionMask?.canMove(monster.x, monster.y, newX, monster.y);
-                    
-                const canMoveY = involveStairs ?
-                    this.collisionMask?.isWalkable(monster.x, newY) :
-                    this.collisionMask?.canMove(monster.x, monster.y, monster.x, newY);
+                const canMoveX = this.collisionMask?.isWalkable(newX, monster.y);
+                const canMoveY = this.collisionMask?.isWalkable(monster.x, newY);
                 
                 if (canMoveX) {
                     monster.x = newX;
@@ -794,58 +769,14 @@ export class MonsterManager {
     }
 
     /**
-     * Smart stair beeline movement - simple and effective
+     * Simple pathfinding: Use A* to find walkable path, wander if none exists
      */
     calculateSmartMovement(monster: ServerMonsterState, target: { x: number, y: number }): { x: number, y: number } {
         const dx = target.x - monster.x;
         const dy = target.y - monster.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        const monsterElevation = this.getElevationAt(monster.x, monster.y);
-        const targetElevation = this.getElevationAt(target.x, target.y);
         
-        // Debug logging every few seconds with A* tile info
-        if (!monster.lastDebugLog || Date.now() - monster.lastDebugLog > 5000) {
-            console.log(`[Monster ${monster.id}] Pos: (${Math.round(monster.x)}, ${Math.round(monster.y)}), Target: (${Math.round(target.x)}, ${Math.round(target.y)}), MonsterElev: ${monsterElevation}, TargetElev: ${targetElevation}, Distance: ${Math.round(distance)}`);
-            
-            // Test A* tile system
-            if (this.astarPathfinding) {
-                const monsterTileInfo = this.astarPathfinding.debugWalkabilityAt(monster.x, monster.y);
-                const targetTileInfo = this.astarPathfinding.debugWalkabilityAt(target.x, target.y);
-                console.log(`[Monster ${monster.id}] Tiles - Monster: (${monsterTileInfo.tile.x}, ${monsterTileInfo.tile.y}) walkable=${monsterTileInfo.walkable} elev=${monsterTileInfo.elevation}, Target: (${targetTileInfo.tile.x}, ${targetTileInfo.tile.y}) walkable=${targetTileInfo.walkable} elev=${targetTileInfo.elevation}`);
-            }
-            
-            monster.lastDebugLog = Date.now();
-        }
-        
-        // Check if monster is stuck first
-        if (this.isMonsterStuck(monster)) {
-            console.log(`[Monster ${monster.id}] STUCK - attempting escape`);
-            const escapeMovement = this.getEscapeMovement(monster, target);
-            if (escapeMovement.x !== 0 || escapeMovement.y !== 0) {
-                return escapeMovement;
-            }
-        }
-        
-        // === A* PATHFINDING SYSTEM ===
-        
-        // Check if we should stick with previous decision to prevent oscillation
-        const now = Date.now();
-        if (monster.lastPathfindingDecision && monster.decisionCooldown && now < monster.decisionCooldown) {
-            // Stick with previous decision for at least 500ms to prevent oscillation
-            if (monster.lastPathfindingDecision === 'wander' && monster.wanderDirection) {
-                return monster.wanderDirection; // Use cached wander direction, not new random one!
-            } else if (monster.lastPathfindingDecision === 'direct' && monsterElevation === targetElevation) {
-                return { x: dx, y: dy };
-            }
-        }
-        
-        // Clear cached wander direction when cooldown expires
-        if (monster.decisionCooldown && now > monster.decisionCooldown) {
-            monster.wanderDirection = undefined;
-            monster.lastPathfindingDecision = undefined;
-        }
-        
-        // ALWAYS use A* pathfinding if available - no fallback to prevent oscillation
+        // Simple: Just use A* pathfinding
         if (this.astarPathfinding) {
             // Check if we have a valid cached path
             if (monster.currentPath && monster.pathTarget && 
@@ -880,31 +811,23 @@ export class MonsterManager {
                         y: nextWaypoint.y - monster.y
                     };
                     
-                    console.log(`[Monster ${monster.id}] Following cached path, waypoint ${monster.pathIndex}/${monster.currentPath.length}`);
                     return moveDirection;
                 } else {
-                    // Target moved, invalidate path
-                    console.log(`[Monster ${monster.id}] Target moved, recalculating path`);
+                    // Target moved, recalculate
                     monster.currentPath = undefined;
                     monster.pathIndex = undefined;
                     monster.pathTarget = undefined;
                 }
             }
             
-            // Calculate new path
-            // Only log every 2 seconds to avoid spam
-            if (!monster.lastPathLog || now - monster.lastPathLog > 2000) {
-                console.log(`[Monster ${monster.id}] Calculating new A* path`);
-                monster.lastPathLog = now;
-            }
-            
+            // Try to find a path
             const pathResult = this.astarPathfinding.findPath(
                 { x: monster.x, y: monster.y },
                 { x: target.x, y: target.y }
             );
             
             if (pathResult.success && pathResult.worldPath.length > 1) {
-                // Cache the path
+                // Found a path! Cache it and follow it
                 monster.currentPath = pathResult.worldPath;
                 monster.pathIndex = 1; // Skip current position
                 monster.pathTarget = { x: target.x, y: target.y };
@@ -916,92 +839,19 @@ export class MonsterManager {
                     y: nextStep.y - monster.y
                 };
                 
-                console.log(`[Monster ${monster.id}] A* found path with ${pathResult.worldPath.length} steps`);
-                monster.lastPathfindingDecision = 'astar';
-                monster.decisionCooldown = now + 500; // Stick with A* for 500ms
                 return moveDirection;
             } else {
-                console.log(`[Monster ${monster.id}] A* pathfinding failed - no valid path exists`);
-                // Clear any cached path
-                monster.currentPath = undefined;
-                monster.pathIndex = undefined;
-                monster.pathTarget = undefined;
-                
-                // When A* fails, don't oscillate - just stop or wander
-                // This prevents the "facing toward/away" oscillation
-                if (monsterElevation !== targetElevation) {
-                    // Different elevations and no path - wander to find stairs
-                    console.log(`[Monster ${monster.id}] No path to different elevation, wandering`);
-                    monster.lastPathfindingDecision = 'wander';
-                    monster.decisionCooldown = now + 1000; // Wander for 1 second before retrying
-                    monster.wanderDirection = this.getWanderDirection(monster); // Cache the direction!
-                    return monster.wanderDirection;
-                } else {
-                    // Same elevation but blocked - try to move around obstacle
-                    console.log(`[Monster ${monster.id}] Same elevation but blocked, trying obstacle avoidance`);
-                    monster.lastPathfindingDecision = 'direct';
-                    monster.decisionCooldown = now + 500;
-                    return this.findPathAroundObstacle(monster, target);
+                // No path found - wander randomly to explore
+                if (!monster.wanderDirection || Math.random() < 0.1) {
+                    // Change wander direction occasionally
+                    monster.wanderDirection = this.getWanderDirection(monster);
                 }
+                return monster.wanderDirection;
             }
         }
         
-        // === FALLBACK: OLD STAIR BEELINE LOGIC ===
-        
-        // 1. Can we see the target?
-        const hasLOS = this.hasLineOfSight(monster, target);
-        if (hasLOS) {
-            // 2. Are we on the same elevation?
-            if (monsterElevation === targetElevation) {
-                // Same elevation and can see - move directly
-                return { x: dx, y: dy };
-            } else {
-                // Different elevation but can see - go to nearest stairs!
-                console.log(`[Monster ${monster.id}] Can see target but different elevation (${monsterElevation} vs ${targetElevation}), seeking stairs`);
-                const stairDirection = this.findNearestStairs(monster, targetElevation);
-                if (stairDirection.x !== 0 || stairDirection.y !== 0) {
-                    console.log(`[Monster ${monster.id}] Found stairs, moving toward them`);
-                    return stairDirection;
-                }
-                
-                console.log(`[Monster ${monster.id}] No elevation-specific stairs found, trying nearby stairs`);
-                // No stairs found - try nearby stairs without elevation filter
-                const nearbyStairs = this.findNearbyStairs(monster, 15);
-                if (nearbyStairs.x !== 0 || nearbyStairs.y !== 0) {
-                    console.log(`[Monster ${monster.id}] Found nearby stairs`);
-                    return nearbyStairs;
-                } else {
-                    console.log(`[Monster ${monster.id}] NO STAIRS FOUND AT ALL`);
-                }
-            }
-        } else {
-            // No line of sight
-            if (monsterElevation !== targetElevation) {
-                console.log(`[Monster ${monster.id}] No LOS, different elevation, seeking stairs`);
-                const stairDirection = this.findNearestStairs(monster, targetElevation);
-                if (stairDirection.x !== 0 || stairDirection.y !== 0) {
-                    return stairDirection;
-                }
-            }
-        }
-        
-        // 3. Are we currently on stairs?
-        if (this.isOnStairs(monster.x, monster.y)) {
-            console.log(`[Monster ${monster.id}] On stairs, continuing toward target`);
-            return { x: dx, y: dy };
-        }
-        
-        // 4. Fallback - try to find ANY stairs nearby
-        console.log(`[Monster ${monster.id}] Fallback: looking for any stairs within 20 tiles`);
-        const anyStairs = this.findNearbyStairs(monster, 20);
-        if (anyStairs.x !== 0 || anyStairs.y !== 0) {
-            console.log(`[Monster ${monster.id}] Found fallback stairs`);
-            return anyStairs;
-        }
-        
-        // 5. Final fallback - wall following behavior to find stairs
-        console.log(`[Monster ${monster.id}] No stairs found anywhere, using wall following to search`);
-        return this.followWallToFindStairs(monster, target);
+        // Fallback if no A* system (shouldn't happen)
+        return { x: dx, y: dy };
     }
 
     /**
