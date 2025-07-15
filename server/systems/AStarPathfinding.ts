@@ -304,7 +304,10 @@ export class AStarPathfinding {
             return this.pathCache.get(cacheKey)!;
         }
         
-        console.log(`[AStarPathfinding] A* pathfinding from tile (${startTile.x}, ${startTile.y}) to (${goalTile.x}, ${goalTile.y})`);
+        const startElevation = this.getTileElevation(startTile.x, startTile.y);
+        const goalElevation = this.getTileElevation(goalTile.x, goalTile.y);
+        
+        console.log(`[AStarPathfinding] A* pathfinding from tile (${startTile.x}, ${startTile.y}) elev=${startElevation} to (${goalTile.x}, ${goalTile.y}) elev=${goalElevation}`);
         
         // Validate start and goal tiles
         if (!this.isTileWalkable(startTile.x, startTile.y)) {
