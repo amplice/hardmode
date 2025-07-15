@@ -743,17 +743,26 @@ export class MonsterManager {
             const newX = monster.x + monster.velocity.x;
             const newY = monster.y + monster.velocity.y;
             
-            // Simple movement validation - just check if walkable
-            const canMoveToPosition = this.collisionMask && this.collisionMask.isWalkable(newX, newY);
+            // Movement validation - check the path, not just destination
+            const canMoveToPosition = this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, newY);
             
             if (canMoveToPosition) {
                 // Movement is valid, update position
+                const oldX = monster.x;
+                const oldY = monster.y;
                 monster.x = newX;
                 monster.y = newY;
+                
+                // Debug: Check if monster crossed elevation boundary
+                const oldElevation = this.getElevationAt(oldX, oldY);
+                const newElevation = this.getElevationAt(newX, newY);
+                if (oldElevation !== newElevation && !this.isOnStairs(newX, newY)) {
+                    console.warn(`[MonsterManager] Monster ${monster.id} walked through cliff! From elev ${oldElevation} to ${newElevation} at (${Math.round(newX)}, ${Math.round(newY)})`);
+                }
             } else {
                 // Movement blocked, try partial movement (sliding along walls)
-                const canMoveX = this.collisionMask?.isWalkable(newX, monster.y);
-                const canMoveY = this.collisionMask?.isWalkable(monster.x, newY);
+                const canMoveX = this.collisionMask?.canMove(monster.x, monster.y, newX, monster.y);
+                const canMoveY = this.collisionMask?.canMove(monster.x, monster.y, monster.x, newY);
                 
                 if (canMoveX) {
                     monster.x = newX;
