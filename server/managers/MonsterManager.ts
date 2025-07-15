@@ -741,16 +741,43 @@ export class MonsterManager {
             const newX = monster.x + monster.velocity.x;
             const newY = monster.y + monster.velocity.y;
             
+            // Check if we're on stairs or moving to stairs - be less strict with collision
+            const isOnStairsNow = this.isOnStairs(monster.x, monster.y);
+            const isMovingToStairs = this.isOnStairs(newX, newY);
+            const involveStairs = isOnStairsNow || isMovingToStairs;
+            
             // Validate movement using collision mask
-            if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, newY)) {
+            let canMoveToPosition = false;
+            
+            if (involveStairs) {
+                // For stairs, just check if the center is walkable (no buffer)
+                canMoveToPosition = this.collisionMask && this.collisionMask.isWalkable(newX, newY);
+            } else {
+                // For normal movement, use the strict canMove check
+                canMoveToPosition = this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, newY);
+            }
+            
+            if (canMoveToPosition) {
                 // Movement is valid, update position
                 monster.x = newX;
                 monster.y = newY;
             } else {
+                // Debug log when movement is blocked near stairs
+                if (involveStairs) {
+                    console.log(`[Monster ${monster.id}] BLOCKED near stairs: from (${Math.round(monster.x)}, ${Math.round(monster.y)}) to (${Math.round(newX)}, ${Math.round(newY)}), onStairs=${isOnStairsNow}, toStairs=${isMovingToStairs}`);
+                }
                 // Movement blocked, try partial movement (sliding along walls)
-                if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, monster.y)) {
+                const canMoveX = involveStairs ? 
+                    this.collisionMask?.isWalkable(newX, monster.y) : 
+                    this.collisionMask?.canMove(monster.x, monster.y, newX, monster.y);
+                    
+                const canMoveY = involveStairs ?
+                    this.collisionMask?.isWalkable(monster.x, newY) :
+                    this.collisionMask?.canMove(monster.x, monster.y, monster.x, newY);
+                
+                if (canMoveX) {
                     monster.x = newX;
-                } else if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, monster.x, newY)) {
+                } else if (canMoveY) {
                     monster.y = newY;
                 } else {
                     // Completely blocked, try wandering to find better position
