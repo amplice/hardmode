@@ -74,6 +74,9 @@ export class AStarPathfinding {
         
         this.walkabilityGrid = [];
         
+        let walkableCount = 0;
+        let totalCount = 0;
+        
         for (let tileY = 0; tileY < tilesY; tileY++) {
             this.walkabilityGrid[tileY] = [];
             for (let tileX = 0; tileX < tilesX; tileX++) {
@@ -84,10 +87,36 @@ export class AStarPathfinding {
                 // Check if this tile center is walkable
                 const isWalkable = this.collisionMask.isWalkable(worldX, worldY);
                 this.walkabilityGrid[tileY][tileX] = isWalkable;
+                
+                if (isWalkable) walkableCount++;
+                totalCount++;
+                
+                // Debug first few tiles
+                if (tileY === 0 && tileX < 5) {
+                    console.log(`[AStarPathfinding] Tile (${tileX}, ${tileY}) at world (${worldX}, ${worldY}) is ${isWalkable ? 'walkable' : 'NOT walkable'}`);
+                }
             }
         }
         
-        console.log(`[AStarPathfinding] Built ${tilesX}x${tilesY} walkability grid`);
+        console.log(`[AStarPathfinding] Built ${tilesX}x${tilesY} walkability grid - ${walkableCount}/${totalCount} tiles walkable (${Math.round(walkableCount/totalCount*100)}%)`);
+        
+        // CRITICAL CHECK: If nothing is walkable, something is wrong!
+        if (walkableCount === 0) {
+            console.error('[AStarPathfinding] CRITICAL ERROR: No tiles are walkable! This will break all pathfinding.');
+            console.error('[AStarPathfinding] Collision mask might not be initialized properly.');
+        }
+        
+        // Debug: Print a small sample of the grid
+        if (tilesX > 0 && tilesY > 0) {
+            console.log('[AStarPathfinding] Sample grid (top-left 10x10):');
+            for (let y = 0; y < Math.min(10, tilesY); y++) {
+                let row = '';
+                for (let x = 0; x < Math.min(10, tilesX); x++) {
+                    row += this.walkabilityGrid[y][x] ? '.' : '#';
+                }
+                console.log(`  ${row}`);
+            }
+        }
     }
     
     /**
@@ -188,9 +217,14 @@ export class AStarPathfinding {
     isTileWalkable(tileX: number, tileY: number): boolean {
         if (tileY < 0 || tileY >= this.walkabilityGrid.length ||
             tileX < 0 || tileX >= this.walkabilityGrid[0].length) {
+            console.warn(`[AStarPathfinding] Tile (${tileX}, ${tileY}) out of bounds. Grid size: ${this.walkabilityGrid[0]?.length || 0}x${this.walkabilityGrid.length}`);
             return false;
         }
-        return this.walkabilityGrid[tileY][tileX];
+        const walkable = this.walkabilityGrid[tileY][tileX];
+        if (!walkable && tileX % 10 === 0 && tileY % 10 === 0) { // Log every 10th tile to avoid spam
+            console.log(`[AStarPathfinding] Tile (${tileX}, ${tileY}) is not walkable`);
+        }
+        return walkable;
     }
     
     /**
@@ -275,7 +309,9 @@ export class AStarPathfinding {
         // Check cache first
         const cacheKey = `${startTile.x},${startTile.y}->${goalTile.x},${goalTile.y}`;
         if (this.pathCache.has(cacheKey)) {
-            return this.pathCache.get(cacheKey)!;
+            const cached = this.pathCache.get(cacheKey)!;
+            console.log(`[AStarPathfinding] Using cached path: ${cached.success ? 'SUCCESS' : 'FAILED'}`);
+            return cached;
         }
         
         const startElevation = this.getTileElevation(startTile.x, startTile.y);
@@ -286,11 +322,15 @@ export class AStarPathfinding {
         // Validate start and goal tiles
         if (!this.isTileWalkable(startTile.x, startTile.y)) {
             console.warn(`[AStarPathfinding] Start tile (${startTile.x}, ${startTile.y}) is not walkable`);
+            const debugInfo = this.debugWalkabilityAt(startWorld.x, startWorld.y);
+            console.warn(`[AStarPathfinding] Start debug: walkable=${debugInfo.walkable}, elevation=${debugInfo.elevation}, tile=(${debugInfo.tile.x},${debugInfo.tile.y})`);
             return { success: false, path: [], worldPath: [] };
         }
         
         if (!this.isTileWalkable(goalTile.x, goalTile.y)) {
             console.warn(`[AStarPathfinding] Goal tile (${goalTile.x}, ${goalTile.y}) is not walkable`);
+            const debugInfo = this.debugWalkabilityAt(goalWorld.x, goalWorld.y);
+            console.warn(`[AStarPathfinding] Goal debug: walkable=${debugInfo.walkable}, elevation=${debugInfo.elevation}, tile=(${debugInfo.tile.x},${debugInfo.tile.y})`);
             return { success: false, path: [], worldPath: [] };
         }
         

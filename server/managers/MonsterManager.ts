@@ -552,6 +552,7 @@ export class MonsterManager {
         }
         
         if (nearestPlayer) {
+            console.log(`[MonsterManager] Monster ${monster.id} found player at distance ${Math.round(nearestDistance)}, transitioning to chasing`);
             monster.state = 'chasing';
             monster.target = this.playerToLegacy(nearestPlayer);
         }
@@ -776,6 +777,12 @@ export class MonsterManager {
         const dy = target.y - monster.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
+        // Debug: Log pathfinding attempts occasionally
+        if (!monster.lastDebugLog || Date.now() - monster.lastDebugLog > 5000) {
+            monster.lastDebugLog = Date.now();
+            console.log(`[MonsterManager] Monster ${monster.id} at (${Math.round(monster.x)}, ${Math.round(monster.y)}) trying to reach player at (${Math.round(target.x)}, ${Math.round(target.y)}), distance: ${Math.round(distance)}`);
+        }
+        
         // Simple: Just use A* pathfinding
         if (this.astarPathfinding) {
             // Check if we have a valid cached path
@@ -841,12 +848,19 @@ export class MonsterManager {
                 
                 return moveDirection;
             } else {
-                // No path found - wander randomly to explore
-                if (!monster.wanderDirection || Math.random() < 0.1) {
-                    // Change wander direction occasionally
-                    monster.wanderDirection = this.getWanderDirection(monster);
+                // No path found - check if we can move directly (same elevation, close range)
+                if (distance < 300) {
+                    // Close range - try direct movement
+                    console.log(`[MonsterManager] Monster ${monster.id} close to player (${Math.round(distance)}) - trying direct movement`);
+                    return { x: dx, y: dy };
+                } else {
+                    // Far away - wander randomly to explore
+                    if (!monster.wanderDirection || Math.random() < 0.1) {
+                        // Change wander direction occasionally
+                        monster.wanderDirection = this.getWanderDirection(monster);
+                    }
+                    return monster.wanderDirection;
                 }
-                return monster.wanderDirection;
             }
         }
         

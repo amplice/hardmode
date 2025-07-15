@@ -103,25 +103,51 @@ export class CollisionMask {
         if (worldGenerator && worldGenerator.getStairsData) {
             const stairsData = worldGenerator.getStairsData();
             if (stairsData) {
+                let stairCount = 0;
+                let walkableStairCount = 0;
+                
                 for (let y = 0; y < this.height; y++) {
                     for (let x = 0; x < this.width; x++) {
                         if (stairsData[y][x]) {
+                            stairCount++;
                             const stairInfo = stairsData[y][x];
                             // If this stair tile is walkable, mark it as walkable in collision mask
                             if (worldGenerator.isStairTileWalkable(stairInfo.tileY, stairInfo.tileX)) {
                                 this.mask[y][x] = true;
+                                walkableStairCount++;
                             }
                         }
                     }
                 }
-                console.log("[CollisionMask] Updated collision mask for walkable stair tiles");
+                console.log(`[CollisionMask] Updated collision mask for walkable stair tiles - ${walkableStairCount}/${stairCount} stairs marked as walkable`);
+            } else {
+                console.warn("[CollisionMask] No stairs data available!");
             }
+        } else {
+            console.warn("[CollisionMask] World generator or getStairsData method not available!");
         }
         
         // Set world boundaries as unwalkable
         this.setWorldBoundaries();
         
-        console.log("[CollisionMask] Collision mask generated successfully");
+        // Debug: Count walkable tiles
+        let walkableCount = 0;
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (this.mask[y][x]) walkableCount++;
+            }
+        }
+        console.log(`[CollisionMask] Collision mask generated successfully - ${walkableCount}/${this.width * this.height} tiles walkable (${Math.round(walkableCount/(this.width*this.height)*100)}%)`);
+        
+        // Debug: Show sample of mask
+        console.log('[CollisionMask] Sample mask (top-left 10x10):');
+        for (let y = 0; y < Math.min(10, this.height); y++) {
+            let row = '';
+            for (let x = 0; x < Math.min(10, this.width); x++) {
+                row += this.mask[y][x] ? '.' : '#';
+            }
+            console.log(`  ${row}`);
+        }
     }
     
     
@@ -148,8 +174,18 @@ export class CollisionMask {
     isWalkable(worldX: number, worldY: number): boolean {
         const tileX = Math.floor(worldX / this.tileSize);
         const tileY = Math.floor(worldY / this.tileSize);
-        return this.isTileWalkable(tileX, tileY);
+        const result = this.isTileWalkable(tileX, tileY);
+        
+        // Debug logging for first few checks
+        if (!this.debugCount) this.debugCount = 0;
+        if (this.debugCount++ < 10) {
+            console.log(`[CollisionMask] isWalkable(${worldX}, ${worldY}) -> tile(${tileX}, ${tileY}) = ${result}`);
+        }
+        
+        return result;
     }
+    
+    private debugCount?: number;
     
     /**
      * Check if a tile coordinate is walkable
