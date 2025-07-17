@@ -513,12 +513,12 @@ export const ATTACK_DEFINITIONS = {
         },
         multiHit: {
             hits: 3,
-            interval: 1000,
-            duration: 3000
+            interval: 500,
+            duration: 1500
         },
         animation: 'attack3', // Uses Attack3.png animation
         windupAnimation: 'attack3_windup', // Uses BlockStart.png for windup
-        moveSpeedMultiplier: 2.0 // 200% movement speed during spin
+        moveSpeedMultiplier: 3.0 // 300% movement speed during spin
     },
     monster_ogre_slam: {
         archetype: 'standard_melee',
