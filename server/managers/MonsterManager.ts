@@ -84,6 +84,7 @@ interface ServerMonsterState extends MonsterState {
         lastHitTime: number;
         originalTarget?: Position;
         hitEntities?: Set<string>; // Track who has been hit by this attack
+        fixedDirection?: { x: number; y: number }; // Fixed direction for committed movement
     };
     // Track last damage source to prevent duplicate hits
     lastHitBy?: {
@@ -393,6 +394,11 @@ export class MonsterManager {
      * @returns true if transition was successful
      */
     private transitionMonsterState(monster: ServerMonsterState, newState: string, contextData: any = {}): boolean {
+        // Skip transition if already in target state
+        if (monster.state === newState) {
+            return true;
+        }
+        
         if (!monster.stateMachine) {
             // Fallback for monsters without state machines (legacy)
             monster.state = newState as any;
@@ -596,14 +602,14 @@ export class MonsterManager {
                 if (distance <= stats.attackRange) {
                     const now = Date.now();
                     if (now - monster.lastAttack >= stats.attackCooldown) {
-                        monster.state = 'attacking';
+                        this.transitionMonsterState(monster, 'attacking');
                         return;
                     }
                     // Still on cooldown, stay idle
                     return;
                 } else if (distance <= stats.aggroRange) {
                     // Out of attack range but still in aggro range
-                    monster.state = 'chasing';
+                    this.transitionMonsterState(monster, 'chasing');
                     return;
                 }
             }
@@ -628,7 +634,7 @@ export class MonsterManager {
         
         if (nearestPlayer) {
             console.log(`[MonsterManager] Monster ${monster.id} found player at distance ${Math.round(nearestDistance)}, transitioning to chasing`);
-            monster.state = 'chasing';
+            this.transitionMonsterState(monster, 'chasing');
             monster.target = this.playerToLegacy(nearestPlayer);
         }
     }
@@ -637,7 +643,7 @@ export class MonsterManager {
         const target = monster.target;
         
         if (!target || target.hp <= 0) {
-            monster.state = 'idle';
+            this.transitionMonsterState(monster, 'idle');
             monster.target = null;
             monster.velocity = { x: 0, y: 0 };
             return;
@@ -647,7 +653,7 @@ export class MonsterManager {
         
         // Lost aggro - too far
         if (distance > stats.aggroRange * 1.5) {
-            monster.state = 'idle';
+            this.transitionMonsterState(monster, 'idle');
             monster.target = null;
             monster.velocity = { x: 0, y: 0 };
             return;
@@ -655,7 +661,7 @@ export class MonsterManager {
         
         // In attack range
         if (distance <= stats.attackRange) {
-            monster.state = 'attacking';
+            this.transitionMonsterState(monster, 'attacking');
             monster.velocity = { x: 0, y: 0 };
             return;
         }
@@ -673,7 +679,7 @@ export class MonsterManager {
         const target = monster.target;
         
         if (!target || target.hp <= 0) {
-            monster.state = 'idle';
+            this.transitionMonsterState(monster, 'idle');
             monster.target = null;
             monster.isAttackAnimating = false;
             monster.currentAttackType = undefined;
@@ -688,7 +694,7 @@ export class MonsterManager {
         
         // Target moved out of range while we're not animating
         if (distance > attackRange * 1.2 && !monster.isAttackAnimating) {
-            monster.state = 'chasing';
+            this.transitionMonsterState(monster, 'chasing');
             monster.currentAttackType = undefined;
             return;
         }
@@ -717,9 +723,9 @@ export class MonsterManager {
                 // After animation completes, check if we should continue attacking or change state
                 const currentDistance = getDistance(monster, target);
                 if (currentDistance > attackRange) {
-                    monster.state = 'chasing';
+                    this.transitionMonsterState(monster, 'chasing');
                 } else {
-                    monster.state = 'idle'; // Go to idle between attacks
+                    this.transitionMonsterState(monster, 'idle'); // Go to idle between attacks
                 }
                 monster.currentAttackType = undefined;
             }
@@ -799,7 +805,7 @@ export class MonsterManager {
             }
         } else {
             // Cooldown not ready, go back to idle
-            monster.state = 'idle';
+            this.transitionMonsterState(monster, 'idle');
             monster.currentAttackType = undefined;
         }
     }
@@ -1219,12 +1225,12 @@ export class MonsterManager {
                             const monsterStats = MONSTER_STATS[monster.type as keyof typeof MONSTER_STATS];
                             
                             if (distance > monsterStats.attackRange) {
-                                monster.state = 'chasing';
+                                this.transitionMonsterState(monster, 'chasing');
                             } else {
-                                monster.state = 'idle';
+                                this.transitionMonsterState(monster, 'idle');
                             }
                         } else {
-                            monster.state = 'idle';
+                            this.transitionMonsterState(monster, 'idle');
                         }
                     }
                 }, attackConfig.recoveryTime);
