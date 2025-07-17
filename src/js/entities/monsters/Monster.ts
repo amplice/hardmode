@@ -94,6 +94,7 @@ interface MonsterServerUpdate {
     state: MonsterState;
     facing: Direction;
     currentAttackType?: 'primary' | 'special1' | 'special2';
+    attackPhase?: 'windup' | 'active' | 'recovery';
 }
 
 interface SpriteManagerInterface {
@@ -254,11 +255,14 @@ export class Monster {
             case 'attacking':
                 // Use currentAttackType to determine which attack animation to play
                 const attackType = (this as any).currentAttackType;
+                const attackPhase = (this as any).attackPhase;
+                
                 if (attackType === 'special1') {
                     // Map special attacks to their animations
                     switch (this.type) {
                         case 'ogre':
-                            animState = 'attack3'; // Spin attack
+                            // Use windup animation during windup phase
+                            animState = attackPhase === 'windup' ? 'attack3_windup' : 'attack3';
                             break;
                         case 'elemental':
                             animState = 'attack2'; // Spell cast
@@ -501,6 +505,11 @@ export class Monster {
         const oldAttackType = (this as any).currentAttackType;
         if (data.currentAttackType !== undefined) {
             (this as any).currentAttackType = data.currentAttackType;
+        }
+        
+        // Update attack phase for windup animations
+        if (data.attackPhase !== undefined) {
+            (this as any).attackPhase = data.attackPhase;
         }
         
         // Prevent facing changes from restarting attack animations

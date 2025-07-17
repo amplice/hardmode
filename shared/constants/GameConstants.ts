@@ -517,7 +517,8 @@ export const ATTACK_DEFINITIONS = {
             duration: 1500
         },
         animation: 'attack3', // Uses Attack3.png animation
-        moveSpeedMultiplier: 0.3 // Can move slowly during spin
+        windupAnimation: 'attack3_windup', // Uses BlockStart.png for windup
+        moveSpeedMultiplier: 2.0 // 200% movement speed during spin
     },
     monster_ogre_slam: {
         archetype: 'standard_melee',

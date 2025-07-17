@@ -88,6 +88,7 @@ export interface MonsterState {
     aggroRange: number;
     moveSpeed: number;
     currentAttackType?: 'primary' | 'special1' | 'special2'; // For animation sync
+    attackPhase?: 'windup' | 'active' | 'recovery'; // Attack phase tracking
 }
 
 /**

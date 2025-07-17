@@ -390,7 +390,8 @@ export class NetworkOptimizer {
                 'hp',          // Health for UI and death detection
                 'facing',      // Direction for rendering
                 'type',        // Monster type for behavior/visuals
-                'currentAttackType' // Attack animation type (when attacking)
+                'currentAttackType', // Attack animation type (when attacking)
+                'attackPhase'  // Attack phase (windup/active/recovery)
             ];
         }
         

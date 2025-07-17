@@ -669,6 +669,7 @@ export class MonsterManager {
             const animDuration = attackConfig.windupTime + attackConfig.recoveryTime;
             if (now - monster.attackAnimationStarted >= animDuration) {
                 monster.isAttackAnimating = false;
+                monster.attackPhase = undefined;
                 // After animation completes, check if we should continue attacking or change state
                 const currentDistance = getDistance(monster, target);
                 if (currentDistance > attackRange) {
@@ -696,12 +697,14 @@ export class MonsterManager {
             monster.attackAnimationStarted = now;
             monster.isAttackAnimating = true;
             monster.currentAttackType = attackType;
+            monster.attackPhase = 'windup';
             
             // Handle different attack archetypes
             if (attackConfig.archetype === 'projectile') {
                 // Schedule projectile creation
                 monster.pendingAttackTimeout = setTimeout(() => {
                     monster.pendingAttackTimeout = null;
+                    monster.attackPhase = 'active';
                     this.executeProjectileAttack(monster, target, attackConfig);
                 }, attackConfig.windupTime);
             } else if (attackConfig.archetype === 'multi_hit_melee') {
@@ -717,18 +720,21 @@ export class MonsterManager {
                 // Schedule first hit
                 monster.pendingAttackTimeout = setTimeout(() => {
                     monster.pendingAttackTimeout = null;
+                    monster.attackPhase = 'active';
                     this.executeMultiHitAttack(monster, stats, attackConfig, players);
                 }, attackConfig.windupTime);
             } else if (attackConfig.archetype === 'multi_projectile') {
                 // Schedule multi-projectile attack
                 monster.pendingAttackTimeout = setTimeout(() => {
                     monster.pendingAttackTimeout = null;
+                    monster.attackPhase = 'active';
                     this.executeMultiProjectileAttack(monster, target, attackConfig);
                 }, attackConfig.windupTime);
             } else {
                 // Standard melee attack
                 monster.pendingAttackTimeout = setTimeout(() => {
                     monster.pendingAttackTimeout = null;
+                    monster.attackPhase = 'active';
                     // Re-fetch current players from gameState to ensure we have latest data
                     if (this.io && (this.io as any).gameState && (this.io as any).gameState.players) {
                         this.executeMeleeAttack(monster, attackConfig, (this.io as any).gameState.players);
@@ -1124,8 +1130,16 @@ export class MonsterManager {
                     this.executeMultiHitAttack(monster, stats, attackConfig, players);
                 }, multiHit.hitInterval);
             } else {
-                // Multi-hit complete, clear data
+                // Multi-hit complete, enter recovery phase
                 monster.multiHitData = undefined;
+                monster.attackPhase = 'recovery';
+                
+                // Schedule recovery complete
+                setTimeout(() => {
+                    if (monster && monster.attackPhase === 'recovery') {
+                        monster.attackPhase = undefined;
+                    }
+                }, attackConfig.recoveryTime);
             }
         }
     }
