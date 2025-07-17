@@ -330,7 +330,16 @@ export class Monster {
             if (this.animatedSprite) {
                 // Configure loop based on animation type
                 const nonLoopingStates: MonsterState[] = ['attacking', 'stunned', 'dying'];
-                this.animatedSprite.loop = !nonLoopingStates.includes(this.state);
+                let shouldLoop = !nonLoopingStates.includes(this.state);
+                
+                // Special case: Ogre spin attack (special1) should loop
+                if (this.state === 'attacking' && this.type === 'ogre' && 
+                    (this as any).currentAttackType === 'special1' && 
+                    (this as any).attackPhase === 'active') {
+                    shouldLoop = true;
+                }
+                
+                this.animatedSprite.loop = shouldLoop;
                 
                 this.animatedSprite.play();
                 this.animatedSprite.anchor.set(0.5, 0.5);
@@ -362,7 +371,14 @@ export class Monster {
                 
             case 'attacking':
                 // Don't change state locally - let server control it
-                // Just stop the animation on the last frame
+                // For looping attacks (like Ogre spin), let it continue
+                if (this.type === 'ogre' && 
+                    (this as any).currentAttackType === 'special1' && 
+                    (this as any).attackPhase === 'active') {
+                    // Let the spin attack continue looping
+                    return;
+                }
+                // For non-looping attacks, stop on the last frame
                 if (this.animatedSprite) {
                     this.animatedSprite.gotoAndStop(this.animatedSprite.totalFrames - 1);
                 }
