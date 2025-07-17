@@ -513,8 +513,8 @@ export const ATTACK_DEFINITIONS = {
         },
         multiHit: {
             hits: 3,
-            interval: 500,
-            duration: 1500
+            interval: 1000,
+            duration: 3000
         },
         animation: 'attack3', // Uses Attack3.png animation
         windupAnimation: 'attack3_windup', // Uses BlockStart.png for windup
