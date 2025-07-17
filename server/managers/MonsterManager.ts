@@ -1,4 +1,4 @@
-import { GAME_CONSTANTS, MONSTER_STATS, MONSTER_SPAWN_WEIGHTS } from '../../shared/constants/GameConstants.js';
+import { GAME_CONSTANTS, MONSTER_STATS, MONSTER_SPAWN_WEIGHTS, ATTACK_DEFINITIONS } from '../../shared/constants/GameConstants.js';
 import { getDistance, selectWeightedRandom } from '../../shared/utils/MathUtils.js';
 import { CollisionMask } from '../../shared/systems/CollisionMask.js';
 import { SharedWorldGenerator } from '../../shared/systems/WorldGenerator.js';
