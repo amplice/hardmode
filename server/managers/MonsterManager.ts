@@ -250,7 +250,8 @@ export class MonsterManager {
             }
             
             // Determine LOD level and update frequency
-            if (closestDistance < nearDistance) {
+            // Force full updates for monsters in multi-hit attacks to ensure smooth movement
+            if (closestDistance < nearDistance || (monster.multiHitData && monster.state === 'attacking')) {
                 // NEAR: Full update every frame (highest priority)
                 // Phase 5.1: Wake up dormant monsters using state machine
                 if ((monster as any).state === 'dormant') {
@@ -485,8 +486,8 @@ export class MonsterManager {
         
         // Skip most updates during multi-hit attacks to prevent state/facing changes
         if (monster.multiHitData && monster.state === 'attacking') {
-            // Handle fixed direction movement during entire attack (windup, active, recovery)
-            if (monster.multiHitData.fixedDirection) {
+            // Handle fixed direction movement ONLY during active attack phase
+            if (monster.attackPhase === 'active' && monster.multiHitData.fixedDirection) {
                 const attackConfig = this.getAttackConfig(monster);
                 if (attackConfig && (attackConfig as any).moveSpeedMultiplier) {
                     const moveSpeed = stats.moveSpeed * (attackConfig as any).moveSpeedMultiplier;
@@ -495,9 +496,9 @@ export class MonsterManager {
                     monster.velocity.x = monster.multiHitData.fixedDirection.x * moveSpeed;
                     monster.velocity.y = monster.multiHitData.fixedDirection.y * moveSpeed;
                     
-                    // Calculate new position
-                    const newX = monster.x + monster.velocity.x * deltaTime;
-                    const newY = monster.y + monster.velocity.y * deltaTime;
+                    // Calculate new position (velocity is already per-frame, don't multiply by deltaTime)
+                    const newX = monster.x + monster.velocity.x;
+                    const newY = monster.y + monster.velocity.y;
                     
                     // Check collision
                     if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, newY)) {
@@ -509,6 +510,10 @@ export class MonsterManager {
                         monster.velocity.y = 0;
                     }
                 }
+            } else {
+                // Not in active phase - ensure velocity is zero
+                monster.velocity.x = 0;
+                monster.velocity.y = 0;
             }
             
             monster.lastUpdate = Date.now();
