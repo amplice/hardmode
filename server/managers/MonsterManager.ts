@@ -71,6 +71,25 @@ interface ServerMonsterState extends MonsterState {
     pathIndex?: number;
     pathTarget?: WorldCoord;
     wanderDirection?: { x: number, y: number };
+    // Special attack system
+    currentAttackType?: 'primary' | 'special1' | 'special2';
+    attackCooldowns?: {
+        primary: number;
+        special1?: number;
+        special2?: number;
+    };
+    multiHitData?: {
+        hitsRemaining: number;
+        hitInterval: number;
+        lastHitTime: number;
+        originalTarget?: Position;
+        hitEntities?: Set<string>; // Track who has been hit by this attack
+    };
+    // Track last damage source to prevent duplicate hits
+    lastHitBy?: {
+        attackId: string;
+        timestamp: number;
+    };
 }
 
 // World coordinate type for A* pathfinding
@@ -625,14 +644,20 @@ export class MonsterManager {
             monster.state = 'idle';
             monster.target = null;
             monster.isAttackAnimating = false;
+            monster.currentAttackType = undefined;
             return;
         }
         
+        const targetCoords = this.playerToCoords(target);
+        const { attackType, attackConfig } = this.selectMonsterAttack(monster, stats, targetCoords);
+        
         const distance = getDistance(monster, target);
+        const attackRange = attackConfig.range || stats.attackRange;
         
         // Target moved out of range while we're not animating
-        if (distance > stats.attackRange * 1.2 && !monster.isAttackAnimating) {
+        if (distance > attackRange * 1.2 && !monster.isAttackAnimating) {
             monster.state = 'chasing';
+            monster.currentAttackType = undefined;
             return;
         }
         
@@ -640,48 +665,81 @@ export class MonsterManager {
         
         // If we're currently animating, don't start a new attack
         if (monster.isAttackAnimating) {
-            // Check if animation should be finished
-            if (now - monster.attackAnimationStarted >= stats.attackDuration) {
+            // Check if animation should be finished based on attack config
+            const animDuration = attackConfig.windupTime + attackConfig.recoveryTime;
+            if (now - monster.attackAnimationStarted >= animDuration) {
                 monster.isAttackAnimating = false;
                 // After animation completes, check if we should continue attacking or change state
                 const currentDistance = getDistance(monster, target);
-                if (currentDistance > stats.attackRange) {
+                if (currentDistance > attackRange) {
                     monster.state = 'chasing';
                 } else {
                     monster.state = 'idle'; // Go to idle between attacks
                 }
+                monster.currentAttackType = undefined;
             }
             return;
         }
         
+        // Check if the selected attack is ready (cooldown)
+        const lastUsed = monster.attackCooldowns?.[attackType] || 0;
+        const cooldownReady = now - lastUsed >= attackConfig.cooldown;
+        
         // Start a new attack if cooldown is ready and monster is alive
-        if (now - monster.lastAttack >= stats.attackCooldown && monster.hp > 0 && monster.state !== 'dying') {
+        if (cooldownReady && monster.hp > 0 && monster.state !== 'dying') {
+            // Update cooldowns
+            if (!monster.attackCooldowns) {
+                monster.attackCooldowns = { primary: 0 };
+            }
+            monster.attackCooldowns[attackType] = now;
             monster.lastAttack = now;
             monster.attackAnimationStarted = now;
             monster.isAttackAnimating = true;
+            monster.currentAttackType = attackType;
             
-            // Handle projectile attacks differently
-            if (monster.type === 'wildarcher') {
-                // Schedule projectile creation and track timeout for interruption
+            // Handle different attack archetypes
+            if (attackConfig.archetype === 'projectile') {
+                // Schedule projectile creation
                 monster.pendingAttackTimeout = setTimeout(() => {
-                    monster.pendingAttackTimeout = null; // Clear reference when executing
-                    this.createMonsterProjectile(monster, target, stats);
-                }, stats.attackDelay);
+                    monster.pendingAttackTimeout = null;
+                    this.executeProjectileAttack(monster, target, attackConfig);
+                }, attackConfig.windupTime);
+            } else if (attackConfig.archetype === 'multi_hit_melee') {
+                // Initialize multi-hit data
+                monster.multiHitData = {
+                    hitsRemaining: attackConfig.multiHit.hits,
+                    hitInterval: attackConfig.multiHit.interval,
+                    lastHitTime: now + attackConfig.windupTime,
+                    originalTarget: targetCoords,
+                    hitEntities: new Set<string>()
+                };
+                // Schedule first hit
+                monster.pendingAttackTimeout = setTimeout(() => {
+                    monster.pendingAttackTimeout = null;
+                    this.executeMultiHitAttack(monster, stats, attackConfig, players);
+                }, attackConfig.windupTime);
+            } else if (attackConfig.archetype === 'multi_projectile') {
+                // Schedule multi-projectile attack
+                monster.pendingAttackTimeout = setTimeout(() => {
+                    monster.pendingAttackTimeout = null;
+                    this.executeMultiProjectileAttack(monster, target, attackConfig);
+                }, attackConfig.windupTime);
             } else {
-                // Schedule melee damage application and track timeout for interruption
+                // Standard melee attack
                 monster.pendingAttackTimeout = setTimeout(() => {
-                    monster.pendingAttackTimeout = null; // Clear reference when executing
+                    monster.pendingAttackTimeout = null;
                     // Re-fetch current players from gameState to ensure we have latest data
                     if (this.io && (this.io as any).gameState && (this.io as any).gameState.players) {
-                        this.applyMonsterDamage(monster, stats, (this.io as any).gameState.players);
+                        this.executeMeleeAttack(monster, attackConfig, (this.io as any).gameState.players);
                     } else {
-                        this.applyMonsterDamage(monster, stats, players);
+                        this.executeMeleeAttack(monster, attackConfig, players);
                     }
-                }, stats.attackDelay);
+                }, attackConfig.windupTime);
             }
         } else {
             // Cooldown not ready, go back to idle
             monster.state = 'idle';
+            monster.currentAttackType = undefined;
         }
     }
 
@@ -749,6 +807,329 @@ export class MonsterManager {
                 range: stats.attackRange,
                 effectType: effectType
             });
+        }
+    }
+
+    /**
+     * Select which attack the monster should use based on conditions
+     */
+    selectMonsterAttack(monster: ServerMonsterState, stats: any, target: { x: number, y: number }): { attackType: 'primary' | 'special1' | 'special2', attackConfig: any } {
+        const now = Date.now();
+        const distance = Math.sqrt(Math.pow(target.x - monster.x, 2) + Math.pow(target.y - monster.y, 2));
+        
+        // Initialize cooldowns if not present
+        if (!monster.attackCooldowns) {
+            monster.attackCooldowns = {
+                primary: 0,
+                special1: 0,
+                special2: 0
+            };
+        }
+        
+        // Get attack configurations
+        const attacks = stats.attacks || { primary: `monster_${monster.type}_primary` };
+        const availableAttacks: Array<{ type: 'primary' | 'special1' | 'special2', configName: string }> = [];
+        
+        // Check which attacks are available (off cooldown and in range)
+        for (const [attackType, attackName] of Object.entries(attacks)) {
+            if (!attackName) continue;
+            
+            const attackConfig = ATTACK_DEFINITIONS[attackName as keyof typeof ATTACK_DEFINITIONS];
+            if (!attackConfig) continue;
+            
+            const cooldownKey = attackType as 'primary' | 'special1' | 'special2';
+            const lastUsed = monster.attackCooldowns[cooldownKey] || 0;
+            const cooldownReady = now - lastUsed >= attackConfig.cooldown;
+            const inRange = distance <= (attackConfig.range || stats.attackRange);
+            
+            if (cooldownReady && inRange) {
+                availableAttacks.push({ type: cooldownKey, configName: attackName as string });
+            }
+        }
+        
+        // If no attacks available, return primary as fallback
+        if (availableAttacks.length === 0) {
+            return {
+                attackType: 'primary',
+                attackConfig: ATTACK_DEFINITIONS[attacks.primary as keyof typeof ATTACK_DEFINITIONS] || ATTACK_DEFINITIONS.monster_ogre_primary
+            };
+        }
+        
+        // Select attack based on monster type and conditions
+        let selectedAttack = availableAttacks[0]; // Default to first available
+        
+        switch (monster.type) {
+            case 'ogre':
+                // Ogre prefers slam when multiple enemies nearby, spin when surrounded
+                const nearbyEnemies = this.countNearbyPlayers(monster, 150);
+                if (nearbyEnemies >= 3 && availableAttacks.find(a => a.configName === 'monster_ogre_spin')) {
+                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_ogre_spin')!;
+                } else if (nearbyEnemies >= 2 && availableAttacks.find(a => a.configName === 'monster_ogre_slam')) {
+                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_ogre_slam')!;
+                } else if (Math.random() < 0.3 && availableAttacks.find(a => a.type === 'special1' || a.type === 'special2')) {
+                    // 30% chance to use special attack when available
+                    const specials = availableAttacks.filter(a => a.type === 'special1' || a.type === 'special2');
+                    selectedAttack = specials[Math.floor(Math.random() * specials.length)];
+                }
+                break;
+                
+            case 'elemental':
+                // Elemental uses spell at medium range, melee up close
+                if (distance > 150 && distance < 300 && availableAttacks.find(a => a.configName === 'monster_elemental_spell')) {
+                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_elemental_spell')!;
+                }
+                break;
+                
+            case 'ghoul':
+                // Ghoul uses frenzy when player is low health or randomly
+                if ((target as any).hp <= 2 && availableAttacks.find(a => a.configName === 'monster_ghoul_frenzy')) {
+                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_ghoul_frenzy')!;
+                } else if (Math.random() < 0.25 && availableAttacks.find(a => a.configName === 'monster_ghoul_frenzy')) {
+                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_ghoul_frenzy')!;
+                }
+                break;
+                
+            case 'skeleton':
+                // Skeleton throws bones at range, melee up close
+                if (distance > 200 && availableAttacks.find(a => a.configName === 'monster_skeleton_bonethrow')) {
+                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_skeleton_bonethrow')!;
+                }
+                break;
+                
+            case 'wildarcher':
+                // Wild archer uses multishot when multiple targets in range
+                const targetsInRange = this.countNearbyPlayers(monster, 400);
+                if (targetsInRange >= 2 && availableAttacks.find(a => a.configName === 'monster_wildarcher_multishot')) {
+                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_wildarcher_multishot')!;
+                }
+                break;
+        }
+        
+        const attackConfig = ATTACK_DEFINITIONS[selectedAttack.configName as keyof typeof ATTACK_DEFINITIONS];
+        return {
+            attackType: selectedAttack.type,
+            attackConfig: attackConfig
+        };
+    }
+
+    /**
+     * Count nearby players within radius
+     */
+    countNearbyPlayers(monster: ServerMonsterState, radius: number): number {
+        if (!this.io || !(this.io as any).gameState) return 0;
+        
+        const players = (this.io as any).gameState.players as Map<string, PlayerState>;
+        let count = 0;
+        
+        for (const [_, player] of players) {
+            if (player.hp <= 0) continue;
+            
+            const playerCoords = this.playerToCoords(player);
+            const distance = Math.sqrt(
+                Math.pow(playerCoords.x - monster.x, 2) + 
+                Math.pow(playerCoords.y - monster.y, 2)
+            );
+            
+            if (distance <= radius) {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+
+    /**
+     * Execute a standard melee attack
+     */
+    executeMeleeAttack(monster: ServerMonsterState, attackConfig: any, players: Map<string, PlayerState>): void {
+        if (!monster || monster.hp <= 0 || monster.state === 'dying') {
+            return;
+        }
+        
+        const target = monster.target;
+        if (!target || target.hp <= 0) return;
+        
+        const distance = getDistance(monster, target);
+        if (distance > (attackConfig.range || 100) * 1.2) return;
+        
+        // Handle AOE attacks
+        if (attackConfig.hitboxType === 'circle') {
+            this.executeAOEAttack(monster, attackConfig, players);
+        } else {
+            // Single target melee
+            if (this.damageProcessor) {
+                this.damageProcessor.applyDamage(
+                    monster,
+                    target,
+                    attackConfig.damage,
+                    'melee',
+                    { attackType: `monster_${attackConfig.name || 'melee'}` }
+                );
+            }
+        }
+    }
+
+    /**
+     * Execute an AOE attack hitting multiple targets
+     */
+    executeAOEAttack(monster: ServerMonsterState, attackConfig: any, players: Map<string, PlayerState>): void {
+        if (!monster || monster.hp <= 0 || monster.state === 'dying') {
+            return;
+        }
+        
+        const radius = attackConfig.hitboxParams?.radius || 100;
+        const attackId = `${monster.id}_${Date.now()}`;
+        
+        // Find all players in range
+        for (const [_, player] of players) {
+            if (player.hp <= 0) continue;
+            
+            const playerCoords = this.playerToCoords(player);
+            const distance = Math.sqrt(
+                Math.pow(playerCoords.x - monster.x, 2) + 
+                Math.pow(playerCoords.y - monster.y, 2)
+            );
+            
+            if (distance <= radius) {
+                // Check if already hit by this attack (for multi-hit prevention)
+                const playerState = player as any;
+                if (playerState.lastHitBy?.attackId === attackId) {
+                    continue;
+                }
+                
+                // Apply damage
+                if (this.damageProcessor) {
+                    this.damageProcessor.applyDamage(
+                        monster,
+                        player,
+                        attackConfig.damage,
+                        'melee',
+                        { attackType: `monster_${attackConfig.name || 'aoe'}`, attackId }
+                    );
+                    
+                    // Mark as hit by this attack
+                    playerState.lastHitBy = { attackId, timestamp: Date.now() };
+                }
+            }
+        }
+    }
+
+    /**
+     * Execute a projectile attack
+     */
+    executeProjectileAttack(monster: ServerMonsterState, target: PlayerState, attackConfig: any): void {
+        if (!monster || monster.hp <= 0 || monster.state === 'dying') {
+            return;
+        }
+        
+        if (!target || target.hp <= 0) return;
+        
+        const targetCoords = this.playerToCoords(target);
+        const dx = targetCoords.x - monster.x;
+        const dy = targetCoords.y - monster.y;
+        const angle = Math.atan2(dy, dx);
+        
+        // Determine projectile type based on monster
+        let effectType = 'wildarcher_shot_effect';
+        if (monster.type === 'elemental') {
+            effectType = 'elemental_spell_effect';
+        } else if (monster.type === 'skeleton') {
+            effectType = 'skeleton_bone_effect';
+        }
+        
+        // Create projectile
+        if ((this.io as any).projectileManager) {
+            const projectileOwner = {
+                id: monster.id,
+                type: monster.type
+            };
+            (this.io as any).projectileManager.createProjectile(projectileOwner, {
+                x: monster.x,
+                y: monster.y,
+                angle: angle,
+                speed: attackConfig.projectileSpeed || 600,
+                damage: attackConfig.damage,
+                range: attackConfig.projectileRange || attackConfig.range,
+                effectType: effectType
+            });
+        }
+    }
+
+    /**
+     * Execute a multi-projectile attack
+     */
+    executeMultiProjectileAttack(monster: ServerMonsterState, target: PlayerState, attackConfig: any): void {
+        if (!monster || monster.hp <= 0 || monster.state === 'dying') {
+            return;
+        }
+        
+        if (!target || target.hp <= 0) return;
+        
+        const targetCoords = this.playerToCoords(target);
+        const dx = targetCoords.x - monster.x;
+        const dy = targetCoords.y - monster.y;
+        const baseAngle = Math.atan2(dy, dx);
+        
+        const projectileCount = attackConfig.projectileCount || 3;
+        const spreadAngle = (attackConfig.spreadAngle || 30) * Math.PI / 180;
+        const angleStep = spreadAngle / (projectileCount - 1);
+        const startAngle = baseAngle - spreadAngle / 2;
+        
+        // Create multiple projectiles
+        for (let i = 0; i < projectileCount; i++) {
+            const angle = startAngle + angleStep * i;
+            
+            if ((this.io as any).projectileManager) {
+                const projectileOwner = {
+                    id: monster.id,
+                    type: monster.type
+                };
+                (this.io as any).projectileManager.createProjectile(projectileOwner, {
+                    x: monster.x,
+                    y: monster.y,
+                    angle: angle,
+                    speed: attackConfig.projectileSpeed || 450,
+                    damage: attackConfig.damage,
+                    range: attackConfig.projectileRange || attackConfig.range,
+                    effectType: 'wildarcher_shot_effect'
+                });
+            }
+        }
+    }
+
+    /**
+     * Execute a multi-hit melee attack
+     */
+    executeMultiHitAttack(monster: ServerMonsterState, stats: any, attackConfig: any, players: Map<string, PlayerState>): void {
+        if (!monster || monster.hp <= 0 || monster.state === 'dying' || !monster.multiHitData) {
+            return;
+        }
+        
+        const multiHit = monster.multiHitData;
+        
+        // Apply current hit
+        if (multiHit.hitsRemaining > 0) {
+            // AOE damage for multi-hit
+            this.executeAOEAttack(monster, attackConfig, players);
+            multiHit.hitsRemaining--;
+            
+            // Apply movement speed modifier if configured
+            if (attackConfig.moveSpeedMultiplier && monster.target) {
+                // Allow movement during multi-hit
+                const targetCoords = this.playerToCoords(monster.target);
+                const moveSpeed = stats.moveSpeed * attackConfig.moveSpeedMultiplier;
+                this.moveToward(monster, monster.target, moveSpeed);
+            }
+            
+            // Schedule next hit if more remaining
+            if (multiHit.hitsRemaining > 0) {
+                setTimeout(() => {
+                    this.executeMultiHitAttack(monster, stats, attackConfig, players);
+                }, multiHit.hitInterval);
+            } else {
+                // Multi-hit complete, clear data
+                monster.multiHitData = undefined;
+            }
         }
     }
 
@@ -1752,7 +2133,8 @@ export class MonsterManager {
                 state: monster.state,
                 isAttackAnimating: monster.isAttackAnimating,
                 attackAnimationStarted: monster.attackAnimationStarted,
-                isStunned: monster.isStunned
+                isStunned: monster.isStunned,
+                currentAttackType: monster.currentAttackType // Include attack type for animations
             }));
     }
 

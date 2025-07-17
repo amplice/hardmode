@@ -676,6 +676,24 @@ export const PLAYER_CONFIG = {
       flipX: false,
       flipY: false
     },
+    elemental_spell_effect: {
+      scale: 1.2,
+      offsetDistance: 40,
+      rotationOffset: 0,
+      animationSpeed: 0.4,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    skeleton_bone_effect: {
+      scale: 0.8,
+      offsetDistance: 25,
+      rotationOffset: 0,
+      animationSpeed: 0.5,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
     hunter_cone_effect: { // For Retreat Shot
       scale: 1.5,
       offsetDistance: 0, // To be used with useStartPosition:true and distance:0 in sequence

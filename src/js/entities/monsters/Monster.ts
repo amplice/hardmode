@@ -93,6 +93,7 @@ interface MonsterServerUpdate {
     maxHp: number;
     state: MonsterState;
     facing: Direction;
+    currentAttackType?: 'primary' | 'special1' | 'special2';
 }
 
 interface SpriteManagerInterface {
@@ -251,7 +252,42 @@ export class Monster {
                 animState = 'walk';
                 break;
             case 'attacking':
-                animState = 'attack1';
+                // Use currentAttackType to determine which attack animation to play
+                const attackType = (this as any).currentAttackType;
+                if (attackType === 'special1') {
+                    // Map special attacks to their animations
+                    switch (this.type) {
+                        case 'ogre':
+                            animState = 'attack3'; // Spin attack
+                            break;
+                        case 'elemental':
+                            animState = 'attack2'; // Spell cast
+                            break;
+                        case 'ghoul':
+                            animState = 'attack3'; // Frenzy
+                            break;
+                        case 'skeleton':
+                            animState = 'special1'; // Bone throw
+                            break;
+                        case 'wildarcher':
+                            animState = 'attack2'; // Multi-shot
+                            break;
+                        default:
+                            animState = 'attack1';
+                    }
+                } else if (attackType === 'special2') {
+                    // Map special2 attacks
+                    switch (this.type) {
+                        case 'ogre':
+                            animState = 'special1'; // Slam
+                            break;
+                        default:
+                            animState = 'attack1';
+                    }
+                } else {
+                    // Default primary attack
+                    animState = 'attack1';
+                }
                 break;
             case 'stunned':
                 animState = 'hit';
@@ -461,6 +497,12 @@ export class Monster {
             this.alive = false;
         }
         
+        // Update current attack type for animation
+        const oldAttackType = (this as any).currentAttackType;
+        if (data.currentAttackType !== undefined) {
+            (this as any).currentAttackType = data.currentAttackType;
+        }
+        
         // Prevent facing changes from restarting attack animations
         const wasAttacking = this.state === 'attacking';
         const isNowAttacking = data.state === 'attacking';
@@ -471,8 +513,9 @@ export class Monster {
         this.state = data.state;
         this.facing = data.facing;
         
-        // Only update animation if state changed, or if facing changed but not during an attack
-        if (oldState !== this.state || (!wasAttacking && !isNowAttacking && oldFacing !== this.facing)) {
+        // Update animation if state changed, attack type changed, or facing changed (but not during attack)
+        const attackTypeChanged = wasAttacking && isNowAttacking && oldAttackType !== data.currentAttackType;
+        if (oldState !== this.state || attackTypeChanged || (!wasAttacking && !isNowAttacking && oldFacing !== this.facing)) {
             this.updateAnimation();
         }
     }

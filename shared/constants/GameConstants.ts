@@ -172,7 +172,12 @@ export const MONSTER_STATS = {
         attackCooldown: 2500,
         collisionRadius: 35,
         attackDelay: 750, // ms delay before damage (75% of 1000ms animation)
-        attackDuration: 1000 // Total animation duration (15 frames at 0.25 speed)
+        attackDuration: 1000, // Total animation duration (15 frames at 0.25 speed)
+        attacks: {
+            primary: 'monster_ogre_primary',
+            special1: 'monster_ogre_spin'
+            // special2: 'monster_ogre_slam' // Disabled for now
+        }
     },
     skeleton: {
         hp: 2,
@@ -184,7 +189,11 @@ export const MONSTER_STATS = {
         attackCooldown: 1800,
         collisionRadius: 20,
         attackDelay: 625, // ms delay before damage (75% of 833ms animation)
-        attackDuration: 833 // Total animation duration (15 frames at 0.3 speed)
+        attackDuration: 833, // Total animation duration (15 frames at 0.3 speed)
+        attacks: {
+            primary: 'monster_skeleton_primary'
+            // special1: 'monster_skeleton_bonethrow' // Disabled for now
+        }
     },
     elemental: {
         hp: 3,
@@ -196,7 +205,11 @@ export const MONSTER_STATS = {
         attackCooldown: 3000,
         collisionRadius: 20,
         attackDelay: 625, // ms delay before damage (75% of 833ms animation)
-        attackDuration: 833 // Total animation duration (15 frames at 0.3 speed)
+        attackDuration: 833, // Total animation duration (15 frames at 0.3 speed)
+        attacks: {
+            primary: 'monster_elemental_primary'
+            // special1: 'monster_elemental_spell' // Disabled for now
+        }
     },
     ghoul: {
         hp: 2,
@@ -208,7 +221,11 @@ export const MONSTER_STATS = {
         attackCooldown: 1200,
         collisionRadius: 15,
         attackDelay: 469, // ms delay before damage (75% of 625ms animation)
-        attackDuration: 625 // Total animation duration (15 frames at 0.4 speed)
+        attackDuration: 625, // Total animation duration (15 frames at 0.4 speed)
+        attacks: {
+            primary: 'monster_ghoul_primary'
+            // special1: 'monster_ghoul_frenzy' // Disabled for now
+        }
     },
     wildarcher: {
         hp: 1,
@@ -220,7 +237,11 @@ export const MONSTER_STATS = {
         attackCooldown: 3000,
         collisionRadius: 20,
         attackDelay: 536, // ms delay before damage (75% of 714ms animation)
-        attackDuration: 714 // Total animation duration (15 frames at 0.35 speed)
+        attackDuration: 714, // Total animation duration (15 frames at 0.35 speed)
+        attacks: {
+            primary: 'monster_wildarcher_primary'
+            // special1: 'monster_wildarcher_multishot' // Disabled for now
+        }
     }
 };
 
@@ -475,5 +496,119 @@ export const ATTACK_DEFINITIONS = {
             width: 8,
             length: 20
         }
+    },
+    
+    // Special attacks for monsters
+    monster_ogre_spin: {
+        archetype: 'multi_hit_melee',
+        name: 'Spin Attack',
+        damage: 1,
+        windupTime: 500,
+        recoveryTime: 500,
+        cooldown: 5000,
+        range: 120,
+        hitboxType: 'circle',
+        hitboxParams: {
+            radius: 120
+        },
+        multiHit: {
+            hits: 3,
+            interval: 500,
+            duration: 1500
+        },
+        animation: 'attack3', // Uses Attack3.png animation
+        moveSpeedMultiplier: 0.3 // Can move slowly during spin
+    },
+    monster_ogre_slam: {
+        archetype: 'standard_melee',
+        name: 'Ground Slam',
+        damage: 3,
+        windupTime: 1000,
+        recoveryTime: 500,
+        cooldown: 8000,
+        range: 150,
+        hitboxType: 'circle',
+        hitboxParams: {
+            radius: 150
+        },
+        animation: 'special1', // Uses Pummel.png animation
+    },
+    
+    monster_elemental_spell: {
+        archetype: 'projectile',
+        name: 'Magic Bolt',
+        damage: 2,
+        windupTime: 800,
+        recoveryTime: 400,
+        cooldown: 4000,
+        range: 300,
+        projectileSpeed: 600,
+        projectileRange: 400,
+        hitboxType: 'projectile',
+        hitboxParams: {
+            width: 12,
+            length: 24
+        },
+        animation: 'attack2'
+    },
+    
+    monster_ghoul_frenzy: {
+        archetype: 'multi_hit_melee',
+        name: 'Frenzy',
+        damage: 1,
+        windupTime: 200,
+        recoveryTime: 300,
+        cooldown: 3000,
+        range: 80,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 100,
+            length: 100
+        },
+        multiHit: {
+            hits: 4,
+            interval: 200,
+            duration: 800
+        },
+        animation: 'attack3',
+        moveSpeedMultiplier: 1.5 // Moves faster during frenzy
+    },
+    
+    monster_skeleton_bonethrow: {
+        archetype: 'projectile',
+        name: 'Bone Throw',
+        damage: 1,
+        windupTime: 500,
+        recoveryTime: 300,
+        cooldown: 4000,
+        range: 350,
+        projectileSpeed: 500,
+        projectileRange: 350,
+        hitboxType: 'projectile',
+        hitboxParams: {
+            width: 10,
+            length: 20
+        },
+        animation: 'special1'
+    },
+    
+    monster_wildarcher_multishot: {
+        archetype: 'multi_projectile',
+        name: 'Multi Shot',
+        damage: 1,
+        windupTime: 700,
+        recoveryTime: 500,
+        cooldown: 5000,
+        range: 400,
+        projectileSpeed: 450,
+        projectileRange: 400,
+        projectileCount: 3,
+        spreadAngle: 30, // degrees
+        hitboxType: 'projectile',
+        hitboxParams: {
+            width: 8,
+            length: 20
+        },
+        animation: 'attack2'
     }
 };

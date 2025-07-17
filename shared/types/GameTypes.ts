@@ -87,6 +87,7 @@ export interface MonsterState {
     attackRange: number;
     aggroRange: number;
     moveSpeed: number;
+    currentAttackType?: 'primary' | 'special1' | 'special2'; // For animation sync
 }
 
 /**

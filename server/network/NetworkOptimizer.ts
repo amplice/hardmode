@@ -389,7 +389,8 @@ export class NetworkOptimizer {
                 'state',       // AI state (idle/chasing/attacking)
                 'hp',          // Health for UI and death detection
                 'facing',      // Direction for rendering
-                'type'         // Monster type for behavior/visuals
+                'type',        // Monster type for behavior/visuals
+                'currentAttackType' // Attack animation type (when attacking)
             ];
         }
         

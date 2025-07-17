@@ -556,6 +556,51 @@ WORLD: {
 - **Consistent Extensions**: Fallback logic prevents missing bottom cliff tiles
 - **Large World Support**: Optimized for 500x500 with chunked rendering
 
+## 🎮 **MONSTER SPECIAL ATTACKS SYSTEM**
+
+### **Implementation Overview**
+Monsters now have multiple attack types with different animations, AOE patterns, and conditions:
+
+#### **Attack Types**
+- **Primary**: Basic attack all monsters have
+- **Special1**: First special attack (varies by monster)
+- **Special2**: Second special attack (Ogre only currently)
+
+#### **Monster Attack Configurations**
+1. **Ogre**:
+   - Primary: Basic melee (120x120 rectangle)
+   - Special1 (Spin): Multi-hit AOE, 3 hits over 1.5s, 120px radius, uses Rolling.png animation
+   - Special2 (Slam): Large AOE, 150px radius, 3 damage, uses Pummel.png animation
+
+2. **Elemental**:
+   - Primary: Basic melee (100x100 rectangle)
+   - Special1 (Spell): Projectile attack, 300 range, uses CastSpell animation
+
+3. **Ghoul**:
+   - Primary: Basic melee (80x80 rectangle)
+   - Special1 (Frenzy): Multi-hit, 4 hits over 0.8s, 1.5x movement speed during attack
+
+4. **Skeleton**:
+   - Primary: Basic melee (80x80 rectangle)
+   - Special1 (Bone Throw): Projectile, 350 range, uses Special1 animation
+
+5. **Wild Archer**:
+   - Primary: Single projectile
+   - Special1 (Multi-shot): 3 projectiles in 30° spread
+
+#### **Attack Selection AI**
+- **Range-based**: Some attacks only used at certain distances
+- **Target count**: AOE attacks preferred when multiple players nearby
+- **Random chance**: Special attacks have chance-based usage
+- **Cooldowns**: Each attack type has independent cooldown tracking
+
+#### **Technical Implementation**
+- Server-authoritative attack selection in `MonsterManager.selectMonsterAttack()`
+- Client receives `currentAttackType` via network for animation sync
+- Multi-hit attacks track hit entities to prevent duplicate damage
+- New attack archetypes: `multi_hit_melee`, `multi_projectile`
+- Animation mapping in client `Monster.getAnimationName()` based on attack type
+
 ## 🧹 **DOCUMENTATION CLEANUP RECOMMENDATIONS**
 
 The following files are now outdated due to completed TypeScript migration and can be archived or removed:
