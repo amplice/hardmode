@@ -652,7 +652,7 @@ export class MonsterManager {
         const { attackType, attackConfig } = this.selectMonsterAttack(monster, stats, targetCoords);
         
         const distance = getDistance(monster, target);
-        const attackRange = attackConfig.range || stats.attackRange;
+        const attackRange = (attackConfig as any).range || stats.attackRange;
         
         // Target moved out of range while we're not animating
         if (distance > attackRange * 1.2 && !monster.isAttackAnimating) {
@@ -706,9 +706,10 @@ export class MonsterManager {
                 }, attackConfig.windupTime);
             } else if (attackConfig.archetype === 'multi_hit_melee') {
                 // Initialize multi-hit data
+                const multiHitConfig = (attackConfig as any).multiHit;
                 monster.multiHitData = {
-                    hitsRemaining: attackConfig.multiHit.hits,
-                    hitInterval: attackConfig.multiHit.interval,
+                    hitsRemaining: multiHitConfig.hits,
+                    hitInterval: multiHitConfig.interval,
                     lastHitTime: now + attackConfig.windupTime,
                     originalTarget: targetCoords,
                     hitEntities: new Set<string>()
@@ -840,7 +841,8 @@ export class MonsterManager {
             const cooldownKey = attackType as 'primary' | 'special1' | 'special2';
             const lastUsed = monster.attackCooldowns[cooldownKey] || 0;
             const cooldownReady = now - lastUsed >= attackConfig.cooldown;
-            const inRange = distance <= (attackConfig.range || stats.attackRange);
+            const attackRange = (attackConfig as any).range || stats.attackRange;
+            const inRange = distance <= attackRange;
             
             if (cooldownReady && inRange) {
                 availableAttacks.push({ type: cooldownKey, configName: attackName as string });
@@ -944,7 +946,8 @@ export class MonsterManager {
         if (!target || target.hp <= 0) return;
         
         const distance = getDistance(monster, target);
-        if (distance > (attackConfig.range || 100) * 1.2) return;
+        const attackRange = (attackConfig as any).range || 100;
+        if (distance > attackRange * 1.2) return;
         
         // Handle AOE attacks
         if (attackConfig.hitboxType === 'circle') {
@@ -957,7 +960,7 @@ export class MonsterManager {
                     target,
                     attackConfig.damage,
                     'melee',
-                    { attackType: `monster_${attackConfig.name || 'melee'}` }
+                    { attackType: `monster_${(attackConfig as any).name || 'melee'}` }
                 );
             }
         }
@@ -998,7 +1001,7 @@ export class MonsterManager {
                         player,
                         attackConfig.damage,
                         'melee',
-                        { attackType: `monster_${attackConfig.name || 'aoe'}`, attackId }
+                        { attackType: `monster_${(attackConfig as any).name || 'aoe'}`, attackId }
                     );
                     
                     // Mark as hit by this attack
@@ -1041,9 +1044,9 @@ export class MonsterManager {
                 x: monster.x,
                 y: monster.y,
                 angle: angle,
-                speed: attackConfig.projectileSpeed || 600,
+                speed: (attackConfig as any).projectileSpeed || 600,
                 damage: attackConfig.damage,
-                range: attackConfig.projectileRange || attackConfig.range,
+                range: (attackConfig as any).projectileRange || (attackConfig as any).range,
                 effectType: effectType
             });
         }
@@ -1064,8 +1067,8 @@ export class MonsterManager {
         const dy = targetCoords.y - monster.y;
         const baseAngle = Math.atan2(dy, dx);
         
-        const projectileCount = attackConfig.projectileCount || 3;
-        const spreadAngle = (attackConfig.spreadAngle || 30) * Math.PI / 180;
+        const projectileCount = (attackConfig as any).projectileCount || 3;
+        const spreadAngle = ((attackConfig as any).spreadAngle || 30) * Math.PI / 180;
         const angleStep = spreadAngle / (projectileCount - 1);
         const startAngle = baseAngle - spreadAngle / 2;
         
@@ -1082,9 +1085,9 @@ export class MonsterManager {
                     x: monster.x,
                     y: monster.y,
                     angle: angle,
-                    speed: attackConfig.projectileSpeed || 450,
+                    speed: (attackConfig as any).projectileSpeed || 450,
                     damage: attackConfig.damage,
-                    range: attackConfig.projectileRange || attackConfig.range,
+                    range: (attackConfig as any).projectileRange || (attackConfig as any).range,
                     effectType: 'wildarcher_shot_effect'
                 });
             }
@@ -1108,10 +1111,10 @@ export class MonsterManager {
             multiHit.hitsRemaining--;
             
             // Apply movement speed modifier if configured
-            if (attackConfig.moveSpeedMultiplier && monster.target) {
+            if ((attackConfig as any).moveSpeedMultiplier && monster.target) {
                 // Allow movement during multi-hit
                 const targetCoords = this.playerToCoords(monster.target);
-                const moveSpeed = stats.moveSpeed * attackConfig.moveSpeedMultiplier;
+                const moveSpeed = stats.moveSpeed * (attackConfig as any).moveSpeedMultiplier;
                 this.moveToward(monster, monster.target, moveSpeed);
             }
             
