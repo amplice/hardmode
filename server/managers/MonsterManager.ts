@@ -485,8 +485,8 @@ export class MonsterManager {
         
         // Skip most updates during multi-hit attacks to prevent state/facing changes
         if (monster.multiHitData && monster.state === 'attacking') {
-            // Handle fixed direction movement during windup phase
-            if (monster.attackPhase === 'windup' && monster.multiHitData.fixedDirection) {
+            // Handle fixed direction movement during entire attack (windup, active, recovery)
+            if (monster.multiHitData.fixedDirection) {
                 const attackConfig = this.getAttackConfig(monster);
                 if (attackConfig && (attackConfig as any).moveSpeedMultiplier) {
                     const moveSpeed = stats.moveSpeed * (attackConfig as any).moveSpeedMultiplier;
@@ -1176,29 +1176,7 @@ export class MonsterManager {
             this.executeAOEAttack(monster, attackConfig, players);
             multiHit.hitsRemaining--;
             
-            // Apply fixed direction movement for committed attacks
-            if ((attackConfig as any).moveSpeedMultiplier && multiHit.fixedDirection) {
-                const moveSpeed = stats.moveSpeed * (attackConfig as any).moveSpeedMultiplier;
-                
-                // Move in the fixed direction
-                monster.velocity.x = multiHit.fixedDirection.x * moveSpeed;
-                monster.velocity.y = multiHit.fixedDirection.y * moveSpeed;
-                
-                // Calculate new position (using frame-based movement, assuming 30 FPS)
-                const deltaTime = 1/30; // One frame at 30 FPS
-                const newX = monster.x + monster.velocity.x * deltaTime;
-                const newY = monster.y + monster.velocity.y * deltaTime;
-                
-                // Check collision
-                if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, newY)) {
-                    monster.x = newX;
-                    monster.y = newY;
-                } else {
-                    // Stop movement if we hit a wall
-                    monster.velocity.x = 0;
-                    monster.velocity.y = 0;
-                }
-            }
+            // Movement is now handled continuously in updateMonster
             
             // Schedule next hit if more remaining
             if (multiHit.hitsRemaining > 0) {
@@ -1207,7 +1185,7 @@ export class MonsterManager {
                 }, multiHit.hitInterval);
             } else {
                 // Multi-hit complete, enter recovery phase
-                monster.multiHitData = undefined;
+                // Keep multiHitData for movement during recovery
                 monster.attackPhase = 'recovery';
                 
                 // Schedule recovery complete and cleanup
@@ -1217,6 +1195,7 @@ export class MonsterManager {
                         monster.attackPhase = undefined;
                         monster.isAttackAnimating = false;
                         monster.currentAttackType = undefined;
+                        monster.multiHitData = undefined; // Clear multiHitData after recovery
                         
                         // Now transition to appropriate state
                         if (monster.target) {
