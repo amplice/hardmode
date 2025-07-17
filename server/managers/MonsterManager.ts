@@ -666,8 +666,20 @@ export class MonsterManager {
         // If we're currently animating, don't start a new attack
         if (monster.isAttackAnimating) {
             // Check if animation should be finished based on attack config
-            const animDuration = attackConfig.windupTime + attackConfig.recoveryTime;
+            let animDuration = attackConfig.windupTime + attackConfig.recoveryTime;
+            
+            // For multi-hit attacks, include the multi-hit duration
+            if (attackConfig.archetype === 'multi_hit_melee' && (attackConfig as any).multiHit) {
+                animDuration = attackConfig.windupTime + (attackConfig as any).multiHit.duration + attackConfig.recoveryTime;
+            }
+            
             if (now - monster.attackAnimationStarted >= animDuration) {
+                // For multi-hit attacks, let the multi-hit logic handle cleanup
+                if (attackConfig.archetype === 'multi_hit_melee' && monster.multiHitData) {
+                    // Multi-hit attack is still in progress, don't interfere
+                    return;
+                }
+                
                 monster.isAttackAnimating = false;
                 monster.attackPhase = undefined;
                 // After animation completes, check if we should continue attacking or change state
@@ -1134,10 +1146,28 @@ export class MonsterManager {
                 monster.multiHitData = undefined;
                 monster.attackPhase = 'recovery';
                 
-                // Schedule recovery complete
+                // Schedule recovery complete and cleanup
                 setTimeout(() => {
                     if (monster && monster.attackPhase === 'recovery') {
+                        // Clean up all attack state
                         monster.attackPhase = undefined;
+                        monster.isAttackAnimating = false;
+                        monster.currentAttackType = undefined;
+                        
+                        // Now transition to appropriate state
+                        if (monster.target) {
+                            const targetCoords = this.playerToCoords(monster.target);
+                            const distance = getDistance(monster, targetCoords);
+                            const monsterStats = MONSTER_STATS[monster.type as keyof typeof MONSTER_STATS];
+                            
+                            if (distance > monsterStats.attackRange) {
+                                monster.state = 'chasing';
+                            } else {
+                                monster.state = 'idle';
+                            }
+                        } else {
+                            monster.state = 'idle';
+                        }
                     }
                 }, attackConfig.recoveryTime);
             }
@@ -2033,6 +2063,13 @@ export class MonsterManager {
             
             // Reset attack animation state since attack was interrupted
             monster.isAttackAnimating = false;
+            monster.attackPhase = undefined;
+            monster.currentAttackType = undefined;
+            
+            // Clear multi-hit data if present
+            if (monster.multiHitData) {
+                monster.multiHitData = undefined;
+            }
             
             console.log(`[MonsterManager] Interrupted pending attack for monster ${monster.id}`);
         }
@@ -2145,7 +2182,8 @@ export class MonsterManager {
                 isAttackAnimating: monster.isAttackAnimating,
                 attackAnimationStarted: monster.attackAnimationStarted,
                 isStunned: monster.isStunned,
-                currentAttackType: monster.currentAttackType // Include attack type for animations
+                currentAttackType: monster.currentAttackType, // Include attack type for animations
+                attackPhase: monster.attackPhase // Include attack phase for windup animations
             }));
     }
 
