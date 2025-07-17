@@ -477,6 +477,38 @@ export class MonsterManager {
             return; // Exit early, no updates for dying monsters
         }
         
+        // Skip most updates during multi-hit attacks to prevent state/facing changes
+        if (monster.multiHitData && monster.state === 'attacking') {
+            // Handle fixed direction movement during windup phase
+            if (monster.attackPhase === 'windup' && monster.multiHitData.fixedDirection) {
+                const attackConfig = this.getAttackConfig(monster);
+                if (attackConfig && (attackConfig as any).moveSpeedMultiplier) {
+                    const moveSpeed = stats.moveSpeed * (attackConfig as any).moveSpeedMultiplier;
+                    
+                    // Move in the fixed direction
+                    monster.velocity.x = monster.multiHitData.fixedDirection.x * moveSpeed;
+                    monster.velocity.y = monster.multiHitData.fixedDirection.y * moveSpeed;
+                    
+                    // Calculate new position
+                    const newX = monster.x + monster.velocity.x * deltaTime;
+                    const newY = monster.y + monster.velocity.y * deltaTime;
+                    
+                    // Check collision
+                    if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, newY)) {
+                        monster.x = newX;
+                        monster.y = newY;
+                    } else {
+                        // Stop movement if we hit a wall
+                        monster.velocity.x = 0;
+                        monster.velocity.y = 0;
+                    }
+                }
+            }
+            
+            monster.lastUpdate = Date.now();
+            return; // Multi-hit attack is handling its own movement and state
+        }
+        
         // Safety check: If monster is stuck in unwalkable tile, teleport to nearest walkable
         if (this.collisionMask && !this.collisionMask.isWalkable(monster.x, monster.y)) {
             console.warn(`[MonsterManager] Monster ${monster.id} stuck in unwalkable tile at (${Math.round(monster.x)}, ${Math.round(monster.y)})`);
@@ -722,12 +754,22 @@ export class MonsterManager {
             } else if (attackConfig.archetype === 'multi_hit_melee') {
                 // Initialize multi-hit data
                 const multiHitConfig = (attackConfig as any).multiHit;
+                
+                // Calculate initial direction vector for committed movement
+                const dx = targetCoords.x - monster.x;
+                const dy = targetCoords.y - monster.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const directionX = distance > 0 ? dx / distance : 0;
+                const directionY = distance > 0 ? dy / distance : 0;
+                
                 monster.multiHitData = {
                     hitsRemaining: multiHitConfig.hits,
                     hitInterval: multiHitConfig.interval,
                     lastHitTime: now + attackConfig.windupTime,
                     originalTarget: targetCoords,
-                    hitEntities: new Set<string>()
+                    hitEntities: new Set<string>(),
+                    // Store fixed direction for committed movement
+                    fixedDirection: { x: directionX, y: directionY }
                 };
                 // Schedule first hit
                 monster.pendingAttackTimeout = setTimeout(() => {
@@ -1128,12 +1170,28 @@ export class MonsterManager {
             this.executeAOEAttack(monster, attackConfig, players);
             multiHit.hitsRemaining--;
             
-            // Apply movement speed modifier if configured
-            if ((attackConfig as any).moveSpeedMultiplier && monster.target) {
-                // Allow movement during multi-hit
-                const targetCoords = this.playerToCoords(monster.target);
+            // Apply fixed direction movement for committed attacks
+            if ((attackConfig as any).moveSpeedMultiplier && multiHit.fixedDirection) {
                 const moveSpeed = stats.moveSpeed * (attackConfig as any).moveSpeedMultiplier;
-                this.moveToward(monster, monster.target, moveSpeed);
+                
+                // Move in the fixed direction
+                monster.velocity.x = multiHit.fixedDirection.x * moveSpeed;
+                monster.velocity.y = multiHit.fixedDirection.y * moveSpeed;
+                
+                // Calculate new position (using frame-based movement, assuming 30 FPS)
+                const deltaTime = 1/30; // One frame at 30 FPS
+                const newX = monster.x + monster.velocity.x * deltaTime;
+                const newY = monster.y + monster.velocity.y * deltaTime;
+                
+                // Check collision
+                if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, newY)) {
+                    monster.x = newX;
+                    monster.y = newY;
+                } else {
+                    // Stop movement if we hit a wall
+                    monster.velocity.x = 0;
+                    monster.velocity.y = 0;
+                }
             }
             
             // Schedule next hit if more remaining
@@ -1220,7 +1278,10 @@ export class MonsterManager {
                 }
             }
             
-            monster.facing = this.getFacingDirection(movement.x, movement.y);
+            // Don't update facing during multi-hit attacks (committed movement)
+            if (!monster.multiHitData) {
+                monster.facing = this.getFacingDirection(movement.x, movement.y);
+            }
         }
     }
 
@@ -1719,10 +1780,29 @@ export class MonsterManager {
             monster.velocity.y = (dy / wanderDistance) * speed;
             monster.x = newX;
             monster.y = newY;
-            monster.facing = this.getFacingDirection(dx, dy);
+            // Don't update facing during multi-hit attacks
+            if (!monster.multiHitData) {
+                monster.facing = this.getFacingDirection(dx, dy);
+            }
         }
     }
 
+    /**
+     * Get the current attack configuration for a monster
+     */
+    getAttackConfig(monster: ServerMonsterState): any {
+        if (!monster.currentAttackType) return null;
+        
+        const stats = MONSTER_STATS[monster.type as keyof typeof MONSTER_STATS];
+        const attacks = stats.attacks;
+        if (!attacks) return null;
+        
+        const attackKey = attacks[monster.currentAttackType as keyof typeof attacks];
+        if (!attackKey) return null;
+        
+        return ATTACK_DEFINITIONS[attackKey as keyof typeof ATTACK_DEFINITIONS];
+    }
+    
     /**
      * Check if monster is stuck (hasn't moved much in recent time)
      */
