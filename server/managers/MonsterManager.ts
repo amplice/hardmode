@@ -860,16 +860,10 @@ export class MonsterManager {
         
         switch (monster.type) {
             case 'ogre':
-                // Ogre prefers slam when multiple enemies nearby, spin when surrounded
-                const nearbyEnemies = this.countNearbyPlayers(monster, 150);
-                if (nearbyEnemies >= 3 && availableAttacks.find(a => a.configName === 'monster_ogre_spin')) {
-                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_ogre_spin')!;
-                } else if (nearbyEnemies >= 2 && availableAttacks.find(a => a.configName === 'monster_ogre_slam')) {
-                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_ogre_slam')!;
-                } else if (Math.random() < 0.3 && availableAttacks.find(a => a.type === 'special1' || a.type === 'special2')) {
-                    // 30% chance to use special attack when available
-                    const specials = availableAttacks.filter(a => a.type === 'special1' || a.type === 'special2');
-                    selectedAttack = specials[Math.floor(Math.random() * specials.length)];
+                // For playtesting: Always prioritize spin attack when available
+                const spinAttack = availableAttacks.find(a => a.configName === 'monster_ogre_spin');
+                if (spinAttack) {
+                    selectedAttack = spinAttack;
                 }
                 break;
                 
