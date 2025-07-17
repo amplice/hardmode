@@ -140,6 +140,7 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
             { keySuffix: 'walk', path: 'assets/sprites/monsters/Ogre/Walk.png', columns: 15, rows: 8 },
             { keySuffix: 'idle', path: 'assets/sprites/monsters/Ogre/Idle.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/monsters/Ogre/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack3', path: 'assets/sprites/monsters/Ogre/Attack3.png', columns: 15, rows: 8 },
             { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Ogre/TakeDamage.png', columns: 15, rows: 8 },
             { keySuffix: 'die', path: 'assets/sprites/monsters/Ogre/Die.png', columns: 15, rows: 8 },
         ]
