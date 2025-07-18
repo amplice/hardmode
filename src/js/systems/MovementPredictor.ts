@@ -177,10 +177,10 @@ export class MovementPredictor {
         // ALWAYS store predicted state for reconciliation (even when not moving)
         this.predictedStates.set(input.sequence, newState);
         
-        // Debug: Log sequence gaps
-        if (Math.random() < 0.01) {
-            console.log(`[MovementPredictor] Storing prediction for sequence ${input.sequence}`);
-        }
+        // Debug: Log sequence gaps - disabled
+        // if (Math.random() < 0.01) {
+        //     console.log(`[MovementPredictor] Storing prediction for sequence ${input.sequence}`);
+        // }
 
         // Clean up old states less aggressively
         if (this.predictedStates.size > this.maxHistorySize * 2) {

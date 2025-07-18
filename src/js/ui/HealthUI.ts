@@ -72,12 +72,12 @@ export class HealthUI {
         
         const armorHP = this.player.armorHP || 0;
         
-        // Debug logging
-        console.log('[HealthUI] Player object:', this.player);
-        console.log('[HealthUI] ArmorHP value:', armorHP, 'Type:', typeof armorHP);
-        if (armorHP > 0) {
-            console.log('[HealthUI] Displaying', armorHP, 'green armor hearts');
-        }
+        // Debug logging - disabled
+        // console.log('[HealthUI] Player object:', this.player);
+        // console.log('[HealthUI] ArmorHP value:', armorHP, 'Type:', typeof armorHP);
+        // if (armorHP > 0) {
+        //     console.log('[HealthUI] Displaying', armorHP, 'green armor hearts');
+        // }
         
         let heartIndex = 0;
         

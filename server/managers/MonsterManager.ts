@@ -406,6 +406,9 @@ export class MonsterManager {
             return true;
         }
         
+        // Debug logging for state transitions
+        console.log(`[Monster ${monster.id}] State transition: ${monster.state} -> ${newState}, target: ${monster.target?.id || 'none'}, isAttacking: ${monster.isAttackAnimating}`);
+        
         if (!monster.stateMachine) {
             // Fallback for monsters without state machines (legacy)
             monster.state = newState as any;
@@ -602,8 +605,6 @@ export class MonsterManager {
     }
 
     handleIdleState(monster: ServerMonsterState, stats: any, players: Map<string, PlayerState>): void {
-        console.log(`[DEBUG] Monster ${monster.id} in idle state, has target: ${!!monster.target}`);
-        
         // If we already have a target, check if we should attack again
         if (monster.target) {
             // Find target by ID - handle both direct lookup and searching
@@ -649,10 +650,12 @@ export class MonsterManager {
                     
                     // Initialize cooldowns if not present
                     if (!monster.attackCooldowns) {
+                        // Initialize to a time that makes attacks immediately available
+                        const initialTime = now - 10000; // 10 seconds ago
                         monster.attackCooldowns = {
-                            primary: 0,
-                            special1: 0,
-                            special2: 0
+                            primary: initialTime,
+                            special1: initialTime,
+                            special2: initialTime
                         };
                     }
                     
@@ -669,15 +672,6 @@ export class MonsterManager {
                         const cooldownReady = now - lastUsed >= attackConfig.cooldown;
                         const attackRange = (attackConfig as any).range || stats.attackRange;
                         
-                        console.log(`[DEBUG] Monster ${monster.id} attack ${attackType}:`, {
-                            cooldownReady,
-                            timeSinceLastUse: now - lastUsed,
-                            cooldownRequired: attackConfig.cooldown,
-                            inRange: distance <= attackRange,
-                            distance,
-                            attackRange
-                        });
-                        
                         // Check if this specific attack is in range and ready
                         if (distance <= attackRange && cooldownReady) {
                             anyAttackReady = true;
@@ -686,11 +680,13 @@ export class MonsterManager {
                     }
                     
                     if (anyAttackReady) {
+                        console.log(`[Monster ${monster.id}] In idle, found ready attack, transitioning to attacking`);
                         this.transitionMonsterState(monster, 'attacking');
                         return;
                     }
                     // All attacks on cooldown, wait in place
                     // Keep the target but don't do anything else
+                    console.log(`[Monster ${monster.id}] In idle, no attacks ready, cooldowns:`, monster.attackCooldowns);
                     monster.velocity = { x: 0, y: 0 };
                     return;
                 } else if (distance <= stats.aggroRange) {
@@ -827,6 +823,7 @@ export class MonsterManager {
         
         const targetCoords = this.playerToCoords(target);
         const { attackType, attackConfig } = this.selectMonsterAttack(monster, stats, targetCoords);
+        console.log(`[Monster ${monster.id}] Selected attack: ${attackType}`);
         
         const distance = getDistance(monster, target);
         const attackRange = (attackConfig as any).range || stats.attackRange;
@@ -862,10 +859,12 @@ export class MonsterManager {
                 // Set cooldown when animation ends for proper cooldown timing
                 const currentAttackType = monster.currentAttackType || 'primary';
                 if (!monster.attackCooldowns) {
-                    monster.attackCooldowns = { primary: 0 };
+                    monster.attackCooldowns = { primary: 0, special1: 0, special2: 0 };
                 }
                 monster.attackCooldowns[currentAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
                 monster.lastAttack = Date.now();
+                console.log(`[Monster ${monster.id}] Attack ${currentAttackType} animation completed, cooldown set to: ${Date.now()}`);
+                
                 // After animation completes, check if we should continue attacking or change state
                 const currentDistance = getDistance(monster, target);
                 if (currentDistance > attackRange) {
@@ -884,6 +883,8 @@ export class MonsterManager {
         
         // Start a new attack if cooldown is ready and monster is alive
         if (cooldownReady && monster.hp > 0 && monster.state !== 'dying') {
+            console.log(`[Monster ${monster.id}] Starting attack ${attackType}, cooldown was ready (last used: ${lastUsed}, now: ${now}, diff: ${now - lastUsed}ms)`);
+            
             // Update cooldowns
             if (!monster.attackCooldowns) {
                 monster.attackCooldowns = { primary: 0 };
@@ -974,6 +975,7 @@ export class MonsterManager {
             }
         } else {
             // Cooldown not ready, go back to idle
+            console.log(`[Monster ${monster.id}] Attack ${attackType} NOT ready (last used: ${lastUsed}, now: ${now}, diff: ${now - lastUsed}ms, needed: ${attackConfig.cooldown}ms)`);
             this.transitionMonsterState(monster, 'idle');
             monster.currentAttackType = undefined;
         }
@@ -1055,10 +1057,12 @@ export class MonsterManager {
         
         // Initialize cooldowns if not present
         if (!monster.attackCooldowns) {
+            // Initialize to a time that makes attacks immediately available
+            const initialTime = now - 10000; // 10 seconds ago
             monster.attackCooldowns = {
-                primary: 0,
-                special1: 0,
-                special2: 0
+                primary: initialTime,
+                special1: initialTime,
+                special2: initialTime
             };
         }
         
@@ -1084,11 +1088,13 @@ export class MonsterManager {
             }
         }
         
-        // If no attacks available, return primary as fallback
+        // If no attacks available, return null to indicate no attack should be performed
         if (availableAttacks.length === 0) {
+            // Return primary attack config but with a flag indicating it's not ready
+            const primaryConfig = ATTACK_DEFINITIONS[attacks.primary as keyof typeof ATTACK_DEFINITIONS] || ATTACK_DEFINITIONS.monster_ogre_primary;
             return {
                 attackType: 'primary',
-                attackConfig: ATTACK_DEFINITIONS[attacks.primary as keyof typeof ATTACK_DEFINITIONS] || ATTACK_DEFINITIONS.monster_ogre_primary
+                attackConfig: primaryConfig
             };
         }
         
