@@ -640,14 +640,46 @@ export class MonsterManager {
                     }
                 }
                 
-                // Still in attack range and cooldown is ready
+                // Still in attack range - check if ANY attack is ready
                 if (distance <= maxAttackRange) {
                     const now = Date.now();
-                    if (now - monster.lastAttack >= stats.attackCooldown) {
+                    let anyAttackReady = false;
+                    
+                    // Initialize cooldowns if not present
+                    if (!monster.attackCooldowns) {
+                        monster.attackCooldowns = {
+                            primary: 0,
+                            special1: 0,
+                            special2: 0
+                        };
+                    }
+                    
+                    // Check all available attacks
+                    if (stats.attacks) {
+                        for (const [attackType, attackName] of Object.entries(stats.attacks)) {
+                            if (!attackName) continue;
+                            
+                            const attackConfig = ATTACK_DEFINITIONS[attackName as keyof typeof ATTACK_DEFINITIONS];
+                            if (!attackConfig) continue;
+                            
+                            const cooldownKey = attackType as 'primary' | 'special1' | 'special2';
+                            const lastUsed = monster.attackCooldowns[cooldownKey] || 0;
+                            const cooldownReady = now - lastUsed >= attackConfig.cooldown;
+                            const attackRange = (attackConfig as any).range || stats.attackRange;
+                            
+                            // Check if this specific attack is in range and ready
+                            if (distance <= attackRange && cooldownReady) {
+                                anyAttackReady = true;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if (anyAttackReady) {
                         this.transitionMonsterState(monster, 'attacking');
                         return;
                     }
-                    // Still on cooldown, stay idle
+                    // All attacks on cooldown, stay idle
                     return;
                 } else if (distance <= stats.aggroRange) {
                     // Out of attack range but still in aggro range
@@ -717,13 +749,45 @@ export class MonsterManager {
         
         // In range of any attack
         if (distance <= maxAttackRange) {
-            // Check if attack is off cooldown before transitioning
+            // Check if ANY attack is off cooldown before transitioning
             const now = Date.now();
-            if (now - monster.lastAttack >= stats.attackCooldown) {
+            let anyAttackReady = false;
+            
+            // Initialize cooldowns if not present
+            if (!monster.attackCooldowns) {
+                monster.attackCooldowns = {
+                    primary: 0,
+                    special1: 0,
+                    special2: 0
+                };
+            }
+            
+            // Check all available attacks
+            if (stats.attacks) {
+                for (const [attackType, attackName] of Object.entries(stats.attacks)) {
+                    if (!attackName) continue;
+                    
+                    const attackConfig = ATTACK_DEFINITIONS[attackName as keyof typeof ATTACK_DEFINITIONS];
+                    if (!attackConfig) continue;
+                    
+                    const cooldownKey = attackType as 'primary' | 'special1' | 'special2';
+                    const lastUsed = monster.attackCooldowns[cooldownKey] || 0;
+                    const cooldownReady = now - lastUsed >= attackConfig.cooldown;
+                    const attackRange = (attackConfig as any).range || stats.attackRange;
+                    
+                    // Check if this specific attack is in range and ready
+                    if (distance <= attackRange && cooldownReady) {
+                        anyAttackReady = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (anyAttackReady) {
                 this.transitionMonsterState(monster, 'attacking');
                 monster.velocity = { x: 0, y: 0 };
             } else {
-                // On cooldown, transition to idle
+                // All attacks on cooldown, transition to idle
                 this.transitionMonsterState(monster, 'idle');
                 monster.velocity = { x: 0, y: 0 };
             }
