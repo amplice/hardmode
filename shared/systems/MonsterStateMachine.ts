@@ -131,7 +131,7 @@ export class DormantState extends BaseMonsterState {
  */
 export class IdleState extends BaseMonsterState {
     readonly name = 'idle';
-    readonly validTransitions = ['chasing', 'dormant', 'stunned', 'dying'];
+    readonly validTransitions = ['chasing', 'attacking', 'dormant', 'stunned', 'dying'];
     
     onEnter(context: StateContext): void {
         // Clear any previous target
