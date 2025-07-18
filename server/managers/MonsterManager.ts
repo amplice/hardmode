@@ -723,8 +723,9 @@ export class MonsterManager {
                 this.transitionMonsterState(monster, 'attacking');
                 monster.velocity = { x: 0, y: 0 };
             } else {
-                // On cooldown, keep chasing but slower
-                this.moveToward(monster, target, stats.moveSpeed * 0.7);
+                // On cooldown, transition to idle
+                this.transitionMonsterState(monster, 'idle');
+                monster.velocity = { x: 0, y: 0 };
             }
             return;
         }
