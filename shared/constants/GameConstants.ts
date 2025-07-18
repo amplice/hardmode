@@ -506,7 +506,7 @@ export const ATTACK_DEFINITIONS = {
         windupTime: 500,
         recoveryTime: 500,
         cooldown: 5000,
-        range: 120,
+        range: 200,
         hitboxType: 'circle',
         hitboxParams: {
             radius: 120
