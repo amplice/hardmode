@@ -655,9 +655,8 @@ export class MonsterManager {
                     }
                     
                     // Check all available attacks
-                    const attacks = stats.attacks || { primary: `monster_${monster.type}_primary` };
-                    if (attacks) {
-                        for (const [attackType, attackName] of Object.entries(attacks)) {
+                    if (stats.attacks) {
+                        for (const [attackType, attackName] of Object.entries(stats.attacks)) {
                             if (!attackName) continue;
                             
                             const attackConfig = ATTACK_DEFINITIONS[attackName as keyof typeof ATTACK_DEFINITIONS];
@@ -764,9 +763,8 @@ export class MonsterManager {
             }
             
             // Check all available attacks
-            const attacks = stats.attacks || { primary: `monster_${monster.type}_primary` };
-            if (attacks) {
-                for (const [attackType, attackName] of Object.entries(attacks)) {
+            if (stats.attacks) {
+                for (const [attackType, attackName] of Object.entries(stats.attacks)) {
                     if (!attackName) continue;
                     
                     const attackConfig = ATTACK_DEFINITIONS[attackName as keyof typeof ATTACK_DEFINITIONS];
