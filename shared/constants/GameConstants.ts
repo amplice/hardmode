@@ -153,11 +153,12 @@ export const POWERUP_CONFIG = {
 
 // Monster type weights for spawning
 export const MONSTER_SPAWN_WEIGHTS = {
-    skeleton: 0.2,
-    elemental: 0.2,
-    ghoul: 0.2,
-    ogre: 0.2,
-    wildarcher: 0.2
+    skeleton: 0.16,
+    elemental: 0.16,
+    ghoul: 0.16,
+    ogre: 0.16,
+    wildarcher: 0.16,
+    darkmage: 0.2
 };
 
 // Centralized monster statistics
@@ -241,6 +242,22 @@ export const MONSTER_STATS = {
         attacks: {
             primary: 'monster_wildarcher_primary'
             // special1: 'monster_wildarcher_multishot' // Disabled for now
+        }
+    },
+    darkmage: {
+        hp: 3,
+        moveSpeed: 2.5,
+        damage: 2,
+        attackRange: 400,
+        aggroRange: 1000,
+        xp: 30,
+        attackCooldown: 2000,
+        collisionRadius: 20,
+        attackDelay: 600, // ms delay before damage for projectile
+        attackDuration: 833, // Total animation duration
+        attacks: {
+            primary: 'monster_darkmage_shadowbolt',
+            special1: 'monster_darkmage_teleport'
         }
     }
 };
@@ -611,5 +628,44 @@ export const ATTACK_DEFINITIONS = {
             length: 20
         },
         animation: 'attack2'
+    },
+    
+    // Dark Mage attacks
+    monster_darkmage_shadowbolt: {
+        archetype: 'projectile',
+        name: 'Shadow Bolt',
+        damage: 2,
+        windupTime: 600,
+        recoveryTime: 400,
+        cooldown: 3000,
+        range: 400,
+        projectileSpeed: 500,
+        projectileRange: 450,
+        hitboxType: 'projectile',
+        hitboxParams: {
+            width: 15,
+            length: 30
+        },
+        animation: 'attack1'
+    },
+    
+    monster_darkmage_teleport: {
+        archetype: 'teleport_melee',
+        name: 'Teleport Strike',
+        damage: 3,
+        windupTime: 800,  // Time for first 10 frames of Special1
+        recoveryTime: 600,
+        cooldown: 8000,
+        range: 300,  // Max teleport distance
+        teleportBehindDistance: 80,  // How far behind player
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 100,
+            length: 100
+        },
+        animation: 'special1',
+        windupAnimation: 'special1_windup',  // First 10 frames
+        postTeleportAnimation: 'special1_post',  // Last 5 frames
+        attackAnimation: 'quickshot'  // QuickShot animation for actual attack
     }
 };

@@ -282,6 +282,19 @@ export class Monster {
                         case 'wildarcher':
                             animState = 'attack2'; // Multi-shot
                             break;
+                        case 'darkmage':
+                            // Handle teleport attack phases
+                            const teleportPhase = (this as any).teleportPhase;
+                            if (teleportPhase === 'attack') {
+                                animState = 'quickshot';
+                            } else if (teleportPhase === 'post') {
+                                animState = 'special1_post'; // Last 5 frames
+                            } else if (attackPhase === 'windup') {
+                                animState = 'special1_windup'; // First 10 frames
+                            } else {
+                                animState = 'special1';
+                            }
+                            break;
                         default:
                             animState = 'attack1';
                     }
@@ -346,6 +359,25 @@ export class Monster {
                 }
                 
                 this.animatedSprite.loop = shouldLoop;
+                
+                // Handle custom frame ranges for Dark Mage teleport
+                if (this.type === 'darkmage' && animName.includes('special1_windup')) {
+                    // Only play first 10 frames for windup
+                    const totalFrames = this.animatedSprite.totalFrames;
+                    if (totalFrames > 10) {
+                        // Manually limit to first 10 frames
+                        const originalTextures = this.animatedSprite.textures as PIXI.Texture[];
+                        this.animatedSprite.textures = originalTextures.slice(0, 10);
+                    }
+                } else if (this.type === 'darkmage' && animName.includes('special1_post')) {
+                    // Only play last 5 frames for post-teleport
+                    const totalFrames = this.animatedSprite.totalFrames;
+                    if (totalFrames > 5) {
+                        // Use last 5 frames
+                        const originalTextures = this.animatedSprite.textures as PIXI.Texture[];
+                        this.animatedSprite.textures = originalTextures.slice(-5);
+                    }
+                }
                 
                 this.animatedSprite.play();
                 this.animatedSprite.anchor.set(0.5, 0.5);
@@ -505,9 +537,23 @@ export class Monster {
     }
     
     updateFromServer(data: MonsterServerUpdate): void {
-        // Update target position for smooth interpolation
-        this.targetPosition.x = data.x;
-        this.targetPosition.y = data.y;
+        // Check if monster teleported (Dark Mage teleport attack)
+        if ((data as any).teleported) {
+            // Instant position update, no interpolation
+            this.sprite.x = data.x;
+            this.sprite.y = data.y;
+            this.targetPosition.x = data.x;
+            this.targetPosition.y = data.y;
+        } else {
+            // Update target position for smooth interpolation
+            this.targetPosition.x = data.x;
+            this.targetPosition.y = data.y;
+        }
+        
+        // Update teleport phase for Dark Mage animations
+        if ((data as any).teleportPhase !== undefined) {
+            (this as any).teleportPhase = (data as any).teleportPhase;
+        }
         
         // Update health
         this.hitPoints = data.hp;

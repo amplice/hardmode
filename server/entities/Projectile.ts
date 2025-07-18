@@ -174,7 +174,7 @@ export class Projectile {
      */
     public shouldHitMonsters(): boolean {
         // Monster types that create projectiles
-        const monsterTypes = ['skeleton', 'elemental', 'ghoul', 'ogre', 'wildarcher'];
+        const monsterTypes = ['skeleton', 'elemental', 'ghoul', 'ogre', 'wildarcher', 'darkmage'];
         return !monsterTypes.includes(this.ownerType);
     }
     

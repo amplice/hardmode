@@ -166,6 +166,20 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
             { keySuffix: 'die', path: 'assets/sprites/monsters/WildArcher/Die.png', columns: 15, rows: 8 },
         ]
     },
+    {
+        keyPrefix: 'darkmage', type: 'monster',
+        animations: [
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/DarkMage/Walk.png', columns: 15, rows: 8 },
+            { keySuffix: 'idle', path: 'assets/sprites/monsters/DarkMage/Idle.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack1', path: 'assets/sprites/monsters/DarkMage/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'special1', path: 'assets/sprites/monsters/DarkMage/Special1.png', columns: 15, rows: 8 },
+            { keySuffix: 'special1_windup', path: 'assets/sprites/monsters/DarkMage/Special1.png', columns: 15, rows: 8 },  // Will use first 10 frames in Monster.ts
+            { keySuffix: 'special1_post', path: 'assets/sprites/monsters/DarkMage/Special1.png', columns: 15, rows: 8 },  // Will use last 5 frames in Monster.ts
+            { keySuffix: 'quickshot', path: 'assets/sprites/monsters/DarkMage/QuickShot.png', columns: 15, rows: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/DarkMage/TakeDamage.png', columns: 15, rows: 8 },
+            { keySuffix: 'die', path: 'assets/sprites/monsters/DarkMage/Die.png', columns: 15, rows: 8 },
+        ]
+    },
     // Effects
     {
         keyPrefix: 'slash_effect', type: 'effect', path: 'assets/sprites/effects/Slash.png',

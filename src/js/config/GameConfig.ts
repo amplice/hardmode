@@ -199,6 +199,25 @@ export const MONSTER_CONFIG = {
         take_damage: { speed: 0.7 },
         die: { speed: 0.3 }
       }
+    } as MonsterStats,
+    darkmage: {
+      hitPoints: 3,
+      moveSpeed: 2.5,
+      attackRange: 400,
+      collisionRadius: 20,
+      aggroRange: 1000,
+      xp: 30,
+      animations: {
+        walk: { speed: 0.3 },
+        idle: { speed: 0.2 },
+        attack1: { speed: 0.3 },
+        special1: { speed: 0.5 },  // For teleport animation
+        special1_windup: { speed: 0.5 },  // First 10 frames of Special1
+        special1_post: { speed: 0.6 },  // Last 5 frames of Special1
+        quickshot: { speed: 0.4 },  // Attack animation after teleport
+        take_damage: { speed: 0.7 },
+        die: { speed: 0.3 }
+      }
     } as MonsterStats
   },
 
@@ -263,6 +282,31 @@ export const MONSTER_CONFIG = {
           maxDistance: 600,
           color: 0x8B4513
         }
+      } as MonsterAttackConfig
+    },
+    darkmage: {
+      primary: {
+        name: "Shadow Bolt",
+        damage: 2,
+        windupTime: 600,
+        recoveryTime: 400,
+        cooldown: 3000,
+        range: 400,
+        projectile: {
+          speed: 12,
+          size: 15,
+          pierce: false,
+          maxDistance: 450,
+          color: 0x8B00FF  // Purple shadow bolt
+        }
+      } as MonsterAttackConfig,
+      special: {
+        name: "Teleport Strike",
+        damage: 3,
+        windupTime: 800,
+        recoveryTime: 600,
+        cooldown: 8000,
+        range: 300
       } as MonsterAttackConfig
     }
   }
