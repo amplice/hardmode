@@ -643,11 +643,6 @@ export class MonsterManager {
                 // Still in attack range - check if ANY attack is ready
                 if (distance <= maxAttackRange) {
                     const now = Date.now();
-                    
-                    // Debug log
-                    if (Math.random() < 0.1) {
-                        console.log(`[MonsterManager] ${monster.type} ${monster.id} in idle with target at distance ${Math.round(distance)}, checking attacks...`);
-                    }
                     let anyAttackReady = false;
                     
                     // Initialize cooldowns if not present
@@ -660,23 +655,22 @@ export class MonsterManager {
                     }
                     
                     // Check all available attacks
-                    if (stats.attacks) {
-                        for (const [attackType, attackName] of Object.entries(stats.attacks)) {
-                            if (!attackName) continue;
-                            
-                            const attackConfig = ATTACK_DEFINITIONS[attackName as keyof typeof ATTACK_DEFINITIONS];
-                            if (!attackConfig) continue;
-                            
-                            const cooldownKey = attackType as 'primary' | 'special1' | 'special2';
-                            const lastUsed = monster.attackCooldowns[cooldownKey] || 0;
-                            const cooldownReady = now - lastUsed >= attackConfig.cooldown;
-                            const attackRange = (attackConfig as any).range || stats.attackRange;
-                            
-                            // Check if this specific attack is in range and ready
-                            if (distance <= attackRange && cooldownReady) {
-                                anyAttackReady = true;
-                                break;
-                            }
+                    const attacks = stats.attacks || { primary: `monster_${monster.type}_primary` };
+                    for (const [attackType, attackName] of Object.entries(attacks)) {
+                        if (!attackName) continue;
+                        
+                        const attackConfig = ATTACK_DEFINITIONS[attackName as keyof typeof ATTACK_DEFINITIONS];
+                        if (!attackConfig) continue;
+                        
+                        const cooldownKey = attackType as 'primary' | 'special1' | 'special2';
+                        const lastUsed = monster.attackCooldowns[cooldownKey] || 0;
+                        const cooldownReady = now - lastUsed >= attackConfig.cooldown;
+                        const attackRange = (attackConfig as any).range || stats.attackRange;
+                        
+                        // Check if this specific attack is in range and ready
+                        if (distance <= attackRange && cooldownReady) {
+                            anyAttackReady = true;
+                            break;
                         }
                     }
                     
@@ -770,28 +764,22 @@ export class MonsterManager {
             }
             
             // Check all available attacks
-            if (stats.attacks) {
-                for (const [attackType, attackName] of Object.entries(stats.attacks)) {
-                    if (!attackName) continue;
-                    
-                    const attackConfig = ATTACK_DEFINITIONS[attackName as keyof typeof ATTACK_DEFINITIONS];
-                    if (!attackConfig) continue;
-                    
-                    const cooldownKey = attackType as 'primary' | 'special1' | 'special2';
-                    const lastUsed = monster.attackCooldowns[cooldownKey] || 0;
-                    const cooldownReady = now - lastUsed >= attackConfig.cooldown;
-                    const attackRange = (attackConfig as any).range || stats.attackRange;
-                    
-                    // Check if this specific attack is in range and ready
-                    if (distance <= attackRange && cooldownReady) {
-                        anyAttackReady = true;
-                        break;
-                    }
-                    
-                    // Debug log
-                    if (Math.random() < 0.05) { // 5% chance
-                        console.log(`[MonsterManager] ${monster.type} ${monster.id} - ${attackType}: cooldown ${attackConfig.cooldown}ms, last used ${lastUsed}, time since ${now - lastUsed}ms, ready: ${cooldownReady}`);
-                    }
+            const attacks = stats.attacks || { primary: `monster_${monster.type}_primary` };
+            for (const [attackType, attackName] of Object.entries(attacks)) {
+                if (!attackName) continue;
+                
+                const attackConfig = ATTACK_DEFINITIONS[attackName as keyof typeof ATTACK_DEFINITIONS];
+                if (!attackConfig) continue;
+                
+                const cooldownKey = attackType as 'primary' | 'special1' | 'special2';
+                const lastUsed = monster.attackCooldowns[cooldownKey] || 0;
+                const cooldownReady = now - lastUsed >= attackConfig.cooldown;
+                const attackRange = (attackConfig as any).range || stats.attackRange;
+                
+                // Check if this specific attack is in range and ready
+                if (distance <= attackRange && cooldownReady) {
+                    anyAttackReady = true;
+                    break;
                 }
             }
             
