@@ -643,6 +643,11 @@ export class MonsterManager {
                 // Still in attack range - check if ANY attack is ready
                 if (distance <= maxAttackRange) {
                     const now = Date.now();
+                    
+                    // Debug log
+                    if (Math.random() < 0.1) {
+                        console.log(`[MonsterManager] ${monster.type} ${monster.id} in idle with target at distance ${Math.round(distance)}, checking attacks...`);
+                    }
                     let anyAttackReady = false;
                     
                     // Initialize cooldowns if not present
@@ -679,7 +684,9 @@ export class MonsterManager {
                         this.transitionMonsterState(monster, 'attacking');
                         return;
                     }
-                    // All attacks on cooldown, stay idle
+                    // All attacks on cooldown, wait in place
+                    // Keep the target but don't do anything else
+                    monster.velocity = { x: 0, y: 0 };
                     return;
                 } else if (distance <= stats.aggroRange) {
                     // Out of attack range but still in aggro range
@@ -779,6 +786,11 @@ export class MonsterManager {
                     if (distance <= attackRange && cooldownReady) {
                         anyAttackReady = true;
                         break;
+                    }
+                    
+                    // Debug log
+                    if (Math.random() < 0.05) { // 5% chance
+                        console.log(`[MonsterManager] ${monster.type} ${monster.id} - ${attackType}: cooldown ${attackConfig.cooldown}ms, last used ${lastUsed}, time since ${now - lastUsed}ms, ready: ${cooldownReady}`);
                     }
                 }
             }
