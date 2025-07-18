@@ -603,8 +603,22 @@ export class MonsterManager {
                 const targetCoords = this.playerToCoords(target);
                 const distance = getDistance(monster, targetCoords);
                 
+                // Check if any attack is in range
+                let maxAttackRange = stats.attackRange;
+                
+                // Check all available attacks for their ranges
+                if (stats.attacks) {
+                    for (const attackType in stats.attacks) {
+                        const attackKey = stats.attacks[attackType as keyof typeof stats.attacks];
+                        const attackConfig = ATTACK_DEFINITIONS[attackKey as keyof typeof ATTACK_DEFINITIONS];
+                        if (attackConfig && (attackConfig as any).range) {
+                            maxAttackRange = Math.max(maxAttackRange, (attackConfig as any).range);
+                        }
+                    }
+                }
+                
                 // Still in attack range and cooldown is ready
-                if (distance <= stats.attackRange) {
+                if (distance <= maxAttackRange) {
                     const now = Date.now();
                     if (now - monster.lastAttack >= stats.attackCooldown) {
                         this.transitionMonsterState(monster, 'attacking');
@@ -664,8 +678,22 @@ export class MonsterManager {
             return;
         }
         
-        // In attack range
-        if (distance <= stats.attackRange) {
+        // Check if any attack is in range
+        let maxAttackRange = stats.attackRange;
+        
+        // Check all available attacks for their ranges
+        if (stats.attacks) {
+            for (const attackType in stats.attacks) {
+                const attackKey = stats.attacks[attackType as keyof typeof stats.attacks];
+                const attackConfig = ATTACK_DEFINITIONS[attackKey as keyof typeof ATTACK_DEFINITIONS];
+                if (attackConfig && (attackConfig as any).range) {
+                    maxAttackRange = Math.max(maxAttackRange, (attackConfig as any).range);
+                }
+            }
+        }
+        
+        // In range of any attack
+        if (distance <= maxAttackRange) {
             this.transitionMonsterState(monster, 'attacking');
             monster.velocity = { x: 0, y: 0 };
             return;
