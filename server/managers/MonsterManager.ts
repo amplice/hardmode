@@ -641,7 +641,8 @@ export class MonsterManager {
                         this.transitionMonsterState(monster, 'attacking');
                         return;
                     }
-                    // Still on cooldown, stay idle
+                    // Still on cooldown, should chase instead of staying idle
+                    this.transitionMonsterState(monster, 'chasing');
                     return;
                 } else if (distance <= stats.aggroRange) {
                     // Out of attack range but still in aggro range
@@ -775,10 +776,7 @@ export class MonsterManager {
                 if (currentDistance > attackRange) {
                     this.transitionMonsterState(monster, 'chasing');
                 } else {
-                    // Stay in attacking state if target is still in range
-                    // The cooldown check will prevent immediate re-attack
-                    // This prevents the "idle and unresponsive" bug
-                    return;
+                    this.transitionMonsterState(monster, 'idle'); // Go to idle between attacks
                 }
                 monster.currentAttackType = undefined;
             }
