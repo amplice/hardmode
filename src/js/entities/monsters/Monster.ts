@@ -61,7 +61,7 @@ import {
 } from '../../../../shared/systems/MonsterStateMachine.js';
 
 // Type definitions
-type MonsterType = 'skeleton' | 'ogre' | 'ghoul' | 'elemental' | 'wildarcher';
+type MonsterType = 'skeleton' | 'ogre' | 'ghoul' | 'elemental' | 'wildarcher' | 'darkmage';
 type MonsterState = 'dormant' | 'idle' | 'chasing' | 'attacking' | 'stunned' | 'dying' | 'walking';
 type Direction = 'up' | 'down' | 'left' | 'right' | 'up-left' | 'up-right' | 'down-left' | 'down-right';
 
