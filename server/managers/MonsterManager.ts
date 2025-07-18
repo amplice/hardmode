@@ -602,6 +602,8 @@ export class MonsterManager {
     }
 
     handleIdleState(monster: ServerMonsterState, stats: any, players: Map<string, PlayerState>): void {
+        console.log(`[DEBUG] Monster ${monster.id} in idle state, has target: ${!!monster.target}`);
+        
         // If we already have a target, check if we should attack again
         if (monster.target) {
             // Find target by ID - handle both direct lookup and searching
@@ -666,6 +668,15 @@ export class MonsterManager {
                         const lastUsed = monster.attackCooldowns[cooldownKey] || 0;
                         const cooldownReady = now - lastUsed >= attackConfig.cooldown;
                         const attackRange = (attackConfig as any).range || stats.attackRange;
+                        
+                        console.log(`[DEBUG] Monster ${monster.id} attack ${attackType}:`, {
+                            cooldownReady,
+                            timeSinceLastUse: now - lastUsed,
+                            cooldownRequired: attackConfig.cooldown,
+                            inRange: distance <= attackRange,
+                            distance,
+                            attackRange
+                        });
                         
                         // Check if this specific attack is in range and ready
                         if (distance <= attackRange && cooldownReady) {
@@ -848,7 +859,12 @@ export class MonsterManager {
                 
                 monster.isAttackAnimating = false;
                 monster.attackPhase = undefined;
-                // Set lastAttack when animation ends for proper cooldown timing
+                // Set cooldown when animation ends for proper cooldown timing
+                const currentAttackType = monster.currentAttackType || 'primary';
+                if (!monster.attackCooldowns) {
+                    monster.attackCooldowns = { primary: 0 };
+                }
+                monster.attackCooldowns[currentAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
                 monster.lastAttack = Date.now();
                 // After animation completes, check if we should continue attacking or change state
                 const currentDistance = getDistance(monster, target);
@@ -872,8 +888,8 @@ export class MonsterManager {
             if (!monster.attackCooldowns) {
                 monster.attackCooldowns = { primary: 0 };
             }
-            monster.attackCooldowns[attackType] = now;
-            // Don't set lastAttack here - set it when animation ends for proper cooldown timing
+            // Don't set cooldown here - set it when animation ends for proper cooldown timing
+            // monster.attackCooldowns[attackType] = now;
             monster.attackAnimationStarted = now;
             monster.isAttackAnimating = true;
             monster.currentAttackType = attackType;
@@ -1357,9 +1373,14 @@ export class MonsterManager {
                             if (monster && monster.attackPhase === 'recovery') {
                                 monster.attackPhase = undefined;
                                 monster.isAttackAnimating = false;
-                                monster.currentAttackType = undefined;
-                                // Set lastAttack when animation ends for proper cooldown timing
+                                // Set cooldown when animation ends for proper cooldown timing
+                                const completedAttackType = monster.currentAttackType || 'primary';
+                                if (!monster.attackCooldowns) {
+                                    monster.attackCooldowns = { primary: 0 };
+                                }
+                                monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
                                 monster.lastAttack = Date.now();
+                                monster.currentAttackType = undefined;
                                 
                                 // Transition to appropriate state
                                 if (monster.target) {
@@ -1405,9 +1426,14 @@ export class MonsterManager {
                         if (monster && monster.attackPhase === 'recovery') {
                             monster.attackPhase = undefined;
                             monster.isAttackAnimating = false;
-                            monster.currentAttackType = undefined;
-                            // Set lastAttack when animation ends for proper cooldown timing
+                            // Set cooldown when animation ends for proper cooldown timing
+                            const completedAttackType = monster.currentAttackType || 'primary';
+                            if (!monster.attackCooldowns) {
+                                monster.attackCooldowns = { primary: 0 };
+                            }
+                            monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
                             monster.lastAttack = Date.now();
+                            monster.currentAttackType = undefined;
                             this.transitionMonsterState(monster, 'idle');
                         }
                     }, attackConfig.recoveryTime);
@@ -1489,10 +1515,15 @@ export class MonsterManager {
                         // Clean up all attack state
                         monster.attackPhase = undefined;
                         monster.isAttackAnimating = false;
+                        // Set cooldown when animation ends for proper cooldown timing
+                        const completedAttackType = monster.currentAttackType || 'primary';
+                        if (!monster.attackCooldowns) {
+                            monster.attackCooldowns = { primary: 0 };
+                        }
+                        monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
+                        monster.lastAttack = Date.now();
                         monster.currentAttackType = undefined;
                         monster.multiHitData = undefined; // Clear multiHitData after recovery
-                        // Set lastAttack when animation ends for proper cooldown timing
-                        monster.lastAttack = Date.now();
                         
                         // Now transition to appropriate state
                         if (monster.target) {
