@@ -647,8 +647,7 @@ export class MonsterManager {
                         this.transitionMonsterState(monster, 'attacking');
                         return;
                     }
-                    // Still on cooldown, should chase instead of staying idle
-                    this.transitionMonsterState(monster, 'chasing');
+                    // Still on cooldown, stay idle
                     return;
                 } else if (distance <= stats.aggroRange) {
                     // Out of attack range but still in aggro range
@@ -718,8 +717,15 @@ export class MonsterManager {
         
         // In range of any attack
         if (distance <= maxAttackRange) {
-            this.transitionMonsterState(monster, 'attacking');
-            monster.velocity = { x: 0, y: 0 };
+            // Check if attack is off cooldown before transitioning
+            const now = Date.now();
+            if (now - monster.lastAttack >= stats.attackCooldown) {
+                this.transitionMonsterState(monster, 'attacking');
+                monster.velocity = { x: 0, y: 0 };
+            } else {
+                // On cooldown, keep chasing but slower
+                this.moveToward(monster, target, stats.moveSpeed * 0.7);
+            }
             return;
         }
         

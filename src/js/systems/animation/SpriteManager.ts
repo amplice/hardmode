@@ -592,7 +592,8 @@ export class SpriteManager {
         const facingSuffix = directionStringToAnimationSuffix(directionString || 'down');
         
         if (monsterType === 'skeleton' || monsterType === 'elemental' ||
-            monsterType === 'ogre' || monsterType === 'ghoul' || monsterType === 'wildarcher') {
+            monsterType === 'ogre' || monsterType === 'ghoul' || monsterType === 'wildarcher' ||
+            monsterType === 'darkmage') {
             // Handle special animation states
             if (state === 'hit') {
                 return `${monsterType}_take_damage_${facingSuffix}`;
