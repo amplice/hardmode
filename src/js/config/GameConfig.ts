@@ -134,7 +134,7 @@ export const MONSTER_CONFIG = {
         walk: { speed: 0.3 },
         idle: { speed: 0.2 },
         attack1: { speed: 0.25 },
-        attack3: { speed: 0.3 },
+        attack3: { speed: 0.667 },
         attack3_windup: { speed: 0.3 },
         take_damage: { speed: 0.7 },
         die: { speed: 0.2 }
