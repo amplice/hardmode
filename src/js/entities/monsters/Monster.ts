@@ -257,6 +257,12 @@ export class Monster {
                 const attackType = (this as any).currentAttackType;
                 const attackPhase = (this as any).attackPhase;
                 
+                // Show idle during recovery phase
+                if (attackPhase === 'recovery') {
+                    animState = 'idle';
+                    break;
+                }
+                
                 if (attackType === 'special1') {
                     // Map special attacks to their animations
                     switch (this.type) {
