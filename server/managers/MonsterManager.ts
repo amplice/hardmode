@@ -598,7 +598,24 @@ export class MonsterManager {
     handleIdleState(monster: ServerMonsterState, stats: any, players: Map<string, PlayerState>): void {
         // If we already have a target, check if we should attack again
         if (monster.target) {
-            const target = players.get(monster.target.id);
+            // Find target by ID - handle both direct lookup and searching
+            let target: PlayerState | undefined;
+            
+            // Try direct lookup first
+            if (typeof monster.target.id === 'string') {
+                target = players.get(monster.target.id);
+            }
+            
+            // If direct lookup failed, search all players
+            if (!target) {
+                for (const [id, player] of players) {
+                    if (id === monster.target.id || player.id === monster.target.id) {
+                        target = player;
+                        break;
+                    }
+                }
+            }
+            
             if (target && target.hp > 0) {
                 const targetCoords = this.playerToCoords(target);
                 const distance = getDistance(monster, targetCoords);
@@ -758,7 +775,10 @@ export class MonsterManager {
                 if (currentDistance > attackRange) {
                     this.transitionMonsterState(monster, 'chasing');
                 } else {
-                    this.transitionMonsterState(monster, 'idle'); // Go to idle between attacks
+                    // Stay in attacking state if target is still in range
+                    // The cooldown check will prevent immediate re-attack
+                    // This prevents the "idle and unresponsive" bug
+                    return;
                 }
                 monster.currentAttackType = undefined;
             }
@@ -1236,7 +1256,19 @@ export class MonsterManager {
                             const distance = getDistance(monster, targetCoords);
                             const monsterStats = MONSTER_STATS[monster.type as keyof typeof MONSTER_STATS];
                             
-                            if (distance > monsterStats.attackRange) {
+                            // Check if any attack is in range (use max range)
+                            let maxAttackRange = monsterStats.attackRange;
+                            if (monsterStats.attacks) {
+                                for (const attackType in monsterStats.attacks) {
+                                    const attackKey = monsterStats.attacks[attackType as keyof typeof monsterStats.attacks];
+                                    const attackConfig = ATTACK_DEFINITIONS[attackKey as keyof typeof ATTACK_DEFINITIONS];
+                                    if (attackConfig && (attackConfig as any).range) {
+                                        maxAttackRange = Math.max(maxAttackRange, (attackConfig as any).range);
+                                    }
+                                }
+                            }
+                            
+                            if (distance > maxAttackRange) {
                                 this.transitionMonsterState(monster, 'chasing');
                             } else {
                                 this.transitionMonsterState(monster, 'idle');
