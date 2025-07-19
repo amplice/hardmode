@@ -416,6 +416,19 @@ export class Monster {
                     // Let the spin attack continue looping
                     return;
                 }
+                // For Dark Mage quickshot animation, hold on last frame
+                if (this.type === 'darkmage' && 
+                    (this as any).teleportPhase === 'attack' &&
+                    this.animatedSprite?.textures) {
+                    // Hold on last frame and ensure sprite is visible
+                    if (this.animatedSprite) {
+                        this.animatedSprite.gotoAndStop(this.animatedSprite.totalFrames - 1);
+                        this.animatedSprite.visible = true;
+                        this.sprite.visible = true;
+                        this.sprite.alpha = 1;
+                    }
+                    return;
+                }
                 // For non-looping attacks, stop on the last frame
                 if (this.animatedSprite) {
                     this.animatedSprite.gotoAndStop(this.animatedSprite.totalFrames - 1);
@@ -532,6 +545,14 @@ export class Monster {
         // Update sprite position
         this.sprite.position.set(this.position.x, this.position.y);
         
+        // Visibility safeguard - ensure monster is visible unless dying
+        if (this.state !== 'dying' && this.sprite.alpha > 0) {
+            this.sprite.visible = true;
+            if (this.animatedSprite) {
+                this.animatedSprite.visible = true;
+            }
+        }
+        
         // Update animation based on current state if needed
         this.updateAnimation();
     }
@@ -544,6 +565,12 @@ export class Monster {
             this.sprite.y = data.y;
             this.targetPosition.x = data.x;
             this.targetPosition.y = data.y;
+            // Ensure sprite is visible after teleport
+            this.sprite.visible = true;
+            this.sprite.alpha = 1;
+            if (this.animatedSprite) {
+                this.animatedSprite.visible = true;
+            }
         } else {
             // Update target position for smooth interpolation
             this.targetPosition.x = data.x;
@@ -553,6 +580,11 @@ export class Monster {
         // Update teleport phase for Dark Mage animations
         if ((data as any).teleportPhase !== undefined) {
             (this as any).teleportPhase = (data as any).teleportPhase;
+        }
+        
+        // Clear teleport phase when attack ends
+        if (this.type === 'darkmage' && !(data as any).teleportPhase && (this as any).teleportPhase) {
+            (this as any).teleportPhase = undefined;
         }
         
         // Update health

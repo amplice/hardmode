@@ -391,7 +391,9 @@ export class NetworkOptimizer {
                 'facing',      // Direction for rendering
                 'type',        // Monster type for behavior/visuals
                 'currentAttackType', // Attack animation type (when attacking)
-                'attackPhase'  // Attack phase (windup/active/recovery)
+                'attackPhase',  // Attack phase (windup/active/recovery)
+                'teleported',   // Dark Mage teleport flag - CRITICAL for instant movement
+                'teleportPhase' // Dark Mage animation phase - CRITICAL for proper animation
             ];
         }
         

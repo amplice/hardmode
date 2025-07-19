@@ -129,6 +129,7 @@ export class MonsterManager {
     private collisionMask: CollisionMask;
     public damageProcessor?: DamageProcessor;
     private astarPathfinding?: AStarPathfinding;
+    private teleportTimeouts: Map<string, NodeJS.Timeout>;
 
     // Helper function to convert PlayerState to coordinate format for getDistance
     private playerToCoords(player: PlayerState): { x: number, y: number } {
@@ -159,6 +160,7 @@ export class MonsterManager {
         this.nextMonsterId = 1;
         this.spawnTimer = 0;
         this.serverWorldManager = serverWorldManager;
+        this.teleportTimeouts = new Map();
         
         // Initialize collision mask using shared world data (NO duplicate generation)
         this.collisionMask = new CollisionMask(
@@ -243,6 +245,7 @@ export class MonsterManager {
         
         for (const monster of Array.from(this.monsters.values())) {
             if (monster.state === 'dying') {
+                this.cleanupMonsterTimeouts(monster.id);
                 this.monsters.delete(monster.id);
                 continue;
             }
@@ -954,6 +957,12 @@ export class MonsterManager {
                     teleportDistance: teleportConfig.teleportBehindDistance || 50
                 };
                 
+                console.log(`[MonsterManager] Dark Mage ${monster.id} initiating teleport attack`, {
+                    from: { x: Math.round(monster.x), y: Math.round(monster.y) },
+                    targetPlayer: { x: Math.round(targetCoords.x), y: Math.round(targetCoords.y) },
+                    behindDistance: teleportConfig.teleportBehindDistance
+                });
+                
                 // Schedule teleport execution
                 monster.pendingAttackTimeout = setTimeout(() => {
                     monster.pendingAttackTimeout = null;
@@ -1319,43 +1328,68 @@ export class MonsterManager {
      * Execute a teleport melee attack
      */
     executeTeleportMeleeAttack(monster: ServerMonsterState, stats: any, attackConfig: any, players: Map<string, PlayerState>): void {
-        if (!monster || monster.hp <= 0 || monster.state === 'dying' || !monster.teleportData) {
-            return;
-        }
-        
-        const teleportConfig = attackConfig as any;
-        const teleportData = monster.teleportData;
-        
-        // Calculate actual teleport position (behind the target)
-        const teleportX = teleportData.targetPosition.x + Math.cos(teleportData.teleportAngle) * teleportData.teleportDistance;
-        const teleportY = teleportData.targetPosition.y + Math.sin(teleportData.teleportAngle) * teleportData.teleportDistance;
-        
-        // Validate teleport destination
-        const canTeleport = this.collisionMask.canMove(
-            monster.x, monster.y,
-            teleportX, teleportY
-        );
-        
-        if (canTeleport) {
-            // Perform teleport
-            monster.x = teleportX;
-            monster.y = teleportY;
-            monster.velocity = { x: 0, y: 0 };
+        try {
+            if (!monster || monster.hp <= 0 || monster.state === 'dying' || !monster.teleportData) {
+                console.warn(`[MonsterManager] Teleport attack cancelled - invalid monster state`);
+                return;
+            }
             
-            // Update facing to look at target
-            const dx = teleportData.targetPosition.x - teleportX;
-            const dy = teleportData.targetPosition.y - teleportY;
-            monster.facing = this.getFacingDirection(dx, dy);
+            const teleportConfig = attackConfig as any;
+            const teleportData = monster.teleportData;
             
-            // Mark as teleported for client interpolation handling
-            (monster as any).teleported = true;
+            // Validate teleport data
+            if (!teleportData.targetPosition || teleportData.targetPosition.x === undefined || teleportData.targetPosition.y === undefined) {
+                console.error(`[MonsterManager] Invalid teleport data for ${monster.id}`);
+                monster.teleportData = undefined;
+                (monster as any).teleported = false;
+                (monster as any).teleportPhase = undefined;
+                monster.attackPhase = undefined;
+                monster.isAttackAnimating = false;
+                return;
+            }
             
-            // Change animation to post-teleport
-            monster.currentAttackType = 'special1';
-            (monster as any).teleportPhase = 'post';
+            // Calculate actual teleport position (behind the target)
+            const teleportX = teleportData.targetPosition.x + Math.cos(teleportData.teleportAngle) * teleportData.teleportDistance;
+            const teleportY = teleportData.targetPosition.y + Math.sin(teleportData.teleportAngle) * teleportData.teleportDistance;
             
-            // Schedule melee attack with QuickShot animation
-            setTimeout(() => {
+            // Validate teleport destination
+            let canTeleport = false;
+            try {
+                canTeleport = this.collisionMask.canMove(
+                    monster.x, monster.y,
+                    teleportX, teleportY
+                );
+            } catch (error) {
+                console.error(`[MonsterManager] Error checking teleport collision:`, error);
+                canTeleport = false;
+            }
+            
+            if (canTeleport) {
+                // Perform teleport
+                monster.x = teleportX;
+                monster.y = teleportY;
+                monster.velocity = { x: 0, y: 0 };
+            
+                // Update facing to look at target
+                const dx = teleportData.targetPosition.x - teleportX;
+                const dy = teleportData.targetPosition.y - teleportY;
+                monster.facing = this.getFacingDirection(dx, dy);
+                
+                // Mark as teleported for client interpolation handling
+                (monster as any).teleported = true;
+                
+                // Change animation to post-teleport
+                monster.currentAttackType = 'special1';
+                (monster as any).teleportPhase = 'post';
+                
+                console.log(`[MonsterManager] Dark Mage ${monster.id} teleported successfully`, {
+                    to: { x: Math.round(teleportX), y: Math.round(teleportY) },
+                    teleported: true,
+                    phase: 'post'
+                });
+                
+                // Schedule melee attack with QuickShot animation
+                setTimeout(() => {
                 if (!monster || monster.hp <= 0 || monster.state === 'dying') {
                     return;
                 }
@@ -1364,7 +1398,11 @@ export class MonsterManager {
                 (monster as any).teleportPhase = 'attack';
                 
                 // Execute melee damage
-                this.executeAOEAttack(monster, attackConfig, players);
+                try {
+                    this.executeAOEAttack(monster, attackConfig, players);
+                } catch (error) {
+                    console.error(`[MonsterManager] Error executing teleport attack:`, error);
+                }
                 
                 // Schedule recovery
                 setTimeout(() => {
@@ -1417,34 +1455,54 @@ export class MonsterManager {
                         }, attackConfig.recoveryTime);
                     }
                 }, 300); // Quick attack after teleport
-            }, 300); // Brief pause after teleport
-        } else {
-            // Can't teleport, fall back to regular attack
-            console.log(`[MonsterManager] Teleport failed for ${monster.id}, executing normal attack`);
-            monster.teleportData = undefined;
-            this.executeAOEAttack(monster, attackConfig, players);
-            
-            // Still need to handle recovery
-            setTimeout(() => {
-                if (monster) {
-                    monster.attackPhase = 'recovery';
-                    setTimeout(() => {
-                        if (monster && monster.attackPhase === 'recovery') {
-                            monster.attackPhase = undefined;
-                            monster.isAttackAnimating = false;
-                            // Set cooldown when animation ends for proper cooldown timing
-                            const completedAttackType = monster.currentAttackType || 'primary';
-                            if (!monster.attackCooldowns) {
-                                monster.attackCooldowns = { primary: 0 };
-                            }
-                            monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
-                            monster.lastAttack = Date.now();
-                            monster.currentAttackType = undefined;
-                            this.transitionMonsterState(monster, 'idle');
-                        }
-                    }, attackConfig.recoveryTime);
+                }, 300); // Brief pause after teleport
+            } else {
+                // Can't teleport, fall back to regular attack
+                console.log(`[MonsterManager] Teleport failed for ${monster.id}, executing normal attack`);
+                monster.teleportData = undefined;
+                (monster as any).teleported = false;
+                (monster as any).teleportPhase = undefined;
+                
+                try {
+                    this.executeAOEAttack(monster, attackConfig, players);
+                } catch (error) {
+                    console.error(`[MonsterManager] Error executing fallback attack:`, error);
                 }
-            }, 300);
+                
+                // Still need to handle recovery
+                setTimeout(() => {
+                    if (monster) {
+                        monster.attackPhase = 'recovery';
+                        setTimeout(() => {
+                            if (monster && monster.attackPhase === 'recovery') {
+                                monster.attackPhase = undefined;
+                                monster.isAttackAnimating = false;
+                                // Set cooldown when animation ends for proper cooldown timing
+                                const completedAttackType = monster.currentAttackType || 'primary';
+                                if (!monster.attackCooldowns) {
+                                    monster.attackCooldowns = { primary: 0 };
+                                }
+                                monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
+                                monster.lastAttack = Date.now();
+                                monster.currentAttackType = undefined;
+                                this.transitionMonsterState(monster, 'idle');
+                            }
+                        }, attackConfig.recoveryTime);
+                    }
+                }, 300);
+            }
+        } catch (error) {
+            console.error(`[MonsterManager] Critical error in executeTeleportMeleeAttack:`, error);
+            // Clean up monster state to prevent stuck monsters
+            if (monster) {
+                monster.attackPhase = undefined;
+                monster.isAttackAnimating = false;
+                monster.teleportData = undefined;
+                (monster as any).teleported = false;
+                (monster as any).teleportPhase = undefined;
+                monster.currentAttackType = undefined;
+                monster.attackAnimationStarted = 0;
+            }
         }
     }
 
@@ -2511,8 +2569,28 @@ export class MonsterManager {
         
         // Remove from monsters map after a delay
         setTimeout(() => {
+            this.cleanupMonsterTimeouts(monster.id);
             this.monsters.delete(monster.id);
         }, 1000);
+    }
+    
+    private cleanupMonsterTimeouts(monsterId: string): void {
+        // Clean up any pending teleport timeouts for this monster
+        const timeoutKeys = [
+            `${monsterId}_attack`,
+            `${monsterId}_recovery`,
+            `${monsterId}_cleanup`,
+            `${monsterId}_recovery_fallback`,
+            `${monsterId}_cleanup_fallback`
+        ];
+        
+        for (const key of timeoutKeys) {
+            const timeout = this.teleportTimeouts.get(key);
+            if (timeout) {
+                clearTimeout(timeout);
+                this.teleportTimeouts.delete(key);
+            }
+        }
     }
 
     checkLevelUp(player: PlayerState): void {
