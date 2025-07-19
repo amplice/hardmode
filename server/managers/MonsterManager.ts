@@ -1218,11 +1218,14 @@ export class MonsterManager {
         const attackRange = (attackConfig as any).range || 100;
         if (distance > attackRange * 1.2) return;
         
-        // Handle AOE attacks
+        // Handle different attack types
         if (attackConfig.hitboxType === 'circle') {
             this.executeAOEAttack(monster, attackConfig, players);
+        } else if (attackConfig.hitboxType === 'cone') {
+            // Cone attacks hit multiple targets in an arc
+            this.executeConeAttack(monster, attackConfig, players);
         } else {
-            // Single target melee
+            // Single target melee (rectangle or default)
             if (this.damageProcessor) {
                 this.damageProcessor.applyDamage(
                     monster,
@@ -1233,6 +1236,68 @@ export class MonsterManager {
                 );
             }
         }
+    }
+
+    /**
+     * Execute a cone attack hitting multiple targets in an arc
+     */
+    executeConeAttack(monster: ServerMonsterState, attackConfig: any, players: Map<string, PlayerState>): void {
+        if (!monster || monster.hp <= 0 || monster.state === 'dying') {
+            return;
+        }
+        
+        const range = attackConfig.hitboxParams?.range || 100;
+        const angle = attackConfig.hitboxParams?.angle || 90; // degrees
+        const halfAngle = (angle / 2) * (Math.PI / 180); // Convert to radians
+        const attackId = `${monster.id}_${Date.now()}`;
+        
+        // Find all players in cone
+        for (const [_, player] of players) {
+            if (player.hp <= 0) continue;
+            
+            const playerCoords = this.playerToCoords(player);
+            const dx = playerCoords.x - monster.x;
+            const dy = playerCoords.y - monster.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance <= range) {
+                // Check if player is within the cone angle
+                const angleToPlayer = Math.atan2(dy, dx);
+                const monsterFacingNum = typeof monster.facing === 'number' ? monster.facing : 0;
+                const angleDiff = Math.abs(this.normalizeAngle(angleToPlayer - monsterFacingNum));
+                
+                if (angleDiff <= halfAngle) {
+                    // Check if already hit by this attack (for multi-hit prevention)
+                    const playerState = player as any;
+                    if (playerState.lastHitBy?.attackId === attackId) {
+                        continue;
+                    }
+                    
+                    // Apply damage
+                    if (this.damageProcessor) {
+                        this.damageProcessor.applyDamage(
+                            monster,
+                            player,
+                            attackConfig.damage,
+                            'melee',
+                            { attackType: `monster_${(attackConfig as any).name || 'cone'}`, attackId }
+                        );
+                        
+                        // Mark as hit by this attack
+                        playerState.lastHitBy = { attackId, timestamp: Date.now() };
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Normalize angle to [-PI, PI] range
+     */
+    normalizeAngle(angle: number): number {
+        while (angle > Math.PI) angle -= 2 * Math.PI;
+        while (angle < -Math.PI) angle += 2 * Math.PI;
+        return angle;
     }
 
     /**
@@ -1404,20 +1469,18 @@ export class MonsterManager {
                     monster.y = teleportY;
                     monster.velocity = { x: 0, y: 0 };
                     (monster as any).isDashing = false;
-                    (monster as any).teleportPhase = 'post';
                     
-                    // Small delay before attack
-                    setTimeout(() => {
-                        if (!monster || monster.hp <= 0 || monster.state === 'dying') {
-                            return;
-                        }
+                    // Immediately transition to attack
+                    if (!monster || monster.hp <= 0) {
+                        return;
+                    }
                 
                 // Change to attack animation
                 (monster as any).teleportPhase = 'attack';
                 
-                // Execute melee damage
+                // Execute cone melee damage
                 try {
-                    this.executeAOEAttack(monster, attackConfig, players);
+                    this.executeMeleeAttack(monster, attackConfig, players);
                 } catch (error) {
                     console.error(`[MonsterManager] Error executing teleport attack:`, error);
                 }
@@ -1479,7 +1542,6 @@ export class MonsterManager {
                         }, attackConfig.recoveryTime);
                     }
                 }, 300); // Quick attack after teleport
-                    }, 100); // Brief pause after dash
                 }, 200); // Dash duration
             } else {
                 // Can't teleport, fall back to regular attack
@@ -1489,7 +1551,7 @@ export class MonsterManager {
                 (monster as any).teleportPhase = undefined;
                 
                 try {
-                    this.executeAOEAttack(monster, attackConfig, players);
+                    this.executeMeleeAttack(monster, attackConfig, players);
                 } catch (error) {
                     console.error(`[MonsterManager] Error executing fallback attack:`, error);
                 }

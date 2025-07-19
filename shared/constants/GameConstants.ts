@@ -653,19 +653,18 @@ export const ATTACK_DEFINITIONS = {
         archetype: 'teleport_melee',
         name: 'Teleport Strike',
         damage: 3,
-        windupTime: 800,  // Time for first 10 frames of Special1
+        windupTime: 400,  // Time for first 5 frames of Special1
         recoveryTime: 600,
         cooldown: 8000,
         range: 300,  // Max teleport distance
         teleportBehindDistance: 80,  // How far behind player
-        hitboxType: 'rectangle',
+        hitboxType: 'cone',  // Changed from rectangle to cone
         hitboxParams: {
-            width: 100,
-            length: 100
+            range: 90,
+            angle: 90  // 90 degree cone like skeleton
         },
         animation: 'special1',
-        windupAnimation: 'special1_windup',  // First 10 frames
-        postTeleportAnimation: 'special1_post',  // Last 5 frames
+        windupAnimation: 'special1_windup',  // First 5 frames
         attackAnimation: 'quickshot'  // QuickShot animation for actual attack
     }
 };

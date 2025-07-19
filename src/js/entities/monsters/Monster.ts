@@ -143,6 +143,7 @@ export class Monster {
     // Sprites
     public sprite: PIXI.Container;
     private animatedSprite?: PIXI.AnimatedSprite;
+    private originalTextures?: PIXI.Texture[];
     private spriteManager: SpriteManagerInterface;
     
     // Movement (for legacy compatibility)
@@ -287,12 +288,9 @@ export class Monster {
                             const teleportPhase = (this as any).teleportPhase;
                             if (teleportPhase === 'attack') {
                                 animState = 'quickshot';
-                            } else if (teleportPhase === 'post') {
-                                animState = 'special1_post'; // Last 5 frames
-                            } else if (teleportPhase === 'dash') {
-                                animState = 'special1'; // Full special animation during dash
-                            } else if (attackPhase === 'windup') {
-                                animState = 'special1_windup'; // First 10 frames
+                            } else if (attackPhase === 'windup' || teleportPhase === 'dash') {
+                                // Use same special1 animation for both windup and dash
+                                animState = 'special1';
                             } else {
                                 animState = 'special1';
                             }
@@ -363,21 +361,30 @@ export class Monster {
                 this.animatedSprite.loop = shouldLoop;
                 
                 // Handle custom frame ranges for Dark Mage teleport
-                if (this.type === 'darkmage' && animName.includes('special1_windup')) {
-                    // Only play first 10 frames for windup
-                    const totalFrames = this.animatedSprite.totalFrames;
-                    if (totalFrames > 10) {
-                        // Manually limit to first 10 frames
-                        const originalTextures = this.animatedSprite.textures as PIXI.Texture[];
-                        this.animatedSprite.textures = originalTextures.slice(0, 10);
+                if (this.type === 'darkmage' && animName === 'special1') {
+                    const attackPhase = (this as any).attackPhase;
+                    const teleportPhase = (this as any).teleportPhase;
+                    
+                    // Store original textures if not already stored
+                    if (!this.originalTextures) {
+                        this.originalTextures = [...this.animatedSprite.textures] as PIXI.Texture[];
                     }
-                } else if (this.type === 'darkmage' && animName.includes('special1_post')) {
-                    // Only play last 5 frames for post-teleport
-                    const totalFrames = this.animatedSprite.totalFrames;
-                    if (totalFrames > 5) {
-                        // Use last 5 frames
-                        const originalTextures = this.animatedSprite.textures as PIXI.Texture[];
-                        this.animatedSprite.textures = originalTextures.slice(-5);
+                    
+                    if (attackPhase === 'windup') {
+                        // Only play first 5 frames for windup
+                        if (this.originalTextures && this.originalTextures.length >= 5) {
+                            this.animatedSprite.textures = this.originalTextures.slice(0, 5);
+                            this.animatedSprite.loop = false; // Don't loop during windup
+                        }
+                    } else if (teleportPhase === 'dash') {
+                        // Play frames 6-15 during dash
+                        if (this.originalTextures && this.originalTextures.length >= 15) {
+                            this.animatedSprite.textures = this.originalTextures.slice(5, 15);
+                            this.animatedSprite.loop = false; // Don't loop during dash
+                        }
+                    } else if (this.originalTextures) {
+                        // Reset to full animation
+                        this.animatedSprite.textures = this.originalTextures;
                     }
                 }
                 
@@ -418,10 +425,9 @@ export class Monster {
                     // Let the spin attack continue looping
                     return;
                 }
-                // For Dark Mage quickshot animation, hold on last frame
+                // For Dark Mage quickshot animation, ensure sprite stays visible
                 if (this.type === 'darkmage' && 
-                    (this as any).teleportPhase === 'attack' &&
-                    this.animatedSprite?.textures) {
+                    ((this as any).teleportPhase === 'attack' || (this as any).teleportPhase === 'dash')) {
                     // Hold on last frame and ensure sprite is visible
                     if (this.animatedSprite) {
                         this.animatedSprite.gotoAndStop(this.animatedSprite.totalFrames - 1);
