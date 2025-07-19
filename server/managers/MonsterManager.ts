@@ -1365,34 +1365,52 @@ export class MonsterManager {
             }
             
             if (canTeleport) {
-                // Perform teleport
-                monster.x = teleportX;
-                monster.y = teleportY;
-                monster.velocity = { x: 0, y: 0 };
-            
+                // Store original position for dash
+                const startX = monster.x;
+                const startY = monster.y;
+                
                 // Update facing to look at target
                 const dx = teleportData.targetPosition.x - teleportX;
                 const dy = teleportData.targetPosition.y - teleportY;
                 monster.facing = this.getFacingDirection(dx, dy);
                 
-                // Mark as teleported for client interpolation handling
-                (monster as any).teleported = true;
+                // Mark as dashing for client animation
+                (monster as any).dashStartX = startX;
+                (monster as any).dashStartY = startY;
+                (monster as any).dashEndX = teleportX;
+                (monster as any).dashEndY = teleportY;
+                (monster as any).dashStartTime = Date.now();
+                (monster as any).dashDuration = 200; // 200ms ultra-fast dash
+                (monster as any).isDashing = true;
                 
-                // Change animation to post-teleport
+                // Change animation to dash
                 monster.currentAttackType = 'special1';
-                (monster as any).teleportPhase = 'post';
+                (monster as any).teleportPhase = 'dash';
                 
-                console.log(`[MonsterManager] Dark Mage ${monster.id} teleported successfully`, {
+                console.log(`[MonsterManager] Dark Mage ${monster.id} dashing to target`, {
+                    from: { x: Math.round(startX), y: Math.round(startY) },
                     to: { x: Math.round(teleportX), y: Math.round(teleportY) },
-                    teleported: true,
-                    phase: 'post'
+                    dashDuration: 200
                 });
                 
-                // Schedule melee attack with QuickShot animation
+                // Schedule position update after dash
                 setTimeout(() => {
-                if (!monster || monster.hp <= 0 || monster.state === 'dying') {
-                    return;
-                }
+                    if (!monster || monster.hp <= 0 || monster.state === 'dying') {
+                        return;
+                    }
+                    
+                    // Update position after dash
+                    monster.x = teleportX;
+                    monster.y = teleportY;
+                    monster.velocity = { x: 0, y: 0 };
+                    (monster as any).isDashing = false;
+                    (monster as any).teleportPhase = 'post';
+                    
+                    // Small delay before attack
+                    setTimeout(() => {
+                        if (!monster || monster.hp <= 0 || monster.state === 'dying') {
+                            return;
+                        }
                 
                 // Change to attack animation
                 (monster as any).teleportPhase = 'attack';
@@ -1409,7 +1427,13 @@ export class MonsterManager {
                     if (monster) {
                         monster.attackPhase = 'recovery';
                         monster.teleportData = undefined;
-                        (monster as any).teleported = false;
+                        (monster as any).isDashing = false;
+                        (monster as any).dashStartX = undefined;
+                        (monster as any).dashStartY = undefined;
+                        (monster as any).dashEndX = undefined;
+                        (monster as any).dashEndY = undefined;
+                        (monster as any).dashStartTime = undefined;
+                        (monster as any).dashDuration = undefined;
                         (monster as any).teleportPhase = undefined;
                         
                         // Schedule cleanup
@@ -1455,12 +1479,13 @@ export class MonsterManager {
                         }, attackConfig.recoveryTime);
                     }
                 }, 300); // Quick attack after teleport
-                }, 300); // Brief pause after teleport
+                    }, 100); // Brief pause after dash
+                }, 200); // Dash duration
             } else {
                 // Can't teleport, fall back to regular attack
                 console.log(`[MonsterManager] Teleport failed for ${monster.id}, executing normal attack`);
                 monster.teleportData = undefined;
-                (monster as any).teleported = false;
+                (monster as any).isDashing = false;
                 (monster as any).teleportPhase = undefined;
                 
                 try {
@@ -1498,7 +1523,13 @@ export class MonsterManager {
                 monster.attackPhase = undefined;
                 monster.isAttackAnimating = false;
                 monster.teleportData = undefined;
-                (monster as any).teleported = false;
+                (monster as any).isDashing = false;
+                (monster as any).dashStartX = undefined;
+                (monster as any).dashStartY = undefined;
+                (monster as any).dashEndX = undefined;
+                (monster as any).dashEndY = undefined;
+                (monster as any).dashStartTime = undefined;
+                (monster as any).dashDuration = undefined;
                 (monster as any).teleportPhase = undefined;
                 monster.currentAttackType = undefined;
                 monster.attackAnimationStarted = 0;
@@ -2673,8 +2704,14 @@ export class MonsterManager {
                 isStunned: monster.isStunned,
                 currentAttackType: monster.currentAttackType, // Include attack type for animations
                 attackPhase: monster.attackPhase, // Include attack phase for windup animations
-                teleported: (monster as any).teleported, // For Dark Mage teleport
-                teleportPhase: (monster as any).teleportPhase // For Dark Mage animation phases
+                teleportPhase: (monster as any).teleportPhase, // For Dark Mage animation phases
+                isDashing: (monster as any).isDashing, // Dark Mage dash state
+                dashStartX: (monster as any).dashStartX, // Dash interpolation
+                dashStartY: (monster as any).dashStartY,
+                dashEndX: (monster as any).dashEndX,
+                dashEndY: (monster as any).dashEndY,
+                dashStartTime: (monster as any).dashStartTime,
+                dashDuration: (monster as any).dashDuration
             }));
     }
 

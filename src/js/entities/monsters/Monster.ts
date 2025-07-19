@@ -289,6 +289,8 @@ export class Monster {
                                 animState = 'quickshot';
                             } else if (teleportPhase === 'post') {
                                 animState = 'special1_post'; // Last 5 frames
+                            } else if (teleportPhase === 'dash') {
+                                animState = 'special1'; // Full special animation during dash
                             } else if (attackPhase === 'windup') {
                                 animState = 'special1_windup'; // First 10 frames
                             } else {
@@ -538,9 +540,41 @@ export class Monster {
         // Don't do any updates if dead
         if (!this.alive) return;
         
-        // Smooth interpolation to target position (for network sync)
-        this.position.x += (this.targetPosition.x - this.position.x) * this.interpolationSpeed;
-        this.position.y += (this.targetPosition.y - this.position.y) * this.interpolationSpeed;
+        // Handle darkmage dash interpolation
+        if ((this as any).isDashing && (this as any).dashStartTime) {
+            const now = Date.now();
+            const elapsed = now - (this as any).dashStartTime;
+            const duration = (this as any).dashDuration || 200;
+            
+            if (elapsed < duration) {
+                // Calculate progress (0 to 1)
+                const progress = elapsed / duration;
+                // Use easing for smooth acceleration/deceleration
+                const easedProgress = 1 - Math.pow(1 - progress, 3); // Cubic ease-out
+                
+                // Interpolate position
+                const startX = (this as any).dashStartX;
+                const startY = (this as any).dashStartY;
+                const endX = (this as any).dashEndX;
+                const endY = (this as any).dashEndY;
+                
+                this.position.x = startX + (endX - startX) * easedProgress;
+                this.position.y = startY + (endY - startY) * easedProgress;
+                this.targetPosition.x = this.position.x;
+                this.targetPosition.y = this.position.y;
+            } else {
+                // Dash complete
+                this.position.x = (this as any).dashEndX;
+                this.position.y = (this as any).dashEndY;
+                this.targetPosition.x = this.position.x;
+                this.targetPosition.y = this.position.y;
+                (this as any).isDashing = false;
+            }
+        } else {
+            // Normal smooth interpolation to target position (for network sync)
+            this.position.x += (this.targetPosition.x - this.position.x) * this.interpolationSpeed;
+            this.position.y += (this.targetPosition.y - this.position.y) * this.interpolationSpeed;
+        }
         
         // Update sprite position
         this.sprite.position.set(this.position.x, this.position.y);
@@ -558,20 +592,29 @@ export class Monster {
     }
     
     updateFromServer(data: MonsterServerUpdate): void {
-        // Check if monster teleported (Dark Mage teleport attack)
-        if ((data as any).teleported) {
-            // Instant position update, no interpolation
-            this.sprite.x = data.x;
-            this.sprite.y = data.y;
-            this.targetPosition.x = data.x;
-            this.targetPosition.y = data.y;
-            // Ensure sprite is visible after teleport
-            this.sprite.visible = true;
-            this.sprite.alpha = 1;
-            if (this.animatedSprite) {
-                this.animatedSprite.visible = true;
+        // Update dash state for Dark Mage
+        if ((data as any).isDashing !== undefined) {
+            (this as any).isDashing = (data as any).isDashing;
+            
+            // If starting a new dash, set up interpolation data
+            if ((data as any).isDashing && (data as any).dashStartTime) {
+                (this as any).dashStartX = (data as any).dashStartX;
+                (this as any).dashStartY = (data as any).dashStartY;
+                (this as any).dashEndX = (data as any).dashEndX;
+                (this as any).dashEndY = (data as any).dashEndY;
+                (this as any).dashStartTime = (data as any).dashStartTime;
+                (this as any).dashDuration = (data as any).dashDuration;
+                
+                // Start position should match server's start position
+                this.position.x = (data as any).dashStartX;
+                this.position.y = (data as any).dashStartY;
+                this.sprite.x = this.position.x;
+                this.sprite.y = this.position.y;
             }
-        } else {
+        }
+        
+        // Don't update position normally if dashing (handled in update())
+        if (!(this as any).isDashing) {
             // Update target position for smooth interpolation
             this.targetPosition.x = data.x;
             this.targetPosition.y = data.y;
@@ -585,6 +628,13 @@ export class Monster {
         // Clear teleport phase when attack ends
         if (this.type === 'darkmage' && !(data as any).teleportPhase && (this as any).teleportPhase) {
             (this as any).teleportPhase = undefined;
+        }
+        
+        // Ensure sprite is visible
+        this.sprite.visible = true;
+        this.sprite.alpha = 1;
+        if (this.animatedSprite) {
+            this.animatedSprite.visible = true;
         }
         
         // Update health

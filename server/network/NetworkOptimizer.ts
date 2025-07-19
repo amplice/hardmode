@@ -392,8 +392,14 @@ export class NetworkOptimizer {
                 'type',        // Monster type for behavior/visuals
                 'currentAttackType', // Attack animation type (when attacking)
                 'attackPhase',  // Attack phase (windup/active/recovery)
-                'teleported',   // Dark Mage teleport flag - CRITICAL for instant movement
-                'teleportPhase' // Dark Mage animation phase - CRITICAL for proper animation
+                'teleportPhase', // Dark Mage animation phase - CRITICAL for proper animation
+                'isDashing',    // Dark Mage dash state
+                'dashStartX',   // Dash start position for interpolation
+                'dashStartY',   // Dash start position for interpolation
+                'dashEndX',     // Dash end position for interpolation
+                'dashEndY',     // Dash end position for interpolation
+                'dashStartTime', // Dash timing for interpolation
+                'dashDuration'  // Dash duration for interpolation
             ];
         }
         
