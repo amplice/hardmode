@@ -550,7 +550,7 @@ export class Monster {
         if ((this as any).isDashing && (this as any).dashStartTime) {
             const now = Date.now();
             const elapsed = now - (this as any).dashStartTime;
-            const duration = (this as any).dashDuration || 200;
+            const duration = (this as any).dashDuration || 250;
             
             if (elapsed < duration) {
                 // Calculate progress (0 to 1)

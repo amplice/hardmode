@@ -211,10 +211,10 @@ export const MONSTER_CONFIG = {
         walk: { speed: 0.3 },
         idle: { speed: 0.2 },
         attack1: { speed: 0.3 },
-        special1: { speed: 0.5 },  // For teleport animation
-        special1_windup: { speed: 0.5 },  // First 10 frames of Special1
+        special1: { speed: 0.4 },  // 10 frames in 250ms = 10/(60*x) = 250ms, x = 0.4
+        special1_windup: { speed: 0.25 },  // First 5 frames for 333ms windup
         special1_post: { speed: 0.6 },  // Last 5 frames of Special1
-        quickshot: { speed: 0.4 },  // Attack animation after teleport
+        quickshot: { speed: 0.5 },  // 14 frames at 0.5 = 467ms total
         take_damage: { speed: 0.7 },
         die: { speed: 0.3 }
       }

@@ -245,10 +245,10 @@ export const MONSTER_STATS = {
         }
     },
     darkmage: {
-        hp: 3,
-        moveSpeed: 2.5,
+        hp: 2,
+        moveSpeed: 4,
         damage: 2,
-        attackRange: 400,
+        attackRange: 500,
         aggroRange: 1000,
         xp: 30,
         attackCooldown: 2000,
@@ -652,19 +652,20 @@ export const ATTACK_DEFINITIONS = {
     monster_darkmage_teleport: {
         archetype: 'teleport_melee',
         name: 'Teleport Strike',
-        damage: 3,
-        windupTime: 400,  // Time for first 5 frames of Special1
-        recoveryTime: 600,
-        cooldown: 8000,
-        range: 300,  // Max teleport distance
-        teleportBehindDistance: 80,  // How far behind player
+        damage: 2,
+        windupTime: 333,  // 5 frames at 0.25 speed = 5/(60*0.25) = 333ms
+        recoveryTime: 300,
+        cooldown: 5000,
+        range: 500,  // Max teleport distance
+        teleportBehindDistance: 60,  // How far behind player
         hitboxType: 'cone',  // Changed from rectangle to cone
         hitboxParams: {
             range: 90,
-            angle: 90  // 90 degree cone like skeleton
+            angle: 80  // 80 degree cone
         },
         animation: 'special1',
         windupAnimation: 'special1_windup',  // First 5 frames
-        attackAnimation: 'quickshot'  // QuickShot animation for actual attack
+        attackAnimation: 'quickshot',  // QuickShot animation for actual attack
+        attackDelay: 200  // Damage at frame 6 of quickshot: 6/(60*0.5) = 200ms
     }
 };

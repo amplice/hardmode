@@ -1445,7 +1445,7 @@ export class MonsterManager {
                 (monster as any).dashEndX = teleportX;
                 (monster as any).dashEndY = teleportY;
                 (monster as any).dashStartTime = Date.now();
-                (monster as any).dashDuration = 200; // 200ms ultra-fast dash
+                (monster as any).dashDuration = 250; // 250ms ultra-fast dash
                 (monster as any).isDashing = true;
                 
                 // Change animation to dash
@@ -1455,7 +1455,7 @@ export class MonsterManager {
                 console.log(`[MonsterManager] Dark Mage ${monster.id} dashing to target`, {
                     from: { x: Math.round(startX), y: Math.round(startY) },
                     to: { x: Math.round(teleportX), y: Math.round(teleportY) },
-                    dashDuration: 200
+                    dashDuration: 250
                 });
                 
                 // Schedule position update after dash
@@ -1478,12 +1478,20 @@ export class MonsterManager {
                 // Change to attack animation
                 (monster as any).teleportPhase = 'attack';
                 
-                // Execute cone melee damage
-                try {
-                    this.executeMeleeAttack(monster, attackConfig, players);
-                } catch (error) {
-                    console.error(`[MonsterManager] Error executing teleport attack:`, error);
-                }
+                // Schedule damage at frame 6 of quickshot animation
+                const attackDelay = (attackConfig as any).attackDelay || 200; // 200ms for frame 6
+                setTimeout(() => {
+                    if (!monster || monster.hp <= 0) {
+                        return;
+                    }
+                    
+                    // Execute cone melee damage
+                    try {
+                        this.executeMeleeAttack(monster, attackConfig, players);
+                    } catch (error) {
+                        console.error(`[MonsterManager] Error executing teleport attack:`, error);
+                    }
+                }, attackDelay);
                 
                 // Schedule recovery
                 setTimeout(() => {
@@ -1542,7 +1550,7 @@ export class MonsterManager {
                         }, attackConfig.recoveryTime);
                     }
                 }, 300); // Quick attack after teleport
-                }, 200); // Dash duration
+                }, 250); // Dash duration
             } else {
                 // Can't teleport, fall back to regular attack
                 console.log(`[MonsterManager] Teleport failed for ${monster.id}, executing normal attack`);
