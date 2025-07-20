@@ -219,6 +219,10 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
         columns: 9, rows: 9, rowIndex: 5, frameSize: { width: 64, height: 64 }
     },
     {
+        keyPrefix: 'darkmage_shadowbolt_effect', type: 'effect', path: 'assets/sprites/effects/478.png',
+        columns: 9, rows: 9, rowIndex: 1, frameSize: { width: 64, height: 64 }
+    },
+    {
         keyPrefix: 'hunter_cone_effect', type: 'effect', path: 'assets/sprites/effects/448.png',
         columns: 9, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
     },

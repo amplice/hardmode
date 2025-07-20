@@ -1383,6 +1383,8 @@ export class MonsterManager {
             effectType = 'elemental_spell_effect';
         } else if (monster.type === 'skeleton') {
             effectType = 'skeleton_bone_effect';
+        } else if (monster.type === 'darkmage') {
+            effectType = 'darkmage_shadowbolt_effect';
         }
         
         // Create projectile

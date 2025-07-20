@@ -635,11 +635,11 @@ export const ATTACK_DEFINITIONS = {
         archetype: 'projectile',
         name: 'Shadow Bolt',
         damage: 2,
-        windupTime: 600,
-        recoveryTime: 400,
-        cooldown: 3000,
+        windupTime: 300,
+        recoveryTime: 300,
+        cooldown: 500,
         range: 400,
-        projectileSpeed: 500,
+        projectileSpeed: 10,
         projectileRange: 450,
         hitboxType: 'projectile',
         hitboxParams: {
@@ -654,8 +654,8 @@ export const ATTACK_DEFINITIONS = {
         name: 'Teleport Strike',
         damage: 2,
         windupTime: 333,  // 5 frames at 0.25 speed = 5/(60*0.25) = 333ms
-        recoveryTime: 500,  // Match Pummel animation duration: 15 frames at 0.5 speed = 500ms
-        cooldown: 5000,
+        recoveryTime: 400,  // Quick recovery after attack
+        cooldown: 3000,
         range: 500,  // Max teleport distance
         teleportBehindDistance: 60,  // How far behind player
         hitboxType: 'cone',  // Changed from rectangle to cone
