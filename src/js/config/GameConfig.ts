@@ -724,7 +724,7 @@ export const PLAYER_CONFIG = {
       flipY: false
     },
     darkmage_shadowbolt_effect: {
-      scale: 0.9,
+      scale: 0.5,
       offsetDistance: 35,
       rotationOffset: 0,
       animationSpeed: 0.4,

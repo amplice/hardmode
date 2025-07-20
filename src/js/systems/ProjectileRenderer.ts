@@ -27,6 +27,7 @@
  */
 
 import * as PIXI from 'pixi.js';
+import { PLAYER_CONFIG } from '../config/GameConfig.js';
 
 // Interface for projectile creation data
 interface ProjectileData {
@@ -141,8 +142,30 @@ export class ProjectileRenderer {
         if (effect) {
             effect.play();
             effect.anchor.set(0.5, 0.5);
-            effect.scale.set(1.5, 1.5); // Make projectiles more visible
-            effect.animationSpeed = 0.5;
+            
+            // Get effect configuration if available
+            const effectConfig = (PLAYER_CONFIG.effects as any)[effectType];
+            if (effectConfig) {
+                // Apply scale with flip support
+                let scaleX = effectConfig.scale || 1.5;
+                let scaleY = effectConfig.scale || 1.5;
+                if (effectConfig.flipX) scaleX = -scaleX;
+                if (effectConfig.flipY) scaleY = -scaleY;
+                effect.scale.set(scaleX, scaleY);
+                
+                // Apply rotation offset if specified
+                if (effectConfig.rotationOffset) {
+                    effect.rotation = effectConfig.rotationOffset;
+                }
+                
+                // Apply animation speed
+                effect.animationSpeed = effectConfig.animationSpeed || 0.5;
+            } else {
+                // Fallback to defaults if no config found
+                effect.scale.set(1.5, 1.5);
+                effect.animationSpeed = 0.5;
+            }
+            
             effect.loop = true; // Keep looping for projectile lifetime
         }
         
