@@ -654,7 +654,7 @@ export const ATTACK_DEFINITIONS = {
         name: 'Teleport Strike',
         damage: 2,
         windupTime: 333,  // 5 frames at 0.25 speed = 5/(60*0.25) = 333ms
-        recoveryTime: 625,  // Match Pummel animation duration: 15 frames at 0.4 speed = 625ms
+        recoveryTime: 500,  // Match Pummel animation duration: 15 frames at 0.5 speed = 500ms
         cooldown: 5000,
         range: 500,  // Max teleport distance
         teleportBehindDistance: 60,  // How far behind player
@@ -666,6 +666,6 @@ export const ATTACK_DEFINITIONS = {
         animation: 'special1',
         windupAnimation: 'special1_windup',  // First 5 frames
         attackAnimation: 'pummel',  // Pummel animation for actual attack
-        attackDelay: 250  // Damage at frame 6 of pummel: 6/(60*0.4) = 250ms
+        attackDelay: 200  // Damage at frame 6 of pummel: 6/(60*0.5) = 200ms
     }
 };

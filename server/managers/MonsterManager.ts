@@ -1571,7 +1571,7 @@ export class MonsterManager {
                             }
                         }, attackConfig.recoveryTime);
                     }
-                }, 625); // Allow full Pummel animation (15 frames at 0.4 speed = 625ms)
+                }, 500); // Allow full Pummel animation (15 frames at 0.5 speed = 500ms)
                 }, 250); // Dash duration
             } else {
                 // Can't teleport, fall back to regular attack

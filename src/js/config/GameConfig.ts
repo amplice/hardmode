@@ -215,7 +215,7 @@ export const MONSTER_CONFIG = {
         special1_windup: { speed: 0.25 },  // First 5 frames for 333ms windup
         special1_post: { speed: 0.6 },  // Last 5 frames of Special1
         quickshot: { speed: 0.5 },  // 14 frames at 0.5 = 467ms total
-        pummel: { speed: 0.4 },  // 15 frames at 0.4 = 625ms total
+        pummel: { speed: 0.5 },  // 15 frames at 0.5 = 500ms total
         take_damage: { speed: 0.7 },
         die: { speed: 0.3 }
       }
