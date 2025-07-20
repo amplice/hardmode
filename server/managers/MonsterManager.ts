@@ -1571,7 +1571,7 @@ export class MonsterManager {
                             }
                         }, attackConfig.recoveryTime);
                     }
-                }, 300); // Quick attack after teleport
+                }, 467); // Allow full QuickShot animation (14 frames at 0.5 speed = 467ms)
                 }, 250); // Dash duration
             } else {
                 // Can't teleport, fall back to regular attack
