@@ -288,7 +288,6 @@ export class Monster {
                             const teleportPhase = (this as any).teleportPhase;
                             if (teleportPhase === 'attack') {
                                 animState = 'pummel';
-                                console.log('[DarkMage] Setting pummel animation for teleport attack phase');
                             } else if (attackPhase === 'windup' || teleportPhase === 'dash') {
                                 // Use same special1 animation for both windup and dash
                                 animState = 'special1';
@@ -325,11 +324,7 @@ export class Monster {
                 break;
         }
         
-        const animName = this.spriteManager.getMonsterAnimationForDirection(this.type, this.facing, animState);
-        if (animState === 'pummel') {
-            console.log('[DarkMage] Final animation name:', animName);
-        }
-        return animName;
+        return this.spriteManager.getMonsterAnimationForDirection(this.type, this.facing, animState);
     }
     
     private updateAnimation(): void {
@@ -434,9 +429,18 @@ export class Monster {
                     return;
                 }
                 // For Dark Mage pummel animation, ensure sprite stays visible
-                if (this.type === 'darkmage' && 
-                    ((this as any).teleportPhase === 'attack' || (this as any).teleportPhase === 'dash')) {
-                    // Hold on last frame and ensure sprite is visible
+                if (this.type === 'darkmage' && (this as any).teleportPhase === 'attack') {
+                    // Let pummel animation play normally, just ensure visibility
+                    if (this.animatedSprite) {
+                        this.animatedSprite.visible = true;
+                        this.sprite.visible = true;
+                        this.sprite.alpha = 1;
+                    }
+                    // Don't stop on last frame - let it play
+                    return;
+                }
+                // For Dark Mage dash phase, hold on last frame
+                if (this.type === 'darkmage' && (this as any).teleportPhase === 'dash') {
                     if (this.animatedSprite) {
                         this.animatedSprite.gotoAndStop(this.animatedSprite.totalFrames - 1);
                         this.animatedSprite.visible = true;
