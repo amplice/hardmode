@@ -723,6 +723,15 @@ export const PLAYER_CONFIG = {
       flipX: false,
       flipY: false
     },
+    darkmage_shadowbolt_effect: {
+      scale: 1.2,
+      offsetDistance: 35,
+      rotationOffset: 0,
+      animationSpeed: 0.4,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
     elemental_spell_effect: {
       scale: 1.2,
       offsetDistance: 40,

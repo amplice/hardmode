@@ -639,7 +639,7 @@ export const ATTACK_DEFINITIONS = {
         recoveryTime: 300,
         cooldown: 500,
         range: 400,
-        projectileSpeed: 700,
+        projectileSpeed: 600,
         projectileRange: 450,
         hitboxType: 'projectile',
         hitboxParams: {
