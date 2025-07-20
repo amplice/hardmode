@@ -403,6 +403,9 @@ export class SpriteManager {
         properties: any, 
         directions: string[] = ['e', 'se', 's', 'sw', 'w', 'nw', 'n', 'ne']
     ): void {
+        if (entityType === 'darkmage' && actionName === 'pummel') {
+            console.log('[DarkMage] Creating pummel animations with properties:', properties);
+        }
         for (const direction of directions) {
             const textureKey = `${entityType}_${actionName}_${direction}`;
             if (!this.textures[textureKey]) {
@@ -456,6 +459,9 @@ export class SpriteManager {
     createAnimatedSprite(animationName: string): PIXI.AnimatedSprite | null {
         if (!this.animations[animationName]) {
             console.error(`Animation ${animationName} not found`);
+            if (animationName.includes('pummel')) {
+                console.log('[DarkMage] Available animations:', Object.keys(this.animations).filter(key => key.includes('darkmage')));
+            }
             return null;
         }
         

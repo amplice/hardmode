@@ -288,6 +288,7 @@ export class Monster {
                             const teleportPhase = (this as any).teleportPhase;
                             if (teleportPhase === 'attack') {
                                 animState = 'pummel';
+                                console.log('[DarkMage] Setting pummel animation for teleport attack phase');
                             } else if (attackPhase === 'windup' || teleportPhase === 'dash') {
                                 // Use same special1 animation for both windup and dash
                                 animState = 'special1';
@@ -324,7 +325,11 @@ export class Monster {
                 break;
         }
         
-        return this.spriteManager.getMonsterAnimationForDirection(this.type, this.facing, animState);
+        const animName = this.spriteManager.getMonsterAnimationForDirection(this.type, this.facing, animState);
+        if (animState === 'pummel') {
+            console.log('[DarkMage] Final animation name:', animName);
+        }
+        return animName;
     }
     
     private updateAnimation(): void {
@@ -347,6 +352,9 @@ export class Monster {
             this.animatedSprite = this.spriteManager.createAnimatedSprite(animName) || undefined;
             
             if (this.animatedSprite) {
+                if (animName.includes('pummel')) {
+                    console.log('[DarkMage] Successfully created pummel animated sprite');
+                }
                 // Configure loop based on animation type
                 const nonLoopingStates: MonsterState[] = ['attacking', 'stunned', 'dying'];
                 let shouldLoop = !nonLoopingStates.includes(this.state);
