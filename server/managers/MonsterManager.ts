@@ -1263,8 +1263,25 @@ export class MonsterManager {
             if (distance <= range) {
                 // Check if player is within the cone angle
                 const angleToPlayer = Math.atan2(dy, dx);
-                const monsterFacingNum = typeof monster.facing === 'number' ? monster.facing : 0;
-                const angleDiff = Math.abs(this.normalizeAngle(angleToPlayer - monsterFacingNum));
+                // Convert facing direction to angle if it's a string
+                let monsterFacingAngle: number;
+                if (typeof monster.facing === 'number') {
+                    monsterFacingAngle = monster.facing;
+                } else {
+                    // Convert direction string to angle
+                    const facingAngles: Record<string, number> = {
+                        'right': 0,
+                        'down-right': Math.PI / 4,
+                        'down': Math.PI / 2,
+                        'down-left': 3 * Math.PI / 4,
+                        'left': Math.PI,
+                        'up-left': -3 * Math.PI / 4,
+                        'up': -Math.PI / 2,
+                        'up-right': -Math.PI / 4
+                    };
+                    monsterFacingAngle = facingAngles[monster.facing] || 0;
+                }
+                const angleDiff = Math.abs(this.normalizeAngle(angleToPlayer - monsterFacingAngle));
                 
                 if (angleDiff <= halfAngle) {
                     // Check if already hit by this attack (for multi-hit prevention)
@@ -1487,7 +1504,12 @@ export class MonsterManager {
                     
                     // Execute cone melee damage
                     try {
-                        this.executeMeleeAttack(monster, attackConfig, players);
+                        // Since teleport attack is configured as cone, use executeConeAttack
+                        if (attackConfig.hitboxType === 'cone') {
+                            this.executeConeAttack(monster, attackConfig, players);
+                        } else {
+                            this.executeMeleeAttack(monster, attackConfig, players);
+                        }
                     } catch (error) {
                         console.error(`[MonsterManager] Error executing teleport attack:`, error);
                     }
