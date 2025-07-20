@@ -1495,7 +1495,7 @@ export class MonsterManager {
                 // Change to attack animation
                 (monster as any).teleportPhase = 'attack';
                 
-                // Schedule damage at frame 6 of quickshot animation
+                // Schedule damage at frame 6 of pummel animation
                 const attackDelay = (attackConfig as any).attackDelay || 200; // 200ms for frame 6
                 setTimeout(() => {
                     if (!monster || monster.hp <= 0) {
@@ -1571,7 +1571,7 @@ export class MonsterManager {
                             }
                         }, attackConfig.recoveryTime);
                     }
-                }, 467); // Allow full QuickShot animation (14 frames at 0.5 speed = 467ms)
+                }, 625); // Allow full Pummel animation (15 frames at 0.4 speed = 625ms)
                 }, 250); // Dash duration
             } else {
                 // Can't teleport, fall back to regular attack

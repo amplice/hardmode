@@ -287,7 +287,7 @@ export class Monster {
                             // Handle teleport attack phases
                             const teleportPhase = (this as any).teleportPhase;
                             if (teleportPhase === 'attack') {
-                                animState = 'quickshot';
+                                animState = 'pummel';
                             } else if (attackPhase === 'windup' || teleportPhase === 'dash') {
                                 // Use same special1 animation for both windup and dash
                                 animState = 'special1';
@@ -425,7 +425,7 @@ export class Monster {
                     // Let the spin attack continue looping
                     return;
                 }
-                // For Dark Mage quickshot animation, ensure sprite stays visible
+                // For Dark Mage pummel animation, ensure sprite stays visible
                 if (this.type === 'darkmage' && 
                     ((this as any).teleportPhase === 'attack' || (this as any).teleportPhase === 'dash')) {
                     // Hold on last frame and ensure sprite is visible
