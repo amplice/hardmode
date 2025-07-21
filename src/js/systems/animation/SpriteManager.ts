@@ -184,7 +184,7 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
     {
         keyPrefix: 'wolf', type: 'monster',
         animations: [
-            { keySuffix: 'walk', path: 'assets/sprites/monsters/Wolf/Walk.png', columns: 15, rows: 8 },
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/Wolf/Run.png', columns: 15, rows: 8 },
             { keySuffix: 'idle', path: 'assets/sprites/monsters/Wolf/Idle.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/monsters/Wolf/Attack1.png', columns: 15, rows: 8 },
             { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Wolf/TakeDamage.png', columns: 15, rows: 8 },
@@ -502,6 +502,11 @@ export class SpriteManager {
         if (animationName.startsWith('ogre_')) {
             // Ogre sprites are 192x192 but we want them to appear about 1.5x larger than regular sprites
             scale = (this.frameWidth / 192) * 1.5;
+        }
+        
+        // Wolf sprites should be 2x larger
+        if (animationName.startsWith('wolf_')) {
+            scale = this.spriteScale * 2.0;
         }
         
         sprite.scale.set(scale, scale);

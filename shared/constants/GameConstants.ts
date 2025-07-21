@@ -265,11 +265,11 @@ export const MONSTER_STATS = {
         hp: 2,
         moveSpeed: 3.5,
         damage: 1,
-        attackRange: 70,
+        attackRange: 90,  // Increased to match larger size
         aggroRange: 3000,
         xp: 15,
         attackCooldown: 1200,
-        collisionRadius: 15,
+        collisionRadius: 30,  // Doubled to match 2x sprite size
         attackDelay: 469, // ms delay before damage (75% of 625ms animation)
         attackDuration: 625, // Total animation duration (15 frames at 0.4 speed)
         attacks: {
@@ -693,11 +693,11 @@ export const ATTACK_DEFINITIONS = {
         windupTime: 469,
         recoveryTime: 156,
         cooldown: 1200,
-        range: 70,
+        range: 90,  // Increased to match larger size
         hitboxType: 'rectangle',
         hitboxParams: {
-            width: 80,
-            length: 80
+            width: 100,  // Increased for larger wolf
+            length: 100  // Increased for larger wolf
         },
         animation: 'attack1'
     }
