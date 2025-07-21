@@ -706,7 +706,7 @@ export const PLAYER_CONFIG = {
       flipY: false
     },
     bow_shot_effect: { // Projectile visual / launch effect
-      scale: 1.0,
+      scale: 1.3,
       offsetDistance: 30, // Offset from player at launch
       rotationOffset: 0 * Math.PI / 4, // Adjust as needed for sprite orientation
       animationSpeed: 0.3,
@@ -715,7 +715,7 @@ export const PLAYER_CONFIG = {
       flipY: false
     },
     wildarcher_shot_effect: {
-      scale: 1.0,
+      scale: 1.3,
       offsetDistance: 30,
       rotationOffset: 0,
       animationSpeed: 0.3,
@@ -724,7 +724,7 @@ export const PLAYER_CONFIG = {
       flipY: false
     },
     darkmage_shadowbolt_effect: {
-      scale: 0.5,
+      scale: 1.2,
       offsetDistance: 35,
       rotationOffset: 0,
       animationSpeed: 0.4,
