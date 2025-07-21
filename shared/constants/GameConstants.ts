@@ -183,7 +183,7 @@ export const MONSTER_STATS = {
     },
     skeleton: {
         hp: 2,
-        moveSpeed: 3,  // Updated speed
+        moveSpeed: 2.5,  // Updated speed
         damage: 1,
         attackRange: 70,
         aggroRange: 1200,
@@ -199,7 +199,7 @@ export const MONSTER_STATS = {
     },
     elemental: {
         hp: 3,
-        moveSpeed: 2,
+        moveSpeed: 2.5,
         damage: 2,
         attackRange: 100,
         aggroRange: 800,
@@ -215,7 +215,7 @@ export const MONSTER_STATS = {
     },
     ghoul: {
         hp: 2,
-        moveSpeed: 4.5,  // Updated speed
+        moveSpeed: 4,  // Updated speed
         damage: 1,
         attackRange: 70,
         aggroRange: 3000,
@@ -262,7 +262,7 @@ export const MONSTER_STATS = {
         }
     },
     wolf: {
-        hp: 2,
+        hp: 1,
         moveSpeed: 5.5,  // Fast predator
         damage: 1,
         attackRange: 85,  // Increased for 1.5x size

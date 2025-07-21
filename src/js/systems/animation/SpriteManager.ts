@@ -116,7 +116,7 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
     {
         keyPrefix: 'skeleton', type: 'monster',
         animations: [
-            { keySuffix: 'walk', path: 'assets/sprites/monsters/Skeleton/Run.png', columns: 15, rows: 8 },
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/Skeleton/Walk.png', columns: 15, rows: 8 },
             { keySuffix: 'idle', path: 'assets/sprites/monsters/Skeleton/Idle.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/monsters/Skeleton/Attack1.png', columns: 15, rows: 8 },
             { keySuffix: 'take_damage', path: 'assets/sprites/monsters/Skeleton/TakeDamage.png', columns: 15, rows: 8 },

@@ -142,7 +142,7 @@ export const MONSTER_CONFIG = {
     } as MonsterStats,
     skeleton: {
       hitPoints: 2,
-      moveSpeed: 3,  // Updated speed
+      moveSpeed: 2.5,  // Updated speed
       attackRange: 70,
       collisionRadius: 15,
       aggroRange: 1200,
@@ -157,7 +157,7 @@ export const MONSTER_CONFIG = {
     } as MonsterStats,
     elemental: {
       hitPoints: 3,
-      moveSpeed: 2,
+      moveSpeed: 2.5,
       attackRange: 100,
       collisionRadius: 15,
       aggroRange: 800,
@@ -172,7 +172,7 @@ export const MONSTER_CONFIG = {
     } as MonsterStats,
     ghoul: {
       hitPoints: 2,
-      moveSpeed: 4.5,  // Updated speed
+      moveSpeed: 4,  // Updated speed
       attackRange: 70,
       collisionRadius: 10,
       aggroRange: 3000,
@@ -221,7 +221,7 @@ export const MONSTER_CONFIG = {
       }
     } as MonsterStats,
     wolf: {
-      hitPoints: 2,
+      hitPoints: 1,
       moveSpeed: 5.5,  // Fast predator
       attackRange: 70,
       collisionRadius: 15,
