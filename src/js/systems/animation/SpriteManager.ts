@@ -295,6 +295,10 @@ export class SpriteManager {
                         config.defaultFrameSize || null
                     ));
                 }
+                // Debug log for Wolf texture loading
+                if (config.keyPrefix === 'wolf') {
+                    console.log('[Wolf] Loading Wolf animations:', config.animations);
+                }
             } else if (config.type === 'effect') {
                 // Special handling for powerups - they're single images, not sprite sheets
                 if (config.keyPrefix.endsWith('_powerup')) {
@@ -430,6 +434,10 @@ export class SpriteManager {
                 textures: this.textures[textureKey],
                 speed: properties.speed || 0.2
             };
+            // Debug for Wolf animations
+            if (entityType === 'wolf' && direction === 's') {
+                console.log(`[Wolf] Created animation ${textureKey} with ${this.textures[textureKey].length} frames`);
+            }
         }
     }
 
@@ -451,6 +459,10 @@ export class SpriteManager {
             if (monsterStats.animations) {
                 for (const animName in monsterStats.animations) {
                     this._createDirectionalAnimations(monsterType, animName, monsterStats.animations[animName]);
+                }
+                // Debug log for Wolf animations
+                if (monsterType === 'wolf') {
+                    console.log('[Wolf] Created animations for wolf with animations:', Object.keys(monsterStats.animations));
                 }
             }
         }
@@ -614,7 +626,7 @@ export class SpriteManager {
         
         if (monsterType === 'skeleton' || monsterType === 'elemental' ||
             monsterType === 'ogre' || monsterType === 'ghoul' || monsterType === 'wildarcher' ||
-            monsterType === 'darkmage') {
+            monsterType === 'darkmage' || monsterType === 'wolf') {
             // Handle special animation states
             if (state === 'hit') {
                 return `${monsterType}_take_damage_${facingSuffix}`;
