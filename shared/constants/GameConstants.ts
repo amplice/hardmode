@@ -98,7 +98,7 @@ export const GAME_CONSTANTS = {
     LEVELS: {
         MAX_LEVEL: 10,
         XP_GROWTH: 20, // Used in triangular progression formula
-        PLAYTEST_MODE: true, // Toggle this for easy leveling (20 XP per level)
+        PLAYTEST_MODE: false, // Toggle this for easy leveling (20 XP per level)
         PLAYTEST_XP_PER_LEVEL: 20 // XP needed per level in playtest mode
     },
     
