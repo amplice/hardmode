@@ -263,13 +263,13 @@ export const MONSTER_STATS = {
     },
     wolf: {
         hp: 2,
-        moveSpeed: 5,  // Fast wolf - matches player speed
+        moveSpeed: 6,  // Very fast predator
         damage: 1,
-        attackRange: 75,  // Slightly increased for 1.2x size
+        attackRange: 85,  // Increased for 1.5x size
         aggroRange: 3000,
         xp: 15,
         attackCooldown: 1200,
-        collisionRadius: 18,  // 1.2x of original 15
+        collisionRadius: 22,  // ~1.5x of original 15
         attackDelay: 469, // ms delay before damage (75% of 625ms animation)
         attackDuration: 625, // Total animation duration (15 frames at 0.4 speed)
         attacks: {
@@ -693,11 +693,11 @@ export const ATTACK_DEFINITIONS = {
         windupTime: 469,
         recoveryTime: 156,
         cooldown: 1200,
-        range: 75,  // Slightly increased for 1.2x size
+        range: 85,  // Increased for 1.5x size
         hitboxType: 'rectangle',
         hitboxParams: {
-            width: 85,  // ~1.2x of 70
-            length: 85  // ~1.2x of 70
+            width: 105,  // ~1.5x of 70
+            length: 105  // ~1.5x of 70
         },
         animation: 'attack1'
     }

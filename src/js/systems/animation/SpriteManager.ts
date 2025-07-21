@@ -504,9 +504,9 @@ export class SpriteManager {
             scale = (this.frameWidth / 192) * 1.5;
         }
         
-        // Wolf sprites should be 1.2x larger
+        // Wolf sprites should be 1.5x larger
         if (animationName.startsWith('wolf_')) {
-            scale = this.spriteScale * 1.2;
+            scale = this.spriteScale * 1.5;
         }
         
         sprite.scale.set(scale, scale);

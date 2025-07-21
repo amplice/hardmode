@@ -222,7 +222,7 @@ export const MONSTER_CONFIG = {
     } as MonsterStats,
     wolf: {
       hitPoints: 2,
-      moveSpeed: 5,  // Fast wolf - matches player speed
+      moveSpeed: 6,  // Very fast predator
       attackRange: 70,
       collisionRadius: 15,
       aggroRange: 3000,
