@@ -263,7 +263,7 @@ export const MONSTER_STATS = {
     },
     wolf: {
         hp: 2,
-        moveSpeed: 3.5,
+        moveSpeed: 5,  // Fast wolf - matches player speed
         damage: 1,
         attackRange: 75,  // Slightly increased for 1.2x size
         aggroRange: 3000,

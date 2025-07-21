@@ -222,13 +222,13 @@ export const MONSTER_CONFIG = {
     } as MonsterStats,
     wolf: {
       hitPoints: 2,
-      moveSpeed: 3.5,
+      moveSpeed: 5,  // Fast wolf - matches player speed
       attackRange: 70,
       collisionRadius: 15,
       aggroRange: 3000,
       xp: 15,
       animations: {
-        walk: { speed: 0.45 },
+        walk: { speed: 0.35 },  // Faster animation for running
         idle: { speed: 0.25 },
         attack1: { speed: 0.4 },
         take_damage: { speed: 0.7 },
