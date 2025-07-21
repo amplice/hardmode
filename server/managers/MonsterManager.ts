@@ -504,11 +504,12 @@ export class MonsterManager {
                 if (attackConfig && (attackConfig as any).moveSpeedMultiplier) {
                     const moveSpeed = stats.moveSpeed * (attackConfig as any).moveSpeedMultiplier;
                     
-                    // Move in the fixed direction
-                    monster.velocity.x = monster.multiHitData.fixedDirection.x * moveSpeed;
-                    monster.velocity.y = monster.multiHitData.fixedDirection.y * moveSpeed;
+                    // Move in the fixed direction with same scaling as players
+                    const scaledSpeed = moveSpeed * deltaTime * 60;
+                    monster.velocity.x = monster.multiHitData.fixedDirection.x * scaledSpeed;
+                    monster.velocity.y = monster.multiHitData.fixedDirection.y * scaledSpeed;
                     
-                    // Calculate new position (velocity is already per-frame, don't multiply by deltaTime)
+                    // Calculate new position
                     const newX = monster.x + monster.velocity.x;
                     const newY = monster.y + monster.velocity.y;
                     
@@ -833,7 +834,7 @@ export class MonsterManager {
                 // If we're not in range of the shortest attack, keep chasing
                 if (distance > shortestAttackRange) {
                     // Continue chasing to get in range for melee attacks
-                    this.moveToward(monster, target, stats.moveSpeed);
+                    this.moveToward(monster, target, stats.moveSpeed, deltaTime);
                 } else {
                     // We're in range of all attacks, but they're all on cooldown
                     this.transitionMonsterState(monster, 'idle');
@@ -845,7 +846,7 @@ export class MonsterManager {
         
         // Chase player (but not if stunned)
         if (!monster.isStunned) {
-            this.moveToward(monster, target, stats.moveSpeed);
+            this.moveToward(monster, target, stats.moveSpeed, deltaTime);
         } else {
             // Stop moving while stunned
             monster.velocity = { x: 0, y: 0 };
@@ -1785,7 +1786,7 @@ export class MonsterManager {
         }
     }
 
-    moveToward(monster: ServerMonsterState, target: PlayerState, speed: number): void {
+    moveToward(monster: ServerMonsterState, target: PlayerState, speed: number, deltaTime: number = 1/30): void {
         const targetCoords = this.playerToCoords(target);
         
         // Use smart pathfinding that understands elevation and stairs
@@ -1793,8 +1794,10 @@ export class MonsterManager {
         
         if (movement.x !== 0 || movement.y !== 0) {
             const distance = Math.sqrt(movement.x * movement.x + movement.y * movement.y);
-            monster.velocity.x = (movement.x / distance) * speed;
-            monster.velocity.y = (movement.y / distance) * speed;
+            // Apply same speed scaling as players: speed * deltaTime * 60
+            const scaledSpeed = speed * deltaTime * 60;
+            monster.velocity.x = (movement.x / distance) * scaledSpeed;
+            monster.velocity.y = (movement.y / distance) * scaledSpeed;
             
             // Calculate intended new position
             const newX = monster.x + monster.velocity.x;
