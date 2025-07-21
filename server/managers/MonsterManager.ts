@@ -687,9 +687,28 @@ export class MonsterManager {
                         this.transitionMonsterState(monster, 'attacking');
                         return;
                     }
-                    // All attacks on cooldown, wait in place
-                    // Keep the target but don't do anything else
-                    console.log(`[Monster ${monster.id}] In idle, no attacks ready, cooldowns:`, monster.attackCooldowns);
+                    
+                    // All attacks on cooldown - check if we should chase to get in range for shorter attacks
+                    let shortestAttackRange = Infinity;
+                    
+                    // Find the shortest attack range
+                    for (const [attackType, attackName] of Object.entries(attacks)) {
+                        if (!attackName) continue;
+                        const attackConfig = ATTACK_DEFINITIONS[attackName as keyof typeof ATTACK_DEFINITIONS];
+                        if (!attackConfig) continue;
+                        const attackRange = (attackConfig as any).range || stats.attackRange;
+                        shortestAttackRange = Math.min(shortestAttackRange, attackRange);
+                    }
+                    
+                    // If we're not in range of the shortest attack, chase
+                    if (distance > shortestAttackRange) {
+                        console.log(`[Monster ${monster.id}] In idle, attacks on cooldown, but out of melee range (${distance} > ${shortestAttackRange}), chasing`);
+                        this.transitionMonsterState(monster, 'chasing');
+                        return;
+                    }
+                    
+                    // We're in range of all attacks, but they're all on cooldown
+                    console.log(`[Monster ${monster.id}] In idle, no attacks ready, in melee range, cooldowns:`, monster.attackCooldowns);
                     monster.velocity = { x: 0, y: 0 };
                     return;
                 } else if (distance <= stats.aggroRange) {
@@ -796,12 +815,32 @@ export class MonsterManager {
             if (anyAttackReady) {
                 this.transitionMonsterState(monster, 'attacking');
                 monster.velocity = { x: 0, y: 0 };
+                return;
             } else {
-                // All attacks on cooldown, transition to idle
-                this.transitionMonsterState(monster, 'idle');
-                monster.velocity = { x: 0, y: 0 };
+                // All attacks on cooldown - check if we should continue chasing
+                // to get in range for shorter-range attacks
+                let shortestAttackRange = Infinity;
+                
+                // Find the shortest attack range
+                for (const [attackType, attackName] of Object.entries(attacks)) {
+                    if (!attackName) continue;
+                    const attackConfig = ATTACK_DEFINITIONS[attackName as keyof typeof ATTACK_DEFINITIONS];
+                    if (!attackConfig) continue;
+                    const attackRange = (attackConfig as any).range || stats.attackRange;
+                    shortestAttackRange = Math.min(shortestAttackRange, attackRange);
+                }
+                
+                // If we're not in range of the shortest attack, keep chasing
+                if (distance > shortestAttackRange) {
+                    // Continue chasing to get in range for melee attacks
+                    this.moveToward(monster, target, stats.moveSpeed);
+                } else {
+                    // We're in range of all attacks, but they're all on cooldown
+                    this.transitionMonsterState(monster, 'idle');
+                    monster.velocity = { x: 0, y: 0 };
+                }
+                return;
             }
-            return;
         }
         
         // Chase player (but not if stunned)
