@@ -13,7 +13,7 @@ export type Direction = 'up' | 'down' | 'left' | 'right' | 'up-left' | 'up-right
 
 export type CharacterClass = 'bladedancer' | 'guardian' | 'hunter' | 'rogue';
 
-export type MonsterType = 'ogre' | 'skeleton' | 'elemental' | 'ghoul' | 'wildarcher' | 'darkmage';
+export type MonsterType = 'ogre' | 'skeleton' | 'elemental' | 'ghoul' | 'wildarcher' | 'darkmage' | 'wolf';
 
 export type MonsterStateType = 'idle' | 'chasing' | 'attacking' | 'dying' | 'stunned';
 

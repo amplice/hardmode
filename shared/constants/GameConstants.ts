@@ -153,12 +153,13 @@ export const POWERUP_CONFIG = {
 
 // Monster type weights for spawning
 export const MONSTER_SPAWN_WEIGHTS = {
-    skeleton: 0.16,
-    elemental: 0.16,
-    ghoul: 0.16,
-    ogre: 0.16,
-    wildarcher: 0.16,
-    darkmage: 0.2
+    skeleton: 0.14,
+    elemental: 0.14,
+    ghoul: 0.14,
+    ogre: 0.14,
+    wildarcher: 0.14,
+    darkmage: 0.16,
+    wolf: 0.14
 };
 
 // Centralized monster statistics
@@ -258,6 +259,22 @@ export const MONSTER_STATS = {
         attacks: {
             primary: 'monster_darkmage_shadowbolt',
             special1: 'monster_darkmage_teleport'
+        }
+    },
+    wolf: {
+        hp: 2,
+        moveSpeed: 3.5,
+        damage: 1,
+        attackRange: 70,
+        aggroRange: 3000,
+        xp: 15,
+        attackCooldown: 1200,
+        collisionRadius: 15,
+        attackDelay: 469, // ms delay before damage (75% of 625ms animation)
+        attackDuration: 625, // Total animation duration (15 frames at 0.4 speed)
+        attacks: {
+            primary: 'monster_wolf_primary'
+            // special1: 'monster_wolf_special' // Reserved for future implementation
         }
     }
 };
@@ -667,5 +684,21 @@ export const ATTACK_DEFINITIONS = {
         windupAnimation: 'special1_windup',  // First 5 frames
         attackAnimation: 'pummel',  // Pummel animation for actual attack
         attackDelay: 200  // Damage at frame 6 of pummel: 6/(60*0.5) = 200ms
+    },
+    
+    // Wolf attacks
+    monster_wolf_primary: {
+        archetype: 'standard_melee',
+        damage: 1,
+        windupTime: 469,
+        recoveryTime: 156,
+        cooldown: 1200,
+        range: 70,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 80,
+            length: 80
+        },
+        animation: 'attack1'
     }
 };

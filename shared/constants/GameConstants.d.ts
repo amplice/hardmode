@@ -89,6 +89,8 @@ export declare const MONSTER_SPAWN_WEIGHTS: {
     ghoul: number;
     ogre: number;
     wildarcher: number;
+    darkmage: number;
+    wolf: number;
 };
 export declare const MONSTER_STATS: {
     ogre: {
@@ -150,6 +152,37 @@ export declare const MONSTER_STATS: {
         collisionRadius: number;
         attackDelay: number;
         attackDuration: number;
+    };
+    darkmage: {
+        hp: number;
+        moveSpeed: number;
+        damage: number;
+        attackRange: number;
+        aggroRange: number;
+        xp: number;
+        attackCooldown: number;
+        collisionRadius: number;
+        attackDelay: number;
+        attackDuration: number;
+        attacks: {
+            primary: string;
+            special1: string;
+        };
+    };
+    wolf: {
+        hp: number;
+        moveSpeed: number;
+        damage: number;
+        attackRange: number;
+        aggroRange: number;
+        xp: number;
+        attackCooldown: number;
+        collisionRadius: number;
+        attackDelay: number;
+        attackDuration: number;
+        attacks: {
+            primary: string;
+        };
     };
 };
 export declare const PLAYER_STATS: {

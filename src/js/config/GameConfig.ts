@@ -219,6 +219,21 @@ export const MONSTER_CONFIG = {
         take_damage: { speed: 0.7 },
         die: { speed: 0.3 }
       }
+    } as MonsterStats,
+    wolf: {
+      hitPoints: 2,
+      moveSpeed: 3.5,
+      attackRange: 70,
+      collisionRadius: 15,
+      aggroRange: 3000,
+      xp: 15,
+      animations: {
+        walk: { speed: 0.45 },
+        idle: { speed: 0.25 },
+        attack1: { speed: 0.4 },
+        take_damage: { speed: 0.7 },
+        die: { speed: 0.25 }
+      }
     } as MonsterStats
   },
 
@@ -308,6 +323,17 @@ export const MONSTER_CONFIG = {
         recoveryTime: 600,
         cooldown: 8000,
         range: 300
+      } as MonsterAttackConfig
+    },
+    wolf: {
+      primary: {
+        name: "Bite",
+        damage: 1,
+        windupTime: 200,
+        recoveryTime: 300,
+        cooldown: 800,
+        range: 70,
+        hitbox: { width: 80, height: 80 }
       } as MonsterAttackConfig
     }
   }
