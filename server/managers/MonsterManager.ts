@@ -1009,6 +1009,41 @@ export class MonsterManager {
                     monster.attackPhase = 'active';
                     this.executeTeleportMeleeAttack(monster, stats, attackConfig, players);
                 }, attackConfig.windupTime);
+            } else if (attackConfig.archetype === 'jump_attack') {
+                // Initialize jump attack data
+                const jumpConfig = attackConfig as any;
+                
+                // Calculate jump target position
+                const dx = targetCoords.x - monster.x;
+                const dy = targetCoords.y - monster.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const jumpDistance = Math.min(distance, jumpConfig.dashDistance || 200);
+                const jumpAngle = Math.atan2(dy, dx);
+                
+                const jumpTargetX = monster.x + Math.cos(jumpAngle) * jumpDistance;
+                const jumpTargetY = monster.y + Math.sin(jumpAngle) * jumpDistance;
+                
+                (monster as any).jumpData = {
+                    startX: monster.x,
+                    startY: monster.y,
+                    targetX: jumpTargetX,
+                    targetY: jumpTargetY,
+                    startTime: Date.now(),
+                    duration: jumpConfig.jumpDuration || 300
+                };
+                
+                console.log(`[MonsterManager] Wolf ${monster.id} initiating jump attack`, {
+                    from: { x: Math.round(monster.x), y: Math.round(monster.y) },
+                    to: { x: Math.round(jumpTargetX), y: Math.round(jumpTargetY) },
+                    distance: Math.round(jumpDistance)
+                });
+                
+                // Schedule jump execution
+                monster.pendingAttackTimeout = setTimeout(() => {
+                    monster.pendingAttackTimeout = null;
+                    monster.attackPhase = 'active';
+                    this.executeJumpAttack(monster, stats, attackConfig, players);
+                }, attackConfig.windupTime);
             } else {
                 // Standard melee attack
                 monster.pendingAttackTimeout = setTimeout(() => {
@@ -1454,6 +1489,81 @@ export class MonsterManager {
         }
     }
 
+    /**
+     * Execute a jump attack
+     */
+    executeJumpAttack(monster: ServerMonsterState, stats: any, attackConfig: any, players: Map<string, PlayerState>): void {
+        if (!monster || monster.hp <= 0 || monster.state === 'dying' || !(monster as any).jumpData) {
+            return;
+        }
+        
+        const jumpData = (monster as any).jumpData;
+        const now = Date.now();
+        const elapsed = now - jumpData.startTime;
+        const progress = Math.min(elapsed / jumpData.duration, 1);
+        
+        // Update monster position during jump
+        const newX = jumpData.startX + (jumpData.targetX - jumpData.startX) * progress;
+        const newY = jumpData.startY + (jumpData.targetY - jumpData.startY) * progress;
+        
+        // Check collision for the new position
+        if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, newY)) {
+            monster.x = newX;
+            monster.y = newY;
+        }
+        
+        // Jump animation state
+        (monster as any).isJumping = true;
+        
+        if (progress < 1) {
+            // Continue jumping
+            setTimeout(() => {
+                this.executeJumpAttack(monster, stats, attackConfig, players);
+            }, 16); // ~60 FPS update
+        } else {
+            // Jump complete - deal AOE damage at landing position
+            (monster as any).isJumping = false;
+            console.log(`[MonsterManager] Wolf ${monster.id} landing jump attack at (${Math.round(monster.x)}, ${Math.round(monster.y)})`);
+            
+            // Execute AOE damage
+            this.executeAOEAttack(monster, attackConfig, players);
+            
+            // Clean up jump data
+            (monster as any).jumpData = undefined;
+            
+            // Enter recovery phase
+            monster.attackPhase = 'recovery';
+            setTimeout(() => {
+                if (monster && monster.attackPhase === 'recovery') {
+                    monster.attackPhase = undefined;
+                    monster.isAttackAnimating = false;
+                    // Set cooldown when animation ends
+                    const completedAttackType = monster.currentAttackType || 'primary';
+                    if (!monster.attackCooldowns) {
+                        monster.attackCooldowns = { primary: 0, special1: 0, special2: 0 };
+                    }
+                    monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
+                    monster.lastAttack = Date.now();
+                    monster.currentAttackType = undefined;
+                    
+                    // Transition to appropriate state
+                    if (monster.target) {
+                        const targetCoords = this.playerToCoords(monster.target);
+                        const distance = getDistance(monster, targetCoords);
+                        
+                        if (distance <= stats.attackRange) {
+                            this.transitionMonsterState(monster, 'idle');
+                        } else {
+                            this.transitionMonsterState(monster, 'chasing');
+                        }
+                    } else {
+                        this.transitionMonsterState(monster, 'idle');
+                    }
+                }
+            }, attackConfig.recoveryTime);
+        }
+    }
+    
     /**
      * Execute a multi-projectile attack
      */

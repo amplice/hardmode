@@ -61,7 +61,7 @@ import {
 } from '../../../../shared/systems/MonsterStateMachine.js';
 
 // Type definitions
-type MonsterType = 'skeleton' | 'ogre' | 'ghoul' | 'elemental' | 'wildarcher' | 'darkmage';
+type MonsterType = 'skeleton' | 'ogre' | 'ghoul' | 'elemental' | 'wildarcher' | 'darkmage' | 'wolf';
 type MonsterState = 'dormant' | 'idle' | 'chasing' | 'attacking' | 'stunned' | 'dying' | 'walking';
 type Direction = 'up' | 'down' | 'left' | 'right' | 'up-left' | 'up-right' | 'down-left' | 'down-right';
 
@@ -294,6 +294,9 @@ export class Monster {
                             } else {
                                 animState = 'special1';
                             }
+                            break;
+                        case 'wolf':
+                            animState = 'attack2'; // Pounce attack
                             break;
                         default:
                             animState = 'attack1';
