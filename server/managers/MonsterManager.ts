@@ -1013,12 +1013,11 @@ export class MonsterManager {
                 // Initialize jump attack data
                 const jumpConfig = attackConfig as any;
                 
-                // Calculate jump target position
+                // Calculate jump target position - always jump full distance
                 const dx = targetCoords.x - monster.x;
                 const dy = targetCoords.y - monster.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                const jumpDistance = Math.min(distance, jumpConfig.dashDistance || 200);
                 const jumpAngle = Math.atan2(dy, dx);
+                const jumpDistance = jumpConfig.dashDistance || 250; // Always jump full distance
                 
                 const jumpTargetX = monster.x + Math.cos(jumpAngle) * jumpDistance;
                 const jumpTargetY = monster.y + Math.sin(jumpAngle) * jumpDistance;
@@ -1245,10 +1244,11 @@ export class MonsterManager {
                 break;
                 
             case 'wolf':
-                // Wolf uses pounce at medium range, melee up close
+                // Wolf uses pounce at specific range window (always jumps 250 pixels)
                 const pounceAttack = availableAttacks.find(a => a.configName === 'monster_wolf_special');
-                if (pounceAttack && distance > 90 && distance <= 250) {
-                    // Use pounce when at optimal range (not too close for melee, within jump range)
+                if (pounceAttack && distance > 150 && distance <= 250) {
+                    // Use pounce only when target is in the 150-250 pixel range
+                    // This ensures the 250 pixel jump is appropriate
                     selectedAttack = pounceAttack;
                 }
                 break;
