@@ -234,6 +234,7 @@ export class AbilityManager {
 
             const startX = player.x;
             const startY = player.y;
+            const startFacing = player.facing;
             const endX = startX + Math.cos(angle) * config.dashDistance;
             const endY = startY + Math.sin(angle) * config.dashDistance;
 
@@ -260,7 +261,7 @@ export class AbilityManager {
                 endX,
                 endY,
                 duration: config.dashDuration,
-                facing: player.facing
+                facing: startFacing
             });
 
             // Schedule damage event (dash damage happens immediately at start)
@@ -272,7 +273,7 @@ export class AbilityManager {
                         abilityType: abilityType,
                         x: startX,
                         y: startY,
-                        facing: player.facing,
+                        facing: startFacing,
                         config: {
                             damage: config.damage + ((player as any).damageBonus || 0),
                             hitboxType: config.hitboxType,
@@ -409,6 +410,11 @@ export class AbilityManager {
 
     private executeStandardMeleeAbility(player: Player, config: AttackConfig, abilityType: string): void {
         try {
+            // Capture position and facing at ability start
+            const startX = player.x;
+            const startY = player.y;
+            const startFacing = player.facing;
+            
             // Schedule damage event after windup
             const windupTime = config.windupTime || 0;
             const damageTimeout = setTimeout(() => {
@@ -416,9 +422,9 @@ export class AbilityManager {
                     const damageData = {
                         playerId: player.id,
                         abilityType: abilityType,
-                        x: player.x,
-                        y: player.y,
-                        facing: player.facing,
+                        x: startX,  // Use position at ability start
+                        y: startY,  // Use position at ability start
+                        facing: startFacing,  // Use facing at ability start
                         config: {
                             damage: config.damage + ((player as any).damageBonus || 0),
                             hitboxType: config.hitboxType,

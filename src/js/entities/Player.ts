@@ -1221,6 +1221,16 @@ export class Player implements PlayerInterface {
             return;
         }
         
+        // Flash red to indicate damage (like monsters)
+        if (this.animatedSprite) {
+            this.animatedSprite.tint = 0xFF0000;
+            setTimeout(() => {
+                if (this.animatedSprite && !this.isDead && !this.isDying) {
+                    this.animatedSprite.tint = 0xFFFFFF;
+                }
+            }, 200);
+        }
+        
         // Start take damage animation
         this.isTakingDamage = true;
         this.damageStunTimer = this.damageStunDuration;

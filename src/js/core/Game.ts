@@ -645,6 +645,10 @@ export class Game {
   updateRemotePlayers(delta: number): void {
     if (!this.remotePlayers) return;
     for (const p of this.remotePlayers.values()) {
+      // Update health component to process damage stun timer
+      if (p.health) {
+        p.health.update(delta);
+      }
       p.animation.update();
     }
   }
