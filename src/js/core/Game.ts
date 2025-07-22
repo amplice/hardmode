@@ -652,6 +652,8 @@ export class Game {
         p.spawnProtectionTimer -= delta;
         if (p.spawnProtectionTimer <= 0) {
           p.spawnProtectionTimer = 0;
+          // Update tint when spawn protection expires
+          p.animation.applyCurrentTints();
         }
       }
       

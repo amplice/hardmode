@@ -901,6 +901,9 @@ class HealthComponent extends BaseComponent implements IHealthComponent {
             this.owner.animatedSprite = null;
         }
         this.owner.animation.update();
+        
+        // Apply tints for spawn protection
+        this.owner.animation.applyCurrentTints();
     }
     
     getClassHitPoints(): number {
