@@ -634,11 +634,8 @@ export class Game {
     // Update spawn protection status for remote players
     if (info.spawnProtectionTimer !== undefined) {
       p.spawnProtectionTimer = info.spawnProtectionTimer;
-      if (p.spawnProtectionTimer > 0 && p.animatedSprite) {
-        p.animatedSprite.tint = 0xFFFF00; // Yellow tint
-      } else if (p.animatedSprite) {
-        p.animatedSprite.tint = 0xFFFFFF; // Normal tint
-      }
+      // Let the animation component handle tinting based on state
+      p.animation.applyCurrentTints();
     }
   }
 
@@ -649,7 +646,19 @@ export class Game {
       if (p.health) {
         p.health.update(delta);
       }
+      
+      // Update spawn protection timer
+      if (p.spawnProtectionTimer > 0) {
+        p.spawnProtectionTimer -= delta;
+        if (p.spawnProtectionTimer <= 0) {
+          p.spawnProtectionTimer = 0;
+        }
+      }
+      
       p.animation.update();
+      
+      // Update tints based on current state
+      p.animation.applyCurrentTints();
     }
   }
 

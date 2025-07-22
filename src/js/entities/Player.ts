@@ -1226,7 +1226,8 @@ export class Player implements PlayerInterface {
             this.animatedSprite.tint = 0xFF0000;
             setTimeout(() => {
                 if (this.animatedSprite && !this.isDead && !this.isDying) {
-                    this.animatedSprite.tint = 0xFFFFFF;
+                    // Use applyCurrentTints to restore the correct tint based on state
+                    this.animation.applyCurrentTints();
                 }
             }, 200);
         }
