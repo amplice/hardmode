@@ -705,13 +705,13 @@ export const ATTACK_DEFINITIONS = {
     monster_wolf_special: {
         archetype: 'jump_attack',
         name: 'Pounce',
-        damage: 2,
+        damage: 1,
         windupTime: 200,
-        jumpDuration: 300,  // Slightly shorter than Guardian's 325
+        jumpDuration: 400,  // Increased from 300ms
         recoveryTime: 250,
         cooldown: 3000,
-        range: 180,  // Slightly less than Guardian's 200
-        dashDistance: 180,  // Slightly less than Guardian's 200
+        range: 250,  // Increased from 180
+        dashDistance: 250,  // Increased from 180
         hitboxType: 'circle',
         hitboxParams: {
             radius: 60  // Smaller than Guardian's 75

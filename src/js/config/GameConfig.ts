@@ -231,7 +231,7 @@ export const MONSTER_CONFIG = {
         walk: { speed: 0.35 },  // Faster animation for running
         idle: { speed: 0.25 },
         attack1: { speed: 0.4 },
-        attack2: { speed: 0.4 },  // Jump attack animation
+        attack2: { speed: 0.5 },  // Jump attack animation
         take_damage: { speed: 0.7 },
         die: { speed: 0.25 }
       }
