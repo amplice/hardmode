@@ -693,8 +693,8 @@ export class AbilityManager {
         width: number, length: number,
         targetX: number, targetY: number, targetRadius: number
     ): boolean {
-        // Convert facing to angle
-        const angle = directionStringToAngleRadians(facing);
+        // Convert facing to angle (add PI/2 to match client-side rotation)
+        const angle = directionStringToAngleRadians(facing) + Math.PI / 2;
         
         // Translate target position to local coordinates
         const dx = targetX - x;
@@ -706,11 +706,11 @@ export class AbilityManager {
         const localX = dx * cos - dy * sin;
         const localY = dx * sin + dy * cos;
         
-        // Check bounds with radius
+        // Check bounds with radius (rectangle extends from -length to 0 in local Y)
         return localX >= -width/2 - targetRadius &&
                localX <= width/2 + targetRadius &&
-               localY >= 0 - targetRadius &&
-               localY <= length + targetRadius;
+               localY >= -length - targetRadius &&
+               localY <= 0 + targetRadius;
     }
     
     // Cone hitbox collision check
