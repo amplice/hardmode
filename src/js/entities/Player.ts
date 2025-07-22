@@ -246,8 +246,11 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
                 return;
             }
             
-            // Don't change animation if special state
-            if (this.owner.isDying || this.owner.isTakingDamage || this.owner.isAttacking) {
+            // Don't change animation if special state (but death takes priority)
+            if (this.owner.isDying) {
+                return; // Death animation is playing
+            }
+            if (this.owner.isTakingDamage || this.owner.isAttacking) {
                 return;
             }
             
@@ -849,6 +852,10 @@ class HealthComponent extends BaseComponent implements IHealthComponent {
         if (this.owner.isDying || this.owner.isDead) {
             return;
         }
+        
+        // Clear any damage state to allow death animation to play
+        this.owner.isTakingDamage = false;
+        this.owner.damageStunTimer = 0;
         
         // Player died
         this.owner.isDying = true;
