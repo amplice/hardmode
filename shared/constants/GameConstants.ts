@@ -273,8 +273,8 @@ export const MONSTER_STATS = {
         attackDelay: 469, // ms delay before damage (75% of 625ms animation)
         attackDuration: 625, // Total animation duration (15 frames at 0.4 speed)
         attacks: {
-            primary: 'monster_wolf_primary'
-            // special1: 'monster_wolf_special' // Reserved for future implementation
+            primary: 'monster_wolf_primary',
+            special1: 'monster_wolf_special'
         }
     }
 };
@@ -700,5 +700,22 @@ export const ATTACK_DEFINITIONS = {
             length: 105  // ~1.5x of 70
         },
         animation: 'attack1'
+    },
+    
+    monster_wolf_special: {
+        archetype: 'jump_attack',
+        name: 'Pounce',
+        damage: 2,
+        windupTime: 200,
+        jumpDuration: 300,  // Slightly shorter than Guardian's 325
+        recoveryTime: 250,
+        cooldown: 3000,
+        range: 180,  // Slightly less than Guardian's 200
+        dashDistance: 180,  // Slightly less than Guardian's 200
+        hitboxType: 'circle',
+        hitboxParams: {
+            radius: 60  // Smaller than Guardian's 75
+        },
+        animation: 'attack2'  // Uses Attack2.png
     }
 };

@@ -1208,6 +1208,15 @@ export class MonsterManager {
                     }
                 }
                 break;
+                
+            case 'wolf':
+                // Wolf uses pounce at medium range, melee up close
+                const pounceAttack = availableAttacks.find(a => a.configName === 'monster_wolf_special');
+                if (pounceAttack && distance > 90 && distance <= 180) {
+                    // Use pounce when at optimal range (not too close for melee, within jump range)
+                    selectedAttack = pounceAttack;
+                }
+                break;
         }
         
         const attackConfig = ATTACK_DEFINITIONS[selectedAttack.configName as keyof typeof ATTACK_DEFINITIONS];
