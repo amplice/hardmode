@@ -169,7 +169,7 @@ export const MONSTER_STATS = {
         moveSpeed: 2,
         damage: 1,
         attackRange: 90,
-        aggroRange: 800,
+        aggroRange: 1000,
         xp: 20,
         attackCooldown: 2500,
         collisionRadius: 35,
@@ -217,11 +217,11 @@ export const MONSTER_STATS = {
         hp: 2,
         moveSpeed: 4,  // Updated speed
         damage: 1,
-        attackRange: 70,
+        attackRange: 84,  // Increased for 1.2x size
         aggroRange: 3000,
         xp: 15,
         attackCooldown: 1200,
-        collisionRadius: 15,
+        collisionRadius: 18,  // 1.2x of original 15
         attackDelay: 469, // ms delay before damage (75% of 625ms animation)
         attackDuration: 625, // Total animation duration (15 frames at 0.4 speed)
         attacks: {
@@ -509,11 +509,11 @@ export const ATTACK_DEFINITIONS = {
         windupTime: 469,
         recoveryTime: 156,
         cooldown: 1200,
-        range: 70,
+        range: 84,  // Matches updated attack range
         hitboxType: 'rectangle',
         hitboxParams: {
-            width: 80,
-            length: 80
+            width: 96,  // 1.2x of 80
+            length: 96  // 1.2x of 80
         }
     },
     monster_wildarcher_primary: {
@@ -651,12 +651,12 @@ export const ATTACK_DEFINITIONS = {
     monster_darkmage_shadowbolt: {
         archetype: 'projectile',
         name: 'Shadow Bolt',
-        damage: 2,
+        damage: 1,
         windupTime: 300,
         recoveryTime: 300,
-        cooldown: 500,
+        cooldown: 750,
         range: 400,
-        projectileSpeed: 600,
+        projectileSpeed: 450,
         projectileRange: 450,
         hitboxType: 'projectile',
         hitboxParams: {
@@ -672,8 +672,8 @@ export const ATTACK_DEFINITIONS = {
         damage: 2,
         windupTime: 333,  // 5 frames at 0.25 speed = 5/(60*0.25) = 333ms
         recoveryTime: 400,  // Quick recovery after attack
-        cooldown: 3000,
-        range: 500,  // Max teleport distance
+        cooldown: 4000,
+        range: 400,  // Max teleport distance
         teleportBehindDistance: 60,  // How far behind player
         hitboxType: 'cone',  // Changed from rectangle to cone
         hitboxParams: {

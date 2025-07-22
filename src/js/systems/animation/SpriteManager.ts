@@ -510,6 +510,11 @@ export class SpriteManager {
             scale = this.spriteScale * 1.5;
         }
         
+        // Ghoul sprites should be 1.2x larger
+        if (animationName.startsWith('ghoul_')) {
+            scale = this.spriteScale * 1.2;
+        }
+        
         sprite.scale.set(scale, scale);
         
         return sprite;

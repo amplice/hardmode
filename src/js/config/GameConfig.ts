@@ -128,7 +128,7 @@ export const MONSTER_CONFIG = {
       moveSpeed: 2,
       attackRange: 90,
       collisionRadius: 35,
-      aggroRange: 800,
+      aggroRange: 1000,
       xp: 20,
       animations: {
         walk: { speed: 0.3 },
@@ -173,8 +173,8 @@ export const MONSTER_CONFIG = {
     ghoul: {
       hitPoints: 2,
       moveSpeed: 4,  // Updated speed
-      attackRange: 70,
-      collisionRadius: 10,
+      attackRange: 84,  // Increased for 1.2x size
+      collisionRadius: 18,  // 1.2x of original 15
       aggroRange: 3000,
       xp: 15,
       animations: {
