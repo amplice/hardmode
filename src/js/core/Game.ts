@@ -634,6 +634,8 @@ export class Game {
     // Update spawn protection status for remote players
     if (info.spawnProtectionTimer !== undefined) {
       p.spawnProtectionTimer = info.spawnProtectionTimer;
+      // Sync invulnerable flag with spawn protection (same as local players)
+      p.isInvulnerable = info.spawnProtectionTimer > 0;
       // Let the animation component handle tinting based on state
       p.animation.applyCurrentTints();
     }
@@ -647,10 +649,11 @@ export class Game {
         p.health.update(delta);
       }
       
-      // Update spawn protection timer
+      // Update spawn protection timer (same as local player logic)
       if (p.spawnProtectionTimer > 0) {
         p.spawnProtectionTimer -= delta;
         if (p.spawnProtectionTimer <= 0) {
+          p.isInvulnerable = false;  // Clear invulnerable flag like local players
           p.spawnProtectionTimer = 0;
           // Update tint when spawn protection expires
           p.animation.applyCurrentTints();
