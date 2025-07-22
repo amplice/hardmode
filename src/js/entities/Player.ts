@@ -1214,6 +1214,21 @@ export class Player implements PlayerInterface {
         this.health.takeDamage(amount);
     }
     
+    showDamageEffect(): void {
+        // Visual-only damage effect for remote players
+        // Don't apply if already dead or dying
+        if (this.hitPoints <= 0 || this.isDying || this.isDead) {
+            return;
+        }
+        
+        // Start take damage animation
+        this.isTakingDamage = true;
+        this.damageStunTimer = this.damageStunDuration;
+        
+        // Play damage animation
+        this.animation.playDamageAnimation();
+    }
+    
     getClassHitPoints(): number {
         return this.health.getClassHitPoints();
     }

@@ -491,10 +491,14 @@ export class NetworkClient {
                 if (this.game.entities.player) {
                     this.game.entities.player.hitPoints = data.hp;
                     (this.game.entities.player as any).armorHP = data.armorHP || 0;
-                    // Show damage effects without applying damage again
-                    this.game.entities.player.isTakingDamage = true;
-                    this.game.entities.player.damageStunTimer = this.game.entities.player.damageStunDuration;
-                    this.game.entities.player.animation.playDamageAnimation();
+                    
+                    // Only show damage effects if not already dead
+                    if (data.hp > 0 && !this.game.entities.player.isDying && !this.game.entities.player.isDead) {
+                        // Show damage effects without applying damage again
+                        this.game.entities.player.isTakingDamage = true;
+                        this.game.entities.player.damageStunTimer = this.game.entities.player.damageStunDuration;
+                        this.game.entities.player.animation.playDamageAnimation();
+                    }
                 }
             } else {
                 // Another player took damage
@@ -502,7 +506,11 @@ export class NetworkClient {
                 if (remotePlayer) {
                     remotePlayer.hitPoints = data.hp;
                     (remotePlayer as any).armorHP = data.armorHP || 0;
-                    remotePlayer.showDamageEffect?.();
+                    
+                    // Only show damage effects if not already dead
+                    if (data.hp > 0) {
+                        remotePlayer.showDamageEffect?.();
+                    }
                 }
             }
         });

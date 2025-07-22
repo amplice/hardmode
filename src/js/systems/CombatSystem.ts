@@ -345,6 +345,12 @@ export class CombatSystem {
   }
 
   _executeStandardMeleeAttack(entity: any, attackConfig: AttackConfig, attackType: string): number {
+    // For local player, send ability request to server for PvP damage
+    if (entity === (window as any).game.entities.player) {
+        (window as any).game.network.sendAbilityRequest(attackType);
+    }
+    
+    // Still create visual hitbox locally for immediate feedback
     setTimeout(() => {
       if (entity.isAttacking && entity.currentAttackType === attackType) {
         const hitbox = this.createHitbox(
