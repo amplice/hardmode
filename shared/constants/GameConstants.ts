@@ -178,7 +178,6 @@ export const MONSTER_STATS = {
         attacks: {
             primary: 'monster_ogre_primary',
             special1: 'monster_ogre_spin'
-            // special2: 'monster_ogre_slam' // Disabled for now
         }
     },
     skeleton: {
@@ -194,7 +193,6 @@ export const MONSTER_STATS = {
         attackDuration: 833, // Total animation duration (15 frames at 0.3 speed)
         attacks: {
             primary: 'monster_skeleton_primary'
-            // special1: 'monster_skeleton_bonethrow' // Disabled for now
         }
     },
     elemental: {
@@ -210,7 +208,6 @@ export const MONSTER_STATS = {
         attackDuration: 833, // Total animation duration (15 frames at 0.3 speed)
         attacks: {
             primary: 'monster_elemental_primary'
-            // special1: 'monster_elemental_spell' // Disabled for now
         }
     },
     ghoul: {
@@ -226,7 +223,6 @@ export const MONSTER_STATS = {
         attackDuration: 625, // Total animation duration (15 frames at 0.4 speed)
         attacks: {
             primary: 'monster_ghoul_primary'
-            // special1: 'monster_ghoul_frenzy' // Disabled for now
         }
     },
     wildarcher: {
@@ -242,7 +238,6 @@ export const MONSTER_STATS = {
         attackDuration: 714, // Total animation duration (15 frames at 0.35 speed)
         attacks: {
             primary: 'monster_wildarcher_primary'
-            // special1: 'monster_wildarcher_multishot' // Disabled for now
         }
     },
     darkmage: {
@@ -553,98 +548,6 @@ export const ATTACK_DEFINITIONS = {
         animation: 'attack3', // Uses Attack3.png animation
         windupAnimation: 'attack3_windup', // Uses BlockStart.png for windup
         moveSpeedMultiplier: 3.0 // 300% movement speed during spin
-    },
-    monster_ogre_slam: {
-        archetype: 'standard_melee',
-        name: 'Ground Slam',
-        damage: 3,
-        windupTime: 1000,
-        recoveryTime: 500,
-        cooldown: 8000,
-        range: 150,
-        hitboxType: 'circle',
-        hitboxParams: {
-            radius: 150
-        },
-        animation: 'special1', // Uses Pummel.png animation
-    },
-    
-    monster_elemental_spell: {
-        archetype: 'projectile',
-        name: 'Magic Bolt',
-        damage: 2,
-        windupTime: 800,
-        recoveryTime: 400,
-        cooldown: 4000,
-        range: 300,
-        projectileSpeed: 600,
-        projectileRange: 400,
-        hitboxType: 'projectile',
-        hitboxParams: {
-            width: 12,
-            length: 24
-        },
-        animation: 'attack2'
-    },
-    
-    monster_ghoul_frenzy: {
-        archetype: 'multi_hit_melee',
-        name: 'Frenzy',
-        damage: 1,
-        windupTime: 200,
-        recoveryTime: 300,
-        cooldown: 3000,
-        range: 80,
-        hitboxType: 'rectangle',
-        hitboxParams: {
-            width: 100,
-            length: 100
-        },
-        multiHit: {
-            hits: 4,
-            interval: 200,
-            duration: 800
-        },
-        animation: 'attack3',
-        moveSpeedMultiplier: 1.5 // Moves faster during frenzy
-    },
-    
-    monster_skeleton_bonethrow: {
-        archetype: 'projectile',
-        name: 'Bone Throw',
-        damage: 1,
-        windupTime: 500,
-        recoveryTime: 300,
-        cooldown: 4000,
-        range: 350,
-        projectileSpeed: 500,
-        projectileRange: 350,
-        hitboxType: 'projectile',
-        hitboxParams: {
-            width: 10,
-            length: 20
-        },
-        animation: 'special1'
-    },
-    
-    monster_wildarcher_multishot: {
-        archetype: 'multi_projectile',
-        name: 'Multi Shot',
-        damage: 1,
-        windupTime: 700,
-        recoveryTime: 500,
-        cooldown: 5000,
-        range: 400,
-        projectileSpeed: 450,
-        projectileRange: 400,
-        projectileCount: 3,
-        spreadAngle: 30, // degrees
-        hitboxType: 'projectile',
-        hitboxParams: {
-            width: 8,
-            length: 20
-        },
-        animation: 'attack2'
     },
     
     // Dark Mage attacks

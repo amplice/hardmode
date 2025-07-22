@@ -1194,34 +1194,19 @@ export class MonsterManager {
                 break;
                 
             case 'elemental':
-                // Elemental uses spell at medium range, melee up close
-                if (distance > 150 && distance < 300 && availableAttacks.find(a => a.configName === 'monster_elemental_spell')) {
-                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_elemental_spell')!;
-                }
+                // Elemental only has melee attack
                 break;
                 
             case 'ghoul':
-                // Ghoul uses frenzy when player is low health or randomly
-                if ((target as any).hp <= 2 && availableAttacks.find(a => a.configName === 'monster_ghoul_frenzy')) {
-                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_ghoul_frenzy')!;
-                } else if (Math.random() < 0.25 && availableAttacks.find(a => a.configName === 'monster_ghoul_frenzy')) {
-                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_ghoul_frenzy')!;
-                }
+                // Ghoul only has melee attack
                 break;
                 
             case 'skeleton':
-                // Skeleton throws bones at range, melee up close
-                if (distance > 200 && availableAttacks.find(a => a.configName === 'monster_skeleton_bonethrow')) {
-                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_skeleton_bonethrow')!;
-                }
+                // Skeleton only has melee attack
                 break;
                 
             case 'wildarcher':
-                // Wild archer uses multishot when multiple targets in range
-                const targetsInRange = this.countNearbyPlayers(monster, 400);
-                if (targetsInRange >= 2 && availableAttacks.find(a => a.configName === 'monster_wildarcher_multishot')) {
-                    selectedAttack = availableAttacks.find(a => a.configName === 'monster_wildarcher_multishot')!;
-                }
+                // Wild archer only has single shot
                 break;
                 
             case 'darkmage':
