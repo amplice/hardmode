@@ -656,9 +656,6 @@ export class Game {
       }
       
       p.animation.update();
-      
-      // Update tints based on current state
-      p.animation.applyCurrentTints();
     }
   }
 

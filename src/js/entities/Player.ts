@@ -326,6 +326,11 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
     applyCurrentTints(): void {
         if (!this.owner.animatedSprite) return;
         
+        // Don't override tint if we're showing damage (red tint)
+        if (this.owner.isTakingDamage && this.owner.animatedSprite.tint === 0xFF0000) {
+            return; // Keep the red damage tint
+        }
+        
         // Priority order: invulnerability (any source) > speed boost > damage boost > normal
         if (this.owner.spawnProtectionTimer > 0 || (this.owner as any).invulnerabilityActive) {
             this.owner.animatedSprite.tint = 0xFFFF00; // Yellow for any invulnerability
@@ -1221,11 +1226,11 @@ export class Player implements PlayerInterface {
             return;
         }
         
-        // Start take damage animation
+        // Set damage state
         this.isTakingDamage = true;
         this.damageStunTimer = this.damageStunDuration;
         
-        // Play damage animation (which handles the red tint)
+        // Play damage animation with red tint
         this.animation.playDamageAnimation();
     }
     
