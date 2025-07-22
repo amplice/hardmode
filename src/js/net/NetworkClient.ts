@@ -492,8 +492,10 @@ export class NetworkClient {
                     this.game.entities.player.hitPoints = data.hp;
                     (this.game.entities.player as any).armorHP = data.armorHP || 0;
                     
-                    // Only show damage effects if not already dead
-                    if (data.hp > 0 && !this.game.entities.player.isDying && !this.game.entities.player.isDead) {
+                    // Check if we died (same as monster damage)
+                    if (data.hp <= 0 && !this.game.entities.player.isDying && !this.game.entities.player.isDead) {
+                        this.game.entities.player.health.die();
+                    } else if (data.hp > 0 && !this.game.entities.player.isDying && !this.game.entities.player.isDead) {
                         // Show damage effects without applying damage again
                         this.game.entities.player.isTakingDamage = true;
                         this.game.entities.player.damageStunTimer = this.game.entities.player.damageStunDuration;
@@ -507,8 +509,10 @@ export class NetworkClient {
                     remotePlayer.hitPoints = data.hp;
                     (remotePlayer as any).armorHP = data.armorHP || 0;
                     
-                    // Only show damage effects if not already dead
-                    if (data.hp > 0) {
+                    // Check if they died (same as monster damage)
+                    if (data.hp <= 0 && !remotePlayer.isDying && !remotePlayer.isDead) {
+                        remotePlayer.health?.die();
+                    } else if (data.hp > 0) {
                         remotePlayer.showDamageEffect?.();
                     }
                 }
@@ -521,19 +525,8 @@ export class NetworkClient {
                 this.game.killFeedUI.addKill(data.killerClass, data.victimClass);
             }
             
-            if (data.playerId === this.socket.id) {
-                // We died
-                // Player killed
-                if (this.game.entities.player) {
-                    this.game.entities.player.health.die();
-                }
-            } else {
-                // Another player died
-                const remotePlayer = this.game.remotePlayers?.get(data.playerId!);
-                if (remotePlayer) {
-                    remotePlayer.health?.die();
-                }
-            }
+            // Death is now handled in playerDamaged when HP reaches 0
+            // This matches how monster kills work
         });
 
         this.socket.on('playerLevelUp', (data: LevelUpData) => {
