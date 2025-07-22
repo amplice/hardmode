@@ -131,8 +131,15 @@ export class DamageProcessor {
             return { success: false, error: 'Player is invulnerable' };
         }
 
+        // Apply PvP damage multiplier if source is another player
+        let finalDamage = damage;
+        const pvpSourceType = this._getEntityType(source);
+        if (pvpSourceType === 'player' && GAME_CONSTANTS.PVP.ENABLED) {
+            finalDamage = Math.floor(damage * GAME_CONSTANTS.PVP.DAMAGE_MULTIPLIER);
+        }
+
         // Apply damage with armor HP priority
-        let remainingDamage = damage;
+        let remainingDamage = finalDamage;
         let armorDamage = 0;
         let healthDamage = 0;
         
@@ -153,16 +160,35 @@ export class DamageProcessor {
         const actualDamage = armorDamage + healthDamage;
 
         // Emit damage event with proper source format
-        let sourceString: string;
+        let sourceData: any = {};
         const sourceType = this._getEntityType(source);
         if (sourceType === 'monster') {
             const monsterSource = source as MonsterState;
-            sourceString = `${monsterSource.type}_${monsterSource.id}`;
+            sourceData = {
+                type: 'monster',
+                id: monsterSource.id,
+                monsterType: monsterSource.type
+            };
         } else if (sourceType === 'projectile') {
             const projectileSource = source as any; // ProjectileState might have legacy fields
-            sourceString = `${projectileSource.ownerType || projectileSource.id}_projectile`;
+            sourceData = {
+                type: 'projectile',
+                id: projectileSource.id,
+                ownerType: projectileSource.ownerType
+            };
+        } else if (sourceType === 'player') {
+            // PvP damage
+            const playerSource = source as PlayerState;
+            sourceData = {
+                type: 'player',
+                id: playerSource.id,
+                class: playerSource.characterClass || (playerSource as any).class
+            };
         } else {
-            sourceString = source.id || 'unknown';
+            sourceData = {
+                type: 'unknown',
+                id: source.id || 'unknown'
+            };
         }
         
         this.io.emit('playerDamaged', {
@@ -170,7 +196,7 @@ export class DamageProcessor {
             damage: actualDamage,
             hp: player.hp,
             armorHP: player.armorHP || 0,
-            source: sourceString
+            source: sourceData
         });
 
         // Check for death
@@ -262,14 +288,29 @@ export class DamageProcessor {
         // Set respawn timer (3 seconds)
         playerWithDeathFields.respawnTime = Date.now() + (GAME_CONSTANTS.PLAYER.RESPAWN_TIME || 3000);
 
-        // Emit death event
-        this.io.emit('playerKilled', {
-            playerId: player.id,
-            killerId: source.id || (source as any).monsterId,
-            killerType: this._getEntityType(source) === 'monster' ? (source as MonsterState).type : this._getEntityType(source)
-        });
-
-        console.log(`Player ${player.id} killed by ${this._getEntityType(source)} ${source.id || (source as any).monsterId}`);
+        // Emit death event with proper PvP support
+        const sourceType = this._getEntityType(source);
+        
+        if (sourceType === 'player') {
+            // PvP kill
+            const killerPlayer = source as PlayerState;
+            this.io.emit('playerKilled', {
+                playerId: player.id,
+                victimId: player.id,
+                victimClass: player.characterClass || (player as any).class,
+                killerId: killerPlayer.id,
+                killerClass: killerPlayer.characterClass || (killerPlayer as any).class
+            });
+            console.log(`Player ${player.id} (${player.characterClass}) killed by player ${killerPlayer.id} (${killerPlayer.characterClass})`);
+        } else {
+            // PvE death
+            this.io.emit('playerKilled', {
+                playerId: player.id,
+                killerId: source.id || (source as any).monsterId,
+                killerType: sourceType === 'monster' ? (source as MonsterState).type : sourceType
+            });
+            console.log(`Player ${player.id} killed by ${sourceType} ${source.id || (source as any).monsterId}`);
+        }
     }
 
     private _handleMonsterDeath(monster: MonsterState, source: PlayerState | MonsterState | ProjectileState): void {

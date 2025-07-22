@@ -67,6 +67,7 @@ interface GameInterface {
     powerupRenderer?: any; // PowerupRenderer instance
     healthUI?: any; // HealthUI instance
     statsUI?: any; // StatsUI instance
+    killFeedUI?: any; // KillFeedUI instance
     
     // Methods called by NetworkClient
     initializeGameWorld(world: WorldInitData): void;
@@ -158,6 +159,10 @@ interface KillEventData {
     xpReward?: number;
     killerXp?: number;
     killerLevel?: number;
+    victimId?: string;
+    victimClass?: string;
+    killerId?: string;
+    killerClass?: string;
 }
 
 interface LevelUpData {
@@ -503,6 +508,11 @@ export class NetworkClient {
         });
 
         this.socket.on('playerKilled', (data: KillEventData) => {
+            // Handle PvP kill feed
+            if (data.killerClass && data.victimClass && this.game.killFeedUI) {
+                this.game.killFeedUI.addKill(data.killerClass, data.victimClass);
+            }
+            
             if (data.playerId === this.socket.id) {
                 // We died
                 // Player killed

@@ -25,6 +25,8 @@
 
 import { PLAYER_CONFIG } from '../../src/js/config/GameConfig.js';
 import { directionStringToAngleRadians } from '../../src/js/utils/DirectionUtils.js';
+import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
+import { HitboxType } from '../../shared/types/GameTypes.js';
 
 // Socket.IO server interface
 interface SocketIOServer {
@@ -200,6 +202,9 @@ export class AbilityManager {
                 case 'projectile':
                     this.executeProjectileAbility(player, attackConfig, abilityType, data);
                     break;
+                case 'standard_melee':
+                    this.executeStandardMeleeAbility(player, attackConfig, abilityType);
+                    break;
                 default:
                     console.log(`[AbilityManager] Non-movement ability ${abilityType} - client handles locally`);
             }
@@ -262,7 +267,7 @@ export class AbilityManager {
             const windupTime = config.windupTime || 0;
             const damageTimeout = setTimeout(() => {
                 try {
-                    this.io.emit('playerAbilityDamage', {
+                    const damageData = {
                         playerId: player.id,
                         abilityType: abilityType,
                         x: startX,
@@ -273,7 +278,11 @@ export class AbilityManager {
                             hitboxType: config.hitboxType,
                             hitboxParams: config.hitboxParams
                         }
-                    });
+                    };
+                    this.io.emit('playerAbilityDamage', damageData);
+                    
+                    // Check for PvP hits
+                    this.checkPvPHits(player, damageData);
                 } catch (error) {
                     console.error('[AbilityManager] Error in dash damage timeout:', error);
                 }
@@ -367,7 +376,7 @@ export class AbilityManager {
             
             const damageTimeout = setTimeout(() => {
                 try {
-                    this.io.emit('playerAbilityDamage', {
+                    const damageData = {
                         playerId: player.id,
                         abilityType: abilityType,
                         x: attackPosition.x,
@@ -378,7 +387,11 @@ export class AbilityManager {
                             hitboxType: config.hitboxType,
                             hitboxParams: config.hitboxParams
                         }
-                    });
+                    };
+                    this.io.emit('playerAbilityDamage', damageData);
+                    
+                    // Check for PvP hits
+                    this.checkPvPHits(player, damageData);
                 } catch (error) {
                     console.error('[AbilityManager] Error in jump damage timeout:', error);
                 }
@@ -391,6 +404,45 @@ export class AbilityManager {
             this.updateJumpMovement(player.id);
         } catch (error) {
             console.error('[AbilityManager] Error in executeJumpAbility:', error);
+        }
+    }
+
+    private executeStandardMeleeAbility(player: Player, config: AttackConfig, abilityType: string): void {
+        try {
+            // Schedule damage event after windup
+            const windupTime = config.windupTime || 0;
+            const damageTimeout = setTimeout(() => {
+                try {
+                    const damageData = {
+                        playerId: player.id,
+                        abilityType: abilityType,
+                        x: player.x,
+                        y: player.y,
+                        facing: player.facing,
+                        config: {
+                            damage: config.damage + ((player as any).damageBonus || 0),
+                            hitboxType: config.hitboxType,
+                            hitboxParams: config.hitboxParams
+                        }
+                    };
+                    this.io.emit('playerAbilityDamage', damageData);
+                    
+                    // Check for PvP hits
+                    this.checkPvPHits(player, damageData);
+                } catch (error) {
+                    console.error('[AbilityManager] Error in standard melee damage timeout:', error);
+                }
+            }, windupTime);
+            
+            // Store timeout for cleanup
+            this.activeTimeouts.set(`${player.id}_damage`, damageTimeout);
+            
+            // Set cooldown
+            const cooldownKey = `${player.id}_${abilityType}`;
+            this.cooldowns.set(cooldownKey, Date.now() + config.cooldown);
+            
+        } catch (error) {
+            console.error('[AbilityManager] Error in executeStandardMeleeAbility:', error);
         }
     }
 
@@ -543,6 +595,174 @@ export class AbilityManager {
             }
         } catch (error) {
             console.error('[AbilityManager] Error in updateJumpMovement:', error);
+        }
+    }
+
+    // Check for PvP hits when an ability damages
+    private checkPvPHits(attacker: Player, damageData: any): void {
+        // Check if PvP is enabled
+        if (!GAME_CONSTANTS.PVP.ENABLED) {
+            return;
+        }
+        
+        // Get all players to check for hits
+        const players = (this.gameState as any).players as Map<string, any>;
+        if (!players || players.size === 0) {
+            return;
+        }
+        
+        let hitCount = 0;
+        const maxTargets = GAME_CONSTANTS.PVP.MAX_TARGETS_PER_ABILITY;
+        
+        // Check each player for hits
+        for (const [targetId, targetPlayer] of players) {
+            // Skip self
+            if (targetId === attacker.id) {
+                continue;
+            }
+            
+            // Skip dead players
+            if (targetPlayer.hp <= 0) {
+                continue;
+            }
+            
+            // Skip invulnerable players
+            if (targetPlayer.invulnerable) {
+                continue;
+            }
+            
+            // Check if target is in hitbox
+            if (this.isPlayerInHitbox(targetPlayer, damageData)) {
+                // Apply PvP damage
+                this.applyPvPDamage(attacker, targetPlayer, damageData.config.damage);
+                
+                hitCount++;
+                if (hitCount >= maxTargets) {
+                    break;
+                }
+            }
+        }
+    }
+    
+    // Check if a player is within an ability's hitbox
+    private isPlayerInHitbox(player: any, damageData: any): boolean {
+        const hitboxType = damageData.config.hitboxType as HitboxType;
+        const params = damageData.config.hitboxParams;
+        const playerRadius = GAME_CONSTANTS.PLAYER.COLLISION_RADIUS;
+        
+        switch (hitboxType) {
+            case 'rectangle':
+                // Rectangle hitbox check with facing direction
+                return this.checkRectangleHit(
+                    damageData.x, damageData.y, 
+                    damageData.facing,
+                    params.width, params.length,
+                    player.x, player.y, playerRadius
+                );
+                
+            case 'circle':
+                // Circle hitbox check
+                const dx = player.x - damageData.x;
+                const dy = player.y - damageData.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                return distance <= params.radius + playerRadius;
+                
+            case 'cone':
+                // Cone hitbox check
+                return this.checkConeHit(
+                    damageData.x, damageData.y,
+                    damageData.facing,
+                    params.range, params.angle,
+                    player.x, player.y, playerRadius
+                );
+                
+            default:
+                return false;
+        }
+    }
+    
+    // Rectangle hitbox collision check
+    private checkRectangleHit(
+        x: number, y: number, facing: string,
+        width: number, length: number,
+        targetX: number, targetY: number, targetRadius: number
+    ): boolean {
+        // Convert facing to angle
+        const angle = directionStringToAngleRadians(facing);
+        
+        // Translate target position to local coordinates
+        const dx = targetX - x;
+        const dy = targetY - y;
+        
+        // Rotate to align with rectangle
+        const cos = Math.cos(-angle);
+        const sin = Math.sin(-angle);
+        const localX = dx * cos - dy * sin;
+        const localY = dx * sin + dy * cos;
+        
+        // Check bounds with radius
+        return localX >= -width/2 - targetRadius &&
+               localX <= width/2 + targetRadius &&
+               localY >= 0 - targetRadius &&
+               localY <= length + targetRadius;
+    }
+    
+    // Cone hitbox collision check
+    private checkConeHit(
+        x: number, y: number, facing: string,
+        range: number, angleDegrees: number,
+        targetX: number, targetY: number, targetRadius: number
+    ): boolean {
+        // Distance check
+        const dx = targetX - x;
+        const dy = targetY - y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance > range + targetRadius) {
+            return false;
+        }
+        
+        // Angle check
+        const facingAngle = directionStringToAngleRadians(facing);
+        const angleToTarget = Math.atan2(dy, dx);
+        
+        // Normalize angle difference
+        let angleDiff = angleToTarget - facingAngle;
+        while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
+        while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
+        
+        const halfAngle = (angleDegrees / 2) * (Math.PI / 180);
+        return Math.abs(angleDiff) <= halfAngle;
+    }
+    
+    // Apply damage from one player to another
+    private applyPvPDamage(attacker: Player, target: any, damage: number): void {
+        // Apply PvP damage multiplier
+        const finalDamage = Math.floor(damage * GAME_CONSTANTS.PVP.DAMAGE_MULTIPLIER);
+        
+        // Apply damage to target
+        target.hp = Math.max(0, target.hp - finalDamage);
+        
+        // Emit damage event
+        this.io.emit('playerDamaged', {
+            playerId: target.id,
+            damage: finalDamage,
+            hp: target.hp,
+            source: {
+                type: 'player',
+                id: attacker.id,
+                class: attacker.class
+            }
+        });
+        
+        // Handle death
+        if (target.hp <= 0) {
+            this.io.emit('playerKilled', {
+                victimId: target.id,
+                victimClass: target.class || target.characterClass,
+                killerId: attacker.id,
+                killerClass: attacker.class
+            });
         }
     }
 

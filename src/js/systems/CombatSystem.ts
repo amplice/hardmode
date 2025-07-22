@@ -459,26 +459,8 @@ _executeProjectileAttack(entity: any, attackConfig: AttackConfig, attackType: st
       damage = 1;
     }
     
-    // Check PvP damage against other players
-    if (PLAYER_CONFIG.pvpEnabled) {
-      // Check local player
-      if ((window as any).game.entities.player && (window as any).game.entities.player !== entity) {
-        const player = (window as any).game.entities.player;
-        if (hitbox.testHit(player, 20)) { // Player collision radius
-          player.takeDamage(damage);
-        }
-      }
-      
-      // Check remote players
-      if ((window as any).game.remotePlayers) {
-        for (const remotePlayer of (window as any).game.remotePlayers.values()) {
-          if (remotePlayer !== entity && hitbox.testHit(remotePlayer, 20)) {
-            // For now, just log it - actual damage will be handled server-side later
-            // Would damage remote player (PvP disabled)
-          }
-        }
-      }
-    }
+    // PvP damage is now handled server-side via ability events
+    // The server will check for player hits when processing ability damage
     
     // Check monster collisions (PvE always enabled)
     // Now using server-controlled monsters

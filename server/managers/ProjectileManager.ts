@@ -1,5 +1,5 @@
 import { getDistance } from '../../shared/utils/MathUtils.js';
-import { MONSTER_STATS } from '../../shared/constants/GameConstants.js';
+import { MONSTER_STATS, GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 import { Projectile, type ProjectileConfig, type ProjectileTarget } from '../entities/Projectile.js';
 import type { 
     PlayerState, 
@@ -150,7 +150,9 @@ export class ProjectileManager {
             
             // Check collisions based on projectile type
             if (projectile.shouldHitMonsters()) {
-                // Player projectiles hit monsters
+                // Player projectiles hit monsters AND other players (if PvP enabled)
+                
+                // First check monster collisions (always enabled)
                 for (const [monsterId, monster] of Array.from(monsters.entries())) {
                     const target: ProjectileTarget = {
                         id: monsterId,
@@ -166,6 +168,31 @@ export class ProjectileManager {
                         break; // Stop checking after first hit
                     }
                 }
+                
+                // Then check player collisions if PvP is enabled
+                if (GAME_CONSTANTS.PVP.ENABLED && !projectilesToRemove.includes(id)) {
+                    for (const [playerId, player] of Array.from(players.entries())) {
+                        // Skip the projectile owner
+                        if (playerId === projectile.ownerId) {
+                            continue;
+                        }
+                        
+                        const playerCoords = this.playerToCoords(player);
+                        const target: ProjectileTarget = {
+                            id: playerId,
+                            position: playerCoords,
+                            hp: player.hp,
+                            collisionRadius: GAME_CONSTANTS.PLAYER.COLLISION_RADIUS
+                        };
+                        
+                        const hitResult = projectile.checkCollision(target);
+                        if (hitResult.hit) {
+                            this.handleProjectileHit(projectile, player, 'player', players, monsters);
+                            projectilesToRemove.push(id);
+                            break; // Stop checking after first hit
+                        }
+                    }
+                }
             } else {
                 // Monster projectiles hit players
                 for (const [playerId, player] of Array.from(players.entries())) {
@@ -174,7 +201,7 @@ export class ProjectileManager {
                         id: playerId,
                         position: playerCoords,
                         hp: player.hp,
-                        collisionRadius: 20 // Player collision radius
+                        collisionRadius: GAME_CONSTANTS.PLAYER.COLLISION_RADIUS
                     };
                     
                     const hitResult = projectile.checkCollision(target);
@@ -221,25 +248,43 @@ export class ProjectileManager {
         } else if (targetType === 'player') {
             // Apply damage to player using DamageProcessor
             if (this.damageProcessor) {
-                // For monster projectiles, the source is the projectile itself
-                // We'll pass the projectile data with ownerType info
                 const projectileData = projectile.serialize();
-                const projectileSource = {
-                    ...projectileData,
-                    type: 'projectile',
-                    id: projectile.ownerType // For proper source identification
-                };
                 
-                this.damageProcessor.applyDamage(
-                    projectileSource,
-                    target,
-                    projectileData.damage,
-                    'projectile',
-                    { 
-                        attackType: 'monster_projectile',
-                        projectileId: projectile.id 
+                // Check if this is a player projectile (PvP) or monster projectile
+                if (projectile.shouldHitMonsters()) {
+                    // Player projectile hitting another player (PvP)
+                    const owner = players.get(projectile.ownerId);
+                    if (owner && GAME_CONSTANTS.PVP.ENABLED) {
+                        this.damageProcessor.applyDamage(
+                            owner,
+                            target,
+                            projectileData.damage,
+                            'projectile',
+                            { 
+                                attackType: 'player_projectile_pvp',
+                                projectileId: projectile.id 
+                            }
+                        );
                     }
-                );
+                } else {
+                    // Monster projectile hitting a player
+                    const projectileSource = {
+                        ...projectileData,
+                        type: 'projectile',
+                        id: projectile.ownerType // For proper source identification
+                    };
+                    
+                    this.damageProcessor.applyDamage(
+                        projectileSource,
+                        target,
+                        projectileData.damage,
+                        'projectile',
+                        { 
+                            attackType: 'monster_projectile',
+                            projectileId: projectile.id 
+                        }
+                    );
+                }
             }
         }
         

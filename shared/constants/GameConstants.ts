@@ -86,7 +86,15 @@ export const GAME_CONSTANTS = {
     PLAYER: {
         SPAWN_PROTECTION_DURATION: 3.0, // seconds
         RESPAWN_TIME: 3.0, // seconds
-        DAMAGE_STUN_DURATION: 0.25 // seconds
+        DAMAGE_STUN_DURATION: 0.25, // seconds
+        COLLISION_RADIUS: 20 // pixels - used for hit detection
+    },
+    
+    // PvP settings
+    PVP: {
+        ENABLED: true, // Global PvP toggle
+        DAMAGE_MULTIPLIER: 1.0, // Damage scaling for PvP
+        MAX_TARGETS_PER_ABILITY: 10 // Performance limit
     },
     
     // Monster settings
