@@ -707,7 +707,7 @@ export const ATTACK_DEFINITIONS = {
         name: 'Pounce',
         damage: 1,
         windupTime: 200,
-        jumpDuration: 400,  // Increased from 300ms
+        jumpDuration: 500,  // Extended jump time
         recoveryTime: 250,
         cooldown: 3000,
         range: 250,  // Increased from 180
