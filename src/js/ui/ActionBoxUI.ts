@@ -65,10 +65,10 @@ export class ActionBoxUI {
     }
     
     private updatePosition(): void {
-        // Position 20px from right edge, 20px from bottom
+        // Position 10px from right edge, 10px from bottom
         // Account for message height (6 messages * 25px each)
         const totalHeight = this.maxMessages * 25;
-        this.container.position.set(window.innerWidth - 300, window.innerHeight - totalHeight - 20);
+        this.container.position.set(window.innerWidth - 290, window.innerHeight - totalHeight - 10);
     }
     
     /**
