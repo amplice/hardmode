@@ -380,7 +380,8 @@ export class DamageProcessor {
             'ghoul': 20,
             'wildarcher': 30,
             'darkmage': 30,
-            'wolf': 15
+            'wolf': 15,
+            'wingeddemon': 5
         };
         return xpRewards[monsterType] || 10;
     }
