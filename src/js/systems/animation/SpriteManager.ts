@@ -245,11 +245,11 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
         columns: 9, rows: 9, rowIndex: 1, frameSize: { width: 64, height: 64 }
     },
     {
-        keyPrefix: 'wingeddemon_warning_effect', type: 'effect', path: 'assets/sprites/effects/638.png',
+        keyPrefix: 'wingeddemon_warning_effect', type: 'effect', path: 'assets/sprites/effects/20.png',
         columns: 9, rows: 9, rowIndex: 7, frameSize: { width: 64, height: 64 }  // 8th row (0-indexed)
     },
     {
-        keyPrefix: 'wingeddemon_damage_effect', type: 'effect', path: 'assets/sprites/effects/529.png',
+        keyPrefix: 'wingeddemon_damage_effect', type: 'effect', path: 'assets/sprites/effects/435.png',
         columns: 9, rows: 9, rowIndex: 7, frameSize: { width: 64, height: 64 }  // 8th row (0-indexed)
     },
     {
