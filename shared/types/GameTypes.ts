@@ -29,6 +29,7 @@ export type PowerupType = 'health' | 'armor' | 'speed' | 'damage' | 'invulnerabi
  */
 export interface PlayerState {
     id: string;
+    username?: string; // Display name for the player
     position: Position;
     facing: Direction;
     characterClass: CharacterClass;

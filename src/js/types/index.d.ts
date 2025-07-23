@@ -24,6 +24,7 @@ export interface InputState {
 // Player constructor options - VERIFIED in Phase 1.2
 export interface PlayerOptions {
     id?: string;
+    username?: string;
     class?: string; // Character class name
     x?: number;
     y?: number;
@@ -303,6 +304,7 @@ export interface MonsterInfo {
 
 export interface PlayerInfo {
     id: string;
+    username?: string;
     x: number;
     y: number;
     class: string;

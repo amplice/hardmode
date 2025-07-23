@@ -50,6 +50,7 @@ import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
 import { KillFeedUI } from '../ui/KillFeedUI.js';
+import { UsernameUI } from '../ui/UsernameUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 import { NetworkClient } from '../net/NetworkClient.js';
 import { LatencyTracker } from '../systems/LatencyTracker.js';
@@ -92,6 +93,8 @@ export class Game {
   spriteManager?: any; // SpriteManager
   gameStarted: boolean = false;
   selectedClass?: string;
+  username?: string;
+  usernameUI?: any; // UsernameUI
   classSelectUI?: any; // ClassSelectUI
   connectingMessage?: PIXI.Text;
   healthUI?: any; // HealthUI
@@ -232,11 +235,56 @@ export class Game {
       await this.tilesets.load();               // load & slice all sheets
       await this.systems.sprites.loadSprites(); // then other art
       
-      // Show class selection UI instead of immediately starting the game
-      this.showClassSelection();
+      // Show username UI first
+      this.showUsernamePrompt();
     } catch (err) {
       console.error('Failed to load game assets:', err);
     }
+  }
+  
+  // Show username prompt
+  showUsernamePrompt(): void {
+    // Initialize network connection early for username validation
+    if (!this.network) {
+      this.network = new NetworkClient(this);
+      this.latencyTracker = new LatencyTracker(this.network);
+      
+      // Set up username validation handler
+      this.network.socket.on('usernameResult', (data: { success: boolean; message?: string }) => {
+        if (data.success) {
+          this.handleUsernameAccepted();
+        } else {
+          if (this.usernameUI) {
+            this.usernameUI.showError(data.message || 'Username validation failed');
+          }
+        }
+      });
+    }
+    
+    this.usernameUI = new UsernameUI(this.handleUsernameSubmit.bind(this));
+    this.uiContainer.addChild(this.usernameUI.container);
+    this.usernameUI.show();
+  }
+  
+  // Handle username submission
+  handleUsernameSubmit(username: string): void {
+    // Validate with server
+    this.username = username;
+    this.network.socket.emit('validateUsername', { username });
+  }
+  
+  // Handle successful username validation
+  handleUsernameAccepted(): void {
+    // Remove username UI
+    if (this.usernameUI) {
+      this.usernameUI.hide();
+      this.uiContainer.removeChild(this.usernameUI.container);
+      this.usernameUI.destroy();
+      this.usernameUI = null;
+    }
+    
+    // Show class selection
+    this.showClassSelection();
   }
   
   // Add new method to show class selection
@@ -548,6 +596,7 @@ export class Game {
       x: (data.width / 2) * data.tileSize,
       y: (data.height / 2) * data.tileSize,
       class: this.selectedClass || 'bladedancer',
+      username: this.username,
       combatSystem: this.systems.combat,
       spriteManager: this.systems.sprites
     });
@@ -590,6 +639,7 @@ export class Game {
       x: info.x,
       y: info.y,
       class: info.class,
+      username: info.username,
       combatSystem: this.systems.combat,
       spriteManager: this.systems.sprites
     });
@@ -612,6 +662,11 @@ export class Game {
         p.animatedSprite = undefined;
       }
       p.animation.setupAnimations();
+    }
+    
+    // Update username if changed
+    if (info.username && info.username !== p.username) {
+      p.setUsername(info.username);
     }
 
     const prevX = p.position.x;

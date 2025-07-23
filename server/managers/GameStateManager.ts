@@ -40,6 +40,7 @@ interface ServerPlayerState extends PlayerState {
     spawnProtectionTimer: number;
     invulnerable: boolean;
     lastProcessedSeq?: number;
+    username?: string; // Player's chosen username
 }
 
 interface CreatePlayerOptions {
@@ -50,6 +51,7 @@ interface CreatePlayerOptions {
 
 interface SerializedPlayer {
     id: string;
+    username?: string;
     x: number;
     y: number;
     facing: Direction;
@@ -233,6 +235,7 @@ export class GameStateManager {
         return Array.from(this.players.values()).map(p => {
             const serialized: SerializedPlayer = {
                 id: p.id,
+                username: p.username,
                 x: p.x,
                 y: p.y,
                 facing: p.facing,

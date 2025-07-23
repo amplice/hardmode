@@ -125,6 +125,7 @@ export class SocketHandler {
     private sessionAntiCheat: SessionAntiCheat;
     private worldSeed: number;
     private networkOptimizer: NetworkOptimizer;
+    private activeUsernames: Map<string, string>; // socketId -> username
 
     constructor(
         io: SocketIO,
@@ -148,6 +149,7 @@ export class SocketHandler {
         this.sessionAntiCheat = sessionAntiCheat;
         this.worldSeed = worldSeed;
         this.networkOptimizer = networkOptimizer;
+        this.activeUsernames = new Map();
         this.setupEventHandlers();
     }
 
@@ -176,14 +178,29 @@ export class SocketHandler {
             }
         });
         
-        // Notify others
-        socket.broadcast.emit('playerJoined', player);
+        // Notify others with serialized player data
+        const serverPlayer = player as any; // Cast to access server-specific fields
+        const serializedPlayer = {
+            id: serverPlayer.id,
+            username: serverPlayer.username,
+            x: serverPlayer.x,
+            y: serverPlayer.y,
+            facing: serverPlayer.facing,
+            class: serverPlayer.class,
+            hp: serverPlayer.hp,
+            maxHp: serverPlayer.maxHp,
+            armorHP: serverPlayer.armorHP || 0,
+            level: serverPlayer.level,
+            spawnProtectionTimer: serverPlayer.spawnProtectionTimer
+        };
+        socket.broadcast.emit('playerJoined', serializedPlayer);
         
         // Set up player-specific handlers
         this.setupPlayerHandlers(socket);
     }
 
     private setupPlayerHandlers(socket: Socket): void {
+        socket.on('validateUsername', (data: { username: string }) => this.handleValidateUsername(socket, data));
         socket.on('playerUpdate', (data: PlayerUpdateData) => this.handlePlayerUpdate(socket, data));
         socket.on('playerInput', (data: PlayerInputData) => this.handlePlayerInput(socket, data));
         socket.on('attack', (data: PlayerAttackData) => this.handlePlayerAttack(socket, data));
@@ -194,6 +211,51 @@ export class SocketHandler {
         socket.on('collisionMask', (data: any) => this.handleCollisionMask(socket, data));
         socket.on('ping', (data: PingData) => this.handlePing(socket, data));
         socket.on('disconnect', () => this.handleDisconnect(socket));
+    }
+
+    private handleValidateUsername(socket: Socket, data: { username: string }): void {
+        const username = data.username?.trim();
+        
+        // Validate username format
+        if (!username || username.length < 3 || username.length > 20) {
+            socket.emit('usernameResult', { 
+                success: false, 
+                message: 'Username must be between 3 and 20 characters' 
+            });
+            return;
+        }
+        
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            socket.emit('usernameResult', { 
+                success: false, 
+                message: 'Username can only contain letters, numbers, and underscores' 
+            });
+            return;
+        }
+        
+        // Check if username is already taken
+        const isUsernameTaken = Array.from(this.activeUsernames.values()).some(
+            existingUsername => existingUsername.toLowerCase() === username.toLowerCase()
+        );
+        
+        if (isUsernameTaken) {
+            socket.emit('usernameResult', { 
+                success: false, 
+                message: 'Username is already taken' 
+            });
+            return;
+        }
+        
+        // Store username
+        this.activeUsernames.set(socket.id, username);
+        
+        // Update player state with username
+        const player = this.gameState.getPlayer(socket.id);
+        if (player) {
+            player.username = username;
+        }
+        
+        socket.emit('usernameResult', { success: true });
     }
 
     private handlePlayerUpdate(socket: Socket, data: PlayerUpdateData): void {
@@ -382,6 +444,8 @@ export class SocketHandler {
         if (this.networkOptimizer) {
             this.networkOptimizer.resetClient(socket.id); // Clean up delta compression state
         }
+        // Clean up username
+        this.activeUsernames.delete(socket.id);
         socket.broadcast.emit('playerLeft', socket.id);
     }
 }

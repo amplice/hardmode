@@ -1032,6 +1032,7 @@ class StatsComponent extends BaseComponent implements IStatsComponent {
 export class Player implements PlayerInterface {
     // State properties
     id!: string;
+    username?: string; // Display name
     characterClass!: string;
     position!: Position;
     velocity!: Velocity;
@@ -1073,6 +1074,7 @@ export class Player implements PlayerInterface {
     sprite: PIXIContainer;
     animatedSprite?: PIXIAnimatedSprite;
     placeholder?: PIXIGraphics;
+    usernameText?: PIXI.Text;
     
     // Components
     components: PlayerComponents;
@@ -1128,6 +1130,11 @@ export class Player implements PlayerInterface {
         
         // Initialize all components
         Object.values(this.components).forEach(component => component.init());
+        
+        // Set username if provided
+        if (options.username) {
+            this.setUsername(options.username);
+        }
     }
     
     addComponent(name: keyof PlayerComponents, component: Component): void {
@@ -1225,6 +1232,35 @@ export class Player implements PlayerInterface {
     }
     
     // Public API methods (accessible to other systems)
+    setUsername(username: string): void {
+        this.username = username;
+        this.updateUsernameDisplay();
+    }
+    
+    updateUsernameDisplay(): void {
+        if (!this.username) return;
+        
+        if (!this.usernameText) {
+            // Create username text
+            this.usernameText = new PIXI.Text(this.username, {
+                fontFamily: 'Arial',
+                fontSize: 14,
+                fill: 0xFFFFFF,
+                align: 'center',
+                stroke: 0x000000,
+                strokeThickness: 3
+            });
+            this.usernameText.anchor.set(0.5, 0.5);
+            this.sprite.addChild(this.usernameText);
+        } else {
+            // Update text
+            this.usernameText.text = this.username;
+        }
+        
+        // Position above character
+        this.usernameText.position.set(0, -40);
+    }
+    
     takeDamage(amount: number): void {
         this.health.takeDamage(amount);
     }
