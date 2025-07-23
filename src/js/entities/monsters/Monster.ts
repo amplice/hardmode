@@ -298,6 +298,9 @@ export class Monster {
                         case 'wolf':
                             animState = 'attack2'; // Pounce attack
                             break;
+                        case 'wingeddemon':
+                            animState = 'attack5'; // Infernal Strike
+                            break;
                         default:
                             animState = 'attack1';
                     }
@@ -610,6 +613,19 @@ export class Monster {
         
         // Update animation based on current state if needed
         this.updateAnimation();
+        
+        // Handle WingedDemon attack5 frame freeze
+        if (this.type === 'wingeddemon' && 
+            this.state === 'attacking' && 
+            (this as any).currentAttackType === 'special1' && 
+            (this as any).attackPhase === 'active' &&
+            this.animatedSprite) {
+            // Freeze on frame 11 (0-indexed, so frame 10)
+            const freezeFrame = 10;
+            if (this.animatedSprite.currentFrame >= freezeFrame && !this.animatedSprite.loop) {
+                this.animatedSprite.gotoAndStop(freezeFrame);
+            }
+        }
     }
     
     updateFromServer(data: MonsterServerUpdate): void {

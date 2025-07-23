@@ -293,7 +293,8 @@ export const MONSTER_STATS = {
         attackDelay: 625, // ms delay before damage (75% of 833ms animation)
         attackDuration: 833, // Total animation duration (15 frames at 0.3 speed)
         attacks: {
-            primary: 'monster_wingeddemon_primary'
+            primary: 'monster_wingeddemon_primary',
+            special1: 'monster_wingeddemon_special'
         }
     }
 };
@@ -659,5 +660,24 @@ export const ATTACK_DEFINITIONS = {
             width: 120,  // 1.5x of 80
             length: 120  // 1.5x of 80
         }
+    },
+    
+    monster_wingeddemon_special: {
+        archetype: 'ranged_aoe',
+        name: 'Infernal Strike',
+        damage: 2,
+        windupTime: 800,  // Warning duration
+        recoveryTime: 200,
+        cooldown: 8000,
+        range: 400,
+        minRange: 100,
+        hitboxType: 'circle',
+        hitboxParams: {
+            radius: 100
+        },
+        animation: 'attack5',
+        freezeFrame: 11,  // Freeze on frame 11
+        warningEffect: 'wingeddemon_warning_effect',
+        damageEffect: 'wingeddemon_damage_effect'
     }
 };

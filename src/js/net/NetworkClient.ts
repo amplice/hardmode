@@ -753,6 +753,29 @@ export class NetworkClient {
             }
         });
         
+        // Handle server-triggered effects (like WingedDemon warning/damage)
+        this.socket.on('effect', (data: { type: string; x: number; y: number; duration: number }) => {
+            if (this.game.combatSystem) {
+                // Create effect at specified position
+                const effect = this.game.combatSystem.createEffect(
+                    data.type,
+                    { x: data.x, y: data.y },
+                    'down', // default facing for ground effects
+                    null,
+                    true // useRawPosition
+                );
+                
+                // If duration is specified, remove effect after duration
+                if (effect && data.duration) {
+                    setTimeout(() => {
+                        if (effect.parent) {
+                            effect.parent.removeChild(effect);
+                        }
+                    }, data.duration);
+                }
+            }
+        });
+        
         this.socket.on('playerHealed', (data: { playerId: string; healAmount: number; newHP: number; maxHP: number }) => {
             if (data.playerId === this.socket.id && this.game.entities.player) {
                 this.game.entities.player.hitPoints = data.newHP;

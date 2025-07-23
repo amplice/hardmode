@@ -247,6 +247,7 @@ export const MONSTER_CONFIG = {
         walk: { speed: 0.3 },
         idle: { speed: 0.2 },
         attack1: { speed: 0.3 },
+        attack5: { speed: 0.3 },
         take_damage: { speed: 0.7 },
         die: { speed: 0.3 }
       }
@@ -361,6 +362,15 @@ export const MONSTER_CONFIG = {
         cooldown: 800,
         range: 105,  // 1.5x of 70
         hitbox: { width: 120, height: 120 }  // 1.5x of 80
+      } as MonsterAttackConfig,
+      special: {
+        name: "Infernal Strike",
+        damage: 2,
+        windupTime: 800,
+        recoveryTime: 200,
+        cooldown: 8000,
+        range: 400,
+        hitbox: { width: 200, height: 200 }  // Circle with radius 100
       } as MonsterAttackConfig
     }
   }
@@ -783,6 +793,24 @@ export const PLAYER_CONFIG = {
       animationSpeed: 0.4,
       followDuration: 0,
       flipX: true,
+      flipY: false
+    },
+    wingeddemon_warning_effect: {
+      scale: 1.0,
+      offsetDistance: 0,
+      rotationOffset: 0,
+      animationSpeed: 0.2,
+      followDuration: 0,
+      flipX: false,
+      flipY: false
+    },
+    wingeddemon_damage_effect: {
+      scale: 1.0,
+      offsetDistance: 0,
+      rotationOffset: 0,
+      animationSpeed: 0.2,
+      followDuration: 0,
+      flipX: false,
       flipY: false
     },
     elemental_spell_effect: {

@@ -198,6 +198,7 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
             { keySuffix: 'walk', path: 'assets/sprites/monsters/WingedDemon/Walk.png', columns: 15, rows: 8 },
             { keySuffix: 'idle', path: 'assets/sprites/monsters/WingedDemon/Idle.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/monsters/WingedDemon/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack5', path: 'assets/sprites/monsters/WingedDemon/Attack5.png', columns: 15, rows: 8 },
             { keySuffix: 'take_damage', path: 'assets/sprites/monsters/WingedDemon/TakeDamage.png', columns: 15, rows: 8 },
             { keySuffix: 'die', path: 'assets/sprites/monsters/WingedDemon/Die.png', columns: 15, rows: 8 },
         ]
@@ -242,6 +243,14 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
     {
         keyPrefix: 'darkmage_shadowbolt_effect', type: 'effect', path: 'assets/sprites/effects/478.png',
         columns: 9, rows: 9, rowIndex: 1, frameSize: { width: 64, height: 64 }
+    },
+    {
+        keyPrefix: 'wingeddemon_warning_effect', type: 'effect', path: 'assets/sprites/effects/638.png',
+        columns: 9, rows: 9, rowIndex: 7, frameSize: { width: 64, height: 64 }  // 8th row (0-indexed)
+    },
+    {
+        keyPrefix: 'wingeddemon_damage_effect', type: 'effect', path: 'assets/sprites/effects/529.png',
+        columns: 9, rows: 9, rowIndex: 7, frameSize: { width: 64, height: 64 }  // 8th row (0-indexed)
     },
     {
         keyPrefix: 'hunter_cone_effect', type: 'effect', path: 'assets/sprites/effects/448.png',

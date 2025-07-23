@@ -86,6 +86,11 @@ interface ServerMonsterState extends MonsterState {
         hitEntities?: Set<string>; // Track who has been hit by this attack
         fixedDirection?: { x: number; y: number }; // Fixed direction for committed movement
     };
+    rangedAoeData?: {
+        targetX: number;
+        targetY: number;
+        warningStartTime: number;
+    };
     teleportData?: {
         originalPosition: Position;
         targetPosition: Position;
@@ -1043,6 +1048,28 @@ export class MonsterManager {
                     monster.attackPhase = 'active';
                     this.executeJumpAttack(monster, stats, attackConfig, players);
                 }, attackConfig.windupTime);
+            } else if (attackConfig.archetype === 'ranged_aoe') {
+                // Store target position at time of attack initiation
+                monster.rangedAoeData = {
+                    targetX: targetCoords.x,
+                    targetY: targetCoords.y,
+                    warningStartTime: Date.now()
+                };
+                
+                // Create warning effect immediately
+                this.io.emit('effect', {
+                    type: (attackConfig as any).warningEffect || 'wingeddemon_warning_effect',
+                    x: targetCoords.x,
+                    y: targetCoords.y,
+                    duration: attackConfig.windupTime // Warning lasts for windup duration
+                });
+                
+                // Schedule damage after windup
+                monster.pendingAttackTimeout = setTimeout(() => {
+                    monster.pendingAttackTimeout = null;
+                    monster.attackPhase = 'active';
+                    this.executeRangedAoeAttack(monster, attackConfig, players);
+                }, attackConfig.windupTime);
             } else {
                 // Standard melee attack
                 monster.pendingAttackTimeout = setTimeout(() => {
@@ -1164,7 +1191,8 @@ export class MonsterManager {
             const lastUsed = monster.attackCooldowns[cooldownKey] || 0;
             const cooldownReady = now - lastUsed >= attackConfig.cooldown;
             const attackRange = (attackConfig as any).range || stats.attackRange;
-            const inRange = distance <= attackRange;
+            const minRange = (attackConfig as any).minRange || 0;
+            const inRange = distance <= attackRange && distance >= minRange;
             
             if (cooldownReady && inRange) {
                 availableAttacks.push({ type: cooldownKey, configName: attackName as string });
@@ -1235,6 +1263,14 @@ export class MonsterManager {
                     // Use pounce only when target is in the 150-250 pixel range
                     // This ensures the 250 pixel jump is appropriate
                     selectedAttack = pounceAttack;
+                }
+                break;
+                
+            case 'wingeddemon':
+                // WingedDemon randomly uses infernal strike when available
+                const infernalStrike = availableAttacks.find(a => a.configName === 'monster_wingeddemon_special');
+                if (infernalStrike && Math.random() < 0.4) {
+                    selectedAttack = infernalStrike;
                 }
                 break;
         }
@@ -1812,6 +1848,92 @@ export class MonsterManager {
                 });
             }
         }
+    }
+
+    /**
+     * Execute a ranged AOE attack
+     */
+    executeRangedAoeAttack(monster: ServerMonsterState, attackConfig: any, players: Map<string, PlayerState>): void {
+        if (!monster || monster.hp <= 0 || monster.state === 'dying' || !monster.rangedAoeData) {
+            return;
+        }
+        
+        const aoeData = monster.rangedAoeData;
+        
+        // Create damage effect at target position
+        this.io.emit('effect', {
+            type: (attackConfig as any).damageEffect || 'wingeddemon_damage_effect',
+            x: aoeData.targetX,
+            y: aoeData.targetY,
+            duration: 800 // Effect duration
+        });
+        
+        // Check all players for AOE damage
+        const radius = attackConfig.hitboxParams?.radius || 100;
+        for (const [_, player] of players) {
+            if (player.hp <= 0) continue;
+            
+            const playerCoords = this.playerToCoords(player);
+            const dx = playerCoords.x - aoeData.targetX;
+            const dy = playerCoords.y - aoeData.targetY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance <= radius) {
+                // Apply damage
+                if (this.damageProcessor) {
+                    this.damageProcessor.applyDamage(
+                        monster,
+                        player,
+                        attackConfig.damage,
+                        'aoe',
+                        { attackType: (attackConfig as any).name || 'ranged_aoe' }
+                    );
+                }
+            }
+        }
+        
+        // Clean up AOE data
+        monster.rangedAoeData = undefined;
+        
+        // Enter recovery phase
+        monster.attackPhase = 'recovery';
+        
+        // Schedule recovery complete
+        setTimeout(() => {
+            if (monster && monster.attackPhase === 'recovery') {
+                // Clean up all attack state
+                monster.attackPhase = undefined;
+                monster.isAttackAnimating = false;
+                
+                // Set cooldown
+                const completedAttackType = monster.currentAttackType || 'primary';
+                if (!monster.attackCooldowns) {
+                    monster.attackCooldowns = { primary: 0, special1: 0, special2: 0 };
+                }
+                monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
+                monster.lastAttack = Date.now();
+                monster.currentAttackType = undefined;
+                
+                // Determine next state
+                if (monster.target) {
+                    const target = monster.target;
+                    const targetCoords = this.playerToCoords(target);
+                    const distance = Math.sqrt(
+                        Math.pow(targetCoords.x - monster.x, 2) + 
+                        Math.pow(targetCoords.y - monster.y, 2)
+                    );
+                    
+                    const stats = MONSTER_STATS[monster.type];
+                    if (distance <= stats.attackRange) {
+                        this.transitionMonsterState(monster, 'idle');
+                    } else {
+                        this.transitionMonsterState(monster, 'chasing');
+                    }
+                } else {
+                    this.transitionMonsterState(monster, 'idle');
+                }
+            }
+        }, attackConfig.recoveryTime);
     }
 
     /**
