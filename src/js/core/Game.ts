@@ -49,7 +49,7 @@ import { SpriteManager }  from '../systems/animation/SpriteManager.js';
 import { TilesetManager } from '../systems/tiles/TilesetManager.js';
 import { HealthUI } from '../ui/HealthUI.js';
 import { StatsUI } from '../ui/StatsUI.js';
-import { KillFeedUI } from '../ui/KillFeedUI.js';
+import { ActionBoxUI } from '../ui/ActionBoxUI.js';
 import { UsernameUI } from '../ui/UsernameUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
 import { NetworkClient } from '../net/NetworkClient.js';
@@ -99,7 +99,7 @@ export class Game {
   connectingMessage?: PIXI.Text;
   healthUI?: any; // HealthUI
   statsUI?: any; // StatsUI
-  killFeedUI?: any; // KillFeedUI
+  actionBoxUI?: any; // ActionBoxUI
   projectileRenderer?: any; // ProjectileRenderer
   powerupRenderer?: any; // PowerupRenderer
   debugLogger: DebugLogger;
@@ -469,7 +469,7 @@ export class Game {
     this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
-    if (this.killFeedUI) this.killFeedUI.update();
+    if (this.actionBoxUI) this.actionBoxUI.update();
 
     // Remove old position sending - now using input commands
     // if (this.network) {
@@ -606,10 +606,10 @@ export class Game {
     // Add health and stats UI
     this.healthUI = new HealthUI(this.entities.player);
     this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
-    this.killFeedUI = new KillFeedUI();
+    this.actionBoxUI = new ActionBoxUI();
     this.uiContainer.addChild(this.healthUI.container);
     this.uiContainer.addChild(this.statsUI.container);
-    this.uiContainer.addChild(this.killFeedUI.container);
+    this.uiContainer.addChild(this.actionBoxUI.container);
     
     // Initialize projectile renderer
     this.projectileRenderer = new ProjectileRenderer(this);

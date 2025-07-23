@@ -2900,6 +2900,7 @@ export class MonsterManager {
             // Emit level up event
             this.io.emit('playerLevelUp', {
                 playerId: player.id,
+                username: player.username,
                 level: player.level,
                 hp: player.hp,
                 maxHp: player.maxHp,

@@ -67,7 +67,7 @@ interface GameInterface {
     powerupRenderer?: any; // PowerupRenderer instance
     healthUI?: any; // HealthUI instance
     statsUI?: any; // StatsUI instance
-    killFeedUI?: any; // KillFeedUI instance
+    actionBoxUI?: any; // ActionBoxUI instance
     selectedClass?: string; // Selected character class
     
     // Methods called by NetworkClient
@@ -162,12 +162,16 @@ interface KillEventData {
     killerLevel?: number;
     victimId?: string;
     victimClass?: string;
+    victimUsername?: string;
     killerId?: string;
     killerClass?: string;
+    killerUsername?: string;
+    killerType?: string; // For monster kills
 }
 
 interface LevelUpData {
     playerId: string;
+    username?: string;
     level: number;
     hp: number;
     maxHp?: number;
@@ -546,9 +550,28 @@ export class NetworkClient {
         });
 
         this.socket.on('playerKilled', (data: KillEventData) => {
-            // Handle PvP kill feed
-            if (data.killerClass && data.victimClass && this.game.killFeedUI) {
-                this.game.killFeedUI.addKill(data.killerClass, data.victimClass);
+            // Handle kill feed with usernames
+            if (this.game.actionBoxUI) {
+                if (data.killerId && data.victimId) {
+                    // PvP kill - we'll receive usernames from server
+                    const killerName = data.killerUsername || data.killerClass || 'Unknown';
+                    const victimName = data.victimUsername || data.victimClass || 'Unknown';
+                    const isLocalPlayerVictim = data.victimId === this.socket.id;
+                    
+                    if (isLocalPlayerVictim) {
+                        // Local player was killed
+                        this.game.actionBoxUI.addDeath(killerName);
+                    } else {
+                        // Another player was killed
+                        this.game.actionBoxUI.addKill(killerName, victimName, true);
+                    }
+                } else if (data.playerId && data.killerType) {
+                    // PvE death - monster killed player
+                    const monsterName = data.killerType || 'a monster';
+                    if (data.playerId === this.socket.id) {
+                        this.game.actionBoxUI.addDeath(monsterName);
+                    }
+                }
             }
             
             // Death is now handled in playerDamaged when HP reaches 0
@@ -556,6 +579,13 @@ export class NetworkClient {
         });
 
         this.socket.on('playerLevelUp', (data: LevelUpData) => {
+            // Add level up to action box
+            if (this.game.actionBoxUI) {
+                const isLocalPlayer = data.playerId === this.socket.id;
+                const playerName = isLocalPlayer ? 'You' : (data.username || `Player ${data.playerId}`);
+                this.game.actionBoxUI.addLevelUp(playerName, data.level);
+            }
+            
             if (data.playerId === this.socket.id) {
                 // We leveled up
                 // Level up!

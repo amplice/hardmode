@@ -41,6 +41,7 @@ interface Player {
     hp: number;
     class: string;
     facing: string;
+    username?: string;
 }
 
 // Game state manager interface
@@ -766,8 +767,10 @@ export class AbilityManager {
             this.io.emit('playerKilled', {
                 victimId: target.id,
                 victimClass: target.class || target.characterClass,
+                victimUsername: target.username || `Player ${target.id}`,
                 killerId: attacker.id,
-                killerClass: attacker.class
+                killerClass: attacker.class,
+                killerUsername: attacker.username || `Player ${attacker.id}`
             });
         }
     }

@@ -298,10 +298,12 @@ export class DamageProcessor {
                 playerId: player.id,
                 victimId: player.id,
                 victimClass: player.characterClass || (player as any).class,
+                victimUsername: player.username || `Player ${player.id}`,
                 killerId: killerPlayer.id,
-                killerClass: killerPlayer.characterClass || (killerPlayer as any).class
+                killerClass: killerPlayer.characterClass || (killerPlayer as any).class,
+                killerUsername: killerPlayer.username || `Player ${killerPlayer.id}`
             });
-            console.log(`Player ${player.id} (${player.characterClass}) killed by player ${killerPlayer.id} (${killerPlayer.characterClass})`);
+            console.log(`Player ${player.username || player.id} (${player.characterClass}) killed by player ${killerPlayer.username || killerPlayer.id} (${killerPlayer.characterClass})`);
         } else {
             // PvE death
             this.io.emit('playerKilled', {
@@ -309,7 +311,7 @@ export class DamageProcessor {
                 killerId: source.id || (source as any).monsterId,
                 killerType: sourceType === 'monster' ? (source as MonsterState).type : sourceType
             });
-            console.log(`Player ${player.id} killed by ${sourceType} ${source.id || (source as any).monsterId}`);
+            console.log(`Player ${player.username || player.id} killed by ${sourceType} ${source.id || (source as any).monsterId}`);
         }
     }
 
@@ -391,6 +393,7 @@ export class DamageProcessor {
             // Emit level up event with all expected fields
             this.io.emit('playerLevelUp', {
                 playerId: player.id,
+                username: player.username,
                 level: player.level,        // Client expects 'level' not 'newLevel'
                 hp: player.hp,              // Current HP (full heal)
                 maxHp: player.maxHp,
