@@ -171,11 +171,31 @@ export class DamageProcessor {
             };
         } else if (sourceType === 'projectile') {
             const projectileSource = source as any; // ProjectileState might have legacy fields
-            sourceData = {
-                type: 'projectile',
-                id: projectileSource.id,
-                ownerType: projectileSource.ownerType
-            };
+            // Try to get the owner information
+            const owner = this.gameState.getPlayer(projectileSource.ownerId);
+            if (owner) {
+                // Projectile from player
+                sourceData = {
+                    type: 'player',
+                    id: owner.id,
+                    class: owner.characterClass || (owner as any).class,
+                    username: owner.username
+                };
+            } else if (projectileSource.ownerType && projectileSource.ownerType !== 'player') {
+                // Projectile from monster
+                sourceData = {
+                    type: 'monster',
+                    id: projectileSource.ownerId,
+                    monsterType: projectileSource.ownerType
+                };
+            } else {
+                // Fallback
+                sourceData = {
+                    type: 'projectile',
+                    id: projectileSource.id,
+                    ownerType: projectileSource.ownerType
+                };
+            }
         } else if (sourceType === 'player') {
             // PvP damage
             const playerSource = source as PlayerState;

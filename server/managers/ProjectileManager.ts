@@ -268,22 +268,39 @@ export class ProjectileManager {
                     }
                 } else {
                     // Monster projectile hitting a player
-                    const projectileSource = {
-                        ...projectileData,
-                        type: 'projectile',
-                        id: projectile.ownerType // For proper source identification
-                    };
-                    
-                    this.damageProcessor.applyDamage(
-                        projectileSource,
-                        target,
-                        projectileData.damage,
-                        'projectile',
-                        { 
-                            attackType: 'monster_projectile',
-                            projectileId: projectile.id 
-                        }
-                    );
+                    // Try to find the monster owner
+                    const monsterOwner = monsters.get(projectile.ownerId);
+                    if (monsterOwner) {
+                        // Pass the monster as the source
+                        this.damageProcessor.applyDamage(
+                            monsterOwner,
+                            target,
+                            projectileData.damage,
+                            'projectile',
+                            { 
+                                attackType: 'monster_projectile',
+                                projectileId: projectile.id 
+                            }
+                        );
+                    } else {
+                        // Fallback if monster not found - pass projectile data
+                        const projectileSource = {
+                            ...projectileData,
+                            type: 'projectile',
+                            id: projectileData.id
+                        };
+                        
+                        this.damageProcessor.applyDamage(
+                            projectileSource,
+                            target,
+                            projectileData.damage,
+                            'projectile',
+                            { 
+                                attackType: 'monster_projectile',
+                                projectileId: projectile.id 
+                            }
+                        );
+                    }
                 }
             }
         }
