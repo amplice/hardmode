@@ -192,6 +192,16 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
             { keySuffix: 'die', path: 'assets/sprites/monsters/Wolf/Die.png', columns: 15, rows: 8 },
         ]
     },
+    {
+        keyPrefix: 'wingeddemon', type: 'monster',
+        animations: [
+            { keySuffix: 'walk', path: 'assets/sprites/monsters/WingedDemon/Walk.png', columns: 15, rows: 8 },
+            { keySuffix: 'idle', path: 'assets/sprites/monsters/WingedDemon/Idle.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack1', path: 'assets/sprites/monsters/WingedDemon/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'take_damage', path: 'assets/sprites/monsters/WingedDemon/TakeDamage.png', columns: 15, rows: 8 },
+            { keySuffix: 'die', path: 'assets/sprites/monsters/WingedDemon/Die.png', columns: 15, rows: 8 },
+        ]
+    },
     // Effects
     {
         keyPrefix: 'slash_effect', type: 'effect', path: 'assets/sprites/effects/Slash.png',
@@ -637,7 +647,7 @@ export class SpriteManager {
         
         if (monsterType === 'skeleton' || monsterType === 'elemental' ||
             monsterType === 'ogre' || monsterType === 'ghoul' || monsterType === 'wildarcher' ||
-            monsterType === 'darkmage' || monsterType === 'wolf') {
+            monsterType === 'darkmage' || monsterType === 'wolf' || monsterType === 'wingeddemon') {
             // Handle special animation states
             if (state === 'hit') {
                 return `${monsterType}_take_damage_${facingSuffix}`;

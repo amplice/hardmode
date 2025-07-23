@@ -161,13 +161,14 @@ export const POWERUP_CONFIG = {
 
 // Monster type weights for spawning
 export const MONSTER_SPAWN_WEIGHTS = {
-    skeleton: 0.14,
-    elemental: 0.14,
-    ghoul: 0.14,
-    ogre: 0.14,
-    wildarcher: 0.14,
-    darkmage: 0.16,
-    wolf: 0.14
+    skeleton: 0.125,
+    elemental: 0.125,
+    ghoul: 0.125,
+    ogre: 0.125,
+    wildarcher: 0.125,
+    darkmage: 0.125,
+    wolf: 0.125,
+    wingeddemon: 0.125
 };
 
 // Centralized monster statistics
@@ -278,6 +279,21 @@ export const MONSTER_STATS = {
         attacks: {
             primary: 'monster_wolf_primary',
             special1: 'monster_wolf_special'
+        }
+    },
+    wingeddemon: {
+        hp: 2,
+        moveSpeed: 2.5,
+        damage: 1,
+        attackRange: 70,
+        aggroRange: 1200,
+        xp: 5,
+        attackCooldown: 1800,
+        collisionRadius: 20,
+        attackDelay: 625, // ms delay before damage (75% of 833ms animation)
+        attackDuration: 833, // Total animation duration (15 frames at 0.3 speed)
+        attacks: {
+            primary: 'monster_wingeddemon_primary'
         }
     }
 };
@@ -628,5 +644,20 @@ export const ATTACK_DEFINITIONS = {
             radius: 60  // Smaller than Guardian's 75
         },
         animation: 'attack2'  // Uses Attack2.png
+    },
+    
+    // WingedDemon attacks (using skeleton stats)
+    monster_wingeddemon_primary: {
+        archetype: 'standard_melee',
+        damage: 1,
+        windupTime: 625,
+        recoveryTime: 208, // Remaining animation time
+        cooldown: 1800,
+        range: 70,
+        hitboxType: 'rectangle',
+        hitboxParams: {
+            width: 80,
+            length: 80
+        }
     }
 };
