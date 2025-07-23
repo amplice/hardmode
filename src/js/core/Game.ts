@@ -308,10 +308,15 @@ export class Game {
 
     // Phase 2: Client-side prediction + input sending
     if (this.network && this.network.connected) {
-      // Filter movement keys during attacks
+      // Don't send any movement inputs if dead or dying
+      const isDead = this.entities.player.isDying || this.entities.player.isDead;
+      
+      // Filter movement keys during attacks or death
       const isAttacking = this.entities.player.isAttacking;
       const allKeys = this.getActiveKeys(inputState);
-      const keys = isAttacking ? 
+      const keys = isDead ?
+        [] : // No inputs when dead
+        isAttacking ? 
         allKeys.filter(key => !['w', 's', 'a', 'd'].includes(key)) : // Remove movement keys during attack
         allKeys; // Keep all keys when not attacking
       
@@ -332,7 +337,7 @@ export class Game {
                                   this.entities.player.currentAttackType &&
                                   ['secondary'].includes(this.entities.player.currentAttackType);
                                   
-      if (!isAttacking) {
+      if (!isAttacking && !isDead) {
         
         const currentState = {
           x: this.entities.player.position.x,
@@ -361,8 +366,14 @@ export class Game {
       }
 
       // Still need to handle non-movement updates (attacks, animations, etc.)
-      // But skip the movement component
-      this.entities.player.handleNonMovementUpdate(deltaTimeSeconds, inputState);
+      // But skip the movement component unless dead
+      if (!isDead) {
+        this.entities.player.handleNonMovementUpdate(deltaTimeSeconds, inputState);
+      } else {
+        // When dead, only update health (for respawn) and animations
+        this.entities.player.health.update(deltaTimeSeconds);
+        (this.entities.player.animation as any).update();
+      }
       
     } else {
       // Fallback to local-only movement when not connected
