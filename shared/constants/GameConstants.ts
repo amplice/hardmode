@@ -285,11 +285,11 @@ export const MONSTER_STATS = {
         hp: 2,
         moveSpeed: 2.5,
         damage: 1,
-        attackRange: 70,
+        attackRange: 105,  // 1.5x of 70
         aggroRange: 1200,
         xp: 5,
         attackCooldown: 1800,
-        collisionRadius: 20,
+        collisionRadius: 30,  // 1.5x of 20
         attackDelay: 625, // ms delay before damage (75% of 833ms animation)
         attackDuration: 833, // Total animation duration (15 frames at 0.3 speed)
         attacks: {
@@ -646,18 +646,18 @@ export const ATTACK_DEFINITIONS = {
         animation: 'attack2'  // Uses Attack2.png
     },
     
-    // WingedDemon attacks (using skeleton stats)
+    // WingedDemon attacks (1.5x size)
     monster_wingeddemon_primary: {
         archetype: 'standard_melee',
         damage: 1,
         windupTime: 625,
         recoveryTime: 208, // Remaining animation time
         cooldown: 1800,
-        range: 70,
+        range: 105,  // 1.5x of 70
         hitboxType: 'rectangle',
         hitboxParams: {
-            width: 80,
-            length: 80
+            width: 120,  // 1.5x of 80
+            length: 120  // 1.5x of 80
         }
     }
 };

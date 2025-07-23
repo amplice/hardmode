@@ -520,6 +520,11 @@ export class SpriteManager {
             scale = this.spriteScale * 1.5;
         }
         
+        // WingedDemon sprites should be 1.5x larger
+        if (animationName.startsWith('wingeddemon_')) {
+            scale = this.spriteScale * 1.5;
+        }
+        
         // Ghoul sprites should be 1.2x larger
         if (animationName.startsWith('ghoul_')) {
             scale = this.spriteScale * 1.2;

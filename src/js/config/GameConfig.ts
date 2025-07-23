@@ -239,8 +239,8 @@ export const MONSTER_CONFIG = {
     wingeddemon: {
       hitPoints: 2,
       moveSpeed: 2.5,
-      attackRange: 70,
-      collisionRadius: 20,
+      attackRange: 105,  // 1.5x of 70
+      collisionRadius: 30,  // 1.5x of 20
       aggroRange: 1200,
       xp: 5,
       animations: {
@@ -359,8 +359,8 @@ export const MONSTER_CONFIG = {
         windupTime: 200,
         recoveryTime: 300,
         cooldown: 800,
-        range: 70,
-        hitbox: { width: 80, height: 80 }
+        range: 105,  // 1.5x of 70
+        hitbox: { width: 120, height: 120 }  // 1.5x of 80
       } as MonsterAttackConfig
     }
   }
