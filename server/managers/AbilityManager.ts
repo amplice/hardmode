@@ -758,7 +758,8 @@ export class AbilityManager {
             source: {
                 type: 'player',
                 id: attacker.id,
-                class: attacker.class
+                class: attacker.class,
+                username: attacker.username
             }
         });
         

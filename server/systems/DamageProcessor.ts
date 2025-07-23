@@ -182,7 +182,8 @@ export class DamageProcessor {
             sourceData = {
                 type: 'player',
                 id: playerSource.id,
-                class: playerSource.characterClass || (playerSource as any).class
+                class: playerSource.characterClass || (playerSource as any).class,
+                username: playerSource.username
             };
         } else {
             sourceData = {

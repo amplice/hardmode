@@ -151,6 +151,13 @@ interface DamageEventData {
     hp: number;
     damage: number;
     armorHP?: number;
+    source?: {
+        type: string;
+        id: string;
+        class?: string;
+        username?: string;
+        monsterType?: string;
+    };
 }
 
 interface KillEventData {
@@ -482,9 +489,15 @@ export class NetworkClient {
                 monster.hitPoints = data.hp;
                 monster.showDamageEffect?.();
                 
-                // Show damage number if we attacked it
+                // Show damage number and action box message if we attacked it
                 if (data.attacker === this.socket.id) {
                     this.game.showDamageNumber?.(monster.position, data.damage);
+                    
+                    // Add damage message to action box
+                    if (this.game.actionBoxUI && data.damage > 0) {
+                        const monsterName = monster.type || 'monster';
+                        this.game.actionBoxUI.addDamageDealt(monsterName, data.damage);
+                    }
                 }
                 
                 // Don't change state client-side - the server will send the state update
@@ -522,6 +535,17 @@ export class NetworkClient {
                     this.game.entities.player.hitPoints = data.hp;
                     (this.game.entities.player as any).armorHP = data.armorHP || 0;
                     
+                    // Add damage taken message to action box
+                    if (this.game.actionBoxUI && data.damage > 0 && data.source) {
+                        let attackerName = 'Unknown';
+                        if (data.source.type === 'player') {
+                            attackerName = data.source.username || `Player ${data.source.id}`;
+                        } else if (data.source.type === 'monster') {
+                            attackerName = data.source.monsterType || 'a monster';
+                        }
+                        this.game.actionBoxUI.addDamageTaken(attackerName, data.damage);
+                    }
+                    
                     // Check if we died (same as monster damage)
                     if (data.hp <= 0 && !this.game.entities.player.isDying && !this.game.entities.player.isDead) {
                         this.game.entities.player.health.die();
@@ -538,6 +562,12 @@ export class NetworkClient {
                 if (remotePlayer) {
                     remotePlayer.hitPoints = data.hp;
                     (remotePlayer as any).armorHP = data.armorHP || 0;
+                    
+                    // If we dealt the damage, add message
+                    if (this.game.actionBoxUI && data.damage > 0 && data.source?.id === this.socket.id) {
+                        const victimName = remotePlayer.username || `Player ${data.playerId}`;
+                        this.game.actionBoxUI.addDamageDealt(victimName, data.damage);
+                    }
                     
                     // Check if they died (same as monster damage)
                     if (data.hp <= 0 && !remotePlayer.isDying && !remotePlayer.isDead) {
@@ -579,11 +609,9 @@ export class NetworkClient {
         });
 
         this.socket.on('playerLevelUp', (data: LevelUpData) => {
-            // Add level up to action box
-            if (this.game.actionBoxUI) {
-                const isLocalPlayer = data.playerId === this.socket.id;
-                const playerName = isLocalPlayer ? 'You' : (data.username || `Player ${data.playerId}`);
-                this.game.actionBoxUI.addLevelUp(playerName, data.level);
+            // Add level up to action box only for local player
+            if (this.game.actionBoxUI && data.playerId === this.socket.id) {
+                this.game.actionBoxUI.addLevelUp('You', data.level);
             }
             
             if (data.playerId === this.socket.id) {
@@ -668,6 +696,12 @@ export class NetworkClient {
         // Handle disconnection
         this.socket.on('disconnect', () => {
             this.connected = false;
+            
+            // Show disconnect message
+            if (this.game.actionBoxUI) {
+                this.game.actionBoxUI.addDisconnect();
+            }
+            
             // Clear caches on disconnect
             this.playerStateCache.clear();
             this.monsterStateCache.clear();

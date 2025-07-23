@@ -17,7 +17,7 @@
 
 import * as PIXI from 'pixi.js';
 
-export type ActionType = 'kill' | 'death' | 'levelup' | 'powerup' | 'achievement' | 'system';
+export type ActionType = 'kill' | 'death' | 'levelup' | 'powerup' | 'achievement' | 'system' | 'damage' | 'disconnect';
 
 interface ActionMessage {
     text: PIXI.Text;
@@ -45,7 +45,9 @@ export class ActionBoxUI {
         levelup: { color: 0x66FF66, icon: '⬆️' },
         powerup: { color: 0x66CCFF, icon: '✨' },
         achievement: { color: 0xFFD700, icon: '🏆' },
-        system: { color: 0xCCCCCC, icon: 'ℹ️' }
+        system: { color: 0xCCCCCC, icon: 'ℹ️' },
+        damage: { color: 0xFFAA66, icon: '🗡️' },
+        disconnect: { color: 0xFF0000, icon: '⚠️' }
     };
     
     constructor() {
@@ -101,6 +103,30 @@ export class ActionBoxUI {
     addPowerup(powerupType: string): void {
         const message = `Picked up ${powerupType}`;
         this.addAction(message, 'powerup');
+    }
+    
+    /**
+     * Add damage dealt message
+     */
+    addDamageDealt(targetName: string, damage: number): void {
+        const message = `You did ${damage} damage to ${targetName}`;
+        this.addAction(message, 'damage');
+    }
+    
+    /**
+     * Add damage taken message
+     */
+    addDamageTaken(attackerName: string, damage: number): void {
+        const message = `${attackerName} did ${damage} damage to you`;
+        this.addAction(message, 'damage');
+    }
+    
+    /**
+     * Add disconnect message
+     */
+    addDisconnect(): void {
+        const message = `You've been disconnected. Refresh the browser to rejoin`;
+        this.addAction(message, 'disconnect');
     }
     
     /**
