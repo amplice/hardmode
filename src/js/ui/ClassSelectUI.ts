@@ -150,7 +150,7 @@ export class ClassSelectUI {
         const spacing = 25;
         const totalWidth = (classes.length * cardWidth) + ((classes.length - 1) * spacing);
         const startX = (window.innerWidth - totalWidth) / 2;
-        const startY = window.innerHeight / 2 - 100;
+        const startY = window.innerHeight / 2 - 250; // Moved up by 150px
         
         classes.forEach((className, index) => {
             const classConfig = PLAYER_CONFIG.classes[className];
@@ -491,9 +491,11 @@ export class ClassSelectUI {
             classButton.container.position.set(x, startY);
         });
 
-        // Reposition start button
+        // Reposition start button (moved up with the cards)
         const buttonWidth = 280;
-        const yPosition = window.innerHeight - 100;
+        const cardHeight = 260;
+        const cardsStartY = window.innerHeight / 2 - 250; // Same as cards
+        const yPosition = cardsStartY + cardHeight + 50; // Same relative position
         this.startButton.position.set(window.innerWidth / 2 - buttonWidth / 2, yPosition);
     }
 }
