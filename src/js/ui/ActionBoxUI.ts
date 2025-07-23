@@ -5,7 +5,7 @@
  * - Displays recent game actions from local player's perspective
  * - Shows various events: kills, deaths, level ups, achievements, etc.
  * - Auto-fades messages after a few seconds
- * - Fixed screen position in top-right corner
+ * - Fixed screen position in bottom-right corner
  * 
  * VISUAL DESIGN:
  * - White text with shadow for readability
@@ -65,8 +65,10 @@ export class ActionBoxUI {
     }
     
     private updatePosition(): void {
-        // Position 20px from right edge, 20px from top
-        this.container.position.set(window.innerWidth - 300, 20);
+        // Position 20px from right edge, 20px from bottom
+        // Account for message height (6 messages * 25px each)
+        const totalHeight = this.maxMessages * 25;
+        this.container.position.set(window.innerWidth - 300, window.innerHeight - totalHeight - 20);
     }
     
     /**
