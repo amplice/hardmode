@@ -796,18 +796,18 @@ export const PLAYER_CONFIG = {
       flipY: false
     },
     wingeddemon_warning_effect: {
-      scale: 1.0,
+      scale: 2.5,
       offsetDistance: 0,
-      rotationOffset: 0,
+      rotationOffset: -Math.PI / 2,  // -90 degrees in radians
       animationSpeed: 0.2,
       followDuration: 0,
       flipX: false,
       flipY: false
     },
     wingeddemon_damage_effect: {
-      scale: 1.0,
+      scale: 2.5,
       offsetDistance: 0,
-      rotationOffset: 0,
+      rotationOffset: -Math.PI / 2,  // -90 degrees in radians
       animationSpeed: 0.2,
       followDuration: 0,
       flipX: false,
