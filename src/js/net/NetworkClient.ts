@@ -755,9 +755,9 @@ export class NetworkClient {
         
         // Handle server-triggered effects (like WingedDemon warning/damage)
         this.socket.on('effect', (data: { type: string; x: number; y: number; duration: number }) => {
-            if (this.game.combatSystem) {
+            if (this.game.systems?.combat) {
                 // Create effect at specified position
-                const effect = this.game.combatSystem.createEffect(
+                const effect = this.game.systems.combat.createEffect(
                     data.type,
                     { x: data.x, y: data.y },
                     'down', // default facing for ground effects
