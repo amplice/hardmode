@@ -68,6 +68,7 @@ interface GameInterface {
     healthUI?: any; // HealthUI instance
     statsUI?: any; // StatsUI instance
     killFeedUI?: any; // KillFeedUI instance
+    selectedClass?: string; // Selected character class
     
     // Methods called by NetworkClient
     initializeGameWorld(world: WorldInitData): void;
@@ -237,8 +238,7 @@ interface CacheStats {
 
 export class NetworkClient {
     private game: GameInterface;
-    private socket: SocketIOClient;
-    private id?: string;
+    public socket: SocketIOClient;
     private connected: boolean = false;
     
     // Legacy collections - TODO: Consider removing if unused
@@ -254,6 +254,9 @@ export class NetworkClient {
     
     // Server world seed storage
     public serverWorldSeed?: number;
+    
+    // Store init data for delayed initialization
+    private initData?: InitData;
 
     /**
      * Creates NetworkClient - the main client-server communication hub
@@ -276,9 +279,26 @@ export class NetworkClient {
         
         this.setupHandlers();
     }
+    
 
     setClass(cls: CharacterClass): void {
         this.socket.emit('setClass', cls);
+    }
+    
+    /**
+     * Process stored init data after class selection
+     */
+    processStoredInitData(): void {
+        if (this.initData && this.game.selectedClass) {
+            this.game.initializeGameWorld(this.initData.world);
+            this.initData.players.forEach(p => {
+                if (p.id !== this.socket.id) this.game.addRemotePlayer(p);
+            });
+            this.initData.monsters.forEach(m => this.game.addOrUpdateMonster(m));
+            
+            // Clear stored data
+            this.initData = undefined;
+        }
     }
     
     /**
@@ -343,7 +363,7 @@ export class NetworkClient {
 
     private setupHandlers(): void {
         this.socket.on('init', (data: InitData) => {
-            this.id = data.id;
+            this.socket.id = data.id;
             this.connected = true; // Mark as connected
             // Connected to server
             
@@ -358,15 +378,21 @@ export class NetworkClient {
                 this.game.applyServerConfig(data.config);
             }
             
-            this.game.initializeGameWorld(data.world);
-            data.players.forEach(p => {
-                if (p.id !== this.id) this.game.addRemotePlayer(p);
-            });
-            data.monsters.forEach(m => this.game.addOrUpdateMonster(m));
+            // Store init data for later use
+            this.initData = data;
+            
+            // Only initialize game world if we're past class selection
+            if (this.game.selectedClass) {
+                this.game.initializeGameWorld(data.world);
+                data.players.forEach(p => {
+                    if (p.id !== this.socket.id) this.game.addRemotePlayer(p);
+                });
+                data.monsters.forEach(m => this.game.addOrUpdateMonster(m));
+            }
         });
 
         this.socket.on('playerJoined', (p: any) => {
-            if (p.id !== this.id) this.game.addRemotePlayer(p);
+            if (p.id !== this.socket.id) this.game.addRemotePlayer(p);
         });
 
         this.socket.on('playerLeft', (id: string) => {
@@ -438,7 +464,7 @@ export class NetworkClient {
         });
 
         this.socket.on('playerAttack', (data: { id: string; type: AttackType; facing: number }) => {
-            if (data.id !== this.id) {
+            if (data.id !== this.socket.id) {
                 // Convert facing number to string if needed
                 this.game.remotePlayerAttack(data.id, data.type as string, data.facing.toString());
             }
@@ -881,7 +907,7 @@ export class NetworkClient {
      * Process a single player state update (extracted from original state handler)
      */
     processPlayerUpdate(playerState: PlayerStateUpdate): void {
-        if (playerState.id === this.id) {
+        if (playerState.id === this.socket.id) {
             // PHASE 3: Use reconciler for server state updates
             if (this.game.entities.player && this.game.systems?.reconciler) {
                 const player = this.game.entities.player;

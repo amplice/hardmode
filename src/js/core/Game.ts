@@ -295,6 +295,8 @@ export class Game {
   
   // Modified to accept selectedClass parameter
   startGame(selectedClass: string): void {
+    console.log('[Game] Starting game with selected class:', selectedClass);
+    
     // Remove class selection UI
     if (this.classSelectUI) {
       this.uiContainer.removeChild(this.classSelectUI.container);
@@ -304,20 +306,16 @@ export class Game {
     // Store selected class for when we get server world data
     this.selectedClass = selectedClass;
     
-    if (!this.network) {
-      // NETWORK INITIALIZATION: Create bidirectional Game ↔ NetworkClient relationship
-      // NetworkClient(this) allows network to call back into game systems
-      this.network = new NetworkClient(this);
+    // Network should already be initialized from username phase
+    if (this.network) {
+      // Send class selection to server
+      this.network.setClass(selectedClass);
       
-      // Initialize latency tracker after network client
-      this.latencyTracker = new LatencyTracker(this.network);
+      // Process any stored init data from earlier connection
+      this.network.processStoredInitData();
+    } else {
+      console.error('[Game] Network not initialized - this should not happen');
     }
-    
-    // Show connecting message instead of immediately generating world
-    this.showConnectingMessage();
-    console.log('[Game] Waiting for server world data...');
-    
-    // Game initialization will happen in initializeGameWorld() when server sends world data
   }
   
   showConnectingMessage(): void {
@@ -557,7 +555,7 @@ export class Game {
   initializeGameWorld(data: WorldData): void {
     console.log('[Game] Initializing game world with server seed:', data.seed);
     
-    // Hide connecting message
+    // Hide connecting message if it exists
     this.hideConnectingMessage();
     
     // Generate world data once using SharedWorldGenerator with server's seed
@@ -602,10 +600,8 @@ export class Game {
     });
     this.entityContainer.addChild(this.entities.player.sprite);
 
-    // Set player class on network
-    if (this.network) {
-      this.network.setClass(this.entities.player.characterClass);
-    }
+    // Don't need to set class again - already sent during startGame
+    console.log('[Game] Created player with class:', this.entities.player.characterClass);
 
     // Add health and stats UI
     this.healthUI = new HealthUI(this.entities.player);
