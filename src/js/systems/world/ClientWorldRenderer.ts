@@ -223,7 +223,7 @@ export class ClientWorldRenderer {
         }
         
         // For all non-stair tiles, use the autotiler (it handles both cliff and biome transitions)
-        const tileResult = (this.cliffAutotiler as any).getTileTexture(x, y, this.elevationData || [], null, this.biomeData || undefined);
+        const tileResult = (this.cliffAutotiler as any).getTileTexture(x, y, this.elevationData || [], null, this.biomeData || undefined, undefined);
         if (tileResult && tileResult.texture) {
             return tileResult.texture;
         }
@@ -504,14 +504,25 @@ export class ClientWorldRenderer {
                 }
                 
                 // Normal tile processing - pass biome data to autotiler
-                const tileResult = (this.cliffAutotiler as any).getTileTexture(x, y, this.elevationData || [], processedTiles, this.biomeData || undefined) as any;
+                const tileResult = (this.cliffAutotiler as any).getTileTexture(x, y, this.elevationData || [], processedTiles, this.biomeData || undefined, undefined) as any;
                 processedTiles[y][x] = tileResult.type;
                 
                 // Mark tile walkability based on collision mask
                 tile.isCliffEdge = !this.collisionMask.isTileWalkable(x, y);
                 
+                // FOR TILES THAT NEED GRASS BASE (snow transition tiles with transparency)
+                if (tileResult.needsGrassBase) {
+                    // Add green grass base layer first
+                    const grassTexture = this.tilesets.getRandomPureGrass();
+                    if (grassTexture) {
+                        const grassSprite = new PIXI.Sprite(grassTexture);
+                        grassSprite.scale.set(this.tileSize / 32, this.tileSize / 32);
+                        tile.container.addChild(grassSprite);
+                    }
+                }
+                
                 // FOR ELEVATED TILES: Create base layer first, then cliff tile on top
-                if (this.elevationData[y][x] > 0) {
+                else if (this.elevationData[y][x] > 0) {
                     // Get the biome for this elevated tile
                     const cliffBiome = this.biomeData && this.biomeData[y] ? this.biomeData[y][x] : 0;
                     const isDarkGrassCliff = cliffBiome === 1;
@@ -610,7 +621,7 @@ export class ClientWorldRenderer {
             for (let x = 0; x < this.width; x++) {
                 if (this.elevationData[y][x] === 0) continue;
                 
-                const extensionTexture = (this.cliffAutotiler as any).getCliffExtensionTexture(x, y, this.elevationData, processedTiles, this.biomeData);
+                const extensionTexture = (this.cliffAutotiler as any).getCliffExtensionTexture(x, y, this.elevationData, processedTiles, this.biomeData, undefined);
                 
                 if (extensionTexture && y + 1 < this.height) {
                     // Update the ground tile underneath to match the cliff's biome

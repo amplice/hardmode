@@ -266,13 +266,25 @@ export class ChunkedWorldRenderer {
             x, y, 
             this.worldRenderer.elevationData || [], 
             processedTiles, 
-            this.worldRenderer.biomeData || undefined
+            this.worldRenderer.biomeData || undefined,
+            undefined  // snowVariantData not needed yet since we only have white snow
         ) as any;
         
         processedTiles[y][x] = tileResult.type;
         
+        // FOR TILES THAT NEED GRASS BASE (snow transition tiles with transparency)
+        if (tileResult.needsGrassBase) {
+            // Add green grass base layer first
+            const grassTexture = this.worldRenderer.tilesets.getRandomPureGrass();
+            if (grassTexture) {
+                const grassSprite = new PIXI.Sprite(grassTexture);
+                grassSprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
+                tileContainer.addChild(grassSprite);
+            }
+        }
+        
         // FOR ELEVATED TILES: Create base layer first
-        if (this.worldRenderer.elevationData && this.worldRenderer.elevationData[y][x] > 0) {
+        else if (this.worldRenderer.elevationData && this.worldRenderer.elevationData[y][x] > 0) {
             const cliffBiome = this.worldRenderer.biomeData && this.worldRenderer.biomeData[y] ? 
                 this.worldRenderer.biomeData[y][x] : 0;
             const isDarkGrassCliff = cliffBiome === 1;
@@ -327,7 +339,7 @@ export class ChunkedWorldRenderer {
                 
                 // Get cliff extension texture from autotiler
                 const extensionTexture = (this.worldRenderer.cliffAutotiler as any).getCliffExtensionTexture(
-                    x, y, this.worldRenderer.elevationData, processedTiles, this.worldRenderer.biomeData
+                    x, y, this.worldRenderer.elevationData, processedTiles, this.worldRenderer.biomeData, undefined
                 );
                 
                 if (extensionTexture && y + 1 < this.worldRenderer.height) {

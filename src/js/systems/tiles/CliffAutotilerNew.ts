@@ -62,6 +62,7 @@ interface TileCoordinates {
 interface TileResult {
     texture: Texture | null;
     type: string;
+    needsGrassBase?: boolean;
 }
 
 interface TransitionCoordinates {
@@ -225,7 +226,7 @@ export class CliffAutotiler {
      * @param processedTiles - Processed tile types
      * @param biomeData - 2D biome map (0=green, 1=dark)
      */
-    getTileTexture(x: number, y: number, elevationData: number[][], processedTiles: any[][] | null, biomeData?: number[][]): TileResult {
+    getTileTexture(x: number, y: number, elevationData: number[][], processedTiles: any[][] | null, biomeData?: number[][], snowVariantData?: number[][]): TileResult {
         // STEP 1: BIOME DETERMINATION FIRST
         // Determine biome type (0=green grass, 1=dark grass, 2=snow) - this drives everything else
         const biomeId = biomeData && biomeData[y] ? biomeData[y][x] : 0;
@@ -241,8 +242,17 @@ export class CliffAutotiler {
         // STEP 2: CLIFF/TERRAIN GENERATION BASED ON BIOME
         // Ground level tiles - biome-specific handling
         if (currentElevation === 0) {
-            // Snow biomes get white snow (variant 0) for now
+            // Snow biomes - check for transitions to grass
             if (isSnow) {
+                // Check for snow-to-grass transitions (only for white snow)
+                const snowVariant = snowVariantData && snowVariantData[y] ? snowVariantData[y][x] : 0;
+                if (snowVariant === 0) { // Only white snow transitions to grass
+                    const grassTransition = this.getSnowToGrassTransition(x, y, biomeData);
+                    if (grassTransition) {
+                        return grassTransition;
+                    }
+                }
+                
                 return {
                     texture: this.tilesets.getRandomSnowTile(0), // White snow
                     type: 'snow'
@@ -557,6 +567,131 @@ export class CliffAutotiler {
         if (hasNorth) return { row: 36, col: baseCol + 1, type: "S edge fallback (dark north)" };
         
         // Priority 6: No transition needed - this shouldn't happen if bitmask > 0
+        return null;
+    }
+    
+    /**
+     * Get snow-to-grass transition tile
+     * Snow tiles with transparency need green grass underneath
+     */
+    private getSnowToGrassTransition(x: number, y: number, biomeData?: number[][]): TileResult | null {
+        if (!biomeData) return null;
+        
+        const width = biomeData[0].length;
+        const height = biomeData.length;
+        
+        // Calculate bitmask for grass neighbors (only green grass, not dark grass)
+        let grassBitmask = 0;
+        
+        // Check all 8 directions for green grass
+        const directions = [
+            { dx: 0, dy: -1, bit: this.BITS.NORTH },
+            { dx: 1, dy: -1, bit: this.BITS.NORTHEAST },
+            { dx: 1, dy: 0, bit: this.BITS.EAST },
+            { dx: 1, dy: 1, bit: this.BITS.SOUTHEAST },
+            { dx: 0, dy: 1, bit: this.BITS.SOUTH },
+            { dx: -1, dy: 1, bit: this.BITS.SOUTHWEST },
+            { dx: -1, dy: 0, bit: this.BITS.WEST },
+            { dx: -1, dy: -1, bit: this.BITS.NORTHWEST }
+        ];
+        
+        for (const dir of directions) {
+            const nx = x + dir.dx;
+            const ny = y + dir.dy;
+            
+            if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                // Only green grass (0), not dark grass (1) or snow (2)
+                if (biomeData[ny][nx] === BIOME_TYPES.GRASS) {
+                    grassBitmask |= dir.bit;
+                }
+            }
+        }
+        
+        // No grass neighbors = no transition
+        if (grassBitmask === 0) return null;
+        
+        // Determine transition tile based on bitmask
+        const transitionCoords = this.determineSnowToGrassTransitionType(grassBitmask);
+        if (!transitionCoords) return null;
+        
+        // Get texture from snow tileset
+        const texture = this.tilesets.getSnowTileAt(transitionCoords.row, transitionCoords.col);
+        if (!texture) return null;
+        
+        // Snow transition tiles have transparency, so they need green grass underneath
+        return {
+            texture: texture,
+            type: `snow_grass_transition_${transitionCoords.row},${transitionCoords.col}`,
+            needsGrassBase: true
+        };
+    }
+    
+    /**
+     * Determine snow-to-grass transition tile based on grass neighbor bitmask
+     * Uses same logic as grass transitions but with different tile coordinates
+     */
+    private determineSnowToGrassTransitionType(bitmask: number): TransitionCoordinates | null {
+        // Extract direction bits
+        const hasNorth = (bitmask & this.BITS.NORTH) !== 0;
+        const hasEast = (bitmask & this.BITS.EAST) !== 0;
+        const hasSouth = (bitmask & this.BITS.SOUTH) !== 0;
+        const hasWest = (bitmask & this.BITS.WEST) !== 0;
+        const hasNortheast = (bitmask & this.BITS.NORTHEAST) !== 0;
+        const hasNorthwest = (bitmask & this.BITS.NORTHWEST) !== 0;
+        const hasSoutheast = (bitmask & this.BITS.SOUTHEAST) !== 0;
+        const hasSouthwest = (bitmask & this.BITS.SOUTHWEST) !== 0;
+        
+        // Snow tileset mapping:
+        // (30,0) to (31,5) in grass → (36,0) to (37,5) in snow
+        // (32,0) to (36,4) in grass → (38,0) to (42,4) in snow
+        
+        // Priority 1: Inner corners (same as grass but offset by 6 rows)
+        // These were rows 30-31 in grass, now 36-37 in snow
+        if (hasNorth && hasEast && !hasNortheast) return { row: 36, col: 0, type: "inner NE corner" };
+        if (hasSouth && hasEast && !hasSoutheast) return { row: 36, col: 1, type: "inner SE corner" };
+        if (hasSouth && hasWest && !hasSouthwest) return { row: 37, col: 0, type: "inner SW corner" };
+        if (hasNorth && hasWest && !hasNorthwest) return { row: 37, col: 1, type: "inner NW corner" };
+        
+        // Priority 2: Outer diagonal edges (rows 32→38 in mapping)
+        if (hasSoutheast && !hasSouth && !hasEast) return { row: 38, col: 0, type: "NW outer diagonal" };
+        if (hasSouthwest && !hasSouth && !hasWest) return { row: 38, col: 4, type: "NE outer diagonal" };
+        if (hasNortheast && !hasNorth && !hasEast) return { row: 42, col: 0, type: "SW outer diagonal" };
+        if (hasNorthwest && !hasNorth && !hasWest) return { row: 42, col: 4, type: "SE outer diagonal" };
+        
+        // Priority 3: Single cardinal edges (using reversed logic)
+        // Grass to the south = north edge of grass area
+        if (hasSouth && !hasEast && !hasNorth && !hasWest) return { row: 38, col: 1, type: "N edge" };
+        if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 39, col: 0, type: "W edge" };
+        if (hasWest && !hasNorth && !hasSouth && !hasEast) return { row: 40, col: 4, type: "E edge" };
+        if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 42, col: 1, type: "S edge" };
+        
+        // Priority 4: Edge variants
+        if (hasSouth && !hasNorth) {
+            if (hasWest || hasEast) return { row: 38, col: 2, type: "N edge variant" };
+            return { row: 38, col: 3, type: "N edge variant 2" };
+        }
+        
+        if (hasNorth && !hasSouth) {
+            if (hasWest || hasEast) return { row: 42, col: 2, type: "S edge variant" };
+            return { row: 42, col: 3, type: "S edge variant 2" };
+        }
+        
+        if (hasWest && !hasEast) {
+            if (hasNorth || hasSouth) return { row: 40, col: 4, type: "E edge variant" };
+            return { row: 41, col: 4, type: "E edge variant 2" };
+        }
+        
+        if (hasEast && !hasWest) {
+            if (hasNorth || hasSouth) return { row: 40, col: 0, type: "W edge variant" };
+            return { row: 41, col: 0, type: "W edge variant 2" };
+        }
+        
+        // Priority 5: Fallback
+        if (hasSouth) return { row: 38, col: 1, type: "N edge fallback" };
+        if (hasEast) return { row: 39, col: 0, type: "W edge fallback" };
+        if (hasWest) return { row: 40, col: 4, type: "E edge fallback" };
+        if (hasNorth) return { row: 42, col: 1, type: "S edge fallback" };
+        
         return null;
     }
 }
