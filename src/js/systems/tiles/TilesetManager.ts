@@ -72,7 +72,7 @@ export class TilesetManager {
     constructor() {
         this.textures = {
             terrain: [],      // All terrain tiles from MainLev2.0
-            plants: []        // Keep plants for decorations
+            plants: []        // Empty array - decorations now come from biome-specific tilesets
         };
         
         this.tileSize = 32; // New tileset uses 32x32 tiles
@@ -92,8 +92,7 @@ export class TilesetManager {
             : 'assets/sprites/tiles/grass/MainLev2.0.png';
         
         Assets.addBundle('tilesets', {
-            terrain: terrainTileset,
-            plants: 'assets/sprites/tiles/Plants.png'
+            terrain: terrainTileset
         });
     }
 
@@ -106,12 +105,6 @@ export class TilesetManager {
             throw new Error("Failed to load terrain texture");
         }
         this.sliceTerrainTileset(terrainTexture.baseTexture);
-        
-        // Keep plants for decorations
-        const plantsTexture = Assets.get('plants');
-        if (plantsTexture) {
-            this.textures.plants = this.slicePlantsTileset(plantsTexture.baseTexture);
-        }
         
         console.log("Tilesets loaded successfully");
         console.log(`[DEBUG] Using ${GAME_CONSTANTS.DEBUG.USE_DEBUG_TILESET ? 'DEBUG' : 'regular'} tileset`);
@@ -272,6 +265,12 @@ export class TilesetManager {
     }
     
     getPlantTexture(type: PlantType): Texture | undefined {
+        // Plants are no longer loaded from a separate file
+        // Decorations should come from biome-specific tilesets
+        return undefined;
+        
+        // Legacy code kept for reference:
+        /*
         const textureMap: Record<PlantType, number> = {
             'plant': 9,
             'branches': 10,
@@ -283,6 +282,7 @@ export class TilesetManager {
         };
         
         return this.textures.plants[textureMap[type]];
+        */
     }
     
     // Full tile getters - updated for new tileset

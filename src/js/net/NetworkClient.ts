@@ -756,6 +756,7 @@ export class NetworkClient {
         
         // Handle server-triggered effects (like WingedDemon warning/damage)
         this.socket.on('effect', (data: { type: string; x: number; y: number; duration: number }) => {
+            console.log('[NetworkClient] Received effect event:', data);
             if (this.game.systems?.combat) {
                 // Create effect at specified position
                 const effect = this.game.systems.combat.createEffect(
@@ -768,25 +769,31 @@ export class NetworkClient {
                 
                 // TEMPORARY: Add debug circles for WingedDemon AOE visualization
                 if (data.type === 'wingeddemon_warning_effect' || data.type === 'wingeddemon_damage_effect') {
+                    console.log('[NetworkClient] Creating debug circle for:', data.type, 'at', data.x, data.y);
                     const graphics = new (window as any).PIXI.Graphics();
                     const radius = 100; // AOE radius from attack config
                     
                     if (data.type === 'wingeddemon_warning_effect') {
                         // White circle for warning
                         graphics.lineStyle(2, 0xFFFFFF, 0.5);
-                        graphics.drawCircle(data.x, data.y, radius);
+                        graphics.drawCircle(0, 0, radius); // Draw at 0,0 since position is set below
                     } else {
                         // Red circle for damage
                         graphics.lineStyle(2, 0xFF0000, 0.7);
-                        graphics.drawCircle(data.x, data.y, radius);
+                        graphics.drawCircle(0, 0, radius); // Draw at 0,0 since position is set below
                     }
                     
+                    // Set position
+                    graphics.position.set(data.x, data.y);
+                    
                     this.game.entityContainer.addChild(graphics);
+                    console.log('[NetworkClient] Debug circle added to entityContainer');
                     
                     // Remove debug circle when effect expires
                     setTimeout(() => {
                         if (graphics.parent) {
                             graphics.parent.removeChild(graphics);
+                            console.log('[NetworkClient] Debug circle removed');
                         }
                     }, data.duration || 1000);
                 }

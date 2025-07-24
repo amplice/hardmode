@@ -1057,6 +1057,7 @@ export class MonsterManager {
                 };
                 
                 // Create warning effect immediately (offset warning 10px down for better ground alignment)
+                console.log('[MonsterManager] Emitting warning effect:', (attackConfig as any).warningEffect, 'at', targetCoords.x, targetCoords.y);
                 this.io.emit('effect', {
                     type: (attackConfig as any).warningEffect || 'wingeddemon_warning_effect',
                     x: targetCoords.x,
@@ -1861,6 +1862,7 @@ export class MonsterManager {
         const aoeData = monster.rangedAoeData;
         
         // Create damage effect at target position (offset damage -20px up for better visual alignment)
+        console.log('[MonsterManager] Emitting damage effect:', (attackConfig as any).damageEffect, 'at', aoeData.targetX, aoeData.targetY);
         this.io.emit('effect', {
             type: (attackConfig as any).damageEffect || 'wingeddemon_damage_effect',
             x: aoeData.targetX,
