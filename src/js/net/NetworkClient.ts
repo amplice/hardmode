@@ -775,19 +775,24 @@ export class NetworkClient {
                     
                     if (data.type === 'wingeddemon_warning_effect') {
                         // White circle for warning
-                        graphics.lineStyle(2, 0xFFFFFF, 0.5);
-                        graphics.drawCircle(0, 0, radius); // Draw at 0,0 since position is set below
+                        graphics.lineStyle(4, 0xFFFFFF, 1.0); // Thicker line, full opacity
+                        graphics.beginFill(0xFFFFFF, 0.1); // Add slight fill
+                        graphics.drawCircle(0, 0, radius);
+                        graphics.endFill();
                     } else {
                         // Red circle for damage
-                        graphics.lineStyle(2, 0xFF0000, 0.7);
-                        graphics.drawCircle(0, 0, radius); // Draw at 0,0 since position is set below
+                        graphics.lineStyle(4, 0xFF0000, 1.0); // Thicker line, full opacity
+                        graphics.beginFill(0xFF0000, 0.2); // Add slight fill
+                        graphics.drawCircle(0, 0, radius);
+                        graphics.endFill();
                     }
                     
                     // Set position
                     graphics.position.set(data.x, data.y);
                     
+                    // Add to entity container (should be visible on top of world)
                     this.game.entityContainer.addChild(graphics);
-                    console.log('[NetworkClient] Debug circle added to entityContainer');
+                    console.log('[NetworkClient] Debug circle added to entityContainer at z-index:', this.game.entityContainer.children.length);
                     
                     // Remove debug circle when effect expires
                     setTimeout(() => {
@@ -946,9 +951,11 @@ export class NetworkClient {
                 );
                 
                 if (hitbox) {
-                    // Only the attacking player applies damage
-                    if (isLocalPlayer) {
-                        this.game.systems.combat.applyHitEffects(player, hitbox, data.config.damage);
+                    // Don't apply damage for local player - they already did it when initiating the attack
+                    // This event is only for visual feedback and for other players to see the attack
+                    if (!isLocalPlayer) {
+                        // For remote players, we do need to show the visual effect but not apply damage
+                        // Damage is handled server-side
                     }
                 }
             }
