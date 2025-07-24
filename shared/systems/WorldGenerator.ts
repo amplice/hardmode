@@ -216,6 +216,12 @@ export class SharedWorldGenerator {
         // Create snow biome in top-right quarter with natural border variation
         this.generateSnowBiomeRegion(biomeData);
         
+        // Flatten any plateaus that would cross biome boundaries
+        this.flattenCrossBiomePlateaus(elevationData, biomeData);
+        
+        // Create 2-tile green grass buffer around snow/grass borders
+        this.createGreenGrassBuffer(biomeData);
+        
         // Now apply the variant system (green/dark grass) within the grass biome
         // This works exactly as before - using moisture to determine variants
         for (let y = 0; y < this.height; y++) {
@@ -277,6 +283,74 @@ export class SharedWorldGenerator {
                 
                 if (distance < adjustedRadius + cornerBias) {
                     biomeData[y][x] = BIOME_TYPES.SNOW;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Flatten plateaus that cross biome boundaries
+     */
+    private flattenCrossBiomePlateaus(elevationData: number[][], biomeData: number[][]): void {
+        // Find all plateau regions (without buffers)
+        const plateaus = this.findAllPlateaus(elevationData);
+        
+        for (const plateau of plateaus) {
+            // Check if this plateau crosses biome boundaries
+            const biomes = new Set<number>();
+            for (const {x, y} of plateau) {
+                biomes.add(biomeData[y][x]);
+            }
+            
+            // If plateau spans multiple major biomes (not just grass variants)
+            const hasSnow = biomes.has(BIOME_TYPES.SNOW);
+            const hasGrass = biomes.has(BIOME_TYPES.GRASS) || biomes.has(BIOME_TYPES.DARK_GRASS);
+            
+            if (hasSnow && hasGrass) {
+                console.log(`[WorldGenerator] Flattening plateau that crosses snow/grass boundary (${plateau.length} tiles)`);
+                
+                // Flatten the entire plateau
+                for (const {x, y} of plateau) {
+                    elevationData[y][x] = 0;
+                    
+                    // Also remove any stairs on this plateau
+                    if (this.stairsData && this.stairsData[y] && this.stairsData[y][x]) {
+                        this.stairsData[y][x] = null;
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Create a 2-tile green grass buffer around snow/grass borders
+     */
+    private createGreenGrassBuffer(biomeData: number[][]): void {
+        // Create a copy to work from
+        const originalBiomes: number[][] = [];
+        for (let y = 0; y < this.height; y++) {
+            originalBiomes[y] = [...biomeData[y]];
+        }
+        
+        // Find all snow border tiles and convert nearby grass to green
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (originalBiomes[y][x] === BIOME_TYPES.SNOW) {
+                    // Check in a 2-tile radius
+                    for (let dy = -2; dy <= 2; dy++) {
+                        for (let dx = -2; dx <= 2; dx++) {
+                            const ny = y + dy;
+                            const nx = x + dx;
+                            
+                            if (ny >= 0 && ny < this.height && nx >= 0 && nx < this.width) {
+                                // If it's any type of grass, make it green grass
+                                if (originalBiomes[ny][nx] === BIOME_TYPES.GRASS || 
+                                    originalBiomes[ny][nx] === BIOME_TYPES.DARK_GRASS) {
+                                    biomeData[ny][nx] = BIOME_TYPES.GRASS;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1647,7 +1721,16 @@ export class SharedWorldGenerator {
             // DARK GRASS STAIRS - Bottom edge stairs walkable tiles (+11 column offset)
             [15, 16], [15, 17], [16, 16], [16, 17], [17, 16], [17, 17],
             // DARK GRASS STAIRS - Eastern stairs walkable tiles (+11 column offset)
-            [14, 18], [14, 19], [15, 18], [15, 19]
+            [14, 18], [14, 19], [15, 18], [15, 19],
+            
+            // SNOW STAIRS - Western stairs walkable tiles (rows 17-20 in snow tileset)
+            [18, 2], [18, 3], [19, 2], [19, 3],
+            // SNOW STAIRS - Top edge stairs walkable tiles
+            [17, 5], [17, 6], [18, 5], [18, 6],
+            // SNOW STAIRS - Bottom edge stairs walkable tiles
+            [19, 5], [19, 6], [20, 5], [20, 6], [21, 5], [21, 6],
+            // SNOW STAIRS - Eastern stairs walkable tiles
+            [18, 7], [18, 8], [19, 7], [19, 8]
         ];
         
         return walkableStairs.some(([row, col]) => row === tileY && col === tileX);
