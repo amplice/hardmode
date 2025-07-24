@@ -1538,10 +1538,14 @@ export class SharedWorldGenerator {
         // Check biome at stair location (biome data is now available)
         const stairBiome = this.biomeData && this.biomeData[y] && this.biomeData[y][x] ? this.biomeData[y][x] : 0;
         const isDarkGrassStairs = stairBiome === 1;
+        const isSnowStairs = stairBiome === 2;
         const colOffset = isDarkGrassStairs ? 11 : 0;
         
+        // For snow biome, we'll use different row/col coordinates entirely
+        const tileRowOffset = isSnowStairs ? 4 : 0; // Snow stairs are 4 rows down from grass stairs (17 vs 13)
+        
         // DEBUG: Log stair placement details  
-        console.log(`[SharedWorldGenerator] Placing ${direction} stairs at (${x},${y}): biome=${stairBiome}, isDark=${isDarkGrassStairs}, colOffset=${colOffset}`);
+        console.log(`[SharedWorldGenerator] Placing ${direction} stairs at (${x},${y}): biome=${stairBiome}, isDark=${isDarkGrassStairs}, isSnow=${isSnowStairs}, colOffset=${colOffset}`);
         console.log(`[SharedWorldGenerator] biomeData exists: ${!!this.biomeData}, biomeData[${y}] exists: ${!!(this.biomeData && this.biomeData[y])}, value: ${this.biomeData && this.biomeData[y] && this.biomeData[y][x]}`);
         
         switch (direction) {
@@ -1550,13 +1554,14 @@ export class SharedWorldGenerator {
                 for (let dy = 0; dy < 4; dy++) {
                     for (let dx = 0; dx < 2; dx++) {
                         if (x + dx >= 0 && y + dy < this.height) {
-                            const tileX = 2 + dx + colOffset;
-                            const tileY = 13 + dy;
+                            const tileX = 2 + dx + (isSnowStairs ? 0 : colOffset); // Snow uses same columns as green grass
+                            const tileY = 13 + dy + tileRowOffset; // Add row offset for snow
                             this.stairsData![y + dy][x + dx] = {
                                 type: 'west',
                                 tileX: tileX,
                                 tileY: tileY,
-                                biome: stairBiome
+                                biome: stairBiome,
+                                isSnow: isSnowStairs
                             };
                             // DEBUG: Log each stair tile placement
                             if (dy === 0 && dx === 0) { // Only log first tile to avoid spam
@@ -1574,9 +1579,10 @@ export class SharedWorldGenerator {
                         if (x + dx < this.width && y + dy < this.height) {
                             this.stairsData![y + dy][x + dx] = {
                                 type: 'east',
-                                tileX: 7 + dx + colOffset,
-                                tileY: 13 + dy,
-                                biome: stairBiome
+                                tileX: 7 + dx + (isSnowStairs ? 0 : colOffset),
+                                tileY: 13 + dy + tileRowOffset,
+                                biome: stairBiome,
+                                isSnow: isSnowStairs
                             };
                         }
                     }
@@ -1590,9 +1596,10 @@ export class SharedWorldGenerator {
                         if (x + dx < this.width && y + dy >= 0) {
                             this.stairsData![y + dy][x + dx] = {
                                 type: 'north',
-                                tileX: 4 + dx + colOffset,
-                                tileY: 13 + dy,
-                                biome: stairBiome
+                                tileX: 4 + dx + (isSnowStairs ? 0 : colOffset),
+                                tileY: 13 + dy + tileRowOffset,
+                                biome: stairBiome,
+                                isSnow: isSnowStairs
                             };
                         }
                     }
@@ -1606,9 +1613,10 @@ export class SharedWorldGenerator {
                         if (x + dx < this.width && y + dy < this.height) {
                             this.stairsData![y + dy][x + dx] = {
                                 type: 'south',
-                                tileX: 4 + dx + colOffset,
-                                tileY: 15 + dy,
-                                biome: stairBiome
+                                tileX: 4 + dx + (isSnowStairs ? 0 : colOffset),
+                                tileY: 15 + dy + tileRowOffset,
+                                biome: stairBiome,
+                                isSnow: isSnowStairs
                             };
                         }
                     }

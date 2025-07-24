@@ -222,14 +222,21 @@ export class ChunkedWorldRenderer {
         // Check if this position has stairs
         if (this.worldRenderer.stairsData && this.worldRenderer.stairsData[y] && this.worldRenderer.stairsData[y][x]) {
             const stairInfo = this.worldRenderer.stairsData[y][x] as StairInfo;
-            const stairTexture = this.worldRenderer.tilesets.textures.terrain[stairInfo.tileY] && 
-                               this.worldRenderer.tilesets.textures.terrain[stairInfo.tileY][stairInfo.tileX];
+            // Use snow tileset for snow stairs, terrain tileset for grass stairs
+            const tileset = (stairInfo as any).isSnow ? this.worldRenderer.tilesets.textures.snow : this.worldRenderer.tilesets.textures.terrain;
+            const stairTexture = tileset[stairInfo.tileY] && tileset[stairInfo.tileY][stairInfo.tileX];
             
             if (stairTexture) {
                 // Create base color fill for stairs
                 const stairBiome = stairInfo.biome || 0;
                 const isDarkGrassStair = stairBiome === 1;
-                const baseColor = isDarkGrassStair ? 0x2a3a1c : 0x3e5b24;
+                const isSnowStair = stairBiome === 2;
+                let baseColor = 0x3e5b24; // Default green grass
+                if (isDarkGrassStair) {
+                    baseColor = 0x2a3a1c; // Dark grass
+                } else if (isSnowStair) {
+                    baseColor = 0xE0E8F0; // Light blue-white for snow
+                }
                 
                 const colorFill = new PIXI.Graphics();
                 colorFill.beginFill(baseColor, 1.0);
@@ -263,7 +270,13 @@ export class ChunkedWorldRenderer {
             const cliffBiome = this.worldRenderer.biomeData && this.worldRenderer.biomeData[y] ? 
                 this.worldRenderer.biomeData[y][x] : 0;
             const isDarkGrassCliff = cliffBiome === 1;
-            const baseColor = isDarkGrassCliff ? 0x2a3a1c : 0x3e5b24;
+            const isSnowCliff = cliffBiome === 2;
+            let baseColor = 0x3e5b24; // Default green grass
+            if (isDarkGrassCliff) {
+                baseColor = 0x2a3a1c; // Dark grass
+            } else if (isSnowCliff) {
+                baseColor = 0xE0E8F0; // Light blue-white for snow
+            }
             
             const colorFill = new PIXI.Graphics();
             colorFill.beginFill(baseColor, 1.0);

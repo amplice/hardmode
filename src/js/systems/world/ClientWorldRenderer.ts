@@ -213,12 +213,13 @@ export class ClientWorldRenderer {
         // Check if this position has stairs first
         if (this.stairsData && this.stairsData[y] && this.stairsData[y][x]) {
             const stairInfo = this.stairsData[y][x];
-            const stairTexture = this.tilesets.textures.terrain[stairInfo.tileY] && 
-                                this.tilesets.textures.terrain[stairInfo.tileY][stairInfo.tileX];
+            // Use snow tileset for snow stairs, terrain tileset for grass stairs
+            const tileset = stairInfo.isSnow ? this.tilesets.textures.snow : this.tilesets.textures.terrain;
+            const stairTexture = tileset[stairInfo.tileY] && tileset[stairInfo.tileY][stairInfo.tileX];
             if (stairTexture) {
                 return stairTexture;
             }
-            console.warn(`[ClientWorldRenderer] Missing stair texture at (${stairInfo.tileY},${stairInfo.tileX})`);
+            console.warn(`[ClientWorldRenderer] Missing stair texture at (${stairInfo.tileY},${stairInfo.tileX}) in ${stairInfo.isSnow ? 'snow' : 'terrain'} tileset`);
         }
         
         // For all non-stair tiles, use the autotiler (it handles both cliff and biome transitions)
@@ -492,8 +493,9 @@ export class ClientWorldRenderer {
                 // Check if this position has stairs
                 if (this.stairsData && this.stairsData[y] && this.stairsData[y][x]) {
                     const stairInfo = this.stairsData[y][x];
-                    const stairTexture = this.tilesets.textures.terrain[stairInfo.tileY] && 
-                                        this.tilesets.textures.terrain[stairInfo.tileY][stairInfo.tileX];
+                    // Use snow tileset for snow stairs, terrain tileset for grass stairs
+                    const tileset = stairInfo.isSnow ? this.tilesets.textures.snow : this.tilesets.textures.terrain;
+                    const stairTexture = tileset[stairInfo.tileY] && tileset[stairInfo.tileY][stairInfo.tileX];
                     if (stairTexture) {
                         tile.baseSprite.texture = stairTexture;
                         processedTiles[y][x] = 'stairs';
@@ -513,9 +515,15 @@ export class ClientWorldRenderer {
                     // Get the biome for this elevated tile
                     const cliffBiome = this.biomeData && this.biomeData[y] ? this.biomeData[y][x] : 0;
                     const isDarkGrassCliff = cliffBiome === 1;
+                    const isSnowCliff = cliffBiome === 2;
                     
                     // Create base color fill (what shows through transparent areas)
-                    const baseColor = isDarkGrassCliff ? 0x2a3a1c : 0x3e5b24; // dark grass : green grass
+                    let baseColor = 0x3e5b24; // Default green grass
+                    if (isDarkGrassCliff) {
+                        baseColor = 0x2a3a1c; // Dark grass
+                    } else if (isSnowCliff) {
+                        baseColor = 0xE0E8F0; // Light blue-white for snow
+                    }
                     const colorFill = new PIXI.Graphics();
                     colorFill.beginFill(baseColor);
                     colorFill.drawRect(0, 0, this.tileSize, this.tileSize);
