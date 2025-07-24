@@ -227,22 +227,28 @@ export class ChunkedWorldRenderer {
             const stairTexture = tileset[stairInfo.tileY] && tileset[stairInfo.tileY][stairInfo.tileX];
             
             if (stairTexture) {
-                // Create base color fill for stairs
+                // Create base layer for stairs
                 const stairBiome = stairInfo.biome || 0;
                 const isDarkGrassStair = stairBiome === 1;
                 const isSnowStair = stairBiome === 2;
-                let baseColor = 0x3e5b24; // Default green grass
-                if (isDarkGrassStair) {
-                    baseColor = 0x2a3a1c; // Dark grass
-                } else if (isSnowStair) {
-                    baseColor = 0xE0E8F0; // Light blue-white for snow
-                }
                 
-                const colorFill = new PIXI.Graphics();
-                colorFill.beginFill(baseColor, 1.0);
-                colorFill.drawRect(0, 0, this.worldRenderer.tileSize, this.worldRenderer.tileSize);
-                colorFill.endFill();
-                tileContainer.addChild(colorFill);
+                if (isSnowStair) {
+                    // For snow stairs, place a full snow ground tile as base
+                    const snowGroundTexture = this.worldRenderer.tilesets.getRandomSnowTile(0); // White snow variant
+                    if (snowGroundTexture) {
+                        const baseSprite = new PIXI.Sprite(snowGroundTexture);
+                        baseSprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
+                        tileContainer.addChild(baseSprite);
+                    }
+                } else {
+                    // For grass stairs, use solid color fill as before
+                    const baseColor = isDarkGrassStair ? 0x2a3a1c : 0x3e5b24;
+                    const colorFill = new PIXI.Graphics();
+                    colorFill.beginFill(baseColor, 1.0);
+                    colorFill.drawRect(0, 0, this.worldRenderer.tileSize, this.worldRenderer.tileSize);
+                    colorFill.endFill();
+                    tileContainer.addChild(colorFill);
+                }
                 
                 // Add stair sprite
                 const stairSprite = new PIXI.Sprite(stairTexture);
@@ -265,24 +271,30 @@ export class ChunkedWorldRenderer {
         
         processedTiles[y][x] = tileResult.type;
         
-        // FOR ELEVATED TILES: Create base color fill first
+        // FOR ELEVATED TILES: Create base layer first
         if (this.worldRenderer.elevationData && this.worldRenderer.elevationData[y][x] > 0) {
             const cliffBiome = this.worldRenderer.biomeData && this.worldRenderer.biomeData[y] ? 
                 this.worldRenderer.biomeData[y][x] : 0;
             const isDarkGrassCliff = cliffBiome === 1;
             const isSnowCliff = cliffBiome === 2;
-            let baseColor = 0x3e5b24; // Default green grass
-            if (isDarkGrassCliff) {
-                baseColor = 0x2a3a1c; // Dark grass
-            } else if (isSnowCliff) {
-                baseColor = 0xE0E8F0; // Light blue-white for snow
-            }
             
-            const colorFill = new PIXI.Graphics();
-            colorFill.beginFill(baseColor, 1.0);
-            colorFill.drawRect(0, 0, this.worldRenderer.tileSize, this.worldRenderer.tileSize);
-            colorFill.endFill();
-            tileContainer.addChild(colorFill);
+            if (isSnowCliff) {
+                // For snow cliffs, place a full snow ground tile as base
+                const snowGroundTexture = this.worldRenderer.tilesets.getRandomSnowTile(0); // White snow variant
+                if (snowGroundTexture) {
+                    const baseSprite = new PIXI.Sprite(snowGroundTexture);
+                    baseSprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
+                    tileContainer.addChild(baseSprite);
+                }
+            } else {
+                // For grass cliffs, use solid color fill as before
+                let baseColor = isDarkGrassCliff ? 0x2a3a1c : 0x3e5b24;
+                const colorFill = new PIXI.Graphics();
+                colorFill.beginFill(baseColor, 1.0);
+                colorFill.drawRect(0, 0, this.worldRenderer.tileSize, this.worldRenderer.tileSize);
+                colorFill.endFill();
+                tileContainer.addChild(colorFill);
+            }
         }
         
         // Add the tile sprite

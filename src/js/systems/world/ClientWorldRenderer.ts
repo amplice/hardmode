@@ -510,25 +510,30 @@ export class ClientWorldRenderer {
                 // Mark tile walkability based on collision mask
                 tile.isCliffEdge = !this.collisionMask.isTileWalkable(x, y);
                 
-                // FOR ELEVATED TILES: Create base color fill first, then cliff tile on top
+                // FOR ELEVATED TILES: Create base layer first, then cliff tile on top
                 if (this.elevationData[y][x] > 0) {
                     // Get the biome for this elevated tile
                     const cliffBiome = this.biomeData && this.biomeData[y] ? this.biomeData[y][x] : 0;
                     const isDarkGrassCliff = cliffBiome === 1;
                     const isSnowCliff = cliffBiome === 2;
                     
-                    // Create base color fill (what shows through transparent areas)
-                    let baseColor = 0x3e5b24; // Default green grass
-                    if (isDarkGrassCliff) {
-                        baseColor = 0x2a3a1c; // Dark grass
-                    } else if (isSnowCliff) {
-                        baseColor = 0xE0E8F0; // Light blue-white for snow
+                    if (isSnowCliff) {
+                        // For snow cliffs, place a full snow ground tile as base
+                        const snowGroundTexture = this.tilesets.getRandomSnowTile(0); // White snow variant
+                        if (snowGroundTexture) {
+                            const baseSprite = new PIXI.Sprite(snowGroundTexture);
+                            baseSprite.scale.set(this.tileSize / 32, this.tileSize / 32);
+                            tile.container.addChild(baseSprite);
+                        }
+                    } else {
+                        // For grass cliffs, use solid color fill as before
+                        const baseColor = isDarkGrassCliff ? 0x2a3a1c : 0x3e5b24;
+                        const colorFill = new PIXI.Graphics();
+                        colorFill.beginFill(baseColor);
+                        colorFill.drawRect(0, 0, this.tileSize, this.tileSize);
+                        colorFill.endFill();
+                        tile.container.addChild(colorFill);
                     }
-                    const colorFill = new PIXI.Graphics();
-                    colorFill.beginFill(baseColor);
-                    colorFill.drawRect(0, 0, this.tileSize, this.tileSize);
-                    colorFill.endFill();
-                    tile.container.addChild(colorFill);
                     
                     // Create cliff tile sprite on top
                     const cliffSprite = new PIXI.Sprite(tileResult.texture);
