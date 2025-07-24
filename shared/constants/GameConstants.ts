@@ -681,3 +681,10 @@ export const ATTACK_DEFINITIONS = {
         damageEffect: 'wingeddemon_damage_effect'
     }
 };
+
+// Biome type constants
+export const BIOME_TYPES = {
+    GRASS: 0,
+    DARK_GRASS: 1,
+    SNOW: 2
+};

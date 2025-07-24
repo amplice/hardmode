@@ -37,11 +37,12 @@
  */
 
 import { Assets, Texture, Rectangle, BaseTexture } from 'pixi.js';
-import { GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js';
+import { GAME_CONSTANTS, BIOME_TYPES } from '../../../../shared/constants/GameConstants.js';
 
 // Type definitions
 interface TextureArrays {
     terrain: (Texture | null)[][];
+    snow: (Texture | null)[][];
     plants: Texture[];
 }
 
@@ -72,6 +73,7 @@ export class TilesetManager {
     constructor() {
         this.textures = {
             terrain: [],      // All terrain tiles from MainLev2.0
+            snow: [],         // Snow tiles from snow/MainLev2.0.png
             plants: []        // Empty array - decorations now come from biome-specific tilesets
         };
         
@@ -92,7 +94,8 @@ export class TilesetManager {
             : 'assets/sprites/tiles/grass/MainLev2.0.png';
         
         Assets.addBundle('tilesets', {
-            terrain: terrainTileset
+            terrain: terrainTileset,
+            snow: 'assets/sprites/tiles/snow/MainLev2.0.png'
         });
     }
 
@@ -106,9 +109,17 @@ export class TilesetManager {
         }
         this.sliceTerrainTileset(terrainTexture.baseTexture);
         
+        // Load snow tileset
+        const snowTexture = Assets.get('snow');
+        if (!snowTexture) {
+            throw new Error("Failed to load snow texture");
+        }
+        this.sliceSnowTileset(snowTexture.baseTexture);
+        
         console.log("Tilesets loaded successfully");
         console.log(`[DEBUG] Using ${GAME_CONSTANTS.DEBUG.USE_DEBUG_TILESET ? 'DEBUG' : 'regular'} tileset`);
         console.log(`[DEBUG] Loaded terrain texture rows: ${this.textures.terrain.length}`);
+        console.log(`[DEBUG] Loaded snow texture rows: ${this.textures.snow.length}`);
     }
     
     private sliceTerrainTileset(baseTexture: BaseTexture): void {
@@ -243,6 +254,104 @@ export class TilesetManager {
         // Legacy arrays for compatibility - not used directly anymore
         this.pureGrassTiles = this.basicGrassTile ? [this.basicGrassTile] : [];
         this.pureDarkGrassTiles = this.basicDarkGrassTile ? [this.basicDarkGrassTile] : [];
+    }
+    
+    private sliceSnowTileset(baseTexture: BaseTexture): void {
+        const tileSize = this.tileSize;
+        
+        // Snow tileset structure (3 variants with gaps)
+        // Variant 1 (white): cols 0-10
+        // Gap: col 11
+        // Variant 2 (blue): cols 12-22
+        // Gap: col 23
+        // Variant 3 (grey): cols 24-34
+        
+        this.textures.snow = [];
+        
+        // Load cliff/ground tiles (rows 0-6) for all 3 variants
+        for (let row = 0; row <= 6; row++) {
+            this.textures.snow[row] = [];
+            // Load all columns including gaps
+            for (let col = 0; col <= 34; col++) {
+                this.textures.snow[row][col] = new Texture(
+                    baseTexture,
+                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+                );
+            }
+        }
+        
+        // Load snow stairs (rows 17-20) for all 3 variants
+        for (let row = 17; row <= 20; row++) {
+            this.textures.snow[row] = [];
+            // White snow stairs: cols 2-8
+            // Blue snow stairs: cols 14-20
+            // Grey snow stairs: cols 26-32
+            for (let col = 0; col <= 32; col++) {
+                this.textures.snow[row][col] = new Texture(
+                    baseTexture,
+                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+                );
+            }
+        }
+        
+        // Load transition tiles
+        // White to blue transitions (rows 22-28)
+        for (let row = 22; row <= 28; row++) {
+            this.textures.snow[row] = [];
+            for (let col = 0; col <= 9; col++) {
+                this.textures.snow[row][col] = new Texture(
+                    baseTexture,
+                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+                );
+            }
+        }
+        
+        // White to grey transitions (rows 29-35)
+        for (let row = 29; row <= 35; row++) {
+            this.textures.snow[row] = [];
+            for (let col = 0; col <= 9; col++) {
+                this.textures.snow[row][col] = new Texture(
+                    baseTexture,
+                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+                );
+            }
+        }
+        
+        // Transparency transitions
+        // White snow to transparency (rows 36-42, cols 0-9)
+        for (let row = 36; row <= 42; row++) {
+            this.textures.snow[row] = [];
+            for (let col = 0; col <= 9; col++) {
+                this.textures.snow[row][col] = new Texture(
+                    baseTexture,
+                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+                );
+            }
+        }
+        
+        // Blue snow to transparency (rows 36-42, cols 10-19)
+        for (let row = 36; row <= 42; row++) {
+            if (!this.textures.snow[row]) {
+                this.textures.snow[row] = [];
+            }
+            for (let col = 10; col <= 19; col++) {
+                this.textures.snow[row][col] = new Texture(
+                    baseTexture,
+                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+                );
+            }
+        }
+        
+        // Grey snow to transparency (rows 43-49, cols 0-9)
+        for (let row = 43; row <= 49; row++) {
+            this.textures.snow[row] = [];
+            for (let col = 0; col <= 9; col++) {
+                this.textures.snow[row][col] = new Texture(
+                    baseTexture,
+                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+                );
+            }
+        }
     }
     
     private slicePlantsTileset(baseTexture: BaseTexture): Texture[] {
@@ -387,5 +496,25 @@ export class TilesetManager {
     getRandomPlateauDarkGrass(): Texture | null {
         // Use same logic as regular dark grass
         return this.getRandomPureDarkGrass();
+    }
+    
+    // Get basic snow tile for a specific variant (0=white, 1=blue, 2=grey)
+    getBasicSnowTile(variant: number = 0): Texture | null {
+        const colOffsets = [0, 12, 24]; // Column offsets for each variant
+        const col = 1 + colOffsets[variant];
+        return this.textures.snow[1] && this.textures.snow[1][col] ? this.textures.snow[1][col] : null;
+    }
+    
+    // Get random snow tile (for now just returns basic tile, can add variations later)
+    getRandomSnowTile(variant: number = 0): Texture | null {
+        return this.getBasicSnowTile(variant);
+    }
+    
+    // Get snow tile for specific coordinates (handles cliff tiles, etc.)
+    getSnowTileAt(row: number, col: number): Texture | null {
+        if (this.textures.snow[row] && this.textures.snow[row][col]) {
+            return this.textures.snow[row][col];
+        }
+        return null;
     }
 }

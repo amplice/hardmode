@@ -35,7 +35,7 @@
  * Compatible with both full rendering and chunked rendering modes
  */
 
-import { GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js';
+import { GAME_CONSTANTS, BIOME_TYPES } from '../../../../shared/constants/GameConstants.js';
 import type { TilesetManager } from './TilesetManager.js';
 import type { Texture } from 'pixi.js';
 
@@ -104,10 +104,17 @@ export class CliffAutotiler {
      * Determine tile type based on bitmask using priority logic
      * @param bitmask - 8-bit neighbor bitmask
      * @param isDarkGrass - Whether to use dark grass tileset
+     * @param biomeId - The biome type (0=grass, 1=dark grass, 2=snow)
      */
-    private determineTileType(bitmask: number, isDarkGrass: boolean = false): TileCoordinates {
-        // Base column offset for biome (dark grass is +11 columns, same rows)
-        const colOffset = isDarkGrass ? 11 : 0;
+    private determineTileType(bitmask: number, isDarkGrass: boolean = false, biomeId: number = 0): TileCoordinates {
+        // Base column offset for biome
+        let colOffset = 0;
+        if (biomeId === BIOME_TYPES.SNOW) {
+            // Snow uses different tileset, but we'll use variant 0 (white) for now
+            colOffset = 0; // White snow
+        } else if (isDarkGrass) {
+            colOffset = 11; // Dark grass
+        }
         // Check cardinal directions
         const hasNorth = (bitmask & this.BITS.NORTH) !== 0;
         const hasEast = (bitmask & this.BITS.EAST) !== 0;
@@ -220,8 +227,10 @@ export class CliffAutotiler {
      */
     getTileTexture(x: number, y: number, elevationData: number[][], processedTiles: any[][] | null, biomeData?: number[][]): TileResult {
         // STEP 1: BIOME DETERMINATION FIRST
-        // Determine biome type (0=green grass, 1=dark grass) - this drives everything else
-        const isDarkGrass = biomeData && biomeData[y] && biomeData[y][x] === 1;
+        // Determine biome type (0=green grass, 1=dark grass, 2=snow) - this drives everything else
+        const biomeId = biomeData && biomeData[y] ? biomeData[y][x] : 0;
+        const isDarkGrass = biomeId === BIOME_TYPES.DARK_GRASS;
+        const isSnow = biomeId === BIOME_TYPES.SNOW;
         const currentElevation = elevationData[y][x];
         
         // Debug logging for biome selection (only log occasionally to avoid spam)
@@ -232,6 +241,14 @@ export class CliffAutotiler {
         // STEP 2: CLIFF/TERRAIN GENERATION BASED ON BIOME
         // Ground level tiles - biome-specific handling
         if (currentElevation === 0) {
+            // Snow biomes get white snow (variant 0) for now
+            if (isSnow) {
+                return {
+                    texture: this.tilesets.getRandomSnowTile(0), // White snow
+                    type: 'snow'
+                };
+            }
+            
             // UNIDIRECTIONAL TRANSITIONS: Only green tiles get transitions when next to dark
             // This prevents both boundary tiles from becoming transitions
             if (!isDarkGrass) {  // Only apply transitions to GREEN tiles
@@ -250,7 +267,7 @@ export class CliffAutotiler {
         
         // Elevated tiles - cliff generation using biome-appropriate tileset
         const bitmask = this.calculateBitmask(x, y, elevationData);
-        let tileCoords = this.determineTileType(bitmask, isDarkGrass);
+        let tileCoords = this.determineTileType(bitmask, isDarkGrass, biomeId);
         
         // Randomize bottom edge tiles (columns 1-5 for horizontal edges)
         if (tileCoords.type.includes("bottom edge") && tileCoords.row === 5) {
@@ -282,13 +299,18 @@ export class CliffAutotiler {
         // Use appropriate texture based on tile type and biome
         let texture: Texture | null = null;
         if (tileCoords.useVariations && tileCoords.type === "grass") {
-            // Use grass variations for plateau interiors based on biome
-            texture = tileCoords.isDarkGrass ? 
-                this.tilesets.getRandomPlateauDarkGrass() : 
-                this.tilesets.getRandomPlateauGrass();
+            // Use grass/snow variations for plateau interiors based on biome
+            if (isSnow) {
+                texture = this.tilesets.getRandomSnowTile(0); // White snow for now
+            } else {
+                texture = tileCoords.isDarkGrass ? 
+                    this.tilesets.getRandomPlateauDarkGrass() : 
+                    this.tilesets.getRandomPlateauGrass();
+            }
         } else {
             // Use exact tile for cliff edges, corners, etc.
-            const row = this.tilesets.textures.terrain[tileCoords.row];
+            const tileset = isSnow ? this.tilesets.textures.snow : this.tilesets.textures.terrain;
+            const row = tileset[tileCoords.row];
             if (row && row[tileCoords.col]) {
                 texture = row[tileCoords.col];
             } else {
@@ -330,7 +352,9 @@ export class CliffAutotiler {
     getCliffExtensionTexture(x: number, y: number, elevationData: number[][], processedTiles: any[][] | null, biomeData?: number[][]): Texture | null {
         // STEP 1: BIOME DETERMINATION FIRST
         // Determine biome type for extension - this drives which tileset to use
-        const isDarkGrass = biomeData && biomeData[y] && biomeData[y][x] === 1;
+        const biomeId = biomeData && biomeData[y] ? biomeData[y][x] : 0;
+        const isDarkGrass = biomeId === BIOME_TYPES.DARK_GRASS;
+        const isSnow = biomeId === BIOME_TYPES.SNOW;
         
         const width = elevationData[0].length;
         const height = elevationData.length;
@@ -353,7 +377,8 @@ export class CliffAutotiler {
             if (row === 5) {
                 // For extension tiles, we need to handle biome offset correctly
                 // The extension row (6) has the same structure as main tileset
-                const extensionRow = this.tilesets.textures.terrain[6];
+                const tileset = isSnow ? this.tilesets.textures.snow : this.tilesets.textures.terrain;
+                const extensionRow = tileset[6];
                 if (extensionRow && extensionRow[col]) {
                     const extensionTexture = extensionRow[col];
                     if (extensionTexture) {
@@ -376,11 +401,12 @@ export class CliffAutotiler {
             // Fallback: if no processed tiles, calculate the tile type directly
             // This ensures extensions are created even if processed tile data is missing
             const bitmask = this.calculateBitmask(x, y, elevationData);
-            const tileCoords = this.determineTileType(bitmask, isDarkGrass);
+            const tileCoords = this.determineTileType(bitmask, isDarkGrass, biomeId);
             
             if (tileCoords.row === 5) {
                 // This is a bottom edge tile that needs an extension
-                const extensionRow = this.tilesets.textures.terrain[6];
+                const tileset = isSnow ? this.tilesets.textures.snow : this.tilesets.textures.terrain;
+                const extensionRow = tileset[6];
                 if (extensionRow && extensionRow[tileCoords.col]) {
                     const extensionTexture = extensionRow[tileCoords.col];
                     if (extensionTexture) {

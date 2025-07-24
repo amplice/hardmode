@@ -33,6 +33,7 @@
  */
 import { createNoise2D } from 'simplex-noise';
 import { createSeededRandom } from '../utils/MathUtils.js';
+import { BIOME_TYPES } from '../constants/GameConstants.js';
 import type { BiomeConfig, ElevationConfig, Vector2D } from '../types/GameTypes.js';
 
 // Plateau region for biome assignment
@@ -323,27 +324,27 @@ export class SharedWorldGenerator {
      * Temporarily mapping to existing grass types until assets are ready
      */
     determineBiomeType(temperature: number, moisture: number): number {
-        // Cold + Any moisture = Snow → Light grass (temporary)
+        // Cold + Any moisture = Snow
         if (temperature < 0.3) {
-            return 0; // Light grass (Snow placeholder)
+            return BIOME_TYPES.SNOW;
         }
         
         // Hot + Dry = Desert → Light grass (temporary)
         if (temperature > 0.7 && moisture < 0.3) {
-            return 0; // Light grass (Desert placeholder)
+            return BIOME_TYPES.GRASS; // Desert placeholder
         }
         
         // Any temperature + Very Wet = Marsh → Dark grass (temporary)
         if (moisture > 0.75) {
-            return 1; // Dark grass (Marsh placeholder)
+            return BIOME_TYPES.DARK_GRASS; // Marsh placeholder
         }
         
         // Moderate conditions = Grass
         // Use moisture to determine light vs dark grass
         if (moisture > 0.5) {
-            return 1; // Dark grass
+            return BIOME_TYPES.DARK_GRASS;
         } else {
-            return 0; // Light grass  
+            return BIOME_TYPES.GRASS;
         }
     }
 
@@ -351,7 +352,7 @@ export class SharedWorldGenerator {
      * Log statistics about generated biomes
      */
     logBiomeStatistics(biomeData: number[][]): void {
-        const counts = { 0: 0, 1: 0 };
+        const counts = { 0: 0, 1: 0, 2: 0 };
         const totalTiles = this.width * this.height;
         
         for (let y = 0; y < this.height; y++) {
@@ -364,11 +365,12 @@ export class SharedWorldGenerator {
         }
         
         const biomeNames = {
-            0: 'Light Grass (includes Snow/Desert placeholders)',
-            1: 'Dark Grass (includes Marsh placeholders)'
+            0: 'Grass',
+            1: 'Dark Grass',
+            2: 'Snow'
         };
         
-        console.log('[BiomeGeneration] Biome distribution (temporary mapping):');
+        console.log('[BiomeGeneration] Biome distribution:');
         for (const [biomeIdStr, count] of Object.entries(counts)) {
             const biomeId = parseInt(biomeIdStr) as keyof typeof biomeNames;
             const percentage = ((count / totalTiles) * 100).toFixed(1);
