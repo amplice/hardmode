@@ -201,58 +201,119 @@ export class SharedWorldGenerator {
     }
 
     /**
-     * Generate biomes around existing plateaus with buffer zones
-     * Ensures each plateau + buffer is a single consistent biome
+     * Generate large coherent biome regions
+     * Top-right quarter is snow, rest is grass biome
      */
     generateBiomesAroundPlateaus(climate: { temperature: number[][], moisture: number[][] }, elevationData: number[][]): number[][] {
-        console.log('[BiomeGeneration] Generating biomes with plateau-first approach...');
+        console.log('[BiomeGeneration] Generating large biome regions...');
         
-        // Initialize biome data (will be filled in two phases)
+        // Initialize biome data - first set everything to grass
         const biomeData: number[][] = [];
         for (let y = 0; y < this.height; y++) {
-            biomeData[y] = new Array(this.width).fill(-1); // -1 = unassigned
+            biomeData[y] = new Array(this.width).fill(BIOME_TYPES.GRASS);
         }
         
-        // PHASE 1: Assign biomes to plateau regions (plateau + buffer zones)
-        console.log('[BiomeGeneration] Phase 1: Assigning biomes to plateau regions...');
-        const plateauRegions = this.getPlateauRegionsWithBuffers(elevationData);
+        // Create snow biome in top-right quarter with natural border variation
+        this.generateSnowBiomeRegion(biomeData);
         
-        for (const region of plateauRegions) {
-            // Pick biome based on climate at plateau center
-            const centerPoint = this.findRegionCenter(region);
-            const temp = climate.temperature[centerPoint.y][centerPoint.x];
-            const moisture = climate.moisture[centerPoint.y][centerPoint.x];
-            const plateauBiome = this.determineBiomeType(temp, moisture);
-            
-            // Apply this single biome to entire plateau region (plateau + buffer)
-            for (const {x, y} of region.tiles) {
-                biomeData[y][x] = plateauBiome;
-            }
-            
-            console.log(`[BiomeGeneration] Plateau region ${region.id}: ${region.tiles.length} tiles → biome ${plateauBiome} (temp=${temp.toFixed(2)}, moisture=${moisture.toFixed(2)})`);
-        }
-        
-        // PHASE 2: Fill remaining unassigned areas with climate-based biomes
-        console.log('[BiomeGeneration] Phase 2: Filling remaining areas with climate-based biomes...');
-        let unassignedFilled = 0;
-        
+        // Now apply the variant system (green/dark grass) within the grass biome
+        // This works exactly as before - using moisture to determine variants
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                if (biomeData[y][x] === -1) { // Unassigned
-                    const temp = climate.temperature[y][x];
+                if (biomeData[y][x] === BIOME_TYPES.GRASS) {
                     const moisture = climate.moisture[y][x];
-                    biomeData[y][x] = this.determineBiomeType(temp, moisture);
-                    unassignedFilled++;
+                    
+                    // Use moisture to determine grass variant (same as before)
+                    if (moisture > 0.5) {
+                        biomeData[y][x] = BIOME_TYPES.DARK_GRASS;
+                    }
+                    // else remains GRASS (green grass)
                 }
             }
         }
         
-        console.log(`[BiomeGeneration] Filled ${unassignedFilled} non-plateau tiles with climate-based biomes`);
+        // Ensure plateaus have consistent variants (single grass type per plateau)
+        this.ensurePlateauVariantConsistency(biomeData, elevationData);
         
         // Log biome statistics
         this.logBiomeStatistics(biomeData);
         
         return biomeData;
+    }
+    
+    /**
+     * Generate snow biome region in top-right quarter with natural borders
+     */
+    private generateSnowBiomeRegion(biomeData: number[][]): void {
+        // Define the center of snow biome (top-right quarter)
+        const snowCenterX = this.width * 0.75;
+        const snowCenterY = this.height * 0.25;
+        
+        // Base radius to cover roughly 1/4 of the map
+        const baseRadius = Math.min(this.width, this.height) * 0.35;
+        
+        // Use noise to create natural, irregular borders
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const dx = x - snowCenterX;
+                const dy = y - snowCenterY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                // Use noise to vary the border
+                const angle = Math.atan2(dy, dx);
+                const noiseValue = this.noise2D(
+                    Math.cos(angle) * 2,
+                    Math.sin(angle) * 2
+                ) + this.noise2D(x * 0.01, y * 0.01) * 0.5;
+                
+                // Adjust radius based on noise for natural borders
+                const adjustedRadius = baseRadius + noiseValue * baseRadius * 0.3;
+                
+                // Additional bias to extend more into the top-right corner
+                const cornerBias = Math.max(0, 
+                    (x - this.width * 0.5) / (this.width * 0.5) + 
+                    (this.height * 0.5 - y) / (this.height * 0.5)
+                ) * baseRadius * 0.2;
+                
+                if (distance < adjustedRadius + cornerBias) {
+                    biomeData[y][x] = BIOME_TYPES.SNOW;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Ensure each plateau has a consistent grass variant
+     */
+    private ensurePlateauVariantConsistency(biomeData: number[][], elevationData: number[][]): void {
+        const plateauRegions = this.getPlateauRegionsWithBuffers(elevationData);
+        
+        for (const region of plateauRegions) {
+            // Check if this plateau is in grass biome
+            const centerPoint = this.findRegionCenter(region);
+            const centerBiome = biomeData[centerPoint.y][centerPoint.x];
+            
+            if (centerBiome === BIOME_TYPES.GRASS || centerBiome === BIOME_TYPES.DARK_GRASS) {
+                // Count grass vs dark grass tiles in this plateau
+                let grassCount = 0;
+                let darkGrassCount = 0;
+                
+                for (const {x, y} of region.tiles) {
+                    if (biomeData[y][x] === BIOME_TYPES.GRASS) grassCount++;
+                    else if (biomeData[y][x] === BIOME_TYPES.DARK_GRASS) darkGrassCount++;
+                }
+                
+                // Use majority variant for entire plateau
+                const plateauVariant = darkGrassCount > grassCount ? BIOME_TYPES.DARK_GRASS : BIOME_TYPES.GRASS;
+                
+                // Apply consistent variant to entire plateau region
+                for (const {x, y} of region.tiles) {
+                    if (biomeData[y][x] !== BIOME_TYPES.SNOW) {
+                        biomeData[y][x] = plateauVariant;
+                    }
+                }
+            }
+        }
     }
 
     /**
