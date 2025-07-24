@@ -1860,11 +1860,11 @@ export class MonsterManager {
         
         const aoeData = monster.rangedAoeData;
         
-        // Create damage effect at target position
+        // Create damage effect at target position (offset damage -20px up for better visual alignment)
         this.io.emit('effect', {
             type: (attackConfig as any).damageEffect || 'wingeddemon_damage_effect',
             x: aoeData.targetX,
-            y: aoeData.targetY,
+            y: aoeData.targetY + ((attackConfig as any).damageEffect === 'wingeddemon_damage_effect' ? -20 : 0),
             duration: 800 // Effect duration
         });
         
