@@ -772,7 +772,7 @@ export class NetworkClient {
                 if (data.type === 'wingeddemon_warning_effect' || data.type === 'wingeddemon_damage_effect') {
                     console.log('[NetworkClient] Creating debug circle for:', data.type, 'at', data.x, data.y);
                     const graphics = new PIXI.Graphics();
-                    const radius = 100; // AOE radius from attack config
+                    const radius = 50; // AOE radius from attack config
                     
                     if (data.type === 'wingeddemon_warning_effect') {
                         // White circle for warning

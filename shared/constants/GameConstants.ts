@@ -673,7 +673,7 @@ export const ATTACK_DEFINITIONS = {
         minRange: 100,
         hitboxType: 'circle',
         hitboxParams: {
-            radius: 100
+            radius: 50
         },
         animation: 'attack5',
         freezeFrame: 11,  // Freeze on frame 11
