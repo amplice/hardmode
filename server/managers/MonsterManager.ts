@@ -1056,11 +1056,11 @@ export class MonsterManager {
                     warningStartTime: Date.now()
                 };
                 
-                // Create warning effect immediately
+                // Create warning effect immediately (offset warning 10px down for better ground alignment)
                 this.io.emit('effect', {
                     type: (attackConfig as any).warningEffect || 'wingeddemon_warning_effect',
                     x: targetCoords.x,
-                    y: targetCoords.y,
+                    y: targetCoords.y + ((attackConfig as any).warningEffect === 'wingeddemon_warning_effect' ? 10 : 0),
                     duration: attackConfig.windupTime // Warning lasts for windup duration
                 });
                 

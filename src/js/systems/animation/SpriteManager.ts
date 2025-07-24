@@ -249,8 +249,8 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
         columns: 14, rows: 9, rowIndex: 7, frameSize: { width: 64, height: 64 }  // 8th row (0-indexed)
     },
     {
-        keyPrefix: 'wingeddemon_damage_effect', type: 'effect', path: 'assets/sprites/effects/351.png',
-        columns: 5, rows: 9, rowIndex: 7, frameSize: { width: 64, height: 64 }  // 8th row (0-indexed)
+        keyPrefix: 'wingeddemon_damage_effect', type: 'effect', path: 'assets/sprites/effects/529.png',
+        columns: 13, rows: 9, rowIndex: 7, frameSize: { width: 64, height: 64 }  // 8th row (0-indexed)
     },
     {
         keyPrefix: 'hunter_cone_effect', type: 'effect', path: 'assets/sprites/effects/448.png',
