@@ -31,6 +31,7 @@
  */
 
 import { StateCache } from './StateCache.js';
+import * as PIXI from 'pixi.js';
 import type { 
     PlayerState,
     MonsterState,
@@ -770,7 +771,7 @@ export class NetworkClient {
                 // TEMPORARY: Add debug circles for WingedDemon AOE visualization
                 if (data.type === 'wingeddemon_warning_effect' || data.type === 'wingeddemon_damage_effect') {
                     console.log('[NetworkClient] Creating debug circle for:', data.type, 'at', data.x, data.y);
-                    const graphics = new (window as any).PIXI.Graphics();
+                    const graphics = new PIXI.Graphics();
                     const radius = 100; // AOE radius from attack config
                     
                     if (data.type === 'wingeddemon_warning_effect') {
