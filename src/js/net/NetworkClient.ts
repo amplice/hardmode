@@ -69,6 +69,7 @@ interface GameInterface {
     statsUI?: any; // StatsUI instance
     actionBoxUI?: any; // ActionBoxUI instance
     selectedClass?: string; // Selected character class
+    entityContainer?: any; // PIXI container for entities
     
     // Methods called by NetworkClient
     initializeGameWorld(world: WorldInitData): void;
@@ -764,6 +765,31 @@ export class NetworkClient {
                     null,
                     true // useRawPosition
                 );
+                
+                // TEMPORARY: Add debug circles for WingedDemon AOE visualization
+                if (data.type === 'wingeddemon_warning_effect' || data.type === 'wingeddemon_damage_effect') {
+                    const graphics = new (window as any).PIXI.Graphics();
+                    const radius = 100; // AOE radius from attack config
+                    
+                    if (data.type === 'wingeddemon_warning_effect') {
+                        // White circle for warning
+                        graphics.lineStyle(2, 0xFFFFFF, 0.5);
+                        graphics.drawCircle(data.x, data.y, radius);
+                    } else {
+                        // Red circle for damage
+                        graphics.lineStyle(2, 0xFF0000, 0.7);
+                        graphics.drawCircle(data.x, data.y, radius);
+                    }
+                    
+                    this.game.entityContainer.addChild(graphics);
+                    
+                    // Remove debug circle when effect expires
+                    setTimeout(() => {
+                        if (graphics.parent) {
+                            graphics.parent.removeChild(graphics);
+                        }
+                    }, data.duration || 1000);
+                }
                 
                 // If duration is specified, remove effect after duration
                 if (effect && data.duration) {
