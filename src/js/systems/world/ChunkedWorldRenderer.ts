@@ -272,19 +272,8 @@ export class ChunkedWorldRenderer {
         
         processedTiles[y][x] = tileResult.type;
         
-        // FOR TILES THAT NEED GRASS BASE (snow transition tiles with transparency)
-        if (tileResult.needsGrassBase) {
-            // Add green grass base layer first
-            const grassTexture = this.worldRenderer.tilesets.getRandomPureGrass();
-            if (grassTexture) {
-                const grassSprite = new PIXI.Sprite(grassTexture);
-                grassSprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
-                tileContainer.addChild(grassSprite);
-            }
-        }
-        
         // FOR ELEVATED TILES: Create base layer first
-        else if (this.worldRenderer.elevationData && this.worldRenderer.elevationData[y][x] > 0) {
+        if (this.worldRenderer.elevationData && this.worldRenderer.elevationData[y][x] > 0) {
             const cliffBiome = this.worldRenderer.biomeData && this.worldRenderer.biomeData[y] ? 
                 this.worldRenderer.biomeData[y][x] : 0;
             const isDarkGrassCliff = cliffBiome === 1;
@@ -313,6 +302,13 @@ export class ChunkedWorldRenderer {
         const sprite = new PIXI.Sprite(tileResult.texture);
         sprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
         tileContainer.addChild(sprite);
+        
+        // Add overlay if present (e.g., grass-to-snow transitions)
+        if (tileResult.overlay) {
+            const overlaySprite = new PIXI.Sprite(tileResult.overlay.texture);
+            overlaySprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
+            tileContainer.addChild(overlaySprite);
+        }
         
         container.addChild(tileContainer);
     }

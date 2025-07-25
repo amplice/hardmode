@@ -246,19 +246,11 @@ export class CliffAutotiler {
         // STEP 2: CLIFF/TERRAIN GENERATION BASED ON BIOME
         // Ground level tiles - biome-specific handling
         if (currentElevation === 0) {
-            // Snow biomes - check for transitions to grass
+            // Snow biomes - just return snow tile (transitions handled from grass side)
             if (isSnow) {
-                // Check for snow-to-grass transitions (only for white snow)
                 const snowVariant = snowVariantData && snowVariantData[y] ? snowVariantData[y][x] : 0;
-                if (snowVariant === 0) { // Only white snow transitions to grass
-                    const grassTransition = this.getSnowToGrassTransition(x, y, biomeData);
-                    if (grassTransition) {
-                        return grassTransition;
-                    }
-                }
-                
                 return {
-                    texture: this.tilesets.getRandomSnowTile(0), // White snow
+                    texture: this.tilesets.getRandomSnowTile(snowVariant),
                     type: 'snow'
                 };
             }

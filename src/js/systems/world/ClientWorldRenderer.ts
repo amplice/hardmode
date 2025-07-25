@@ -510,19 +510,8 @@ export class ClientWorldRenderer {
                 // Mark tile walkability based on collision mask
                 tile.isCliffEdge = !this.collisionMask.isTileWalkable(x, y);
                 
-                // FOR TILES THAT NEED GRASS BASE (snow transition tiles with transparency)
-                if (tileResult.needsGrassBase) {
-                    // Add green grass base layer first
-                    const grassTexture = this.tilesets.getRandomPureGrass();
-                    if (grassTexture) {
-                        const grassSprite = new PIXI.Sprite(grassTexture);
-                        grassSprite.scale.set(this.tileSize / 32, this.tileSize / 32);
-                        tile.container.addChild(grassSprite);
-                    }
-                }
-                
                 // FOR ELEVATED TILES: Create base layer first, then cliff tile on top
-                else if (this.elevationData[y][x] > 0) {
+                if (this.elevationData[y][x] > 0) {
                     // Get the biome for this elevated tile
                     const cliffBiome = this.biomeData && this.biomeData[y] ? this.biomeData[y][x] : 0;
                     const isDarkGrassCliff = cliffBiome === 1;
@@ -559,6 +548,14 @@ export class ClientWorldRenderer {
                     sprite.scale.set(this.tileSize / 32, this.tileSize / 32);
                     tile.sprite = sprite;
                     tile.container.addChild(sprite);
+                    
+                    // Add overlay if present (e.g., grass-to-snow transitions)
+                    if (tileResult.overlay) {
+                        const overlaySprite = new PIXI.Sprite(tileResult.overlay.texture);
+                        overlaySprite.position.set(0, 0);
+                        overlaySprite.scale.set(this.tileSize / 32, this.tileSize / 32);
+                        tile.container.addChild(overlaySprite);
+                    }
                 }
             }
         }
