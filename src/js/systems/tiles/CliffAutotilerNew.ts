@@ -625,7 +625,11 @@ export class CliffAutotiler {
      * @returns Tile result with overlay
      */
     private getGrassToSnowTransitionTile(x: number, y: number, biomeData?: number[][]): TileResult | null {
-        if (!biomeData || !biomeData[y]) return null;
+        console.log(`[getGrassToSnowTransitionTile] Called with x=${x}, y=${y}, biomeData=${!!biomeData}, biomeData[y]=${biomeData ? !!biomeData[y] : 'n/a'}`);
+        if (!biomeData || !biomeData[y]) {
+            console.log(`[getGrassToSnowTransitionTile] Early return - no biomeData or biomeData[y]`);
+            return null;
+        }
         
         const width = biomeData[0].length;
         const height = biomeData.length;
@@ -653,24 +657,43 @@ export class CliffAutotiler {
         if (isSnow(x - 1, y - 1)) snowBitmask |= this.BITS.NORTHWEST;
         
         // If no snow neighbors, no transition needed
-        if (snowBitmask === 0) return null;
+        if (snowBitmask === 0) {
+            console.log(`[getGrassToSnowTransitionTile] No snow neighbors at (${x},${y})`);
+            return null;
+        }
+        
+        console.log(`[getGrassToSnowTransitionTile] Snow bitmask at (${x},${y}): ${snowBitmask}`);
         
         // Determine transition tile using EXACT same logic as determineBiomeTransitionType
         const transitionCoords = this.determineGrassToSnowTransitionType(snowBitmask);
-        if (!transitionCoords) return null;
+        if (!transitionCoords) {
+            console.log(`[getGrassToSnowTransitionTile] No transition coords for bitmask ${snowBitmask}`);
+            return null;
+        }
+        
+        console.log(`[getGrassToSnowTransitionTile] Transition coords: row=${transitionCoords.row}, col=${transitionCoords.col}`);
         
         // Get the transparency transition texture (rows 37-43 instead of 30-36)
         const row = this.tilesets.textures.terrain[transitionCoords.row];
-        if (!row || !row[transitionCoords.col]) return null;
+        if (!row || !row[transitionCoords.col]) {
+            console.log(`[getGrassToSnowTransitionTile] No texture at row ${transitionCoords.row}, col ${transitionCoords.col}`);
+            return null;
+        }
         
         const overlayTexture = row[transitionCoords.col];
-        if (!overlayTexture) return null;
+        if (!overlayTexture) {
+            console.log(`[getGrassToSnowTransitionTile] Overlay texture is null`);
+            return null;
+        }
         
         // For grass-to-snow, we need:
         // 1. Snow tile as the base (what shows through the transparent parts)
         // 2. Green grass transparency tile as overlay
         const snowTexture = this.tilesets.getRandomSnowTile(0); // White snow
-        if (!snowTexture) return null;
+        if (!snowTexture) {
+            console.log(`[getGrassToSnowTransitionTile] Snow texture is null`);
+            return null;
+        }
         
         // Return snow base with grass transparency overlay
         return {
