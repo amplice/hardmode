@@ -219,14 +219,19 @@ export class SharedWorldGenerator {
         // Flatten any plateaus that would cross biome boundaries
         this.flattenCrossBiomePlateaus(elevationData, biomeData);
         
-        // Create 2-tile green grass buffer around snow/grass borders
-        this.createGreenGrassBuffer(biomeData);
+        // Create a mask of tiles that must remain green grass (near snow borders)
+        const mustBeGreenGrass = this.createGreenGrassMask(biomeData);
         
         // Now apply the variant system (green/dark grass) within the grass biome
         // This works exactly as before - using moisture to determine variants
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 if (biomeData[y][x] === BIOME_TYPES.GRASS) {
+                    // Skip tiles that must remain green grass
+                    if (mustBeGreenGrass[y][x]) {
+                        continue; // Keep as green grass
+                    }
+                    
                     const moisture = climate.moisture[y][x];
                     
                     // Use moisture to determine grass variant (same as before)
@@ -323,19 +328,19 @@ export class SharedWorldGenerator {
     }
     
     /**
-     * Create a 2-tile green grass buffer around snow/grass borders
+     * Create a mask of tiles that must remain green grass (near snow borders)
      */
-    private createGreenGrassBuffer(biomeData: number[][]): void {
-        // Create a copy to work from
-        const originalBiomes: number[][] = [];
+    private createGreenGrassMask(biomeData: number[][]): boolean[][] {
+        // Create mask initialized to false
+        const mask: boolean[][] = [];
         for (let y = 0; y < this.height; y++) {
-            originalBiomes[y] = [...biomeData[y]];
+            mask[y] = new Array(this.width).fill(false);
         }
         
-        // Find all snow border tiles and convert nearby grass to green
+        // Mark all grass tiles within 2 tiles of snow
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                if (originalBiomes[y][x] === BIOME_TYPES.SNOW) {
+                if (biomeData[y][x] === BIOME_TYPES.SNOW) {
                     // Check in a 2-tile radius
                     for (let dy = -2; dy <= 2; dy++) {
                         for (let dx = -2; dx <= 2; dx++) {
@@ -343,10 +348,9 @@ export class SharedWorldGenerator {
                             const nx = x + dx;
                             
                             if (ny >= 0 && ny < this.height && nx >= 0 && nx < this.width) {
-                                // If it's any type of grass, make it green grass
-                                if (originalBiomes[ny][nx] === BIOME_TYPES.GRASS || 
-                                    originalBiomes[ny][nx] === BIOME_TYPES.DARK_GRASS) {
-                                    biomeData[ny][nx] = BIOME_TYPES.GRASS;
+                                // If it's grass (will be assigned variants later), mark it
+                                if (biomeData[ny][nx] === BIOME_TYPES.GRASS) {
+                                    mask[ny][nx] = true;
                                 }
                             }
                         }
@@ -354,6 +358,8 @@ export class SharedWorldGenerator {
                 }
             }
         }
+        
+        return mask;
     }
     
     /**

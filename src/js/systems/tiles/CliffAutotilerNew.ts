@@ -262,9 +262,36 @@ export class CliffAutotiler {
             // UNIDIRECTIONAL TRANSITIONS: Only green tiles get transitions when next to dark
             // This prevents both boundary tiles from becoming transitions
             if (!isDarkGrass) {  // Only apply transitions to GREEN tiles
-                const transitionTile = this.getBiomeTransitionTile(x, y, biomeData);
-                if (transitionTile) {
-                    return transitionTile;
+                // But don't apply grass transitions if there's snow nearby
+                // Check for snow neighbors first
+                let hasSnowNeighbor = false;
+                if (biomeData) {
+                    const width = biomeData[0].length;
+                    const height = biomeData.length;
+                    
+                    // Quick check for any snow neighbors
+                    for (let dy = -1; dy <= 1; dy++) {
+                        for (let dx = -1; dx <= 1; dx++) {
+                            if (dx === 0 && dy === 0) continue;
+                            const nx = x + dx;
+                            const ny = y + dy;
+                            if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                                if (biomeData[ny][nx] === BIOME_TYPES.SNOW) {
+                                    hasSnowNeighbor = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (hasSnowNeighbor) break;
+                    }
+                }
+                
+                // Only apply grass transitions if no snow nearby
+                if (!hasSnowNeighbor) {
+                    const transitionTile = this.getBiomeTransitionTile(x, y, biomeData);
+                    if (transitionTile) {
+                        return transitionTile;
+                    }
                 }
             }
             
@@ -647,25 +674,33 @@ export class CliffAutotiler {
         
         // Priority 1: Inner corners (same as grass but offset by 6 rows)
         // These were rows 30-31 in grass, now 36-37 in snow
-        if (hasNorth && hasEast && !hasNortheast) return { row: 36, col: 0, type: "inner NE corner" };
-        if (hasSouth && hasEast && !hasSoutheast) return { row: 36, col: 1, type: "inner SE corner" };
-        if (hasSouth && hasWest && !hasSouthwest) return { row: 37, col: 0, type: "inner SW corner" };
-        if (hasNorth && hasWest && !hasNorthwest) return { row: 37, col: 1, type: "inner NW corner" };
+        // Col 2-5 are the corner tiles we need
+        if (hasNorth && hasEast && !hasNortheast) return { row: 36, col: 2, type: "inner NE corner" };
+        if (hasSouth && hasEast && !hasSoutheast) return { row: 36, col: 3, type: "inner SE corner" };
+        if (hasSouth && hasWest && !hasSouthwest) return { row: 37, col: 4, type: "inner SW corner" };
+        if (hasNorth && hasWest && !hasNorthwest) return { row: 37, col: 5, type: "inner NW corner" };
         
-        // Priority 2: Outer diagonal edges (rows 32→38 in mapping)
+        // Priority 2: Additional corner combinations (rows 36-37)
+        // The smaller corner pieces in columns 0-1
+        if (hasNortheast && (!hasNorth || !hasEast)) return { row: 36, col: 0, type: "small NE corner" };
+        if (hasSoutheast && (!hasSouth || !hasEast)) return { row: 36, col: 1, type: "small SE corner" };
+        if (hasSouthwest && (!hasSouth || !hasWest)) return { row: 37, col: 0, type: "small SW corner" };
+        if (hasNorthwest && (!hasNorth || !hasWest)) return { row: 37, col: 1, type: "small NW corner" };
+        
+        // Priority 3: Outer diagonal edges (rows 32→38 in mapping)
         if (hasSoutheast && !hasSouth && !hasEast) return { row: 38, col: 0, type: "NW outer diagonal" };
         if (hasSouthwest && !hasSouth && !hasWest) return { row: 38, col: 4, type: "NE outer diagonal" };
         if (hasNortheast && !hasNorth && !hasEast) return { row: 42, col: 0, type: "SW outer diagonal" };
         if (hasNorthwest && !hasNorth && !hasWest) return { row: 42, col: 4, type: "SE outer diagonal" };
         
-        // Priority 3: Single cardinal edges (using reversed logic)
+        // Priority 4: Single cardinal edges (using reversed logic)
         // Grass to the south = north edge of grass area
         if (hasSouth && !hasEast && !hasNorth && !hasWest) return { row: 38, col: 1, type: "N edge" };
         if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 39, col: 0, type: "W edge" };
         if (hasWest && !hasNorth && !hasSouth && !hasEast) return { row: 40, col: 4, type: "E edge" };
         if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 42, col: 1, type: "S edge" };
         
-        // Priority 4: Edge variants
+        // Priority 5: Edge variants
         if (hasSouth && !hasNorth) {
             if (hasWest || hasEast) return { row: 38, col: 2, type: "N edge variant" };
             return { row: 38, col: 3, type: "N edge variant 2" };
@@ -686,7 +721,7 @@ export class CliffAutotiler {
             return { row: 41, col: 0, type: "W edge variant 2" };
         }
         
-        // Priority 5: Fallback
+        // Priority 6: Fallback
         if (hasSouth) return { row: 38, col: 1, type: "N edge fallback" };
         if (hasEast) return { row: 39, col: 0, type: "W edge fallback" };
         if (hasWest) return { row: 40, col: 4, type: "E edge fallback" };
