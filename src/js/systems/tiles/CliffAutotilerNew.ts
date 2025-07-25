@@ -787,8 +787,8 @@ export class CliffAutotiler {
      * @returns Tile coordinates or null
      */
     private determineWhiteSnowTransparencyType(bitmask: number): TransitionCoordinates | null {
-        // White snow transparency tiles are at rows 36-42, cols 0-9
-        // Same pattern as grass transitions
+        // White snow transparency tiles main area: (38,0) to (42,4)
+        // This is equivalent to grass tileset (39,0) to (43,4) but offset by 1 row
         
         // Check cardinal directions
         const hasNorth = (bitmask & this.BITS.NORTH) !== 0;
@@ -802,50 +802,45 @@ export class CliffAutotiler {
         const hasSW = (bitmask & this.BITS.SOUTHWEST) !== 0;
         const hasNW = (bitmask & this.BITS.NORTHWEST) !== 0;
         
-        // Priority 1: All sides - full coverage
+        // Priority 1: All sides covered
         if (hasNorth && hasEast && hasSouth && hasWest) {
-            return { row: 40, col: 5, type: "full coverage" };
+            return { row: 40, col: 2, type: "full coverage" };
         }
         
         // Priority 2: Three-way intersections
-        if (hasNorth && hasEast && hasSouth) return { row: 39, col: 8, type: "NES intersection" };
-        if (hasEast && hasSouth && hasWest) return { row: 40, col: 9, type: "ESW intersection" };
-        if (hasSouth && hasWest && hasNorth) return { row: 41, col: 8, type: "SWN intersection" };
-        if (hasWest && hasNorth && hasEast) return { row: 41, col: 9, type: "WNE intersection" };
+        if (hasNorth && hasEast && hasSouth) return { row: 40, col: 3, type: "NES intersection" };
+        if (hasEast && hasSouth && hasWest) return { row: 41, col: 3, type: "ESW intersection" };
+        if (hasSouth && hasWest && hasNorth) return { row: 41, col: 2, type: "SWN intersection" };
+        if (hasWest && hasNorth && hasEast) return { row: 40, col: 1, type: "WNE intersection" };
         
         // Priority 3: Corners (two adjacent cardinals)
-        if (hasNorth && hasEast) return { row: 36, col: 6, type: "NE corner" };
-        if (hasEast && hasSouth) return { row: 36, col: 9, type: "SE corner" };
-        if (hasSouth && hasWest) return { row: 39, col: 9, type: "SW corner" };
-        if (hasWest && hasNorth) return { row: 39, col: 6, type: "NW corner" };
+        if (hasNorth && hasEast) return { row: 42, col: 4, type: "NE corner" };
+        if (hasEast && hasSouth) return { row: 38, col: 4, type: "SE corner" };
+        if (hasSouth && hasWest) return { row: 38, col: 0, type: "SW corner" };
+        if (hasWest && hasNorth) return { row: 42, col: 0, type: "NW corner" };
         
         // Priority 4: Two opposite cardinals (corridors)
         if (hasNorth && hasSouth) {
-            if (hasWest || hasEast) return { row: 38, col: 2, type: "N-S corridor variant" };
-            return { row: 38, col: 3, type: "N-S corridor variant 2" };
+            // Use middle columns for N-S corridors
+            return { row: 40, col: 1, type: "N-S corridor" };
         }
         if (hasEast && hasWest) {
-            if (hasNorth || hasSouth) return { row: 38, col: 0, type: "E-W corridor variant" };
-            return { row: 38, col: 1, type: "E-W corridor variant 2" };
+            // Use middle row for E-W corridors
+            return { row: 40, col: 2, type: "E-W corridor" };
         }
         
-        // Priority 5: Single cardinal edges  
-        if (hasNorth) return { row: 36, col: 1, type: "N edge" };
-        if (hasEast) return { row: 37, col: 0, type: "E edge" };
-        if (hasSouth) return { row: 38, col: 1, type: "S edge" };
-        if (hasWest) return { row: 37, col: 4, type: "W edge" };
+        // Priority 5: Single cardinal edges (with variations)
+        if (hasNorth) return { row: 42, col: 1 + Math.floor(Math.random() * 3), type: "N edge" }; // cols 1,2,3
+        if (hasEast) return { row: 39 + Math.floor(Math.random() * 3), col: 4, type: "E edge" }; // rows 39,40,41
+        if (hasSouth) return { row: 38, col: 1 + Math.floor(Math.random() * 3), type: "S edge" }; // cols 1,2,3
+        if (hasWest) return { row: 39 + Math.floor(Math.random() * 3), col: 0, type: "W edge" }; // rows 39,40,41
         
         // Priority 6: Inner corners (diagonal without adjacent cardinals)
-        if (hasNE && !hasNorth && !hasEast) return { row: 37, col: 6, type: "NE inner" };
-        if (hasSE && !hasSouth && !hasEast) return { row: 37, col: 7, type: "SE inner" };
-        if (hasSW && !hasSouth && !hasWest) return { row: 38, col: 7, type: "SW inner" };
-        if (hasNW && !hasNorth && !hasWest) return { row: 38, col: 6, type: "NW inner" };
-        
-        // Priority 7: Fallback edge patterns for any cardinal
-        if (hasSouth) return { row: 38, col: 1, type: "S edge fallback" };
-        if (hasEast) return { row: 39, col: 0, type: "E edge fallback" };
-        if (hasWest) return { row: 40, col: 4, type: "W edge fallback" };
-        if (hasNorth) return { row: 42, col: 1, type: "N edge fallback" };
+        // These are outside the main (38,0)-(42,4) box
+        if (hasNE && !hasNorth && !hasEast) return { row: 41, col: 6, type: "NE inner" };
+        if (hasSE && !hasSouth && !hasEast) return { row: 39, col: 7, type: "SE inner" };
+        if (hasSW && !hasSouth && !hasWest) return { row: 39, col: 6, type: "SW inner" };
+        if (hasNW && !hasNorth && !hasWest) return { row: 41, col: 7, type: "NW inner" };
         
         // No transition needed
         return null;
