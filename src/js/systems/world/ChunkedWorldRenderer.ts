@@ -284,7 +284,10 @@ export class ChunkedWorldRenderer {
             
             if (isSnowCliff) {
                 // For snow cliffs, place a full snow ground tile as base
-                const snowGroundTexture = this.worldRenderer.tilesets.getRandomSnowTile(0); // White snow variant
+                // Use the correct snow variant for this position
+                const snowVariant = (this.worldRenderer.snowVariantData && this.worldRenderer.snowVariantData[y]) 
+                    ? this.worldRenderer.snowVariantData[y][x] : 0;
+                const snowGroundTexture = this.worldRenderer.tilesets.getRandomSnowTile(snowVariant);
                 if (snowGroundTexture) {
                     const baseSprite = new PIXI.Sprite(snowGroundTexture);
                     baseSprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
