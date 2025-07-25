@@ -955,11 +955,19 @@ export class NetworkClient {
                 );
                 
                 if (hitbox) {
-                    // Apply damage from server for all abilities
-                    // The server is authoritative for damage calculation
-                    this.game.systems.combat.applyHitEffects(player, hitbox, data.config.damage || 0);
+                    // Check if this is a standard melee attack from the local player
+                    const attackType = data.config.archetype;
+                    const isStandardMelee = attackType === 'standard_melee';
                     
-                    // Draw the hitbox for visual feedback
+                    // Only apply damage if:
+                    // 1. It's NOT the local player (remote players need damage applied)
+                    // 2. OR it's NOT a standard melee attack (server-controlled abilities need damage)
+                    // This prevents double damage for local player's standard melee attacks
+                    if (!isLocalPlayer || !isStandardMelee) {
+                        this.game.systems.combat.applyHitEffects(player, hitbox, data.config.damage || 0);
+                    }
+                    
+                    // Always draw the hitbox for visual feedback
                     const graphics = hitbox.draw();
                     this.game.entityContainer.addChild(graphics);
                 }
