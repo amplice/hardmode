@@ -110,13 +110,15 @@ export class CliffAutotiler {
      * @param bitmask - 8-bit neighbor bitmask
      * @param isDarkGrass - Whether to use dark grass tileset
      * @param biomeId - The biome type (0=grass, 1=dark grass, 2=snow)
+     * @param snowVariant - Snow variant (0=white, 1=blue, 2=grey) - only used when biomeId is snow
      */
-    private determineTileType(bitmask: number, isDarkGrass: boolean = false, biomeId: number = 0): TileCoordinates {
+    private determineTileType(bitmask: number, isDarkGrass: boolean = false, biomeId: number = 0, snowVariant: number = 0): TileCoordinates {
         // Base column offset for biome
         let colOffset = 0;
         if (biomeId === BIOME_TYPES.SNOW) {
-            // Snow uses different tileset, but we'll use variant 0 (white) for now
-            colOffset = 0; // White snow
+            // Snow uses different tileset with variant-based offsets
+            // White = 0, Blue = +12, Grey = +24
+            colOffset = snowVariant * 12;
         } else if (isDarkGrass) {
             colOffset = 11; // Dark grass
         }
@@ -229,6 +231,7 @@ export class CliffAutotiler {
      * @param elevationData - 2D elevation map
      * @param processedTiles - Processed tile types
      * @param biomeData - 2D biome map (0=green, 1=dark)
+     * @param snowVariantData - 2D snow variant map (0=white, 1=blue, 2=grey)
      */
     getTileTexture(x: number, y: number, elevationData: number[][], processedTiles: any[][] | null, biomeData?: number[][], snowVariantData?: number[][]): TileResult {
         // Debug: Log function call occasionally
@@ -327,7 +330,8 @@ export class CliffAutotiler {
         
         // Elevated tiles - cliff generation using biome-appropriate tileset
         const bitmask = this.calculateBitmask(x, y, elevationData);
-        let tileCoords = this.determineTileType(bitmask, isDarkGrass, biomeId);
+        const snowVariant = (isSnow && snowVariantData && snowVariantData[y]) ? snowVariantData[y][x] : 0;
+        let tileCoords = this.determineTileType(bitmask, isDarkGrass, biomeId, snowVariant);
         
         // Randomize bottom edge tiles (columns 1-5 for horizontal edges)
         if (tileCoords.type.includes("bottom edge") && tileCoords.row === 5) {
@@ -409,8 +413,9 @@ export class CliffAutotiler {
      * @param elevationData - 2D elevation map
      * @param processedTiles - Processed tile types
      * @param biomeData - 2D biome map (0=green, 1=dark)
+     * @param snowVariantData - 2D snow variant map (0=white, 1=blue, 2=grey)
      */
-    getCliffExtensionTexture(x: number, y: number, elevationData: number[][], processedTiles: any[][] | null, biomeData?: number[][]): Texture | null {
+    getCliffExtensionTexture(x: number, y: number, elevationData: number[][], processedTiles: any[][] | null, biomeData?: number[][], snowVariantData?: number[][]): Texture | null {
         // STEP 1: BIOME DETERMINATION FIRST
         // Determine biome type for extension - this drives which tileset to use
         const biomeId = biomeData && biomeData[y] ? biomeData[y][x] : 0;
@@ -440,21 +445,32 @@ export class CliffAutotiler {
                 // The extension row (6) has the same structure as main tileset
                 const tileset = isSnow ? this.tilesets.textures.snow : this.tilesets.textures.terrain;
                 const extensionRow = tileset[6];
-                if (extensionRow && extensionRow[col]) {
-                    const extensionTexture = extensionRow[col];
+                
+                // For snow, we need to use the correct variant column
+                let extensionCol = col;
+                if (isSnow && snowVariantData && snowVariantData[y]) {
+                    const snowVariant = snowVariantData[y][x];
+                    // The processed tile col might have variant offset already, but we need to ensure
+                    // we're using the right extension column for this variant
+                    const baseCol = col % 12; // Get base column without variant offset
+                    extensionCol = baseCol + (snowVariant * 12); // Apply correct variant offset
+                }
+                
+                if (extensionRow && extensionRow[extensionCol]) {
+                    const extensionTexture = extensionRow[extensionCol];
                     if (extensionTexture) {
                         if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
-                            console.log(`[CliffAutotiler] Extension at (${x}, ${y + 1}) using (6, ${col}) below (${row}, ${col})`);
+                            console.log(`[CliffAutotiler] Extension at (${x}, ${y + 1}) using (6, ${extensionCol}) below (${row}, ${col})`);
                         }
                         return extensionTexture;
                     } else {
                         if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
-                            console.log(`[CliffAutotiler] ❌ No extension texture found at (6, ${col}) for bottom cliff at (${x}, ${y})`);
+                            console.log(`[CliffAutotiler] ❌ No extension texture found at (6, ${extensionCol}) for bottom cliff at (${x}, ${y})`);
                         }
                     }
                 } else {
                     if (GAME_CONSTANTS.DEBUG.ENABLE_TILE_LOGGING) {
-                        console.log(`[CliffAutotiler] ❌ Extension row missing or no texture at column ${col} for bottom cliff at (${x}, ${y})`);
+                        console.log(`[CliffAutotiler] ❌ Extension row missing or no texture at column ${extensionCol} for bottom cliff at (${x}, ${y})`);
                     }
                 }
             }
@@ -462,7 +478,8 @@ export class CliffAutotiler {
             // Fallback: if no processed tiles, calculate the tile type directly
             // This ensures extensions are created even if processed tile data is missing
             const bitmask = this.calculateBitmask(x, y, elevationData);
-            const tileCoords = this.determineTileType(bitmask, isDarkGrass, biomeId);
+            const snowVariant = (isSnow && snowVariantData && snowVariantData[y]) ? snowVariantData[y][x] : 0;
+            const tileCoords = this.determineTileType(bitmask, isDarkGrass, biomeId, snowVariant);
             
             if (tileCoords.row === 5) {
                 // This is a bottom edge tile that needs an extension
