@@ -176,6 +176,17 @@ export class TilesetManager {
             }
         }
         
+        // Load transparency transition tiles (rows 37-43, columns 0-9)
+        for (let row = 37; row <= 43; row++) {
+            this.textures.terrain[row] = [];
+            for (let col = 0; col <= 9; col++) {
+                this.textures.terrain[row][col] = new Texture(
+                    baseTexture,
+                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+                );
+            }
+        }
+        
         // Load the rare grass variations: green (22,54) to (31,63) and dark (22,44) to (31,53)
         for (let row = 22; row <= 31; row++) {
             if (!this.textures.terrain[row]) {
