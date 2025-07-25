@@ -815,8 +815,8 @@ export class CliffAutotiler {
         
         // Priority 3: Corners (two adjacent cardinals)
         if (hasNorth && hasEast) return { row: 42, col: 4, type: "NE corner" };
-        if (hasEast && hasSouth) return { row: 38, col: 4, type: "SE corner" };
-        if (hasSouth && hasWest) return { row: 38, col: 0, type: "SW corner" };
+        if (hasEast && hasSouth) return { row: 38, col: 0, type: "SE corner" };
+        if (hasSouth && hasWest) return { row: 38, col: 4, type: "SW corner" };
         if (hasWest && hasNorth) return { row: 42, col: 0, type: "NW corner" };
         
         // Priority 4: Two opposite cardinals (corridors)
@@ -831,9 +831,9 @@ export class CliffAutotiler {
         
         // Priority 5: Single cardinal edges (with variations)
         if (hasNorth) return { row: 42, col: 1 + Math.floor(Math.random() * 3), type: "N edge" }; // cols 1,2,3
-        if (hasEast) return { row: 39 + Math.floor(Math.random() * 3), col: 4, type: "E edge" }; // rows 39,40,41
+        if (hasWest) return { row: 39 + Math.floor(Math.random() * 3), col: 4, type: "W edge" }; // rows 39,40,41
         if (hasSouth) return { row: 38, col: 1 + Math.floor(Math.random() * 3), type: "S edge" }; // cols 1,2,3
-        if (hasWest) return { row: 39 + Math.floor(Math.random() * 3), col: 0, type: "W edge" }; // rows 39,40,41
+        if (hasEast) return { row: 39 + Math.floor(Math.random() * 3), col: 0, type: "E edge" }; // rows 39,40,41
         
         // Priority 6: Inner corners (diagonal without adjacent cardinals)
         // These are outside the main (38,0)-(42,4) box
