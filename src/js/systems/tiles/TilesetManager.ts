@@ -66,6 +66,11 @@ export class TilesetManager {
     private decorativeGrassVariations: Texture[];
     private decorativeDarkGrassVariations: Texture[];
     
+    // Snow tile references
+    private snowAltTiles: Texture[][] = []; // Alt tiles for each variant [variant][tiles]
+    private snowRockTiles: Texture[] = [];  // Rock decorative tiles
+    private snowVegetationTiles: Texture[] = []; // Vegetation decorative tiles
+    
     // Legacy compatibility
     private pureGrassTiles: Texture[];
     private pureDarkGrassTiles: Texture[];
@@ -363,6 +368,105 @@ export class TilesetManager {
                 );
             }
         }
+        
+        // Load decorative snow tiles
+        // Rock decorative tiles: (26,31) to (29,32) and (27,33) to (29,34)
+        for (let row = 31; row <= 34; row++) {
+            if (!this.textures.snow[row]) {
+                this.textures.snow[row] = [];
+            }
+            for (let col = 26; col <= 29; col++) {
+                // Only load tiles that are in the specified ranges
+                if ((row >= 31 && row <= 32) || (row >= 33 && row <= 34 && col >= 27)) {
+                    this.textures.snow[row][col] = new Texture(
+                        baseTexture,
+                        new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+                    );
+                }
+            }
+        }
+        
+        // Vegetation decorative tiles: row 35, cols 24-28
+        if (!this.textures.snow[35]) {
+            this.textures.snow[35] = [];
+        }
+        for (let col = 24; col <= 28; col++) {
+            this.textures.snow[35][col] = new Texture(
+                baseTexture,
+                new Rectangle(col * tileSize, 35 * tileSize, tileSize, tileSize)
+            );
+        }
+        
+        // Store snow variant tiles for easy access
+        this.setupSnowVariantTiles();
+    }
+    
+    private setupSnowVariantTiles(): void {
+        // Initialize arrays for each variant
+        this.snowAltTiles = [[], [], []]; // white, blue, grey
+        
+        // White snow alt tiles (1,1) to (4,5) - total 20 tiles
+        for (let row = 1; row <= 4; row++) {
+            for (let col = 1; col <= 5; col++) {
+                if (this.textures.snow[row] && this.textures.snow[row][col]) {
+                    this.snowAltTiles[0].push(this.textures.snow[row][col]!);
+                }
+            }
+        }
+        
+        // Blue snow alt tiles - same pattern but with +12 column offset
+        for (let row = 1; row <= 4; row++) {
+            for (let col = 13; col <= 17; col++) { // 1+12 to 5+12
+                if (this.textures.snow[row] && this.textures.snow[row][col]) {
+                    this.snowAltTiles[1].push(this.textures.snow[row][col]!);
+                }
+            }
+        }
+        
+        // Grey snow alt tiles - same pattern but with +24 column offset
+        for (let row = 1; row <= 4; row++) {
+            for (let col = 25; col <= 29; col++) { // 1+24 to 5+24
+                if (this.textures.snow[row] && this.textures.snow[row][col]) {
+                    this.snowAltTiles[2].push(this.textures.snow[row][col]!);
+                }
+            }
+        }
+        
+        // Rock decorative tiles: (26,31) to (29,32) and (27,33) to (29,34)
+        this.snowRockTiles = [];
+        // First range: rows 31-32, cols 26-29
+        for (let row = 31; row <= 32; row++) {
+            for (let col = 26; col <= 29; col++) {
+                if (this.textures.snow[row] && this.textures.snow[row][col]) {
+                    this.snowRockTiles.push(this.textures.snow[row][col]!);
+                }
+            }
+        }
+        // Second range: rows 33-34, cols 27-29
+        for (let row = 33; row <= 34; row++) {
+            for (let col = 27; col <= 29; col++) {
+                if (this.textures.snow[row] && this.textures.snow[row][col]) {
+                    this.snowRockTiles.push(this.textures.snow[row][col]!);
+                }
+            }
+        }
+        
+        // Vegetation decorative tiles: row 35, cols 24-28
+        this.snowVegetationTiles = [];
+        if (this.textures.snow[35]) {
+            for (let col = 24; col <= 28; col++) {
+                if (this.textures.snow[35][col]) {
+                    this.snowVegetationTiles.push(this.textures.snow[35][col]!);
+                }
+            }
+        }
+        
+        console.log(`[TilesetManager] Snow tiles loaded:`);
+        console.log(`  White alt tiles: ${this.snowAltTiles[0].length}`);
+        console.log(`  Blue alt tiles: ${this.snowAltTiles[1].length}`);
+        console.log(`  Grey alt tiles: ${this.snowAltTiles[2].length}`);
+        console.log(`  Rock decorative tiles: ${this.snowRockTiles.length}`);
+        console.log(`  Vegetation decorative tiles: ${this.snowVegetationTiles.length}`);
     }
     
     private slicePlantsTileset(baseTexture: BaseTexture): Texture[] {
@@ -516,8 +620,55 @@ export class TilesetManager {
         return this.textures.snow[1] && this.textures.snow[1][col] ? this.textures.snow[1][col] : null;
     }
     
-    // Get random snow tile (for now just returns basic tile, can add variations later)
+    // Get random snow tile with weighted distribution
     getRandomSnowTile(variant: number = 0): Texture | null {
+        // Ensure variant is valid (0=white, 1=blue, 2=grey)
+        if (variant < 0 || variant > 2) {
+            variant = 0;
+        }
+        
+        const rand = Math.random();
+        
+        // 80% chance for alt tiles (plain snow variations)
+        if (rand < 0.80) {
+            const altTiles = this.snowAltTiles[variant];
+            if (altTiles && altTiles.length > 0) {
+                return altTiles[Math.floor(Math.random() * altTiles.length)];
+            }
+            // Fallback to basic tile if no alt tiles
+            return this.getBasicSnowTile(variant);
+        }
+        // 16% chance for vegetation decorative tiles (only for white snow)
+        else if (rand < 0.96 && variant === 0) {
+            if (this.snowVegetationTiles.length > 0) {
+                return this.snowVegetationTiles[Math.floor(Math.random() * this.snowVegetationTiles.length)];
+            }
+            // Fallback to alt tiles
+            const altTiles = this.snowAltTiles[variant];
+            if (altTiles && altTiles.length > 0) {
+                return altTiles[Math.floor(Math.random() * altTiles.length)];
+            }
+        }
+        // 4% chance for rock decorative tiles (only for white snow)
+        else if (variant === 0) {
+            if (this.snowRockTiles.length > 0) {
+                return this.snowRockTiles[Math.floor(Math.random() * this.snowRockTiles.length)];
+            }
+            // Fallback to alt tiles
+            const altTiles = this.snowAltTiles[variant];
+            if (altTiles && altTiles.length > 0) {
+                return altTiles[Math.floor(Math.random() * altTiles.length)];
+            }
+        }
+        // For blue/grey variants in the 96-100% range, use alt tiles
+        else {
+            const altTiles = this.snowAltTiles[variant];
+            if (altTiles && altTiles.length > 0) {
+                return altTiles[Math.floor(Math.random() * altTiles.length)];
+            }
+        }
+        
+        // Final fallback to basic tile
         return this.getBasicSnowTile(variant);
     }
     
