@@ -265,6 +265,7 @@ export class CliffAutotiler {
                     const width = biomeData[0].length;
                     const height = biomeData.length;
                     
+                    
                     // Quick check for any snow neighbors
                     for (let dy = -1; dy <= 1; dy++) {
                         for (let dx = -1; dx <= 1; dx++) {
@@ -625,6 +626,7 @@ export class CliffAutotiler {
             return biomeData[ny][nx] === BIOME_TYPES.SNOW;
         };
         
+        
         // Check all 8 directions for snow
         if (isSnow(x, y - 1)) snowBitmask |= this.BITS.NORTH;
         if (isSnow(x + 1, y - 1)) snowBitmask |= this.BITS.NORTHEAST;
@@ -649,7 +651,9 @@ export class CliffAutotiler {
         const overlayTexture = row[transitionCoords.col];
         if (!overlayTexture) return null;
         
-        // For grass-to-snow, we need to place a snow tile UNDER the transparency overlay
+        // For grass-to-snow, we need:
+        // 1. Snow tile as the base (what shows through the transparent parts)
+        // 2. Green grass transparency tile as overlay
         const snowTexture = this.tilesets.getRandomSnowTile(0); // White snow
         if (!snowTexture) return null;
         
