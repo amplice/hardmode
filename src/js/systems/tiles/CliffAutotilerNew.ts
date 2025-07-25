@@ -707,7 +707,7 @@ export class CliffAutotiler {
     
     /**
      * Get snow variant transition tile (white-to-blue or white-to-grey)
-     * Uses same bitmask logic as grass transitions
+     * Uses transparency overlay approach like grass-to-snow transitions
      * @param x - Tile X coordinate  
      * @param y - Tile Y coordinate
      * @param snowVariantData - 2D snow variant map
@@ -723,67 +723,136 @@ export class CliffAutotiler {
         // Only white snow (variant 0) gets transitions
         if (currentVariant !== 0) return null;
         
-        // Check for blue (variant 1) and grey (variant 2) neighbors
-        let blueBitmask = 0;
-        let greyBitmask = 0;
+        // Calculate bitmask for non-white snow neighbors (blue or grey)
+        let variantBitmask = 0;
+        let neighborVariant = 0; // Track which variant we're transitioning to
         
-        // Helper function to check variant
-        const checkVariant = (nx: number, ny: number, targetVariant: number): boolean => {
+        // Helper function to check if neighbor is not white snow
+        const isOtherVariant = (nx: number, ny: number): boolean => {
             if (nx < 0 || nx >= width || ny < 0 || ny >= height) {
                 return false;
             }
-            return snowVariantData[ny][nx] === targetVariant;
+            const variant = snowVariantData[ny][nx];
+            if (variant !== 0 && neighborVariant === 0) {
+                neighborVariant = variant; // Set the first non-white variant we find
+            }
+            return variant !== 0 && variant === neighborVariant;
         };
         
-        // Calculate bitmasks for blue and grey neighbors
-        if (checkVariant(x, y - 1, 1)) blueBitmask |= this.BITS.NORTH;
-        if (checkVariant(x + 1, y - 1, 1)) blueBitmask |= this.BITS.NORTHEAST;
-        if (checkVariant(x + 1, y, 1)) blueBitmask |= this.BITS.EAST;
-        if (checkVariant(x + 1, y + 1, 1)) blueBitmask |= this.BITS.SOUTHEAST;
-        if (checkVariant(x, y + 1, 1)) blueBitmask |= this.BITS.SOUTH;
-        if (checkVariant(x - 1, y + 1, 1)) blueBitmask |= this.BITS.SOUTHWEST;
-        if (checkVariant(x - 1, y, 1)) blueBitmask |= this.BITS.WEST;
-        if (checkVariant(x - 1, y - 1, 1)) blueBitmask |= this.BITS.NORTHWEST;
+        // Check all 8 directions for non-white snow
+        if (isOtherVariant(x, y - 1)) variantBitmask |= this.BITS.NORTH;
+        if (isOtherVariant(x + 1, y - 1)) variantBitmask |= this.BITS.NORTHEAST;
+        if (isOtherVariant(x + 1, y)) variantBitmask |= this.BITS.EAST;
+        if (isOtherVariant(x + 1, y + 1)) variantBitmask |= this.BITS.SOUTHEAST;
+        if (isOtherVariant(x, y + 1)) variantBitmask |= this.BITS.SOUTH;
+        if (isOtherVariant(x - 1, y + 1)) variantBitmask |= this.BITS.SOUTHWEST;
+        if (isOtherVariant(x - 1, y)) variantBitmask |= this.BITS.WEST;
+        if (isOtherVariant(x - 1, y - 1)) variantBitmask |= this.BITS.NORTHWEST;
         
-        if (checkVariant(x, y - 1, 2)) greyBitmask |= this.BITS.NORTH;
-        if (checkVariant(x + 1, y - 1, 2)) greyBitmask |= this.BITS.NORTHEAST;
-        if (checkVariant(x + 1, y, 2)) greyBitmask |= this.BITS.EAST;
-        if (checkVariant(x + 1, y + 1, 2)) greyBitmask |= this.BITS.SOUTHEAST;
-        if (checkVariant(x, y + 1, 2)) greyBitmask |= this.BITS.SOUTH;
-        if (checkVariant(x - 1, y + 1, 2)) greyBitmask |= this.BITS.SOUTHWEST;
-        if (checkVariant(x - 1, y, 2)) greyBitmask |= this.BITS.WEST;
-        if (checkVariant(x - 1, y - 1, 2)) greyBitmask |= this.BITS.NORTHWEST;
+        // If no variant neighbors or no consistent variant, no transition needed
+        if (variantBitmask === 0 || neighborVariant === 0) return null;
         
-        // Prioritize blue transitions over grey if both are present
-        if (blueBitmask > 0) {
-            const transitionCoords = this.determineSnowTransitionType(blueBitmask, 'white_to_blue');
-            if (transitionCoords) {
-                const row = this.tilesets.textures.snow[transitionCoords.row];
-                if (row && row[transitionCoords.col]) {
-                    return {
-                        texture: row[transitionCoords.col],
-                        type: 'white_to_blue_transition'
-                    };
-                }
+        // Use the same transition determination logic as grass-to-snow
+        const transitionCoords = this.determineWhiteSnowTransparencyType(variantBitmask);
+        if (!transitionCoords) return null;
+        
+        // Get the white snow transparency texture (rows 36-42)
+        const row = this.tilesets.textures.snow[transitionCoords.row];
+        if (!row || !row[transitionCoords.col]) return null;
+        
+        const overlayTexture = row[transitionCoords.col];
+        if (!overlayTexture) return null;
+        
+        // For white-to-variant transitions:
+        // 1. Blue/grey snow tile as the base (what shows through the transparent parts)
+        // 2. White snow transparency tile as overlay
+        const variantSnowTexture = this.tilesets.getRandomSnowTile(neighborVariant);
+        if (!variantSnowTexture) return null;
+        
+        // Return variant snow base with white snow transparency overlay
+        return {
+            texture: variantSnowTexture,
+            type: `variant_snow_with_white_overlay`,
+            overlay: {
+                texture: overlayTexture,
+                type: `white_to_variant_transition_${transitionCoords.row},${transitionCoords.col}`
             }
-        } else if (greyBitmask > 0) {
-            const transitionCoords = this.determineSnowTransitionType(greyBitmask, 'white_to_grey');
-            if (transitionCoords) {
-                const row = this.tilesets.textures.snow[transitionCoords.row];
-                if (row && row[transitionCoords.col]) {
-                    return {
-                        texture: row[transitionCoords.col],
-                        type: 'white_to_grey_transition'
-                    };
-                }
-            }
+        };
+    }
+    
+    /**
+     * Determine white snow transparency transition tile coordinates
+     * Uses same logic as grass-to-snow transitions but with snow transparency tiles
+     * @param bitmask - Neighbor bitmask  
+     * @returns Tile coordinates or null
+     */
+    private determineWhiteSnowTransparencyType(bitmask: number): TransitionCoordinates | null {
+        // White snow transparency tiles are at rows 36-42, cols 0-9
+        // Same pattern as grass transitions
+        
+        // Check cardinal directions
+        const hasNorth = (bitmask & this.BITS.NORTH) !== 0;
+        const hasEast = (bitmask & this.BITS.EAST) !== 0;
+        const hasSouth = (bitmask & this.BITS.SOUTH) !== 0;
+        const hasWest = (bitmask & this.BITS.WEST) !== 0;
+        
+        // Check diagonals
+        const hasNE = (bitmask & this.BITS.NORTHEAST) !== 0;
+        const hasSE = (bitmask & this.BITS.SOUTHEAST) !== 0;
+        const hasSW = (bitmask & this.BITS.SOUTHWEST) !== 0;
+        const hasNW = (bitmask & this.BITS.NORTHWEST) !== 0;
+        
+        // Priority 1: All sides - full coverage
+        if (hasNorth && hasEast && hasSouth && hasWest) {
+            return { row: 40, col: 5, type: "full coverage" };
         }
         
+        // Priority 2: Three-way intersections
+        if (hasNorth && hasEast && hasSouth) return { row: 39, col: 8, type: "NES intersection" };
+        if (hasEast && hasSouth && hasWest) return { row: 40, col: 9, type: "ESW intersection" };
+        if (hasSouth && hasWest && hasNorth) return { row: 41, col: 8, type: "SWN intersection" };
+        if (hasWest && hasNorth && hasEast) return { row: 41, col: 9, type: "WNE intersection" };
+        
+        // Priority 3: Corners (two adjacent cardinals)
+        if (hasNorth && hasEast) return { row: 36, col: 6, type: "NE corner" };
+        if (hasEast && hasSouth) return { row: 36, col: 9, type: "SE corner" };
+        if (hasSouth && hasWest) return { row: 39, col: 9, type: "SW corner" };
+        if (hasWest && hasNorth) return { row: 39, col: 6, type: "NW corner" };
+        
+        // Priority 4: Two opposite cardinals (corridors)
+        if (hasNorth && hasSouth) {
+            if (hasWest || hasEast) return { row: 38, col: 2, type: "N-S corridor variant" };
+            return { row: 38, col: 3, type: "N-S corridor variant 2" };
+        }
+        if (hasEast && hasWest) {
+            if (hasNorth || hasSouth) return { row: 38, col: 0, type: "E-W corridor variant" };
+            return { row: 38, col: 1, type: "E-W corridor variant 2" };
+        }
+        
+        // Priority 5: Single cardinal edges  
+        if (hasNorth) return { row: 36, col: 1, type: "N edge" };
+        if (hasEast) return { row: 37, col: 0, type: "E edge" };
+        if (hasSouth) return { row: 38, col: 1, type: "S edge" };
+        if (hasWest) return { row: 37, col: 4, type: "W edge" };
+        
+        // Priority 6: Inner corners (diagonal without adjacent cardinals)
+        if (hasNE && !hasNorth && !hasEast) return { row: 37, col: 6, type: "NE inner" };
+        if (hasSE && !hasSouth && !hasEast) return { row: 37, col: 7, type: "SE inner" };
+        if (hasSW && !hasSouth && !hasWest) return { row: 38, col: 7, type: "SW inner" };
+        if (hasNW && !hasNorth && !hasWest) return { row: 38, col: 6, type: "NW inner" };
+        
+        // Priority 7: Fallback edge patterns for any cardinal
+        if (hasSouth) return { row: 38, col: 1, type: "S edge fallback" };
+        if (hasEast) return { row: 39, col: 0, type: "E edge fallback" };
+        if (hasWest) return { row: 40, col: 4, type: "W edge fallback" };
+        if (hasNorth) return { row: 42, col: 1, type: "N edge fallback" };
+        
+        // No transition needed
         return null;
     }
     
     /**
-     * Determine snow variant transition tile coordinates
+     * Determine snow variant transition tile coordinates (OLD - NO LONGER USED)
      * @param bitmask - Neighbor bitmask
      * @param transitionType - 'white_to_blue' or 'white_to_grey'
      * @returns Tile coordinates or null
