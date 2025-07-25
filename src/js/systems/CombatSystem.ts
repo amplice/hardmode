@@ -370,7 +370,8 @@ export class CombatSystem {
             entity,
             damage: attackConfig.damage
           });
-          this.applyHitEffects(entity, hitbox, attackConfig.damage);
+          // Don't apply damage locally - let server handle it
+          // this.applyHitEffects(entity, hitbox, attackConfig.damage);
         }
       }
     }, attackConfig.windupTime);
