@@ -53,6 +53,7 @@ interface WorldData {
     elevationData: number[][];
     biomeData: number[][];
     stairsData: (any | null)[][];
+    snowVariantData?: number[][];
 }
 
 interface RenderOptions {
@@ -84,6 +85,7 @@ export class ClientWorldRenderer {
     elevationData: number[][] | null;
     biomeData: number[][] | null;
     stairsData: (any | null)[][] | null;
+    snowVariantData: number[][] | null;
     sharedWorldGen: SharedWorldGenerator | null;
     
     // Collision and rendering
@@ -110,6 +112,7 @@ export class ClientWorldRenderer {
         this.elevationData = null;
         this.biomeData = null;
         this.stairsData = null;
+        this.snowVariantData = null;
         this.sharedWorldGen = null;
         
         // Initialize collision mask for debug visualization
@@ -132,6 +135,7 @@ export class ClientWorldRenderer {
         this.elevationData = worldData.elevationData;
         this.biomeData = worldData.biomeData;
         this.stairsData = worldData.stairsData;
+        this.snowVariantData = worldData.snowVariantData || null;
         this.sharedWorldGen = sharedWorldGen;
         
         console.log('[ClientWorldRenderer] World data received - biomes:', this.biomeData.length, 'rows');
@@ -223,7 +227,7 @@ export class ClientWorldRenderer {
         }
         
         // For all non-stair tiles, use the autotiler (it handles both cliff and biome transitions)
-        const tileResult = (this.cliffAutotiler as any).getTileTexture(x, y, this.elevationData || [], null, this.biomeData || undefined, undefined);
+        const tileResult = (this.cliffAutotiler as any).getTileTexture(x, y, this.elevationData || [], null, this.biomeData || undefined, this.snowVariantData || undefined);
         if (tileResult && tileResult.texture) {
             return tileResult.texture;
         }
@@ -504,7 +508,7 @@ export class ClientWorldRenderer {
                 }
                 
                 // Normal tile processing - pass biome data to autotiler
-                const tileResult = (this.cliffAutotiler as any).getTileTexture(x, y, this.elevationData || [], processedTiles, this.biomeData || undefined, undefined) as any;
+                const tileResult = (this.cliffAutotiler as any).getTileTexture(x, y, this.elevationData || [], processedTiles, this.biomeData || undefined, this.snowVariantData || undefined) as any;
                 processedTiles[y][x] = tileResult.type;
                 
                 // Mark tile walkability based on collision mask
@@ -618,7 +622,7 @@ export class ClientWorldRenderer {
             for (let x = 0; x < this.width; x++) {
                 if (this.elevationData[y][x] === 0) continue;
                 
-                const extensionTexture = (this.cliffAutotiler as any).getCliffExtensionTexture(x, y, this.elevationData, processedTiles, this.biomeData, undefined);
+                const extensionTexture = (this.cliffAutotiler as any).getCliffExtensionTexture(x, y, this.elevationData, processedTiles, this.biomeData, this.snowVariantData);
                 
                 if (extensionTexture && y + 1 < this.height) {
                     // Update the ground tile underneath to match the cliff's biome

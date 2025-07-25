@@ -52,6 +52,7 @@ export class SharedWorldGenerator {
     public stairsData: any[][] | null;
     public biomeData: number[][] | null;
     public elevationData: number[][] | null;
+    public snowVariantData: number[][] | null;
 
     constructor(width: number = 100, height: number = 100, seed: number = 42) {
         this.width = width;
@@ -62,13 +63,14 @@ export class SharedWorldGenerator {
         this.stairsData = null; // Will be populated after elevation generation
         this.biomeData = null; // Will be populated after biome generation
         this.elevationData = null; // Will be populated during elevation generation
+        this.snowVariantData = null; // Will be populated during snow variant generation
     }
 
     /**
      * Generate complete world data in new order: plateaus → climate → biomes → stairs
      * Returns object with { elevationData, biomeData, stairsData }
      */
-    generateWorld(): { elevationData: number[][], biomeData: number[][], stairsData: any[][] } {
+    generateWorld(): { elevationData: number[][], biomeData: number[][], stairsData: any[][], snowVariantData?: number[][] } {
         console.log('[SharedWorldGenerator] Starting world generation with new order: plateaus → climate → biomes → stairs');
         
         // STEP 1: Generate plateaus FIRST (they define the major terrain features)
@@ -85,15 +87,21 @@ export class SharedWorldGenerator {
         const biomeData = this.generateBiomesAroundPlateaus(climate, elevationData);
         this.biomeData = biomeData;
         
-        // STEP 4: Generate stairs on the existing plateaus
-        console.log('[SharedWorldGenerator] Step 4: Generating stairs...');
+        // STEP 4: Generate snow variants for snow biome areas
+        console.log('[SharedWorldGenerator] Step 4: Generating snow variants...');
+        const snowVariantData = this.generateSnowVariantData(biomeData, elevationData);
+        this.snowVariantData = snowVariantData;
+        
+        // STEP 5: Generate stairs on the existing plateaus
+        console.log('[SharedWorldGenerator] Step 5: Generating stairs...');
         this.generateStairsData(elevationData);
         
         console.log('[SharedWorldGenerator] World generation complete');
         return {
             elevationData,
             biomeData,
-            stairsData: this.stairsData!
+            stairsData: this.stairsData!,
+            snowVariantData
         };
     }
 
@@ -321,6 +329,140 @@ export class SharedWorldGenerator {
                     // Also remove any stairs on this plateau
                     if (this.stairsData && this.stairsData[y] && this.stairsData[y][x]) {
                         this.stairsData[y][x] = null;
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Generate snow variant data (0=white, 1=blue, 2=grey)
+     * Each snow plateau gets one variant with 2-tile buffer
+     * Snow/grass borders always use white snow
+     */
+    private generateSnowVariantData(biomeData: number[][], elevationData: number[][]): number[][] {
+        // Initialize with -1 (not snow)
+        const snowVariantData: number[][] = [];
+        for (let y = 0; y < this.height; y++) {
+            snowVariantData[y] = new Array(this.width).fill(-1);
+        }
+        
+        // First, mark all snow tiles as white (variant 0) by default
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (biomeData[y][x] === BIOME_TYPES.SNOW) {
+                    snowVariantData[y][x] = 0; // Default to white
+                }
+            }
+        }
+        
+        // Find all snow plateaus
+        const snowPlateaus = this.findSnowPlateaus(biomeData, elevationData);
+        
+        // Assign variants to each plateau (33% chance each)
+        for (const plateau of snowPlateaus) {
+            const rand = this.random();
+            const variant = rand < 0.33 ? 0 : (rand < 0.66 ? 1 : 2); // 0=white, 1=blue, 2=grey
+            
+            // Apply variant to plateau tiles and 2-tile buffer
+            this.applySnowVariantToPlateau(plateau, variant, snowVariantData, biomeData);
+        }
+        
+        // Ensure snow/grass borders have white snow (2-tile buffer)
+        this.ensureWhiteSnowAtBorders(snowVariantData, biomeData);
+        
+        return snowVariantData;
+    }
+    
+    /**
+     * Find all plateaus that are in snow biome
+     */
+    private findSnowPlateaus(biomeData: number[][], elevationData: number[][]): Array<{x: number, y: number}[]> {
+        const snowPlateaus: Array<{x: number, y: number}[]> = [];
+        const visited: boolean[][] = [];
+        
+        for (let y = 0; y < this.height; y++) {
+            visited[y] = new Array(this.width).fill(false);
+        }
+        
+        // Find all elevated snow regions
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (!visited[y][x] && elevationData[y][x] > 0 && biomeData[y][x] === BIOME_TYPES.SNOW) {
+                    const plateau = this.floodFillPlateau(elevationData, x, y, visited);
+                    snowPlateaus.push(plateau);
+                }
+            }
+        }
+        
+        return snowPlateaus;
+    }
+    
+    /**
+     * Apply snow variant to plateau and its 2-tile buffer
+     */
+    private applySnowVariantToPlateau(plateau: Array<{x: number, y: number}>, variant: number, snowVariantData: number[][], biomeData: number[][]): void {
+        // Create a set of plateau tiles for quick lookup
+        const plateauTiles = new Set<string>();
+        for (const tile of plateau) {
+            plateauTiles.add(`${tile.x},${tile.y}`);
+        }
+        
+        // Apply variant to plateau tiles
+        for (const tile of plateau) {
+            snowVariantData[tile.y][tile.x] = variant;
+        }
+        
+        // Apply variant to 2-tile buffer around plateau (only if it's snow biome)
+        const bufferTiles = new Set<string>();
+        for (const tile of plateau) {
+            for (let dy = -2; dy <= 2; dy++) {
+                for (let dx = -2; dx <= 2; dx++) {
+                    const nx = tile.x + dx;
+                    const ny = tile.y + dy;
+                    
+                    if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
+                        const key = `${nx},${ny}`;
+                        // Only apply to snow tiles that aren't part of the plateau itself
+                        if (!plateauTiles.has(key) && biomeData[ny][nx] === BIOME_TYPES.SNOW) {
+                            bufferTiles.add(key);
+                            snowVariantData[ny][nx] = variant;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Ensure snow tiles near grass borders are white snow
+     */
+    private ensureWhiteSnowAtBorders(snowVariantData: number[][], biomeData: number[][]): void {
+        // Find all snow tiles within 2 tiles of grass
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (biomeData[y][x] === BIOME_TYPES.SNOW) {
+                    // Check if there's grass within 2 tiles
+                    let nearGrass = false;
+                    
+                    for (let dy = -2; dy <= 2; dy++) {
+                        for (let dx = -2; dx <= 2; dx++) {
+                            const nx = x + dx;
+                            const ny = y + dy;
+                            
+                            if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height) {
+                                if (biomeData[ny][nx] !== BIOME_TYPES.SNOW) {
+                                    nearGrass = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (nearGrass) break;
+                    }
+                    
+                    // If near grass, force to white snow
+                    if (nearGrass) {
+                        snowVariantData[y][x] = 0; // White snow
                     }
                 }
             }
@@ -1619,7 +1761,15 @@ export class SharedWorldGenerator {
         const stairBiome = this.biomeData && this.biomeData[y] && this.biomeData[y][x] ? this.biomeData[y][x] : 0;
         const isDarkGrassStairs = stairBiome === 1;
         const isSnowStairs = stairBiome === 2;
-        const colOffset = isDarkGrassStairs ? 11 : 0;
+        
+        // For snow stairs, determine variant and column offset
+        let colOffset = isDarkGrassStairs ? 11 : 0;
+        let snowVariant = 0;
+        if (isSnowStairs && this.snowVariantData && this.snowVariantData[y] && this.snowVariantData[y][x] !== undefined) {
+            snowVariant = this.snowVariantData[y][x];
+            // Snow variant column offsets: variant 0 = col 0, variant 1 = col 12, variant 2 = col 24
+            colOffset = snowVariant === 1 ? 12 : (snowVariant === 2 ? 24 : 0);
+        }
         
         // For snow biome, we'll use different row/col coordinates entirely
         const tileRowOffset = isSnowStairs ? 4 : 0; // Snow stairs are 4 rows down from grass stairs (17 vs 13)
@@ -1634,14 +1784,15 @@ export class SharedWorldGenerator {
                 for (let dy = 0; dy < 4; dy++) {
                     for (let dx = 0; dx < 2; dx++) {
                         if (x + dx >= 0 && y + dy < this.height) {
-                            const tileX = 2 + dx + (isSnowStairs ? 0 : colOffset); // Snow uses same columns as green grass
+                            const tileX = 2 + dx + (isSnowStairs ? colOffset : (isDarkGrassStairs ? 11 : 0)); // Apply variant offset for snow
                             const tileY = 13 + dy + tileRowOffset; // Add row offset for snow
                             this.stairsData![y + dy][x + dx] = {
                                 type: 'west',
                                 tileX: tileX,
                                 tileY: tileY,
                                 biome: stairBiome,
-                                isSnow: isSnowStairs
+                                isSnow: isSnowStairs,
+                                snowVariant: isSnowStairs ? snowVariant : undefined
                             };
                             // DEBUG: Log each stair tile placement
                             if (dy === 0 && dx === 0) { // Only log first tile to avoid spam
@@ -1659,10 +1810,11 @@ export class SharedWorldGenerator {
                         if (x + dx < this.width && y + dy < this.height) {
                             this.stairsData![y + dy][x + dx] = {
                                 type: 'east',
-                                tileX: 7 + dx + (isSnowStairs ? 0 : colOffset),
+                                tileX: 7 + dx + (isSnowStairs ? colOffset : (isDarkGrassStairs ? 11 : 0)),
                                 tileY: 13 + dy + tileRowOffset,
                                 biome: stairBiome,
-                                isSnow: isSnowStairs
+                                isSnow: isSnowStairs,
+                                snowVariant: isSnowStairs ? snowVariant : undefined
                             };
                         }
                     }
@@ -1676,10 +1828,11 @@ export class SharedWorldGenerator {
                         if (x + dx < this.width && y + dy >= 0) {
                             this.stairsData![y + dy][x + dx] = {
                                 type: 'north',
-                                tileX: 4 + dx + (isSnowStairs ? 0 : colOffset),
+                                tileX: 4 + dx + (isSnowStairs ? colOffset : (isDarkGrassStairs ? 11 : 0)),
                                 tileY: 13 + dy + tileRowOffset,
                                 biome: stairBiome,
-                                isSnow: isSnowStairs
+                                isSnow: isSnowStairs,
+                                snowVariant: isSnowStairs ? snowVariant : undefined
                             };
                         }
                     }
@@ -1693,10 +1846,11 @@ export class SharedWorldGenerator {
                         if (x + dx < this.width && y + dy < this.height) {
                             this.stairsData![y + dy][x + dx] = {
                                 type: 'south',
-                                tileX: 4 + dx + (isSnowStairs ? 0 : colOffset),
+                                tileX: 4 + dx + (isSnowStairs ? colOffset : (isDarkGrassStairs ? 11 : 0)),
                                 tileY: 15 + dy + tileRowOffset,
                                 biome: stairBiome,
-                                isSnow: isSnowStairs
+                                isSnow: isSnowStairs,
+                                snowVariant: isSnowStairs ? snowVariant : undefined
                             };
                         }
                     }

@@ -267,7 +267,7 @@ export class ChunkedWorldRenderer {
             this.worldRenderer.elevationData || [], 
             processedTiles, 
             this.worldRenderer.biomeData || undefined,
-            undefined  // snowVariantData not needed yet since we only have white snow
+            this.worldRenderer.snowVariantData || undefined
         ) as any;
         
         processedTiles[y][x] = tileResult.type;
@@ -336,7 +336,7 @@ export class ChunkedWorldRenderer {
                 
                 // Get cliff extension texture from autotiler
                 const extensionTexture = (this.worldRenderer.cliffAutotiler as any).getCliffExtensionTexture(
-                    x, y, this.worldRenderer.elevationData, processedTiles, this.worldRenderer.biomeData, undefined
+                    x, y, this.worldRenderer.elevationData, processedTiles, this.worldRenderer.biomeData, this.worldRenderer.snowVariantData
                 );
                 
                 if (extensionTexture && y + 1 < this.worldRenderer.height) {
