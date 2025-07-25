@@ -814,10 +814,10 @@ export class CliffAutotiler {
         if (hasWest && hasNorth && hasEast) return { row: 40, col: 1, type: "WNE intersection" };
         
         // Priority 3: Corners (two adjacent cardinals)
-        if (hasNorth && hasEast) return { row: 42, col: 4, type: "NE corner" };
+        if (hasNorth && hasEast) return { row: 42, col: 0, type: "NE corner" };
         if (hasEast && hasSouth) return { row: 38, col: 0, type: "SE corner" };
         if (hasSouth && hasWest) return { row: 38, col: 4, type: "SW corner" };
-        if (hasWest && hasNorth) return { row: 42, col: 0, type: "NW corner" };
+        if (hasWest && hasNorth) return { row: 42, col: 4, type: "NW corner" };
         
         // Priority 4: Two opposite cardinals (corridors)
         if (hasNorth && hasSouth) {
