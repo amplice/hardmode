@@ -240,7 +240,10 @@ interface AbilityDamageData {
         hitboxType: string;
         hitboxParams: any;
         damage: number;
+        archetype?: string;
     };
+    abilityKey?: string;
+    attackerId?: string; // ID of the player who initiated the attack
 }
 
 interface CacheStats {
@@ -952,12 +955,13 @@ export class NetworkClient {
                 );
                 
                 if (hitbox) {
-                    // Don't apply damage for local player - they already did it when initiating the attack
-                    // This event is only for visual feedback and for other players to see the attack
-                    if (!isLocalPlayer) {
-                        // For remote players, we do need to show the visual effect but not apply damage
-                        // Damage is handled server-side
-                    }
+                    // Apply damage from server for all abilities
+                    // The server is authoritative for damage calculation
+                    this.game.systems.combat.applyHitEffects(player, hitbox, data.config.damage || 0);
+                    
+                    // Draw the hitbox for visual feedback
+                    const graphics = hitbox.draw();
+                    this.game.entityContainer.addChild(graphics);
                 }
             }
         });
