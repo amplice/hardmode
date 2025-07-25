@@ -231,12 +231,20 @@ export class CliffAutotiler {
      * @param biomeData - 2D biome map (0=green, 1=dark)
      */
     getTileTexture(x: number, y: number, elevationData: number[][], processedTiles: any[][] | null, biomeData?: number[][], snowVariantData?: number[][]): TileResult {
+        // Debug: Log function call occasionally
+        if (Math.random() < 0.0001) {
+            console.log(`[getTileTexture] Called for (${x},${y}), biomeData exists: ${!!biomeData}, elevationData exists: ${!!elevationData}`);
+            if (biomeData && biomeData[y]) {
+                console.log(`[getTileTexture] Biome at (${x},${y}): ${biomeData[y][x]}`);
+            }
+        }
+        
         // STEP 1: BIOME DETERMINATION FIRST
         // Determine biome type (0=green grass, 1=dark grass, 2=snow) - this drives everything else
         const biomeId = biomeData && biomeData[y] ? biomeData[y][x] : 0;
         const isDarkGrass = biomeId === BIOME_TYPES.DARK_GRASS;
         const isSnow = biomeId === BIOME_TYPES.SNOW;
-        const currentElevation = elevationData[y][x];
+        const currentElevation = elevationData[y] && elevationData[y][x] !== undefined ? elevationData[y][x] : 0;
         
         // Debug logging for biome selection (only log occasionally to avoid spam)
         if (Math.random() < 0.001) {
@@ -257,7 +265,10 @@ export class CliffAutotiler {
             
             // UNIDIRECTIONAL TRANSITIONS: Only green tiles get transitions when next to dark
             // This prevents both boundary tiles from becoming transitions
-            if (!isDarkGrass) {  // Only apply transitions to GREEN tiles
+            if (biomeId === BIOME_TYPES.GRASS) {  // Only apply transitions to GREEN tiles (biomeId 0)
+                // Debug: Log that we're checking a green grass tile
+                console.log(`[CliffAutotiler] Checking green grass at (${x},${y}), biomeData exists: ${!!biomeData}`);
+                
                 // But don't apply grass transitions if there's snow nearby
                 // Check for snow neighbors first
                 let hasSnowNeighbor = false;
@@ -275,6 +286,7 @@ export class CliffAutotiler {
                             if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
                                 if (biomeData[ny][nx] === BIOME_TYPES.SNOW) {
                                     hasSnowNeighbor = true;
+                                    console.log(`[CliffAutotiler] GREEN GRASS at (${x},${y}) has SNOW neighbor at (${nx},${ny})`);
                                     break;
                                 }
                             }
@@ -288,7 +300,10 @@ export class CliffAutotiler {
                     // Apply grass-to-snow transitions
                     const snowTransitionTile = this.getGrassToSnowTransitionTile(x, y, biomeData);
                     if (snowTransitionTile) {
+                        console.log(`[CliffAutotiler] Grass tile at (${x},${y}) returning snow transition with overlay`);
                         return snowTransitionTile;
+                    } else {
+                        console.log(`[CliffAutotiler] Grass tile at (${x},${y}) has snow neighbor but no transition generated`);
                     }
                 } else {
                     // Apply grass-to-dark-grass transitions  

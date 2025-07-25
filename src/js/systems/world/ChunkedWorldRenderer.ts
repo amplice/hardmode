@@ -305,6 +305,7 @@ export class ChunkedWorldRenderer {
         
         // Add overlay if present (e.g., grass-to-snow transitions)
         if (tileResult.overlay) {
+            console.log(`[ChunkedWorldRenderer] Adding overlay at (${x},${y}), type: ${tileResult.overlay.type}`);
             const overlaySprite = new PIXI.Sprite(tileResult.overlay.texture);
             overlaySprite.scale.set(this.worldRenderer.tileSize / 32, this.worldRenderer.tileSize / 32);
             tileContainer.addChild(overlaySprite);
