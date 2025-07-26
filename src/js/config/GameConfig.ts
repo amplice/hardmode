@@ -606,7 +606,7 @@ export const PLAYER_CONFIG = {
       windupTime: 50,
       dashDuration: 200,
       recoveryTime: 150,
-      cooldown: 2000,
+      cooldown: 1500,
       dashDistance: 200,
       invulnerable: false,
       hitboxType: 'rectangle',
