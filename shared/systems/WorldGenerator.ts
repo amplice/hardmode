@@ -504,10 +504,10 @@ export class SharedWorldGenerator {
             { type: 'tree_blue_medium1', width: 4, height: 5, weight: 2 },
             
             // Bushes (common but smaller)
-            { type: 'bush_red_2x1', width: 2, height: 1, weight: 4 },
-            { type: 'bush_red_1x1', width: 1, height: 1, weight: 5 },
-            { type: 'bush_green_2x1', width: 2, height: 1, weight: 4 },
-            { type: 'bush_green_1x1', width: 1, height: 1, weight: 5 },
+            { type: 'bush_red_2x1', width: 2, height: 2, weight: 4 },
+            { type: 'bush_red_1x1', width: 1, height: 2, weight: 5 },
+            { type: 'bush_green_2x1', width: 2, height: 2, weight: 4 },
+            { type: 'bush_green_1x1', width: 1, height: 2, weight: 5 },
             
             // Decorative cliffs (rarer)
             { type: 'cliff_light_big1', width: 4, height: 5, weight: 1 },

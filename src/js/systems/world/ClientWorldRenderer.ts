@@ -680,18 +680,28 @@ export class ClientWorldRenderer {
         
         // Track unique decorative elements to avoid duplicate rendering
         const renderedElements = new Set<string>();
+        let totalElementsFound = 0;
+        let skippedElements = 0;
         
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 const element = this.decorativeElementsData[y]?.[x];
                 if (!element) continue;
                 
+                totalElementsFound++;
+                
                 // Only render from the origin position to avoid duplicates
                 const elementKey = `${element.originX},${element.originY}`;
-                if (renderedElements.has(elementKey)) continue;
+                if (renderedElements.has(elementKey)) {
+                    skippedElements++;
+                    continue;
+                }
                 
                 // Only render if this is the origin tile
-                if (x !== element.originX || y !== element.originY) continue;
+                if (x !== element.originX || y !== element.originY) {
+                    skippedElements++;
+                    continue;
+                }
                 
                 renderedElements.add(elementKey);
                 
@@ -719,7 +729,10 @@ export class ClientWorldRenderer {
         // Add decorative container to main container
         this.container.addChild(decorativeContainer);
         
-        console.log(`[ClientWorldRenderer] Rendered ${renderedElements.size} decorative elements`);
+        console.log(`[ClientWorldRenderer] Decorative elements summary:`);
+        console.log(`  - Total element tiles found: ${totalElementsFound}`);
+        console.log(`  - Skipped (duplicates/non-origin): ${skippedElements}`);
+        console.log(`  - Unique elements rendered: ${renderedElements.size}`);
     }
     
     /**

@@ -633,11 +633,11 @@ export class TilesetManager {
         this.decorativeElementMap.set('tree_blue_large', { row: 26, col: 13, width: 5, height: 5 });
         this.decorativeElementMap.set('tree_blue_medium1', { row: 26, col: 18, width: 4, height: 5 });
         
-        // Bushes
-        this.decorativeElementMap.set('bush_red_2x1', { row: 25, col: 4, width: 2, height: 1 });
-        this.decorativeElementMap.set('bush_red_1x1', { row: 25, col: 6, width: 1, height: 1 });
-        this.decorativeElementMap.set('bush_green_2x1', { row: 25, col: 17, width: 2, height: 1 });
-        this.decorativeElementMap.set('bush_green_1x1', { row: 25, col: 19, width: 1, height: 1 });
+        // Bushes (they are 2 rows tall, not 1)
+        this.decorativeElementMap.set('bush_red_2x1', { row: 25, col: 4, width: 2, height: 2 });
+        this.decorativeElementMap.set('bush_red_1x1', { row: 25, col: 6, width: 1, height: 2 });
+        this.decorativeElementMap.set('bush_green_2x1', { row: 25, col: 17, width: 2, height: 2 });
+        this.decorativeElementMap.set('bush_green_1x1', { row: 25, col: 19, width: 1, height: 2 });
         
         // Decorative cliffs - Light
         this.decorativeElementMap.set('cliff_light_big1', { row: 0, col: 0, width: 4, height: 5 });
@@ -679,6 +679,7 @@ export class TilesetManager {
     public getDecorativeTileTexture(type: string, offsetX: number, offsetY: number): Texture | null {
         const elementInfo = this.decorativeElementMap.get(type);
         if (!elementInfo || !this.textures.decorative) {
+            console.warn(`[TilesetManager] No element info for ${type} or no decorative textures loaded`);
             return null;
         }
         
@@ -686,10 +687,16 @@ export class TilesetManager {
         const tileRow = row + offsetY;
         const tileCol = col + offsetX;
         
-        if (this.textures.decorative[tileRow] && this.textures.decorative[tileRow][tileCol]) {
-            return this.textures.decorative[tileRow][tileCol];
+        if (!this.textures.decorative[tileRow]) {
+            console.warn(`[TilesetManager] No row ${tileRow} in decorative textures (${type} at offset ${offsetX},${offsetY})`);
+            return null;
         }
         
-        return null;
+        if (!this.textures.decorative[tileRow][tileCol]) {
+            console.warn(`[TilesetManager] No texture at [${tileRow}][${tileCol}] (${type} at offset ${offsetX},${offsetY})`);
+            return null;
+        }
+        
+        return this.textures.decorative[tileRow][tileCol];
     }
 }
