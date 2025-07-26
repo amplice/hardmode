@@ -522,8 +522,9 @@ export class SharedWorldGenerator {
         // Calculate total weight for weighted random selection
         const totalWeight = grassDecorativeTypes.reduce((sum, type) => sum + type.weight, 0);
         
-        // Place decorative elements with low frequency
-        const placementChance = 0.003; // 0.3% chance per tile
+        // Different placement chances for different element categories
+        const CLIFF_CHANCE = 0.01;    // 1% chance for decorative cliffs
+        const FOLIAGE_CHANCE = 0.02;  // 2% chance for trees and bushes
         
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
@@ -533,14 +534,40 @@ export class SharedWorldGenerator {
                 // Skip if already occupied by decorative element
                 if (decorativeElements[y][x] !== null) continue;
                 
-                // Random chance to place decorative element
-                if (this.random() > placementChance) continue;
+                // Determine placement chance based on random selection
+                const rand = this.random();
+                let shouldPlace = false;
+                let isCliff = false;
+                
+                // Check for cliff placement (1% chance)
+                if (rand < CLIFF_CHANCE) {
+                    shouldPlace = true;
+                    isCliff = true;
+                }
+                // Check for foliage placement (additional 2% chance, so total 3% for something)
+                else if (rand < (CLIFF_CHANCE + FOLIAGE_CHANCE)) {
+                    shouldPlace = true;
+                    isCliff = false;
+                }
+                
+                if (!shouldPlace) continue;
+                
+                // Filter decorative types based on category
+                const eligibleTypes = grassDecorativeTypes.filter(type => {
+                    const isCliffType = type.type.includes('cliff');
+                    return isCliff ? isCliffType : !isCliffType;
+                });
+                
+                if (eligibleTypes.length === 0) continue;
+                
+                // Calculate weight for filtered types
+                const filteredWeight = eligibleTypes.reduce((sum, type) => sum + type.weight, 0);
                 
                 // Select random decorative type based on weight
-                let randomWeight = this.random() * totalWeight;
+                let randomWeight = this.random() * filteredWeight;
                 let selectedType = null;
                 
-                for (const type of grassDecorativeTypes) {
+                for (const type of eligibleTypes) {
                     randomWeight -= type.weight;
                     if (randomWeight <= 0) {
                         selectedType = type;
