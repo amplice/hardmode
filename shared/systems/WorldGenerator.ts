@@ -53,6 +53,7 @@ export class SharedWorldGenerator {
     public biomeData: number[][] | null;
     public elevationData: number[][] | null;
     public snowVariantData: number[][] | null;
+    public decorativeElementsData: any[][] | null;
 
     constructor(width: number = 100, height: number = 100, seed: number = 42) {
         this.width = width;
@@ -64,13 +65,14 @@ export class SharedWorldGenerator {
         this.biomeData = null; // Will be populated after biome generation
         this.elevationData = null; // Will be populated during elevation generation
         this.snowVariantData = null; // Will be populated during snow variant generation
+        this.decorativeElementsData = null; // Will be populated after biome generation
     }
 
     /**
-     * Generate complete world data in new order: plateaus → climate → biomes → stairs
-     * Returns object with { elevationData, biomeData, stairsData }
+     * Generate complete world data in new order: plateaus → climate → biomes → stairs → decorative elements
+     * Returns object with { elevationData, biomeData, stairsData, snowVariantData, decorativeElementsData }
      */
-    generateWorld(): { elevationData: number[][], biomeData: number[][], stairsData: any[][], snowVariantData?: number[][] } {
+    generateWorld(): { elevationData: number[][], biomeData: number[][], stairsData: any[][], snowVariantData?: number[][], decorativeElementsData?: any[][] } {
         console.log('[SharedWorldGenerator] Starting world generation with new order: plateaus → climate → biomes → stairs');
         
         // STEP 1: Generate plateaus FIRST (they define the major terrain features)
@@ -96,12 +98,18 @@ export class SharedWorldGenerator {
         console.log('[SharedWorldGenerator] Step 5: Generating stairs...');
         this.generateStairsData(elevationData);
         
+        // STEP 6: Generate decorative elements
+        console.log('[SharedWorldGenerator] Step 6: Generating decorative elements...');
+        const decorativeElementsData = this.generateDecorativeElements(biomeData, elevationData);
+        this.decorativeElementsData = decorativeElementsData;
+        
         console.log('[SharedWorldGenerator] World generation complete');
         return {
             elevationData,
             biomeData,
             stairsData: this.stairsData!,
-            snowVariantData
+            snowVariantData,
+            decorativeElementsData
         };
     }
 
@@ -465,6 +473,183 @@ export class SharedWorldGenerator {
                         snowVariantData[y][x] = 0; // White snow
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Generate decorative elements (trees, rocks, decorative cliffs) for the world
+     * These are larger multi-tile features that create unwalkable areas
+     */
+    private generateDecorativeElements(biomeData: number[][], elevationData: number[][]): any[][] {
+        const decorativeElements: any[][] = [];
+        
+        // Initialize empty 2D array
+        for (let y = 0; y < this.height; y++) {
+            decorativeElements[y] = new Array(this.width).fill(null);
+        }
+        
+        // Define decorative element types for grass biome
+        const grassDecorativeTypes = [
+            // Trees (more common)
+            { type: 'tree_red_large', width: 5, height: 5, weight: 3 },
+            { type: 'tree_red_medium1', width: 4, height: 5, weight: 3 },
+            { type: 'tree_red_medium2', width: 4, height: 5, weight: 3 },
+            { type: 'tree_green_large', width: 5, height: 5, weight: 3 },
+            { type: 'tree_green_medium1', width: 4, height: 5, weight: 3 },
+            { type: 'tree_green_medium2', width: 4, height: 5, weight: 3 },
+            { type: 'tree_pink_large', width: 5, height: 5, weight: 2 },
+            { type: 'tree_pink_medium1', width: 4, height: 5, weight: 2 },
+            { type: 'tree_blue_large', width: 5, height: 5, weight: 2 },
+            { type: 'tree_blue_medium1', width: 4, height: 5, weight: 2 },
+            
+            // Bushes (common but smaller)
+            { type: 'bush_red_2x1', width: 2, height: 1, weight: 4 },
+            { type: 'bush_red_1x1', width: 1, height: 1, weight: 5 },
+            { type: 'bush_green_2x1', width: 2, height: 1, weight: 4 },
+            { type: 'bush_green_1x1', width: 1, height: 1, weight: 5 },
+            
+            // Decorative cliffs (rarer)
+            { type: 'cliff_light_big1', width: 4, height: 5, weight: 1 },
+            { type: 'cliff_light_big2', width: 4, height: 4, weight: 1 },
+            { type: 'cliff_light_medium1', width: 3, height: 3, weight: 2 },
+            { type: 'cliff_light_small1', width: 2, height: 2, weight: 3 },
+            { type: 'cliff_dark_big1', width: 4, height: 5, weight: 1 },
+            { type: 'cliff_dark_medium1', width: 3, height: 3, weight: 2 },
+            { type: 'cliff_dark_small1', width: 2, height: 2, weight: 3 }
+        ];
+        
+        // Calculate total weight for weighted random selection
+        const totalWeight = grassDecorativeTypes.reduce((sum, type) => sum + type.weight, 0);
+        
+        // Place decorative elements with low frequency
+        const placementChance = 0.003; // 0.3% chance per tile
+        
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                // Skip if not grass biome
+                if (biomeData[y][x] !== BIOME_TYPES.GRASS) continue;
+                
+                // Skip if already occupied by decorative element
+                if (decorativeElements[y][x] !== null) continue;
+                
+                // Random chance to place decorative element
+                if (this.random() > placementChance) continue;
+                
+                // Select random decorative type based on weight
+                let randomWeight = this.random() * totalWeight;
+                let selectedType = null;
+                
+                for (const type of grassDecorativeTypes) {
+                    randomWeight -= type.weight;
+                    if (randomWeight <= 0) {
+                        selectedType = type;
+                        break;
+                    }
+                }
+                
+                if (!selectedType) continue;
+                
+                // Check if we can place this decorative element here
+                if (this.canPlaceDecorativeElement(x, y, selectedType, biomeData, elevationData, decorativeElements)) {
+                    // Place the decorative element
+                    this.placeDecorativeElement(x, y, selectedType, decorativeElements);
+                }
+            }
+        }
+        
+        return decorativeElements;
+    }
+    
+    /**
+     * Check if a decorative element can be placed at the given position
+     */
+    private canPlaceDecorativeElement(
+        x: number, 
+        y: number, 
+        elementType: any, 
+        biomeData: number[][], 
+        elevationData: number[][], 
+        decorativeElements: any[][]
+    ): boolean {
+        const { width, height } = elementType;
+        
+        // Check bounds
+        if (x + width > this.width || y + height > this.height) {
+            return false;
+        }
+        
+        // Buffer distance from cliffs and biome borders
+        const bufferDistance = 3;
+        
+        // Check entire footprint plus buffer
+        for (let dy = -bufferDistance; dy < height + bufferDistance; dy++) {
+            for (let dx = -bufferDistance; dx < width + bufferDistance; dx++) {
+                const checkX = x + dx;
+                const checkY = y + dy;
+                
+                // Skip out of bounds
+                if (checkX < 0 || checkX >= this.width || checkY < 0 || checkY >= this.height) {
+                    continue;
+                }
+                
+                // Check if within element footprint
+                const inFootprint = dx >= 0 && dx < width && dy >= 0 && dy < height;
+                
+                if (inFootprint) {
+                    // Footprint must be on same elevation
+                    if (elevationData[checkY][checkX] !== elevationData[y][x]) {
+                        return false;
+                    }
+                    
+                    // Footprint must be same biome
+                    if (biomeData[checkY][checkX] !== biomeData[y][x]) {
+                        return false;
+                    }
+                    
+                    // Footprint must not overlap other decorative elements
+                    if (decorativeElements[checkY][checkX] !== null) {
+                        return false;
+                    }
+                    
+                    // Check for stairs
+                    if (this.stairsData && this.stairsData[checkY][checkX]) {
+                        return false;
+                    }
+                } else {
+                    // Buffer area - check for cliffs or biome changes
+                    if (elevationData[checkY][checkX] !== elevationData[y][x]) {
+                        return false; // Too close to cliff edge
+                    }
+                    
+                    if (biomeData[checkY][checkX] !== biomeData[y][x]) {
+                        return false; // Too close to biome border
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Place a decorative element at the given position
+     */
+    private placeDecorativeElement(x: number, y: number, elementType: any, decorativeElements: any[][]): void {
+        const { width, height, type } = elementType;
+        
+        // Mark all tiles occupied by this element
+        for (let dy = 0; dy < height; dy++) {
+            for (let dx = 0; dx < width; dx++) {
+                decorativeElements[y + dy][x + dx] = {
+                    type: type,
+                    originX: x,
+                    originY: y,
+                    offsetX: dx,
+                    offsetY: dy,
+                    width: width,
+                    height: height
+                };
             }
         }
     }

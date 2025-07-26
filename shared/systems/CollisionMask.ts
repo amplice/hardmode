@@ -61,10 +61,10 @@ export class CollisionMask {
     }
     
     /**
-     * Generate collision mask from elevation data
-     * Only cliff edges are unwalkable - plateau interiors are walkable
+     * Generate collision mask from elevation data and decorative elements
+     * Cliff edges and decorative elements are unwalkable - plateau interiors are walkable
      */
-    generateFromElevationData(elevationData: number[][], worldGenerator: any = null): void {
+    generateFromElevationData(elevationData: number[][], worldGenerator: any = null, decorativeElementsData?: any[][]): void {
         console.log("[CollisionMask] Generating collision mask from elevation data...");
         
         // First pass: Mark all tiles as walkable by default
@@ -125,6 +125,22 @@ export class CollisionMask {
             }
         } else {
             console.warn("[CollisionMask] World generator or getStairsData method not available!");
+        }
+        
+        // Fourth pass: Mark decorative elements as unwalkable
+        if (decorativeElementsData) {
+            let decorativeCount = 0;
+            
+            for (let y = 0; y < this.height; y++) {
+                for (let x = 0; x < this.width; x++) {
+                    if (decorativeElementsData[y] && decorativeElementsData[y][x]) {
+                        this.mask[y][x] = false; // Mark as unwalkable
+                        decorativeCount++;
+                    }
+                }
+            }
+            
+            console.log(`[CollisionMask] Marked ${decorativeCount} tiles as unwalkable due to decorative elements`);
         }
         
         // Set world boundaries as unwalkable

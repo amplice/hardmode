@@ -188,8 +188,8 @@ export class MonsterManager {
         const worldData = this.serverWorldManager.getWorldData();
         const worldGen = this.serverWorldManager.getWorldGenerator();
         
-        // Generate collision mask from shared elevation data
-        this.collisionMask.generateFromElevationData(worldData.elevationData, worldGen);
+        // Generate collision mask from shared elevation data and decorative elements
+        this.collisionMask.generateFromElevationData(worldData.elevationData, worldGen, worldData.decorativeElementsData);
         
         console.log('[MonsterManager] Collision mask initialized using shared world data');
     }

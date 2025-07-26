@@ -54,6 +54,7 @@ interface WorldData {
     biomeData: number[][];
     stairsData: (any | null)[][];
     snowVariantData?: number[][];
+    decorativeElementsData?: any[][];
 }
 
 interface RenderOptions {
@@ -86,6 +87,7 @@ export class ClientWorldRenderer {
     biomeData: number[][] | null;
     stairsData: (any | null)[][] | null;
     snowVariantData: number[][] | null;
+    decorativeElementsData: any[][] | null;
     sharedWorldGen: SharedWorldGenerator | null;
     
     // Collision and rendering
@@ -113,6 +115,7 @@ export class ClientWorldRenderer {
         this.biomeData = null;
         this.stairsData = null;
         this.snowVariantData = null;
+        this.decorativeElementsData = null;
         this.sharedWorldGen = null;
         
         // Initialize collision mask for debug visualization
@@ -136,12 +139,13 @@ export class ClientWorldRenderer {
         this.biomeData = worldData.biomeData;
         this.stairsData = worldData.stairsData;
         this.snowVariantData = worldData.snowVariantData || null;
+        this.decorativeElementsData = worldData.decorativeElementsData || null;
         this.sharedWorldGen = sharedWorldGen;
         
         console.log('[ClientWorldRenderer] World data received - biomes:', this.biomeData.length, 'rows');
         
-        // Generate collision mask from provided elevation data and stairs
-        this.collisionMask.generateFromElevationData(this.elevationData, this.sharedWorldGen);
+        // Generate collision mask from provided elevation data, stairs, and decorative elements
+        this.collisionMask.generateFromElevationData(this.elevationData, this.sharedWorldGen, this.decorativeElementsData);
         console.log('[ClientWorldRenderer] Client collision mask generated from shared data');
         
         // Choose rendering method based on world size and options
@@ -573,6 +577,9 @@ export class ClientWorldRenderer {
             }
         }
         
+        // Render decorative elements on top of base tiles
+        this.renderDecorativeElements();
+        
         // Second pass: Add cliff extensions
         this.addCliffExtensions(processedTiles);
     }
@@ -648,6 +655,67 @@ export class ClientWorldRenderer {
                 }
             }
         }
+    }
+    
+    /**
+     * Render decorative elements (trees, rocks, decorative cliffs)
+     */
+    private renderDecorativeElements(): void {
+        if (!this.decorativeElementsData || !this.tilesets) return;
+        
+        console.log('[ClientWorldRenderer] Rendering decorative elements...');
+        
+        // Container for all decorative elements
+        const decorativeContainer = new PIXI.Container();
+        decorativeContainer.name = 'decorative';
+        
+        // Track unique decorative elements to avoid duplicate rendering
+        const renderedElements = new Set<string>();
+        
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const element = this.decorativeElementsData[y]?.[x];
+                if (!element) continue;
+                
+                // Only render from the origin position to avoid duplicates
+                const elementKey = `${element.originX},${element.originY}`;
+                if (renderedElements.has(elementKey)) continue;
+                
+                // Only render if this is the origin tile
+                if (x !== element.originX || y !== element.originY) continue;
+                
+                renderedElements.add(elementKey);
+                
+                // Get the texture for this decorative element
+                const texture = this.getDecorativeTexture(element.type);
+                if (!texture) {
+                    console.warn(`[ClientWorldRenderer] Missing texture for decorative element: ${element.type}`);
+                    continue;
+                }
+                
+                // Create sprite for decorative element
+                const sprite = new PIXI.Sprite(texture);
+                sprite.position.set(x * this.tileSize, y * this.tileSize);
+                sprite.scale.set(this.tileSize / 32, this.tileSize / 32);
+                
+                // Add to decorative container
+                decorativeContainer.addChild(sprite);
+            }
+        }
+        
+        // Add decorative container to main container
+        this.container.addChild(decorativeContainer);
+        
+        console.log(`[ClientWorldRenderer] Rendered ${renderedElements.size} decorative elements`);
+    }
+    
+    /**
+     * Get texture for a decorative element type
+     */
+    private getDecorativeTexture(type: string): PIXI.Texture | null {
+        // This will be implemented when we load the decorative textures
+        // For now, return null
+        return this.tilesets.getDecorativeTexture?.(type) || null;
     }
     
     private createCollisionDebugOverlay(): void {

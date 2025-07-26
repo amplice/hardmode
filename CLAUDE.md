@@ -601,6 +601,59 @@ Monsters now have multiple attack types with different animations, AOE patterns,
 - New attack archetypes: `multi_hit_melee`, `multi_projectile`
 - Animation mapping in client `Monster.getAnimationName()` based on attack type
 
+## 🌿 **DECORATIVE ELEMENTS SYSTEM**
+
+### **Grass Biome Decorative Elements**
+Large multi-tile decorative features that create unwalkable areas. Located in `/src/assets/sprites/tiles/grass/decorative.png`.
+
+#### **Decorative Cliffs - Light Color Set**
+**Big decorative cliffs (4-5 tiles tall):**
+- (0,0) to (4,3) - 5x4 tiles
+- (1,4) to (4,7) - 4x4 tiles
+- (1,24) to (4,27) - 4x4 tiles
+- (0,28) to (4,31) - 5x4 tiles
+
+**Medium decorative cliffs (3 tiles tall):**
+- (0,8) to (2,10) - 3x3 tiles
+- (0,12) to (2,14) - 3x3 tiles
+- (0,16) to (2,18) - 3x3 tiles
+- (0,19) to (2,20) - 3x2 tiles
+- (0,22) to (2,23) - 3x2 tiles
+
+**Small decorative cliffs (2 tiles tall):**
+- (3,8) to (4,9) - 2x2 tiles
+- (3,10) to (4,11) - 2x2 tiles
+- (3,12) to (4,13) - 2x2 tiles
+- (3,16) to (4,17) - 2x2 tiles
+- (3,19) to (4,20) - 2x2 tiles
+
+#### **Decorative Cliffs - Dark Color Set**
+Same patterns as light set but offset by 5 rows (e.g., (0,0) becomes (5,0)).
+
+#### **Trees and Bushes**
+**Red trees (5x5 tiles for large, 5x4 tiles for medium):**
+- (20,0) to (24,4) - Large red tree
+- (20,5) to (24,8) - Medium red tree
+- (20,9) to (24,12) - Medium red tree variant
+
+**Red bushes (1-2 tiles):**
+- (25,4) to (25,5) - 1x2 bush
+- (25,6) - 1x1 bush
+- (25,7) to (25,8) - 1x2 bush
+- (25,9) - 1x1 bush
+
+**Other tree colors (same patterns):**
+- Green: Offset by 13 columns from red
+- Pink: Offset by 6 rows from red
+- Blue: Offset by 6 rows AND 13 columns from red
+
+#### **Placement Rules**
+- All decorative elements create unwalkable collision areas
+- Cannot be placed on or near cliff edges
+- Cannot be placed near biome borders
+- Low frequency to avoid cluttering the world
+- Must check full footprint is valid before placement
+
 ## 🧹 **DOCUMENTATION CLEANUP RECOMMENDATIONS**
 
 The following files are now outdated due to completed TypeScript migration and can be archived or removed:

@@ -36,7 +36,8 @@
  * Controlled by GAME_CONSTANTS.DEBUG.USE_DEBUG_TILESET flag
  */
 
-import { Assets, Texture, Rectangle, BaseTexture } from 'pixi.js';
+import { Assets, Texture, Rectangle, BaseTexture, RenderTexture } from 'pixi.js';
+import * as PIXI from 'pixi.js';
 import { GAME_CONSTANTS, BIOME_TYPES } from '../../../../shared/constants/GameConstants.js';
 
 // Type definitions
@@ -44,6 +45,7 @@ interface TextureArrays {
     terrain: (Texture | null)[][];
     snow: (Texture | null)[][];
     plants: Texture[];
+    decorative?: (Texture | null)[][];
 }
 
 type PlantType = 'plant' | 'branches' | 'twigs' | 'flower1' | 'flower2' | 'flower3' | 'flower4';
@@ -70,6 +72,9 @@ export class TilesetManager {
     private snowAltTiles: Texture[][] = []; // Alt tiles for each variant [variant][tiles]
     private snowRockTiles: Texture[][] = [[], [], []];  // Rock decorative tiles [variant][tiles]
     private snowVegetationTiles: Texture[][] = [[], [], []]; // Vegetation decorative tiles [variant][tiles]
+    
+    // Grass decorative element mapping
+    private decorativeElementMap: Map<string, { row: number, col: number, width: number, height: number }> = new Map();
     
     // Legacy compatibility
     private pureGrassTiles: Texture[];
@@ -100,7 +105,8 @@ export class TilesetManager {
         
         Assets.addBundle('tilesets', {
             terrain: terrainTileset,
-            snow: 'assets/sprites/tiles/snow/MainLev2.0.png'
+            snow: 'assets/sprites/tiles/snow/MainLev2.0.png',
+            decorative: 'assets/sprites/tiles/grass/decorative.png'
         });
     }
 
@@ -121,10 +127,18 @@ export class TilesetManager {
         }
         this.sliceSnowTileset(snowTexture.baseTexture);
         
+        // Load decorative tileset
+        const decorativeTexture = Assets.get('decorative');
+        if (decorativeTexture) {
+            this.sliceDecorativeTileset(decorativeTexture.baseTexture);
+            this.setupDecorativeElementMap();
+        }
+        
         console.log("Tilesets loaded successfully");
         console.log(`[DEBUG] Using ${GAME_CONSTANTS.DEBUG.USE_DEBUG_TILESET ? 'DEBUG' : 'regular'} tileset`);
         console.log(`[DEBUG] Loaded terrain texture rows: ${this.textures.terrain.length}`);
         console.log(`[DEBUG] Loaded snow texture rows: ${this.textures.snow.length}`);
+        console.log(`[DEBUG] Loaded decorative elements: ${this.decorativeElementMap.size}`);
     }
     
     private sliceTerrainTileset(baseTexture: BaseTexture): void {
@@ -572,5 +586,114 @@ export class TilesetManager {
             return this.textures.snow[row][col];
         }
         return null;
+    }
+    
+    /**
+     * Slice decorative tileset into individual textures
+     */
+    private sliceDecorativeTileset(baseTexture: BaseTexture): void {
+        const tileSize = this.tileSize;
+        
+        // Initialize decorative texture array
+        this.textures.decorative = [];
+        
+        // Load entire decorative tileset
+        const tilesWide = Math.floor(baseTexture.width / tileSize);
+        const tilesHigh = Math.floor(baseTexture.height / tileSize);
+        
+        console.log(`[TilesetManager] Slicing decorative tileset: ${tilesWide}x${tilesHigh} tiles`);
+        
+        for (let row = 0; row < tilesHigh; row++) {
+            this.textures.decorative[row] = [];
+            for (let col = 0; col < tilesWide; col++) {
+                this.textures.decorative[row][col] = new Texture(
+                    baseTexture,
+                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+                );
+            }
+        }
+    }
+    
+    /**
+     * Setup mapping of decorative element types to their texture coordinates
+     */
+    private setupDecorativeElementMap(): void {
+        // Trees
+        this.decorativeElementMap.set('tree_red_large', { row: 20, col: 0, width: 5, height: 5 });
+        this.decorativeElementMap.set('tree_red_medium1', { row: 20, col: 5, width: 4, height: 5 });
+        this.decorativeElementMap.set('tree_red_medium2', { row: 20, col: 9, width: 4, height: 5 });
+        
+        this.decorativeElementMap.set('tree_green_large', { row: 20, col: 13, width: 5, height: 5 });
+        this.decorativeElementMap.set('tree_green_medium1', { row: 20, col: 18, width: 4, height: 5 });
+        this.decorativeElementMap.set('tree_green_medium2', { row: 20, col: 22, width: 4, height: 5 });
+        
+        this.decorativeElementMap.set('tree_pink_large', { row: 26, col: 0, width: 5, height: 5 });
+        this.decorativeElementMap.set('tree_pink_medium1', { row: 26, col: 5, width: 4, height: 5 });
+        
+        this.decorativeElementMap.set('tree_blue_large', { row: 26, col: 13, width: 5, height: 5 });
+        this.decorativeElementMap.set('tree_blue_medium1', { row: 26, col: 18, width: 4, height: 5 });
+        
+        // Bushes
+        this.decorativeElementMap.set('bush_red_2x1', { row: 25, col: 4, width: 2, height: 1 });
+        this.decorativeElementMap.set('bush_red_1x1', { row: 25, col: 6, width: 1, height: 1 });
+        this.decorativeElementMap.set('bush_green_2x1', { row: 25, col: 17, width: 2, height: 1 });
+        this.decorativeElementMap.set('bush_green_1x1', { row: 25, col: 19, width: 1, height: 1 });
+        
+        // Decorative cliffs - Light
+        this.decorativeElementMap.set('cliff_light_big1', { row: 0, col: 0, width: 4, height: 5 });
+        this.decorativeElementMap.set('cliff_light_big2', { row: 1, col: 4, width: 4, height: 4 });
+        this.decorativeElementMap.set('cliff_light_medium1', { row: 0, col: 8, width: 3, height: 3 });
+        this.decorativeElementMap.set('cliff_light_small1', { row: 3, col: 8, width: 2, height: 2 });
+        
+        // Decorative cliffs - Dark
+        this.decorativeElementMap.set('cliff_dark_big1', { row: 5, col: 0, width: 4, height: 5 });
+        this.decorativeElementMap.set('cliff_dark_medium1', { row: 5, col: 8, width: 3, height: 3 });
+        this.decorativeElementMap.set('cliff_dark_small1', { row: 8, col: 8, width: 2, height: 2 });
+    }
+    
+    /**
+     * Get texture for a decorative element type
+     */
+    public getDecorativeTexture(type: string): Texture | null {
+        const elementInfo = this.decorativeElementMap.get(type);
+        if (!elementInfo || !this.textures.decorative) {
+            return null;
+        }
+        
+        const { row, col, width, height } = elementInfo;
+        
+        // For multi-tile elements, create a composite texture
+        if (width > 1 || height > 1) {
+            // Create a render texture to combine tiles
+            const app = (window as any).gameApp; // Reference to PIXI application
+            if (!app || !app.renderer) {
+                console.warn(`[TilesetManager] Cannot create composite texture - no renderer available`);
+                return null;
+            }
+            
+            const renderTexture = PIXI.RenderTexture.create({
+                width: width * this.tileSize,
+                height: height * this.tileSize
+            });
+            
+            // Draw each tile to the render texture
+            const container = new PIXI.Container();
+            for (let dy = 0; dy < height; dy++) {
+                for (let dx = 0; dx < width; dx++) {
+                    const tile = this.textures.decorative[row + dy]?.[col + dx];
+                    if (tile) {
+                        const sprite = new PIXI.Sprite(tile);
+                        sprite.position.set(dx * this.tileSize, dy * this.tileSize);
+                        container.addChild(sprite);
+                    }
+                }
+            }
+            
+            app.renderer.render(container, { renderTexture });
+            return renderTexture;
+        } else {
+            // Single tile element
+            return this.textures.decorative[row]?.[col] || null;
+        }
     }
 }
