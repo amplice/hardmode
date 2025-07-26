@@ -54,6 +54,7 @@ export class SharedWorldGenerator {
     public elevationData: number[][] | null;
     public snowVariantData: number[][] | null;
     public decorativeElementsData: any[][] | null;
+    public colorRegionData: number[][] | null;
 
     constructor(width: number = 100, height: number = 100, seed: number = 42) {
         this.width = width;
@@ -66,6 +67,7 @@ export class SharedWorldGenerator {
         this.elevationData = null; // Will be populated during elevation generation
         this.snowVariantData = null; // Will be populated during snow variant generation
         this.decorativeElementsData = null; // Will be populated after biome generation
+        this.colorRegionData = null; // Will be populated before decorative generation
     }
 
     /**
@@ -98,8 +100,13 @@ export class SharedWorldGenerator {
         console.log('[SharedWorldGenerator] Step 5: Generating stairs...');
         this.generateStairsData(elevationData);
         
-        // STEP 6: Generate decorative elements
-        console.log('[SharedWorldGenerator] Step 6: Generating decorative elements...');
+        // STEP 6: Generate color regions for decorative consistency
+        console.log('[SharedWorldGenerator] Step 6: Generating color regions...');
+        const colorRegionData = this.generateColorRegions();
+        this.colorRegionData = colorRegionData;
+        
+        // STEP 7: Generate decorative elements
+        console.log('[SharedWorldGenerator] Step 7: Generating decorative elements...');
         const decorativeElementsData = this.generateDecorativeElements(biomeData, elevationData);
         this.decorativeElementsData = decorativeElementsData;
         
@@ -478,6 +485,46 @@ export class SharedWorldGenerator {
     }
 
     /**
+     * Generate color regions for decorative element consistency
+     * Divides the map into grid regions, each with a consistent color theme
+     */
+    private generateColorRegions(): number[][] {
+        const REGION_SIZE = 50; // Each region is 50x50 tiles
+        const colorRegionData: number[][] = [];
+        
+        // Color values: 0 = red, 1 = green, 2 = pink, 3 = blue
+        const colors = [0, 1, 2, 3];
+        
+        // Initialize array
+        for (let y = 0; y < this.height; y++) {
+            colorRegionData[y] = new Array(this.width).fill(0);
+        }
+        
+        // Generate regions
+        for (let regionY = 0; regionY < Math.ceil(this.height / REGION_SIZE); regionY++) {
+            for (let regionX = 0; regionX < Math.ceil(this.width / REGION_SIZE); regionX++) {
+                // Choose a random color for this region
+                const regionColor = colors[Math.floor(this.random() * colors.length)];
+                
+                // Fill all tiles in this region
+                const startY = regionY * REGION_SIZE;
+                const endY = Math.min((regionY + 1) * REGION_SIZE, this.height);
+                const startX = regionX * REGION_SIZE;
+                const endX = Math.min((regionX + 1) * REGION_SIZE, this.width);
+                
+                for (let y = startY; y < endY; y++) {
+                    for (let x = startX; x < endX; x++) {
+                        colorRegionData[y][x] = regionColor;
+                    }
+                }
+            }
+        }
+        
+        console.log(`[SharedWorldGenerator] Generated ${Math.ceil(this.width / REGION_SIZE) * Math.ceil(this.height / REGION_SIZE)} color regions`);
+        return colorRegionData;
+    }
+
+    /**
      * Generate decorative elements (trees, rocks, decorative cliffs) for the world
      * These are larger multi-tile features that create unwalkable areas
      */
@@ -552,10 +599,22 @@ export class SharedWorldGenerator {
                 
                 if (!shouldPlace) continue;
                 
-                // Filter decorative types based on category
+                // Get color for this position from color regions
+                const regionColor = this.colorRegionData![y][x];
+                const colorNames = ['red', 'green', 'pink', 'blue'];
+                const currentColor = colorNames[regionColor];
+                
+                // Filter decorative types based on category AND color region
                 const eligibleTypes = grassDecorativeTypes.filter(type => {
                     const isCliffType = type.type.includes('cliff');
-                    return isCliff ? isCliffType : !isCliffType;
+                    const categoryMatch = isCliff ? isCliffType : !isCliffType;
+                    
+                    // For cliffs, we don't filter by color (they come in light/dark)
+                    if (isCliffType) return categoryMatch;
+                    
+                    // For trees and bushes, filter by region color
+                    const typeColor = type.type.split('_')[1]; // e.g., 'tree_red_large' -> 'red'
+                    return categoryMatch && typeColor === currentColor;
                 });
                 
                 if (eligibleTypes.length === 0) continue;
