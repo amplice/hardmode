@@ -96,6 +96,7 @@ interface LatencyTracker {
 // Interface for collision mask (minimal interface)
 interface CollisionMask {
     isWalkable(x: number, y: number): boolean;
+    canMove(fromX: number, fromY: number, toX: number, toY: number): boolean;
 }
 
 // Class speeds mapped by character class
@@ -243,10 +244,27 @@ export class MovementPredictor {
         const newX = Math.round(state.x + velocity.x);
         const newY = Math.round(state.y + velocity.y);
         
-        // TEMPORARILY DISABLE CLIENT COLLISION CHECKING
-        // Let server be authoritative for collision detection to fix teleporting issue
-        state.x = newX;
-        state.y = newY;
+        // CLIENT COLLISION CHECKING - matches server logic exactly
+        // Server remains authoritative through reconciliation if any discrepancy
+        if (this.collisionMask && this.collisionMask.canMove(state.x, state.y, newX, newY)) {
+            // Movement is valid, update position
+            state.x = newX;
+            state.y = newY;
+        } else {
+            // Movement completely blocked - attempt sliding (same as server)
+            const canMoveX = this.collisionMask ? this.collisionMask.canMove(state.x, state.y, newX, state.y) : false;
+            const canMoveY = this.collisionMask ? this.collisionMask.canMove(state.x, state.y, state.x, newY) : false;
+            
+            // Only allow sliding if moving diagonally and one direction is clear
+            if (Math.abs(velocity.x) > 0 && Math.abs(velocity.y) > 0) {
+                if (canMoveX && !canMoveY) {
+                    state.x = newX; // Slide along horizontal wall
+                } else if (canMoveY && !canMoveX) {
+                    state.y = newY; // Slide along vertical wall
+                }
+            }
+            // If not diagonal or both directions blocked, position stays the same
+        }
 
         // Apply world boundaries (match server)
         this.applyWorldBounds(state);
