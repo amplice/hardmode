@@ -130,15 +130,16 @@ export class TilesetManager {
     private sliceTerrainTileset(baseTexture: BaseTexture): void {
         const tileSize = this.tileSize;
         
-        // MainLev2.0 is 64x44 tiles (2048x1408 pixels)
-        // Store as 2D array for easier access
+        // Load the ENTIRE grass tileset to avoid missing tiles
+        const tilesWide = Math.floor(baseTexture.width / tileSize);
+        const tilesHigh = Math.floor(baseTexture.height / tileSize);
+        
         this.textures.terrain = [];
         
-        // Load rows 0-10 with green grass (cols 0-10) and dark grass (cols 11-21)
-        for (let row = 0; row < 11; row++) {
+        // Load every single tile in the entire tileset
+        for (let row = 0; row < tilesHigh; row++) {
             this.textures.terrain[row] = [];
-            // Load green grass columns (0-10) and dark grass columns (11-21)
-            for (let col = 0; col < 22; col++) {
+            for (let col = 0; col < tilesWide; col++) {
                 this.textures.terrain[row][col] = new Texture(
                     baseTexture,
                     new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
@@ -146,72 +147,7 @@ export class TilesetManager {
             }
         }
         
-        // Load rows 13-17 to include stairs (both green and dark grass stairs)
-        for (let row = 13; row <= 17; row++) {
-            this.textures.terrain[row] = [];
-            // Load green grass stairs (cols 0-10) and dark grass stairs (cols 11-21)
-            for (let col = 0; col < 22; col++) {
-                this.textures.terrain[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
-        
-        // Load decorative grass variation rows (27-28) with full column range for dark grass
-        for (let row = 27; row <= 28; row++) {
-            this.textures.terrain[row] = [];
-            // Load green grass common variations (cols 0-10) and dark grass common variations (cols 16-20)
-            for (let col = 0; col < 21; col++) {
-                this.textures.terrain[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
-        
-        // Load transition tiles (rows 30-36, columns 0-9)
-        for (let row = 30; row <= 36; row++) {
-            this.textures.terrain[row] = [];
-            for (let col = 0; col <= 9; col++) {
-                this.textures.terrain[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
-        
-        // Load transparency transition tiles (rows 37-43, columns 0-9)
-        for (let row = 37; row <= 43; row++) {
-            this.textures.terrain[row] = [];
-            for (let col = 0; col <= 9; col++) {
-                this.textures.terrain[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
-        
-        // Load the rare grass variations: green (22,54) to (31,63) and dark (22,44) to (31,53)
-        for (let row = 22; row <= 31; row++) {
-            if (!this.textures.terrain[row]) {
-                this.textures.terrain[row] = [];
-            }
-            // Load dark grass rare variations (22,44) to (31,53)
-            for (let col = 44; col <= 53; col++) {
-                this.textures.terrain[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-            // Load green grass rare variations (22,54) to (31,63)
-            for (let col = 54; col <= 63; col++) {
-                this.textures.terrain[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
+        console.log(`[TilesetManager] Loaded entire grass tileset: ${tilesWide}x${tilesHigh} tiles`);
         
         // Store green grass tiles with different frequency weights
         this.basicGrassTile = this.textures.terrain[1][1];
@@ -275,20 +211,16 @@ export class TilesetManager {
     private sliceSnowTileset(baseTexture: BaseTexture): void {
         const tileSize = this.tileSize;
         
-        // Snow tileset structure (3 variants with gaps)
-        // Variant 1 (white): cols 0-10
-        // Gap: col 11
-        // Variant 2 (blue): cols 12-22
-        // Gap: col 23
-        // Variant 3 (grey): cols 24-34
+        // Load the ENTIRE snow tileset to avoid missing tiles
+        const tilesWide = Math.floor(baseTexture.width / tileSize);
+        const tilesHigh = Math.floor(baseTexture.height / tileSize);
         
         this.textures.snow = [];
         
-        // Load cliff/ground tiles (rows 0-6) for all 3 variants
-        for (let row = 0; row <= 6; row++) {
+        // Load every single tile in the entire tileset
+        for (let row = 0; row < tilesHigh; row++) {
             this.textures.snow[row] = [];
-            // Load all columns including gaps
-            for (let col = 0; col <= 34; col++) {
+            for (let col = 0; col < tilesWide; col++) {
                 this.textures.snow[row][col] = new Texture(
                     baseTexture,
                     new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
@@ -296,92 +228,7 @@ export class TilesetManager {
             }
         }
         
-        // Load snow stairs (rows 17-20) for all 3 variants
-        for (let row = 17; row <= 20; row++) {
-            this.textures.snow[row] = [];
-            // White snow stairs: cols 2-8
-            // Blue snow stairs: cols 14-20
-            // Grey snow stairs: cols 26-32
-            for (let col = 0; col <= 32; col++) {
-                this.textures.snow[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
-        
-        // Load transition tiles
-        // White to blue transitions (rows 22-28)
-        for (let row = 22; row <= 28; row++) {
-            this.textures.snow[row] = [];
-            for (let col = 0; col <= 9; col++) {
-                this.textures.snow[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
-        
-        // White to grey transitions (rows 29-35)
-        for (let row = 29; row <= 35; row++) {
-            this.textures.snow[row] = [];
-            for (let col = 0; col <= 9; col++) {
-                this.textures.snow[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
-        
-        // Transparency transitions
-        // White snow to transparency (rows 36-42, cols 0-9)
-        for (let row = 36; row <= 42; row++) {
-            this.textures.snow[row] = [];
-            for (let col = 0; col <= 9; col++) {
-                this.textures.snow[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
-        
-        // Blue snow to transparency (rows 36-42, cols 10-19)
-        for (let row = 36; row <= 42; row++) {
-            if (!this.textures.snow[row]) {
-                this.textures.snow[row] = [];
-            }
-            for (let col = 10; col <= 19; col++) {
-                this.textures.snow[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
-        
-        // Grey snow to transparency (rows 43-49, cols 0-9)
-        for (let row = 43; row <= 49; row++) {
-            this.textures.snow[row] = [];
-            for (let col = 0; col <= 9; col++) {
-                this.textures.snow[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
-        
-        // Load all decorative snow tiles - need to load wider range for all variants
-        for (let row = 31; row <= 46; row++) {
-            if (!this.textures.snow[row]) {
-                this.textures.snow[row] = [];
-            }
-            // Load a wide range of columns to cover all decorative tiles
-            for (let col = 24; col <= 46; col++) {
-                this.textures.snow[row][col] = new Texture(
-                    baseTexture,
-                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
-                );
-            }
-        }
+        console.log(`[TilesetManager] Loaded entire snow tileset: ${tilesWide}x${tilesHigh} tiles`);
         
         // Store snow variant tiles for easy access
         this.setupSnowVariantTiles();
