@@ -672,4 +672,24 @@ export class TilesetManager {
             return this.textures.decorative[row]?.[col] || null;
         }
     }
+    
+    /**
+     * Get texture for a specific tile within a decorative element
+     */
+    public getDecorativeTileTexture(type: string, offsetX: number, offsetY: number): Texture | null {
+        const elementInfo = this.decorativeElementMap.get(type);
+        if (!elementInfo || !this.textures.decorative) {
+            return null;
+        }
+        
+        const { row, col } = elementInfo;
+        const tileRow = row + offsetY;
+        const tileCol = col + offsetX;
+        
+        if (this.textures.decorative[tileRow] && this.textures.decorative[tileRow][tileCol]) {
+            return this.textures.decorative[tileRow][tileCol];
+        }
+        
+        return null;
+    }
 }

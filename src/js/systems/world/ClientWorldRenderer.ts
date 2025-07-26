@@ -695,20 +695,24 @@ export class ClientWorldRenderer {
                 
                 renderedElements.add(elementKey);
                 
-                // Get the texture for this decorative element
-                const texture = this.getDecorativeTexture(element.type);
-                if (!texture) {
-                    console.warn(`[ClientWorldRenderer] Missing texture for decorative element: ${element.type}`);
-                    continue;
+                // Render all tiles for this decorative element
+                for (let dy = 0; dy < element.height; dy++) {
+                    for (let dx = 0; dx < element.width; dx++) {
+                        const texture = this.getDecorativeTileTexture(element.type, dx, dy);
+                        if (!texture) {
+                            console.warn(`[ClientWorldRenderer] Missing texture for decorative element: ${element.type} at offset ${dx},${dy}`);
+                            continue;
+                        }
+                        
+                        // Create sprite for this tile of the decorative element
+                        const sprite = new PIXI.Sprite(texture);
+                        sprite.position.set((x + dx) * this.tileSize, (y + dy) * this.tileSize);
+                        sprite.scale.set(this.tileSize / 32, this.tileSize / 32);
+                        
+                        // Add to decorative container
+                        decorativeContainer.addChild(sprite);
+                    }
                 }
-                
-                // Create sprite for decorative element
-                const sprite = new PIXI.Sprite(texture);
-                sprite.position.set(x * this.tileSize, y * this.tileSize);
-                sprite.scale.set(this.tileSize / 32, this.tileSize / 32);
-                
-                // Add to decorative container
-                decorativeContainer.addChild(sprite);
             }
         }
         
@@ -725,6 +729,13 @@ export class ClientWorldRenderer {
         // This will be implemented when we load the decorative textures
         // For now, return null
         return this.tilesets.getDecorativeTexture?.(type) || null;
+    }
+    
+    /**
+     * Get texture for a specific tile within a decorative element
+     */
+    private getDecorativeTileTexture(type: string, offsetX: number, offsetY: number): PIXI.Texture | null {
+        return this.tilesets.getDecorativeTileTexture?.(type, offsetX, offsetY) || null;
     }
     
     private createCollisionDebugOverlay(): void {
