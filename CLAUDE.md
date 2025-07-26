@@ -636,11 +636,11 @@ Same patterns as light set but offset by 5 rows (e.g., (0,0) becomes (5,0)).
 - (20,5) to (24,8) - Medium red tree
 - (20,9) to (24,12) - Medium red tree variant
 
-**Red bushes:**
-- (25,4) to (26,5) - 2x2 bush
-- (25,6) to (26,6) - 2x1 bush
-- (25,7) to (26,8) - 2x2 bush
-- (25,9) to (26,9) - 2x1 bush
+**Red bushes (1 tile tall):**
+- (25,4) to (25,5) - 2x1 bush
+- (25,6) - 1x1 bush
+- (25,7) to (25,8) - 2x1 bush
+- (25,9) - 1x1 bush
 
 **Other tree colors (same patterns):**
 - Green: Offset by 13 columns from red
