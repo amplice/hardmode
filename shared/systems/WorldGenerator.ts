@@ -516,11 +516,7 @@ export class SharedWorldGenerator {
             // Decorative cliffs (rarer)
             { type: 'cliff_light_big1', width: 4, height: 5, weight: 1 },
             { type: 'cliff_light_big2', width: 4, height: 4, weight: 1 },
-            { type: 'cliff_light_medium1', width: 3, height: 3, weight: 2 },
-            { type: 'cliff_light_small1', width: 2, height: 2, weight: 3 },
-            { type: 'cliff_dark_big1', width: 4, height: 5, weight: 1 },
-            { type: 'cliff_dark_medium1', width: 3, height: 3, weight: 2 },
-            { type: 'cliff_dark_small1', width: 2, height: 2, weight: 3 }
+            { type: 'cliff_dark_big1', width: 4, height: 5, weight: 1 }
         ];
         
         // Calculate total weight for weighted random selection

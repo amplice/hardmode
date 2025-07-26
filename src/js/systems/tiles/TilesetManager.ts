@@ -650,13 +650,9 @@ export class TilesetManager {
         // Decorative cliffs - Light
         this.decorativeElementMap.set('cliff_light_big1', { row: 0, col: 0, width: 4, height: 5 });
         this.decorativeElementMap.set('cliff_light_big2', { row: 1, col: 4, width: 4, height: 4 });
-        this.decorativeElementMap.set('cliff_light_medium1', { row: 0, col: 8, width: 3, height: 3 });
-        this.decorativeElementMap.set('cliff_light_small1', { row: 3, col: 8, width: 2, height: 2 });
         
         // Decorative cliffs - Dark
         this.decorativeElementMap.set('cliff_dark_big1', { row: 5, col: 0, width: 4, height: 5 });
-        this.decorativeElementMap.set('cliff_dark_medium1', { row: 5, col: 8, width: 3, height: 3 });
-        this.decorativeElementMap.set('cliff_dark_small1', { row: 8, col: 8, width: 2, height: 2 });
     }
     
     /**
