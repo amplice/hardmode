@@ -489,7 +489,7 @@ export class SharedWorldGenerator {
             decorativeElements[y] = new Array(this.width).fill(null);
         }
         
-        // Define decorative element types for grass biome
+        // Define decorative element types for grass biomes (both green and dark grass)
         const grassDecorativeTypes = [
             // Trees (more common)
             { type: 'tree_red_large', width: 5, height: 5, weight: 3 },
@@ -528,8 +528,8 @@ export class SharedWorldGenerator {
         
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                // Skip if not grass biome
-                if (biomeData[y][x] !== BIOME_TYPES.GRASS) continue;
+                // Skip if not grass biome (green or dark grass)
+                if (biomeData[y][x] !== BIOME_TYPES.GRASS && biomeData[y][x] !== BIOME_TYPES.DARK_GRASS) continue;
                 
                 // Skip if already occupied by decorative element
                 if (decorativeElements[y][x] !== null) continue;
