@@ -142,6 +142,8 @@ export class ClientWorldRenderer {
         this.decorativeElementsData = worldData.decorativeElementsData || null;
         this.sharedWorldGen = sharedWorldGen;
         
+        console.log('[ClientWorldRenderer] decorativeElementsData:', this.decorativeElementsData ? 'present' : 'null');
+        
         console.log('[ClientWorldRenderer] World data received - biomes:', this.biomeData.length, 'rows');
         
         // Generate collision mask from provided elevation data, stairs, and decorative elements
@@ -161,6 +163,9 @@ export class ClientWorldRenderer {
             // Create visual tiles using autotiler
             this.createTileSprites();
         }
+        
+        // Render decorative elements on top of base terrain (for both chunked and non-chunked)
+        this.renderDecorativeElements();
         
         // Create debug overlay for collision boundaries
         this.createCollisionDebugOverlay();
@@ -577,9 +582,6 @@ export class ClientWorldRenderer {
             }
         }
         
-        // Render decorative elements on top of base tiles
-        this.renderDecorativeElements();
-        
         // Second pass: Add cliff extensions
         this.addCliffExtensions(processedTiles);
     }
@@ -661,7 +663,14 @@ export class ClientWorldRenderer {
      * Render decorative elements (trees, rocks, decorative cliffs)
      */
     private renderDecorativeElements(): void {
-        if (!this.decorativeElementsData || !this.tilesets) return;
+        console.log('[ClientWorldRenderer] renderDecorativeElements called');
+        console.log('[ClientWorldRenderer] decorativeElementsData:', this.decorativeElementsData ? 'present' : 'null');
+        console.log('[ClientWorldRenderer] tilesets:', this.tilesets ? 'present' : 'null');
+        
+        if (!this.decorativeElementsData || !this.tilesets) {
+            console.log('[ClientWorldRenderer] Exiting early - missing data');
+            return;
+        }
         
         console.log('[ClientWorldRenderer] Rendering decorative elements...');
         

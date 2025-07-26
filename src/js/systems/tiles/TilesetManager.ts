@@ -664,33 +664,9 @@ export class TilesetManager {
         
         // For multi-tile elements, create a composite texture
         if (width > 1 || height > 1) {
-            // Create a render texture to combine tiles
-            const app = (window as any).gameApp; // Reference to PIXI application
-            if (!app || !app.renderer) {
-                console.warn(`[TilesetManager] Cannot create composite texture - no renderer available`);
-                return null;
-            }
-            
-            const renderTexture = PIXI.RenderTexture.create({
-                width: width * this.tileSize,
-                height: height * this.tileSize
-            });
-            
-            // Draw each tile to the render texture
-            const container = new PIXI.Container();
-            for (let dy = 0; dy < height; dy++) {
-                for (let dx = 0; dx < width; dx++) {
-                    const tile = this.textures.decorative[row + dy]?.[col + dx];
-                    if (tile) {
-                        const sprite = new PIXI.Sprite(tile);
-                        sprite.position.set(dx * this.tileSize, dy * this.tileSize);
-                        container.addChild(sprite);
-                    }
-                }
-            }
-            
-            app.renderer.render(container, { renderTexture });
-            return renderTexture;
+            // For now, just return the top-left tile of multi-tile elements
+            // TODO: Implement proper composite texture creation
+            return this.textures.decorative[row]?.[col] || null;
         } else {
             // Single tile element
             return this.textures.decorative[row]?.[col] || null;
