@@ -187,7 +187,7 @@ export class InputProcessor {
             }
             
             // Generate collision mask from shared elevation data and decorative elements
-            this.collisionMask.generateFromElevationData(worldData.elevationData, worldGen, worldData.decorativeElementsData);
+            this.collisionMask.generateFromElevationData(worldData.elevationData, worldGen, worldData.decorativeElementsData || undefined);
             
             console.log('[InputProcessor] Collision mask initialized using shared world data');
         } catch (error) {

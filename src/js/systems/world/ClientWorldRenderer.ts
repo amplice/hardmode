@@ -145,7 +145,7 @@ export class ClientWorldRenderer {
         console.log('[ClientWorldRenderer] World data received - biomes:', this.biomeData.length, 'rows');
         
         // Generate collision mask from provided elevation data, stairs, and decorative elements
-        this.collisionMask.generateFromElevationData(this.elevationData, this.sharedWorldGen, this.decorativeElementsData);
+        this.collisionMask.generateFromElevationData(this.elevationData, this.sharedWorldGen, this.decorativeElementsData || undefined);
         console.log('[ClientWorldRenderer] Client collision mask generated from shared data');
         
         // Choose rendering method based on world size and options
