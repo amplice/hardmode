@@ -127,20 +127,27 @@ export class CollisionMask {
             console.warn("[CollisionMask] World generator or getStairsData method not available!");
         }
         
-        // Fourth pass: Mark decorative elements as unwalkable
+        // Fourth pass: Mark decorative elements as unwalkable (unless marked as walkable)
         if (decorativeElementsData) {
             let decorativeCount = 0;
+            let walkableDecorativeCount = 0;
             
             for (let y = 0; y < this.height; y++) {
                 for (let x = 0; x < this.width; x++) {
                     if (decorativeElementsData[y] && decorativeElementsData[y][x]) {
-                        this.mask[y][x] = false; // Mark as unwalkable
-                        decorativeCount++;
+                        const element = decorativeElementsData[y][x];
+                        // Only mark as unwalkable if the element doesn't have walkable: true
+                        if (!element.walkable) {
+                            this.mask[y][x] = false; // Mark as unwalkable
+                            decorativeCount++;
+                        } else {
+                            walkableDecorativeCount++;
+                        }
                     }
                 }
             }
             
-            console.log(`[CollisionMask] Marked ${decorativeCount} tiles as unwalkable due to decorative elements`);
+            console.log(`[CollisionMask] Marked ${decorativeCount} tiles as unwalkable due to decorative elements (${walkableDecorativeCount} decorative tiles remain walkable)`);
         }
         
         // Set world boundaries as unwalkable

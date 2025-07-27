@@ -629,9 +629,11 @@ export class TilesetManager {
         
         this.decorativeElementMap.set('tree_pink_large', { row: 26, col: 0, width: 5, height: 5 });
         this.decorativeElementMap.set('tree_pink_medium1', { row: 26, col: 5, width: 4, height: 5 });
+        this.decorativeElementMap.set('tree_pink_medium2', { row: 26, col: 9, width: 4, height: 5 });
         
         this.decorativeElementMap.set('tree_blue_large', { row: 26, col: 13, width: 5, height: 5 });
         this.decorativeElementMap.set('tree_blue_medium1', { row: 26, col: 18, width: 4, height: 5 });
+        this.decorativeElementMap.set('tree_blue_medium2', { row: 26, col: 22, width: 4, height: 5 });
         
         // Bushes (1 row tall)
         this.decorativeElementMap.set('bush_red_2x1', { row: 25, col: 4, width: 2, height: 1 });

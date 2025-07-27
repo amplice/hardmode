@@ -539,31 +539,167 @@ export class SharedWorldGenerator {
         // Define decorative element types for grass biomes (both green and dark grass)
         const grassDecorativeTypes = [
             // Trees (more common)
-            { type: 'tree_red_large', width: 5, height: 5, weight: 3 },
-            { type: 'tree_red_medium1', width: 4, height: 5, weight: 3 },
-            { type: 'tree_red_medium2', width: 4, height: 5, weight: 3 },
-            { type: 'tree_green_large', width: 5, height: 5, weight: 3 },
-            { type: 'tree_green_medium1', width: 4, height: 5, weight: 3 },
-            { type: 'tree_green_medium2', width: 4, height: 5, weight: 3 },
-            { type: 'tree_pink_large', width: 5, height: 5, weight: 2 },
-            { type: 'tree_pink_medium1', width: 4, height: 5, weight: 2 },
-            { type: 'tree_blue_large', width: 5, height: 5, weight: 2 },
-            { type: 'tree_blue_medium1', width: 4, height: 5, weight: 2 },
+            { 
+                type: 'tree_red_large', width: 5, height: 5, weight: 3,
+                walkablePattern: [
+                    [1, 1, 1, 1, 0], // Row 0: First 4 walkable
+                    [1, 0, 0, 1, 0], // Row 1: Corners walkable
+                    [0, 0, 0, 0, 0], // Row 2: All unwalkable
+                    [0, 0, 0, 0, 0], // Row 3: All unwalkable
+                    [1, 0, 0, 0, 0]  // Row 4: First walkable
+                ]
+            },
+            { 
+                type: 'tree_red_medium1', width: 4, height: 5, weight: 3,
+                walkablePattern: [
+                    [1, 0, 0, 0], // Row 0: First walkable
+                    [0, 0, 0, 0], // Row 1: All unwalkable
+                    [1, 0, 0, 0], // Row 2: First walkable
+                    [1, 1, 0, 1], // Row 3: 1st, 2nd, 4th walkable
+                    [1, 1, 0, 1]  // Row 4: 1st, 2nd, 4th walkable
+                ]
+            },
+            { 
+                type: 'tree_red_medium2', width: 4, height: 5, weight: 3,
+                walkablePattern: [
+                    [1, 0, 0, 1], // Row 0: 1st and 4th walkable
+                    [0, 0, 0, 0], // Row 1: All unwalkable
+                    [1, 0, 0, 0], // Row 2: First walkable
+                    [1, 1, 0, 1], // Row 3: 1st, 2nd, 4th walkable
+                    [0, 1, 0, 1]  // Row 4: 2nd and 4th walkable
+                ]
+            },
+            { 
+                type: 'tree_green_large', width: 5, height: 5, weight: 3,
+                walkablePattern: [
+                    [1, 1, 1, 1, 0], // Same pattern as red_large
+                    [1, 0, 0, 1, 0],
+                    [0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0],
+                    [1, 0, 0, 0, 0]
+                ]
+            },
+            { 
+                type: 'tree_green_medium1', width: 4, height: 5, weight: 3,
+                walkablePattern: [
+                    [1, 0, 0, 0], // Same pattern as red_medium1
+                    [0, 0, 0, 0],
+                    [1, 0, 0, 0],
+                    [1, 1, 0, 1],
+                    [1, 1, 0, 1]
+                ]
+            },
+            { 
+                type: 'tree_green_medium2', width: 4, height: 5, weight: 3,
+                walkablePattern: [
+                    [1, 0, 0, 1], // Same pattern as red_medium2
+                    [0, 0, 0, 0],
+                    [1, 0, 0, 0],
+                    [1, 1, 0, 1],
+                    [0, 1, 0, 1]
+                ]
+            },
+            { 
+                type: 'tree_pink_large', width: 5, height: 5, weight: 2,
+                walkablePattern: [
+                    [1, 1, 1, 1, 0], // Same pattern as red_large
+                    [1, 0, 0, 1, 0],
+                    [0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0],
+                    [1, 0, 0, 0, 0]
+                ]
+            },
+            { 
+                type: 'tree_pink_medium1', width: 4, height: 5, weight: 2,
+                walkablePattern: [
+                    [1, 0, 0, 0], // Same pattern as red_medium1
+                    [0, 0, 0, 0],
+                    [1, 0, 0, 0],
+                    [1, 1, 0, 1],
+                    [1, 1, 0, 1]
+                ]
+            },
+            { 
+                type: 'tree_pink_medium2', width: 4, height: 5, weight: 2,
+                walkablePattern: [
+                    [1, 0, 0, 1], // Same pattern as red_medium2
+                    [0, 0, 0, 0],
+                    [1, 0, 0, 0],
+                    [1, 1, 0, 1],
+                    [0, 1, 0, 1]
+                ]
+            },
+            { 
+                type: 'tree_blue_large', width: 5, height: 5, weight: 2,
+                walkablePattern: [
+                    [1, 1, 1, 1, 0], // Same pattern as red_large
+                    [1, 0, 0, 1, 0],
+                    [0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0],
+                    [1, 0, 0, 0, 0]
+                ]
+            },
+            { 
+                type: 'tree_blue_medium1', width: 4, height: 5, weight: 2,
+                walkablePattern: [
+                    [1, 0, 0, 0], // Same pattern as red_medium1
+                    [0, 0, 0, 0],
+                    [1, 0, 0, 0],
+                    [1, 1, 0, 1],
+                    [1, 1, 0, 1]
+                ]
+            },
+            { 
+                type: 'tree_blue_medium2', width: 4, height: 5, weight: 2,
+                walkablePattern: [
+                    [1, 0, 0, 1], // Same pattern as red_medium2
+                    [0, 0, 0, 0],
+                    [1, 0, 0, 0],
+                    [1, 1, 0, 1],
+                    [0, 1, 0, 1]
+                ]
+            },
             
-            // Bushes (common but smaller)
-            { type: 'bush_red_2x1', width: 2, height: 1, weight: 4 },
-            { type: 'bush_red_1x1', width: 1, height: 1, weight: 5 },
-            { type: 'bush_green_2x1', width: 2, height: 1, weight: 4 },
-            { type: 'bush_green_1x1', width: 1, height: 1, weight: 5 },
-            { type: 'bush_pink_2x1', width: 2, height: 1, weight: 3 },
-            { type: 'bush_pink_1x1', width: 1, height: 1, weight: 4 },
-            { type: 'bush_blue_2x1', width: 2, height: 1, weight: 3 },
-            { type: 'bush_blue_1x1', width: 1, height: 1, weight: 4 },
+            // Bushes (common but smaller) - all unwalkable
+            { type: 'bush_red_2x1', width: 2, height: 1, weight: 4, walkablePattern: [[0, 0]] },
+            { type: 'bush_red_1x1', width: 1, height: 1, weight: 5, walkablePattern: [[0]] },
+            { type: 'bush_green_2x1', width: 2, height: 1, weight: 4, walkablePattern: [[0, 0]] },
+            { type: 'bush_green_1x1', width: 1, height: 1, weight: 5, walkablePattern: [[0]] },
+            { type: 'bush_pink_2x1', width: 2, height: 1, weight: 3, walkablePattern: [[0, 0]] },
+            { type: 'bush_pink_1x1', width: 1, height: 1, weight: 4, walkablePattern: [[0]] },
+            { type: 'bush_blue_2x1', width: 2, height: 1, weight: 3, walkablePattern: [[0, 0]] },
+            { type: 'bush_blue_1x1', width: 1, height: 1, weight: 4, walkablePattern: [[0]] },
             
             // Decorative cliffs (rarer)
-            { type: 'cliff_light_big1', width: 4, height: 5, weight: 1 },
-            { type: 'cliff_light_big2', width: 4, height: 4, weight: 1 },
-            { type: 'cliff_dark_big1', width: 4, height: 5, weight: 1 }
+            { 
+                type: 'cliff_light_big1', width: 4, height: 5, weight: 1,
+                walkablePattern: [
+                    [1, 1, 1, 1], // Row 0: All walkable
+                    [1, 0, 0, 1], // Row 1: Corners walkable
+                    [0, 0, 0, 0], // Row 2: All unwalkable
+                    [0, 0, 0, 0], // Row 3: All unwalkable
+                    [1, 0, 0, 0]  // Row 4: First walkable
+                ]
+            },
+            { 
+                type: 'cliff_light_big2', width: 4, height: 4, weight: 1,
+                walkablePattern: [
+                    [1, 0, 0, 1], // Row 0 (offset row 1): Corners walkable
+                    [0, 0, 0, 0], // Row 1: All unwalkable
+                    [0, 0, 0, 0], // Row 2: All unwalkable
+                    [1, 0, 0, 0]  // Row 3: First walkable
+                ]
+            },
+            { 
+                type: 'cliff_dark_big1', width: 4, height: 5, weight: 1,
+                walkablePattern: [
+                    [1, 1, 1, 1], // Row 0: All walkable
+                    [1, 0, 0, 1], // Row 1: Corners walkable
+                    [0, 0, 0, 0], // Row 2: All unwalkable
+                    [0, 0, 0, 0], // Row 3: All unwalkable
+                    [1, 0, 0, 0]  // Row 4: First walkable
+                ]
+            }
         ];
         
         // Calculate total weight for weighted random selection
@@ -722,11 +858,14 @@ export class SharedWorldGenerator {
      * Place a decorative element at the given position
      */
     private placeDecorativeElement(x: number, y: number, elementType: any, decorativeElements: any[][]): void {
-        const { width, height, type } = elementType;
+        const { width, height, type, walkablePattern } = elementType;
         
         // Mark all tiles occupied by this element
         for (let dy = 0; dy < height; dy++) {
             for (let dx = 0; dx < width; dx++) {
+                // Check if this tile is walkable according to the pattern
+                const isWalkable = walkablePattern ? walkablePattern[dy][dx] === 1 : false;
+                
                 decorativeElements[y + dy][x + dx] = {
                     type: type,
                     originX: x,
@@ -734,7 +873,8 @@ export class SharedWorldGenerator {
                     offsetX: dx,
                     offsetY: dy,
                     width: width,
-                    height: height
+                    height: height,
+                    walkable: isWalkable
                 };
             }
         }
