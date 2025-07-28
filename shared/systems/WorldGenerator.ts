@@ -757,9 +757,9 @@ export class SharedWorldGenerator {
                     const rand = this.random();
                     
                     // Calculate category based on weights
-                    const LOG_CHANCE = 0.01;    // 1% for logs
-                    const BUSH_CHANCE = 0.02;   // 2% for bushes
-                    const TREE_CHANCE = 0.03;   // 3% for trees (same as grass)
+                    const LOG_CHANCE = 0.005;    // 0.5% for logs
+                    const BUSH_CHANCE = 0.005;   // 0.5% for bushes
+                    const TREE_CHANCE = 0.005;   // 0.5% for trees
                     
                     if (rand < LOG_CHANCE) {
                         // Filter for logs
