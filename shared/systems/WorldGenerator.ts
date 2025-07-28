@@ -542,19 +542,19 @@ export class SharedWorldGenerator {
             { 
                 type: 'tree_red_large', width: 5, height: 5, weight: 3,
                 walkablePattern: [
-                    [1, 1, 1, 1, 0], // Row 0: First 4 walkable
-                    [1, 0, 0, 1, 0], // Row 1: Corners walkable
-                    [0, 0, 0, 0, 0], // Row 2: All unwalkable
-                    [0, 0, 0, 0, 0], // Row 3: All unwalkable
-                    [1, 0, 0, 0, 0]  // Row 4: First walkable
+                    [1, 0, 0, 0, 1], // Row 0: Corners walkable
+                    [0, 0, 0, 0, 0], // Row 1: All unwalkable
+                    [1, 1, 0, 0, 1], // Row 2: Sides walkable, center unwalkable
+                    [1, 1, 0, 0, 1], // Row 3: Sides walkable, center unwalkable
+                    [1, 1, 0, 0, 1]  // Row 4: Sides walkable, center unwalkable
                 ]
             },
             { 
                 type: 'tree_red_medium1', width: 4, height: 5, weight: 3,
                 walkablePattern: [
-                    [1, 0, 0, 0], // Row 0: First walkable
+                    [0, 0, 0, 0], // Row 0: All unwalkable
                     [0, 0, 0, 0], // Row 1: All unwalkable
-                    [1, 0, 0, 0], // Row 2: First walkable
+                    [1, 0, 0, 0], // Row 2: Only first walkable
                     [1, 1, 0, 1], // Row 3: 1st, 2nd, 4th walkable
                     [1, 1, 0, 1]  // Row 4: 1st, 2nd, 4th walkable
                 ]
@@ -562,27 +562,27 @@ export class SharedWorldGenerator {
             { 
                 type: 'tree_red_medium2', width: 4, height: 5, weight: 3,
                 walkablePattern: [
-                    [1, 0, 0, 1], // Row 0: 1st and 4th walkable
+                    [0, 0, 0, 0], // Row 0: All unwalkable
                     [0, 0, 0, 0], // Row 1: All unwalkable
-                    [1, 0, 0, 0], // Row 2: First walkable
+                    [1, 0, 0, 0], // Row 2: Only first walkable
                     [1, 1, 0, 1], // Row 3: 1st, 2nd, 4th walkable
-                    [0, 1, 0, 1]  // Row 4: 2nd and 4th walkable
+                    [1, 1, 0, 1]  // Row 4: 1st, 2nd, 4th walkable
                 ]
             },
             { 
                 type: 'tree_green_large', width: 5, height: 5, weight: 3,
                 walkablePattern: [
-                    [1, 1, 1, 1, 0], // Same pattern as red_large
-                    [1, 0, 0, 1, 0],
+                    [1, 0, 0, 0, 1], // Same pattern as red_large
                     [0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0],
-                    [1, 0, 0, 0, 0]
+                    [1, 1, 0, 0, 1],
+                    [1, 1, 0, 0, 1],
+                    [1, 1, 0, 0, 1]
                 ]
             },
             { 
                 type: 'tree_green_medium1', width: 4, height: 5, weight: 3,
                 walkablePattern: [
-                    [1, 0, 0, 0], // Same pattern as red_medium1
+                    [0, 0, 0, 0], // Same pattern as red_medium1
                     [0, 0, 0, 0],
                     [1, 0, 0, 0],
                     [1, 1, 0, 1],
@@ -592,27 +592,27 @@ export class SharedWorldGenerator {
             { 
                 type: 'tree_green_medium2', width: 4, height: 5, weight: 3,
                 walkablePattern: [
-                    [1, 0, 0, 1], // Same pattern as red_medium2
+                    [0, 0, 0, 0], // Same pattern as red_medium2
                     [0, 0, 0, 0],
                     [1, 0, 0, 0],
                     [1, 1, 0, 1],
-                    [0, 1, 0, 1]
+                    [1, 1, 0, 1]
                 ]
             },
             { 
                 type: 'tree_pink_large', width: 5, height: 5, weight: 2,
                 walkablePattern: [
-                    [1, 1, 1, 1, 0], // Same pattern as red_large
-                    [1, 0, 0, 1, 0],
+                    [1, 0, 0, 0, 1], // Same pattern as red_large
                     [0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0],
-                    [1, 0, 0, 0, 0]
+                    [1, 1, 0, 0, 1],
+                    [1, 1, 0, 0, 1],
+                    [1, 1, 0, 0, 1]
                 ]
             },
             { 
                 type: 'tree_pink_medium1', width: 4, height: 5, weight: 2,
                 walkablePattern: [
-                    [1, 0, 0, 0], // Same pattern as red_medium1
+                    [0, 0, 0, 0], // Same pattern as red_medium1
                     [0, 0, 0, 0],
                     [1, 0, 0, 0],
                     [1, 1, 0, 1],
@@ -622,27 +622,27 @@ export class SharedWorldGenerator {
             { 
                 type: 'tree_pink_medium2', width: 4, height: 5, weight: 2,
                 walkablePattern: [
-                    [1, 0, 0, 1], // Same pattern as red_medium2
+                    [0, 0, 0, 0], // Same pattern as red_medium2
                     [0, 0, 0, 0],
                     [1, 0, 0, 0],
                     [1, 1, 0, 1],
-                    [0, 1, 0, 1]
+                    [1, 1, 0, 1]
                 ]
             },
             { 
                 type: 'tree_blue_large', width: 5, height: 5, weight: 2,
                 walkablePattern: [
-                    [1, 1, 1, 1, 0], // Same pattern as red_large
-                    [1, 0, 0, 1, 0],
+                    [1, 0, 0, 0, 1], // Same pattern as red_large
                     [0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0],
-                    [1, 0, 0, 0, 0]
+                    [1, 1, 0, 0, 1],
+                    [1, 1, 0, 0, 1],
+                    [1, 1, 0, 0, 1]
                 ]
             },
             { 
                 type: 'tree_blue_medium1', width: 4, height: 5, weight: 2,
                 walkablePattern: [
-                    [1, 0, 0, 0], // Same pattern as red_medium1
+                    [0, 0, 0, 0], // Same pattern as red_medium1
                     [0, 0, 0, 0],
                     [1, 0, 0, 0],
                     [1, 1, 0, 1],
@@ -652,11 +652,11 @@ export class SharedWorldGenerator {
             { 
                 type: 'tree_blue_medium2', width: 4, height: 5, weight: 2,
                 walkablePattern: [
-                    [1, 0, 0, 1], // Same pattern as red_medium2
+                    [0, 0, 0, 0], // Same pattern as red_medium2
                     [0, 0, 0, 0],
                     [1, 0, 0, 0],
                     [1, 1, 0, 1],
-                    [0, 1, 0, 1]
+                    [1, 1, 0, 1]
                 ]
             },
             
