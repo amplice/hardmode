@@ -114,7 +114,7 @@ export class TilesetManager {
             terrain: terrainTileset,
             snow: 'assets/sprites/tiles/snow/MainLev2.0.png',
             decorative: 'assets/sprites/tiles/grass/decorative.png',
-            snowDecorative: 'assets/sprites/tiles/snow/decorations.png',
+            snowDecorative: 'assets/sprites/tiles/snow/decorative.png',
             // Tree animations
             tree1A: 'assets/sprites/tiles/grass/anim/tree1A_ss.png',
             tree1B: 'assets/sprites/tiles/grass/anim/tree1B_ss.png',
