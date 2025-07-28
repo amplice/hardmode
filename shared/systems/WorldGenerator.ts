@@ -538,29 +538,29 @@ export class SharedWorldGenerator {
         
         // Define decorative element types for snow biome
         const snowDecorativeTypes = [
-            // Fallen logs (1% chance)
-            { type: 'log_fallen1', width: 3, height: 2, weight: 1, walkablePattern: [[0,0,0],[0,0,0]] },
-            { type: 'log_fallen2', width: 3, height: 2, weight: 1, walkablePattern: [[0,0,0],[0,0,0]] },
-            { type: 'log_fallen3', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
-            { type: 'log_fallen4', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
-            { type: 'log_fallen5', width: 3, height: 2, weight: 1, walkablePattern: [[0,0,0],[0,0,0]] },
-            { type: 'log_fallen6', width: 3, height: 2, weight: 1, walkablePattern: [[0,0,0],[0,0,0]] },
-            { type: 'log_fallen7', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
-            { type: 'log_fallen8', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
+            // Fallen logs (0.5% chance)
+            { type: 'log_fallen1', width: 3, height: 2, weight: 0.5, walkablePattern: [[0,0,0],[0,0,0]] },
+            { type: 'log_fallen2', width: 3, height: 2, weight: 0.5, walkablePattern: [[0,0,0],[0,0,0]] },
+            { type: 'log_fallen3', width: 2, height: 2, weight: 0.5, walkablePattern: [[0,0],[0,0]] },
+            { type: 'log_fallen4', width: 2, height: 2, weight: 0.5, walkablePattern: [[0,0],[0,0]] },
+            { type: 'log_fallen5', width: 3, height: 2, weight: 0.5, walkablePattern: [[0,0,0],[0,0,0]] },
+            { type: 'log_fallen6', width: 3, height: 2, weight: 0.5, walkablePattern: [[0,0,0],[0,0,0]] },
+            { type: 'log_fallen7', width: 2, height: 2, weight: 0.5, walkablePattern: [[0,0],[0,0]] },
+            { type: 'log_fallen8', width: 2, height: 2, weight: 0.5, walkablePattern: [[0,0],[0,0]] },
             
-            // Snowy bushes (1% chance)
-            { type: 'bush_snow1', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
-            { type: 'bush_snow2', width: 1, height: 2, weight: 1, walkablePattern: [[0],[0]] },
-            { type: 'bush_snow3', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
-            { type: 'bush_snow4', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
-            { type: 'bush_snow5', width: 3, height: 2, weight: 1, walkablePattern: [[0,0,0],[0,0,0]] },
+            // Snowy bushes (0.5% chance)
+            { type: 'bush_snow1', width: 2, height: 2, weight: 0.5, walkablePattern: [[0,0],[0,0]] },
+            { type: 'bush_snow2', width: 1, height: 2, weight: 0.5, walkablePattern: [[0],[0]] },
+            { type: 'bush_snow3', width: 2, height: 2, weight: 0.5, walkablePattern: [[0,0],[0,0]] },
+            { type: 'bush_snow4', width: 2, height: 2, weight: 0.5, walkablePattern: [[0,0],[0,0]] },
+            { type: 'bush_snow5', width: 3, height: 2, weight: 0.5, walkablePattern: [[0,0,0],[0,0,0]] },
             
-            // Winter trees (1% chance)
-            { type: 'tree_winter1', width: 3, height: 4, weight: 1, walkablePattern: [[0,0,0],[0,0,0],[0,0,0],[0,0,0]] },
-            { type: 'tree_winter2', width: 2, height: 3, weight: 1, walkablePattern: [[0,0],[0,0],[0,0]] },
-            { type: 'tree_winter3', width: 2, height: 3, weight: 1, walkablePattern: [[0,0],[0,0],[0,0]] },
-            { type: 'tree_winter4', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
-            { type: 'tree_winter5', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] }
+            // Winter trees (0.5% chance)
+            { type: 'tree_winter1', width: 3, height: 4, weight: 0.5, walkablePattern: [[0,0,0],[0,0,0],[0,0,0],[0,0,0]] },
+            { type: 'tree_winter2', width: 2, height: 3, weight: 0.5, walkablePattern: [[0,0],[0,0],[0,0]] },
+            { type: 'tree_winter3', width: 2, height: 3, weight: 0.5, walkablePattern: [[0,0],[0,0],[0,0]] },
+            { type: 'tree_winter4', width: 2, height: 2, weight: 0.5, walkablePattern: [[0,0],[0,0]] },
+            { type: 'tree_winter5', width: 2, height: 2, weight: 0.5, walkablePattern: [[0,0],[0,0]] }
         ];
         
         // Define decorative element types for grass biomes (both green and dark grass)
