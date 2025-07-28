@@ -109,7 +109,12 @@ export class TilesetManager {
         Assets.addBundle('tilesets', {
             terrain: terrainTileset,
             snow: 'assets/sprites/tiles/snow/MainLev2.0.png',
-            decorative: 'assets/sprites/tiles/grass/decorative.png'
+            decorative: 'assets/sprites/tiles/grass/decorative.png',
+            // Tree animations
+            tree1A: 'assets/sprites/tiles/grass/anim/tree1A_ss.png',
+            tree1B: 'assets/sprites/tiles/grass/anim/tree1B_ss.png',
+            tree1C: 'assets/sprites/tiles/grass/anim/tree1C_ss.png',
+            tree1D: 'assets/sprites/tiles/grass/anim/tree1D_ss.png'
         });
     }
 
@@ -675,8 +680,8 @@ export class TilesetManager {
             const treeType = treeTypes[i];
             
             try {
-                // Load the sprite sheet
-                const texture = await Assets.load(`src/assets/sprites/tiles/grass/anim/tree1${color}_ss.png`);
+                // Get the pre-loaded texture from the bundle
+                const texture = Assets.get(`tree1${color}`);
                 
                 if (texture && texture.baseTexture) {
                     // Slice the sprite sheet (5 columns, 2 rows, 160x160 each)
