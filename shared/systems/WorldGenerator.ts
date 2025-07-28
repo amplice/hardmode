@@ -542,9 +542,9 @@ export class SharedWorldGenerator {
             { type: 'log_fallen1', width: 3, height: 2, weight: 0.5, walkablePattern: [[0,0,0],[1,0,0]] },
             { type: 'log_fallen2', width: 3, height: 2, weight: 0.5, walkablePattern: [[1,1,1],[0,0,0]] },
             { type: 'log_fallen3', width: 2, height: 2, weight: 0.5, walkablePattern: [[1,1],[0,0]] },
-            { type: 'log_fallen4', width: 2, height: 2, weight: 0.5, walkablePattern: [[1,0],[0,1]] },
+            { type: 'log_fallen4', width: 2, height: 2, weight: 0.5, walkablePattern: [[0,0],[0,1]] },
             { type: 'log_fallen5', width: 3, height: 2, weight: 0.5, walkablePattern: [[0,0,0],[1,1,1]] },
-            { type: 'log_fallen6', width: 3, height: 2, weight: 0.5, walkablePattern: [[1,0,1],[0,0,1]] },
+            { type: 'log_fallen6', width: 3, height: 2, weight: 0.5, walkablePattern: [[0,0,1],[0,0,1]] },
             { type: 'log_fallen7', width: 2, height: 2, weight: 0.5, walkablePattern: [[1,0],[0,1]] },
             { type: 'log_fallen8', width: 2, height: 2, weight: 0.5, walkablePattern: [[1,0],[0,1]] },
             
@@ -557,7 +557,7 @@ export class SharedWorldGenerator {
             
             // Winter trees (0.5% chance)
             { type: 'tree_winter1', width: 3, height: 4, weight: 0.5, walkablePattern: [[1,0,1],[1,0,1],[0,0,0],[1,0,1]] },
-            { type: 'tree_winter2', width: 2, height: 3, weight: 0.5, walkablePattern: [[1,0],[0,0],[0,0]] },
+            { type: 'tree_winter2', width: 2, height: 3, weight: 0.5, walkablePattern: [[0,0],[0,0],[0,0]] },
             { type: 'tree_winter3', width: 2, height: 3, weight: 0.5, walkablePattern: [[0,0],[0,0],[1,1]] },
             { type: 'tree_winter5', width: 2, height: 2, weight: 0.5, walkablePattern: [[0,1],[1,0]] }
         ];
