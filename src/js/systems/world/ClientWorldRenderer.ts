@@ -720,8 +720,9 @@ export class ClientWorldRenderer {
                 renderedElements.add(elementKey);
                 
                 // Check if this is an animated tree (any size)
-                const isAnimatedTree = element.type.includes('tree_') && 
-                    (element.type.includes('_large') || element.type.includes('_medium'));
+                const isAnimatedTree = (element.type.includes('tree_') && 
+                    (element.type.includes('_large') || element.type.includes('_medium'))) ||
+                    (element.type === 'tree_winter1' || element.type === 'tree_winter2' || element.type === 'tree_winter3');
                 
                 if (isAnimatedTree) {
                     // Get animation frames for this tree type
@@ -741,6 +742,18 @@ export class ClientWorldRenderer {
                             targetHeight = 5 * this.tileSize; // 5 tiles tall
                             sourceWidth = 160;
                             sourceHeight = 160;
+                        } else if (element.type === 'tree_winter1') {
+                            // Winter tree 1 is 3x4 tiles
+                            targetWidth = 3 * this.tileSize;
+                            targetHeight = 4 * this.tileSize;
+                            sourceWidth = 96;
+                            sourceHeight = 128;
+                        } else if (element.type === 'tree_winter2' || element.type === 'tree_winter3') {
+                            // Winter trees 2 and 3 are 2x3 tiles
+                            targetWidth = 2 * this.tileSize;
+                            targetHeight = 3 * this.tileSize;
+                            sourceWidth = 64;
+                            sourceHeight = 96;
                         } else {
                             // Medium trees are 4x5 tiles
                             targetWidth = 4 * this.tileSize;  // 4 tiles wide

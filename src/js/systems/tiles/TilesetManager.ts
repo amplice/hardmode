@@ -127,7 +127,11 @@ export class TilesetManager {
             tree3A: 'assets/sprites/tiles/grass/anim/tree3A_ss.png',
             tree3B: 'assets/sprites/tiles/grass/anim/tree3B_ss.png',
             tree3C: 'assets/sprites/tiles/grass/anim/tree3C_ss.png',
-            tree3D: 'assets/sprites/tiles/grass/anim/tree3D_ss.png'
+            tree3D: 'assets/sprites/tiles/grass/anim/tree3D_ss.png',
+            // Snow tree animations
+            snowTree1: 'assets/sprites/tiles/snow/anim/tree1.png',
+            snowTree2: 'assets/sprites/tiles/snow/anim/tree2.png',
+            snowTree3: 'assets/sprites/tiles/snow/anim/tree3.png'
         });
     }
 
@@ -803,6 +807,44 @@ export class TilesetManager {
                 } catch (error) {
                     console.warn(`[TilesetManager] Failed to load tree animation for ${treeType}:`, error);
                 }
+            }
+        }
+        
+        // Load snow tree animations
+        const snowTreeConfigs = [
+            { name: 'snowTree1', type: 'tree_winter1', frameWidth: 96, frameHeight: 128, cols: 5, rows: 2 },
+            { name: 'snowTree2', type: 'tree_winter2', frameWidth: 64, frameHeight: 96, cols: 5, rows: 2 },
+            { name: 'snowTree3', type: 'tree_winter3', frameWidth: 64, frameHeight: 96, cols: 5, rows: 2 }
+        ];
+        
+        for (const config of snowTreeConfigs) {
+            try {
+                const texture = Assets.get(config.name);
+                
+                if (texture && texture.baseTexture) {
+                    const frames: Texture[] = [];
+                    const { frameWidth, frameHeight, cols, rows } = config;
+                    
+                    for (let row = 0; row < rows; row++) {
+                        for (let col = 0; col < cols; col++) {
+                            const frame = new Texture(
+                                texture.baseTexture,
+                                new Rectangle(
+                                    col * frameWidth,
+                                    row * frameHeight,
+                                    frameWidth,
+                                    frameHeight
+                                )
+                            );
+                            frames.push(frame);
+                        }
+                    }
+                    
+                    this.treeAnimations.set(config.type, frames);
+                    console.log(`[TilesetManager] Loaded ${frames.length} animation frames for ${config.type}`);
+                }
+            } catch (error) {
+                console.warn(`[TilesetManager] Failed to load snow tree animation for ${config.type}:`, error);
             }
         }
     }
