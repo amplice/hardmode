@@ -482,6 +482,11 @@ export class Game {
     // Update remote monsters
     this.updateRemoteMonsters(deltaTimeSeconds);
     
+    // Update tree animations
+    if (this.systems.world) {
+      this.systems.world.updateAnimations(deltaTimeSeconds);
+    }
+    
     // Capture debug state every frame
     this.debugLogger.captureGameState(this);
   }

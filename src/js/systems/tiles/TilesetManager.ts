@@ -76,6 +76,9 @@ export class TilesetManager {
     // Grass decorative element mapping
     private decorativeElementMap: Map<string, { row: number, col: number, width: number, height: number }> = new Map();
     
+    // Tree animation textures
+    private treeAnimations: Map<string, Texture[]> = new Map();
+    
     // Legacy compatibility
     private pureGrassTiles: Texture[];
     private pureDarkGrassTiles: Texture[];
@@ -133,6 +136,9 @@ export class TilesetManager {
             this.sliceDecorativeTileset(decorativeTexture.baseTexture);
             this.setupDecorativeElementMap();
         }
+        
+        // Load tree animations
+        await this.loadTreeAnimations();
         
         console.log("Tilesets loaded successfully");
         console.log(`[DEBUG] Using ${GAME_CONSTANTS.DEBUG.USE_DEBUG_TILESET ? 'DEBUG' : 'regular'} tileset`);
@@ -655,6 +661,59 @@ export class TilesetManager {
         
         // Decorative cliffs - Dark
         this.decorativeElementMap.set('cliff_dark_big1', { row: 5, col: 0, width: 4, height: 5 });
+    }
+    
+    /**
+     * Load tree animation sprite sheets
+     */
+    private async loadTreeAnimations(): Promise<void> {
+        const treeColors = ['A', 'B', 'C', 'D']; // Red, Green, Pink, Blue
+        const treeTypes = ['tree_red_large', 'tree_green_large', 'tree_pink_large', 'tree_blue_large'];
+        
+        for (let i = 0; i < treeColors.length; i++) {
+            const color = treeColors[i];
+            const treeType = treeTypes[i];
+            
+            try {
+                // Load the sprite sheet
+                const texture = await Assets.load(`src/assets/sprites/tiles/grass/anim/tree1${color}_ss.png`);
+                
+                if (texture && texture.baseTexture) {
+                    // Slice the sprite sheet (5 columns, 2 rows, 160x160 each)
+                    const frames: Texture[] = [];
+                    const frameWidth = 160;
+                    const frameHeight = 160;
+                    
+                    for (let row = 0; row < 2; row++) {
+                        for (let col = 0; col < 5; col++) {
+                            const frame = new Texture(
+                                texture.baseTexture,
+                                new Rectangle(
+                                    col * frameWidth,
+                                    row * frameHeight,
+                                    frameWidth,
+                                    frameHeight
+                                )
+                            );
+                            frames.push(frame);
+                        }
+                    }
+                    
+                    // Store the animation frames
+                    this.treeAnimations.set(treeType, frames);
+                    console.log(`[TilesetManager] Loaded ${frames.length} animation frames for ${treeType}`);
+                }
+            } catch (error) {
+                console.warn(`[TilesetManager] Failed to load tree animation for ${treeType}:`, error);
+            }
+        }
+    }
+    
+    /**
+     * Get animation frames for a tree type
+     */
+    public getTreeAnimationFrames(treeType: string): Texture[] | null {
+        return this.treeAnimations.get(treeType) || null;
     }
     
     /**

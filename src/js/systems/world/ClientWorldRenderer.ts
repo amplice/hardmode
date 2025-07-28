@@ -96,6 +96,14 @@ export class ClientWorldRenderer {
     chunkedRenderer?: ChunkedWorldRenderer;
     debugContainer?: PIXI.Container;
     
+    // Animation tracking
+    animatedTrees: Array<{
+        sprite: PIXI.AnimatedSprite;
+        type: string;
+        x: number;
+        y: number;
+    }>;
+    
     // Noise generation
     private random: () => number;
     private noise2D: ReturnType<typeof createNoise2D>;
@@ -124,6 +132,9 @@ export class ClientWorldRenderer {
         // Initialize noise functions
         this.random = createSeededRandom(this.seed);
         this.noise2D = createNoise2D(this.random);
+        
+        // Initialize animation tracking
+        this.animatedTrees = [];
         
         console.log('[ClientWorldRenderer] Initialized for rendering only');
     }
@@ -683,6 +694,9 @@ export class ClientWorldRenderer {
         let totalElementsFound = 0;
         let skippedElements = 0;
         
+        // Track animated trees for updating
+        this.animatedTrees = [];
+        
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 const element = this.decorativeElementsData[y]?.[x];
@@ -705,23 +719,45 @@ export class ClientWorldRenderer {
                 
                 renderedElements.add(elementKey);
                 
-                // Render all tiles for this decorative element
-                for (let dy = 0; dy < element.height; dy++) {
-                    for (let dx = 0; dx < element.width; dx++) {
-                        const texture = this.getDecorativeTileTexture(element.type, dx, dy);
-                        if (!texture) {
-                            console.warn(`[ClientWorldRenderer] Missing texture for decorative element: ${element.type} at offset ${dx},${dy}`);
-                            continue;
-                        }
+                // Check if this is an animated big tree
+                const isAnimatedTree = element.type.includes('_large') && element.type.includes('tree_');
+                
+                if (isAnimatedTree) {
+                    // Get animation frames for this tree type
+                    const animationFrames = this.tilesets.getTreeAnimationFrames(element.type);
+                    
+                    if (animationFrames && animationFrames.length > 0) {
+                        // Create animated sprite for the tree
+                        const animatedSprite = new PIXI.AnimatedSprite(animationFrames);
                         
-                        // Create sprite for this tile of the decorative element
-                        const sprite = new PIXI.Sprite(texture);
-                        sprite.position.set((x + dx) * this.tileSize, (y + dy) * this.tileSize);
-                        sprite.scale.set(this.tileSize / 32, this.tileSize / 32);
+                        // Position at the tree's location
+                        animatedSprite.position.set(x * this.tileSize, y * this.tileSize);
                         
-                        // Add to decorative container
-                        decorativeContainer.addChild(sprite);
+                        // Scale to fit (160px sprites to 5x5 tiles = 320px)
+                        const targetSize = 5 * this.tileSize; // 5 tiles * 64px = 320px
+                        animatedSprite.scale.set(targetSize / 160, targetSize / 160);
+                        
+                        // Set animation properties
+                        animatedSprite.animationSpeed = 0.05; // ~3 frames per second
+                        animatedSprite.play();
+                        
+                        // Add to container
+                        decorativeContainer.addChild(animatedSprite);
+                        
+                        // Track for updates
+                        this.animatedTrees.push({
+                            sprite: animatedSprite,
+                            type: element.type,
+                            x: x,
+                            y: y
+                        });
+                    } else {
+                        // Fallback to static rendering if animation not available
+                        this.renderStaticDecorativeElement(element, x, y, decorativeContainer);
                     }
+                } else {
+                    // Render non-animated decorative elements normally
+                    this.renderStaticDecorativeElement(element, x, y, decorativeContainer);
                 }
             }
         }
@@ -733,6 +769,31 @@ export class ClientWorldRenderer {
         console.log(`  - Total element tiles found: ${totalElementsFound}`);
         console.log(`  - Skipped (duplicates/non-origin): ${skippedElements}`);
         console.log(`  - Unique elements rendered: ${renderedElements.size}`);
+        console.log(`  - Animated trees: ${this.animatedTrees.length}`);
+    }
+    
+    /**
+     * Render a static decorative element (non-animated)
+     */
+    private renderStaticDecorativeElement(element: any, x: number, y: number, container: PIXI.Container): void {
+        // Render all tiles for this decorative element
+        for (let dy = 0; dy < element.height; dy++) {
+            for (let dx = 0; dx < element.width; dx++) {
+                const texture = this.getDecorativeTileTexture(element.type, dx, dy);
+                if (!texture) {
+                    console.warn(`[ClientWorldRenderer] Missing texture for decorative element: ${element.type} at offset ${dx},${dy}`);
+                    continue;
+                }
+                
+                // Create sprite for this tile of the decorative element
+                const sprite = new PIXI.Sprite(texture);
+                sprite.position.set((x + dx) * this.tileSize, (y + dy) * this.tileSize);
+                sprite.scale.set(this.tileSize / 32, this.tileSize / 32);
+                
+                // Add to decorative container
+                container.addChild(sprite);
+            }
+        }
     }
     
     /**
@@ -800,5 +861,33 @@ export class ClientWorldRenderer {
         graphics.y = tileY * this.tileSize;
         
         return graphics;
+    }
+    
+    /**
+     * Update all animated trees (call this in the game loop)
+     * Uses a shared timer for all trees for performance
+     */
+    public updateAnimations(deltaTime: number): void {
+        if (this.animatedTrees.length === 0) return;
+        
+        // Calculate a global frame based on time for all trees
+        // This ensures all trees are synchronized but at different offsets
+        const globalTime = Date.now() / 1000; // Convert to seconds
+        const framesPerSecond = 3;
+        const totalFrames = 10;
+        
+        // Each tree gets a slight offset based on position for variety
+        this.animatedTrees.forEach(treeData => {
+            const { sprite, x, y } = treeData;
+            
+            // Create position-based offset (0-1 range)
+            const positionOffset = ((x * 73 + y * 137) % 100) / 100;
+            
+            // Calculate frame with offset
+            const frame = Math.floor((globalTime * framesPerSecond + positionOffset * totalFrames)) % totalFrames;
+            
+            // Update the sprite's current frame
+            sprite.gotoAndStop(frame);
+        });
     }
 }
