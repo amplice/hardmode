@@ -536,6 +536,33 @@ export class SharedWorldGenerator {
             decorativeElements[y] = new Array(this.width).fill(null);
         }
         
+        // Define decorative element types for snow biome
+        const snowDecorativeTypes = [
+            // Fallen logs (1% chance)
+            { type: 'log_fallen1', width: 3, height: 2, weight: 1, walkablePattern: [[0,0,0],[0,0,0]] },
+            { type: 'log_fallen2', width: 3, height: 2, weight: 1, walkablePattern: [[0,0,0],[0,0,0]] },
+            { type: 'log_fallen3', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
+            { type: 'log_fallen4', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
+            { type: 'log_fallen5', width: 3, height: 2, weight: 1, walkablePattern: [[0,0,0],[0,0,0]] },
+            { type: 'log_fallen6', width: 3, height: 2, weight: 1, walkablePattern: [[0,0,0],[0,0,0]] },
+            { type: 'log_fallen7', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
+            { type: 'log_fallen8', width: 2, height: 2, weight: 1, walkablePattern: [[0,0],[0,0]] },
+            
+            // Snowy bushes (2% chance)
+            { type: 'bush_snow1', width: 2, height: 2, weight: 2, walkablePattern: [[0,0],[0,0]] },
+            { type: 'bush_snow2', width: 1, height: 2, weight: 2, walkablePattern: [[0],[0]] },
+            { type: 'bush_snow3', width: 2, height: 2, weight: 2, walkablePattern: [[0,0],[0,0]] },
+            { type: 'bush_snow4', width: 2, height: 2, weight: 2, walkablePattern: [[0,0],[0,0]] },
+            { type: 'bush_snow5', width: 3, height: 2, weight: 2, walkablePattern: [[0,0,0],[0,0,0]] },
+            
+            // Winter trees (same frequency as grass trees)
+            { type: 'tree_winter1', width: 3, height: 4, weight: 3, walkablePattern: [[0,0,0],[0,0,0],[0,0,0],[0,0,0]] },
+            { type: 'tree_winter2', width: 2, height: 3, weight: 3, walkablePattern: [[0,0],[0,0],[0,0]] },
+            { type: 'tree_winter3', width: 2, height: 3, weight: 3, walkablePattern: [[0,0],[0,0],[0,0]] },
+            { type: 'tree_winter4', width: 2, height: 2, weight: 3, walkablePattern: [[0,0],[0,0]] },
+            { type: 'tree_winter5', width: 2, height: 2, weight: 3, walkablePattern: [[0,0],[0,0]] }
+        ];
+        
         // Define decorative element types for grass biomes (both green and dark grass)
         const grassDecorativeTypes = [
             // Trees (more common)
@@ -711,47 +738,78 @@ export class SharedWorldGenerator {
         
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                // Skip if not grass biome (green or dark grass)
-                if (biomeData[y][x] !== BIOME_TYPES.GRASS && biomeData[y][x] !== BIOME_TYPES.DARK_GRASS) continue;
+                const biomeType = biomeData[y][x];
+                
+                // Skip if not a supported biome
+                if (biomeType !== BIOME_TYPES.GRASS && 
+                    biomeType !== BIOME_TYPES.DARK_GRASS && 
+                    biomeType !== BIOME_TYPES.SNOW) continue;
                 
                 // Skip if already occupied by decorative element
                 if (decorativeElements[y][x] !== null) continue;
                 
-                // Determine placement chance based on random selection
-                const rand = this.random();
-                let shouldPlace = false;
-                let isCliff = false;
+                // Determine which decorative types to use based on biome
+                let decorativeTypes;
+                let eligibleTypes;
                 
-                // Check for cliff placement (1% chance)
-                if (rand < CLIFF_CHANCE) {
-                    shouldPlace = true;
-                    isCliff = true;
-                }
-                // Check for foliage placement (additional 2% chance, so total 3% for something)
-                else if (rand < (CLIFF_CHANCE + FOLIAGE_CHANCE)) {
-                    shouldPlace = true;
-                    isCliff = false;
-                }
-                
-                if (!shouldPlace) continue;
-                
-                // Get color for this position from color regions
-                const regionColor = this.colorRegionData![y][x];
-                const colorNames = ['red', 'green', 'pink', 'blue'];
-                const currentColor = colorNames[regionColor];
-                
-                // Filter decorative types based on category AND color region
-                const eligibleTypes = grassDecorativeTypes.filter(type => {
-                    const isCliffType = type.type.includes('cliff');
-                    const categoryMatch = isCliff ? isCliffType : !isCliffType;
+                if (biomeType === BIOME_TYPES.SNOW) {
+                    // Snow biome logic
+                    const rand = this.random();
                     
-                    // For cliffs, we don't filter by color (they come in light/dark)
-                    if (isCliffType) return categoryMatch;
+                    // Calculate category based on weights
+                    const LOG_CHANCE = 0.01;    // 1% for logs
+                    const BUSH_CHANCE = 0.02;   // 2% for bushes
+                    const TREE_CHANCE = 0.03;   // 3% for trees (same as grass)
                     
-                    // For trees and bushes, filter by region color
-                    const typeColor = type.type.split('_')[1]; // e.g., 'tree_red_large' -> 'red'
-                    return categoryMatch && typeColor === currentColor;
-                });
+                    if (rand < LOG_CHANCE) {
+                        // Filter for logs
+                        eligibleTypes = snowDecorativeTypes.filter(type => type.type.includes('log_'));
+                    } else if (rand < (LOG_CHANCE + BUSH_CHANCE)) {
+                        // Filter for bushes
+                        eligibleTypes = snowDecorativeTypes.filter(type => type.type.includes('bush_'));
+                    } else if (rand < (LOG_CHANCE + BUSH_CHANCE + TREE_CHANCE)) {
+                        // Filter for trees
+                        eligibleTypes = snowDecorativeTypes.filter(type => type.type.includes('tree_'));
+                    } else {
+                        continue; // No placement
+                    }
+                } else {
+                    // Grass biome logic (existing)
+                    const rand = this.random();
+                    let shouldPlace = false;
+                    let isCliff = false;
+                    
+                    // Check for cliff placement (1% chance)
+                    if (rand < CLIFF_CHANCE) {
+                        shouldPlace = true;
+                        isCliff = true;
+                    }
+                    // Check for foliage placement (additional 2% chance, so total 3% for something)
+                    else if (rand < (CLIFF_CHANCE + FOLIAGE_CHANCE)) {
+                        shouldPlace = true;
+                        isCliff = false;
+                    }
+                    
+                    if (!shouldPlace) continue;
+                    
+                    // Get color for this position from color regions
+                    const regionColor = this.colorRegionData![y][x];
+                    const colorNames = ['red', 'green', 'pink', 'blue'];
+                    const currentColor = colorNames[regionColor];
+                    
+                    // Filter decorative types based on category AND color region
+                    eligibleTypes = grassDecorativeTypes.filter(type => {
+                        const isCliffType = type.type.includes('cliff');
+                        const categoryMatch = isCliff ? isCliffType : !isCliffType;
+                        
+                        // For cliffs, we don't filter by color (they come in light/dark)
+                        if (isCliffType) return categoryMatch;
+                        
+                        // For trees and bushes, filter by region color
+                        const typeColor = type.type.split('_')[1]; // e.g., 'tree_red_large' -> 'red'
+                        return categoryMatch && typeColor === currentColor;
+                    });
+                }
                 
                 if (eligibleTypes.length === 0) continue;
                 

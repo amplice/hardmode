@@ -823,6 +823,11 @@ export class ClientWorldRenderer {
      * Get texture for a specific tile within a decorative element
      */
     private getDecorativeTileTexture(type: string, offsetX: number, offsetY: number): PIXI.Texture | null {
+        // Check if it's a snow decorative element
+        if (type.includes('log_') || type.includes('bush_snow') || type.includes('tree_winter')) {
+            return this.tilesets.getSnowDecorativeTileTexture?.(type, offsetX, offsetY) || null;
+        }
+        // Otherwise it's a grass decorative element
         return this.tilesets.getDecorativeTileTexture?.(type, offsetX, offsetY) || null;
     }
     

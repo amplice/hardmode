@@ -46,6 +46,7 @@ interface TextureArrays {
     snow: (Texture | null)[][];
     plants: Texture[];
     decorative?: (Texture | null)[][];
+    snowDecorative?: (Texture | null)[][];
 }
 
 type PlantType = 'plant' | 'branches' | 'twigs' | 'flower1' | 'flower2' | 'flower3' | 'flower4';
@@ -75,6 +76,9 @@ export class TilesetManager {
     
     // Grass decorative element mapping
     private decorativeElementMap: Map<string, { row: number, col: number, width: number, height: number }> = new Map();
+    
+    // Snow decorative element mapping
+    private snowDecorativeElementMap: Map<string, { row: number, col: number, width: number, height: number }> = new Map();
     
     // Tree animation textures
     private treeAnimations: Map<string, Texture[]> = new Map();
@@ -110,6 +114,7 @@ export class TilesetManager {
             terrain: terrainTileset,
             snow: 'assets/sprites/tiles/snow/MainLev2.0.png',
             decorative: 'assets/sprites/tiles/grass/decorative.png',
+            snowDecorative: 'assets/sprites/tiles/snow/decorations.png',
             // Tree animations
             tree1A: 'assets/sprites/tiles/grass/anim/tree1A_ss.png',
             tree1B: 'assets/sprites/tiles/grass/anim/tree1B_ss.png',
@@ -148,6 +153,13 @@ export class TilesetManager {
         if (decorativeTexture) {
             this.sliceDecorativeTileset(decorativeTexture.baseTexture);
             this.setupDecorativeElementMap();
+        }
+        
+        // Load snow decorative tileset
+        const snowDecorativeTexture = Assets.get('snowDecorative');
+        if (snowDecorativeTexture) {
+            this.sliceSnowDecorativeTileset(snowDecorativeTexture.baseTexture);
+            this.setupSnowDecorativeElementMap();
         }
         
         // Load tree animations
@@ -677,6 +689,65 @@ export class TilesetManager {
     }
     
     /**
+     * Slice snow decorative tileset into individual textures
+     */
+    private sliceSnowDecorativeTileset(baseTexture: BaseTexture): void {
+        const tileSize = this.tileSize;
+        
+        // Initialize snow decorative texture array
+        this.textures.snowDecorative = [];
+        
+        // Load entire snow decorative tileset
+        const tilesWide = Math.floor(baseTexture.width / tileSize);
+        const tilesHigh = Math.floor(baseTexture.height / tileSize);
+        
+        console.log(`[TilesetManager] Slicing snow decorative tileset: ${tilesWide}x${tilesHigh} tiles`);
+        
+        for (let row = 0; row < tilesHigh; row++) {
+            this.textures.snowDecorative[row] = [];
+            for (let col = 0; col < tilesWide; col++) {
+                const rect = new Rectangle(
+                    col * tileSize,
+                    row * tileSize,
+                    tileSize,
+                    tileSize
+                );
+                
+                this.textures.snowDecorative[row][col] = new Texture(baseTexture, rect);
+            }
+        }
+    }
+    
+    /**
+     * Setup mapping for snow decorative elements
+     */
+    private setupSnowDecorativeElementMap(): void {
+        // Fallen logs
+        this.snowDecorativeElementMap.set('log_fallen1', { row: 11, col: 0, width: 3, height: 2 });
+        this.snowDecorativeElementMap.set('log_fallen2', { row: 11, col: 9, width: 3, height: 2 });
+        this.snowDecorativeElementMap.set('log_fallen3', { row: 11, col: 14, width: 2, height: 2 });
+        this.snowDecorativeElementMap.set('log_fallen4', { row: 12, col: 16, width: 2, height: 2 });
+        this.snowDecorativeElementMap.set('log_fallen5', { row: 11, col: 23, width: 3, height: 2 });
+        this.snowDecorativeElementMap.set('log_fallen6', { row: 14, col: 0, width: 3, height: 2 });
+        this.snowDecorativeElementMap.set('log_fallen7', { row: 13, col: 20, width: 2, height: 2 });
+        this.snowDecorativeElementMap.set('log_fallen8', { row: 13, col: 23, width: 2, height: 2 });
+        
+        // Snowy bushes
+        this.snowDecorativeElementMap.set('bush_snow1', { row: 17, col: 8, width: 2, height: 2 });
+        this.snowDecorativeElementMap.set('bush_snow2', { row: 17, col: 10, width: 1, height: 2 });
+        this.snowDecorativeElementMap.set('bush_snow3', { row: 17, col: 11, width: 2, height: 2 });
+        this.snowDecorativeElementMap.set('bush_snow4', { row: 17, col: 15, width: 2, height: 2 });
+        this.snowDecorativeElementMap.set('bush_snow5', { row: 17, col: 17, width: 3, height: 2 });
+        
+        // Winter trees
+        this.snowDecorativeElementMap.set('tree_winter1', { row: 20, col: 0, width: 3, height: 4 });
+        this.snowDecorativeElementMap.set('tree_winter2', { row: 20, col: 6, width: 2, height: 3 });
+        this.snowDecorativeElementMap.set('tree_winter3', { row: 21, col: 10, width: 2, height: 3 });
+        this.snowDecorativeElementMap.set('tree_winter4', { row: 20, col: 28, width: 2, height: 2 });
+        this.snowDecorativeElementMap.set('tree_winter5', { row: 22, col: 28, width: 2, height: 2 });
+    }
+    
+    /**
      * Load tree animation sprite sheets
      */
     private async loadTreeAnimations(): Promise<void> {
@@ -790,5 +861,32 @@ export class TilesetManager {
         }
         
         return this.textures.decorative[tileRow][tileCol];
+    }
+    
+    /**
+     * Get texture for a snow decorative element tile
+     */
+    public getSnowDecorativeTileTexture(type: string, offsetX: number, offsetY: number): Texture | null {
+        const elementInfo = this.snowDecorativeElementMap.get(type);
+        if (!elementInfo || !this.textures.snowDecorative) {
+            console.warn(`[TilesetManager] No element info for ${type} or no snow decorative textures loaded`);
+            return null;
+        }
+        
+        const { row, col } = elementInfo;
+        const tileRow = row + offsetY;
+        const tileCol = col + offsetX;
+        
+        if (!this.textures.snowDecorative[tileRow]) {
+            console.warn(`[TilesetManager] No row ${tileRow} in snow decorative textures (${type} at offset ${offsetX},${offsetY})`);
+            return null;
+        }
+        
+        if (!this.textures.snowDecorative[tileRow][tileCol]) {
+            console.warn(`[TilesetManager] No texture at [${tileRow}][${tileCol}] (${type} at offset ${offsetX},${offsetY})`);
+            return null;
+        }
+        
+        return this.textures.snowDecorative[tileRow][tileCol];
     }
 }
