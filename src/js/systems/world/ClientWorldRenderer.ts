@@ -719,8 +719,9 @@ export class ClientWorldRenderer {
                 
                 renderedElements.add(elementKey);
                 
-                // Check if this is an animated big tree
-                const isAnimatedTree = element.type.includes('_large') && element.type.includes('tree_');
+                // Check if this is an animated tree (any size)
+                const isAnimatedTree = element.type.includes('tree_') && 
+                    (element.type.includes('_large') || element.type.includes('_medium'));
                 
                 if (isAnimatedTree) {
                     // Get animation frames for this tree type
@@ -733,9 +734,22 @@ export class ClientWorldRenderer {
                         // Position at the tree's location
                         animatedSprite.position.set(x * this.tileSize, y * this.tileSize);
                         
-                        // Scale to fit (160px sprites to 5x5 tiles = 320px)
-                        const targetSize = 5 * this.tileSize; // 5 tiles * 64px = 320px
-                        animatedSprite.scale.set(targetSize / 160, targetSize / 160);
+                        // Scale based on tree type
+                        let targetWidth, targetHeight, sourceWidth, sourceHeight;
+                        if (element.type.includes('_large')) {
+                            targetWidth = 5 * this.tileSize;  // 5 tiles wide
+                            targetHeight = 5 * this.tileSize; // 5 tiles tall
+                            sourceWidth = 160;
+                            sourceHeight = 160;
+                        } else {
+                            // Medium trees are 4x5 tiles
+                            targetWidth = 4 * this.tileSize;  // 4 tiles wide
+                            targetHeight = 5 * this.tileSize; // 5 tiles tall
+                            sourceWidth = 128;
+                            sourceHeight = 160;
+                        }
+                        
+                        animatedSprite.scale.set(targetWidth / sourceWidth, targetHeight / sourceHeight);
                         
                         // Set animation properties
                         animatedSprite.animationSpeed = 0.05; // ~3 frames per second
@@ -874,11 +888,13 @@ export class ClientWorldRenderer {
         // This ensures all trees are synchronized but at different offsets
         const globalTime = Date.now() / 1000; // Convert to seconds
         const framesPerSecond = 3;
-        const totalFrames = 10;
         
         // Each tree gets a slight offset based on position for variety
         this.animatedTrees.forEach(treeData => {
-            const { sprite, x, y } = treeData;
+            const { sprite, type, x, y } = treeData;
+            
+            // Get total frames based on tree type
+            const totalFrames = type.includes('_large') ? 10 : 8; // Large trees have 10 frames, medium have 8
             
             // Create position-based offset (0-1 range)
             const positionOffset = ((x * 73 + y * 137) % 100) / 100;

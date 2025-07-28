@@ -114,7 +114,15 @@ export class TilesetManager {
             tree1A: 'assets/sprites/tiles/grass/anim/tree1A_ss.png',
             tree1B: 'assets/sprites/tiles/grass/anim/tree1B_ss.png',
             tree1C: 'assets/sprites/tiles/grass/anim/tree1C_ss.png',
-            tree1D: 'assets/sprites/tiles/grass/anim/tree1D_ss.png'
+            tree1D: 'assets/sprites/tiles/grass/anim/tree1D_ss.png',
+            tree2A: 'assets/sprites/tiles/grass/anim/tree2A_ss.png',
+            tree2B: 'assets/sprites/tiles/grass/anim/tree2B_ss.png',
+            tree2C: 'assets/sprites/tiles/grass/anim/tree2C_ss.png',
+            tree2D: 'assets/sprites/tiles/grass/anim/tree2D_ss.png',
+            tree3A: 'assets/sprites/tiles/grass/anim/tree3A_ss.png',
+            tree3B: 'assets/sprites/tiles/grass/anim/tree3B_ss.png',
+            tree3C: 'assets/sprites/tiles/grass/anim/tree3C_ss.png',
+            tree3D: 'assets/sprites/tiles/grass/anim/tree3D_ss.png'
         });
     }
 
@@ -673,43 +681,57 @@ export class TilesetManager {
      */
     private async loadTreeAnimations(): Promise<void> {
         const treeColors = ['A', 'B', 'C', 'D']; // Red, Green, Pink, Blue
-        const treeTypes = ['tree_red_large', 'tree_green_large', 'tree_pink_large', 'tree_blue_large'];
+        const colorNames = ['red', 'green', 'pink', 'blue'];
         
-        for (let i = 0; i < treeColors.length; i++) {
-            const color = treeColors[i];
-            const treeType = treeTypes[i];
-            
-            try {
-                // Get the pre-loaded texture from the bundle
-                const texture = Assets.get(`tree1${color}`);
+        // Configuration for each tree type
+        const treeConfigs = [
+            { prefix: 'tree1', suffix: 'large', frameWidth: 160, frameHeight: 160, cols: 5, rows: 2 },
+            { prefix: 'tree2', suffix: 'medium1', frameWidth: 128, frameHeight: 160, cols: 4, rows: 3 },
+            { prefix: 'tree3', suffix: 'medium2', frameWidth: 128, frameHeight: 160, cols: 4, rows: 3 }
+        ];
+        
+        for (const config of treeConfigs) {
+            for (let i = 0; i < treeColors.length; i++) {
+                const color = treeColors[i];
+                const treeType = `tree_${colorNames[i]}_${config.suffix}`;
                 
-                if (texture && texture.baseTexture) {
-                    // Slice the sprite sheet (5 columns, 2 rows, 160x160 each)
-                    const frames: Texture[] = [];
-                    const frameWidth = 160;
-                    const frameHeight = 160;
+                try {
+                    // Get the pre-loaded texture from the bundle
+                    const texture = Assets.get(`${config.prefix}${color}`);
                     
-                    for (let row = 0; row < 2; row++) {
-                        for (let col = 0; col < 5; col++) {
-                            const frame = new Texture(
-                                texture.baseTexture,
-                                new Rectangle(
-                                    col * frameWidth,
-                                    row * frameHeight,
-                                    frameWidth,
-                                    frameHeight
-                                )
-                            );
-                            frames.push(frame);
+                    if (texture && texture.baseTexture) {
+                        // Slice the sprite sheet based on configuration
+                        const frames: Texture[] = [];
+                        const { frameWidth, frameHeight, cols, rows } = config;
+                        
+                        for (let row = 0; row < rows; row++) {
+                            for (let col = 0; col < cols; col++) {
+                                // Skip the last row for medium trees (it's empty padding)
+                                if (config.suffix.includes('medium') && row === rows - 1) {
+                                    continue;
+                                }
+                                
+                                const frame = new Texture(
+                                    texture.baseTexture,
+                                    new Rectangle(
+                                        col * frameWidth,
+                                        row * frameHeight,
+                                        frameWidth,
+                                        frameHeight
+                                    )
+                                );
+                                frames.push(frame);
+                            }
                         }
+                        
+                        // Medium trees should have 8 frames (2 rows x 4 cols)
+                        // Large trees should have 10 frames (2 rows x 5 cols)
+                        this.treeAnimations.set(treeType, frames);
+                        console.log(`[TilesetManager] Loaded ${frames.length} animation frames for ${treeType}`);
                     }
-                    
-                    // Store the animation frames
-                    this.treeAnimations.set(treeType, frames);
-                    console.log(`[TilesetManager] Loaded ${frames.length} animation frames for ${treeType}`);
+                } catch (error) {
+                    console.warn(`[TilesetManager] Failed to load tree animation for ${treeType}:`, error);
                 }
-            } catch (error) {
-                console.warn(`[TilesetManager] Failed to load tree animation for ${treeType}:`, error);
             }
         }
     }
