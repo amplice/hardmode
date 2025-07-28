@@ -408,8 +408,7 @@ export class DamageProcessor {
                 player.maxHp = newMaxHp;
             }
             
-            // Full heal on level up
-            player.hp = player.maxHp;
+            // No healing on level up - player keeps current HP
             
             
             // Emit level up event with all expected fields
@@ -417,7 +416,7 @@ export class DamageProcessor {
                 playerId: player.id,
                 username: player.username,
                 level: player.level,        // Client expects 'level' not 'newLevel'
-                hp: player.hp,              // Current HP (full heal)
+                hp: player.hp,              // Current HP (no change)
                 maxHp: player.maxHp,
                 moveSpeedBonus: player.moveSpeedBonus,
                 attackRecoveryBonus: player.attackRecoveryBonus,

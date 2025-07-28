@@ -61,9 +61,9 @@ export class PowerupManager {
      * Called from DamageProcessor when monster dies
      */
     createPowerupDrop(x: number, y: number): PowerupState | null {
-        // DEBUG MODE: 100% drop rate for testing
-        const DEBUG_DROP_RATE = 1.0; // 100% for testing
-        if (Math.random() > DEBUG_DROP_RATE) {
+        // 35% drop rate for powerups
+        const DROP_RATE = 0.35; // 35% chance
+        if (Math.random() > DROP_RATE) {
             return null;
         }
         
