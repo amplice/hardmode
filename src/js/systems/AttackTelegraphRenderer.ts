@@ -243,6 +243,30 @@ export class AttackTelegraphRenderer {
                 fadeOut: 100
             },
             
+            // Basic cone attacks - orange warning
+            cone_basic: {
+                shape: 'cone',
+                color: 0xFFA500,     // Orange
+                fillAlpha: 0.2,
+                borderAlpha: 0.8,
+                borderWidth: 3,
+                duration: 600,
+                fadeIn: 100,
+                fadeOut: 100
+            },
+            
+            // Heavy cone attacks - red warning
+            cone_heavy: {
+                shape: 'cone',
+                color: 0xFF0000,     // Red
+                fillAlpha: 0.25,
+                borderAlpha: 0.9,
+                borderWidth: 4,
+                duration: 800,
+                fadeIn: 150,
+                fadeOut: 100
+            },
+            
             // AOE attacks - red warning
             aoe_circle: {
                 shape: 'circle',

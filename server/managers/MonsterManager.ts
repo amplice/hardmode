@@ -3200,15 +3200,19 @@ export class MonsterManager {
     private getTelegraphType(monsterType: MonsterType, attackType: string): string | null {
         // Map monster types and attacks to telegraph types
         const telegraphMap: Record<string, string | null> = {
-            // Basic melee attacks
-            'ogre_primary': 'melee_heavy',
-            'skeleton_primary': 'melee_basic',
-            'elemental_primary': 'melee_heavy',
-            'ghoul_primary': 'melee_basic',
+            // Basic melee attacks (now cones)
+            'ogre_primary': 'cone_heavy',
+            'skeleton_primary': 'cone_basic',
+            'elemental_primary': 'melee_heavy',  // Still rectangle
+            'ghoul_primary': 'cone_basic',
+            'wingeddemon_primary': 'cone_heavy',
             
             // Special melee attacks (skip these for now)
             'ogre_special1': null, // Multi-hit spin
             'ghoul_special1': null, // Multi-hit frenzy
+            
+            // Wolf attack (still rectangle)
+            'wolf_primary': 'melee_basic',
             
             // Projectile attacks (skip these)
             'wildarcher_primary': null,
@@ -3218,6 +3222,7 @@ export class MonsterManager {
             // Other attacks we're skipping
             'darkmage_teleport': null,
             'wingeddemon_special': null,
+            'wolf_special': null,  // Jump attack
         };
         
         const key = `${monsterType}_${attackType}`;

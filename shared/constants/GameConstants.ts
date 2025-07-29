@@ -491,10 +491,10 @@ export const ATTACK_DEFINITIONS = {
         recoveryTime: 250, // Remaining animation time
         cooldown: 2500,
         range: 90,
-        hitboxType: 'rectangle',
+        hitboxType: 'cone',
         hitboxParams: {
-            width: 120,
-            length: 120
+            range: 120,
+            angle: 90  // Wide cone for heavy swing
         }
     },
     monster_skeleton_primary: {
@@ -504,10 +504,10 @@ export const ATTACK_DEFINITIONS = {
         recoveryTime: 208, // Remaining animation time
         cooldown: 1800,
         range: 70,
-        hitboxType: 'rectangle',
+        hitboxType: 'cone',
         hitboxParams: {
-            width: 80,
-            length: 80
+            range: 80,
+            angle: 70  // Medium cone for sword swing
         }
     },
     monster_elemental_primary: {
@@ -530,10 +530,10 @@ export const ATTACK_DEFINITIONS = {
         recoveryTime: 156,
         cooldown: 1200,
         range: 84,  // Matches updated attack range
-        hitboxType: 'rectangle',
+        hitboxType: 'cone',
         hitboxParams: {
-            width: 96,  // 1.2x of 80
-            length: 96  // 1.2x of 80
+            range: 96,
+            angle: 60  // Narrower cone for claw swipe
         }
     },
     monster_wildarcher_primary: {
@@ -655,10 +655,10 @@ export const ATTACK_DEFINITIONS = {
         recoveryTime: 208, // Remaining animation time
         cooldown: 1800,
         range: 105,  // 1.5x of 70
-        hitboxType: 'rectangle',
+        hitboxType: 'cone',
         hitboxParams: {
-            width: 120,  // 1.5x of 80
-            length: 120  // 1.5x of 80
+            range: 120,
+            angle: 85  // Wide cone for demon claw sweep
         }
     },
     
