@@ -337,6 +337,18 @@ export class AttackTelegraphRenderer {
                 duration: 200,       // Time before damage after teleport
                 fadeIn: 50,
                 fadeOut: 50
+            },
+            
+            // WingedDemon Infernal Strike
+            aoe_infernal: {
+                shape: 'circle',
+                color: 0xFF0000,     // Red (demonic fire)
+                fillAlpha: 0.3,
+                borderAlpha: 1.0,
+                borderWidth: 4,
+                duration: 800,       // Match winged demon windup
+                fadeIn: 200,
+                fadeOut: 100
             }
         };
 

@@ -1072,14 +1072,21 @@ export class MonsterManager {
                     warningStartTime: Date.now()
                 };
                 
-                // Create warning effect immediately (offset warning 10px down for better ground alignment)
-                console.log('[MonsterManager] Emitting warning effect:', (attackConfig as any).warningEffect, 'at', targetCoords.x, targetCoords.y);
-                this.io.emit('effect', {
-                    type: (attackConfig as any).warningEffect || 'wingeddemon_warning_effect',
-                    x: targetCoords.x,
-                    y: targetCoords.y + ((attackConfig as any).warningEffect === 'wingeddemon_warning_effect' ? 10 : 0),
-                    duration: attackConfig.windupTime // Warning lasts for windup duration
-                });
+                // Emit telegraph for ranged AOE attacks
+                const telegraphType = this.getTelegraphType(monster.type, attackType);
+                if (telegraphType) {
+                    this.io.emit('monsterTelegraph', {
+                        monsterId: monster.id,
+                        monsterType: monster.type,
+                        attackType: attackType,
+                        telegraphType: telegraphType,
+                        x: targetCoords.x,
+                        y: targetCoords.y,
+                        facing: 0, // Circle doesn't need facing
+                        config: attackConfig,
+                        duration: attackConfig.windupTime
+                    });
+                }
                 
                 // Schedule damage after windup
                 monster.pendingAttackTimeout = setTimeout(() => {
@@ -3248,8 +3255,8 @@ export class MonsterManager {
             // Projectile attacks (skip these)
             'wildarcher_primary': null,
             
-            // Other attacks we're skipping
-            'wingeddemon_special': null
+            // Other attacks
+            'wingeddemon_special': 'aoe_infernal'
         };
         
         const key = `${monsterType}_${attackType}`;
