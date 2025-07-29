@@ -3203,7 +3203,7 @@ export class MonsterManager {
             // Basic melee attacks (now cones)
             'ogre_primary': 'cone_heavy',
             'skeleton_primary': 'cone_basic',
-            'elemental_primary': 'melee_heavy',  // Still rectangle
+            'elemental_primary': 'aoe_burst',  // Circle burst
             'ghoul_primary': 'cone_basic',
             'wingeddemon_primary': 'cone_heavy',
             

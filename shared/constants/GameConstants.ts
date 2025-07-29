@@ -517,10 +517,9 @@ export const ATTACK_DEFINITIONS = {
         recoveryTime: 208,
         cooldown: 3000,
         range: 100,
-        hitboxType: 'rectangle',
+        hitboxType: 'circle',
         hitboxParams: {
-            width: 100,
-            length: 100
+            radius: 100  // Burst radius around the elemental
         }
     },
     monster_ghoul_primary: {

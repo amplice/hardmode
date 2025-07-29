@@ -277,6 +277,18 @@ export class AttackTelegraphRenderer {
                 duration: 1000,
                 fadeIn: 200,
                 fadeOut: 150
+            },
+            
+            // Elemental burst attack - purple/blue warning
+            aoe_burst: {
+                shape: 'circle',
+                color: 0x9B59B6,     // Purple (magical)
+                fillAlpha: 0.25,
+                borderAlpha: 0.9,
+                borderWidth: 4,
+                duration: 625,       // Match elemental windup time
+                fadeIn: 150,
+                fadeOut: 100
             }
         };
 
