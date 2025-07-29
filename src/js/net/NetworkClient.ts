@@ -32,6 +32,7 @@
 
 import { StateCache } from './StateCache.js';
 import * as PIXI from 'pixi.js';
+import { AttackTelegraphRenderer } from '../systems/AttackTelegraphRenderer.js';
 import type { 
     PlayerState,
     MonsterState,
@@ -65,6 +66,7 @@ interface GameInterface {
     remotePlayers?: Map<string, any>; // Remote Player instances
     remoteMonsters?: Map<string, any>; // Remote Monster instances
     projectileRenderer?: any; // ProjectileRenderer instance
+    telegraphRenderer?: any; // AttackTelegraphRenderer instance
     powerupRenderer?: any; // PowerupRenderer instance
     healthUI?: any; // HealthUI instance
     statsUI?: any; // StatsUI instance
@@ -755,6 +757,61 @@ export class NetworkClient {
             if (data.playerId === this.socket.id && this.game.entities.player) {
                 (this.game.entities.player as any).armorHP = data.totalArmor;
                 console.log('[NetworkClient] Player gained armor HP:', data.armorAmount, 'Total:', data.totalArmor);
+            }
+        });
+        
+        // Handle monster attack telegraphs
+        this.socket.on('monsterTelegraph', (data: {
+            monsterId: string;
+            monsterType: string;
+            attackType: string;
+            telegraphType: string;
+            x: number;
+            y: number;
+            facing: number;
+            config: any;
+            duration: number;
+        }) => {
+            console.log('[NetworkClient] Received monster telegraph:', data);
+            
+            if (this.game.telegraphRenderer && data.telegraphType) {
+                // Get the shape info from attack config
+                let shape: any;
+                
+                if (data.config.hitboxType === 'rectangle') {
+                    shape = {
+                        shape: 'rectangle',
+                        width: data.config.hitboxParams.width,
+                        length: data.config.hitboxParams.length
+                    };
+                } else if (data.config.hitboxType === 'cone') {
+                    shape = {
+                        shape: 'cone',
+                        range: data.config.hitboxParams.range,
+                        angle: data.config.hitboxParams.angle
+                    };
+                } else if (data.config.hitboxType === 'circle') {
+                    shape = {
+                        shape: 'circle',
+                        radius: data.config.hitboxParams.radius
+                    };
+                }
+                
+                if (shape) {
+                    // Get default config for the telegraph type
+                    const telegraphConfig = (AttackTelegraphRenderer as any).getDefaultConfig(data.telegraphType);
+                    telegraphConfig.duration = data.duration;
+                    
+                    // Create the telegraph
+                    this.game.telegraphRenderer.createTelegraph(
+                        data.monsterId,
+                        data.x,
+                        data.y,
+                        data.facing,
+                        shape,
+                        telegraphConfig
+                    );
+                }
             }
         });
         

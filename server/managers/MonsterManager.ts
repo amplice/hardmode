@@ -1073,6 +1073,27 @@ export class MonsterManager {
                 }, attackConfig.windupTime);
             } else {
                 // Standard melee attack
+                // Emit telegraph for melee attacks
+                const telegraphType = this.getTelegraphType(monster.type, attackType);
+                if (telegraphType) {
+                    // Calculate attack direction
+                    const dx = targetCoords.x - monster.x;
+                    const dy = targetCoords.y - monster.y;
+                    const facing = Math.atan2(dy, dx);
+                    
+                    this.io.emit('monsterTelegraph', {
+                        monsterId: monster.id,
+                        monsterType: monster.type,
+                        attackType: attackType,
+                        telegraphType: telegraphType,
+                        x: monster.x,
+                        y: monster.y,
+                        facing: facing,
+                        config: attackConfig,
+                        duration: attackConfig.windupTime
+                    });
+                }
+                
                 monster.pendingAttackTimeout = setTimeout(() => {
                     monster.pendingAttackTimeout = null;
                     monster.attackPhase = 'active';
@@ -3085,5 +3106,36 @@ export class MonsterManager {
         for (let i = 0; i < count; i++) {
             this.createMonster(null, null, players);
         }
+    }
+
+    /**
+     * Get the telegraph type for a monster attack
+     * @returns Telegraph type string or null if no telegraph should be shown
+     */
+    private getTelegraphType(monsterType: MonsterType, attackType: string): string | null {
+        // Map monster types and attacks to telegraph types
+        const telegraphMap: Record<string, string | null> = {
+            // Basic melee attacks
+            'ogre_primary': 'melee_heavy',
+            'skeleton_primary': 'melee_basic',
+            'elemental_primary': 'melee_heavy',
+            'ghoul_primary': 'melee_basic',
+            
+            // Special melee attacks (skip these for now)
+            'ogre_special1': null, // Multi-hit spin
+            'ghoul_special1': null, // Multi-hit frenzy
+            
+            // Projectile attacks (skip these)
+            'wildarcher_primary': null,
+            'elemental_special1': null,
+            'skeleton_special1': null,
+            
+            // Other attacks we're skipping
+            'darkmage_teleport': null,
+            'wingeddemon_special': null,
+        };
+        
+        const key = `${monsterType}_${attackType}`;
+        return telegraphMap[key] !== undefined ? telegraphMap[key] : 'melee_basic';
     }
 }

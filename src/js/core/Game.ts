@@ -56,6 +56,7 @@ import { NetworkClient } from '../net/NetworkClient.js';
 import { LatencyTracker } from '../systems/LatencyTracker.js';
 import { ProjectileRenderer } from '../systems/ProjectileRenderer.js';
 import { PowerupRenderer } from '../systems/PowerupRenderer.js';
+import { AttackTelegraphRenderer } from '../systems/AttackTelegraphRenderer.js';
 import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 import { DebugLogger } from '../debug/DebugLogger.js';
@@ -102,6 +103,7 @@ export class Game {
   actionBoxUI?: any; // ActionBoxUI
   projectileRenderer?: any; // ProjectileRenderer
   powerupRenderer?: any; // PowerupRenderer
+  telegraphRenderer?: AttackTelegraphRenderer;
   debugLogger: DebugLogger;
   
   constructor() {
@@ -466,6 +468,9 @@ export class Game {
     if (this.powerupRenderer) {
       this.powerupRenderer.update(deltaTimeSeconds);
     }
+    if (this.telegraphRenderer) {
+      this.telegraphRenderer.update(deltaTimeSeconds);
+    }
     this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
@@ -621,6 +626,10 @@ export class Game {
     
     // Initialize powerup renderer
     this.powerupRenderer = new PowerupRenderer(this);
+    
+    // Initialize telegraph renderer
+    this.telegraphRenderer = new AttackTelegraphRenderer();
+    this.entityContainer.addChild(this.telegraphRenderer.getContainer());
 
     // Initialize camera position to player position (prevents initial camera jump)
     this.camera.x = this.entities.player.position.x;
