@@ -815,6 +815,13 @@ export class NetworkClient {
             }
         });
         
+        // Handle telegraph position updates (for moving attacks)
+        this.socket.on('updateTelegraph', (data: { monsterId: string; x: number; y: number }) => {
+            if (this.game.telegraphRenderer) {
+                this.game.telegraphRenderer.updateTelegraphPosition(data.monsterId, data.x, data.y);
+            }
+        });
+        
         // Handle server-triggered effects (like WingedDemon warning/damage)
         this.socket.on('effect', (data: { type: string; x: number; y: number; duration: number }) => {
             console.log('[NetworkClient] Received effect event:', data);

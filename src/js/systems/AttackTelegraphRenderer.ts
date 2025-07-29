@@ -179,6 +179,16 @@ export class AttackTelegraphRenderer {
     }
 
     /**
+     * Update telegraph position (for moving attacks like ogre spin)
+     */
+    updateTelegraphPosition(id: string, x: number, y: number): void {
+        const telegraph = this.activeTelegraphs.get(id);
+        if (telegraph) {
+            telegraph.graphics.position.set(x, y);
+        }
+    }
+
+    /**
      * Remove a telegraph
      */
     removeTelegraph(id: string): void {

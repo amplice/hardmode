@@ -522,6 +522,15 @@ export class MonsterManager {
                     if (this.collisionMask && this.collisionMask.canMove(monster.x, monster.y, newX, newY)) {
                         monster.x = newX;
                         monster.y = newY;
+                        
+                        // Update telegraph position for spinning attacks
+                        if (monster.type === 'ogre' && monster.currentAttackType === 'special1') {
+                            this.io.emit('updateTelegraph', {
+                                monsterId: monster.id,
+                                x: monster.x,
+                                y: monster.y
+                            });
+                        }
                     } else {
                         // Stop movement if we hit a wall
                         monster.velocity.x = 0;
@@ -1810,7 +1819,7 @@ export class MonsterManager {
                         y: monster.y,
                         facing: attackAngle,
                         config: attackConfig,
-                        duration: (attackConfig as any).attackDelay || 200
+                        duration: 300 // Match the increased attack delay
                     });
                     
                     // Immediately transition to attack
@@ -1822,7 +1831,7 @@ export class MonsterManager {
                 (monster as any).teleportPhase = 'attack';
                 
                 // Schedule damage at frame 6 of pummel animation
-                const attackDelay = (attackConfig as any).attackDelay || 200; // 200ms for frame 6
+                const attackDelay = 300; // Increased to 300ms for better reaction time
                 setTimeout(() => {
                     if (!monster || monster.hp <= 0) {
                         return;
