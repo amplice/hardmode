@@ -573,16 +573,13 @@ Monsters now have multiple attack types with different animations, AOE patterns,
    - Special2 (Slam): Large AOE, 150px radius, 3 damage, uses Pummel.png animation
 
 2. **Elemental**:
-   - Primary: Basic melee (100x100 rectangle)
-   - Special1 (Spell): Projectile attack, 300 range, uses CastSpell animation
+   - Primary: Circle burst (100 radius)
 
 3. **Ghoul**:
-   - Primary: Basic melee (80x80 rectangle)
-   - Special1 (Frenzy): Multi-hit, 4 hits over 0.8s, 1.5x movement speed during attack
+   - Primary: Cone melee (96 range, 60° angle)
 
 4. **Skeleton**:
-   - Primary: Basic melee (80x80 rectangle)
-   - Special1 (Bone Throw): Projectile, 350 range, uses Special1 animation
+   - Primary: Cone melee (80 range, 70° angle)
 
 5. **Wild Archer**:
    - Primary: Single projectile

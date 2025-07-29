@@ -3209,15 +3209,12 @@ export class MonsterManager {
             
             // Special melee attacks (skip these for now)
             'ogre_special1': null, // Multi-hit spin
-            'ghoul_special1': null, // Multi-hit frenzy
             
             // Wolf attack (still rectangle)
             'wolf_primary': 'melee_basic',
             
             // Projectile attacks (skip these)
             'wildarcher_primary': null,
-            'elemental_special1': null,
-            'skeleton_special1': null,
             
             // Other attacks we're skipping
             'darkmage_teleport': null,
