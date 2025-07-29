@@ -623,7 +623,7 @@ export const ATTACK_DEFINITIONS = {
         range: 85,  // Increased for 1.5x size
         hitboxType: 'rectangle',
         hitboxParams: {
-            width: 105,  // ~1.5x of 70
+            width: 70,   // Narrower bite/lunge
             length: 105  // ~1.5x of 70
         },
         animation: 'attack1'
