@@ -1042,6 +1042,22 @@ export class MonsterManager {
                     distance: Math.round(jumpDistance)
                 });
                 
+                // Emit telegraph for landing zone
+                const telegraphType = this.getTelegraphType(monster.type, attackType);
+                if (telegraphType) {
+                    this.io.emit('monsterTelegraph', {
+                        monsterId: monster.id,
+                        monsterType: monster.type,
+                        attackType: attackType,
+                        telegraphType: telegraphType,
+                        x: jumpTargetX,
+                        y: jumpTargetY,
+                        facing: jumpAngle,
+                        config: attackConfig,
+                        duration: jumpConfig.windupTime + jumpConfig.jumpDuration
+                    });
+                }
+                
                 // Schedule jump execution
                 monster.pendingAttackTimeout = setTimeout(() => {
                     monster.pendingAttackTimeout = null;
@@ -1775,6 +1791,20 @@ export class MonsterManager {
                     monster.y = teleportY;
                     monster.velocity = { x: 0, y: 0 };
                     (monster as any).isDashing = false;
+                    
+                    // Emit phase 2 telegraph at new position
+                    const attackAngle = teleportData.teleportAngle; // Facing towards player
+                    this.io.emit('monsterTelegraph', {
+                        monsterId: monster.id,
+                        monsterType: monster.type,
+                        attackType: 'special1',
+                        telegraphType: 'teleport_attack',
+                        x: monster.x,
+                        y: monster.y,
+                        facing: attackAngle,
+                        config: attackConfig,
+                        duration: (attackConfig as any).attackDelay || 200
+                    });
                     
                     // Immediately transition to attack
                     if (!monster || monster.hp <= 0) {
@@ -3207,8 +3237,10 @@ export class MonsterManager {
             'ghoul_primary': 'cone_basic',
             'wingeddemon_primary': 'cone_heavy',
             
-            // Special melee attacks (skip these for now)
-            'ogre_special1': null, // Multi-hit spin
+            // Special melee attacks
+            'ogre_special1': 'aoe_spin', // Multi-hit spin
+            'wolf_special': 'aoe_jump',  // Jump attack
+            'darkmage_special1': 'teleport_warning', // Teleport attack phase 1
             
             // Wolf attack (still rectangle)
             'wolf_primary': 'melee_basic',
@@ -3217,9 +3249,7 @@ export class MonsterManager {
             'wildarcher_primary': null,
             
             // Other attacks we're skipping
-            'darkmage_teleport': null,
-            'wingeddemon_special': null,
-            'wolf_special': null,  // Jump attack
+            'wingeddemon_special': null
         };
         
         const key = `${monsterType}_${attackType}`;

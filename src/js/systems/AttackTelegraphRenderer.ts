@@ -289,6 +289,54 @@ export class AttackTelegraphRenderer {
                 duration: 625,       // Match elemental windup time
                 fadeIn: 150,
                 fadeOut: 100
+            },
+            
+            // Ogre spin attack - orange spinning warning
+            aoe_spin: {
+                shape: 'circle',
+                color: 0xFFA500,     // Orange
+                fillAlpha: 0.2,
+                borderAlpha: 0.8,
+                borderWidth: 4,
+                duration: 500,       // Match ogre spin windup
+                fadeIn: 100,
+                fadeOut: 50
+            },
+            
+            // Wolf jump attack - yellow impact zone
+            aoe_jump: {
+                shape: 'circle',
+                color: 0xFFFF00,     // Yellow
+                fillAlpha: 0.2,
+                borderAlpha: 0.8,
+                borderWidth: 3,
+                duration: 200,       // Match wolf jump windup
+                fadeIn: 50,
+                fadeOut: 50
+            },
+            
+            // Dark Mage teleport warning (phase 1)
+            teleport_warning: {
+                shape: 'circle',
+                color: 0x8B008B,     // Dark magenta
+                fillAlpha: 0.3,
+                borderAlpha: 0.9,
+                borderWidth: 3,
+                duration: 333,       // Match teleport windup
+                fadeIn: 100,
+                fadeOut: 100
+            },
+            
+            // Dark Mage teleport attack (phase 2)
+            teleport_attack: {
+                shape: 'cone',
+                color: 0x8B008B,     // Dark magenta
+                fillAlpha: 0.25,
+                borderAlpha: 0.9,
+                borderWidth: 4,
+                duration: 200,       // Time before damage after teleport
+                fadeIn: 50,
+                fadeOut: 50
             }
         };
 
