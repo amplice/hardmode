@@ -437,6 +437,8 @@ export class SocketHandler {
     }
 
     private handleDisconnect(socket: Socket): void {
+        console.log(`[SocketHandler] Player ${socket.id} disconnected - reason: ${(socket as any).disconnectReason || 'unknown'}`);
+        
         this.abilityManager.removePlayer(socket.id);
         this.inputProcessor.removePlayer(socket.id); // This also cleans up anti-cheat data
         this.lagCompensation.removePlayer(socket.id);

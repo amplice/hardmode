@@ -79,7 +79,16 @@ const __dirname = dirname(__filename);
 // Initialize server
 const app = express();
 const server = http.createServer(app);
-const io: ExtendedSocketIO = new Server(server);
+const io: ExtendedSocketIO = new Server(server, {
+    // Increase timeouts to prevent disconnections
+    pingTimeout: 60000,      // 60 seconds (default: 5 seconds)
+    pingInterval: 25000,     // 25 seconds (default: 25 seconds)
+    transports: ['websocket', 'polling'], // Allow fallback to polling
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST']
+    }
+});
 
 const PORT: number = parseInt(process.env.PORT || '3000', 10);
 
