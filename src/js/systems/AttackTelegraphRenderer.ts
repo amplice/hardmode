@@ -110,8 +110,8 @@ export class AttackTelegraphRenderer {
         shape: TelegraphShape,
         config: TelegraphConfig
     ): void {
-        // Set line style for border
-        graphics.lineStyle(config.borderWidth, config.color, config.borderAlpha);
+        // No border - set line style to 0
+        graphics.lineStyle(0);
         
         // Set fill
         graphics.beginFill(config.color, config.fillAlpha);
@@ -221,9 +221,9 @@ export class AttackTelegraphRenderer {
             melee_basic: {
                 shape: 'rectangle',
                 color: 0xFFA500,     // Orange
-                fillAlpha: 0.2,
-                borderAlpha: 0.8,
-                borderWidth: 3,
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
                 duration: 600,       // Show for 600ms
                 fadeIn: 100,
                 fadeOut: 100
@@ -233,9 +233,9 @@ export class AttackTelegraphRenderer {
             melee_heavy: {
                 shape: 'rectangle',
                 color: 0xFF0000,     // Red
-                fillAlpha: 0.25,
-                borderAlpha: 0.9,
-                borderWidth: 4,
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
                 duration: 800,
                 fadeIn: 150,
                 fadeOut: 100
@@ -245,9 +245,9 @@ export class AttackTelegraphRenderer {
             cone_sweep: {
                 shape: 'cone',
                 color: 0xFFFF00,     // Yellow
-                fillAlpha: 0.2,
-                borderAlpha: 0.8,
-                borderWidth: 3,
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
                 duration: 700,
                 fadeIn: 100,
                 fadeOut: 100
@@ -257,9 +257,9 @@ export class AttackTelegraphRenderer {
             cone_basic: {
                 shape: 'cone',
                 color: 0xFFA500,     // Orange
-                fillAlpha: 0.2,
-                borderAlpha: 0.8,
-                borderWidth: 3,
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
                 duration: 600,
                 fadeIn: 100,
                 fadeOut: 100
@@ -269,9 +269,9 @@ export class AttackTelegraphRenderer {
             cone_heavy: {
                 shape: 'cone',
                 color: 0xFF0000,     // Red
-                fillAlpha: 0.25,
-                borderAlpha: 0.9,
-                borderWidth: 4,
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
                 duration: 800,
                 fadeIn: 150,
                 fadeOut: 100
@@ -281,9 +281,9 @@ export class AttackTelegraphRenderer {
             aoe_circle: {
                 shape: 'circle',
                 color: 0xFF0000,     // Red
-                fillAlpha: 0.3,
-                borderAlpha: 1.0,
-                borderWidth: 4,
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
                 duration: 1000,
                 fadeIn: 200,
                 fadeOut: 150
@@ -293,9 +293,9 @@ export class AttackTelegraphRenderer {
             aoe_burst: {
                 shape: 'circle',
                 color: 0x9B59B6,     // Purple (magical)
-                fillAlpha: 0.25,
-                borderAlpha: 0.9,
-                borderWidth: 4,
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
                 duration: 625,       // Match elemental windup time
                 fadeIn: 150,
                 fadeOut: 100
@@ -305,9 +305,9 @@ export class AttackTelegraphRenderer {
             aoe_spin: {
                 shape: 'circle',
                 color: 0xFFA500,     // Orange
-                fillAlpha: 0.2,
-                borderAlpha: 0.8,
-                borderWidth: 4,
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
                 duration: 500,       // Match ogre spin windup
                 fadeIn: 100,
                 fadeOut: 50
@@ -317,9 +317,9 @@ export class AttackTelegraphRenderer {
             aoe_jump: {
                 shape: 'circle',
                 color: 0xFFFF00,     // Yellow
-                fillAlpha: 0.2,
-                borderAlpha: 0.8,
-                borderWidth: 3,
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
                 duration: 200,       // Match wolf jump windup
                 fadeIn: 50,
                 fadeOut: 50
@@ -329,9 +329,9 @@ export class AttackTelegraphRenderer {
             teleport_warning: {
                 shape: 'circle',
                 color: 0x8B008B,     // Dark magenta
-                fillAlpha: 0.3,
-                borderAlpha: 0.9,
-                borderWidth: 3,
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
                 duration: 333,       // Match teleport windup
                 fadeIn: 100,
                 fadeOut: 100
@@ -341,10 +341,10 @@ export class AttackTelegraphRenderer {
             teleport_attack: {
                 shape: 'cone',
                 color: 0x8B008B,     // Dark magenta
-                fillAlpha: 0.25,
-                borderAlpha: 0.9,
-                borderWidth: 4,
-                duration: 200,       // Time before damage after teleport
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
+                duration: 300,       // Time before damage after teleport
                 fadeIn: 50,
                 fadeOut: 50
             },
@@ -353,9 +353,9 @@ export class AttackTelegraphRenderer {
             aoe_infernal: {
                 shape: 'circle',
                 color: 0xFF0000,     // Red (demonic fire)
-                fillAlpha: 0.3,
-                borderAlpha: 1.0,
-                borderWidth: 4,
+                fillAlpha: 0.15,     // 15% opacity
+                borderAlpha: 0,      // No border
+                borderWidth: 0,      // No border
                 duration: 800,       // Match winged demon windup
                 fadeIn: 200,
                 fadeOut: 100
