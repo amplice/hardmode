@@ -1352,15 +1352,96 @@ export class MonsterManager {
             // Cone attacks hit multiple targets in an arc
             this.executeConeAttack(monster, attackConfig, players);
         } else {
-            // Single target melee (rectangle or default)
-            if (this.damageProcessor) {
-                this.damageProcessor.applyDamage(
-                    monster,
-                    target,
-                    attackConfig.damage,
-                    'melee',
-                    { attackType: `monster_${(attackConfig as any).name || 'melee'}` }
-                );
+            // Rectangle attack - check if target is in the rectangle hitbox
+            if (attackConfig.hitboxType === 'rectangle') {
+                this.executeRectangleAttack(monster, attackConfig, players);
+            } else {
+                // Default single target melee
+                if (this.damageProcessor) {
+                    this.damageProcessor.applyDamage(
+                        monster,
+                        target,
+                        attackConfig.damage,
+                        'melee',
+                        { attackType: `monster_${(attackConfig as any).name || 'melee'}` }
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * Execute a rectangle attack hitting targets in a rectangular area
+     */
+    executeRectangleAttack(monster: ServerMonsterState, attackConfig: any, players: Map<string, PlayerState>): void {
+        if (!monster || monster.hp <= 0 || monster.state === 'dying') {
+            return;
+        }
+        
+        const width = attackConfig.hitboxParams?.width || 100;
+        const length = attackConfig.hitboxParams?.length || 100;
+        const attackId = `${monster.id}_${Date.now()}`;
+        
+        // Calculate attack angle based on target
+        let attackAngle: number;
+        if (monster.target) {
+            const targetCoords = this.playerToCoords(monster.target);
+            const dx = targetCoords.x - monster.x;
+            const dy = targetCoords.y - monster.y;
+            attackAngle = Math.atan2(dy, dx);
+        } else {
+            // Fallback to facing direction
+            const facingAngles: Record<string, number> = {
+                'right': 0,
+                'down-right': Math.PI / 4,
+                'down': Math.PI / 2,
+                'down-left': 3 * Math.PI / 4,
+                'left': Math.PI,
+                'up-left': -3 * Math.PI / 4,
+                'up': -Math.PI / 2,
+                'up-right': -Math.PI / 4
+            };
+            attackAngle = facingAngles[monster.facing] || 0;
+        }
+        
+        // Find all players that might be hit
+        for (const [_, player] of players) {
+            if (player.hp <= 0) continue;
+            
+            const playerCoords = this.playerToCoords(player);
+            
+            // Transform player position to attack-relative coordinates
+            const dx = playerCoords.x - monster.x;
+            const dy = playerCoords.y - monster.y;
+            
+            // Rotate to align with attack direction
+            const cos = Math.cos(-attackAngle);
+            const sin = Math.sin(-attackAngle);
+            const localX = dx * cos - dy * sin;
+            const localY = dx * sin + dy * cos;
+            
+            // Check if player is within the rectangle
+            // Rectangle extends forward (positive X) from monster position
+            if (localX >= 0 && localX <= length && Math.abs(localY) <= width / 2) {
+                // Check if already hit by this attack (for multi-hit prevention)
+                const playerState = player as any;
+                if (playerState.lastHitBy?.attackId === attackId) {
+                    continue;
+                }
+                
+                // Apply damage
+                if (this.damageProcessor) {
+                    this.damageProcessor.applyDamage(
+                        monster,
+                        player,
+                        attackConfig.damage,
+                        'melee',
+                        { attackType: `monster_${(attackConfig as any).name || 'melee'}`, attackId }
+                    );
+                    
+                    // Mark as hit by this attack
+                    playerState.lastHitBy = { attackId, timestamp: Date.now() };
+                }
             }
         }
     }
@@ -1378,6 +1459,28 @@ export class MonsterManager {
         const halfAngle = (angle / 2) * (Math.PI / 180); // Convert to radians
         const attackId = `${monster.id}_${Date.now()}`;
         
+        // Calculate attack direction based on target (same as telegraph)
+        let attackAngle: number;
+        if (monster.target) {
+            const targetCoords = this.playerToCoords(monster.target);
+            const dx = targetCoords.x - monster.x;
+            const dy = targetCoords.y - monster.y;
+            attackAngle = Math.atan2(dy, dx);
+        } else {
+            // Fallback to facing direction
+            const facingAngles: Record<string, number> = {
+                'right': 0,
+                'down-right': Math.PI / 4,
+                'down': Math.PI / 2,
+                'down-left': 3 * Math.PI / 4,
+                'left': Math.PI,
+                'up-left': -3 * Math.PI / 4,
+                'up': -Math.PI / 2,
+                'up-right': -Math.PI / 4
+            };
+            attackAngle = facingAngles[monster.facing] || 0;
+        }
+        
         // Find all players in cone
         for (const [_, player] of players) {
             if (player.hp <= 0) continue;
@@ -1390,25 +1493,7 @@ export class MonsterManager {
             if (distance <= range) {
                 // Check if player is within the cone angle
                 const angleToPlayer = Math.atan2(dy, dx);
-                // Convert facing direction to angle if it's a string
-                let monsterFacingAngle: number;
-                if (typeof monster.facing === 'number') {
-                    monsterFacingAngle = monster.facing;
-                } else {
-                    // Convert direction string to angle
-                    const facingAngles: Record<string, number> = {
-                        'right': 0,
-                        'down-right': Math.PI / 4,
-                        'down': Math.PI / 2,
-                        'down-left': 3 * Math.PI / 4,
-                        'left': Math.PI,
-                        'up-left': -3 * Math.PI / 4,
-                        'up': -Math.PI / 2,
-                        'up-right': -Math.PI / 4
-                    };
-                    monsterFacingAngle = facingAngles[monster.facing] || 0;
-                }
-                const angleDiff = Math.abs(this.normalizeAngle(angleToPlayer - monsterFacingAngle));
+                const angleDiff = Math.abs(this.normalizeAngle(angleToPlayer - attackAngle));
                 
                 if (angleDiff <= halfAngle) {
                     // Check if already hit by this attack (for multi-hit prevention)

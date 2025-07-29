@@ -119,8 +119,9 @@ export class AttackTelegraphRenderer {
         switch (shape.shape) {
             case 'rectangle':
                 // Rectangle extends forward from position
+                // In PIXI, rotation 0 = right, so rectangle extends along positive X
                 const halfWidth = shape.width / 2;
-                graphics.drawRect(-halfWidth, 0, shape.width, shape.length);
+                graphics.drawRect(0, -halfWidth, shape.length, shape.width);
                 break;
 
             case 'cone':
