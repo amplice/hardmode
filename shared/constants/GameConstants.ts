@@ -68,9 +68,9 @@ export const GAME_CONSTANTS = {
     
     // Spawn system
     SPAWN: {
-        MAX_MONSTERS: 75, // Reasonable limit for good performance
-        INITIAL_MONSTERS: 20, // Start with fewer monsters
-        INTERVAL: 3, // Spawn new monster every 3 seconds
+        MAX_MONSTERS: 150, // Increased monster count
+        INITIAL_MONSTERS: 40, // Start with more monsters
+        INTERVAL: 1.5, // Spawn new monster every 1.5 seconds
         MIN_DISTANCE_FROM_PLAYER: 700,
         MAX_DISTANCE_FROM_PLAYER: 8000, // Sufficient for larger world
         WORLD_EDGE_MARGIN: 2000 // Increased proportionally for 500x500 world
