@@ -1844,7 +1844,7 @@ export class MonsterManager {
                         y: monster.y,
                         facing: attackAngle,
                         config: attackConfig,
-                        duration: 400 // Match the increased attack delay
+                        duration: (attackConfig as any).attackDelay || 400 // Use configured attack delay
                     });
                     
                     // Immediately transition to attack
@@ -1855,8 +1855,8 @@ export class MonsterManager {
                 // Change to attack animation
                 (monster as any).teleportPhase = 'attack';
                 
-                // Schedule damage at frame 6 of pummel animation
-                const attackDelay = 400; // Increased to 400ms for better reaction time
+                // Schedule damage using configured delay
+                const attackDelay = (attackConfig as any).attackDelay || 400;
                 setTimeout(() => {
                     if (!monster || monster.hp <= 0) {
                         return;

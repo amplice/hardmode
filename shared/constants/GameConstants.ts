@@ -610,7 +610,7 @@ export const ATTACK_DEFINITIONS = {
         animation: 'special1',
         windupAnimation: 'special1_windup',  // First 5 frames
         attackAnimation: 'pummel',  // Pummel animation for actual attack
-        attackDelay: 200  // Damage at frame 6 of pummel: 6/(60*0.5) = 200ms (but we add 200ms extra delay)
+        attackDelay: 400  // 200ms for animation + 200ms extra delay for player reaction time
     },
     
     // Wolf attacks
