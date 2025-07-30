@@ -344,7 +344,7 @@ export class AttackTelegraphRenderer {
                 fillAlpha: 0.15,     // 15% opacity
                 borderAlpha: 0,      // No border
                 borderWidth: 0,      // No border
-                duration: 300,       // Time before damage after teleport
+                duration: 400,       // Time before damage after teleport
                 fadeIn: 50,
                 fadeOut: 50
             },

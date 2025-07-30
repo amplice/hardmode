@@ -1844,7 +1844,7 @@ export class MonsterManager {
                         y: monster.y,
                         facing: attackAngle,
                         config: attackConfig,
-                        duration: 300 // Match the increased attack delay
+                        duration: 400 // Match the increased attack delay
                     });
                     
                     // Immediately transition to attack
@@ -1856,7 +1856,7 @@ export class MonsterManager {
                 (monster as any).teleportPhase = 'attack';
                 
                 // Schedule damage at frame 6 of pummel animation
-                const attackDelay = 300; // Increased to 300ms for better reaction time
+                const attackDelay = 400; // Increased to 400ms for better reaction time
                 setTimeout(() => {
                     if (!monster || monster.hp <= 0) {
                         return;
@@ -1966,7 +1966,7 @@ export class MonsterManager {
                             }
                         }, attackConfig.recoveryTime);
                     }
-                }, 300);
+                }, 400);
             }
         } catch (error) {
             console.error(`[MonsterManager] Critical error in executeTeleportMeleeAttack:`, error);
@@ -2218,6 +2218,16 @@ export class MonsterManager {
                 monster.x = newX;
                 monster.y = newY;
                 
+                // Update telegraph position for spinning attacks during windup
+                if (monster.type === 'ogre' && monster.currentAttackType === 'special1' && 
+                    (monster.attackPhase === 'windup' || monster.attackPhase === 'active')) {
+                    this.io.emit('updateTelegraph', {
+                        monsterId: monster.id,
+                        x: monster.x,
+                        y: monster.y
+                    });
+                }
+                
                 // Debug: Check if monster crossed elevation boundary
                 const oldElevation = this.getElevationAt(oldX, oldY);
                 const newElevation = this.getElevationAt(newX, newY);
@@ -2231,8 +2241,26 @@ export class MonsterManager {
                 
                 if (canMoveX) {
                     monster.x = newX;
+                    // Update telegraph position for partial movement
+                    if (monster.type === 'ogre' && monster.currentAttackType === 'special1' && 
+                        (monster.attackPhase === 'windup' || monster.attackPhase === 'active')) {
+                        this.io.emit('updateTelegraph', {
+                            monsterId: monster.id,
+                            x: monster.x,
+                            y: monster.y
+                        });
+                    }
                 } else if (canMoveY) {
                     monster.y = newY;
+                    // Update telegraph position for partial movement
+                    if (monster.type === 'ogre' && monster.currentAttackType === 'special1' && 
+                        (monster.attackPhase === 'windup' || monster.attackPhase === 'active')) {
+                        this.io.emit('updateTelegraph', {
+                            monsterId: monster.id,
+                            x: monster.x,
+                            y: monster.y
+                        });
+                    }
                 } else {
                     // Completely blocked, try wandering to find better position
                     this.attemptWandering(monster, speed);
