@@ -514,8 +514,8 @@ export class Game {
       
       // Update latency if available
       if (this.latencyTracker) {
-        const latency = this.latencyTracker.getSmoothedRTT();
-        this.performanceOverlay.updateLatency(latency);
+        const stats = this.latencyTracker.getStats();
+        this.performanceOverlay.updateLatency(stats.averageRTT);
       }
     }
   }
