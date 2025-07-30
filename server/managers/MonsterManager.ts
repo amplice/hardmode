@@ -2125,6 +2125,27 @@ export class MonsterManager {
         
         const multiHit = monster.multiHitData;
         
+        // Emit telegraph for the active spinning phase (first hit only)
+        if (multiHit.hitsRemaining === (attackConfig as any).multiHit.hits && monster.type === 'ogre' && monster.currentAttackType === 'special1') {
+            const telegraphType = this.getTelegraphType(monster.type, 'special1');
+            if (telegraphType) {
+                this.io.emit('monsterTelegraph', {
+                    monsterId: monster.id,
+                    monsterType: monster.type,
+                    attackType: 'special1',
+                    telegraphType: telegraphType,
+                    x: monster.x,
+                    y: monster.y,
+                    facing: 0, // Circle doesn't need facing
+                    config: {
+                        hitboxType: attackConfig.hitboxType,
+                        hitboxParams: attackConfig.hitboxParams
+                    },
+                    duration: (attackConfig as any).multiHit.duration // Full spin duration
+                });
+            }
+        }
+        
         // Apply current hit
         if (multiHit.hitsRemaining > 0) {
             // AOE damage for multi-hit
