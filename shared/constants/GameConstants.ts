@@ -66,11 +66,11 @@ export const GAME_CONSTANTS = {
     // Server tick rate
     TICK_RATE: 30,
     
-    // Spawn system - EXTREME STRESS TEST
+    // Spawn system
     SPAWN: {
-        MAX_MONSTERS: 500, // EXTREME: Testing performance limits!
-        INITIAL_MONSTERS: 50, // Start with more monsters for immediate stress test
-        INTERVAL: 0.05, // LIGHTNING FAST: New monster every 50ms for stress testing
+        MAX_MONSTERS: 75, // Reasonable limit for good performance
+        INITIAL_MONSTERS: 20, // Start with fewer monsters
+        INTERVAL: 3, // Spawn new monster every 3 seconds
         MIN_DISTANCE_FROM_PLAYER: 700,
         MAX_DISTANCE_FROM_PLAYER: 8000, // Sufficient for larger world
         WORLD_EDGE_MARGIN: 2000 // Increased proportionally for 500x500 world

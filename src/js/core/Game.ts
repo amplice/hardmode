@@ -60,6 +60,7 @@ import { AttackTelegraphRenderer } from '../systems/AttackTelegraphRenderer.js';
 import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 import { DebugLogger } from '../debug/DebugLogger.js';
+import { PerformanceOverlay } from '../ui/PerformanceOverlay.js';
 import type {
     GameSystems,
     GameEntities,
@@ -105,6 +106,7 @@ export class Game {
   powerupRenderer?: any; // PowerupRenderer
   telegraphRenderer?: AttackTelegraphRenderer;
   debugLogger: DebugLogger;
+  performanceOverlay?: any; // PerformanceOverlay
   
   constructor() {
     this.app = new PIXI.Application({
@@ -347,6 +349,12 @@ export class Game {
     // Only update game if it has started
     if (!this.gameStarted) return;
     
+    // Track performance
+    if (this.performanceOverlay) {
+      this.performanceOverlay.startUpdateTimer();
+      this.performanceOverlay.updateFPS();
+    }
+    
     const deltaTimeSeconds = delta / 60;
 
     // 1. Capture and process input
@@ -494,6 +502,22 @@ export class Game {
     
     // Capture debug state every frame
     this.debugLogger.captureGameState(this);
+    
+    // Update performance metrics
+    if (this.performanceOverlay) {
+      this.performanceOverlay.endUpdateTimer();
+      
+      // Count monsters
+      const activeMonsters = this.remoteMonsters ? this.remoteMonsters.size : 0;
+      const totalMonsters = activeMonsters; // Same for now since all monsters are active
+      this.performanceOverlay.updateMonsterCount(activeMonsters, totalMonsters);
+      
+      // Update latency if available
+      if (this.latencyTracker) {
+        const latency = this.latencyTracker.getSmoothedRTT();
+        this.performanceOverlay.updateLatency(latency);
+      }
+    }
   }
 
   /**
@@ -630,6 +654,18 @@ export class Game {
     // Initialize telegraph renderer
     this.telegraphRenderer = new AttackTelegraphRenderer();
     this.entityContainer.addChild(this.telegraphRenderer.getContainer());
+    
+    // Initialize performance overlay
+    this.performanceOverlay = new PerformanceOverlay();
+    this.uiContainer.addChild(this.performanceOverlay.getContainer());
+    
+    // Toggle performance overlay with F3 key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'F3') {
+        e.preventDefault();
+        this.performanceOverlay.toggle();
+      }
+    });
 
     // Initialize camera position to player position (prevents initial camera jump)
     this.camera.x = this.entities.player.position.x;
