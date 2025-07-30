@@ -2351,14 +2351,32 @@ export class SharedWorldGenerator {
             // DARK GRASS STAIRS - Eastern stairs walkable tiles (+11 column offset)
             [14, 18], [14, 19], [15, 18], [15, 19],
             
-            // SNOW STAIRS - Western stairs walkable tiles (rows 17-20 in snow tileset)
+            // WHITE SNOW STAIRS (variant 0) - Western stairs walkable tiles (rows 17-20 in snow tileset)
             [18, 2], [18, 3], [19, 2], [19, 3],
-            // SNOW STAIRS - Top edge stairs walkable tiles
+            // WHITE SNOW STAIRS - Top edge stairs walkable tiles
             [17, 5], [17, 6], [18, 5], [18, 6],
-            // SNOW STAIRS - Bottom edge stairs walkable tiles
+            // WHITE SNOW STAIRS - Bottom edge stairs walkable tiles
             [19, 5], [19, 6], [20, 5], [20, 6], [21, 5], [21, 6],
-            // SNOW STAIRS - Eastern stairs walkable tiles
-            [18, 7], [18, 8], [19, 7], [19, 8]
+            // WHITE SNOW STAIRS - Eastern stairs walkable tiles
+            [18, 7], [18, 8], [19, 7], [19, 8],
+            
+            // BLUE SNOW STAIRS (variant 1, +12 column offset) - Western stairs walkable tiles
+            [18, 14], [18, 15], [19, 14], [19, 15],
+            // BLUE SNOW STAIRS - Top edge stairs walkable tiles
+            [17, 17], [17, 18], [18, 17], [18, 18],
+            // BLUE SNOW STAIRS - Bottom edge stairs walkable tiles
+            [19, 17], [19, 18], [20, 17], [20, 18], [21, 17], [21, 18],
+            // BLUE SNOW STAIRS - Eastern stairs walkable tiles
+            [18, 19], [18, 20], [19, 19], [19, 20],
+            
+            // GREY SNOW STAIRS (variant 2, +24 column offset) - Western stairs walkable tiles
+            [18, 26], [18, 27], [19, 26], [19, 27],
+            // GREY SNOW STAIRS - Top edge stairs walkable tiles
+            [17, 29], [17, 30], [18, 29], [18, 30],
+            // GREY SNOW STAIRS - Bottom edge stairs walkable tiles
+            [19, 29], [19, 30], [20, 29], [20, 30], [21, 29], [21, 30],
+            // GREY SNOW STAIRS - Eastern stairs walkable tiles
+            [18, 31], [18, 32], [19, 31], [19, 32]
         ];
         
         return walkableStairs.some(([row, col]) => row === tileY && col === tileX);
