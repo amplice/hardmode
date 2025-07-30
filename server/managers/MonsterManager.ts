@@ -995,8 +995,10 @@ export class MonsterManager {
                         x: monster.x,
                         y: monster.y,
                         facing: facing,
-                        shape: attackConfig.hitboxType === 'circle' ? 'circle' : 'cone',
-                        shapeParams: attackConfig.hitboxParams,
+                        config: {
+                            hitboxType: attackConfig.hitboxType,
+                            hitboxParams: attackConfig.hitboxParams
+                        },
                         duration: attackConfig.windupTime
                     });
                 }
@@ -1112,7 +1114,10 @@ export class MonsterManager {
                         x: targetCoords.x,
                         y: targetCoords.y,
                         facing: 0, // Circle doesn't need facing
-                        config: attackConfig,
+                        config: {
+                            hitboxType: attackConfig.hitboxType,
+                            hitboxParams: attackConfig.hitboxParams
+                        },
                         duration: attackConfig.windupTime
                     });
                 }
@@ -3285,7 +3290,7 @@ export class MonsterManager {
             'wildarcher_primary': null,
             
             // Other attacks
-            'wingeddemon_special': 'aoe_infernal'
+            'wingeddemon_special1': 'aoe_infernal'
         };
         
         const key = `${monsterType}_${attackType}`;
