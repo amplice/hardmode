@@ -981,6 +981,26 @@ export class MonsterManager {
                     // Store fixed direction for committed movement
                     fixedDirection: { x: directionX, y: directionY }
                 };
+                
+                // Emit telegraph for multi-hit attacks (like ogre spin)
+                const telegraphType = this.getTelegraphType(monster.type, attackType);
+                if (telegraphType) {
+                    const facing = Math.atan2(dy, dx);
+                    
+                    this.io.emit('monsterTelegraph', {
+                        monsterId: monster.id,
+                        monsterType: monster.type,
+                        attackType: attackType,
+                        telegraphType: telegraphType,
+                        x: monster.x,
+                        y: monster.y,
+                        facing: facing,
+                        shape: attackConfig.hitboxType === 'circle' ? 'circle' : 'cone',
+                        shapeParams: attackConfig.hitboxParams,
+                        duration: attackConfig.windupTime
+                    });
+                }
+                
                 // Schedule first hit
                 monster.pendingAttackTimeout = setTimeout(() => {
                     monster.pendingAttackTimeout = null;

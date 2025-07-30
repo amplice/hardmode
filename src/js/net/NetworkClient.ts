@@ -835,42 +835,6 @@ export class NetworkClient {
                     true // useRawPosition
                 );
                 
-                // TEMPORARY: Add debug circles for WingedDemon AOE visualization
-                if (data.type === 'wingeddemon_warning_effect' || data.type === 'wingeddemon_damage_effect') {
-                    console.log('[NetworkClient] Creating debug circle for:', data.type, 'at', data.x, data.y);
-                    const graphics = new PIXI.Graphics();
-                    const radius = 50; // AOE radius from attack config
-                    
-                    if (data.type === 'wingeddemon_warning_effect') {
-                        // White circle for warning
-                        graphics.lineStyle(4, 0xFFFFFF, 1.0); // Thicker line, full opacity
-                        graphics.beginFill(0xFFFFFF, 0.1); // Add slight fill
-                        graphics.drawCircle(0, 0, radius);
-                        graphics.endFill();
-                    } else {
-                        // Red circle for damage
-                        graphics.lineStyle(4, 0xFF0000, 1.0); // Thicker line, full opacity
-                        graphics.beginFill(0xFF0000, 0.2); // Add slight fill
-                        graphics.drawCircle(0, 0, radius);
-                        graphics.endFill();
-                    }
-                    
-                    // Set position
-                    graphics.position.set(data.x, data.y);
-                    
-                    // Add to entity container (should be visible on top of world)
-                    this.game.entityContainer.addChild(graphics);
-                    console.log('[NetworkClient] Debug circle added to entityContainer at z-index:', this.game.entityContainer.children.length);
-                    
-                    // Remove debug circle when effect expires
-                    setTimeout(() => {
-                        if (graphics.parent) {
-                            graphics.parent.removeChild(graphics);
-                            console.log('[NetworkClient] Debug circle removed');
-                        }
-                    }, data.duration || 1000);
-                }
-                
                 // If duration is specified, remove effect after duration
                 if (effect && data.duration) {
                     setTimeout(() => {
