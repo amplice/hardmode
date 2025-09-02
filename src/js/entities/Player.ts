@@ -231,6 +231,11 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
     }
     
     handleFootstepSounds(): void {
+        // Only process footsteps for local player
+        if (!this.owner.isLocalPlayer) {
+            return;
+        }
+        
         // Only play footsteps if actually moving and on the ground (not rolling)
         if (!this.owner.isMoving || this.owner.isRolling) {
             return;
@@ -239,11 +244,12 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
         // Check if enough time has passed since last footstep
         const currentTime = Date.now();
         if (currentTime - this.lastFootstepTime >= this.footstepInterval) {
-            // Only play footstep sound for local player
-            if (this.owner.isLocalPlayer) {
-                // Get footstep sound based on terrain (simplified for now)
-                const footstepSound = getFootstepSound(0); // Using 0 for now, could get actual biome later
-                soundManager.play(footstepSound);
+            // Get footstep sound based on terrain (simplified for now)
+            const footstepSound = getFootstepSound(0); // Using 0 for now, could get actual biome later
+            console.log('[Player] Playing footstep sound:', footstepSound);
+            const soundId = soundManager.play(footstepSound);
+            if (soundId === null) {
+                console.warn('[Player] Failed to play footstep sound');
             }
             
             this.lastFootstepTime = currentTime;
@@ -1264,6 +1270,9 @@ export class Player implements PlayerInterface {
         
         // Update movement state for animations (but not position)
         this.updateMovementStateForAnimation(inputState);
+        
+        // Handle footstep sounds even though movement is handled by prediction
+        this.movement.handleFootstepSounds();
         
         // Update combat (for attacks, but not movement)
         this.combat.update(deltaTime, inputState);
