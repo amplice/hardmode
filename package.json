@@ -20,6 +20,7 @@
   "description": "",
   "dependencies": {
     "express": "^5.1.0",
+    "howler": "^2.2.4",
     "pixi.js": "^7.4.3",
     "simplex-noise": "^4.0.3",
     "socket.io": "^4.8.1"
@@ -28,6 +29,7 @@
     "@babel/core": "^7.27.7",
     "@babel/preset-env": "^7.27.2",
     "@types/express": "^5.0.3",
+    "@types/howler": "^2.2.12",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.1",
     "babel-jest": "^30.0.2",

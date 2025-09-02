@@ -44,6 +44,8 @@
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js';
 import { ATTACK_DEFINITIONS } from '../../../shared/constants/GameConstants.js';
+import { soundManager } from '../systems/SoundManager.js';
+import { getPlayerAttackSound, getFootstepSound } from '../config/SoundConfig.js';
 import { 
     angleToDirectionString, 
     directionStringToAngleRadians,
@@ -90,6 +92,9 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
     velocity!: Velocity;
     position!: Position;
     moveSpeed!: number;
+    private lastFootstepTime: number = 0;
+    private footstepInterval: number = 400; // milliseconds between footsteps
+    
     init(): void {
         // Initialize properties on owner
         this.owner.velocity = { x: 0, y: 0 };
@@ -101,6 +106,9 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
         this.velocity = this.owner.velocity;
         this.position = this.owner.position;
         this.moveSpeed = this.owner.moveSpeed;
+        
+        // Initialize footstep timer
+        this.lastFootstepTime = Date.now();
     }
     
     update(deltaTime: number, inputState?: InputState): void {
@@ -113,6 +121,9 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
         
         this.processMovementInput(inputState);
         this.updatePosition();
+        
+        // Play footstep sounds if moving
+        this.handleFootstepSounds();
         
         // Update facing direction based on mouse position if available
         if (inputState.mousePosition) {
@@ -217,6 +228,26 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
         
         // Convert angle to 8-direction facing using the utility function
         this.owner.facing = angleToDirectionString(angleInDegrees);
+    }
+    
+    handleFootstepSounds(): void {
+        // Only play footsteps if actually moving and on the ground (not rolling)
+        if (!this.owner.isMoving || this.owner.isRolling) {
+            return;
+        }
+        
+        // Check if enough time has passed since last footstep
+        const currentTime = Date.now();
+        if (currentTime - this.lastFootstepTime >= this.footstepInterval) {
+            // Only play footstep sound for local player
+            if (this.owner.isLocalPlayer) {
+                // Get footstep sound based on terrain (simplified for now)
+                const footstepSound = getFootstepSound(0); // Using 0 for now, could get actual biome later
+                soundManager.play(footstepSound);
+            }
+            
+            this.lastFootstepTime = currentTime;
+        }
     }
 }
 
@@ -431,6 +462,9 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
         const classConfig = (PLAYER_CONFIG.classes as any)[this.owner.characterClass];
         const classPrefix = classConfig?.spritePrefix || 'knight'; // Default to 'knight'
         
+        // Play sound effect for this attack
+        this.playAttackSound(attackType);
+        
         if (attackType === 'roll') {
           const rollAnimName = `${classPrefix}_roll_${this.getFacingAnimationKey()}`;
           this.owner.currentAnimation = rollAnimName;
@@ -600,6 +634,24 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
     getFacingAnimationKey(): string {
         // Use the utility function to convert facing string to animation suffix
         return directionStringToAnimationSuffix(this.owner.facing);
+    }
+    
+    playAttackSound(attackType: string): void {
+        // Get the appropriate sound for this class and attack type
+        const soundName = getPlayerAttackSound(this.owner.characterClass, attackType);
+        
+        if (soundName) {
+            // Only play sound for local player (not remote players)
+            if (this.owner.isLocalPlayer) {
+                soundManager.play(soundName);
+            } else {
+                // Play spatial sound for remote players
+                soundManager.playSpatial(soundName, {
+                    x: this.owner.position.x,
+                    y: this.owner.position.y
+                });
+            }
+        }
     }
 }
 
@@ -815,7 +867,10 @@ class HealthComponent extends BaseComponent implements IHealthComponent {
     takeDamage(amount: number): void {
         // Check for invulnerability
         if (this.owner.isInvulnerable) {
-          // Attack blocked by invulnerability
+          // Attack blocked by invulnerability - play blocked sound
+          if (this.owner.isLocalPlayer) {
+            soundManager.play('hit_blocked');
+          }
           return;
         }
         
@@ -828,6 +883,11 @@ class HealthComponent extends BaseComponent implements IHealthComponent {
             this.die();
           }
           return;
+        }
+        
+        // Play hurt sound for local player
+        if (this.owner.isLocalPlayer) {
+          soundManager.play('player_hurt');
         }
         
         // Start take damage stun and animation
@@ -853,6 +913,11 @@ class HealthComponent extends BaseComponent implements IHealthComponent {
             return;
         }
         
+        // Play death sound for local player
+        if (this.owner.isLocalPlayer) {
+            soundManager.play('player_death');
+        }
+        
         // Clear any damage state to allow death animation to play
         this.owner.isTakingDamage = false;
         this.owner.damageStunTimer = 0;
@@ -869,6 +934,11 @@ class HealthComponent extends BaseComponent implements IHealthComponent {
         // Prevent multiple respawn calls
         if (!this.owner.isDead) {
             return;
+        }
+        
+        // Play respawn sound for local player
+        if (this.owner.isLocalPlayer) {
+            soundManager.play('player_respawn');
         }
         
         // Player respawning

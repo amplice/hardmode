@@ -61,6 +61,8 @@ import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 import { DebugLogger } from '../debug/DebugLogger.js';
 import { PerformanceOverlay } from '../ui/PerformanceOverlay.js';
+import { soundManager } from '../systems/SoundManager.js';
+import { SOUND_CONFIG } from '../config/SoundConfig.js';
 import type {
     GameSystems,
     GameEntities,
@@ -583,6 +585,9 @@ export class Game {
     if (this.systems.world && this.systems.world.isChunkedMode) {
       this.systems.world.updatePlayerPosition(this.entities.player.position.x, this.entities.player.position.y);
     }
+    
+    // Update spatial audio listener position
+    this.updateSpatialAudio();
   }
 
   // Multiplayer helpers
@@ -591,6 +596,12 @@ export class Game {
     
     // Hide connecting message if it exists
     this.hideConnectingMessage();
+    
+    // Initialize sound system (fire and forget - don't block game start)
+    this.initializeSounds().catch(err => {
+      console.warn('[Game] Failed to load some sounds:', err);
+      // Continue anyway - game works without sounds
+    });
     
     // Generate world data once using SharedWorldGenerator with server's seed
     const worldGenerator = new SharedWorldGenerator(
@@ -884,6 +895,62 @@ export class Game {
     // Also trigger combat system effects for remote player attacks
     if (this.systems.combat) {
       this.systems.combat.executeAttack(p, type);
+    }
+  }
+  
+  /**
+   * Initialize sound system and load all game sounds
+   */
+  async initializeSounds(): Promise<void> {
+    console.log('[Game] Loading sounds...');
+    
+    try {
+      // Load all combat sounds
+      const combatSounds: any = {};
+      
+      // Load all player attack sounds
+      ['bladedancer', 'guardian', 'hunter', 'rogue'].forEach(cls => {
+        const attack1Key = `${cls}_attack1` as keyof typeof SOUND_CONFIG;
+        const attack2Key = `${cls}_attack2` as keyof typeof SOUND_CONFIG;
+        combatSounds[attack1Key] = SOUND_CONFIG[attack1Key];
+        combatSounds[attack2Key] = SOUND_CONFIG[attack2Key];
+      });
+      
+      // Add universal roll sound
+      combatSounds['roll'] = SOUND_CONFIG['roll'];
+      
+      // Add impact sounds
+      combatSounds['hit_physical'] = SOUND_CONFIG['hit_physical'];
+      combatSounds['player_hurt'] = SOUND_CONFIG['player_hurt'];
+      
+      // Add UI sounds
+      combatSounds['level_up'] = SOUND_CONFIG['level_up'];
+      
+      // Add movement sounds
+      combatSounds['footstep'] = SOUND_CONFIG['footstep'];
+      
+      // Only try to load sounds if files exist
+      // This prevents errors when sound files aren't present yet
+      await soundManager.loadAll(combatSounds).catch(() => {
+        console.log('[Game] Sound files not found - running in silent mode');
+      });
+      
+      console.log('[Game] Sound system initialized');
+    } catch (error) {
+      console.warn('[Game] Sound initialization failed:', error);
+      // Game continues without sound
+    }
+  }
+  
+  /**
+   * Update spatial audio listener position
+   */
+  updateSpatialAudio(): void {
+    if (this.entities.player) {
+      soundManager.updateListenerPosition(
+        this.entities.player.position.x,
+        this.entities.player.position.y
+      );
     }
   }
 }
