@@ -245,6 +245,7 @@ export interface Player extends PlayerState {
     
     // Additional runtime properties
     serverPosition?: { x: number; y: number };
+    isLocalPlayer?: boolean;
     
     // Methods
     addComponent(name: string, component: Component): void;

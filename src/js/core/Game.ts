@@ -643,6 +643,10 @@ export class Game {
       combatSystem: this.systems.combat,
       spriteManager: this.systems.sprites
     });
+    
+    // Mark as local player for sound and other systems
+    this.entities.player.isLocalPlayer = true;
+    
     this.entityContainer.addChild(this.entities.player.sprite);
 
     // Don't need to set class again - already sent during startGame

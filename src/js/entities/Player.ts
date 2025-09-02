@@ -231,13 +231,29 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
     }
     
     handleFootstepSounds(): void {
+        // Debug all conditions
+        console.log('[Footstep Debug]', {
+            isLocalPlayer: this.owner.isLocalPlayer,
+            isMoving: this.owner.isMoving,
+            isRolling: this.owner.isRolling,
+            timeSinceLastFootstep: Date.now() - this.lastFootstepTime,
+            footstepInterval: this.footstepInterval
+        });
+        
         // Only process footsteps for local player
         if (!this.owner.isLocalPlayer) {
+            console.log('[Footstep] Not local player, skipping');
             return;
         }
         
         // Only play footsteps if actually moving and on the ground (not rolling)
-        if (!this.owner.isMoving || this.owner.isRolling) {
+        if (!this.owner.isMoving) {
+            console.log('[Footstep] Not moving, skipping');
+            return;
+        }
+        
+        if (this.owner.isRolling) {
+            console.log('[Footstep] Rolling, skipping');
             return;
         }
         
@@ -1115,6 +1131,7 @@ export class Player implements PlayerInterface {
     facing!: string;
     lastFacing!: string;
     isMoving!: boolean;
+    isLocalPlayer?: boolean; // True for the local player, false/undefined for remote players
     movementDirection!: string | null;
     moveSpeed!: number;
     isAttacking!: boolean;
