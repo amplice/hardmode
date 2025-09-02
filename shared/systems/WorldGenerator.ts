@@ -1071,8 +1071,8 @@ export class SharedWorldGenerator {
 
     /**
      * Determine biome type from climate conditions
-     * NOTE: Desert/Marsh/Snow biomes not yet implemented in client
-     * Temporarily mapping to existing grass types until assets are ready
+     * Snow biome is fully implemented with 3 color variants
+     * Desert and Marsh biomes map to grass types until assets are ready
      */
     determineBiomeType(temperature: number, moisture: number): number {
         // Cold + Any moisture = Snow

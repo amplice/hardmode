@@ -112,11 +112,8 @@ export class WorldGenerator {
         // Create visual tiles
         this.createTileSprites();
         
-        // Skip decorations for now - will update later for new tileset
-        // TODO: Update decorations for 32x32 tileset
-        // this.decorations = new DecorationManager(this, this.tilesets, { random: this.random });
-        // const decorationsContainer = this.decorations.generateDecorations();
-        // this.container.addChild(decorationsContainer);
+        // Note: This file is not used - decorations are implemented in ClientWorldRenderer.ts
+        // The SharedWorldGenerator handles decoration generation and ClientWorldRenderer renders them
         
         console.log("World generation complete!");
         return this.container;

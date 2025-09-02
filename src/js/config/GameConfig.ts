@@ -388,7 +388,7 @@ export const PLAYER_CONFIG = {
       moveSpeed: 5,
       baseColor: 0x3498db, // Blue
       placeholderColor: 0x3498db,
-      spritePrefix: 'knight', // CRITICAL: Must be 'knight', not 'bladedancer'!
+      spritePrefix: 'knight', // Uses 'Knight' sprite folder - this is the sprite name, not the class name
       animations: {
         idle: { speed: 0.2 },
         run: { speed: 0.5 },

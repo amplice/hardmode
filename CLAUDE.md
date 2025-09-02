@@ -9,8 +9,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Vision
 
 **End Goal**: Small-scale permadeath MMORPG (max ~100 concurrent players) with highly skill-based combat. Key principles:
-- **Permadeath/roguelike** mechanics (like Realm of the Mad God) - *Currently: 3-second respawn, working toward true permadeath*
-- **ARPG combat feel** (like Diablo 2) but only 2 attacks per class - *✅ Fully implemented with roll mechanics at level 5*
+- **Permadeath/roguelike** mechanics (like Realm of the Mad God) - *✅ Implemented: 3-second respawn at level 1 with 0 XP*
+- **ARPG combat feel** (like Diablo 2) with 2 attacks per class - *✅ Fully implemented plus roll mechanic unlocked at level 5*
 - **Pure skill focus**: No items/crafting/inventory - just combat - *✅ Fully implemented*
 - **Level 1 can beat Level 10** through superior positioning and timing - *✅ Works, though level 10 has significant advantages*
 
@@ -140,13 +140,13 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
 
 ### **Core Gameplay** *(Production Quality)*
 - **4 Character Classes**: Bladedancer, Guardian, Hunter, Rogue with unique abilities
-- **5 Monster Types**: Ogre, Skeleton, Elemental, Ghoul, Wild Archer with sophisticated AI
+- **8 Monster Types**: Ogre, Skeleton, Elemental, Ghoul, Wild Archer, Dark Mage, Wolf, Winged Demon with sophisticated AI
 - **Combat System**: Hitbox-based attacks (Rectangle, Cone, Circle), projectile physics
 - **Level Progression**: 1-10 with XP-based advancement, roll unlock at level 5
 - **Real-time PvP**: Player vs player combat with same systems as PvE
 
 ### **Network Architecture** *(Bandwidth Optimized)*
-- **Delta Compression**: 70-80% bandwidth reduction via `NetworkOptimizer.js`
+- **Delta Compression**: Significant bandwidth reduction via `NetworkOptimizer.js`
 - **Client-Side Prediction**: Movement prediction with server reconciliation
 - **State Reconciliation**: Sequence-based rollback and replay system
 - **Per-Client Optimization**: Personalized updates based on view distance
@@ -413,7 +413,7 @@ const canMoveToPosition = this.collisionMask.canMove(
 ## 🎯 **OPTIMIZATION RESULTS**
 
 ### **Network Performance**
-- **70-80% bandwidth reduction** achieved through delta compression
+- **Delta compression** reduces bandwidth usage significantly
 - **Per-client view distance filtering** reduces unnecessary data transmission
 - **Position threshold tuning** (0.5px → 0.1px) for smooth movement
 
@@ -439,7 +439,7 @@ const canMoveToPosition = this.collisionMask.canMove(
 8. **Minimum plateau size** - 64 tiles (8x8) minimum prevents tiny plateau formations
 9. **Geometric cliff cleanup** - Edge-based detection removes single diagonal protrusions for clean cliff edges
 10. **Monster movement validation** - Uses canMove() instead of isWalkable() to check entire path and prevent wall clipping
-11. **Coordinate system clarity** - GAME_CONSTANTS.WORLD.WIDTH/HEIGHT are in tiles (500), not pixels (32000)
+11. **Coordinate system clarity** - GAME_CONSTANTS.WORLD.WIDTH/HEIGHT are in tiles (500 tiles × 64 pixels/tile = 32000 pixels total)
 
 ## 🔗 **INTEGRATION POINTS**
 
