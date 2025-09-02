@@ -9,7 +9,19 @@
  * - Priority system to limit concurrent sounds
  */
 
-import { Howl, Howler } from 'howler';
+// @ts-ignore - Howler doesn't have proper TypeScript definitions for ES modules
+import 'howler';
+
+// Access Howl and Howler from the global scope after import
+declare global {
+    interface Window {
+        Howl: any;
+        Howler: any;
+    }
+}
+
+const Howl = (window as any).Howl;
+const Howler = (window as any).Howler;
 
 // Sound categories for volume control
 export enum SoundCategory {
@@ -108,7 +120,7 @@ export class SoundManager {
                     console.log(`[SoundManager] Loaded sound: ${name}`);
                     resolve();
                 },
-                onloaderror: (id, error) => {
+                onloaderror: (id: any, error: any) => {
                     console.error(`[SoundManager] Failed to load ${name}:`, error);
                     reject(error);
                 }
