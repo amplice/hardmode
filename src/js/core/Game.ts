@@ -930,9 +930,6 @@ export class Game {
       // Add UI sounds
       combatSounds['level_up'] = SOUND_CONFIG['level_up'];
       
-      // Add movement sounds
-      combatSounds['footstep'] = SOUND_CONFIG['footstep'];
-      
       // Only try to load sounds if files exist
       // This prevents errors when sound files aren't present yet
       await soundManager.loadAll(combatSounds).catch(() => {

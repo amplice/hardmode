@@ -199,18 +199,6 @@ export const SOUND_CONFIG = {
     },
     
     // ============================================
-    // MOVEMENT SOUNDS
-    // ============================================
-    
-    'footstep': {
-        src: 'assets/sounds/movement/walk_universal.wav',  // walk_knight.wav
-        category: SoundCategory.SFX,
-        priority: SoundPriority.LOW,
-        pool: 2,
-        volume: 0.3
-    },
-    
-    // ============================================
     // UI SOUNDS
     // ============================================
     
@@ -278,14 +266,6 @@ export function getMonsterSound(monsterType: string, soundType: 'attack' | 'hurt
     return null;
 }
 
-/**
- * Helper to get footstep sound based on terrain
- * Currently using universal footstep sound for all terrains
- */
-export function getFootstepSound(biomeType: number): string {
-    // Using universal footstep sound for now
-    return 'footstep';
-}
 
 /**
  * Helper to get powerup sound

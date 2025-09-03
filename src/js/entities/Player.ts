@@ -45,7 +45,7 @@ import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js';
 import { ATTACK_DEFINITIONS } from '../../../shared/constants/GameConstants.js';
 import { soundManager } from '../systems/SoundManager.js';
-import { getPlayerAttackSound, getFootstepSound } from '../config/SoundConfig.js';
+import { getPlayerAttackSound } from '../config/SoundConfig.js';
 import { 
     angleToDirectionString, 
     directionStringToAngleRadians,
@@ -92,8 +92,6 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
     velocity!: Velocity;
     position!: Position;
     moveSpeed!: number;
-    private lastFootstepTime: number = 0;
-    private footstepInterval: number = 400; // milliseconds between footsteps
     
     init(): void {
         // Initialize properties on owner
@@ -106,9 +104,6 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
         this.velocity = this.owner.velocity;
         this.position = this.owner.position;
         this.moveSpeed = this.owner.moveSpeed;
-        
-        // Initialize footstep timer
-        this.lastFootstepTime = Date.now();
     }
     
     update(deltaTime: number, inputState?: InputState): void {
@@ -121,9 +116,6 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
         
         this.processMovementInput(inputState);
         this.updatePosition();
-        
-        // Play footstep sounds if moving
-        this.handleFootstepSounds();
         
         // Update facing direction based on mouse position if available
         if (inputState.mousePosition) {
@@ -228,48 +220,6 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
         
         // Convert angle to 8-direction facing using the utility function
         this.owner.facing = angleToDirectionString(angleInDegrees);
-    }
-    
-    handleFootstepSounds(): void {
-        // Debug all conditions
-        console.log('[Footstep Debug]', {
-            isLocalPlayer: this.owner.isLocalPlayer,
-            isMoving: this.owner.isMoving,
-            isRolling: this.owner.isRolling,
-            timeSinceLastFootstep: Date.now() - this.lastFootstepTime,
-            footstepInterval: this.footstepInterval
-        });
-        
-        // Only process footsteps for local player
-        if (!this.owner.isLocalPlayer) {
-            console.log('[Footstep] Not local player, skipping');
-            return;
-        }
-        
-        // Only play footsteps if actually moving and on the ground (not rolling)
-        if (!this.owner.isMoving) {
-            console.log('[Footstep] Not moving, skipping');
-            return;
-        }
-        
-        if (this.owner.isRolling) {
-            console.log('[Footstep] Rolling, skipping');
-            return;
-        }
-        
-        // Check if enough time has passed since last footstep
-        const currentTime = Date.now();
-        if (currentTime - this.lastFootstepTime >= this.footstepInterval) {
-            // Get footstep sound based on terrain (simplified for now)
-            const footstepSound = getFootstepSound(0); // Using 0 for now, could get actual biome later
-            console.log('[Player] Playing footstep sound:', footstepSound);
-            const soundId = soundManager.play(footstepSound);
-            if (soundId === null) {
-                console.warn('[Player] Failed to play footstep sound');
-            }
-            
-            this.lastFootstepTime = currentTime;
-        }
     }
 }
 
@@ -1287,9 +1237,6 @@ export class Player implements PlayerInterface {
         
         // Update movement state for animations (but not position)
         this.updateMovementStateForAnimation(inputState);
-        
-        // Handle footstep sounds even though movement is handled by prediction
-        this.movement.handleFootstepSounds();
         
         // Update combat (for attacks, but not movement)
         this.combat.update(deltaTime, inputState);
