@@ -15,11 +15,11 @@ export const SOUND_CONFIG = {
     // PLAYER COMBAT SOUNDS
     // ============================================
     
-    // Using universal sounds for all classes temporarily
+    // Class-specific combat sounds
     
     // Bladedancer
     'bladedancer_attack1': {
-        src: 'assets/sounds/combat/attack1_universal.wav',  // attack_knight.wav
+        src: 'assets/sounds/combat/bladedancer_attack1_new.wav',  // Attack_2.wav
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
@@ -33,7 +33,7 @@ export const SOUND_CONFIG = {
     
     // Guardian
     'guardian_attack1': {
-        src: 'assets/sounds/combat/attack1_universal.wav',  // attack_knight.wav
+        src: 'assets/sounds/combat/guardian_attack1_new.wav',  // Attack_1.wav
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
@@ -47,7 +47,7 @@ export const SOUND_CONFIG = {
     
     // Hunter
     'hunter_attack1': {
-        src: 'assets/sounds/combat/attack1_universal.wav',  // attack_knight.wav
+        src: 'assets/sounds/combat/hunter_attack1_new.wav',  // Throw_2.wav
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
@@ -61,7 +61,7 @@ export const SOUND_CONFIG = {
     
     // Rogue
     'rogue_attack1': {
-        src: 'assets/sounds/combat/attack1_universal.wav',  // attack_knight.wav
+        src: 'assets/sounds/combat/rogue_attack1_new.wav',  // Sword_4.wav
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
@@ -75,7 +75,7 @@ export const SOUND_CONFIG = {
     
     // Universal roll sound
     'roll': {
-        src: 'assets/sounds/combat/roll_universal.wav',  // jump_knight.wav
+        src: 'assets/sounds/combat/roll_new.wav',  // Dodge_1.wav
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 3
