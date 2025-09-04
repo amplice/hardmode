@@ -25,7 +25,7 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'bladedancer_attack2': {
-        src: 'assets/sounds/combat/attack2_universal.wav',  // axe_boss.wav
+        src: 'assets/sounds/combat/bladedancer_attack2_new.wav',  // Thunder_02.wav
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
@@ -39,7 +39,7 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'guardian_attack2': {
-        src: 'assets/sounds/combat/attack2_universal.wav',  // axe_boss.wav
+        src: 'assets/sounds/combat/guardian_attack2_new.wav',  // Earth_02.wav
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 3
@@ -47,13 +47,13 @@ export const SOUND_CONFIG = {
     
     // Hunter
     'hunter_attack1': {
-        src: 'assets/sounds/combat/hunter_attack1_new.wav',  // Throw_2.wav
+        src: 'assets/sounds/combat/hunter_attack1_v2.wav',  // Bow Attack 2.wav
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
     },
     'hunter_attack2': {
-        src: 'assets/sounds/combat/attack2_universal.wav',  // axe_boss.wav
+        src: 'assets/sounds/combat/hunter_attack2_new.wav',  // Rock Meteor Throw 1.wav
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
@@ -67,7 +67,7 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'rogue_attack2': {
-        src: 'assets/sounds/combat/attack2_universal.wav',  // axe_boss.wav
+        src: 'assets/sounds/combat/rogue_attack2_new.wav',  // Firebuff 2.wav
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
