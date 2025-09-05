@@ -930,6 +930,19 @@ export class Game {
       // Add UI sounds
       combatSounds['level_up'] = SOUND_CONFIG['level_up'];
       
+      // Add monster sounds
+      const monsterTypes = ['ghoul', 'ogre', 'darkmage', 'skeleton', 'wolf', 'wingeddemon', 'wildarcher', 'elemental'];
+      monsterTypes.forEach(type => {
+        const attackKey = `${type}_attack` as keyof typeof SOUND_CONFIG;
+        if (SOUND_CONFIG[attackKey]) {
+          combatSounds[attackKey] = SOUND_CONFIG[attackKey];
+        }
+        // Add special attack sounds if they exist
+        if (type === 'wingeddemon' && SOUND_CONFIG['wingeddemon_spell']) {
+          combatSounds['wingeddemon_spell'] = SOUND_CONFIG['wingeddemon_spell'];
+        }
+      });
+      
       // Only try to load sounds if files exist
       // This prevents errors when sound files aren't present yet
       await soundManager.loadAll(combatSounds).catch(() => {

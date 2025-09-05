@@ -49,6 +49,8 @@
 import * as PIXI from 'pixi.js';
 import { MONSTER_CONFIG } from '../../config/GameConfig.js';
 import { MONSTER_STATS } from '../../../../shared/constants/GameConstants.js';
+import { soundManager } from '../../systems/SoundManager.js';
+import { getMonsterSound } from '../../config/SoundConfig.js';
 import {
     velocityToDirectionString,
     directionStringToAngleRadians
@@ -708,6 +710,20 @@ export class Monster {
         const oldFacing = this.facing;
         this.state = data.state;
         this.facing = data.facing;
+        
+        // Play attack sound when transitioning to attacking state
+        if (!wasAttacking && isNowAttacking) {
+            const attackType = (this as any).currentAttackType;
+            const soundType = attackType === 'special1' || attackType === 'special2' ? 'special' : 'attack';
+            const soundName = getMonsterSound(this.type, soundType);
+            if (soundName) {
+                // Play spatially for all monsters
+                soundManager.playSpatial(soundName, {
+                    x: this.position.x,
+                    y: this.position.y
+                });
+            }
+        }
         
         // Update animation if state changed, attack type changed, or facing changed (but not during attack)
         const attackTypeChanged = wasAttacking && isNowAttacking && oldAttackType !== data.currentAttackType;
