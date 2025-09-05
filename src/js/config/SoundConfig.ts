@@ -92,13 +92,13 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'ogre_attack': {
-        src: 'assets/sounds/monsters/ogre_melee_attack.wav',
+        src: 'assets/sounds/monsters/ogre_spin_attack.ogg',  // Swapped - basic attack uses spin sound
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
     },
     'ogre_spin': {
-        src: 'assets/sounds/monsters/ogre_spin_attack.ogg',
+        src: 'assets/sounds/monsters/ogre_melee_attack.wav',  // Swapped - special uses melee sound
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 3
@@ -140,13 +140,13 @@ export const SOUND_CONFIG = {
         pool: 3
     },
     'wingeddemon_attack': {
-        src: 'assets/sounds/monsters/winged_demon_melee_attack.wav',
+        src: 'assets/sounds/monsters/winged_demon_special_attack.wav',  // Swapped - basic attack uses special sound
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
     },
     'wingeddemon_spell': {
-        src: 'assets/sounds/monsters/winged_demon_special_attack.wav',
+        src: 'assets/sounds/monsters/winged_demon_melee_attack.wav',  // Swapped - special uses melee sound
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
