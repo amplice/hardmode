@@ -937,9 +937,13 @@ export class Game {
         if (SOUND_CONFIG[attackKey]) {
           combatSounds[attackKey] = SOUND_CONFIG[attackKey];
         }
-        // Add special attack sounds if they exist
-        if (type === 'wingeddemon' && SOUND_CONFIG['wingeddemon_spell']) {
-          combatSounds['wingeddemon_spell'] = SOUND_CONFIG['wingeddemon_spell'];
+      });
+      
+      // Add special attack sounds
+      const specialSounds = ['ogre_spin', 'darkmage_special', 'wolf_special_jump', 'wolf_special_land', 'wingeddemon_spell'] as const;
+      specialSounds.forEach(key => {
+        if (SOUND_CONFIG[key as keyof typeof SOUND_CONFIG]) {
+          combatSounds[key] = SOUND_CONFIG[key as keyof typeof SOUND_CONFIG];
         }
       });
       

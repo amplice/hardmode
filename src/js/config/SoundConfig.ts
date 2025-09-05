@@ -19,13 +19,13 @@ export const SOUND_CONFIG = {
     
     // Bladedancer
     'bladedancer_attack1': {
-        src: 'assets/sounds/combat/bladedancer_attack1_new.wav',  // Attack_2.wav
+        src: 'assets/sounds/combat/bladedancer_attack_1.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
     },
     'bladedancer_attack2': {
-        src: 'assets/sounds/combat/bladedancer_attack2_new.wav',  // Thunder_02.wav
+        src: 'assets/sounds/combat/bladedancer_attack_2_effect.wav',  // Using effect sound for attack2
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
@@ -33,13 +33,13 @@ export const SOUND_CONFIG = {
     
     // Guardian
     'guardian_attack1': {
-        src: 'assets/sounds/combat/guardian_attack1_new.wav',  // Attack_1.wav
+        src: 'assets/sounds/combat/guardian_attack_1.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
     },
     'guardian_attack2': {
-        src: 'assets/sounds/combat/guardian_attack2_new.wav',  // Earth_02.wav
+        src: 'assets/sounds/combat/guardian_attack_2.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 3
@@ -47,13 +47,13 @@ export const SOUND_CONFIG = {
     
     // Hunter
     'hunter_attack1': {
-        src: 'assets/sounds/combat/hunter_attack1_v2.wav',  // Bow Attack 2.wav
+        src: 'assets/sounds/combat/hunter_attack_1.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
     },
     'hunter_attack2': {
-        src: 'assets/sounds/combat/hunter_attack2_new.wav',  // Rock Meteor Throw 1.wav
+        src: 'assets/sounds/combat/hunter_attack_2.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
@@ -61,13 +61,13 @@ export const SOUND_CONFIG = {
     
     // Rogue
     'rogue_attack1': {
-        src: 'assets/sounds/combat/rogue_attack1_new.wav',  // Sword_4.wav
+        src: 'assets/sounds/combat/rogue_attack_1.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
     },
     'rogue_attack2': {
-        src: 'assets/sounds/combat/rogue_attack2_new.wav',  // Firebuff 2.wav
+        src: 'assets/sounds/combat/rogue_attack_2.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
@@ -75,7 +75,7 @@ export const SOUND_CONFIG = {
     
     // Universal roll sound
     'roll': {
-        src: 'assets/sounds/combat/roll_new.wav',  // Dodge_1.wav
+        src: 'assets/sounds/combat/roll.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 3
@@ -92,16 +92,28 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'ogre_attack': {
-        src: 'assets/sounds/monsters/ogre_attack.wav',
+        src: 'assets/sounds/monsters/ogre_melee_attack.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
     },
+    'ogre_spin': {
+        src: 'assets/sounds/monsters/ogre_spin_attack.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 3
+    },
     'darkmage_attack': {
-        src: 'assets/sounds/monsters/darkmage_attack.wav',
+        src: 'assets/sounds/monsters/dark_mage_ranged_attack.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
+    },
+    'darkmage_special': {
+        src: 'assets/sounds/monsters/dark_mage_special_attack.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 3
     },
     'skeleton_attack': {
         src: 'assets/sounds/monsters/skeleton_attack.wav',
@@ -110,25 +122,37 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'wolf_attack': {
-        src: 'assets/sounds/monsters/wolf_attack.wav',
+        src: 'assets/sounds/monsters/wolf_melee_attack.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
     },
+    'wolf_special_jump': {
+        src: 'assets/sounds/monsters/wolf_special_attack_jump.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 3
+    },
+    'wolf_special_land': {
+        src: 'assets/sounds/monsters/wolf_special_attack_land.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 3
+    },
     'wingeddemon_attack': {
-        src: 'assets/sounds/monsters/wingeddemon_attack.mp3',
+        src: 'assets/sounds/monsters/winged_demon_melee_attack.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
     },
     'wingeddemon_spell': {
-        src: 'assets/sounds/monsters/wingeddemon_spell.wav',
+        src: 'assets/sounds/monsters/winged_demon_special_attack.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
     },
     'wildarcher_attack': {
-        src: 'assets/sounds/monsters/wildarcher_attack.wav',
+        src: 'assets/sounds/monsters/wild_archer_attack.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
@@ -319,16 +343,19 @@ export function getMonsterSound(monsterType: string, soundType: 'attack' | 'hurt
             'attack': 'ghoul_attack'
         },
         'ogre': {
-            'attack': 'ogre_attack'
+            'attack': 'ogre_attack',
+            'special': 'ogre_spin'  // Ogre spin attack
         },
         'darkmage': {
-            'attack': 'darkmage_attack'
+            'attack': 'darkmage_attack',
+            'special': 'darkmage_special'  // Dark mage special attack
         },
         'skeleton': {
             'attack': 'skeleton_attack'
         },
         'wolf': {
-            'attack': 'wolf_attack'
+            'attack': 'wolf_attack',
+            'special': 'wolf_special_jump'  // Wolf jump attack (could also use wolf_special_land)
         },
         'wingeddemon': {
             'attack': 'wingeddemon_attack',
