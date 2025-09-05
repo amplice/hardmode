@@ -76,8 +76,10 @@ export class SoundManager {
     private enabled: boolean = true;
     private maxConcurrentSounds: number = 32;  // Browser limit
     private soundCounts: Map<string, number> = new Map();  // Track instances per sound
-    private defaultMaxDistance: number = 1500;  // Default spatial audio distance
-    private defaultRefDistance: number = 400;   // Default full volume distance
+    private screenWidth: number = 1920;  // Will be updated from Game
+    private screenHeight: number = 1080;  // Will be updated from Game
+    private screenBuffer: number = 300;  // Extra pixels around screen edge to hear sounds
+    private cameraZoom: number = 0.85;  // Will be updated from Game
     
     constructor() {
         // Initialize category volumes
@@ -215,7 +217,7 @@ export class SoundManager {
     }
     
     /**
-     * Play a spatial sound with distance-based volume
+     * Play a spatial sound if it's on screen (or within buffer zone)
      */
     playSpatial(name: string, options: SpatialSoundOptions): number | null {
         if (!this.enabled) return null;
@@ -226,32 +228,26 @@ export class SoundManager {
             return null;
         }
         
-        // Calculate distance from listener
+        // Calculate if sound source is visible on screen (with buffer)
         const dx = options.x - this.listenerPosition.x;
         const dy = options.y - this.listenerPosition.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
         
-        // Check if sound is within audible range
-        const maxDistance = options.maxDistance || this.defaultMaxDistance;
-        if (distance > maxDistance) {
-            return null;  // Too far away to hear
+        // Calculate screen boundaries with zoom and buffer
+        const halfScreenWidth = (this.screenWidth / 2 / this.cameraZoom) + this.screenBuffer;
+        const halfScreenHeight = (this.screenHeight / 2 / this.cameraZoom) + this.screenBuffer;
+        
+        // Check if sound source is within screen bounds (plus buffer)
+        if (Math.abs(dx) > halfScreenWidth || Math.abs(dy) > halfScreenHeight) {
+            return null;  // Off screen - don't play sound
         }
         
-        // Calculate volume based on distance
-        const refDistance = options.refDistance || this.defaultRefDistance;
-        const rolloff = options.rolloff || 1.0;
-        let volume = 1.0;
+        // Sound is on screen - play at full volume
+        const volume = 1.0;
         
-        if (distance > refDistance) {
-            // Linear falloff (could also use logarithmic)
-            const fadeDistance = maxDistance - refDistance;
-            const fadeAmount = (distance - refDistance) / fadeDistance;
-            volume = Math.max(0, 1.0 - (fadeAmount * rolloff));
-        }
-        
-        // Calculate stereo panning (-1 to 1)
-        const angle = Math.atan2(dy, dx);
-        const pan = Math.sin(angle) * Math.min(1, distance / maxDistance);
+        // Calculate stereo panning (-1 to 1) based on horizontal position
+        // Full left at left edge, center at middle, full right at right edge
+        const panRange = halfScreenWidth - this.screenBuffer;
+        const pan = Math.max(-1, Math.min(1, dx / panRange));
         
         // Play with calculated volume and pan
         const id = this.play(name, { volume });
@@ -281,32 +277,44 @@ export class SoundManager {
         // Update all active spatial sounds
         this.activeSounds.forEach((sound, id) => {
             if (sound.spatial && sound.position) {
-                // Recalculate volume and pan for active spatial sounds
+                // Recalculate if sound is still on screen
                 const dx = sound.position.x - x;
                 const dy = sound.position.y - y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
                 
-                if (distance > this.defaultMaxDistance) {
-                    // Stop sounds that are now out of range
+                // Calculate screen boundaries with zoom and buffer
+                const halfScreenWidth = (this.screenWidth / 2 / this.cameraZoom) + this.screenBuffer;
+                const halfScreenHeight = (this.screenHeight / 2 / this.cameraZoom) + this.screenBuffer;
+                
+                // Check if sound source is off screen
+                if (Math.abs(dx) > halfScreenWidth || Math.abs(dy) > halfScreenHeight) {
+                    // Stop sounds that are now off screen
                     sound.howl.stop(id);
                 } else {
-                    // Update volume and pan
-                    const refDistance = this.defaultRefDistance;
-                    let volume = 1.0;
-                    if (distance > refDistance) {
-                        const fadeDistance = this.defaultMaxDistance - refDistance;
-                        const fadeAmount = (distance - refDistance) / fadeDistance;
-                        volume = Math.max(0, 1.0 - fadeAmount);
-                    }
+                    // Update pan based on position
+                    const panRange = halfScreenWidth - this.screenBuffer;
+                    const pan = Math.max(-1, Math.min(1, dx / panRange));
                     
-                    const angle = Math.atan2(dy, dx);
-                    const pan = Math.sin(angle) * Math.min(1, distance / this.defaultMaxDistance);
-                    
-                    sound.howl.volume(volume * this.getCategoryVolume(sound.category), id);
+                    // Keep volume at full (sounds are either audible or not)
+                    sound.howl.volume(1.0 * this.getCategoryVolume(sound.category), id);
                     sound.howl.stereo(pan, id);
                 }
             }
         });
+    }
+    
+    /**
+     * Update screen dimensions for spatial audio calculations
+     */
+    updateScreenDimensions(width: number, height: number): void {
+        this.screenWidth = width;
+        this.screenHeight = height;
+    }
+    
+    /**
+     * Update camera zoom for spatial audio calculations
+     */
+    updateCameraZoom(zoom: number): void {
+        this.cameraZoom = zoom;
     }
     
     /**

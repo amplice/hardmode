@@ -142,6 +142,8 @@ export class Game {
       if (this.classSelectUI) {
         this.classSelectUI.resize();
       }
+      // Update sound manager with new screen dimensions
+      soundManager.updateScreenDimensions(window.innerWidth, window.innerHeight);
     });
 
     this.camera = { 
@@ -969,6 +971,10 @@ export class Game {
         this.entities.player.position.x,
         this.entities.player.position.y
       );
+      
+      // Update screen dimensions and camera zoom for spatial calculations
+      soundManager.updateScreenDimensions(this.app.screen.width, this.app.screen.height);
+      soundManager.updateCameraZoom(this.camera.zoom);
     }
   }
 }
