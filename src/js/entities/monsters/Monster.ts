@@ -338,10 +338,34 @@ export class Monster {
     private playAttackSound(): void {
         // Play attack sound when starting an attack animation
         const attackType = (this as any).currentAttackType;
-        const soundType = attackType === 'special1' || attackType === 'special2' ? 'special' : 'attack';
-        const soundName = getMonsterSound(this.type, soundType);
+        
+        // Special handling for Dark Mage teleport attack  
+        // Only play sound once at the beginning of teleport sequence
+        if (this.type === 'darkmage' && attackType === 'special1') {
+            const teleportPhase = (this as any).teleportPhase;
+            // Only play sound during windup phase, not during dash or attack phases
+            if (teleportPhase !== 'windup' && teleportPhase !== undefined) {
+                console.log(`Skipping Dark Mage sound - already in teleport phase: ${teleportPhase}`);
+                return;
+            }
+        }
+        
+        // Debug logging to understand what's happening
+        console.log(`Playing attack sound for ${this.type}: attackType=${attackType}, animation=${this.currentAnimation}`);
+        
+        // Determine sound based on actual attack type
+        let soundName: string | null = null;
+        
+        if (attackType === 'special1' || attackType === 'special2') {
+            // For special attacks, use the special sound
+            soundName = getMonsterSound(this.type, 'special');
+        } else {
+            // For primary attacks or undefined, use the regular attack sound
+            soundName = getMonsterSound(this.type, 'attack');
+        }
         
         if (soundName) {
+            console.log(`Playing sound: ${soundName} for ${this.type} ${attackType}`);
             // Play spatially for all monsters
             soundManager.playSpatial(soundName, {
                 x: this.position.x,
@@ -353,25 +377,36 @@ export class Monster {
     private updateAnimation(): void {
         if (!this.spriteManager || !this.spriteManager.loaded) return;
         
+        // Store previous state and attack type for comparison
+        const previousState = (this as any).previousState;
+        const previousAttackType = (this as any).previousAttackType;
+        const currentAttackType = (this as any).currentAttackType;
+        
         // Get animation name based on current state
         const animName = this.getAnimationName();
         
         // Only update if animation changed
         if (this.currentAnimation !== animName) {
-            console.log(`Monster ${this.type} animation change: ${this.currentAnimation} -> ${animName} (state: ${this.state})`);
+            console.log(`Monster ${this.type} animation change: ${this.currentAnimation} -> ${animName} (state: ${this.state}, attackType: ${currentAttackType})`);
             
-            // Check if we're starting an attack animation
-            const wasAttacking = this.currentAnimation && (this.currentAnimation.includes('attack') || 
-                                                          this.currentAnimation.includes('special') || 
-                                                          this.currentAnimation.includes('pummel'));
-            const isNowAttacking = animName.includes('attack') || 
-                                   animName.includes('special') || 
-                                   animName.includes('pummel');
+            // Check if we just transitioned into attacking state
+            const justStartedAttacking = this.state === 'attacking' && previousState !== 'attacking';
             
-            // Play sound when starting a new attack animation (not continuing one)
-            if (!wasAttacking && isNowAttacking && this.state === 'attacking') {
+            // Check if attack type changed while already attacking
+            const attackTypeChanged = this.state === 'attacking' && 
+                                     previousState === 'attacking' && 
+                                     previousAttackType !== currentAttackType;
+            
+            // Play sound when:
+            // 1. Just transitioned into attacking state
+            // 2. Attack type changed while attacking (for monsters with multiple attacks)
+            if (justStartedAttacking || attackTypeChanged) {
                 this.playAttackSound();
             }
+            
+            // Store current state and attack type for next comparison
+            (this as any).previousState = this.state;
+            (this as any).previousAttackType = currentAttackType;
             
             this.currentAnimation = animName;
             
