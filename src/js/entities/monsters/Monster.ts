@@ -335,6 +335,21 @@ export class Monster {
         return this.spriteManager.getMonsterAnimationForDirection(this.type, this.facing, animState);
     }
     
+    private playAttackSound(): void {
+        // Play attack sound when starting an attack animation
+        const attackType = (this as any).currentAttackType;
+        const soundType = attackType === 'special1' || attackType === 'special2' ? 'special' : 'attack';
+        const soundName = getMonsterSound(this.type, soundType);
+        
+        if (soundName) {
+            // Play spatially for all monsters
+            soundManager.playSpatial(soundName, {
+                x: this.position.x,
+                y: this.position.y
+            });
+        }
+    }
+    
     private updateAnimation(): void {
         if (!this.spriteManager || !this.spriteManager.loaded) return;
         
@@ -344,6 +359,20 @@ export class Monster {
         // Only update if animation changed
         if (this.currentAnimation !== animName) {
             console.log(`Monster ${this.type} animation change: ${this.currentAnimation} -> ${animName} (state: ${this.state})`);
+            
+            // Check if we're starting an attack animation
+            const wasAttacking = this.currentAnimation && (this.currentAnimation.includes('attack') || 
+                                                          this.currentAnimation.includes('special') || 
+                                                          this.currentAnimation.includes('pummel'));
+            const isNowAttacking = animName.includes('attack') || 
+                                   animName.includes('special') || 
+                                   animName.includes('pummel');
+            
+            // Play sound when starting a new attack animation (not continuing one)
+            if (!wasAttacking && isNowAttacking && this.state === 'attacking') {
+                this.playAttackSound();
+            }
+            
             this.currentAnimation = animName;
             
             // Remove old sprite
@@ -710,20 +739,6 @@ export class Monster {
         const oldFacing = this.facing;
         this.state = data.state;
         this.facing = data.facing;
-        
-        // Play attack sound when transitioning to attacking state
-        if (!wasAttacking && isNowAttacking) {
-            const attackType = (this as any).currentAttackType;
-            const soundType = attackType === 'special1' || attackType === 'special2' ? 'special' : 'attack';
-            const soundName = getMonsterSound(this.type, soundType);
-            if (soundName) {
-                // Play spatially for all monsters
-                soundManager.playSpatial(soundName, {
-                    x: this.position.x,
-                    y: this.position.y
-                });
-            }
-        }
         
         // Update animation if state changed, attack type changed, or facing changed (but not during attack)
         const attackTypeChanged = wasAttacking && isNowAttacking && oldAttackType !== data.currentAttackType;
