@@ -82,10 +82,63 @@ export const SOUND_CONFIG = {
     },
     
     // ============================================
-    // MONSTER SOUNDS - TO BE CONFIGURED
+    // MONSTER SOUNDS
     // ============================================
     
-    // Monster sounds will be added here as specified
+    'ghoul_attack': {
+        src: 'assets/sounds/monsters/ghoul_attack.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 5
+    },
+    'ogre_attack': {
+        src: 'assets/sounds/monsters/ogre_attack.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 5
+    },
+    'darkmage_attack': {
+        src: 'assets/sounds/monsters/darkmage_attack.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 5
+    },
+    'skeleton_attack': {
+        src: 'assets/sounds/monsters/skeleton_attack.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 5
+    },
+    'wolf_attack': {
+        src: 'assets/sounds/monsters/wolf_attack.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 5
+    },
+    'wingeddemon_attack': {
+        src: 'assets/sounds/monsters/wingeddemon_attack.mp3',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 5
+    },
+    'wingeddemon_spell': {
+        src: 'assets/sounds/monsters/wingeddemon_spell.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 5
+    },
+    'wildarcher_attack': {
+        src: 'assets/sounds/monsters/wildarcher_attack.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 5
+    },
+    'elemental_attack': {
+        src: 'assets/sounds/monsters/elemental_attack.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 5
+    },
     
     // ============================================
     // HIT & IMPACT SOUNDS
@@ -259,11 +312,37 @@ export function getPlayerAttackSound(characterClass: string, attackType: string)
 
 /**
  * Helper to get the appropriate monster sound
- * TO BE IMPLEMENTED - will map monster types to their sound effects
  */
 export function getMonsterSound(monsterType: string, soundType: 'attack' | 'hurt' | 'death' | 'special'): string | null {
-    // Monster sound mapping will be added as specified
-    return null;
+    const soundMap: { [key: string]: { [key: string]: string } } = {
+        'ghoul': {
+            'attack': 'ghoul_attack'
+        },
+        'ogre': {
+            'attack': 'ogre_attack'
+        },
+        'darkmage': {
+            'attack': 'darkmage_attack'
+        },
+        'skeleton': {
+            'attack': 'skeleton_attack'
+        },
+        'wolf': {
+            'attack': 'wolf_attack'
+        },
+        'wingeddemon': {
+            'attack': 'wingeddemon_attack',
+            'special': 'wingeddemon_spell'
+        },
+        'wildarcher': {
+            'attack': 'wildarcher_attack'
+        },
+        'elemental': {
+            'attack': 'elemental_attack'
+        }
+    };
+    
+    return soundMap[monsterType]?.[soundType] || null;
 }
 
 
