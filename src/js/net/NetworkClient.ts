@@ -722,8 +722,24 @@ export class NetworkClient {
         
         // Handle projectile events
         this.socket.on('projectileCreated', (data: any) => {
+            // Create the visual projectile
             if (this.game.projectileRenderer) {
                 this.game.projectileRenderer.createProjectile(data);
+            }
+            
+            // Play attack sound for monster projectiles
+            // This handles ranged attacks that don't create telegraphs
+            if (data.ownerType === 'darkmage' || data.ownerType === 'wildarcher') {
+                const monsters = this.game.remoteMonsters;
+                if (monsters) {
+                    const monster = monsters.get(data.ownerId);
+                    if (monster && monster.playAttackSound) {
+                        console.log(`[NetworkClient] Playing ${data.ownerType} projectile sound`);
+                        // For projectile attacks, use 'primary' as the attack type
+                        // since Dark Mage and Wild Archer projectiles are their primary attacks
+                        monster.playAttackSound('primary');
+                    }
+                }
             }
         });
         
