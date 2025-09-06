@@ -355,7 +355,7 @@ export function getMonsterSound(monsterType: string, soundType: 'attack' | 'hurt
         },
         'wolf': {
             'attack': 'wolf_attack',
-            'special': 'wolf_special_jump'  // Wolf jump attack (could also use wolf_special_land)
+            'special': 'wolf_special_land'  // Wolf jump attack - using land sound
         },
         'wingeddemon': {
             'attack': 'wingeddemon_attack',
