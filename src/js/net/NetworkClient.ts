@@ -776,16 +776,25 @@ export class NetworkClient {
             
             // Play attack sound when telegraph (hitbox) is created
             // This ensures exactly one sound per attack
+            console.log(`[NetworkClient] Telegraph data:`, data);
             if (data.monsterType && data.attackType) {
                 const monsters = (this.game.entities as any).monsters;
+                console.log(`[NetworkClient] Monsters map exists:`, !!monsters);
                 if (monsters) {
                     const monster = monsters.get(data.monsterId);
+                    console.log(`[NetworkClient] Monster found:`, !!monster, `ID: ${data.monsterId}`);
                     if (monster && monster.playAttackSound) {
                         console.log(`[NetworkClient] Playing sound for ${data.monsterType} ${data.attackType} attack with telegraph`);
                         // Pass the attackType from the telegraph event to ensure we play the right sound
                         monster.playAttackSound(data.attackType);
+                    } else if (monster) {
+                        console.log(`[NetworkClient] Monster found but playAttackSound method missing`);
+                    } else {
+                        console.log(`[NetworkClient] Monster not found for ID: ${data.monsterId}`);
                     }
                 }
+            } else {
+                console.log(`[NetworkClient] Missing monsterType or attackType in telegraph data`);
             }
             
             if (this.game.telegraphRenderer && data.telegraphType) {
