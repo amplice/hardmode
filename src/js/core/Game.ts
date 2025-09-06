@@ -96,6 +96,7 @@ export class Game {
   tilesets?: any; // TilesetManager.TilesetData
   spriteManager?: any; // SpriteManager
   gameStarted: boolean = false;
+  debugMonsterSpawningEnabled: boolean = false;
   selectedClass?: string;
   username?: string;
   usernameUI?: any; // UsernameUI
@@ -683,6 +684,9 @@ export class Game {
         this.performanceOverlay.toggle();
       }
     });
+    
+    // Debug monster spawning system (F4 to toggle, numbers 1-8 to spawn)
+    this.setupDebugMonsterSpawning();
 
     // Initialize camera position to player position (prevents initial camera jump)
     this.camera.x = this.entities.player.position.x;
@@ -976,5 +980,93 @@ export class Game {
       soundManager.updateScreenDimensions(this.app.screen.width, this.app.screen.height);
       soundManager.updateCameraZoom(this.camera.zoom);
     }
+  }
+  
+  /**
+   * Setup debug monster spawning system
+   * F4 toggles the system on/off
+   * Number keys 1-8 spawn different monster types
+   */
+  setupDebugMonsterSpawning(): void {
+    const monsterTypes = [
+      'ghoul',      // 1
+      'ogre',       // 2
+      'skeleton',   // 3
+      'elemental',  // 4
+      'wildarcher', // 5
+      'darkmage',   // 6
+      'wolf',       // 7
+      'wingeddemon' // 8
+    ];
+    
+    window.addEventListener('keydown', (e) => {
+      // Toggle debug spawning with F4
+      if (e.key === 'F4') {
+        e.preventDefault();
+        this.debugMonsterSpawningEnabled = !this.debugMonsterSpawningEnabled;
+        
+        // Show notification
+        const message = this.debugMonsterSpawningEnabled 
+          ? 'Debug Monster Spawning: ENABLED (Press 1-8 to spawn monsters)'
+          : 'Debug Monster Spawning: DISABLED';
+        
+        console.log(`[DEBUG] ${message}`);
+        
+        // Create temporary on-screen notification
+        const text = new PIXI.Text(message, {
+          fontFamily: 'monospace',
+          fontSize: 16,
+          fill: this.debugMonsterSpawningEnabled ? 0x00ff00 : 0xff0000,
+          stroke: 0x000000,
+          strokeThickness: 2
+        });
+        text.x = 10;
+        text.y = 100;
+        this.uiContainer.addChild(text);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+          if (text.parent) {
+            this.uiContainer.removeChild(text);
+          }
+        }, 3000);
+        
+        return;
+      }
+      
+      // Check if debug spawning is enabled and a number key was pressed
+      if (!this.debugMonsterSpawningEnabled) return;
+      
+      const keyNum = parseInt(e.key);
+      if (isNaN(keyNum) || keyNum < 1 || keyNum > 8) return;
+      
+      const monsterType = monsterTypes[keyNum - 1];
+      if (!monsterType) return;
+      
+      // Prevent default behavior for number keys when debugging
+      e.preventDefault();
+      
+      // Send debug spawn command to server
+      if (this.network && this.network.socket) {
+        const playerPos = this.entities.player.position;
+        
+        // Calculate spawn position (in front of player based on facing)
+        const spawnDistance = 150;
+        const facingAngle = typeof this.entities.player.facing === 'string' 
+          ? 0 // Default angle if facing is a string (shouldn't happen)
+          : this.entities.player.facing;
+        const spawnX = playerPos.x + Math.cos(facingAngle) * spawnDistance;
+        const spawnY = playerPos.y + Math.sin(facingAngle) * spawnDistance;
+        
+        console.log(`[DEBUG] Spawning ${monsterType} at (${Math.round(spawnX)}, ${Math.round(spawnY)})`);
+        
+        // Send debug spawn command to server
+        this.network.socket.emit('debugSpawnMonster', {
+          type: monsterType,
+          x: spawnX,
+          y: spawnY
+        });
+      }
+    });
   }
 }

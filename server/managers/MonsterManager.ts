@@ -447,6 +447,20 @@ export class MonsterManager {
         const monster = this.createMonster(null, null, players);
         console.log(`[MonsterManager] Spawned ${monster.type} at (${monster.x}, ${monster.y})`);
     }
+    
+    /**
+     * Spawn a specific monster type at a specific position (for debug/testing)
+     */
+    spawnDebugMonster(type: string, x: number, y: number): void {
+        // Check if position is walkable
+        if (this.collisionMask && !this.collisionMask.isWalkable(x, y)) {
+            console.log(`[DEBUG] Cannot spawn ${type} at (${x}, ${y}) - position not walkable`);
+            return;
+        }
+        
+        const monster = this.createMonster(type as MonsterType, { x, y }, null);
+        console.log(`[DEBUG] Spawned ${monster.type} at (${monster.x}, ${monster.y}) for debugging`);
+    }
 
     findValidSpawnPosition(players: PlayerState[]): Position {
         const worldWidth = GAME_CONSTANTS.WORLD.WIDTH * GAME_CONSTANTS.WORLD.TILE_SIZE;

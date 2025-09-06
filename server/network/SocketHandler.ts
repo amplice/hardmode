@@ -40,6 +40,7 @@ interface MonsterManager {
     getSerializedMonsters(monsters: Map<string, any>): any[];
     handleMonsterDamage(monsterId: string, damage: number, attacker: PlayerState): void;
     updateCollisionMask?(collisionMaskData: any): void;
+    spawnDebugMonster(type: string, x: number, y: number): void;
 }
 
 interface ProjectileManager {
@@ -210,6 +211,7 @@ export class SocketHandler {
         socket.on('setClass', (cls: CharacterClass) => this.handleSetClass(socket, cls));
         socket.on('collisionMask', (data: any) => this.handleCollisionMask(socket, data));
         socket.on('ping', (data: PingData) => this.handlePing(socket, data));
+        socket.on('debugSpawnMonster', (data: { type: string, x: number, y: number }) => this.handleDebugSpawnMonster(socket, data));
         socket.on('disconnect', () => this.handleDisconnect(socket));
     }
 
@@ -434,6 +436,36 @@ export class SocketHandler {
             clientTime: validatedData.clientTime,
             serverTime: serverTime
         });
+    }
+    
+    /**
+     * Handle debug monster spawning (for testing)
+     */
+    private handleDebugSpawnMonster(socket: Socket, data: { type: string, x: number, y: number }): void {
+        // Only allow debug spawning in development mode (or always for testing)
+        // Comment out this check if you want debug spawning in production
+        // if (process.env.NODE_ENV === 'production') {
+        //     console.log(`[DEBUG] Monster spawning disabled in production`);
+        //     return;
+        // }
+        
+        const player = this.gameState.getPlayer(socket.id);
+        if (!player) {
+            console.log(`[DEBUG] Cannot spawn monster - player not found`);
+            return;
+        }
+        
+        // Validate monster type
+        const validTypes = ['ghoul', 'ogre', 'skeleton', 'elemental', 'wildarcher', 'darkmage', 'wolf', 'wingeddemon'];
+        if (!validTypes.includes(data.type)) {
+            console.log(`[DEBUG] Invalid monster type: ${data.type}`);
+            return;
+        }
+        
+        // Spawn the monster at the specified position
+        console.log(`[DEBUG] Player ${player.username} spawning ${data.type} at (${Math.round(data.x)}, ${Math.round(data.y)})`);
+        
+        this.monsterManager.spawnDebugMonster(data.type, data.x, data.y);
     }
 
     private handleDisconnect(socket: Socket): void {
