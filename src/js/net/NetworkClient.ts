@@ -782,7 +782,8 @@ export class NetworkClient {
                     const monster = monsters.get(data.monsterId);
                     if (monster && monster.playAttackSound) {
                         console.log(`[NetworkClient] Playing sound for ${data.monsterType} ${data.attackType} attack with telegraph`);
-                        monster.playAttackSound();
+                        // Pass the attackType from the telegraph event to ensure we play the right sound
+                        monster.playAttackSound(data.attackType);
                     }
                 }
             }

@@ -335,17 +335,18 @@ export class Monster {
         return this.spriteManager.getMonsterAnimationForDirection(this.type, this.facing, animState);
     }
     
-    public playAttackSound(): void {
+    public playAttackSound(attackType?: string): void {
         // Play attack sound when telegraph/hitbox is created
-        const attackType = (this as any).currentAttackType;
+        // Use provided attackType or fall back to currentAttackType
+        const actualAttackType = attackType || (this as any).currentAttackType;
         
         // Debug logging to understand what's happening
-        console.log(`Playing attack sound for ${this.type}: attackType=${attackType} (triggered by telegraph)`);
+        console.log(`Playing attack sound for ${this.type}: attackType=${actualAttackType} (triggered by telegraph)`);
         
         // Determine sound based on actual attack type
         let soundName: string | null = null;
         
-        if (attackType === 'special1' || attackType === 'special2') {
+        if (actualAttackType === 'special1' || actualAttackType === 'special2') {
             // For special attacks, use the special sound
             soundName = getMonsterSound(this.type, 'special');
         } else {
@@ -354,7 +355,7 @@ export class Monster {
         }
         
         if (soundName) {
-            console.log(`Playing sound: ${soundName} for ${this.type} ${attackType}`);
+            console.log(`Playing sound: ${soundName} for ${this.type} ${actualAttackType}`);
             // Play spatially for all monsters
             soundManager.playSpatial(soundName, {
                 x: this.position.x,
