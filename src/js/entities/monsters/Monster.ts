@@ -335,23 +335,12 @@ export class Monster {
         return this.spriteManager.getMonsterAnimationForDirection(this.type, this.facing, animState);
     }
     
-    private playAttackSound(): void {
-        // Play attack sound when starting an attack animation
+    public playAttackSound(): void {
+        // Play attack sound when telegraph/hitbox is created
         const attackType = (this as any).currentAttackType;
         
-        // Special handling for Dark Mage teleport attack  
-        // Only play sound once at the beginning of teleport sequence
-        if (this.type === 'darkmage' && attackType === 'special1') {
-            const teleportPhase = (this as any).teleportPhase;
-            // Only play sound during windup phase, not during dash or attack phases
-            if (teleportPhase !== 'windup' && teleportPhase !== undefined) {
-                console.log(`Skipping Dark Mage sound - already in teleport phase: ${teleportPhase}`);
-                return;
-            }
-        }
-        
         // Debug logging to understand what's happening
-        console.log(`Playing attack sound for ${this.type}: attackType=${attackType}, animation=${this.currentAnimation}`);
+        console.log(`Playing attack sound for ${this.type}: attackType=${attackType} (triggered by telegraph)`);
         
         // Determine sound based on actual attack type
         let soundName: string | null = null;
@@ -377,36 +366,15 @@ export class Monster {
     private updateAnimation(): void {
         if (!this.spriteManager || !this.spriteManager.loaded) return;
         
-        // Store previous state and attack type for comparison
-        const previousState = (this as any).previousState;
-        const previousAttackType = (this as any).previousAttackType;
-        const currentAttackType = (this as any).currentAttackType;
-        
         // Get animation name based on current state
         const animName = this.getAnimationName();
         
         // Only update if animation changed
         if (this.currentAnimation !== animName) {
-            console.log(`Monster ${this.type} animation change: ${this.currentAnimation} -> ${animName} (state: ${this.state}, attackType: ${currentAttackType})`);
+            console.log(`Monster ${this.type} animation change: ${this.currentAnimation} -> ${animName} (state: ${this.state})`);
             
-            // Check if we just transitioned into attacking state
-            const justStartedAttacking = this.state === 'attacking' && previousState !== 'attacking';
-            
-            // Check if attack type changed while already attacking
-            const attackTypeChanged = this.state === 'attacking' && 
-                                     previousState === 'attacking' && 
-                                     previousAttackType !== currentAttackType;
-            
-            // Play sound when:
-            // 1. Just transitioned into attacking state
-            // 2. Attack type changed while attacking (for monsters with multiple attacks)
-            if (justStartedAttacking || attackTypeChanged) {
-                this.playAttackSound();
-            }
-            
-            // Store current state and attack type for next comparison
-            (this as any).previousState = this.state;
-            (this as any).previousAttackType = currentAttackType;
+            // Sound is now triggered by telegraph/hitbox creation, not animation changes
+            // This ensures exactly one sound per attack
             
             this.currentAnimation = animName;
             

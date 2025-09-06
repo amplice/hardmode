@@ -774,6 +774,19 @@ export class NetworkClient {
         }) => {
             console.log('[NetworkClient] Received monster telegraph:', data);
             
+            // Play attack sound when telegraph (hitbox) is created
+            // This ensures exactly one sound per attack
+            if (data.monsterType && data.attackType) {
+                const monsters = (this.game.entities as any).monsters;
+                if (monsters) {
+                    const monster = monsters.get(data.monsterId);
+                    if (monster && monster.playAttackSound) {
+                        console.log(`[NetworkClient] Playing sound for ${data.monsterType} ${data.attackType} attack with telegraph`);
+                        monster.playAttackSound();
+                    }
+                }
+            }
+            
             if (this.game.telegraphRenderer && data.telegraphType) {
                 // Get the shape info from attack config
                 let shape: any;
