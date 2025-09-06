@@ -92,13 +92,13 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'ogre_attack': {
-        src: 'assets/sounds/monsters/ogre_melee_attack.wav',
+        src: 'assets/sounds/monsters/ogre_melee_attack.ogg',  // Swapped: now uses the actual melee sound
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
     },
     'ogre_spin': {
-        src: 'assets/sounds/monsters/ogre_spin_attack.ogg',
+        src: 'assets/sounds/monsters/ogre_spin_attack.wav',  // Swapped: now uses the actual spin sound
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 3
