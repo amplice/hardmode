@@ -778,7 +778,8 @@ export class NetworkClient {
             // This ensures exactly one sound per attack
             console.log(`[NetworkClient] Telegraph data:`, data);
             if (data.monsterType && data.attackType) {
-                const monsters = (this.game.entities as any).monsters;
+                // Use remoteMonsters, not entities.monsters
+                const monsters = this.game.remoteMonsters;
                 console.log(`[NetworkClient] Monsters map exists:`, !!monsters);
                 if (monsters) {
                     const monster = monsters.get(data.monsterId);
