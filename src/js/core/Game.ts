@@ -953,6 +953,10 @@ export class Game {
         }
       });
       
+      // Add monster hit sounds
+      combatSounds['monster_hit_flesh'] = SOUND_CONFIG['monster_hit_flesh'];
+      combatSounds['monster_hit_leather'] = SOUND_CONFIG['monster_hit_leather'];
+      
       // Only try to load sounds if files exist
       // This prevents errors when sound files aren't present yet
       await soundManager.loadAll(combatSounds).catch(() => {

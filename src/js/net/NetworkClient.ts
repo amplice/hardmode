@@ -490,16 +490,13 @@ export class NetworkClient {
 
         // Monster events
         this.socket.on('monsterDamaged', (data: DamageEventData) => {
-            console.log('[NetworkClient] monsterDamaged event received:', data);
             const monster = this.game.remoteMonsters?.get(data.monsterId!);
-            console.log('[NetworkClient] Monster found:', !!monster, 'Type:', monster?.type);
             if (monster) {
                 // Update HP but don't modify other state - server is authoritative
                 monster.hitPoints = data.hp;
                 monster.showDamageEffect?.();
                 
                 // Play hit sound for the monster
-                console.log('[NetworkClient] Checking playHitSound method:', !!monster.playHitSound);
                 if (monster.playHitSound) {
                     monster.playHitSound();
                 }
