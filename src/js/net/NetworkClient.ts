@@ -496,6 +496,11 @@ export class NetworkClient {
                 monster.hitPoints = data.hp;
                 monster.showDamageEffect?.();
                 
+                // Play hit sound for the monster
+                if (monster.playHitSound) {
+                    monster.playHitSound();
+                }
+                
                 // Show damage number and action box message if we attacked it
                 if (data.attacker === this.socket.id) {
                     this.game.showDamageNumber?.(monster.position, data.damage);

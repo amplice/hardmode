@@ -164,6 +164,20 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     
+    // Monster hit sounds
+    'monster_hit_flesh': {
+        src: 'assets/sounds/monsters/monster_hit_flesh.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 8
+    },
+    'monster_hit_leather': {
+        src: 'assets/sounds/monsters/monster_hit_leather.wav',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.MEDIUM,
+        pool: 8
+    },
+    
     // ============================================
     // HIT & IMPACT SOUNDS
     // ============================================
@@ -340,32 +354,40 @@ export function getPlayerAttackSound(characterClass: string, attackType: string)
 export function getMonsterSound(monsterType: string, soundType: 'attack' | 'hurt' | 'death' | 'special'): string | null {
     const soundMap: { [key: string]: { [key: string]: string } } = {
         'ghoul': {
-            'attack': 'ghoul_attack'
+            'attack': 'ghoul_attack',
+            'hurt': 'monster_hit_flesh'
         },
         'ogre': {
             'attack': 'ogre_attack',
-            'special': 'ogre_spin'  // Ogre spin attack
+            'special': 'ogre_spin',  // Ogre spin attack
+            'hurt': 'monster_hit_flesh'
         },
         'darkmage': {
             'attack': 'darkmage_attack',
-            'special': 'darkmage_special'  // Dark mage special attack
+            'special': 'darkmage_special',  // Dark mage special attack
+            'hurt': 'monster_hit_leather'  // Dark Mage uses leather sound
         },
         'skeleton': {
-            'attack': 'skeleton_attack'
+            'attack': 'skeleton_attack',
+            'hurt': 'monster_hit_leather'  // Skeleton uses leather sound
         },
         'wolf': {
             'attack': 'wolf_attack',
-            'special': 'wolf_special_land'  // Wolf jump attack - using land sound
+            'special': 'wolf_special_land',  // Wolf jump attack - using land sound
+            'hurt': 'monster_hit_flesh'
         },
         'wingeddemon': {
             'attack': 'wingeddemon_attack',
-            'special': 'wingeddemon_spell'
+            'special': 'wingeddemon_spell',
+            'hurt': 'monster_hit_flesh'
         },
         'wildarcher': {
-            'attack': 'wildarcher_attack'
+            'attack': 'wildarcher_attack',
+            'hurt': 'monster_hit_flesh'
         },
         'elemental': {
-            'attack': 'elemental_attack'
+            'attack': 'elemental_attack',
+            'hurt': 'monster_hit_flesh'
         }
     };
     

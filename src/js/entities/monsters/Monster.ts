@@ -763,6 +763,19 @@ export class Monster {
         }
     }
     
+    playHitSound(): void {
+        // Play hit sound when monster takes damage
+        const soundName = getMonsterSound(this.type, 'hurt');
+        
+        if (soundName) {
+            // Use the same spatial sound system as attack sounds
+            soundManager.playSpatial(soundName, {
+                x: this.position.x,
+                y: this.position.y
+            });
+        }
+    }
+    
     playDeathAnimation(): void {
         // Switch to death animation
         this.state = 'dying';
