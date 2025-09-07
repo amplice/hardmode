@@ -935,6 +935,7 @@ export class Game {
       
       // Add UI sounds
       combatSounds['level_up'] = SOUND_CONFIG['level_up'];
+      combatSounds['powerup_pickup'] = SOUND_CONFIG['powerup_pickup'];
       
       // Add monster sounds
       const monsterTypes = ['ghoul', 'ogre', 'darkmage', 'skeleton', 'wolf', 'wingeddemon', 'wildarcher', 'elemental'];

@@ -235,7 +235,7 @@ export const SOUND_CONFIG = {
     // ============================================
     
     'level_up': {
-        src: 'assets/sounds/ui/level_up.wav',
+        src: 'assets/sounds/ui/level_up_new.wav',  // Using Generic_Rune_Interact sound
         category: SoundCategory.UI,
         priority: SoundPriority.CRITICAL,
         pool: 1
@@ -262,6 +262,12 @@ export const SOUND_CONFIG = {
         src: 'assets/sounds/powerups/spawn.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
+        pool: 3
+    },
+    'powerup_pickup': {
+        src: 'assets/sounds/powerups/powerup_pickup.wav',  // Using 01_Holy_Cast sound
+        category: SoundCategory.UI,
+        priority: SoundPriority.HIGH,
         pool: 3
     },
     'powerup_health': {

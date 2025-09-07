@@ -33,6 +33,7 @@
 import { StateCache } from './StateCache.js';
 import * as PIXI from 'pixi.js';
 import { AttackTelegraphRenderer } from '../systems/AttackTelegraphRenderer.js';
+import { soundManager } from '../systems/SoundManager.js';
 import type { 
     PlayerState,
     MonsterState,
@@ -628,7 +629,8 @@ export class NetworkClient {
             
             if (data.playerId === this.socket.id) {
                 // We leveled up
-                // Level up!
+                // Play level up sound
+                soundManager.play('level_up');
                 if (this.game.entities.player) {
                     const player = this.game.entities.player;
                     player.level = data.level;
@@ -764,6 +766,11 @@ export class NetworkClient {
         this.socket.on('powerupPickedUp', (data: { powerupId: string; playerId: string; type: string }) => {
             if (this.game.powerupRenderer) {
                 this.game.powerupRenderer.onPowerupPickedUp(data);
+            }
+            
+            // Play pickup sound if it was picked up by the local player
+            if (data.playerId === this.socket.id) {
+                soundManager.play('powerup_pickup');
             }
         });
         
