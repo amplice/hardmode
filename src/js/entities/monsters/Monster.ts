@@ -765,14 +765,19 @@ export class Monster {
     
     playHitSound(): void {
         // Play hit sound when monster takes damage
+        console.log(`[Monster] playHitSound called for ${this.type}`);
         const soundName = getMonsterSound(this.type, 'hurt');
+        console.log(`[Monster] Hit sound for ${this.type}: ${soundName}`);
         
         if (soundName) {
+            console.log(`[Monster] Playing hit sound: ${soundName} at position:`, this.position);
             // Use the same spatial sound system as attack sounds
             soundManager.playSpatial(soundName, {
                 x: this.position.x,
                 y: this.position.y
             });
+        } else {
+            console.log(`[Monster] No hit sound found for ${this.type}`);
         }
     }
     
