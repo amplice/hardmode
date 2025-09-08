@@ -250,7 +250,7 @@ export interface Player extends PlayerState {
     // Methods
     addComponent(name: string, component: Component): void;
     update(deltaTime: number, inputState: InputState): void;
-    handleNonMovementUpdate(deltaTime: number, inputState: InputState): void;
+    handleNonMovementUpdate(deltaTime: number, inputState: InputState, currentBiome?: number): void;
     updateMovementStateForAnimation(inputState: InputState): void;
     takeDamage(amount: number): void;
     getClassHitPoints(): number;

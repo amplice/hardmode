@@ -114,6 +114,7 @@ export class Game {
   telegraphRenderer?: AttackTelegraphRenderer;
   debugLogger: DebugLogger;
   performanceOverlay?: any; // PerformanceOverlay
+  worldData?: WorldData; // Store world data for biome lookups
   
   constructor() {
     this.app = new PIXI.Application({
@@ -628,6 +629,7 @@ export class Game {
       data.seed
     );
     const worldData = worldGenerator.generateWorld();
+    this.worldData = worldData; // Store for biome lookups
     
     // Create renderer and render the world data  
     this.systems.world = new ClientWorldRenderer({
