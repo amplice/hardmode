@@ -45,7 +45,7 @@ import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG, MONSTER_CONFIG } from '../config/GameConfig.js';
 import { ATTACK_DEFINITIONS } from '../../../shared/constants/GameConstants.js';
 import { soundManager } from '../systems/SoundManager.js';
-import { getPlayerAttackSound } from '../config/SoundConfig.js';
+import { getPlayerAttackSound, getFootstepSound } from '../config/SoundConfig.js';
 import { 
     angleToDirectionString, 
     directionStringToAngleRadians,
@@ -227,6 +227,10 @@ class MovementComponent extends BaseComponent implements IMovementComponent {
 class AnimationComponent extends BaseComponent implements IAnimationComponent {
     currentAnimation!: string | null;
     private tintDebugLogged?: boolean;
+    private footstepTimer: number = 0;
+    private footstepInterval: number = 300; // milliseconds between footsteps
+    private lastFootstepTime: number = 0;
+    
     init(): void {
         this.owner.currentAnimation = null;
         this.currentAnimation = null;
@@ -271,9 +275,60 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
                 this.owner.currentAnimation = animationName;
                 this.changeAnimation(animationName);
             }
+            
+            // Handle footsteps for walking/running animations
+            this.updateFootsteps();
         } else if (this.owner.placeholder) {
             // Update placeholder if we don't have sprites yet
             this.drawPlaceholder();
+        }
+    }
+    
+    private updateFootsteps(): void {
+        // Only play footsteps if:
+        // - Player is moving
+        // - Not attacking, rolling, dying, or dead
+        if (!this.owner.isMoving || 
+            this.owner.isAttacking || 
+            this.owner.currentAttackType === 'roll' ||
+            this.owner.isDying || 
+            this.owner.isDead) {
+            return;
+        }
+        
+        // Check if enough time has passed since last footstep
+        const now = Date.now();
+        if (now - this.lastFootstepTime >= this.footstepInterval) {
+            this.playFootstepSound();
+            this.lastFootstepTime = now;
+        }
+    }
+    
+    private playFootstepSound(): void {
+        // Get the biome at player's current position
+        const game = (window as any).game;
+        if (!game || !game.worldData) return;
+        
+        const tileX = Math.floor(this.owner.position.x / 64);
+        const tileY = Math.floor(this.owner.position.y / 64);
+        
+        // Get biome data (0=grass, 1=snow, 2=desert, 3=darkgrass)
+        const biome = game.worldData.biomeData?.[tileY]?.[tileX] ?? 0;
+        
+        // Get the appropriate footstep sound
+        const soundKey = getFootstepSound(this.owner.characterClass, biome);
+        
+        if (soundKey) {
+            // Use spatial audio for remote players, regular for local
+            if (this.owner.isLocalPlayer) {
+                soundManager.play(soundKey, { volume: 0.3 });
+            } else {
+                // Play with spatial audio for remote players
+                soundManager.playSpatial(soundKey, {
+                    x: this.owner.position.x,
+                    y: this.owner.position.y
+                });
+            }
         }
     }
     

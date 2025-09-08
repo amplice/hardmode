@@ -964,6 +964,18 @@ export class Game {
       combatSounds['monster_hit_flesh'] = SOUND_CONFIG['monster_hit_flesh'];
       combatSounds['monster_hit_leather'] = SOUND_CONFIG['monster_hit_leather'];
       
+      // Add footstep sounds for all class/biome combinations
+      const classes = ['bladedancer', 'guardian', 'hunter', 'rogue'];
+      const biomes = ['grass', 'snow', 'desert', 'darkgrass'];
+      classes.forEach(cls => {
+        biomes.forEach(biome => {
+          const footstepKey = `footstep_${cls}_${biome}` as keyof typeof SOUND_CONFIG;
+          if (SOUND_CONFIG[footstepKey]) {
+            combatSounds[footstepKey] = SOUND_CONFIG[footstepKey];
+          }
+        });
+      });
+      
       // Only try to load sounds if files exist
       // This prevents errors when sound files aren't present yet
       await soundManager.loadAll(combatSounds).catch(() => {

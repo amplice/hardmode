@@ -319,6 +319,131 @@ export const SOUND_CONFIG = {
         priority: SoundPriority.MEDIUM,
         pool: 2,
         volume: 0.4
+    },
+    
+    // ============================================
+    // FOOTSTEP SOUNDS - Class + Biome combinations
+    // All use the same file for now, but separated for future customization
+    // ============================================
+    
+    // Bladedancer footsteps
+    'footstep_bladedancer_grass': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_bladedancer_snow': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_bladedancer_desert': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_bladedancer_darkgrass': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    
+    // Guardian footsteps
+    'footstep_guardian_grass': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_guardian_snow': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_guardian_desert': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_guardian_darkgrass': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    
+    // Hunter footsteps
+    'footstep_hunter_grass': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_hunter_snow': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_hunter_desert': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_hunter_darkgrass': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    
+    // Rogue footsteps
+    'footstep_rogue_grass': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_rogue_snow': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_rogue_desert': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
+    },
+    'footstep_rogue_darkgrass': {
+        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        category: SoundCategory.SFX,
+        priority: SoundPriority.LOW,
+        pool: 3,
+        volume: 0.3
     }
 };
 
@@ -340,6 +465,31 @@ export const MUSIC_TRACKS = [
     { name: 'Pixel 11', src: 'assets/sounds/music/Pixel 11.ogg' },
     { name: 'Pixel 12', src: 'assets/sounds/music/Pixel 12.ogg' }
 ];
+
+/**
+ * Helper to get the appropriate footstep sound
+ */
+export function getFootstepSound(characterClass: string, biome: string): string | null {
+    // Map biome numbers to biome names
+    const biomeNames: { [key: number]: string } = {
+        0: 'grass',      // Grass
+        1: 'snow',       // Snow  
+        2: 'desert',     // Desert
+        3: 'darkgrass'   // Dark grass
+    };
+    
+    // Get biome name from number or use directly if already a string
+    const biomeName = typeof biome === 'number' ? biomeNames[biome] : biome;
+    
+    // Fallback to grass if unknown biome
+    const finalBiome = biomeName || 'grass';
+    
+    // Construct the sound key
+    const soundKey = `footstep_${characterClass}_${finalBiome}`;
+    
+    // Check if the sound exists in our config
+    return SOUND_CONFIG[soundKey as keyof typeof SOUND_CONFIG] ? soundKey : null;
+}
 
 /**
  * Helper to get the appropriate player attack sound
