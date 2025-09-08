@@ -1303,7 +1303,7 @@ export class Player implements PlayerInterface {
         const soundKey = getFootstepSound(this.characterClass, biome);
         
         if (soundKey) {
-            soundManager.play(soundKey, { volume: 0.3 });
+            soundManager.play(soundKey, { volume: 1.0 });
         }
     }
 
