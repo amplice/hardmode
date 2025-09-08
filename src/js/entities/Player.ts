@@ -1297,7 +1297,7 @@ export class Player implements PlayerInterface {
     private playFootstepSound(): void {
         // For now, just play the default grass footstep for the character class
         // TODO: Add biome detection once we have access to world data
-        const biome = 0; // Default to grass biome
+        const biome = 'grass'; // Default to grass biome
         
         // Get the appropriate footstep sound
         const soundKey = getFootstepSound(this.characterClass, biome);
