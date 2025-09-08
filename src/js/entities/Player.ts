@@ -1286,6 +1286,7 @@ export class Player implements PlayerInterface {
         if (this.isLocalPlayer && actuallyMoving && !this.isAttacking && !this.isDying && !this.isDead) {
             this.footstepTimer += deltaTime;
             if (this.footstepTimer >= this.footstepInterval) {
+                console.log('[Player] Playing footstep sound NOW');
                 this.playFootstepSound();
                 this.footstepTimer = 0;
             }
@@ -1298,6 +1299,7 @@ export class Player implements PlayerInterface {
         // Get the biome at player's current position
         const game = (window as any).game;
         if (!game || !game.worldData) {
+            console.log('[playFootstepSound] No game or worldData');
             return;
         }
         
@@ -1307,9 +1309,11 @@ export class Player implements PlayerInterface {
         
         // Get the appropriate footstep sound
         const soundKey = getFootstepSound(this.characterClass, biome);
+        console.log('[playFootstepSound] soundKey:', soundKey, 'class:', this.characterClass, 'biome:', biome);
         
         if (soundKey) {
-            soundManager.play(soundKey, { volume: 0.3 });
+            const result = soundManager.play(soundKey, { volume: 0.3 });
+            console.log('[playFootstepSound] play result:', result);
         }
     }
 
