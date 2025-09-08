@@ -288,6 +288,24 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
         // Only play footsteps if:
         // - Player is moving
         // - Not attacking, rolling, dying, or dead
+        
+        // Debug logging to understand what's happening
+        const debugInfo = {
+            isMoving: this.owner.isMoving,
+            isAttacking: this.owner.isAttacking,
+            currentAttackType: this.owner.currentAttackType,
+            isDying: this.owner.isDying,
+            isDead: this.owner.isDead,
+            isLocalPlayer: this.owner.isLocalPlayer,
+            velocity: this.owner.velocity
+        };
+        
+        // Log once every second to avoid spam
+        if (!this.footstepDebugTime || Date.now() - this.footstepDebugTime > 1000) {
+            console.log('[Footsteps] Debug:', debugInfo);
+            this.footstepDebugTime = Date.now();
+        }
+        
         if (!this.owner.isMoving || 
             this.owner.isAttacking || 
             this.owner.currentAttackType === 'roll' ||
@@ -299,10 +317,13 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
         // Check if enough time has passed since last footstep
         const now = Date.now();
         if (now - this.lastFootstepTime >= this.footstepInterval) {
+            console.log('[Footsteps] Playing footstep sound');
             this.playFootstepSound();
             this.lastFootstepTime = now;
         }
     }
+    
+    private footstepDebugTime?: number;
     
     private playFootstepSound(): void {
         // Get the biome at player's current position
@@ -1310,6 +1331,17 @@ export class Player implements PlayerInterface {
         // Check if we're moving based on input
         const isMoving = inputState.up || inputState.down || inputState.left || inputState.right;
         this.isMoving = isMoving;
+        
+        // Also update velocity for footstep detection
+        if (isMoving) {
+            // Set a non-zero velocity to indicate movement for footsteps
+            // The actual velocity is handled by the movement predictor
+            if (!this.velocity || (this.velocity.x === 0 && this.velocity.y === 0)) {
+                this.velocity = { x: 0.1, y: 0.1 }; // Small non-zero value
+            }
+        } else {
+            this.velocity = { x: 0, y: 0 };
+        }
         
         // Update movement direction for animation
         if (isMoving && !this.isAttacking) {
