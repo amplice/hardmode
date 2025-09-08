@@ -1348,6 +1348,21 @@ export class Player implements PlayerInterface {
         
         // Apply tints after all updates
         this.animation.applyCurrentTints();
+        
+        // Handle footsteps for local player (same logic as in update())
+        const actuallyMoving = (inputState && (inputState.up || inputState.down || inputState.left || inputState.right)) || 
+                              (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1);
+        
+        if (this.isLocalPlayer && actuallyMoving && !this.isAttacking && !this.isDying && !this.isDead) {
+            this.footstepTimer += deltaTime;
+            if (this.footstepTimer >= this.footstepInterval) {
+                console.log('[Player.handleNonMovementUpdate] Playing footstep sound NOW');
+                this.playFootstepSound();
+                this.footstepTimer = 0;
+            }
+        } else {
+            this.footstepTimer = 0;
+        }
     }
     
     /**
