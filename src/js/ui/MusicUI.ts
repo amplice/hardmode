@@ -12,7 +12,11 @@ export class MusicUI {
     private container: PIXI.Container;
     private text: PIXI.Text;
     private background: PIXI.Graphics;
+    private muteButton: PIXI.Container;
+    private muteButtonBg: PIXI.Graphics;
+    private muteButtonText: PIXI.Text;
     private lastTrackName: string = '';
+    private isMuted: boolean = false;
     
     constructor() {
         this.container = new PIXI.Container();
@@ -34,11 +38,64 @@ export class MusicUI {
         this.text.x = 10;
         this.text.y = 8;
         
+        // Create mute button
+        this.muteButton = new PIXI.Container();
+        this.muteButton.interactive = true;
+        this.muteButton.cursor = 'pointer';
+        
+        this.muteButtonBg = new PIXI.Graphics();
+        this.muteButtonBg.beginFill(0x333333, 0.8);
+        this.muteButtonBg.drawRoundedRect(0, 0, 35, 30, 5);
+        this.muteButtonBg.endFill();
+        
+        this.muteButtonText = new PIXI.Text('🔊', {
+            fontFamily: 'monospace',
+            fontSize: 16,
+            fill: 0xFFFFFF,
+            align: 'center'
+        });
+        this.muteButtonText.anchor.set(0.5);
+        this.muteButtonText.x = 17.5;
+        this.muteButtonText.y = 15;
+        
+        this.muteButton.addChild(this.muteButtonBg);
+        this.muteButton.addChild(this.muteButtonText);
+        
+        // Position mute button to the right of the track name
+        this.muteButton.x = 255;
+        
+        // Add click handler
+        this.muteButton.on('pointerdown', () => this.toggleMute());
+        
         this.container.addChild(this.background);
         this.container.addChild(this.text);
+        this.container.addChild(this.muteButton);
         
         // Initially hidden until music plays
         this.container.visible = false;
+    }
+    
+    /**
+     * Toggle music mute state
+     */
+    private toggleMute(): void {
+        this.isMuted = !this.isMuted;
+        
+        if (this.isMuted) {
+            soundManager.muteMusic();
+            this.muteButtonText.text = '🔇';
+            this.muteButtonBg.clear();
+            this.muteButtonBg.beginFill(0x662222, 0.8); // Red tint when muted
+            this.muteButtonBg.drawRoundedRect(0, 0, 35, 30, 5);
+            this.muteButtonBg.endFill();
+        } else {
+            soundManager.unmuteMusic();
+            this.muteButtonText.text = '🔊';
+            this.muteButtonBg.clear();
+            this.muteButtonBg.beginFill(0x333333, 0.8);
+            this.muteButtonBg.drawRoundedRect(0, 0, 35, 30, 5);
+            this.muteButtonBg.endFill();
+        }
     }
     
     /**
@@ -54,12 +111,15 @@ export class MusicUI {
                 this.text.text = `♪ ${currentTrack}`;
                 this.container.visible = true;
                 
-                // Resize background to fit text
+                // Resize background to fit text and button
                 const textWidth = this.text.width + 20;
                 this.background.clear();
                 this.background.beginFill(0x000000, 0.5);
                 this.background.drawRoundedRect(0, 0, textWidth, 30, 5);
                 this.background.endFill();
+                
+                // Reposition mute button
+                this.muteButton.x = textWidth + 5;
             } else {
                 this.container.visible = false;
             }

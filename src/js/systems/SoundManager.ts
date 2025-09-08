@@ -471,6 +471,24 @@ export class SoundManager {
     }
     
     /**
+     * Mute background music
+     */
+    muteMusic(): void {
+        if (this.currentMusic) {
+            this.currentMusic.mute(true);
+        }
+    }
+    
+    /**
+     * Unmute background music
+     */
+    unmuteMusic(): void {
+        if (this.currentMusic) {
+            this.currentMusic.mute(false);
+        }
+    }
+    
+    /**
      * Stop a specific sound instance
      */
     stop(id: number): void {
