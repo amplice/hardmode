@@ -226,6 +226,8 @@ export class SoundManager {
     
     /**
      * Play a spatial sound if it's on screen (or within buffer zone)
+     * Binary system: full volume if on screen, no sound if off screen
+     * No distance falloff or stereo panning
      */
     playSpatial(name: string, options: SpatialSoundOptions): number | null {
         if (!this.enabled) return null;
@@ -249,20 +251,14 @@ export class SoundManager {
             return null;  // Off screen - don't play sound
         }
         
-        // Sound is on screen - play at full volume
+        // Sound is on screen - play at full volume with no panning
         const volume = 1.0;
         
-        // Calculate stereo panning (-1 to 1) based on horizontal position
-        // Full left at left edge, center at middle, full right at right edge
-        const panRange = halfScreenWidth - this.screenBuffer;
-        const pan = Math.max(-1, Math.min(1, dx / panRange));
-        
-        // Play with calculated volume and pan
+        // Play at full volume, no stereo panning - just binary on/off
         const id = this.play(name, { volume });
         
         if (id !== null) {
-            // Apply panning
-            howl.stereo(pan, id);
+            // No panning - play centered
             
             // Update active sound info
             const activeSound = this.activeSounds.get(id);
