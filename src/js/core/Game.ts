@@ -628,8 +628,15 @@ export class Game {
       data.height,
       data.seed
     );
-    const worldData = worldGenerator.generateWorld();
-    this.worldData = worldData; // Store for biome lookups
+    const generatedWorld = worldGenerator.generateWorld();
+    // Combine generated world data with metadata
+    this.worldData = {
+      ...generatedWorld,
+      width: data.width,
+      height: data.height,
+      tileSize: data.tileSize,
+      seed: data.seed
+    };
     
     // Create renderer and render the world data  
     this.systems.world = new ClientWorldRenderer({
@@ -647,7 +654,7 @@ export class Game {
     console.log(`[Game] World size: ${data.width}x${data.height} (${totalTiles} tiles)`);
     console.log(`[Game] Using ${useChunkedRendering ? 'chunked' : 'full'} rendering`);
     
-    const worldView = this.systems.world.render(worldData, worldGenerator, { useChunkedRendering });
+    const worldView = this.systems.world.render(generatedWorld, worldGenerator, { useChunkedRendering });
     this.worldContainer.addChild(worldView);
     
     // Now initialize prediction systems with collision mask

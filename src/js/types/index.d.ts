@@ -319,6 +319,11 @@ export interface WorldData {
     height: number;
     tileSize: number;
     seed: number;
+    elevationData: number[][];
+    biomeData: number[][];
+    stairsData: (any | null)[][];
+    snowVariantData?: number[][];
+    decorativeElementsData?: any[][];
 }
 
 // Combat System interfaces
