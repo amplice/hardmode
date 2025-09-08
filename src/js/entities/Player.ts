@@ -1322,6 +1322,7 @@ export class Player implements PlayerInterface {
      * Used when client prediction handles movement but other systems still need updates
      */
     handleNonMovementUpdate(deltaTime: number, inputState: InputState): void {
+        console.log('[handleNonMovementUpdate] Called with deltaTime:', deltaTime, 'isLocalPlayer:', this.isLocalPlayer);
         // Update health component first
         this.health.update(deltaTime);
         
@@ -1350,11 +1351,28 @@ export class Player implements PlayerInterface {
         this.animation.applyCurrentTints();
         
         // Handle footsteps for local player (same logic as in update())
-        const actuallyMoving = (inputState && (inputState.up || inputState.down || inputState.left || inputState.right)) || 
-                              (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1);
+        const inputMoving = inputState && (inputState.up || inputState.down || inputState.left || inputState.right);
+        const velocityMoving = Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1;
+        const actuallyMoving = inputMoving || velocityMoving;
+        
+        console.log('[Footstep Debug]', {
+            isLocalPlayer: this.isLocalPlayer,
+            inputMoving,
+            velocityMoving,
+            actuallyMoving,
+            isAttacking: this.isAttacking,
+            isDying: this.isDying,
+            isDead: this.isDead,
+            footstepTimer: this.footstepTimer,
+            deltaTime,
+            footstepInterval: this.footstepInterval
+        });
         
         if (this.isLocalPlayer && actuallyMoving && !this.isAttacking && !this.isDying && !this.isDead) {
-            this.footstepTimer += deltaTime;
+            // Convert deltaTime from seconds to milliseconds if needed
+            const deltaMs = deltaTime > 1 ? deltaTime : deltaTime * 1000;
+            this.footstepTimer += deltaMs;
+            console.log('[Footstep Timer] timer:', this.footstepTimer, 'interval:', this.footstepInterval);
             if (this.footstepTimer >= this.footstepInterval) {
                 console.log('[Player.handleNonMovementUpdate] Playing footstep sound NOW');
                 this.playFootstepSound();
