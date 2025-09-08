@@ -323,6 +323,25 @@ export const SOUND_CONFIG = {
 };
 
 /**
+ * Background music tracks configuration
+ */
+export const MUSIC_TRACKS = [
+    { name: 'Goblins Den', src: 'assets/sounds/music/Goblins_Den_(Regular).wav' },
+    { name: 'Pixel 1', src: 'assets/sounds/music/Pixel 1.ogg' },
+    { name: 'Pixel 2', src: 'assets/sounds/music/Pixel 2.ogg' },
+    { name: 'Pixel 3', src: 'assets/sounds/music/Pixel 3.ogg' },
+    { name: 'Pixel 4', src: 'assets/sounds/music/Pixel 4.ogg' },
+    { name: 'Pixel 5', src: 'assets/sounds/music/Pixel 5.ogg' },
+    { name: 'Pixel 6', src: 'assets/sounds/music/Pixel 6.ogg' },
+    { name: 'Pixel 7', src: 'assets/sounds/music/Pixel 7.ogg' },
+    { name: 'Pixel 8', src: 'assets/sounds/music/Pixel 8.ogg' },
+    { name: 'Pixel 9', src: 'assets/sounds/music/Pixel 9.ogg' },
+    { name: 'Pixel 10', src: 'assets/sounds/music/Pixel 10.ogg' },
+    { name: 'Pixel 11', src: 'assets/sounds/music/Pixel 11.ogg' },
+    { name: 'Pixel 12', src: 'assets/sounds/music/Pixel 12.ogg' }
+];
+
+/**
  * Helper to get the appropriate player attack sound
  */
 export function getPlayerAttackSound(characterClass: string, attackType: string): string | null {

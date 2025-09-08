@@ -81,6 +81,14 @@ export class SoundManager {
     private screenBuffer: number = 300;  // Extra pixels around screen edge to hear sounds
     private cameraZoom: number = 0.85;  // Will be updated from Game
     
+    // Background music system
+    private musicTracks: Array<{ name: string; src: string; howl?: any }> = [];
+    private currentMusicIndex: number = -1;
+    private currentMusic: any = null;
+    private playedIndices: number[] = [];
+    private musicVolume: number = 0.3;  // Low-medium volume for background music
+    public currentTrackName: string = '';  // Public so UI can read it
+    
     constructor() {
         // Initialize category volumes
         this.categoryVolumes.set(SoundCategory.MASTER, 1.0);
@@ -315,6 +323,149 @@ export class SoundManager {
      */
     updateCameraZoom(zoom: number): void {
         this.cameraZoom = zoom;
+    }
+    
+    /**
+     * Load background music tracks
+     */
+    async loadMusicTracks(tracks: Array<{ name: string; src: string }>): Promise<void> {
+        console.log(`[SoundManager] Loading ${tracks.length} music tracks...`);
+        
+        this.musicTracks = tracks.map(track => ({ ...track }));
+        
+        // Preload all music tracks
+        const loadPromises = this.musicTracks.map((track, index) => {
+            return new Promise<void>((resolve, reject) => {
+                const howl = new Howl({
+                    src: [track.src],
+                    volume: this.musicVolume * this.getCategoryVolume(SoundCategory.MUSIC),
+                    loop: false,  // We'll handle looping manually for playlist
+                    html5: true,  // Use HTML5 audio for music (better for long files)
+                    onload: () => {
+                        track.howl = howl;
+                        console.log(`[SoundManager] Loaded music: ${track.name}`);
+                        resolve();
+                    },
+                    onloaderror: (id: any, error: any) => {
+                        console.error(`[SoundManager] Failed to load music ${track.name}:`, error);
+                        resolve();  // Continue even if one track fails
+                    },
+                    onend: () => {
+                        // When a track ends, play the next one
+                        this.playNextTrack();
+                    }
+                });
+            });
+        });
+        
+        await Promise.all(loadPromises);
+        console.log('[SoundManager] Music tracks loaded');
+    }
+    
+    /**
+     * Start playing background music (shuffled playlist)
+     */
+    startMusic(): void {
+        if (this.musicTracks.length === 0) {
+            console.warn('[SoundManager] No music tracks loaded');
+            return;
+        }
+        
+        // Reset played indices if we've played all tracks
+        if (this.playedIndices.length >= this.musicTracks.length) {
+            this.playedIndices = [];
+        }
+        
+        // Get a random unplayed track
+        const availableIndices = this.musicTracks
+            .map((_, index) => index)
+            .filter(index => !this.playedIndices.includes(index));
+        
+        if (availableIndices.length === 0) {
+            // Should not happen due to reset above, but just in case
+            this.playedIndices = [];
+            this.playNextTrack();
+            return;
+        }
+        
+        const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+        this.playTrack(randomIndex);
+    }
+    
+    /**
+     * Play a specific track by index
+     */
+    private playTrack(index: number): void {
+        // Stop current music if playing
+        if (this.currentMusic) {
+            this.currentMusic.stop();
+        }
+        
+        const track = this.musicTracks[index];
+        if (!track || !track.howl) {
+            console.error(`[SoundManager] Track ${index} not available`);
+            this.playNextTrack();
+            return;
+        }
+        
+        this.currentMusicIndex = index;
+        this.currentMusic = track.howl;
+        this.currentTrackName = track.name;
+        this.playedIndices.push(index);
+        
+        // Update volume in case it changed
+        this.currentMusic.volume(this.musicVolume * this.getCategoryVolume(SoundCategory.MUSIC));
+        
+        console.log(`[SoundManager] Now playing: ${track.name}`);
+        this.currentMusic.play();
+    }
+    
+    /**
+     * Play the next track in the playlist
+     */
+    private playNextTrack(): void {
+        // Reset if we've played everything
+        if (this.playedIndices.length >= this.musicTracks.length) {
+            this.playedIndices = [];
+        }
+        
+        // Get available tracks
+        const availableIndices = this.musicTracks
+            .map((_, index) => index)
+            .filter(index => !this.playedIndices.includes(index));
+        
+        if (availableIndices.length === 0) {
+            // Start over with a fresh shuffle
+            this.playedIndices = [];
+            this.startMusic();
+            return;
+        }
+        
+        // Pick a random track from available ones
+        const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+        this.playTrack(randomIndex);
+    }
+    
+    /**
+     * Stop background music
+     */
+    stopMusic(): void {
+        if (this.currentMusic) {
+            this.currentMusic.stop();
+            this.currentMusic = null;
+            this.currentTrackName = '';
+            this.currentMusicIndex = -1;
+        }
+    }
+    
+    /**
+     * Update music volume
+     */
+    setMusicVolume(volume: number): void {
+        this.musicVolume = Math.max(0, Math.min(1, volume));
+        if (this.currentMusic) {
+            this.currentMusic.volume(this.musicVolume * this.getCategoryVolume(SoundCategory.MUSIC));
+        }
     }
     
     /**

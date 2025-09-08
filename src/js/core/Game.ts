@@ -52,6 +52,7 @@ import { StatsUI } from '../ui/StatsUI.js';
 import { ActionBoxUI } from '../ui/ActionBoxUI.js';
 import { UsernameUI } from '../ui/UsernameUI.js';
 import { ClassSelectUI } from '../ui/ClassSelectUI.js'; // Import the new UI
+import { MusicUI } from '../ui/MusicUI.js';
 import { NetworkClient } from '../net/NetworkClient.js';
 import { LatencyTracker } from '../systems/LatencyTracker.js';
 import { ProjectileRenderer } from '../systems/ProjectileRenderer.js';
@@ -62,7 +63,7 @@ import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 import { DebugLogger } from '../debug/DebugLogger.js';
 import { PerformanceOverlay } from '../ui/PerformanceOverlay.js';
 import { soundManager } from '../systems/SoundManager.js';
-import { SOUND_CONFIG } from '../config/SoundConfig.js';
+import { SOUND_CONFIG, MUSIC_TRACKS } from '../config/SoundConfig.js';
 import type {
     GameSystems,
     GameEntities,
@@ -105,6 +106,7 @@ export class Game {
   healthUI?: any; // HealthUI
   statsUI?: any; // StatsUI
   actionBoxUI?: any; // ActionBoxUI
+  musicUI?: MusicUI;
   projectileRenderer?: any; // ProjectileRenderer
   powerupRenderer?: any; // PowerupRenderer
   telegraphRenderer?: AttackTelegraphRenderer;
@@ -488,6 +490,7 @@ export class Game {
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
     if (this.actionBoxUI) this.actionBoxUI.update();
+    if (this.musicUI) this.musicUI.update();
 
     // Remove old position sending - now using input commands
     // if (this.network) {
@@ -659,9 +662,12 @@ export class Game {
     this.healthUI = new HealthUI(this.entities.player);
     this.statsUI = new StatsUI(this.entities.player, { showDebug: SHOW_DEBUG_STATS });
     this.actionBoxUI = new ActionBoxUI();
+    this.musicUI = new MusicUI();
+    this.musicUI.setPosition(10, window.innerHeight - 40); // Bottom left corner
     this.uiContainer.addChild(this.healthUI.container);
     this.uiContainer.addChild(this.statsUI.container);
     this.uiContainer.addChild(this.actionBoxUI.container);
+    this.uiContainer.addChild(this.musicUI.getContainer());
     
     // Initialize projectile renderer
     this.projectileRenderer = new ProjectileRenderer(this);
@@ -963,6 +969,14 @@ export class Game {
       await soundManager.loadAll(combatSounds).catch(() => {
         console.log('[Game] Sound files not found - running in silent mode');
       });
+      
+      // Load and start background music
+      await soundManager.loadMusicTracks(MUSIC_TRACKS).catch((error) => {
+        console.log('[Game] Music tracks not found or failed to load:', error);
+      });
+      
+      // Start playing music
+      soundManager.startMusic();
       
       console.log('[Game] Sound system initialized');
     } catch (error) {
