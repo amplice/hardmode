@@ -276,9 +276,6 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
                 this.changeAnimation(animationName);
             }
             
-            // Debug: Log when we reach footstep update
-            console.log('[AnimationComponent.update] Calling updateFootsteps, isMoving:', this.owner.isMoving, 'isLocalPlayer:', this.owner.isLocalPlayer);
-            
             // Handle footsteps for walking/running animations
             this.updateFootsteps(deltaTime);
         } else if (this.owner.placeholder) {
@@ -292,43 +289,28 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
         // - Player is moving
         // - Not attacking, rolling, dying, or dead
         
-        console.log('[updateFootsteps] Checking conditions:', {
-            isMoving: this.owner.isMoving,
-            isAttacking: this.owner.isAttacking,
-            currentAttackType: this.owner.currentAttackType,
-            isDying: this.owner.isDying,
-            isDead: this.owner.isDead,
-            isLocalPlayer: this.owner.isLocalPlayer
-        });
-        
         if (!this.owner.isMoving || 
             this.owner.isAttacking || 
             this.owner.currentAttackType === 'roll' ||
             this.owner.isDying || 
             this.owner.isDead) {
-            console.log('[updateFootsteps] Conditions not met, returning');
             return;
         }
         
         // Check if enough time has passed since last footstep
         const now = Date.now();
         const timeSinceLastFootstep = now - this.lastFootstepTime;
-        console.log('[updateFootsteps] Time since last footstep:', timeSinceLastFootstep, 'Interval:', this.footstepInterval);
         
         if (now - this.lastFootstepTime >= this.footstepInterval) {
-            console.log('[updateFootsteps] Playing footstep sound!');
             this.playFootstepSound();
             this.lastFootstepTime = now;
         }
     }
     
     private playFootstepSound(): void {
-        console.log('[playFootstepSound] Called');
-        
         // Get the biome at player's current position
         const game = (window as any).game;
         if (!game || !game.worldData) {
-            console.log('[playFootstepSound] No game or worldData');
             return;
         }
         
@@ -1297,7 +1279,11 @@ export class Player implements PlayerInterface {
         this.animation.applyCurrentTints();
         
         // Handle footsteps for local player
-        if (this.isLocalPlayer && this.isMoving && !this.isAttacking && !this.isDying && !this.isDead) {
+        // Check if actually moving based on input or velocity
+        const actuallyMoving = (inputState && (inputState.up || inputState.down || inputState.left || inputState.right)) || 
+                              (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1);
+        
+        if (this.isLocalPlayer && actuallyMoving && !this.isAttacking && !this.isDying && !this.isDead) {
             this.footstepTimer += deltaTime;
             if (this.footstepTimer >= this.footstepInterval) {
                 this.playFootstepSound();
