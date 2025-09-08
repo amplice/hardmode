@@ -1286,7 +1286,6 @@ export class Player implements PlayerInterface {
         if (this.isLocalPlayer && actuallyMoving && !this.isAttacking && !this.isDying && !this.isDead) {
             this.footstepTimer += deltaTime;
             if (this.footstepTimer >= this.footstepInterval) {
-                console.log('[Player] Playing footstep sound NOW');
                 this.playFootstepSound();
                 this.footstepTimer = 0;
             }
@@ -1296,24 +1295,15 @@ export class Player implements PlayerInterface {
     }
     
     private playFootstepSound(): void {
-        // Get the biome at player's current position
-        const game = (window as any).game;
-        if (!game || !game.worldData) {
-            console.log('[playFootstepSound] No game or worldData');
-            return;
-        }
-        
-        const tileX = Math.floor(this.position.x / 64);
-        const tileY = Math.floor(this.position.y / 64);
-        const biome = game.worldData.biomeData?.[tileY]?.[tileX] || 0;
+        // For now, just play the default grass footstep for the character class
+        // TODO: Add biome detection once we have access to world data
+        const biome = 0; // Default to grass biome
         
         // Get the appropriate footstep sound
         const soundKey = getFootstepSound(this.characterClass, biome);
-        console.log('[playFootstepSound] soundKey:', soundKey, 'class:', this.characterClass, 'biome:', biome);
         
         if (soundKey) {
-            const result = soundManager.play(soundKey, { volume: 0.3 });
-            console.log('[playFootstepSound] play result:', result);
+            soundManager.play(soundKey, { volume: 0.3 });
         }
     }
 
@@ -1322,7 +1312,6 @@ export class Player implements PlayerInterface {
      * Used when client prediction handles movement but other systems still need updates
      */
     handleNonMovementUpdate(deltaTime: number, inputState: InputState): void {
-        console.log('[handleNonMovementUpdate] Called with deltaTime:', deltaTime, 'isLocalPlayer:', this.isLocalPlayer);
         // Update health component first
         this.health.update(deltaTime);
         
@@ -1355,26 +1344,11 @@ export class Player implements PlayerInterface {
         const velocityMoving = Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1;
         const actuallyMoving = inputMoving || velocityMoving;
         
-        console.log('[Footstep Debug]', {
-            isLocalPlayer: this.isLocalPlayer,
-            inputMoving,
-            velocityMoving,
-            actuallyMoving,
-            isAttacking: this.isAttacking,
-            isDying: this.isDying,
-            isDead: this.isDead,
-            footstepTimer: this.footstepTimer,
-            deltaTime,
-            footstepInterval: this.footstepInterval
-        });
-        
         if (this.isLocalPlayer && actuallyMoving && !this.isAttacking && !this.isDying && !this.isDead) {
             // Convert deltaTime from seconds to milliseconds if needed
             const deltaMs = deltaTime > 1 ? deltaTime : deltaTime * 1000;
             this.footstepTimer += deltaMs;
-            console.log('[Footstep Timer] timer:', this.footstepTimer, 'interval:', this.footstepInterval);
             if (this.footstepTimer >= this.footstepInterval) {
-                console.log('[Player.handleNonMovementUpdate] Playing footstep sound NOW');
                 this.playFootstepSound();
                 this.footstepTimer = 0;
             }
