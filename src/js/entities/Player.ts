@@ -246,7 +246,7 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
         }
     }
     
-    update(): void {
+    update(deltaTime: number = 16): void {
         if (this.owner.spriteManager && this.owner.spriteManager.loaded) {
             if (!this.owner.animatedSprite) {
                 this.setupAnimations();
@@ -276,39 +276,61 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
                 this.changeAnimation(animationName);
             }
             
+            // Debug: Log when we reach footstep update
+            console.log('[AnimationComponent.update] Calling updateFootsteps, isMoving:', this.owner.isMoving, 'isLocalPlayer:', this.owner.isLocalPlayer);
+            
             // Handle footsteps for walking/running animations
-            this.updateFootsteps();
+            this.updateFootsteps(deltaTime);
         } else if (this.owner.placeholder) {
             // Update placeholder if we don't have sprites yet
             this.drawPlaceholder();
         }
     }
     
-    private updateFootsteps(): void {
+    private updateFootsteps(deltaTime: number): void {
         // Only play footsteps if:
         // - Player is moving
         // - Not attacking, rolling, dying, or dead
+        
+        console.log('[updateFootsteps] Checking conditions:', {
+            isMoving: this.owner.isMoving,
+            isAttacking: this.owner.isAttacking,
+            currentAttackType: this.owner.currentAttackType,
+            isDying: this.owner.isDying,
+            isDead: this.owner.isDead,
+            isLocalPlayer: this.owner.isLocalPlayer
+        });
         
         if (!this.owner.isMoving || 
             this.owner.isAttacking || 
             this.owner.currentAttackType === 'roll' ||
             this.owner.isDying || 
             this.owner.isDead) {
+            console.log('[updateFootsteps] Conditions not met, returning');
             return;
         }
         
         // Check if enough time has passed since last footstep
         const now = Date.now();
+        const timeSinceLastFootstep = now - this.lastFootstepTime;
+        console.log('[updateFootsteps] Time since last footstep:', timeSinceLastFootstep, 'Interval:', this.footstepInterval);
+        
         if (now - this.lastFootstepTime >= this.footstepInterval) {
+            console.log('[updateFootsteps] Playing footstep sound!');
             this.playFootstepSound();
             this.lastFootstepTime = now;
         }
     }
     
     private playFootstepSound(): void {
+        console.log('[playFootstepSound] Called');
+        
         // Get the biome at player's current position
         const game = (window as any).game;
-        if (!game || !game.worldData) return;
+        if (!game || !game.worldData) {
+            console.log('[playFootstepSound] No game or worldData');
+            return;
+        }
         
         const tileX = Math.floor(this.owner.position.x / 64);
         const tileY = Math.floor(this.owner.position.y / 64);
@@ -842,7 +864,7 @@ class CombatComponent extends BaseComponent implements ICombatComponent {
       
       // Force animation update to return to idle
       this.owner.currentAnimation = null;
-      this.owner.animation.update();
+      this.owner.animation.update(16);
     }
   }
 
@@ -887,7 +909,7 @@ class HealthComponent extends BaseComponent implements IHealthComponent {
                 this.owner.damageStunTimer = 0;
                 // Force animation update to return to normal animations
                 this.owner.currentAnimation = null;
-                this.owner.animation.update();
+                this.owner.animation.update(16);
             }
         }
     }
@@ -998,7 +1020,7 @@ class HealthComponent extends BaseComponent implements IHealthComponent {
             this.owner.sprite.removeChild(this.owner.animatedSprite);
             this.owner.animatedSprite = null;
         }
-        this.owner.animation.update();
+        this.owner.animation.update(16);
         
         // Apply tints for spawn protection
         this.owner.animation.applyCurrentTints();
@@ -1131,6 +1153,10 @@ export class Player implements PlayerInterface {
     // State properties
     id!: string;
     username?: string; // Display name
+    
+    // Footstep tracking
+    private footstepTimer: number = 0;
+    private footstepInterval: number = 300; // milliseconds between footsteps
     characterClass!: string;
     position!: Position;
     velocity!: Velocity;
@@ -1249,7 +1275,7 @@ export class Player implements PlayerInterface {
         if (this.isTakingDamage || this.isDying || this.isDead) {
             // Only update animation and sprite position
             this.sprite.position.set(this.position.x, this.position.y);
-            this.animation.update();
+            this.animation.update(deltaTime);
             return;
         }
         
@@ -1265,10 +1291,40 @@ export class Player implements PlayerInterface {
         }
         
         // Always update animation last
-        this.animation.update();
+        this.animation.update(deltaTime);
         
         // Apply tints after all updates
         this.animation.applyCurrentTints();
+        
+        // Handle footsteps for local player
+        if (this.isLocalPlayer && this.isMoving && !this.isAttacking && !this.isDying && !this.isDead) {
+            this.footstepTimer += deltaTime;
+            if (this.footstepTimer >= this.footstepInterval) {
+                this.playFootstepSound();
+                this.footstepTimer = 0;
+            }
+        } else {
+            this.footstepTimer = 0;
+        }
+    }
+    
+    private playFootstepSound(): void {
+        // Get the biome at player's current position
+        const game = (window as any).game;
+        if (!game || !game.worldData) {
+            return;
+        }
+        
+        const tileX = Math.floor(this.position.x / 64);
+        const tileY = Math.floor(this.position.y / 64);
+        const biome = game.worldData.biomeData?.[tileY]?.[tileX] || 0;
+        
+        // Get the appropriate footstep sound
+        const soundKey = getFootstepSound(this.characterClass, biome);
+        
+        if (soundKey) {
+            soundManager.play(soundKey, { volume: 0.3 });
+        }
     }
 
     /**
@@ -1282,7 +1338,7 @@ export class Player implements PlayerInterface {
         // If taking damage or dying, don't process other components except animation
         if (this.isTakingDamage || this.isDying || this.isDead) {
             // Only update animation - position is handled by prediction
-            this.animation.update();
+            this.animation.update(deltaTime);
             return;
         }
         
@@ -1298,7 +1354,7 @@ export class Player implements PlayerInterface {
         this.combat.update(deltaTime, inputState);
         
         // Always update animation last
-        this.animation.update();
+        this.animation.update(deltaTime);
         
         // Apply tints after all updates
         this.animation.applyCurrentTints();
