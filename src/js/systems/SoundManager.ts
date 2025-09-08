@@ -87,6 +87,7 @@ export class SoundManager {
     private currentMusic: any = null;
     private playedIndices: number[] = [];
     private musicVolume: number = 0.3;  // Low-medium volume for background music
+    private isMusicMuted: boolean = false;  // Track mute state
     public currentTrackName: string = '';  // Public so UI can read it
     
     constructor() {
@@ -418,6 +419,11 @@ export class SoundManager {
         // Update volume
         this.currentMusic.volume(trackVolume * this.getCategoryVolume(SoundCategory.MUSIC));
         
+        // Apply mute state to new track
+        if (this.isMusicMuted) {
+            this.currentMusic.mute(true);
+        }
+        
         console.log(`[SoundManager] Now playing: ${track.name} at volume ${trackVolume}`);
         this.currentMusic.play();
     }
@@ -474,6 +480,7 @@ export class SoundManager {
      * Mute background music
      */
     muteMusic(): void {
+        this.isMusicMuted = true;
         if (this.currentMusic) {
             this.currentMusic.mute(true);
         }
@@ -483,6 +490,7 @@ export class SoundManager {
      * Unmute background music
      */
     unmuteMusic(): void {
+        this.isMusicMuted = false;
         if (this.currentMusic) {
             this.currentMusic.mute(false);
         }
