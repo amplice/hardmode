@@ -62,6 +62,7 @@ import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 import { DebugLogger } from '../debug/DebugLogger.js';
 import { PerformanceOverlay } from '../ui/PerformanceOverlay.js';
+import { BiomeDebugUI } from '../ui/BiomeDebugUI.js';
 import { soundManager } from '../systems/SoundManager.js';
 import { SOUND_CONFIG, MUSIC_TRACKS } from '../config/SoundConfig.js';
 import type {
@@ -107,6 +108,7 @@ export class Game {
   statsUI?: any; // StatsUI
   actionBoxUI?: any; // ActionBoxUI
   musicUI?: MusicUI;
+  biomeDebugUI?: BiomeDebugUI;
   projectileRenderer?: any; // ProjectileRenderer
   powerupRenderer?: any; // PowerupRenderer
   telegraphRenderer?: AttackTelegraphRenderer;
@@ -436,6 +438,11 @@ export class Game {
         const tileY = Math.floor(this.entities.player.position.y / 64);
         const currentBiome = this.worldData?.biomeData?.[tileY]?.[tileX] ?? 0;
         
+        // Update biome debug UI
+        if (this.biomeDebugUI) {
+          this.biomeDebugUI.updateBiome(currentBiome);
+        }
+        
         this.entities.player.handleNonMovementUpdate(deltaTimeSeconds, inputState, currentBiome);
       } else {
         // When dead, only update health (for respawn) and animations
@@ -669,10 +676,13 @@ export class Game {
     this.actionBoxUI = new ActionBoxUI();
     this.musicUI = new MusicUI();
     this.musicUI.setPosition(10, window.innerHeight - 40); // Bottom left corner
+    this.biomeDebugUI = new BiomeDebugUI();
+    this.biomeDebugUI.setPosition(10, window.innerHeight - 80); // Above music UI
     this.uiContainer.addChild(this.healthUI.container);
     this.uiContainer.addChild(this.statsUI.container);
     this.uiContainer.addChild(this.actionBoxUI.container);
     this.uiContainer.addChild(this.musicUI.getContainer());
+    this.uiContainer.addChild(this.biomeDebugUI.getContainer());
     
     // Initialize projectile renderer
     this.projectileRenderer = new ProjectileRenderer(this);
