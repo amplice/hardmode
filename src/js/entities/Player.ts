@@ -326,7 +326,7 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
         if (soundKey) {
             // Use spatial audio for remote players, regular for local
             if (this.owner.isLocalPlayer) {
-                soundManager.play(soundKey, { volume: 0.3 });
+                soundManager.play(soundKey, { volume: 1.0 });
             } else {
                 // Play with spatial audio for remote players
                 soundManager.playSpatial(soundKey, {

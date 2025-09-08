@@ -245,7 +245,7 @@ export const SOUND_CONFIG = {
         category: SoundCategory.UI,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'ability_unlock': {
         src: 'assets/sounds/ui/ability_unlock.wav',
@@ -304,21 +304,21 @@ export const SOUND_CONFIG = {
         category: SoundCategory.UI,
         priority: SoundPriority.HIGH,
         pool: 3,
-        volume: 0.5
+        volume: 1.0
     },
     'ui_hover': {
         src: 'assets/sounds/ui/hover.wav',
         category: SoundCategory.UI,
         priority: SoundPriority.LOW,
         pool: 2,
-        volume: 0.3
+        volume: 1.0
     },
     'chat_message': {
         src: 'assets/sounds/ui/chat.wav',
         category: SoundCategory.UI,
         priority: SoundPriority.MEDIUM,
         pool: 2,
-        volume: 0.4
+        volume: 1.0
     },
     
     // ============================================
@@ -332,28 +332,28 @@ export const SOUND_CONFIG = {
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_bladedancer_snow': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_bladedancer_desert': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_bladedancer_darkgrass': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     
     // Guardian footsteps
@@ -362,28 +362,28 @@ export const SOUND_CONFIG = {
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_guardian_snow': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_guardian_desert': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_guardian_darkgrass': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     
     // Hunter footsteps
@@ -392,28 +392,28 @@ export const SOUND_CONFIG = {
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_hunter_snow': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_hunter_desert': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_hunter_darkgrass': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     
     // Rogue footsteps
@@ -422,28 +422,28 @@ export const SOUND_CONFIG = {
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_rogue_snow': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_rogue_desert': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     },
     'footstep_rogue_darkgrass': {
         src: 'assets/sounds/footsteps/footstep_default.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
-        volume: 0.3
+        volume: 1.0
     }
 };
 
