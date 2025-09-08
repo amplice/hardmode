@@ -431,7 +431,12 @@ export class Game {
       // Still need to handle non-movement updates (attacks, animations, etc.)
       // But skip the movement component unless dead
       if (!isDead) {
-        this.entities.player.handleNonMovementUpdate(deltaTimeSeconds, inputState);
+        // Get current biome for footstep sounds
+        const tileX = Math.floor(this.entities.player.position.x / 64);
+        const tileY = Math.floor(this.entities.player.position.y / 64);
+        const currentBiome = this.worldData?.biomeData?.[tileY]?.[tileX] ?? 0;
+        
+        this.entities.player.handleNonMovementUpdate(deltaTimeSeconds, inputState, currentBiome);
       } else {
         // When dead, only update health (for respawn) and animations
         this.entities.player.health.update(deltaTimeSeconds);

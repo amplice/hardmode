@@ -335,7 +335,7 @@ export const SOUND_CONFIG = {
         volume: 1.0
     },
     'footstep_bladedancer_snow': {
-        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        src: 'assets/sounds/footsteps/footstep_snow.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
@@ -365,7 +365,7 @@ export const SOUND_CONFIG = {
         volume: 1.0
     },
     'footstep_guardian_snow': {
-        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        src: 'assets/sounds/footsteps/footstep_snow.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
@@ -395,7 +395,7 @@ export const SOUND_CONFIG = {
         volume: 1.0
     },
     'footstep_hunter_snow': {
-        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        src: 'assets/sounds/footsteps/footstep_snow.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
@@ -425,7 +425,7 @@ export const SOUND_CONFIG = {
         volume: 1.0
     },
     'footstep_rogue_snow': {
-        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        src: 'assets/sounds/footsteps/footstep_snow.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,

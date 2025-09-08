@@ -1286,7 +1286,7 @@ export class Player implements PlayerInterface {
         if (this.isLocalPlayer && actuallyMoving && !this.isAttacking && !this.isDying && !this.isDead) {
             this.footstepTimer += deltaTime;
             if (this.footstepTimer >= this.footstepInterval) {
-                this.playFootstepSound();
+                this.playFootstepSound(0); // Default to grass in offline mode
                 this.footstepTimer = 0;
             }
         } else {
@@ -1294,10 +1294,16 @@ export class Player implements PlayerInterface {
         }
     }
     
-    private playFootstepSound(): void {
-        // For now, just play the default grass footstep for the character class
-        // TODO: Add biome detection once we have access to world data
-        const biome = 'grass'; // Default to grass biome
+    private playFootstepSound(biomeNumber: number = 0): void {
+        // Map biome numbers to biome names
+        const biomeMap: { [key: number]: string } = {
+            0: 'grass',
+            1: 'darkgrass',
+            2: 'snow',
+            3: 'desert'
+        };
+        
+        const biome = biomeMap[biomeNumber] || 'grass';
         
         // Get the appropriate footstep sound
         const soundKey = getFootstepSound(this.characterClass, biome);
@@ -1311,7 +1317,7 @@ export class Player implements PlayerInterface {
      * Handle non-movement updates during client prediction
      * Used when client prediction handles movement but other systems still need updates
      */
-    handleNonMovementUpdate(deltaTime: number, inputState: InputState): void {
+    handleNonMovementUpdate(deltaTime: number, inputState: InputState, currentBiome: number = 0): void {
         // Update health component first
         this.health.update(deltaTime);
         
@@ -1349,7 +1355,7 @@ export class Player implements PlayerInterface {
             const deltaMs = deltaTime > 1 ? deltaTime : deltaTime * 1000;
             this.footstepTimer += deltaMs;
             if (this.footstepTimer >= this.footstepInterval) {
-                this.playFootstepSound();
+                this.playFootstepSound(currentBiome);
                 this.footstepTimer = 0;
             }
         } else {
