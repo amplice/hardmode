@@ -413,10 +413,16 @@ export class SoundManager {
         this.currentTrackName = track.name;
         this.playedIndices.push(index);
         
-        // Update volume in case it changed
-        this.currentMusic.volume(this.musicVolume * this.getCategoryVolume(SoundCategory.MUSIC));
+        // Special volume adjustment for Goblins Den (50% instead of 30%)
+        let trackVolume = this.musicVolume;
+        if (track.name === 'Goblins Den') {
+            trackVolume = 0.5;  // 50% volume for this track
+        }
         
-        console.log(`[SoundManager] Now playing: ${track.name}`);
+        // Update volume
+        this.currentMusic.volume(trackVolume * this.getCategoryVolume(SoundCategory.MUSIC));
+        
+        console.log(`[SoundManager] Now playing: ${track.name} at volume ${trackVolume}`);
         this.currentMusic.play();
     }
     
