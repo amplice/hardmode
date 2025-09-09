@@ -349,7 +349,7 @@ export const SOUND_CONFIG = {
         volume: 1.0
     },
     'footstep_bladedancer_darkgrass': {
-        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        src: 'assets/sounds/footsteps/footstep_default.ogg',  // Same as grass
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
@@ -379,7 +379,7 @@ export const SOUND_CONFIG = {
         volume: 1.0
     },
     'footstep_guardian_darkgrass': {
-        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        src: 'assets/sounds/footsteps/footstep_default.ogg',  // Same as grass
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
@@ -409,7 +409,7 @@ export const SOUND_CONFIG = {
         volume: 1.0
     },
     'footstep_hunter_darkgrass': {
-        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        src: 'assets/sounds/footsteps/footstep_default.ogg',  // Same as grass
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
@@ -439,7 +439,7 @@ export const SOUND_CONFIG = {
         volume: 1.0
     },
     'footstep_rogue_darkgrass': {
-        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        src: 'assets/sounds/footsteps/footstep_default.ogg',  // Same as grass
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
@@ -472,10 +472,10 @@ export const MUSIC_TRACKS = [
 export function getFootstepSound(characterClass: string, biome: string): string | null {
     // Map biome numbers to biome names
     const biomeNames: { [key: number]: string } = {
-        0: 'grass',      // Grass
-        1: 'snow',       // Snow  
-        2: 'desert',     // Desert
-        3: 'darkgrass'   // Dark grass
+        0: 'grass',      // Light grass
+        1: 'darkgrass',  // Dark grass
+        2: 'snow',       // Snow  
+        3: 'desert'      // Desert (unused for now)
     };
     
     // Get biome name from number or use directly if already a string
