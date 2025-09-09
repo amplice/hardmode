@@ -39,7 +39,7 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'guardian_attack2': {
-        src: 'assets/sounds/combat/guardian_attack_2.wav',
+        src: 'assets/sounds/combat/guardian_attack_2.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 3
