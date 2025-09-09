@@ -25,7 +25,7 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'bladedancer_attack2': {
-        src: 'assets/sounds/combat/bladedancer_attack_2_effect.wav',  // Using effect sound for attack2
+        src: 'assets/sounds/combat/bladedancer_attack_2.ogg',  // Combined charge + effect sound
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
