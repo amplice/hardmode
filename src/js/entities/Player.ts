@@ -1248,9 +1248,9 @@ export class Player implements PlayerInterface {
         }
         
         // Set class-specific footstep interval
-        // Hunter and Rogue have faster footsteps (250ms) vs others (300ms)
+        // Hunter and Rogue have faster footsteps (275ms) vs others (300ms)
         if (this.characterClass === 'hunter' || this.characterClass === 'rogue') {
-            this.footstepInterval = 250;
+            this.footstepInterval = 275;
         } else {
             this.footstepInterval = 300;
         }
