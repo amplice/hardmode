@@ -86,7 +86,7 @@ export class SoundManager {
     private currentMusicIndex: number = -1;
     private currentMusic: any = null;
     private playedIndices: number[] = [];
-    private musicVolume: number = 0.3;  // Low-medium volume for background music
+    private musicVolume: number = 0.15;  // 15% volume for background music
     private isMusicMuted: boolean = false;  // Track mute state
     public currentTrackName: string = '';  // Public so UI can read it
     
@@ -410,10 +410,10 @@ export class SoundManager {
         this.currentTrackName = track.name;
         this.playedIndices.push(index);
         
-        // Special volume adjustment for Goblins Den (50% instead of 30%)
+        // Special volume adjustment for Goblins Den (30% instead of 15%)
         let trackVolume = this.musicVolume;
         if (track.name === 'Goblins Den') {
-            trackVolume = 0.5;  // 50% volume for this track
+            trackVolume = 0.3;  // 30% volume for this track
         }
         
         // Update volume
