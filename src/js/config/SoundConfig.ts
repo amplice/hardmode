@@ -388,14 +388,14 @@ export const SOUND_CONFIG = {
     
     // Hunter footsteps
     'footstep_hunter_grass': {
-        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        src: 'assets/sounds/footsteps/footstep_grass_light.ogg',  // Lighter grass sound
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
         volume: 1.0
     },
     'footstep_hunter_snow': {
-        src: 'assets/sounds/footsteps/footstep_snow.ogg',
+        src: 'assets/sounds/footsteps/footstep_snow_light.ogg',  // Lighter snow sound
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
@@ -409,7 +409,7 @@ export const SOUND_CONFIG = {
         volume: 1.0
     },
     'footstep_hunter_darkgrass': {
-        src: 'assets/sounds/footsteps/footstep_default.ogg',  // Same as grass
+        src: 'assets/sounds/footsteps/footstep_grass_light.ogg',  // Same as light grass
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
@@ -418,14 +418,14 @@ export const SOUND_CONFIG = {
     
     // Rogue footsteps
     'footstep_rogue_grass': {
-        src: 'assets/sounds/footsteps/footstep_default.ogg',
+        src: 'assets/sounds/footsteps/footstep_grass_light.ogg',  // Lighter grass sound
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
         volume: 1.0
     },
     'footstep_rogue_snow': {
-        src: 'assets/sounds/footsteps/footstep_snow.ogg',
+        src: 'assets/sounds/footsteps/footstep_snow_light.ogg',  // Lighter snow sound
         category: SoundCategory.SFX,
         priority: SoundPriority.LOW,
         pool: 3,
