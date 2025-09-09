@@ -276,14 +276,17 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
                 this.changeAnimation(animationName);
             }
             
-            // Handle footsteps for walking/running animations
-            this.updateFootsteps(deltaTime);
+            // Footsteps are now handled in Player.update/handleNonMovementUpdate
+            // this.updateFootsteps(deltaTime); // REMOVED - was causing double footsteps
         } else if (this.owner.placeholder) {
             // Update placeholder if we don't have sprites yet
             this.drawPlaceholder();
         }
     }
     
+    // REMOVED - Old footstep methods that were causing double footsteps
+    // Footsteps are now handled in Player.update/handleNonMovementUpdate
+    /*
     private updateFootsteps(deltaTime: number): void {
         // Only play footsteps if:
         // - Player is moving
@@ -336,6 +339,7 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
             }
         }
     }
+    */
     
     setupAnimations(): void {
         // Remove placeholder if it exists
