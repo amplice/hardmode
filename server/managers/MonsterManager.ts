@@ -267,16 +267,16 @@ export class MonsterManager {
             // Force full updates for monsters in multi-hit attacks to ensure smooth movement
             if (closestDistance < nearDistance || (monster.multiHitData && monster.state === 'attacking')) {
                 // NEAR: Full update every frame (highest priority)
-                // Phase 5.1: Wake up dormant monsters using state machine
-                if ((monster as any).state === 'dormant') {
+                // Wake up dormant monsters
+                if ((monster.state as any) === 'dormant') {
                     this.transitionMonsterState(monster, 'idle');
                 }
                 this.updateMonster(monster, deltaTime, players);
                 nearCount++;
             } else if (closestDistance < mediumDistance) {
                 // MEDIUM: Update every 2 frames (skip 50% of updates)
-                // Phase 5.1: Wake up dormant monsters using state machine
-                if ((monster as any).state === 'dormant') {
+                // Wake up dormant monsters
+                if ((monster.state as any) === 'dormant') {
                     this.transitionMonsterState(monster, 'idle');
                 }
                 if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
@@ -287,8 +287,8 @@ export class MonsterManager {
                 mediumCount++;
             } else if (closestDistance < farDistance) {
                 // FAR: Update every 4 frames (skip 75% of updates) 
-                // Phase 5.1: Wake up dormant monsters using state machine
-                if ((monster as any).state === 'dormant') {
+                // Wake up dormant monsters
+                if ((monster.state as any) === 'dormant') {
                     this.transitionMonsterState(monster, 'idle');
                 }
                 if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
@@ -299,9 +299,9 @@ export class MonsterManager {
                 farCount++;
             } else {
                 // DORMANT: No updates, minimal state
-                if ((monster as any).state !== 'dormant') {
+                if ((monster.state as any) !== 'dormant') {
                     // Newly becoming dormant
-                    (monster as any).state = 'dormant';
+                    monster.state = 'dormant' as any;
                     monster.velocity = { x: 0, y: 0 };
                     monster.target = null;
                 }
@@ -438,7 +438,10 @@ export class MonsterManager {
             });
             return true;
         } else {
-            console.warn(`[MonsterManager] Monster ${monster.id}: ${result.error}`);
+            // Don't log invalid idle->idle transitions as they're handled by early return
+            if (!(monster.state === 'idle' && newState === 'idle')) {
+                console.warn(`[MonsterManager] Monster ${monster.id}: ${result.error}`);
+            }
             return false;
         }
     }
