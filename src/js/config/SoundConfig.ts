@@ -53,7 +53,7 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'hunter_attack2': {
-        src: 'assets/sounds/combat/hunter_attack_2.wav',
+        src: 'assets/sounds/combat/hunter_attack_2.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
