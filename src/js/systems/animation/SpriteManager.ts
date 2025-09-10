@@ -254,7 +254,7 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
     },
     {
         keyPrefix: 'hunter_cone_effect', type: 'effect', path: 'assets/sprites/effects/448.png',
-        columns: 9, rows: 9, rowIndex: 2, frameSize: { width: 64, height: 64 }
+        columns: 9, rows: 9, rowIndex: 1, frameSize: { width: 64, height: 64 }
     },
     {
         keyPrefix: 'level_up_effect', type: 'effect', path: 'assets/sprites/effects/LevelUp.png',
