@@ -146,7 +146,7 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'wingeddemon_spell': {
-        src: 'assets/sounds/monsters/winged_demon_special_attack.wav',
+        src: 'assets/sounds/monsters/winged_demon_special_attack.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
