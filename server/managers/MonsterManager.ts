@@ -300,10 +300,8 @@ export class MonsterManager {
             } else {
                 // DORMANT: No updates, minimal state
                 if ((monster.state as any) !== 'dormant') {
-                    // Newly becoming dormant
-                    monster.state = 'dormant' as any;
-                    monster.velocity = { x: 0, y: 0 };
-                    monster.target = null;
+                    // Newly becoming dormant - use state machine for proper transition
+                    this.transitionMonsterState(monster, 'dormant');
                 }
                 dormantCount++;
             }
@@ -410,7 +408,7 @@ export class MonsterManager {
      */
     private transitionMonsterState(monster: ServerMonsterState, newState: string, contextData: any = {}): boolean {
         // Skip transition if already in target state
-        if (monster.state === newState) {
+        if (monster.state === newState || (monster.state as any) === newState) {
             return true;
         }
         
