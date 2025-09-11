@@ -908,14 +908,19 @@ export class MonsterManager {
         
         const now = Date.now();
         
-        // If we're currently animating, don't start a new attack
-        if (monster.isAttackAnimating) {
+        // If we're currently animating OR in recovery phase, don't start a new attack
+        if (monster.isAttackAnimating || monster.attackPhase === 'recovery') {
             // Check if animation should be finished based on attack config
             let animDuration = attackConfig.windupTime + attackConfig.recoveryTime;
             
             // For multi-hit attacks, include the multi-hit duration
             if (attackConfig.archetype === 'multi_hit_melee' && (attackConfig as any).multiHit) {
                 animDuration = attackConfig.windupTime + (attackConfig as any).multiHit.duration + attackConfig.recoveryTime;
+            }
+            
+            // For jump attacks, include the jump duration
+            if (attackConfig.archetype === 'jump_attack') {
+                animDuration = attackConfig.windupTime + attackConfig.jumpDuration + attackConfig.recoveryTime;
             }
             
             if (now - monster.attackAnimationStarted >= animDuration) {
@@ -1730,7 +1735,7 @@ export class MonsterManager {
             // Clean up jump data
             (monster as any).jumpData = undefined;
             
-            // Enter recovery phase
+            // Enter recovery phase (keep isAttackAnimating true during recovery!)
             monster.attackPhase = 'recovery';
             setTimeout(() => {
                 if (monster && monster.attackPhase === 'recovery') {
