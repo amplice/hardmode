@@ -122,19 +122,13 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'wolf_attack': {
-        src: 'assets/sounds/monsters/wolf_melee_attack.wav',
+        src: 'assets/sounds/monsters/Bulldog_Attack.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
     },
-    'wolf_special_jump': {
-        src: 'assets/sounds/monsters/wolf_special_attack_jump.wav',
-        category: SoundCategory.SFX,
-        priority: SoundPriority.MEDIUM,
-        pool: 3
-    },
     'wolf_special_land': {
-        src: 'assets/sounds/monsters/wolf_special_attack_land.wav',
+        src: 'assets/sounds/monsters/wolf_special_attack_land.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 3
