@@ -122,7 +122,7 @@ export const SOUND_CONFIG = {
         pool: 5
     },
     'wolf_attack': {
-        src: 'assets/sounds/monsters/Bulldog_Attack.wav',
+        src: 'assets/sounds/monsters/wolf_melee_attack.wav',
         category: SoundCategory.SFX,
         priority: SoundPriority.MEDIUM,
         pool: 5
