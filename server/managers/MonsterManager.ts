@@ -310,7 +310,7 @@ export class MonsterManager {
         }
         
         // Log LOD stats occasionally for monitoring
-        if (Math.random() < 0.01) { // 1% chance per update (roughly every 3 seconds at 30 FPS)
+        if (Math.random() < 0.001) { // 0.1% chance per update (roughly every 30 seconds at 30 FPS)
             console.log(`[MonsterManager] AI LOD: ${nearCount} near (100%), ${mediumCount} medium (50%), ${farCount} far (25%), ${dormantCount} dormant (0%)`);
         }
     }
@@ -414,8 +414,10 @@ export class MonsterManager {
             return true;
         }
         
-        // Debug logging for state transitions
-        console.log(`[Monster ${monster.id}] State transition: ${monster.state} -> ${newState}, target: ${monster.target?.id || 'none'}, isAttacking: ${monster.isAttackAnimating}`);
+        // Debug logging for state transitions (only log non-dormant transitions to reduce spam)
+        if (newState !== 'idle' || (monster.state as any) !== 'dormant') {
+            console.log(`[Monster ${monster.id}] State transition: ${monster.state} -> ${newState}, target: ${monster.target?.id || 'none'}, isAttacking: ${monster.isAttackAnimating}`);
+        }
         
         if (!monster.stateMachine) {
             // Fallback for monsters without state machines (legacy)
@@ -629,10 +631,7 @@ export class MonsterManager {
                 break;
             default:
                 // Handle 'dormant' and other states
-                if ((monster as any).state === 'dormant') {
-                    // Dormant monsters wake up when players get close (handled in main update loop)
-                    this.handleIdleState(monster, stats, players);
-                }
+                // Dormant monsters should not process any AI - they're handled by LOD system
                 break;
         }
         
