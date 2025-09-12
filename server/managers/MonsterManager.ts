@@ -899,8 +899,8 @@ export class MonsterManager {
         const distance = getDistance(monster, target);
         const attackRange = (attackConfig as any).range || stats.attackRange;
         
-        // Target moved out of range while we're not animating
-        if (distance > attackRange * 1.2 && !monster.isAttackAnimating) {
+        // Target moved out of range while we're not animating or recovering
+        if (distance > attackRange * 1.2 && !monster.isAttackAnimating && monster.attackPhase !== 'recovery') {
             this.transitionMonsterState(monster, 'chasing');
             monster.currentAttackType = undefined;
             return;
@@ -910,6 +910,11 @@ export class MonsterManager {
         
         // If we're currently animating OR in recovery phase, don't start a new attack
         if (monster.isAttackAnimating || monster.attackPhase === 'recovery') {
+            // If in recovery phase, let the recovery timeout handle everything
+            if (monster.attackPhase === 'recovery') {
+                return;
+            }
+            
             // Check if animation should be finished based on attack config
             let animDuration = attackConfig.windupTime + attackConfig.recoveryTime;
             
