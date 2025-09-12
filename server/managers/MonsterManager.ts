@@ -712,9 +712,12 @@ export class MonsterManager {
                     }
                     
                     if (anyAttackReady) {
-                        console.log(`[Monster ${monster.id}] In idle, found ready attack, transitioning to attacking`);
-                        this.transitionMonsterState(monster, 'attacking');
-                        return;
+                        // Only transition to attacking if not in recovery phase
+                        if (monster.attackPhase !== 'recovery') {
+                            console.log(`[Monster ${monster.id}] In idle, found ready attack, transitioning to attacking`);
+                            this.transitionMonsterState(monster, 'attacking');
+                            return;
+                        }
                     }
                     
                     // All attacks on cooldown - check if we should chase to get in range for shorter attacks
@@ -841,7 +844,8 @@ export class MonsterManager {
                 }
             }
             
-            if (anyAttackReady) {
+            // Only transition to attacking if not in recovery phase
+            if (anyAttackReady && monster.attackPhase !== 'recovery') {
                 this.transitionMonsterState(monster, 'attacking');
                 monster.velocity = { x: 0, y: 0 };
                 return;
@@ -910,8 +914,17 @@ export class MonsterManager {
         
         // If we're currently animating OR in recovery phase, don't start a new attack
         if (monster.isAttackAnimating || monster.attackPhase === 'recovery') {
-            // If in recovery phase, let the recovery timeout handle everything
+            // If in recovery phase, allow movement but not new attacks
             if (monster.attackPhase === 'recovery') {
+                // Check if we should chase the target during recovery
+                const currentDistance = getDistance(monster, target);
+                if (currentDistance > attackRange * 1.2) {
+                    // Target is far, chase them during recovery
+                    this.transitionMonsterState(monster, 'chasing');
+                    // Keep recovery phase active - it will be cleared by the recovery timeout
+                    // Don't clear currentAttackType yet
+                }
+                // Don't start new attacks during recovery
                 return;
             }
             
@@ -1755,19 +1768,8 @@ export class MonsterManager {
                     monster.lastAttack = Date.now();
                     monster.currentAttackType = undefined;
                     
-                    // Transition to appropriate state
-                    if (monster.target) {
-                        const targetCoords = this.playerToCoords(monster.target);
-                        const distance = getDistance(monster, targetCoords);
-                        
-                        if (distance <= stats.attackRange) {
-                            this.transitionMonsterState(monster, 'idle');
-                        } else {
-                            this.transitionMonsterState(monster, 'chasing');
-                        }
-                    } else {
-                        this.transitionMonsterState(monster, 'idle');
-                    }
+                    // Don't force state transition - monster may already be chasing
+                    // The normal state handlers will take care of transitions now that recovery is done
                 }
             }, attackConfig.recoveryTime);
         }
@@ -1986,7 +1988,7 @@ export class MonsterManager {
                                 monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
                                 monster.lastAttack = Date.now();
                                 monster.currentAttackType = undefined;
-                                this.transitionMonsterState(monster, 'idle');
+                                // Don't force state transition - let normal state handlers handle it
                             }
                         }, attackConfig.recoveryTime);
                     }
@@ -2117,24 +2119,8 @@ export class MonsterManager {
                 monster.lastAttack = Date.now();
                 monster.currentAttackType = undefined;
                 
-                // Determine next state
-                if (monster.target) {
-                    const target = monster.target;
-                    const targetCoords = this.playerToCoords(target);
-                    const distance = Math.sqrt(
-                        Math.pow(targetCoords.x - monster.x, 2) + 
-                        Math.pow(targetCoords.y - monster.y, 2)
-                    );
-                    
-                    const stats = MONSTER_STATS[monster.type];
-                    if (distance <= stats.attackRange) {
-                        this.transitionMonsterState(monster, 'idle');
-                    } else {
-                        this.transitionMonsterState(monster, 'chasing');
-                    }
-                } else {
-                    this.transitionMonsterState(monster, 'idle');
-                }
+                // Don't force state transition - monster may already be chasing
+                // The normal state handlers will take care of transitions now that recovery is done
             }
         }, attackConfig.recoveryTime);
     }
@@ -2186,32 +2172,8 @@ export class MonsterManager {
                         monster.currentAttackType = undefined;
                         monster.multiHitData = undefined; // Clear multiHitData after recovery
                         
-                        // Now transition to appropriate state
-                        if (monster.target) {
-                            const targetCoords = this.playerToCoords(monster.target);
-                            const distance = getDistance(monster, targetCoords);
-                            const monsterStats = MONSTER_STATS[monster.type as keyof typeof MONSTER_STATS];
-                            
-                            // Check if any attack is in range (use max range)
-                            let maxAttackRange = monsterStats.attackRange;
-                            if (monsterStats.attacks) {
-                                for (const attackType in monsterStats.attacks) {
-                                    const attackKey = monsterStats.attacks[attackType as keyof typeof monsterStats.attacks];
-                                    const attackConfig = ATTACK_DEFINITIONS[attackKey as keyof typeof ATTACK_DEFINITIONS];
-                                    if (attackConfig && (attackConfig as any).range) {
-                                        maxAttackRange = Math.max(maxAttackRange, (attackConfig as any).range);
-                                    }
-                                }
-                            }
-                            
-                            if (distance > maxAttackRange) {
-                                this.transitionMonsterState(monster, 'chasing');
-                            } else {
-                                this.transitionMonsterState(monster, 'idle');
-                            }
-                        } else {
-                            this.transitionMonsterState(monster, 'idle');
-                        }
+                        // Don't force state transition - monster may already be chasing
+                        // The normal state handlers will take care of transitions now that recovery is done
                     }
                 }, attackConfig.recoveryTime);
             }
