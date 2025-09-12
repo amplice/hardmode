@@ -519,7 +519,8 @@ export class MonsterManager {
         }
         
         // Skip most updates during multi-hit attacks to prevent state/facing changes
-        if (monster.multiHitData && monster.state === 'attacking') {
+        // But allow updates during recovery phase so monster can chase
+        if (monster.multiHitData && monster.state === 'attacking' && monster.attackPhase !== 'recovery') {
             // Handle fixed direction movement ONLY during active attack phase
             if (monster.attackPhase === 'active' && monster.multiHitData.fixedDirection) {
                 const attackConfig = this.getAttackConfig(monster);
