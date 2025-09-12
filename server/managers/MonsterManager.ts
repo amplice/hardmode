@@ -918,8 +918,11 @@ export class MonsterManager {
             if (monster.attackPhase === 'recovery') {
                 // Check if we should chase the target during recovery
                 const currentDistance = getDistance(monster, target);
-                if (currentDistance > attackRange * 1.2) {
-                    // Target is far, chase them during recovery
+                // Use the monster's basic attack range, not the special attack range
+                const basicAttackRange = stats.attackRange;
+                
+                if (currentDistance > basicAttackRange) {
+                    // Target is out of melee range, chase them during recovery
                     this.transitionMonsterState(monster, 'chasing');
                     // Keep recovery phase active - it will be cleared by the recovery timeout
                     // Don't clear currentAttackType yet

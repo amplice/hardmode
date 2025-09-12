@@ -635,7 +635,7 @@ export const ATTACK_DEFINITIONS = {
         damage: 1,
         windupTime: 200,
         jumpDuration: 500,  // Extended jump time
-        recoveryTime: 10000,  // 10 seconds for testing
+        recoveryTime: 400,
         cooldown: 3000,
         range: 250,  // Increased from 180
         dashDistance: 250,  // Increased from 180
