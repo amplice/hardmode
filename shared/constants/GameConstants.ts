@@ -557,7 +557,7 @@ export const ATTACK_DEFINITIONS = {
         name: 'Spin Attack',
         damage: 1,
         windupTime: 500,
-        recoveryTime: 500,
+        recoveryTime: 5000,  // 5 seconds for testing
         cooldown: 5000,
         range: 200,
         hitboxType: 'circle',
@@ -666,7 +666,7 @@ export const ATTACK_DEFINITIONS = {
         name: 'Infernal Strike',
         damage: 2,
         windupTime: 800,  // Warning duration
-        recoveryTime: 200,
+        recoveryTime: 5000,  // 5 seconds for testing
         cooldown: 8000,
         range: 400,
         minRange: 100,
