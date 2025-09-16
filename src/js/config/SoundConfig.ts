@@ -47,7 +47,7 @@ export const SOUND_CONFIG = {
     
     // Hunter
     'hunter_attack1': {
-        src: 'assets/sounds/combat/hunter_attack_1.wav',
+        src: 'assets/sounds/combat/hunter_attack_1.ogg',
         category: SoundCategory.SFX,
         priority: SoundPriority.HIGH,
         pool: 5
