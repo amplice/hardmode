@@ -598,7 +598,7 @@ export const ATTACK_DEFINITIONS = {
         name: 'Teleport Strike',
         damage: 2,
         windupTime: 333,  // 5 frames at 0.25 speed = 5/(60*0.25) = 333ms
-        recoveryTime: 400,  // Quick recovery after attack
+        recoveryTime: 10000,  // 10 seconds for testing
         cooldown: 4000,
         range: 400,  // Max teleport distance
         teleportBehindDistance: 60,  // How far behind player
