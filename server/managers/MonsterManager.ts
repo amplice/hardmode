@@ -1062,10 +1062,19 @@ export class MonsterManager {
                 const teleportConfig = attackConfig as any;
                 
                 // Calculate target position for teleport (behind player)
-                const dx = targetCoords.x - monster.x;
-                const dy = targetCoords.y - monster.y;
-                const playerFacing = Math.atan2(dy, dx);
-                const behindAngle = playerFacing + Math.PI; // Opposite direction
+                // Get player's movement direction to teleport behind them
+                const playerVelocity = (target as any).velocity;
+                let behindAngle;
+                
+                if (playerVelocity && (Math.abs(playerVelocity.x) > 0.1 || Math.abs(playerVelocity.y) > 0.1)) {
+                    // If player is moving, teleport opposite to their movement direction
+                    behindAngle = Math.atan2(-playerVelocity.y, -playerVelocity.x);
+                } else {
+                    // If player is stationary, teleport opposite to where Dark Mage currently is
+                    const dx = monster.x - targetCoords.x;
+                    const dy = monster.y - targetCoords.y;
+                    behindAngle = Math.atan2(dy, dx); // Direction from player to monster
+                }
                 
                 monster.teleportData = {
                     originalPosition: { x: monster.x, y: monster.y },
@@ -1864,7 +1873,11 @@ export class MonsterManager {
                     (monster as any).isDashing = false;
                     
                     // Emit phase 2 telegraph at new position
-                    const attackAngle = teleportData.teleportAngle; // Facing towards player
+                    // Attack angle should face TOWARD the player from the new position
+                    const attackAngle = Math.atan2(
+                        teleportData.targetPosition.y - monster.y,
+                        teleportData.targetPosition.x - monster.x
+                    );
                     this.io.emit('monsterTelegraph', {
                         monsterId: monster.id,
                         monsterType: monster.type,
@@ -1927,37 +1940,15 @@ export class MonsterManager {
                                 // Set cooldown when animation ends for proper cooldown timing
                                 const completedAttackType = monster.currentAttackType || 'primary';
                                 if (!monster.attackCooldowns) {
-                                    monster.attackCooldowns = { primary: 0 };
+                                    monster.attackCooldowns = { primary: 0, special1: 0, special2: 0 };
                                 }
                                 monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
+                                // Also set primary attack cooldown to prevent immediate ranged attack
+                                monster.attackCooldowns.primary = Date.now();
                                 monster.lastAttack = Date.now();
                                 monster.currentAttackType = undefined;
                                 
-                                // Transition to appropriate state
-                                if (monster.target) {
-                                    const targetCoords = this.playerToCoords(monster.target);
-                                    const distance = getDistance(monster, targetCoords);
-                                    
-                                    // Check max attack range
-                                    let maxAttackRange = stats.attackRange;
-                                    if (stats.attacks) {
-                                        for (const attackType in stats.attacks) {
-                                            const attackKey = stats.attacks[attackType as keyof typeof stats.attacks];
-                                            const attackCfg = ATTACK_DEFINITIONS[attackKey as keyof typeof ATTACK_DEFINITIONS];
-                                            if (attackCfg && (attackCfg as any).range) {
-                                                maxAttackRange = Math.max(maxAttackRange, (attackCfg as any).range);
-                                            }
-                                        }
-                                    }
-                                    
-                                    if (distance > maxAttackRange) {
-                                        this.transitionMonsterState(monster, 'chasing');
-                                    } else {
-                                        this.transitionMonsterState(monster, 'idle');
-                                    }
-                                } else {
-                                    this.transitionMonsterState(monster, 'idle');
-                                }
+                                // Don't force state transition - let normal state handlers handle it
                             }
                         }, attackConfig.recoveryTime);
                     }
