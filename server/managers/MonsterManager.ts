@@ -897,6 +897,11 @@ export class MonsterManager {
             return;
         }
         
+        // Skip normal attack processing if Dark Mage is in teleport sequence
+        if ((monster as any).teleportPhase) {
+            return;
+        }
+        
         const targetCoords = this.playerToCoords(target);
         const { attackType, attackConfig } = this.selectMonsterAttack(monster, stats, targetCoords);
         console.log(`[Monster ${monster.id}] Selected attack: ${attackType}`);
@@ -1943,8 +1948,6 @@ export class MonsterManager {
                                     monster.attackCooldowns = { primary: 0, special1: 0, special2: 0 };
                                 }
                                 monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
-                                // Also set primary attack cooldown to prevent immediate ranged attack
-                                monster.attackCooldowns.primary = Date.now();
                                 monster.lastAttack = Date.now();
                                 monster.currentAttackType = undefined;
                                 
