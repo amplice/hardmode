@@ -2261,7 +2261,8 @@ export class MonsterManager {
             }
             
             // Don't update facing during multi-hit attacks (committed movement)
-            if (!monster.multiHitData) {
+            // But allow facing updates during recovery phase
+            if (!monster.multiHitData || monster.attackPhase === 'recovery') {
                 monster.facing = this.getFacingDirection(movement.x, movement.y);
             }
         }
@@ -2763,7 +2764,8 @@ export class MonsterManager {
             monster.x = newX;
             monster.y = newY;
             // Don't update facing during multi-hit attacks
-            if (!monster.multiHitData) {
+            // But allow facing updates during recovery phase
+            if (!monster.multiHitData || monster.attackPhase === 'recovery') {
                 monster.facing = this.getFacingDirection(dx, dy);
             }
         }
