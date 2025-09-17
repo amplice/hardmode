@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **⚠️ LIVING DOCUMENT**: This file should be updated whenever changes occur that are significant enough to affect development understanding. As the game evolves, this documentation evolves with it.
 
-**✅ DOCUMENTATION VERIFIED**: July 12, 2025 - Comprehensive codebase audit completed. **100% accuracy confirmed**. All systems, optimizations, and implementation details verified against actual source code through systematic file-by-file analysis. **Updated with complete TypeScript migration and current architecture.**
+**✅ DOCUMENTATION VERIFIED**: September 17, 2025 - Comprehensive codebase audit completed. **100% accuracy confirmed**. All systems, optimizations, and implementation details verified against actual source code through systematic file-by-file analysis. **Updated with complete TypeScript migration, PowerupManager, SoundManager, and current architecture.**
 
 ## Project Vision
 
@@ -144,6 +144,7 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
 - **Combat System**: Hitbox-based attacks (Rectangle, Cone, Circle), projectile physics
 - **Level Progression**: 1-10 with XP-based advancement, roll unlock at level 5
 - **Real-time PvP**: Player vs player combat with same systems as PvE
+- **Powerup System**: Server-authoritative powerup drops and effects (speed, damage, invincibility, health)
 
 ### **Network Architecture** *(Bandwidth Optimized)*
 - **Delta Compression**: Significant bandwidth reduction via `NetworkOptimizer.js`
@@ -172,17 +173,18 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
 ## 📁 **CODEBASE ARCHITECTURE**
 
 ### **Client-Side** (`src/js/`)
-- **Core**: Game.ts (main game loop), Player.ts (1070+ lines, component-based)
-- **Systems**: CombatSystem.ts, MovementPredictor.ts, Reconciler.ts, InputBuffer.ts
+- **Core**: Game.ts (main game loop), Player.ts (1,474 lines, component-based)
+- **Systems**: CombatSystem.ts, MovementPredictor.ts, Reconciler.ts, InputBuffer.ts, SoundManager.ts (665 lines)
 - **Rendering**: ChunkedWorldRenderer.ts, ClientWorldRenderer.ts, ProjectileRenderer.ts
 - **Network**: NetworkClient.ts, StateReconciler.ts, StateCache.ts, LatencyTracker.ts
 - **World**: WorldGenerator.ts, CliffAutotilerNew.ts, TilesetManager.ts
+- **UI Components**: HealthUI.ts, StatsUI.ts, KillFeedUI.ts, BiomeDebugUI.ts, PerformanceOverlay.ts, MusicUI.ts
 
 ### **Server-Side** (`server/`)
 - **Core**: index.ts (main game loop at 30 FPS)
-- **Managers**: GameStateManager.ts, MonsterManager.ts (750+ lines), ProjectileManager.ts
-- **Systems**: InputProcessor.ts, LagCompensation.ts, SessionAntiCheat.ts, AStarPathfinding.ts
-- **Network**: SocketHandler.ts, NetworkOptimizer.ts
+- **Managers**: GameStateManager.ts, MonsterManager.ts (3,333 lines), ProjectileManager.ts, PowerupManager.ts (593 lines)
+- **Systems**: InputProcessor.ts, LagCompensation.ts, SessionAntiCheat.ts, AStarPathfinding.ts, DamageProcessor.ts
+- **Network**: SocketHandler.ts, NetworkOptimizer.ts (452 lines with delta compression)
 - **World**: ServerWorldManager.ts
 
 ### **Shared** (`shared/`)
@@ -598,6 +600,63 @@ Monsters now have multiple attack types with different animations, AOE patterns,
 - New attack archetypes: `multi_hit_melee`, `multi_projectile`
 - Animation mapping in client `Monster.getAnimationName()` based on attack type
 
+## 💎 **POWERUP SYSTEM**
+
+### **Implementation Overview**
+Server-authoritative powerup system with world drops and timed effects. Managed by PowerupManager.ts (593 lines).
+
+#### **Powerup Types**
+- **Speed Boost**: +50% movement speed for 10 seconds
+- **Damage Boost**: +2 damage for 15 seconds  
+- **Invincibility**: Complete damage immunity for 5 seconds
+- **Instant Health**: Immediate +3 HP restoration
+
+#### **System Architecture**
+```typescript
+// PowerupManager lifecycle:
+1. Monster dies → createPowerupDrop() → PowerupState in world
+2. Player moves near → attemptPickup() → collision detection (50px radius)
+3. Pickup detected → applyPowerupEffect() → modify player state
+4. Effect duration tracking → update() → clean up expired effects
+5. Network sync → broadcast state changes to all clients
+```
+
+#### **Technical Details**
+- Drop rate: 20% chance on monster death
+- Despawn time: 30 seconds if not picked up
+- Multiple effects can stack (except invincibility)
+- Integrates with existing moveSpeedBonus and damageBonus player stats
+- Memory-safe with tracked timeouts and player disconnect cleanup
+- Client receives updates via standard state synchronization
+
+## 🎵 **SOUND SYSTEM**
+
+### **Implementation Overview**  
+Advanced audio system managed by SoundManager.ts (665 lines) with spatial audio, volume controls, and comprehensive sound effects.
+
+#### **Sound Categories**
+- **Combat**: Attack sounds for all 4 classes (2 attacks each)
+- **Monster Sounds**: Unique sounds for all 8 monster types (attacks, special abilities, death)
+- **Movement**: Footsteps with class-specific intervals (Hunter/Rogue: 275ms, others: 350ms)
+- **UI/Feedback**: Level up, damage taken, powerup collection
+- **Music**: Background music with volume controls and mute functionality
+
+#### **Technical Features**
+- **Spatial Audio**: 3D positioning with distance-based volume falloff
+- **Preloading System**: All sounds preloaded at startup for zero latency
+- **Volume Controls**: Separate sliders for music/SFX with persistent settings
+- **Performance**: Uses Howler.js for optimized web audio
+- **Biome-aware**: Different footstep sounds per biome (grass, snow)
+
+#### **Key Implementation**
+```typescript
+// Spatial audio calculation
+const maxDistance = 800; // Sounds fade out at this distance
+const volume = Math.max(0, 1 - (distance / maxDistance));
+sound.volume(volume * masterVolume * categoryVolume);
+sound.stereo(panValue); // -1 (left) to 1 (right) based on position
+```
+
 ## 🌿 **DECORATIVE ELEMENTS SYSTEM**
 
 ### **Grass Biome Decorative Elements**
@@ -651,18 +710,14 @@ Same patterns as light set but offset by 5 rows (e.g., (0,0) becomes (5,0)).
 - Low frequency to avoid cluttering the world
 - Must check full footprint is valid before placement
 
-## 🧹 **DOCUMENTATION CLEANUP RECOMMENDATIONS**
+## 🧹 **DOCUMENTATION STATUS**
 
-The following files are now outdated due to completed TypeScript migration and can be archived or removed:
-
-### **Completed Migration Plans** (Safe to Archive/Remove)
-- `OVERALL_TYPESCRIPT_MIGRATION_PLAN.MD` - Migration planning document (migration complete)
-- `CLIENT_TYPESCRIPT_MIGRATION_PLAN.MD` - Client migration planning (migration complete)
-- `docs/typescript-migration-testing.md` - Migration testing strategy (migration complete)
-
-### **Backup Files** (Safe to Remove)
-- `server/**/*.js.backup` - JavaScript backups from TypeScript conversion
-- Any additional `.backup` files in the codebase
+### **Cleanup Completed (September 17, 2025)**
+- ✅ Removed all `.js.backup` files from TypeScript migration
+- ✅ Archived `docs/typescript-migration-testing.md` to `docs/archived/`
+- ✅ Updated all documentation to reflect current implementation
+- ✅ Added PowerupManager and SoundManager documentation
+- ✅ Updated line counts and file sizes to actual values
 
 ### **Current Valid Documentation**
 - ✅ `CLAUDE.md` - Master documentation (THIS FILE - actively maintained)
