@@ -211,6 +211,7 @@ export const MONSTER_CONFIG = {
         walk: { speed: 0.3 },
         idle: { speed: 0.2 },
         attack1: { speed: 0.3 },
+        attack2: { speed: 0.5 },  // 15 frames at 0.5 = 500ms total
         special1: { speed: 0.4 },  // 10 frames in 250ms = 10/(60*x) = 250ms, x = 0.4
         special1_windup: { speed: 0.25 },  // First 5 frames for 333ms windup
         special1_post: { speed: 0.6 },  // Last 5 frames of Special1

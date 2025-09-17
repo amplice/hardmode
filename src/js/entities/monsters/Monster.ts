@@ -289,7 +289,7 @@ export class Monster {
                             // Handle teleport attack phases
                             const teleportPhase = (this as any).teleportPhase;
                             if (teleportPhase === 'attack') {
-                                animState = 'pummel';
+                                animState = 'attack2';
                             } else if (attackPhase === 'windup' || teleportPhase === 'dash') {
                                 // Use same special1 animation for both windup and dash
                                 animState = 'special1';
