@@ -73,6 +73,7 @@ interface ServerMonsterState extends MonsterState {
     wanderDirection?: { x: number, y: number };
     // Special attack system
     currentAttackType?: 'primary' | 'special1' | 'special2';
+    attackAnimation?: string;  // The actual animation name to play
     attackCooldowns?: {
         primary: number;
         special1?: number;
@@ -894,6 +895,7 @@ export class MonsterManager {
             monster.target = null;
             monster.isAttackAnimating = false;
             monster.currentAttackType = undefined;
+            monster.attackAnimation = undefined;
             return;
         }
         
@@ -913,6 +915,7 @@ export class MonsterManager {
         if (distance > attackRange * 1.2 && !monster.isAttackAnimating && monster.attackPhase !== 'recovery') {
             this.transitionMonsterState(monster, 'chasing');
             monster.currentAttackType = undefined;
+            monster.attackAnimation = undefined;
             return;
         }
         
@@ -976,6 +979,7 @@ export class MonsterManager {
                     this.transitionMonsterState(monster, 'idle'); // Go to idle between attacks
                 }
                 monster.currentAttackType = undefined;
+                monster.attackAnimation = undefined;
             }
             return;
         }
@@ -998,6 +1002,9 @@ export class MonsterManager {
             monster.isAttackAnimating = true;
             monster.currentAttackType = attackType;
             monster.attackPhase = 'windup';
+            
+            // Set the animation to use (from attack config)
+            monster.attackAnimation = (attackConfig as any).animation || 'attack1';
             
             // Handle different attack archetypes
             if (attackConfig.archetype === 'projectile') {
@@ -1222,6 +1229,7 @@ export class MonsterManager {
             console.log(`[Monster ${monster.id}] Attack ${attackType} NOT ready (last used: ${lastUsed}, now: ${now}, diff: ${now - lastUsed}ms, needed: ${attackConfig.cooldown}ms)`);
             this.transitionMonsterState(monster, 'idle');
             monster.currentAttackType = undefined;
+            monster.attackAnimation = undefined;
         }
     }
 
@@ -1785,6 +1793,7 @@ export class MonsterManager {
                     monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
                     monster.lastAttack = Date.now();
                     monster.currentAttackType = undefined;
+                monster.attackAnimation = undefined;
                     
                     // Don't force state transition - monster may already be chasing
                     // The normal state handlers will take care of transitions now that recovery is done
@@ -1902,6 +1911,8 @@ export class MonsterManager {
                 
                 // Change to attack animation
                 (monster as any).teleportPhase = 'attack';
+                // Update animation to the attack animation from config
+                monster.attackAnimation = (attackConfig as any).attackAnimation || 'attack1';
                 
                 // Schedule damage using configured delay
                 const attackDelay = (attackConfig as any).attackDelay || 400;
@@ -1950,6 +1961,7 @@ export class MonsterManager {
                                 monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
                                 monster.lastAttack = Date.now();
                                 monster.currentAttackType = undefined;
+                monster.attackAnimation = undefined;
                                 
                                 // Don't force state transition - let normal state handlers handle it
                             }
@@ -1986,6 +1998,7 @@ export class MonsterManager {
                                 monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
                                 monster.lastAttack = Date.now();
                                 monster.currentAttackType = undefined;
+                monster.attackAnimation = undefined;
                                 // Don't force state transition - let normal state handlers handle it
                             }
                         }, attackConfig.recoveryTime);
@@ -2008,6 +2021,7 @@ export class MonsterManager {
                 (monster as any).dashDuration = undefined;
                 (monster as any).teleportPhase = undefined;
                 monster.currentAttackType = undefined;
+                monster.attackAnimation = undefined;
                 monster.attackAnimationStarted = 0;
             }
         }
@@ -2116,6 +2130,7 @@ export class MonsterManager {
                 monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
                 monster.lastAttack = Date.now();
                 monster.currentAttackType = undefined;
+                monster.attackAnimation = undefined;
                 
                 // Don't force state transition - monster may already be chasing
                 // The normal state handlers will take care of transitions now that recovery is done
@@ -2168,6 +2183,7 @@ export class MonsterManager {
                         monster.attackCooldowns[completedAttackType as 'primary' | 'special1' | 'special2'] = Date.now();
                         monster.lastAttack = Date.now();
                         monster.currentAttackType = undefined;
+                monster.attackAnimation = undefined;
                         monster.multiHitData = undefined; // Clear multiHitData after recovery
                         
                         // Don't force state transition - monster may already be chasing
@@ -3123,6 +3139,7 @@ export class MonsterManager {
             monster.isAttackAnimating = false;
             monster.attackPhase = undefined;
             monster.currentAttackType = undefined;
+            monster.attackAnimation = undefined;
             
             // Clear multi-hit data if present
             if (monster.multiHitData) {
@@ -3262,6 +3279,7 @@ export class MonsterManager {
                 attackAnimationStarted: monster.attackAnimationStarted,
                 isStunned: monster.isStunned,
                 currentAttackType: monster.currentAttackType, // Include attack type for animations
+                attackAnimation: monster.attackAnimation, // The specific animation to play
                 attackPhase: monster.attackPhase, // Include attack phase for windup animations
                 teleportPhase: (monster as any).teleportPhase, // For Dark Mage animation phases
                 isDashing: (monster as any).isDashing, // Dark Mage dash state

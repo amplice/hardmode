@@ -259,6 +259,7 @@ export class Monster {
                 // Use currentAttackType to determine which attack animation to play
                 const attackType = (this as any).currentAttackType;
                 const attackPhase = (this as any).attackPhase;
+                const attackAnimation = (this as any).attackAnimation;
                 
                 // Show idle during recovery phase
                 if (attackPhase === 'recovery') {
@@ -266,6 +267,32 @@ export class Monster {
                     break;
                 }
                 
+                // If server provides specific animation, use it (data-driven approach)
+                if (attackAnimation) {
+                    animState = attackAnimation;
+                    
+                    // Special handling for Dark Mage teleport phases
+                    const teleportPhase = (this as any).teleportPhase;
+                    if (this.type === 'darkmage' && teleportPhase) {
+                        if (teleportPhase === 'attack') {
+                            // Use the attack animation from config during attack phase
+                            animState = attackAnimation;
+                        } else if (teleportPhase === 'dash' || attackPhase === 'windup') {
+                            animState = 'special1';
+                        }
+                    }
+                    // Special handling for windup phases
+                    else if (attackPhase === 'windup') {
+                        if (attackAnimation === 'special1') {
+                            animState = 'special1_windup';
+                        } else if (attackAnimation === 'attack3') {
+                            animState = 'attack3_windup';
+                        }
+                    }
+                    break;
+                }
+                
+                // Fallback to hardcoded logic (for backwards compatibility)
                 if (attackType === 'special1') {
                     // Map special attacks to their animations
                     switch (this.type) {
