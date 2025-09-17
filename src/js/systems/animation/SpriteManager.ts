@@ -172,6 +172,7 @@ const SPRITE_SHEET_CONFIG: SpriteConfig[] = [
             { keySuffix: 'walk', path: 'assets/sprites/monsters/DarkMage/Run.png', columns: 15, rows: 8 },
             { keySuffix: 'idle', path: 'assets/sprites/monsters/DarkMage/Idle.png', columns: 15, rows: 8 },
             { keySuffix: 'attack1', path: 'assets/sprites/monsters/DarkMage/Attack1.png', columns: 15, rows: 8 },
+            { keySuffix: 'attack2', path: 'assets/sprites/monsters/DarkMage/Attack2.png', columns: 15, rows: 8 },
             { keySuffix: 'special1', path: 'assets/sprites/monsters/DarkMage/Special1.png', columns: 15, rows: 8 },
             { keySuffix: 'special1_windup', path: 'assets/sprites/monsters/DarkMage/Special1.png', columns: 15, rows: 8 },  // Will use first 10 frames in Monster.ts
             { keySuffix: 'special1_post', path: 'assets/sprites/monsters/DarkMage/Special1.png', columns: 15, rows: 8 },  // Will use last 5 frames in Monster.ts
