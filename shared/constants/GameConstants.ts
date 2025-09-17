@@ -55,10 +55,10 @@ import type {
 
 // Shared game constants used by both client and server
 export const GAME_CONSTANTS = {
-    // World settings - increased for testing chunked rendering performance
+    // World settings - expanded for more content
     WORLD: {
-        WIDTH: 500,  // Increased from 200 to test large world scaling
-        HEIGHT: 500, // Increased from 200 to test large world scaling
+        WIDTH: 750,  // Expanded from 500 for more exploration space
+        HEIGHT: 750, // Expanded from 500 for more exploration space
         TILE_SIZE: 64,
         SEED: 42 // Default seed, server will override with generated seed
     },
@@ -66,14 +66,14 @@ export const GAME_CONSTANTS = {
     // Server tick rate
     TICK_RATE: 30,
     
-    // Spawn system
+    // Spawn system - optimized for higher density
     SPAWN: {
-        MAX_MONSTERS: 150, // Increased monster count
-        INITIAL_MONSTERS: 40, // Start with more monsters
-        INTERVAL: 1.5, // Spawn new monster every 1.5 seconds
-        MIN_DISTANCE_FROM_PLAYER: 700,
-        MAX_DISTANCE_FROM_PLAYER: 8000, // Sufficient for larger world
-        WORLD_EDGE_MARGIN: 2000 // Increased proportionally for 500x500 world
+        MAX_MONSTERS: 300, // Doubled for better density (still only 0.0005 per tile)
+        INITIAL_MONSTERS: 80, // Start with more monsters visible
+        INTERVAL: 0.8, // Spawn new monsters faster
+        MIN_DISTANCE_FROM_PLAYER: 600, // Slightly closer spawns
+        MAX_DISTANCE_FROM_PLAYER: 10000, // Expanded for 750x750 world
+        WORLD_EDGE_MARGIN: 3000 // Increased proportionally for 750x750 world
     },
     
     // Network settings
