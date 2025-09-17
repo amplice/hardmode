@@ -40,7 +40,7 @@ import type {
 // Delta update types
 interface DeltaUpdate {
     id: string;
-    _updateType: 'full' | 'delta';
+    _updateType: 'full' | 'delta' | 'error';
     [key: string]: any;
 }
 
@@ -127,6 +127,12 @@ export class NetworkOptimizer {
     createDeltaUpdate(clientId: string, entityId: string, currentState: any, forceFullUpdate: boolean = false): DeltaUpdate {
         const stateKey = `${clientId}_${entityId}`;
         
+        // Validate input state
+        if (!currentState || typeof currentState !== 'object') {
+            console.error(`[NetworkOptimizer] Invalid currentState for ${entityId}:`, currentState);
+            return { id: entityId, _updateType: 'error' };
+        }
+        
         // Validate critical fields in development/debug mode
         if (process.env.NODE_ENV !== 'production') {
             this.validateCriticalFields(entityId, currentState);
@@ -134,7 +140,13 @@ export class NetworkOptimizer {
         
         // FULL UPDATE PATH: First contact or forced refresh
         if (forceFullUpdate || !this.lastSentState.has(stateKey)) {
-            this.lastSentState.set(stateKey, JSON.parse(JSON.stringify(currentState)));
+            // Deep clone the state safely
+            try {
+                this.lastSentState.set(stateKey, JSON.parse(JSON.stringify(currentState)));
+            } catch (e) {
+                console.error(`[NetworkOptimizer] Failed to serialize state for ${entityId}:`, e);
+                return { id: entityId, _updateType: 'error' };
+            }
             return { id: entityId, _updateType: 'full', ...currentState };
         }
 
@@ -144,7 +156,12 @@ export class NetworkOptimizer {
         // Ensure lastState is an object - defensive programming
         if (!lastState || typeof lastState !== 'object') {
             console.warn(`[NetworkOptimizer] Invalid lastState for ${stateKey}, forcing full update`);
-            this.lastSentState.set(stateKey, JSON.parse(JSON.stringify(currentState)));
+            try {
+                this.lastSentState.set(stateKey, JSON.parse(JSON.stringify(currentState)));
+            } catch (e) {
+                console.error(`[NetworkOptimizer] Failed to serialize state for ${entityId}:`, e);
+                return { id: entityId, _updateType: 'error' };
+            }
             return { id: entityId, _updateType: 'full', ...currentState };
         }
         
@@ -158,7 +175,13 @@ export class NetworkOptimizer {
         for (const field of criticalFields) {
             if (currentState[field] !== undefined) {
                 delta[field] = currentState[field];
-                lastState[field] = JSON.parse(JSON.stringify(currentState[field]));
+                // Safely deep clone the field
+                try {
+                    lastState[field] = JSON.parse(JSON.stringify(currentState[field]));
+                } catch (e) {
+                    // If serialization fails, just use direct assignment
+                    lastState[field] = currentState[field];
+                }
             }
         }
 
@@ -168,7 +191,13 @@ export class NetworkOptimizer {
             
             if (this.hasPropertyChanged(lastState[key], currentState[key])) {
                 delta[key] = currentState[key];
-                lastState[key] = JSON.parse(JSON.stringify(currentState[key]));
+                // Safely deep clone the field
+                try {
+                    lastState[key] = JSON.parse(JSON.stringify(currentState[key]));
+                } catch (e) {
+                    // If serialization fails, just use direct assignment
+                    lastState[key] = currentState[key];
+                }
                 hasChanges = true;
             }
         }
@@ -253,16 +282,24 @@ export class NetworkOptimizer {
         if (Array.isArray(players)) {
             // Serialized players array
             for (const player of players) {
+                if (!player || typeof player !== 'object') {
+                    console.warn(`[NetworkOptimizer] Invalid player state`);
+                    continue;
+                }
                 const delta = this.createDeltaUpdate(clientId, `player_${player.id}`, player);
-                if (delta) {
+                if (delta && delta._updateType !== 'error') {
                     optimizedState.players.push(delta);
                 }
             }
         } else {
             // Map of players (old format)
             players.forEach((player, id) => {
+                if (!player || typeof player !== 'object') {
+                    console.warn(`[NetworkOptimizer] Invalid player state for id ${id}`);
+                    return;
+                }
                 const delta = this.createDeltaUpdate(clientId, `player_${id}`, player);
-                if (delta) {
+                if (delta && delta._updateType !== 'error') {
                     optimizedState.players.push(delta);
                 }
             });
@@ -271,13 +308,19 @@ export class NetworkOptimizer {
         // Process monster updates with distance-based priority and delta compression
         const monsterUpdates: MonsterUpdateWithDistance[] = [];
         monsters.forEach((monster, id) => {
+            // Skip invalid monsters
+            if (!monster || typeof monster !== 'object') {
+                console.warn(`[NetworkOptimizer] Invalid monster state for id ${id}`);
+                return;
+            }
+            
             const distance = this.getDistance(viewerPosition, monster);
             
             // Skip very distant monsters
             if (distance > GAME_CONSTANTS.NETWORK.VIEW_DISTANCE) return;
             
             const delta = this.createDeltaUpdate(clientId, `monster_${id}`, monster);
-            if (delta) {
+            if (delta && delta._updateType !== 'error') {
                 monsterUpdates.push({ delta, distance });
             }
         });
