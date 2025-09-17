@@ -609,7 +609,7 @@ export const ATTACK_DEFINITIONS = {
         },
         animation: 'special1',
         windupAnimation: 'special1_windup',  // First 5 frames
-        attackAnimation: 'pummel',  // Pummel animation for actual attack
+        attackAnimation: 'quickshot',  // Quickshot animation for actual attack
         attackDelay: 400  // 200ms for animation + 200ms extra delay for player reaction time
     },
     
