@@ -387,10 +387,11 @@ export class MonsterStateMachine {
 export function createStateMachineFromLegacy(monster: MonsterStateData, legacyState: string): MonsterStateMachine {
     const stateMachine = new MonsterStateMachine(monster);
     
-    // Transition to the legacy state if it's valid
-    if (stateMachine.canTransitionTo(legacyState)) {
+    // Only transition if not already in the target state (idle is default)
+    if (legacyState !== 'idle' && stateMachine.canTransitionTo(legacyState)) {
         stateMachine.transition(legacyState);
-    } else {
+    } else if (legacyState !== 'idle') {
+        // Only warn if we're trying to transition to something other than idle
         console.warn(`[MonsterStateMachine] Invalid legacy state: ${legacyState}, staying in idle`);
     }
     
