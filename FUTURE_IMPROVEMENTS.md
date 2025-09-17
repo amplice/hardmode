@@ -1,6 +1,13 @@
 # Future Improvements
 
-This document tracks potential improvements that require live testing to ensure they don't break gameplay.
+This document tracks potential improvements and feature ideas for the game.
+
+## **Quick Feature Ideas**
+- More biomes (desert, swamp, volcanic)
+- Boss monsters (biome-specific with unique mechanics)
+- Q and E ability slots for additional spells
+- Additional monster types and variants
+- Enhanced monster pathfinding (already using A* but could be improved)
 
 ## **Performance Optimizations**
 
