@@ -49,6 +49,8 @@
  * - Maintains movement fluidity around obstacles
  */
 
+import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
+
 // Interface for world bounds
 interface WorldBounds {
     x: number;
@@ -96,6 +98,7 @@ interface GameWorld {
 export class PhysicsSystem {
     private worldBounds: WorldBounds;
     private collisionMask: CollisionMask | null;
+    private loggedWorldInfo: boolean;
 
     constructor() {
         this.worldBounds = {
@@ -105,14 +108,29 @@ export class PhysicsSystem {
             height: 0
         };
         this.collisionMask = null;
+        this.loggedWorldInfo = false;
     }
     
     update(deltaTime: number, entities: PhysicsEntity[], world?: GameWorld): void {
         if (world) {
             // Get collision mask from world
             this.collisionMask = world.collisionMask || null;
-            this.worldBounds.width = world.width * world.tileSize;
-            this.worldBounds.height = world.height * world.tileSize;
+            const expectedWidth = (GAME_CONSTANTS?.WORLD?.WIDTH || world.width) * world.tileSize;
+            const expectedHeight = (GAME_CONSTANTS?.WORLD?.HEIGHT || world.height) * world.tileSize;
+
+            this.worldBounds.width = Math.max(world.width * world.tileSize, expectedWidth);
+            this.worldBounds.height = Math.max(world.height * world.tileSize, expectedHeight);
+
+            if (!this.loggedWorldInfo) {
+                console.log('[PhysicsSystem] world bounds set to', {
+                    widthTiles: world.width,
+                    heightTiles: world.height,
+                    tileSize: world.tileSize,
+                    widthPixels: this.worldBounds.width,
+                    heightPixels: this.worldBounds.height
+                });
+                this.loggedWorldInfo = true;
+            }
             
             entities.forEach(entity => {
                 // Handle collision-aware movement
