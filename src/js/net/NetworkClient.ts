@@ -255,6 +255,14 @@ interface CacheStats {
     deltaCompressionEnabled: boolean;
 }
 
+interface ClientPerfPayload {
+    avgFrame: number;
+    avgInput: number;
+    avgSimulation: number;
+    avgRender: number;
+    frames: number;
+}
+
 export class NetworkClient {
     private game: GameInterface;
     public socket: SocketIOClient;
@@ -1071,7 +1079,15 @@ export class NetworkClient {
         
         this.socket.emit('playerInput', inputCommand);
     }
-    
+
+    sendClientPerfMetrics(payload: ClientPerfPayload): void {
+        if (!this.connected) {
+            return;
+        }
+
+        this.socket.emit('clientPerf', payload);
+    }
+
     createProjectile(data: ProjectileData): void {
         if (!this.connected) {
             // Cannot create projectile - not connected

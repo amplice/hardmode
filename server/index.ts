@@ -31,6 +31,7 @@ import { Server } from 'socket.io';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { performance } from 'node:perf_hooks';
 
 import { GAME_CONSTANTS } from '../shared/constants/GameConstants.js';
 import { GameStateManager } from './managers/GameStateManager.js';
@@ -137,8 +138,65 @@ const lagCompensation = new LagCompensation();
 const sessionAntiCheat = new SessionAntiCheat(abilityManager as any);
 const inputProcessor = new InputProcessor(gameState as any, abilityManager as any, lagCompensation as any, sessionAntiCheat as any, serverWorldManager as any, powerupManager);
 const networkOptimizer = new NetworkOptimizer();
-const socketHandler = new SocketHandler(io, gameState as any, monsterManager as any, projectileManager, abilityManager as any, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer);
+const socketHandler = new SocketHandler(io, gameState as any, monsterManager as any, projectileManager, abilityManager as any, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer, clientPerfStats);
 const damageProcessor = new DamageProcessor(gameState, monsterManager, socketHandler, io, powerupManager);
+
+// Optional lightweight performance profiling (enabled by default)
+const ENABLE_SERVER_PROFILING: boolean = process.env.PROFILE_SERVER !== 'false';
+const PROFILE_LOG_INTERVAL_MS: number = parseInt(process.env.PROFILE_INTERVAL_MS || '10000', 10);
+const SERVER_VIEW_DISTANCE_SQUARED: number = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * GAME_CONSTANTS.NETWORK.VIEW_DISTANCE;
+
+interface ServerPerfStats {
+    tickCount: number;
+    tickTotal: number;
+    inputTotal: number;
+    monsterTotal: number;
+    projectileTotal: number;
+    powerupTotal: number;
+}
+
+const perfStats: ServerPerfStats = {
+    tickCount: 0,
+    tickTotal: 0,
+    inputTotal: 0,
+    monsterTotal: 0,
+    projectileTotal: 0,
+    powerupTotal: 0
+};
+
+let lastProfileLog: number = performance.now();
+
+interface ServerPerfSnapshot {
+    timestamp: number;
+    ticks: number;
+    avgTick: number;
+    avgInput: number;
+    avgMonster: number;
+    avgProjectile: number;
+    avgPowerup: number;
+}
+
+let serverPerfSnapshot: ServerPerfSnapshot = {
+    timestamp: 0,
+    ticks: 0,
+    avgTick: 0,
+    avgInput: 0,
+    avgMonster: 0,
+    avgProjectile: 0,
+    avgPowerup: 0
+};
+
+interface ClientPerfSnapshot {
+    socketId: string;
+    avgFrame: number;
+    avgInput: number;
+    avgSimulation: number;
+    avgRender: number;
+    frames: number;
+    updatedAt: number;
+}
+
+const clientPerfStats: Map<string, ClientPerfSnapshot> = new Map();
 
 // Spawn initial monsters for immediate stress testing
 console.log(`[Server] 🔥 EXTREME STRESS TEST: Spawning ${GAME_CONSTANTS.SPAWN.INITIAL_MONSTERS} initial monsters...`);
@@ -154,6 +212,32 @@ const ENABLE_DELTA_COMPRESSION: boolean = true;
 
 // Setup debug endpoint with access to systems
 setupDebugEndpoint(app, { sessionAntiCheat });
+
+app.get('/metrics/server', (req, res) => {
+    res.json({
+        generatedAt: Date.now(),
+        profilingEnabled: ENABLE_SERVER_PROFILING,
+        snapshot: serverPerfSnapshot
+    });
+});
+
+app.get('/metrics/client', (req, res) => {
+    const clients = Array.from(clientPerfStats.values()).map(entry => ({
+        socketId: entry.socketId,
+        avgFrame: Number(entry.avgFrame.toFixed(3)),
+        avgInput: Number(entry.avgInput.toFixed(3)),
+        avgSimulation: Number(entry.avgSimulation.toFixed(3)),
+        avgRender: Number(entry.avgRender.toFixed(3)),
+        frames: entry.frames,
+        updatedAt: entry.updatedAt
+    }));
+
+    res.json({
+        generatedAt: Date.now(),
+        profilingEnabled: ENABLE_SERVER_PROFILING,
+        clients
+    });
+});
 
 // Cross-reference managers
 io.gameState = gameState;
@@ -172,13 +256,43 @@ setInterval(() => {
     const now: number = Date.now();
     const deltaTime: number = (now - lastUpdateTime) / 1000;
     lastUpdateTime = now;
+
+    const tickStart = ENABLE_SERVER_PROFILING ? performance.now() : 0;
+    let stageTime = tickStart;
     
     // Update game systems
     gameState.update(deltaTime);
     inputProcessor.processAllInputs(deltaTime); // Process client inputs
+
+    if (ENABLE_SERVER_PROFILING) {
+        const stageNow = performance.now();
+        perfStats.inputTotal += stageNow - stageTime;
+        stageTime = stageNow;
+    }
+
     monsterManager.update(deltaTime, gameState.players);
+
+    if (ENABLE_SERVER_PROFILING) {
+        const stageNow = performance.now();
+        perfStats.monsterTotal += stageNow - stageTime;
+        stageTime = stageNow;
+    }
+
     projectileManager.update(deltaTime, gameState.players, monsterManager.monsters);
+
+    if (ENABLE_SERVER_PROFILING) {
+        const stageNow = performance.now();
+        perfStats.projectileTotal += stageNow - stageTime;
+        stageTime = stageNow;
+    }
+
     powerupManager.update(deltaTime);
+
+    if (ENABLE_SERVER_PROFILING) {
+        const stageNow = performance.now();
+        perfStats.powerupTotal += stageNow - stageTime;
+        stageTime = stageNow;
+    }
     
     // Clean up old projectiles periodically
     if (Math.random() < 0.01) { // ~1% chance per tick
@@ -194,39 +308,117 @@ setInterval(() => {
         // PERFORMANCE: Only send monsters within view distance of this specific player
         // Reduces both CPU load and network bandwidth significantly
         const visibleMonsters = monsterManager.getVisibleMonsters(new Map([[player.id, player]]));
+        const viewDistanceSquared = SERVER_VIEW_DISTANCE_SQUARED;
         
+        const playerX = player.position?.x ?? (player as any).x ?? 0;
+        const playerY = player.position?.y ?? (player as any).y ?? 0;
+
         if (ENABLE_DELTA_COMPRESSION) {
             // DELTA COMPRESSION PATH: 70-80% bandwidth reduction
             
             // Step 1: Get authoritative serialized state with client prediction data
             const serializedPlayers = gameState.getSerializedPlayers(inputProcessor);
+            const filteredPlayers = serializedPlayers.filter((serializedPlayer: any) => {
+                if (serializedPlayer.id === player.id) {
+                    return true;
+                }
+                if (serializedPlayer.x === undefined || serializedPlayer.y === undefined) {
+                    return false;
+                }
+                const dx = serializedPlayer.x - playerX;
+                const dy = serializedPlayer.y - playerY;
+                return (dx * dx + dy * dy) <= viewDistanceSquared;
+            });
             const serializedMonsters = monsterManager.getSerializedMonsters(visibleMonsters);
+            const serializedProjectiles = projectileManager.getSerializedProjectiles().filter(projectile => {
+                const dx = projectile.x - playerX;
+                const dy = projectile.y - playerY;
+                return (dx * dx + dy * dy) <= viewDistanceSquared;
+            });
             
             // Step 2: NetworkOptimizer compares current vs last-sent per this client
             // Creates deltas containing only changed fields + critical stability fields
             const optimizedState = networkOptimizer.optimizeStateUpdate(
                 socketId,
-                serializedPlayers as any,
+                filteredPlayers as any,
                 new Map(serializedMonsters.map((m: any) => [m.id, m])),
                 player
             );
             
             // Step 3: Add projectiles (currently not delta compressed but could be)
-            (optimizedState as any).projectiles = projectileManager.getSerializedProjectiles();
+            (optimizedState as any).projectiles = serializedProjectiles;
             
             // Step 4: Send optimized payload with _updateType markers for client processing
             socket.emit('state', optimizedState);
         } else {
             // LEGACY PATH: Send complete objects (backwards compatibility)
+            const serializedPlayers = gameState.getSerializedPlayers(inputProcessor);
+            const filteredPlayers = serializedPlayers.filter((serializedPlayer: any) => {
+                if (serializedPlayer.id === player.id) {
+                    return true;
+                }
+                if (serializedPlayer.x === undefined || serializedPlayer.y === undefined) {
+                    return false;
+                }
+                const dx = serializedPlayer.x - playerX;
+                const dy = serializedPlayer.y - playerY;
+                return (dx * dx + dy * dy) <= viewDistanceSquared;
+            });
+            const serializedProjectiles = projectileManager.getSerializedProjectiles().filter(projectile => {
+                const dx = projectile.x - playerX;
+                const dy = projectile.y - playerY;
+                return (dx * dx + dy * dy) <= viewDistanceSquared;
+            });
             const state = {
-                players: gameState.getSerializedPlayers(inputProcessor),
+                players: filteredPlayers,
                 monsters: monsterManager.getSerializedMonsters(visibleMonsters),
-                projectiles: projectileManager.getSerializedProjectiles()
+                projectiles: serializedProjectiles
             };
             socket.emit('state', state);
         }
     });
-    
+
+    if (ENABLE_SERVER_PROFILING) {
+        const tickEnd = performance.now();
+        perfStats.tickCount += 1;
+        perfStats.tickTotal += tickEnd - tickStart;
+
+        if (tickEnd - lastProfileLog >= PROFILE_LOG_INTERVAL_MS && perfStats.tickCount > 0) {
+            const divisor = perfStats.tickCount || 1;
+            const avgTick = perfStats.tickTotal / divisor;
+            const avgInput = perfStats.inputTotal / divisor;
+            const avgMonster = perfStats.monsterTotal / divisor;
+            const avgProjectile = perfStats.projectileTotal / divisor;
+            const avgPowerup = perfStats.powerupTotal / divisor;
+
+            console.log('[ServerPerf] avg tick %dms | input %dms | monster %dms | projectile %dms | powerup %dms (ticks=%d)',
+                avgTick.toFixed(3),
+                avgInput.toFixed(3),
+                avgMonster.toFixed(3),
+                avgProjectile.toFixed(3),
+                avgPowerup.toFixed(3),
+                perfStats.tickCount);
+
+            serverPerfSnapshot = {
+                timestamp: tickEnd,
+                ticks: perfStats.tickCount,
+                avgTick,
+                avgInput,
+                avgMonster,
+                avgProjectile,
+                avgPowerup
+            };
+
+            perfStats.tickCount = 0;
+            perfStats.tickTotal = 0;
+            perfStats.inputTotal = 0;
+            perfStats.monsterTotal = 0;
+            perfStats.projectileTotal = 0;
+            perfStats.powerupTotal = 0;
+            lastProfileLog = tickEnd;
+        }
+    }
+
 }, 1000 / GAME_CONSTANTS.TICK_RATE);
 
 // Spawn initial monsters

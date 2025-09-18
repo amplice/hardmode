@@ -79,6 +79,7 @@ export class ProjectileManager {
     public projectiles: Map<string, Projectile>;
     private nextProjectileId: number;
     public damageProcessor?: DamageProcessor;
+    private removalBuffer: string[];
 
     // Helper function to convert PlayerState to coordinate format for getDistance
     private playerToCoords(player: PlayerState): { x: number, y: number } {
@@ -107,6 +108,7 @@ export class ProjectileManager {
         this.io = io;
         this.projectiles = new Map();
         this.nextProjectileId = 1;
+        this.removalBuffer = [];
     }
 
     createProjectile(owner: ProjectileOwner, data: ProjectileData): Projectile {
@@ -135,7 +137,8 @@ export class ProjectileManager {
     }
 
     update(deltaTime: number, players: Map<string, PlayerState>, monsters: Map<string, ServerMonsterState>): void {
-        const projectilesToRemove: string[] = [];
+        const projectilesToRemove = this.removalBuffer;
+        projectilesToRemove.length = 0;
         
         // Phase 6.1: Use class-based update and collision detection
         this.projectiles.forEach((projectile, id) => {
@@ -218,6 +221,7 @@ export class ProjectileManager {
         for (const id of projectilesToRemove) {
             this.projectiles.delete(id);
         }
+        projectilesToRemove.length = 0;
     }
 
     handleProjectileHit(

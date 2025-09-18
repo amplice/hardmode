@@ -115,6 +115,16 @@ export class Game {
   debugLogger: DebugLogger;
   performanceOverlay?: any; // PerformanceOverlay
   worldData?: WorldData; // Store world data for biome lookups
+  profilingEnabled: boolean;
+  profilingStats: {
+    frames: number;
+    total: number;
+    input: number;
+    simulation: number;
+    render: number;
+    lastLog: number;
+    logInterval: number;
+  };
   
   constructor() {
     this.app = new PIXI.Application({
@@ -179,6 +189,37 @@ export class Game {
     window.setCameraSmoothing = (value) => {
       this.camera.smoothing = Math.max(0.01, Math.min(1.0, value));
       // Camera smoothing updated
+    };
+    
+    // Lightweight optional profiling controlled via query param or localStorage flag
+    const urlSearch = typeof window !== 'undefined' ? window.location.search : '';
+    const searchParams = new URLSearchParams(urlSearch);
+    let profilingEnabled = true;
+
+    if (searchParams.has('profileClient')) {
+      profilingEnabled = searchParams.get('profileClient') !== '0';
+    } else {
+      try {
+        const stored = typeof localStorage !== 'undefined' ? localStorage.getItem('hm_profile_client') : null;
+        if (stored === 'false') {
+          profilingEnabled = false;
+        } else if (stored === 'true') {
+          profilingEnabled = true;
+        }
+      } catch (error) {
+        // Ignore storage errors and keep default
+      }
+    }
+
+    this.profilingEnabled = profilingEnabled;
+    this.profilingStats = {
+      frames: 0,
+      total: 0,
+      input: 0,
+      simulation: 0,
+      render: 0,
+      lastLog: performance.now(),
+      logInterval: 5000
     };
     
     // Add latency debugging commands (will be available after game starts)
@@ -358,7 +399,14 @@ export class Game {
   update(delta: number): void {
     // Only update game if it has started
     if (!this.gameStarted) return;
-    
+
+    let frameStart = 0;
+    let stageTime = 0;
+    if (this.profilingEnabled) {
+      frameStart = performance.now();
+      stageTime = frameStart;
+    }
+
     // Track performance
     if (this.performanceOverlay) {
       this.performanceOverlay.startUpdateTimer();
@@ -404,7 +452,7 @@ export class Game {
                                   ['secondary'].includes(this.entities.player.currentAttackType);
                                   
       if (!isAttacking && !isDead) {
-        
+
         const currentState = {
           x: this.entities.player.position.x,
           y: this.entities.player.position.y,
@@ -455,7 +503,13 @@ export class Game {
       // Fallback to local-only movement when not connected
       this.entities.player.update(deltaTimeSeconds, inputState);
     }
-    
+
+    if (this.profilingEnabled) {
+      const nowStamp = performance.now();
+      this.profilingStats.input += nowStamp - stageTime;
+      stageTime = nowStamp;
+    }
+
     // Log player state changes
     if (prevPlayerState !== (this.entities.player.isAttacking ? 'attacking' : 'idle')) {
       this.debugLogger.logEvent('playerStateChange', { 
@@ -485,9 +539,9 @@ export class Game {
     
     // 4. Apply physics (world boundaries and tile collisions) to all collected entities
     this.systems.physics.update(deltaTimeSeconds, allEntitiesForPhysics, this.systems.world);
-    
+
     // 5. Jitter buffer disabled for better responsiveness
-    
+
     // 6. Update combat, camera, and UI
     this.systems.combat.update(deltaTimeSeconds);
     if (this.projectileRenderer) {
@@ -499,6 +553,13 @@ export class Game {
     if (this.telegraphRenderer) {
       this.telegraphRenderer.update(deltaTimeSeconds);
     }
+
+    if (this.profilingEnabled) {
+      const nowStamp = performance.now();
+      this.profilingStats.simulation += nowStamp - stageTime;
+      stageTime = nowStamp;
+    }
+
     this.updateCamera(); // Depends on player's final position after physics
     this.healthUI.update();
     if (this.statsUI) this.statsUI.update();
@@ -537,6 +598,45 @@ export class Game {
       if (this.latencyTracker) {
         const stats = this.latencyTracker.getStats();
         this.performanceOverlay.updateLatency(stats.averageRTT);
+      }
+    }
+
+    if (this.profilingEnabled) {
+      const frameEnd = performance.now();
+      this.profilingStats.render += frameEnd - stageTime;
+      this.profilingStats.total += frameEnd - frameStart;
+      this.profilingStats.frames += 1;
+
+      if (frameEnd - this.profilingStats.lastLog >= this.profilingStats.logInterval && this.profilingStats.frames > 0) {
+        const divisor = this.profilingStats.frames || 1;
+        const avgFrame = this.profilingStats.total / divisor;
+        const avgInput = this.profilingStats.input / divisor;
+        const avgSimulation = this.profilingStats.simulation / divisor;
+        const avgRender = this.profilingStats.render / divisor;
+
+        if (this.network && typeof this.network.sendClientPerfMetrics === 'function' && this.network.connected) {
+          this.network.sendClientPerfMetrics({
+            avgFrame,
+            avgInput,
+            avgSimulation,
+            avgRender,
+            frames: this.profilingStats.frames
+          });
+        }
+
+        console.log('[ClientPerf] avg frame %dms | input %dms | simulation %dms | render %dms (frames=%d)',
+          avgFrame.toFixed(3),
+          avgInput.toFixed(3),
+          avgSimulation.toFixed(3),
+          avgRender.toFixed(3),
+          this.profilingStats.frames);
+
+        this.profilingStats.frames = 0;
+        this.profilingStats.total = 0;
+        this.profilingStats.input = 0;
+        this.profilingStats.simulation = 0;
+        this.profilingStats.render = 0;
+        this.profilingStats.lastLog = frameEnd;
       }
     }
   }
@@ -829,8 +929,55 @@ export class Game {
 
   updateRemoteMonsters(delta: number): void {
     if (!this.remoteMonsters) return;
+    const player = this.entities.player;
+    if (!player) {
+      for (const monster of this.remoteMonsters.values()) {
+        monster.update(delta);
+      }
+      return;
+    }
+
+    const lodConfig = (GAME_CONSTANTS.MONSTER as any)?.LOD || {};
+    const mediumMultiplier = lodConfig.MEDIUM_MULTIPLIER ?? 1.6;
+    const farMultiplier = lodConfig.FAR_MULTIPLIER ?? 2.4;
+    const mediumSkip = lodConfig.MEDIUM_SKIP ?? 3;
+    const farSkip = lodConfig.FAR_SKIP ?? 6;
+
+    const viewDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE;
+    const mediumDistanceSq = Math.pow(viewDistance * mediumMultiplier, 2);
+    const farDistanceSq = Math.pow(viewDistance * farMultiplier, 2);
+
+    const playerX = player.position.x;
+    const playerY = player.position.y;
+
     for (const monster of this.remoteMonsters.values()) {
-      monster.update(delta);
+      const dx = monster.position.x - playerX;
+      const dy = monster.position.y - playerY;
+      const distanceSq = dx * dx + dy * dy;
+      const monsterAny = monster as any;
+
+      // Hide very distant monsters to reduce GPU load
+      monster.sprite.visible = distanceSq <= farDistanceSq;
+
+      if (distanceSq <= mediumDistanceSq) {
+        monster.update(delta);
+        if (monsterAny.__lodSkipCounter) {
+          monsterAny.__lodSkipCounter = 0;
+        }
+        continue;
+      }
+
+      monsterAny.__lodSkipCounter = (monsterAny.__lodSkipCounter || 0) + 1;
+
+      if (distanceSq <= farDistanceSq) {
+        if (monsterAny.__lodSkipCounter % Math.max(1, mediumSkip) === 0) {
+          monster.update(delta * Math.max(1, mediumSkip));
+        }
+      } else {
+        if (monsterAny.__lodSkipCounter % Math.max(1, farSkip) === 0) {
+          monster.update(delta * Math.max(1, farSkip));
+        }
+      }
     }
   }
 

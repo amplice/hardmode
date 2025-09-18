@@ -239,10 +239,17 @@ export class MonsterManager {
             }
         }
 
-        // Monster AI LOD System: Conservative distances to ensure monsters near players always update
-        const nearDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 1.2; // 1800px (very generous near range)
-        const mediumDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 2.0; // 3000px (generous medium range)
-        const farDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * 3.0; // 4500px (only very distant monsters affected)
+        // Monster AI LOD System: Using shared constants for consistent behavior
+        const lodConfig = (GAME_CONSTANTS.MONSTER as any)?.LOD || {};
+        const nearMultiplier = lodConfig.NEAR_MULTIPLIER ?? 1.0;
+        const mediumMultiplier = lodConfig.MEDIUM_MULTIPLIER ?? 1.6;
+        const farMultiplier = lodConfig.FAR_MULTIPLIER ?? 2.4;
+        const mediumSkip = lodConfig.MEDIUM_SKIP ?? 3;
+        const farSkip = lodConfig.FAR_SKIP ?? 6;
+
+        const nearDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * nearMultiplier;
+        const mediumDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * mediumMultiplier;
+        const farDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * farMultiplier;
         
         let nearCount = 0;
         let mediumCount = 0;
@@ -275,27 +282,27 @@ export class MonsterManager {
                 this.updateMonster(monster, deltaTime, players);
                 nearCount++;
             } else if (closestDistance < mediumDistance) {
-                // MEDIUM: Update every 2 frames (skip 50% of updates)
+                // MEDIUM: Update every few frames based on configured skip
                 // Wake up dormant monsters
                 if ((monster.state as any) === 'dormant') {
                     this.transitionMonsterState(monster, 'idle');
                 }
                 if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
                 monster.lodSkipCounter++;
-                if (monster.lodSkipCounter % 2 === 0) {
-                    this.updateMonster(monster, deltaTime * 2, players); // Compensate for skipped frame
+                if (monster.lodSkipCounter % Math.max(1, mediumSkip) === 0) {
+                    this.updateMonster(monster, deltaTime * Math.max(1, mediumSkip), players); // Compensate for skipped frames
                 }
                 mediumCount++;
             } else if (closestDistance < farDistance) {
-                // FAR: Update every 4 frames (skip 75% of updates) 
+                // FAR: Update less frequently based on configured skip
                 // Wake up dormant monsters
                 if ((monster.state as any) === 'dormant') {
                     this.transitionMonsterState(monster, 'idle');
                 }
                 if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
                 monster.lodSkipCounter++;
-                if (monster.lodSkipCounter % 4 === 0) {
-                    this.updateMonster(monster, deltaTime * 4, players); // Compensate for skipped frames
+                if (monster.lodSkipCounter % Math.max(1, farSkip) === 0) {
+                    this.updateMonster(monster, deltaTime * Math.max(1, farSkip), players); // Compensate for skipped frames
                 }
                 farCount++;
             } else {

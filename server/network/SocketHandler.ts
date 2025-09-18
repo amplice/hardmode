@@ -72,6 +72,16 @@ interface NetworkOptimizer {
     resetClient(clientId: string): void;
 }
 
+interface ClientPerfStoreEntry {
+    socketId: string;
+    avgFrame: number;
+    avgInput: number;
+    avgSimulation: number;
+    avgRender: number;
+    frames: number;
+    updatedAt: number;
+}
+
 // Message data types
 interface PlayerUpdateData {
     x: number;
@@ -127,6 +137,7 @@ export class SocketHandler {
     private worldSeed: number;
     private networkOptimizer: NetworkOptimizer;
     private activeUsernames: Map<string, string>; // socketId -> username
+    private clientPerfStats?: Map<string, ClientPerfStoreEntry>;
 
     constructor(
         io: SocketIO,
@@ -138,7 +149,8 @@ export class SocketHandler {
         lagCompensation: LagCompensation,
         sessionAntiCheat: SessionAntiCheat,
         worldSeed: number,
-        networkOptimizer: NetworkOptimizer
+        networkOptimizer: NetworkOptimizer,
+        clientPerfStats?: Map<string, ClientPerfStoreEntry>
     ) {
         this.io = io;
         this.gameState = gameState;
@@ -151,6 +163,7 @@ export class SocketHandler {
         this.worldSeed = worldSeed;
         this.networkOptimizer = networkOptimizer;
         this.activeUsernames = new Map();
+        this.clientPerfStats = clientPerfStats;
         this.setupEventHandlers();
     }
 
@@ -212,6 +225,7 @@ export class SocketHandler {
         socket.on('collisionMask', (data: any) => this.handleCollisionMask(socket, data));
         socket.on('ping', (data: PingData) => this.handlePing(socket, data));
         socket.on('debugSpawnMonster', (data: { type: string, x: number, y: number }) => this.handleDebugSpawnMonster(socket, data));
+        socket.on('clientPerf', (data: any) => this.handleClientPerf(socket, data));
         socket.on('disconnect', () => this.handleDisconnect(socket));
     }
 
@@ -481,5 +495,29 @@ export class SocketHandler {
         // Clean up username
         this.activeUsernames.delete(socket.id);
         socket.broadcast.emit('playerLeft', socket.id);
+        if (this.clientPerfStats) {
+            this.clientPerfStats.delete(socket.id);
+        }
+    }
+
+    private handleClientPerf(socket: Socket, data: any): void {
+        if (!this.clientPerfStats) {
+            return;
+        }
+        if (!data || typeof data !== 'object') {
+            return;
+        }
+
+        const entry: ClientPerfStoreEntry = {
+            socketId: socket.id,
+            avgFrame: Number(data.avgFrame) || 0,
+            avgInput: Number(data.avgInput) || 0,
+            avgSimulation: Number(data.avgSimulation) || 0,
+            avgRender: Number(data.avgRender) || 0,
+            frames: Number(data.frames) || 0,
+            updatedAt: Date.now()
+        };
+
+        this.clientPerfStats.set(socket.id, entry);
     }
 }
