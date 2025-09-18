@@ -138,6 +138,7 @@ const lagCompensation = new LagCompensation();
 const sessionAntiCheat = new SessionAntiCheat(abilityManager as any);
 const inputProcessor = new InputProcessor(gameState as any, abilityManager as any, lagCompensation as any, sessionAntiCheat as any, serverWorldManager as any, powerupManager);
 const networkOptimizer = new NetworkOptimizer();
+const clientPerfStats: Map<string, ClientPerfSnapshot> = new Map();
 const socketHandler = new SocketHandler(io, gameState as any, monsterManager as any, projectileManager, abilityManager as any, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer, clientPerfStats);
 const damageProcessor = new DamageProcessor(gameState, monsterManager, socketHandler, io, powerupManager);
 
@@ -195,8 +196,6 @@ interface ClientPerfSnapshot {
     frames: number;
     updatedAt: number;
 }
-
-const clientPerfStats: Map<string, ClientPerfSnapshot> = new Map();
 
 // Spawn initial monsters for immediate stress testing
 console.log(`[Server] 🔥 EXTREME STRESS TEST: Spawning ${GAME_CONSTANTS.SPAWN.INITIAL_MONSTERS} initial monsters...`);
@@ -301,10 +300,13 @@ setInterval(() => {
     
     // BANDWIDTH OPTIMIZATION: Per-client personalized state updates
     // Each client gets only relevant data optimized for their view and connection
+    const serializedPlayersAll = gameState.getSerializedPlayers(inputProcessor);
+    const serializedProjectilesAll = projectileManager.getSerializedProjectiles();
+
     io.sockets.sockets.forEach((socket, socketId) => {
         const player: PlayerState | undefined = gameState.getPlayerBySocket(socketId);
         if (!player) return;
-        
+
         // PERFORMANCE: Only send monsters within view distance of this specific player
         // Reduces both CPU load and network bandwidth significantly
         const visibleMonsters = monsterManager.getVisibleMonsters(new Map([[player.id, player]]));
@@ -317,24 +319,32 @@ setInterval(() => {
             // DELTA COMPRESSION PATH: 70-80% bandwidth reduction
             
             // Step 1: Get authoritative serialized state with client prediction data
-            const serializedPlayers = gameState.getSerializedPlayers(inputProcessor);
-            const filteredPlayers = serializedPlayers.filter((serializedPlayer: any) => {
+            const filteredPlayers: any[] = [];
+            for (const serializedPlayer of serializedPlayersAll) {
                 if (serializedPlayer.id === player.id) {
-                    return true;
+                    filteredPlayers.push(serializedPlayer);
+                    continue;
                 }
-                if (serializedPlayer.x === undefined || serializedPlayer.y === undefined) {
-                    return false;
+                const spx = serializedPlayer.x;
+                const spy = serializedPlayer.y;
+                if (spx === undefined || spy === undefined) {
+                    continue;
                 }
-                const dx = serializedPlayer.x - playerX;
-                const dy = serializedPlayer.y - playerY;
-                return (dx * dx + dy * dy) <= viewDistanceSquared;
-            });
+                const dx = spx - playerX;
+                const dy = spy - playerY;
+                if ((dx * dx + dy * dy) <= viewDistanceSquared) {
+                    filteredPlayers.push(serializedPlayer);
+                }
+            }
             const serializedMonsters = monsterManager.getSerializedMonsters(visibleMonsters);
-            const serializedProjectiles = projectileManager.getSerializedProjectiles().filter(projectile => {
+            const serializedProjectiles: any[] = [];
+            for (const projectile of serializedProjectilesAll) {
                 const dx = projectile.x - playerX;
                 const dy = projectile.y - playerY;
-                return (dx * dx + dy * dy) <= viewDistanceSquared;
-            });
+                if ((dx * dx + dy * dy) <= viewDistanceSquared) {
+                    serializedProjectiles.push(projectile);
+                }
+            }
             
             // Step 2: NetworkOptimizer compares current vs last-sent per this client
             // Creates deltas containing only changed fields + critical stability fields
@@ -352,23 +362,31 @@ setInterval(() => {
             socket.emit('state', optimizedState);
         } else {
             // LEGACY PATH: Send complete objects (backwards compatibility)
-            const serializedPlayers = gameState.getSerializedPlayers(inputProcessor);
-            const filteredPlayers = serializedPlayers.filter((serializedPlayer: any) => {
+            const filteredPlayers: any[] = [];
+            for (const serializedPlayer of serializedPlayersAll) {
                 if (serializedPlayer.id === player.id) {
-                    return true;
+                    filteredPlayers.push(serializedPlayer);
+                    continue;
                 }
-                if (serializedPlayer.x === undefined || serializedPlayer.y === undefined) {
-                    return false;
+                const spx = serializedPlayer.x;
+                const spy = serializedPlayer.y;
+                if (spx === undefined || spy === undefined) {
+                    continue;
                 }
-                const dx = serializedPlayer.x - playerX;
-                const dy = serializedPlayer.y - playerY;
-                return (dx * dx + dy * dy) <= viewDistanceSquared;
-            });
-            const serializedProjectiles = projectileManager.getSerializedProjectiles().filter(projectile => {
+                const dx = spx - playerX;
+                const dy = spy - playerY;
+                if ((dx * dx + dy * dy) <= viewDistanceSquared) {
+                    filteredPlayers.push(serializedPlayer);
+                }
+            }
+            const serializedProjectiles: any[] = [];
+            for (const projectile of serializedProjectilesAll) {
                 const dx = projectile.x - playerX;
                 const dy = projectile.y - playerY;
-                return (dx * dx + dy * dy) <= viewDistanceSquared;
-            });
+                if ((dx * dx + dy * dy) <= viewDistanceSquared) {
+                    serializedProjectiles.push(projectile);
+                }
+            }
             const state = {
                 players: filteredPlayers,
                 monsters: monsterManager.getSerializedMonsters(visibleMonsters),
