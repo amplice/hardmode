@@ -43,6 +43,7 @@ interface Player {
     facing: string;
     damageStunned?: boolean;
     moveSpeedBonus?: number;
+    position?: Position;
 }
 
 // Ability manager interface
@@ -502,7 +503,13 @@ export class InputProcessor {
 
             // Apply world boundaries as final constraint
             this.applyWorldBounds(player);
-            
+
+            // Keep legacy position object in sync for systems still reading player.position
+            if (player.position) {
+                player.position.x = player.x;
+                player.position.y = player.y;
+            }
+
             // Check for powerup pickup after movement
             this.checkPowerupPickup(player);
         } catch (error) {
