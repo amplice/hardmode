@@ -50,6 +50,7 @@
  */
 
 import { directionStringToAngleRadians } from '../utils/DirectionUtils.js';
+import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 import type { CharacterClass } from '../../../shared/types/GameTypes.js';
 
 // Interface for player state used in predictions
@@ -125,13 +126,30 @@ export class MovementPredictor {
             rogue: 6
         };
         
+        const defaultWidthTiles = GAME_CONSTANTS?.WORLD?.WIDTH ?? 500;
+        const defaultHeightTiles = GAME_CONSTANTS?.WORLD?.HEIGHT ?? 500;
+        const tileSize = GAME_CONSTANTS?.WORLD?.TILE_SIZE ?? 64;
+
         this.worldBounds = {
-            width: 500 * 64,  // Updated to 500x500 world (32000x32000 pixels)
-            height: 500 * 64
+            width: defaultWidthTiles * tileSize,
+            height: defaultHeightTiles * tileSize
         };
+
+        if (collisionMask) {
+            this.updateWorldBoundsFromMask(collisionMask as any);
+        }
         
         // Minimal prediction adjustment for high latency
         this.maxPredictionAdjustment = 10; // Conservative max 10ms adjustment
+    }
+
+    private updateWorldBoundsFromMask(mask: any): void {
+        if (!mask) return;
+        const tileSize = typeof mask.tileSize === 'number' ? mask.tileSize : (GAME_CONSTANTS?.WORLD?.TILE_SIZE ?? 64);
+        if (typeof mask.width === 'number' && typeof mask.height === 'number') {
+            this.worldBounds.width = mask.width * tileSize;
+            this.worldBounds.height = mask.height * tileSize;
+        }
     }
     
     /**
