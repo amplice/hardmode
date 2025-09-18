@@ -107,6 +107,7 @@ export class ClientWorldRenderer {
     // Noise generation
     private random: () => number;
     private noise2D: ReturnType<typeof createNoise2D>;
+    private static readonly ENABLE_DECORATIVE_ANIMATION = false;
 
     constructor(options: WorldRendererOptions = {}) {
         this.width = options.width || 100;
@@ -724,7 +725,7 @@ export class ClientWorldRenderer {
                     (element.type.includes('_large') || element.type.includes('_medium'))) ||
                     (element.type === 'tree_winter1' || element.type === 'tree_winter2' || element.type === 'tree_winter3');
                 
-                if (isAnimatedTree) {
+                if (isAnimatedTree && ClientWorldRenderer.ENABLE_DECORATIVE_ANIMATION) {
                     // Get animation frames for this tree type
                     const animationFrames = this.tilesets.getTreeAnimationFrames(element.type);
                     
@@ -796,7 +797,7 @@ export class ClientWorldRenderer {
         console.log(`  - Total element tiles found: ${totalElementsFound}`);
         console.log(`  - Skipped (duplicates/non-origin): ${skippedElements}`);
         console.log(`  - Unique elements rendered: ${renderedElements.size}`);
-        console.log(`  - Animated trees: ${this.animatedTrees.length}`);
+        console.log(`  - Animated trees: ${ClientWorldRenderer.ENABLE_DECORATIVE_ANIMATION ? this.animatedTrees.length : 0}`);
     }
     
     /**
@@ -900,7 +901,7 @@ export class ClientWorldRenderer {
      * Uses a shared timer for all trees for performance
      */
     public updateAnimations(deltaTime: number): void {
-        if (this.animatedTrees.length === 0) return;
+        if (!ClientWorldRenderer.ENABLE_DECORATIVE_ANIMATION || this.animatedTrees.length === 0) return;
         
         // Calculate a global frame based on time for all trees
         // This ensures all trees are synchronized but at different offsets

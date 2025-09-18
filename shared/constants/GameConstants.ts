@@ -57,8 +57,8 @@ import type {
 export const GAME_CONSTANTS = {
     // World settings - expanded for more content
     WORLD: {
-        WIDTH: 750,  // Expanded from 500 for more exploration space
-        HEIGHT: 750, // Expanded from 500 for more exploration space
+        WIDTH: 1000,  // Expanded for large-scale profiling
+        HEIGHT: 1000, // Expanded for large-scale profiling
         TILE_SIZE: 64,
         SEED: 42 // Default seed, server will override with generated seed
     },
@@ -68,8 +68,8 @@ export const GAME_CONSTANTS = {
     
     // Spawn system - optimized for higher density
     SPAWN: {
-        MAX_MONSTERS: 300, // Doubled for better density (still only 0.0005 per tile)
-        INITIAL_MONSTERS: 80, // Start with more monsters visible
+        MAX_MONSTERS: 1200, // Support large-scale stress scenarios
+        INITIAL_MONSTERS: 250, // Start with substantial field presence
         INTERVAL: 0.8, // Spawn new monsters faster
         MIN_DISTANCE_FROM_PLAYER: 600, // Slightly closer spawns
         MAX_DISTANCE_FROM_PLAYER: 10000, // Expanded for 750x750 world
