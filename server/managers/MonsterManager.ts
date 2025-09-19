@@ -139,6 +139,8 @@ export class MonsterManager {
     private teleportTimeouts: Map<string, NodeJS.Timeout>;
     private monsterBuckets: Map<string, Set<string>>;
     private bucketSize: number;
+    private lodScratchMonsters: ServerMonsterState[];
+    private lodDistanceMap: Map<string, number>;
 
     // Helper function to convert PlayerState to coordinate format for getDistance
     private playerToCoords(player: PlayerState): { x: number, y: number } {
@@ -172,6 +174,8 @@ export class MonsterManager {
         this.teleportTimeouts = new Map();
         this.monsterBuckets = new Map();
         this.bucketSize = Math.max(256, GAME_CONSTANTS.NETWORK.VIEW_DISTANCE / 2);
+        this.lodScratchMonsters = [];
+        this.lodDistanceMap = new Map();
 
         // Initialize collision mask using shared world data (NO duplicate generation)
         this.collisionMask = new CollisionMask(
@@ -311,12 +315,45 @@ export class MonsterManager {
         const nearDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * nearMultiplier;
         const mediumDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * mediumMultiplier;
         const farDistance = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * farMultiplier;
-        
+
+        const nearDistanceSq = nearDistance * nearDistance;
+        const mediumDistanceSq = mediumDistance * mediumDistance;
+        const farDistanceSq = farDistance * farDistance;
+        const mediumSkipFrames = Math.max(1, mediumSkip);
+        const farSkipFrames = Math.max(1, farSkip);
+
+        const lodDistanceMap = this.lodDistanceMap;
+        lodDistanceMap.clear();
+
+        const playersArray = Array.from(players.values());
+        if (playersArray.length > 0) {
+            const scratch = this.lodScratchMonsters;
+            for (const player of playersArray) {
+                const playerCoords = this.playerToCoords(player);
+                const nearbyMonsters = this.collectMonstersWithinRadius(
+                    playerCoords.x,
+                    playerCoords.y,
+                    farDistance,
+                    scratch
+                );
+
+                for (const monster of nearbyMonsters) {
+                    const dx = monster.x - playerCoords.x;
+                    const dy = monster.y - playerCoords.y;
+                    const distSq = dx * dx + dy * dy;
+                    const existing = lodDistanceMap.get(monster.id);
+                    if (existing === undefined || distSq < existing) {
+                        lodDistanceMap.set(monster.id, distSq);
+                    }
+                }
+            }
+        }
+
         let nearCount = 0;
         let mediumCount = 0;
         let farCount = 0;
         let dormantCount = 0;
-        
+
         for (const monster of Array.from(this.monsters.values())) {
             if (monster.state === 'dying') {
                 this.cleanupMonsterTimeouts(monster.id);
@@ -324,58 +361,59 @@ export class MonsterManager {
                 this.monsters.delete(monster.id);
                 continue;
             }
-            
-            // Find closest player distance
-            let closestDistance = Infinity;
-            for (const player of Array.from(players.values())) {
-                const playerCoords = this.playerToCoords(player);
-                const dist = getDistance(monster, playerCoords);
-                closestDistance = Math.min(closestDistance, dist);
+
+            const monsterAny = monster as any;
+            const distanceSq = lodDistanceMap.get(monster.id);
+
+            if (distanceSq === undefined) {
+                // No players of interest nearby - park the monster
+                if ((monster.state as any) !== 'dormant') {
+                    this.transitionMonsterState(monster, 'dormant');
+                }
+                monsterAny.lodSkipCounter = 0;
+                dormantCount++;
+                continue;
             }
-            
-            // Determine LOD level and update frequency
-            // Force full updates for monsters in multi-hit attacks to ensure smooth movement
-            if (closestDistance < nearDistance || (monster.multiHitData && monster.state === 'attacking')) {
-                // NEAR: Full update every frame (highest priority)
-                // Wake up dormant monsters
+
+            const forceNear = monster.multiHitData && monster.state === 'attacking';
+
+            if (distanceSq <= nearDistanceSq || forceNear) {
                 if ((monster.state as any) === 'dormant') {
                     this.transitionMonsterState(monster, 'idle');
                 }
+                monsterAny.lodSkipCounter = 0;
                 this.updateMonster(monster, deltaTime, players);
                 this.updateMonsterBucket(monster);
                 nearCount++;
-            } else if (closestDistance < mediumDistance) {
-                // MEDIUM: Update every few frames based on configured skip
-                // Wake up dormant monsters
+                continue;
+            }
+
+            monsterAny.lodSkipCounter = (monsterAny.lodSkipCounter || 0) + 1;
+
+            if (distanceSq <= mediumDistanceSq) {
                 if ((monster.state as any) === 'dormant') {
                     this.transitionMonsterState(monster, 'idle');
                 }
-                if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
-                monster.lodSkipCounter++;
-                if (monster.lodSkipCounter % Math.max(1, mediumSkip) === 0) {
-                    this.updateMonster(monster, deltaTime * Math.max(1, mediumSkip), players); // Compensate for skipped frames
+                if (monsterAny.lodSkipCounter % mediumSkipFrames === 0) {
+                    this.updateMonster(monster, deltaTime * mediumSkipFrames, players);
                     this.updateMonsterBucket(monster);
                 }
                 mediumCount++;
-            } else if (closestDistance < farDistance) {
-                // FAR: Update less frequently based on configured skip
-                // Wake up dormant monsters
+            } else if (distanceSq <= farDistanceSq) {
                 if ((monster.state as any) === 'dormant') {
                     this.transitionMonsterState(monster, 'idle');
                 }
-                if (!monster.lodSkipCounter) monster.lodSkipCounter = 0;
-                monster.lodSkipCounter++;
-                if (monster.lodSkipCounter % Math.max(1, farSkip) === 0) {
-                    this.updateMonster(monster, deltaTime * Math.max(1, farSkip), players); // Compensate for skipped frames
+                if (monsterAny.lodSkipCounter % farSkipFrames === 0) {
+                    this.updateMonster(monster, deltaTime * farSkipFrames, players);
                     this.updateMonsterBucket(monster);
                 }
                 farCount++;
             } else {
-                // DORMANT: No updates, minimal state
+                // Safety: if a monster ended up outside far range due to teleport, park it until rediscovered
                 if ((monster.state as any) !== 'dormant') {
-                    // Newly becoming dormant - use state machine for proper transition
                     this.transitionMonsterState(monster, 'dormant');
                 }
+                monsterAny.lodSkipCounter = 0;
                 dormantCount++;
             }
         }
