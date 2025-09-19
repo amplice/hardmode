@@ -658,10 +658,23 @@ export class Monster {
             }
         } else {
             // Normal smooth interpolation to target position (for network sync)
-            this.position.x += (this.targetPosition.x - this.position.x) * this.interpolationSpeed;
-            this.position.y += (this.targetPosition.y - this.position.y) * this.interpolationSpeed;
+            const baseFactor = this.interpolationSpeed;
+            const smoothingFactor = deltaTime > 0 ? Math.min(1, baseFactor * (deltaTime * 60)) : baseFactor;
+
+            const dx = this.targetPosition.x - this.position.x;
+            const dy = this.targetPosition.y - this.position.y;
+            const distanceSquared = dx * dx + dy * dy;
+
+            // Snap if we're very far away (e.g., teleport or first update)
+            if (distanceSquared > 250000) {
+                this.position.x = this.targetPosition.x;
+                this.position.y = this.targetPosition.y;
+            } else {
+                this.position.x += dx * smoothingFactor;
+                this.position.y += dy * smoothingFactor;
+            }
         }
-        
+
         // Update sprite position
         this.sprite.position.set(this.position.x, this.position.y);
         

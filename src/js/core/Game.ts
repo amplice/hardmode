@@ -845,6 +845,10 @@ export class Game {
     this.entityContainer.addChild(p.sprite);
     if (!this.remotePlayers) this.remotePlayers = new Map();
     this.remotePlayers.set(info.id, p);
+
+    // Initialize network smoothing target for remote players
+    p.networkTargetPosition = { x: info.x, y: info.y };
+    p.lastNetworkUpdate = performance.now();
   }
 
   updateRemotePlayer(info: PlayerInfo & { movementDirection?: string | null; spawnProtectionTimer?: number }): void {
@@ -866,14 +870,19 @@ export class Game {
       p.setUsername(info.username);
     }
 
-    const prevX = p.position.x;
-    const prevY = p.position.y;
+    const prevX = p.networkTargetPosition?.x ?? p.position.x;
+    const prevY = p.networkTargetPosition?.y ?? p.position.y;
+
+    if (!p.networkTargetPosition) {
+      p.networkTargetPosition = { x: p.position.x, y: p.position.y };
+    }
 
     p.lastFacing = p.facing;
-    p.position.x = info.x;
-    p.position.y = info.y;
     p.facing = info.facing || p.facing;
-    p.sprite.position.set(p.position.x, p.position.y);
+
+    p.networkTargetPosition.x = info.x;
+    p.networkTargetPosition.y = info.y;
+    p.lastNetworkUpdate = performance.now();
 
     const dx = info.x - prevX;
     const dy = info.y - prevY;
@@ -907,11 +916,33 @@ export class Game {
   updateRemotePlayers(delta: number): void {
     if (!this.remotePlayers) return;
     for (const p of this.remotePlayers.values()) {
+      // Smoothly move remote player towards the latest network target
+      const targetPos = p.networkTargetPosition || p.position;
+      const smoothing = p.networkSmoothingSpeed;
+      const lerpFactor = delta > 0 ? Math.min(1, smoothing * delta) : smoothing;
+
+      const diffX = targetPos.x - p.position.x;
+      const diffY = targetPos.y - p.position.y;
+      const distanceSq = diffX * diffX + diffY * diffY;
+
+      if (distanceSq > 250000) {
+        // Snap if we're too far (e.g., teleport)
+        p.position.x = targetPos.x;
+        p.position.y = targetPos.y;
+      } else {
+        p.position.x += diffX * lerpFactor;
+        p.position.y += diffY * lerpFactor;
+      }
+
+      if (p.sprite) {
+        p.sprite.position.set(p.position.x, p.position.y);
+      }
+
       // Update health component to process damage stun timer
       if (p.health) {
         p.health.update(delta);
       }
-      
+
       // Update spawn protection timer (same as local player logic)
       if (p.spawnProtectionTimer > 0) {
         p.spawnProtectionTimer -= delta;
@@ -922,7 +953,7 @@ export class Game {
           p.animation.applyCurrentTints();
         }
       }
-      
+
       p.animation.update();
     }
   }

@@ -54,6 +54,10 @@ interface RenderedProjectile {
     effectType?: string;
     graphics?: PIXI.Graphics;
     effect?: PIXI.AnimatedSprite;
+    targetX: number;
+    targetY: number;
+    lastServerUpdate: number;
+    smoothingSpeed: number;
 }
 
 // Minimal game interface
@@ -95,7 +99,11 @@ export class ProjectileRenderer {
                 x: Math.cos(data.angle) * data.speed,
                 y: Math.sin(data.angle) * data.speed
             },
-            effectType: data.effectType // Store for later use
+            effectType: data.effectType,
+            targetX: data.x,
+            targetY: data.y,
+            lastServerUpdate: performance.now(),
+            smoothingSpeed: 18
         };
         
         // Create visual representation
@@ -176,12 +184,16 @@ export class ProjectileRenderer {
         const projectile = this.projectiles.get(id);
         if (!projectile) return;
         
-        // Update position with interpolation
-        const lerpFactor = 0.3;
-        projectile.x = projectile.x + (x - projectile.x) * lerpFactor;
-        projectile.y = projectile.y + (y - projectile.y) * lerpFactor;
-        
-        projectile.sprite.position.set(projectile.x, projectile.y);
+        const now = performance.now();
+        const deltaSinceLast = (now - projectile.lastServerUpdate) / 1000;
+        if (deltaSinceLast > 0) {
+            projectile.velocity.x = (x - projectile.targetX) / deltaSinceLast;
+            projectile.velocity.y = (y - projectile.targetY) / deltaSinceLast;
+        }
+
+        projectile.targetX = x;
+        projectile.targetY = y;
+        projectile.lastServerUpdate = now;
     }
 
     destroyProjectile(id: string, reason: string): void {
@@ -206,7 +218,7 @@ export class ProjectileRenderer {
             if (projectile.effect && projectile.effect.playing) {
                 // Effect is auto-playing
             }
-            
+
             // Check if we need to add sprite effects that weren't loaded earlier
             if (!projectile.effect && projectile.effectType && this.game.systems.sprites?.loaded) {
                 const effect = this.createEffectSprite(projectile.effectType);
@@ -219,6 +231,35 @@ export class ProjectileRenderer {
                         projectile.graphics.visible = false;
                     }
                 }
+            }
+
+            // Smoothly interpolate towards the latest server position
+            const targetX = projectile.targetX;
+            const targetY = projectile.targetY;
+            const diffX = targetX - projectile.x;
+            const diffY = targetY - projectile.y;
+            const distanceSq = diffX * diffX + diffY * diffY;
+
+            const smoothing = projectile.smoothingSpeed;
+            const lerpFactor = deltaTime > 0 ? Math.min(1, smoothing * deltaTime) : smoothing;
+
+            if (distanceSq > 160000) { // 400px squared, snap to avoid trailing far behind
+                projectile.x = targetX;
+                projectile.y = targetY;
+            } else {
+                projectile.x += diffX * lerpFactor;
+                projectile.y += diffY * lerpFactor;
+            }
+
+            // Apply a tiny extrapolation using last known velocity to keep motion fluid
+            if (deltaTime > 0 && distanceSq < 100) {
+                projectile.x += projectile.velocity.x * deltaTime * 0.25;
+                projectile.y += projectile.velocity.y * deltaTime * 0.25;
+            }
+
+            projectile.sprite.position.set(projectile.x, projectile.y);
+            if (projectile.velocity.x !== 0 || projectile.velocity.y !== 0) {
+                projectile.sprite.rotation = Math.atan2(projectile.velocity.y, projectile.velocity.x);
             }
         }
     }

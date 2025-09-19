@@ -1194,6 +1194,11 @@ export class Player implements PlayerInterface {
     combat!: CombatComponent;
     health!: HealthComponent;
     stats!: StatsComponent;
+
+    // Network smoothing helpers for remote players
+    networkTargetPosition?: Position;
+    networkSmoothingSpeed: number = 12; // Units per second for interpolation
+    lastNetworkUpdate: number = performance.now();
     
     constructor(options: PlayerOptions) {
         // Use factory to create complete state with all required fields
@@ -1228,6 +1233,9 @@ export class Player implements PlayerInterface {
         // Create sprite container
         this.sprite = new PIXI.Container();
         this.sprite.position.set(this.position.x, this.position.y);
+
+        this.networkTargetPosition = { x: this.position.x, y: this.position.y };
+        this.lastNetworkUpdate = performance.now();
         
         // Initialize components
         this.components = {} as PlayerComponents;

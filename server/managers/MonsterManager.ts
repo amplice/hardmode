@@ -3256,17 +3256,19 @@ export class MonsterManager {
 
     getVisibleMonsters(players: Map<string, PlayerState>, viewDistance: number = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE): Set<string> {
         const visibleMonsters = new Set<string>();
-        
-        for (const [playerId, player] of Array.from(players.entries())) {
-            for (const [monsterId, monster] of Array.from(this.monsters.entries())) {
-                const playerCoords = this.playerToCoords(player);
-                const dist = getDistance(playerCoords, monster);
-                if (dist < viewDistance) {
+        const viewDistanceSquared = viewDistance * viewDistance;
+
+        for (const [, player] of players) {
+            const playerCoords = this.playerToCoords(player);
+            for (const [monsterId, monster] of this.monsters) {
+                const dx = playerCoords.x - monster.x;
+                const dy = playerCoords.y - monster.y;
+                if ((dx * dx + dy * dy) <= viewDistanceSquared) {
                     visibleMonsters.add(monsterId);
                 }
             }
         }
-        
+
         return visibleMonsters;
     }
 
