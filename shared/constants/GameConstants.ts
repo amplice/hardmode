@@ -104,8 +104,8 @@ export const GAME_CONSTANTS = {
             NEAR_MULTIPLIER: 1.0,
             MEDIUM_MULTIPLIER: 1.6,
             FAR_MULTIPLIER: 2.4,
-            MEDIUM_SKIP: 3,
-            FAR_SKIP: 6
+            MEDIUM_SKIP: 5,
+            FAR_SKIP: 10
         }
     },
     
