@@ -103,6 +103,7 @@ interface ServerMonsterState extends MonsterState {
         attackId: string;
         timestamp: number;
     };
+    bucketKey?: string;
 }
 
 // World coordinate type for A* pathfinding
@@ -136,6 +137,8 @@ export class MonsterManager {
     public damageProcessor?: DamageProcessor;
     private astarPathfinding?: AStarPathfinding;
     private teleportTimeouts: Map<string, NodeJS.Timeout>;
+    private monsterBuckets: Map<string, Set<string>>;
+    private bucketSize: number;
 
     // Helper function to convert PlayerState to coordinate format for getDistance
     private playerToCoords(player: PlayerState): { x: number, y: number } {
@@ -167,7 +170,9 @@ export class MonsterManager {
         this.spawnTimer = 0;
         this.serverWorldManager = serverWorldManager;
         this.teleportTimeouts = new Map();
-        
+        this.monsterBuckets = new Map();
+        this.bucketSize = Math.max(256, GAME_CONSTANTS.NETWORK.VIEW_DISTANCE / 2);
+
         // Initialize collision mask using shared world data (NO duplicate generation)
         this.collisionMask = new CollisionMask(
             GAME_CONSTANTS.WORLD.WIDTH,
@@ -178,6 +183,62 @@ export class MonsterManager {
         
         // Initialize A* pathfinding system after collision mask is ready
         this.initializeAStarPathfinding();
+    }
+
+    private getBucketKeyForCoords(x: number, y: number): string {
+        const bucketX = Math.floor(x / this.bucketSize);
+        const bucketY = Math.floor(y / this.bucketSize);
+        return `${bucketX},${bucketY}`;
+    }
+
+    private registerMonsterBucket(monster: ServerMonsterState): void {
+        const key = this.getBucketKeyForCoords(monster.x, monster.y);
+        monster.bucketKey = key;
+        let bucket = this.monsterBuckets.get(key);
+        if (!bucket) {
+            bucket = new Set();
+            this.monsterBuckets.set(key, bucket);
+        }
+        bucket.add(monster.id);
+    }
+
+    private updateMonsterBucket(monster: ServerMonsterState): void {
+        const newKey = this.getBucketKeyForCoords(monster.x, monster.y);
+        if (monster.bucketKey === newKey) {
+            return;
+        }
+
+        if (monster.bucketKey) {
+            const oldBucket = this.monsterBuckets.get(monster.bucketKey);
+            if (oldBucket) {
+                oldBucket.delete(monster.id);
+                if (oldBucket.size === 0) {
+                    this.monsterBuckets.delete(monster.bucketKey);
+                }
+            }
+        }
+
+        let bucket = this.monsterBuckets.get(newKey);
+        if (!bucket) {
+            bucket = new Set();
+            this.monsterBuckets.set(newKey, bucket);
+        }
+        bucket.add(monster.id);
+        monster.bucketKey = newKey;
+    }
+
+    private removeMonsterFromBucket(monster: ServerMonsterState): void {
+        if (!monster.bucketKey) {
+            return;
+        }
+        const bucket = this.monsterBuckets.get(monster.bucketKey);
+        if (bucket) {
+            bucket.delete(monster.id);
+            if (bucket.size === 0) {
+                this.monsterBuckets.delete(monster.bucketKey);
+            }
+        }
+        monster.bucketKey = undefined;
     }
 
     /**
@@ -259,6 +320,7 @@ export class MonsterManager {
         for (const monster of Array.from(this.monsters.values())) {
             if (monster.state === 'dying') {
                 this.cleanupMonsterTimeouts(monster.id);
+                this.removeMonsterFromBucket(monster);
                 this.monsters.delete(monster.id);
                 continue;
             }
@@ -280,6 +342,7 @@ export class MonsterManager {
                     this.transitionMonsterState(monster, 'idle');
                 }
                 this.updateMonster(monster, deltaTime, players);
+                this.updateMonsterBucket(monster);
                 nearCount++;
             } else if (closestDistance < mediumDistance) {
                 // MEDIUM: Update every few frames based on configured skip
@@ -291,6 +354,7 @@ export class MonsterManager {
                 monster.lodSkipCounter++;
                 if (monster.lodSkipCounter % Math.max(1, mediumSkip) === 0) {
                     this.updateMonster(monster, deltaTime * Math.max(1, mediumSkip), players); // Compensate for skipped frames
+                    this.updateMonsterBucket(monster);
                 }
                 mediumCount++;
             } else if (closestDistance < farDistance) {
@@ -303,6 +367,7 @@ export class MonsterManager {
                 monster.lodSkipCounter++;
                 if (monster.lodSkipCounter % Math.max(1, farSkip) === 0) {
                     this.updateMonster(monster, deltaTime * Math.max(1, farSkip), players); // Compensate for skipped frames
+                    this.updateMonsterBucket(monster);
                 }
                 farCount++;
             } else {
@@ -345,8 +410,9 @@ export class MonsterManager {
             
             // Convert to ServerMonsterState (factory already includes all necessary fields)
             const monster = factoryMonster as unknown as ServerMonsterState;
-            
+
             this.monsters.set(id, monster);
+            this.registerMonsterBucket(monster);
             console.log(`[MonsterManager] Created ${monster.type} ${monster.id} with factory validation`);
             return monster;
             
@@ -404,6 +470,7 @@ export class MonsterManager {
         monster.stateMachine = createStateMachineFromLegacy(monsterData, monster.state);
 
         this.monsters.set(id, monster);
+        this.registerMonsterBucket(monster);
         return monster;
     }
     
@@ -3183,6 +3250,7 @@ export class MonsterManager {
         // Remove from monsters map after a delay
         setTimeout(() => {
             this.cleanupMonsterTimeouts(monster.id);
+            this.removeMonsterFromBucket(monster);
             this.monsters.delete(monster.id);
         }, 1000);
     }
@@ -3257,14 +3325,29 @@ export class MonsterManager {
     getVisibleMonsters(players: Map<string, PlayerState>, viewDistance: number = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE): Set<string> {
         const visibleMonsters = new Set<string>();
         const viewDistanceSquared = viewDistance * viewDistance;
+        const bucketRadius = Math.max(1, Math.ceil(viewDistance / this.bucketSize));
 
         for (const [, player] of players) {
             const playerCoords = this.playerToCoords(player);
-            for (const [monsterId, monster] of this.monsters) {
-                const dx = playerCoords.x - monster.x;
-                const dy = playerCoords.y - monster.y;
-                if ((dx * dx + dy * dy) <= viewDistanceSquared) {
-                    visibleMonsters.add(monsterId);
+            const baseBucketX = Math.floor(playerCoords.x / this.bucketSize);
+            const baseBucketY = Math.floor(playerCoords.y / this.bucketSize);
+
+            for (let bx = baseBucketX - bucketRadius; bx <= baseBucketX + bucketRadius; bx++) {
+                for (let by = baseBucketY - bucketRadius; by <= baseBucketY + bucketRadius; by++) {
+                    const key = `${bx},${by}`;
+                    const bucket = this.monsterBuckets.get(key);
+                    if (!bucket) continue;
+
+                    for (const monsterId of bucket) {
+                        if (visibleMonsters.has(monsterId)) continue;
+                        const monster = this.monsters.get(monsterId);
+                        if (!monster) continue;
+                        const dx = playerCoords.x - monster.x;
+                        const dy = playerCoords.y - monster.y;
+                        if ((dx * dx + dy * dy) <= viewDistanceSquared) {
+                            visibleMonsters.add(monsterId);
+                        }
+                    }
                 }
             }
         }
