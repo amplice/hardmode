@@ -1079,14 +1079,16 @@ export class Game {
       const withinFar = distanceSq <= farDistanceSq;
       const onScreen = withinFar && this.isWorldPositionInView(monster.position.x, monster.position.y, 192);
 
-      monster.sprite.visible = onScreen;
-      if (monster.animatedSprite) {
-        monster.animatedSprite.visible = onScreen;
-      }
-
       if (!withinFar) {
+        monster.detachFromContainer();
         monsterAny.__lodSkipCounter = 0;
         continue;
+      }
+
+      if (onScreen) {
+        monster.attachToContainer(this.entityContainer);
+      } else {
+        monster.detachFromContainer();
       }
 
       if (distanceSq <= mediumDistanceSq) {
@@ -1175,7 +1177,7 @@ export class Game {
         hp: info.hp,
         maxHp: info.maxHp
       });
-      this.entityContainer.addChild(monster.sprite);
+      monster.attachToContainer(this.entityContainer);
       this.remoteMonsters.set(info.id, monster);
       // Created new monster
     }
@@ -1187,7 +1189,7 @@ export class Game {
     if (info.state === 'dying' || info.hp <= 0) {
       setTimeout(() => {
         if (monster && monster.sprite && monster.sprite.parent) {
-          monster.sprite.parent.removeChild(monster.sprite);
+          monster.detachFromContainer();
         }
         this.remoteMonsters?.delete(info.id);
         // Removed monster

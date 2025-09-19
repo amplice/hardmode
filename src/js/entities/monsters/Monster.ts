@@ -147,6 +147,8 @@ export class Monster {
     private animatedSprite?: PIXI.AnimatedSprite;
     private originalTextures?: PIXI.Texture[];
     private spriteManager: SpriteManagerInterface;
+    private parentContainer: PIXI.Container | null;
+    private spriteDetached: boolean;
     
     // Movement (for legacy compatibility)
     public velocity?: Velocity;
@@ -180,7 +182,9 @@ export class Monster {
         // Create sprite container
         this.sprite = new PIXI.Container();
         this.sprite.position.set(this.position.x, this.position.y);
-        
+        this.parentContainer = null;
+        this.spriteDetached = false;
+
         // Get sprite manager
         this.spriteManager = (window as any).game.systems.sprites;
         
@@ -562,9 +566,10 @@ export class Monster {
                 requestAnimationFrame(fadeStep);
             } else if (this.sprite.parent) {
                 this.sprite.parent.removeChild(this.sprite);
+                this.spriteDetached = true;
             }
         };
-        
+
         fadeStep();
     }
     
@@ -742,11 +747,13 @@ export class Monster {
             (this as any).teleportPhase = undefined;
         }
         
-        // Ensure sprite is visible
-        this.sprite.visible = true;
-        this.sprite.alpha = 1;
-        if (this.animatedSprite) {
-            this.animatedSprite.visible = true;
+        // Ensure sprite is visible only if attached
+        if (!this.spriteDetached) {
+            this.sprite.visible = true;
+            this.sprite.alpha = 1;
+            if (this.animatedSprite) {
+                this.animatedSprite.visible = true;
+            }
         }
         
         // Update health
@@ -802,11 +809,60 @@ export class Monster {
             }, 200);
         }
     }
-    
+
+    attachToContainer(container: PIXI.Container): void {
+        this.parentContainer = container;
+
+        if (this.sprite.parent !== container) {
+            if (this.sprite.parent) {
+                this.sprite.parent.removeChild(this.sprite);
+            }
+            container.addChild(this.sprite);
+        }
+
+        this.spriteDetached = false;
+        this.sprite.visible = true;
+        (this.sprite as any).renderable = true;
+        this.sprite.alpha = 1;
+
+        if (this.animatedSprite) {
+            this.animatedSprite.visible = true;
+            if (!this.animatedSprite.playing) {
+                this.animatedSprite.play();
+            }
+        }
+
+    }
+
+    detachFromContainer(): void {
+        if (this.spriteDetached) {
+            return;
+        }
+
+        if (this.animatedSprite) {
+            if (this.animatedSprite.playing) {
+                this.animatedSprite.stop();
+            }
+            this.animatedSprite.visible = false;
+        }
+
+        if (this.sprite.parent) {
+            this.sprite.parent.removeChild(this.sprite);
+        }
+
+        this.sprite.visible = false;
+        (this.sprite as any).renderable = false;
+        this.spriteDetached = true;
+    }
+
+    isSpriteAttached(): boolean {
+        return !this.spriteDetached;
+    }
+
     playHitSound(): void {
         // Play hit sound when monster takes damage
         const soundName = getMonsterSound(this.type, 'hurt');
-        
+
         if (soundName) {
             // Use the same spatial sound system as attack sounds
             soundManager.playSpatial(soundName, {

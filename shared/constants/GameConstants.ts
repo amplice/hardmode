@@ -57,8 +57,8 @@ import type {
 export const GAME_CONSTANTS = {
     // World settings - expanded for more content
     WORLD: {
-        WIDTH: 1000,  // Expanded for large-scale profiling
-        HEIGHT: 1000, // Expanded for large-scale profiling
+        WIDTH: 750,  // Scaled down for smoother client pacing
+        HEIGHT: 750, // Scaled down for smoother client pacing
         TILE_SIZE: 64,
         SEED: 42 // Default seed, server will override with generated seed
     },
@@ -68,12 +68,12 @@ export const GAME_CONSTANTS = {
     
     // Spawn system - optimized for higher density
     SPAWN: {
-        MAX_MONSTERS: 1200, // Support large-scale stress scenarios
-        INITIAL_MONSTERS: 250, // Start with substantial field presence
-        INTERVAL: 0.8, // Spawn new monsters faster
-        MIN_DISTANCE_FROM_PLAYER: 600, // Slightly closer spawns
-        MAX_DISTANCE_FROM_PLAYER: 10000, // Expanded for 750x750 world
-        WORLD_EDGE_MARGIN: 3000 // Increased proportionally for 750x750 world
+        MAX_MONSTERS: 500, // Tuned for current performance target
+        INITIAL_MONSTERS: 150, // Keep world active without overwhelming
+        INTERVAL: 1.0, // Moderate spawn cadence
+        MIN_DISTANCE_FROM_PLAYER: 600, // Prevent pop-ins near player
+        MAX_DISTANCE_FROM_PLAYER: 7000, // Better fit for 750 world
+        WORLD_EDGE_MARGIN: 2400 // Adjusted for reduced world bounds
     },
     
     // Network settings
