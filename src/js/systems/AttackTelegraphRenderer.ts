@@ -53,10 +53,12 @@ export class AttackTelegraphRenderer {
         startTime: number;
         endTime: number;
     }>;
+    private graphicsPool: PIXI.Graphics[];
 
     constructor() {
         this.container = new PIXI.Container();
         this.activeTelegraphs = new Map();
+        this.graphicsPool = [];
     }
 
     getContainer(): PIXI.Container {
@@ -77,7 +79,7 @@ export class AttackTelegraphRenderer {
         // Remove existing telegraph with same ID if any
         this.removeTelegraph(id);
 
-        const graphics = new PIXI.Graphics();
+        const graphics = this.acquireGraphics();
         graphics.position.set(x, y);
         graphics.rotation = facing;
 
@@ -110,10 +112,9 @@ export class AttackTelegraphRenderer {
         shape: TelegraphShape,
         config: TelegraphConfig
     ): void {
-        // No border - set line style to 0
+        // No border - set line style to 0 and reset geometry
+        graphics.clear();
         graphics.lineStyle(0);
-        
-        // Set fill
         graphics.beginFill(config.color, config.fillAlpha);
 
         switch (shape.shape) {
@@ -194,8 +195,7 @@ export class AttackTelegraphRenderer {
     removeTelegraph(id: string): void {
         const telegraph = this.activeTelegraphs.get(id);
         if (telegraph) {
-            this.container.removeChild(telegraph.graphics);
-            telegraph.graphics.destroy();
+            this.releaseGraphics(telegraph.graphics);
             this.activeTelegraphs.delete(id);
         }
     }
@@ -205,10 +205,28 @@ export class AttackTelegraphRenderer {
      */
     clear(): void {
         this.activeTelegraphs.forEach((telegraph, id) => {
-            this.container.removeChild(telegraph.graphics);
-            telegraph.graphics.destroy();
+            this.releaseGraphics(telegraph.graphics);
         });
         this.activeTelegraphs.clear();
+    }
+
+    private acquireGraphics(): PIXI.Graphics {
+        const graphics = this.graphicsPool.pop() || new PIXI.Graphics();
+        graphics.visible = true;
+        graphics.alpha = 1;
+        graphics.rotation = 0;
+        graphics.scale.set(1, 1);
+        return graphics;
+    }
+
+    private releaseGraphics(graphics: PIXI.Graphics): void {
+        if (graphics.parent) {
+            graphics.parent.removeChild(graphics);
+        }
+        graphics.clear();
+        graphics.visible = false;
+        graphics.alpha = 0;
+        this.graphicsPool.push(graphics);
     }
 
     /**

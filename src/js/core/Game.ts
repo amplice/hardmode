@@ -1076,12 +1076,29 @@ export class Game {
       const distanceSq = dx * dx + dy * dy;
       const monsterAny = monster as any;
 
-      // Hide very distant monsters to reduce GPU load
-      monster.sprite.visible = distanceSq <= farDistanceSq;
+      const withinFar = distanceSq <= farDistanceSq;
+      const onScreen = withinFar && this.isWorldPositionInView(monster.position.x, monster.position.y, 192);
+
+      monster.sprite.visible = onScreen;
+      if (monster.animatedSprite) {
+        monster.animatedSprite.visible = onScreen;
+      }
+
+      if (!withinFar) {
+        monsterAny.__lodSkipCounter = 0;
+        continue;
+      }
 
       if (distanceSq <= mediumDistanceSq) {
-        monster.update(delta);
-        if (monsterAny.__lodSkipCounter) {
+        if (onScreen) {
+          monster.update(delta);
+        } else {
+          monsterAny.__lodSkipCounter = (monsterAny.__lodSkipCounter || 0) + 1;
+          if (monsterAny.__lodSkipCounter % Math.max(1, mediumSkip * 2) === 0) {
+            monster.update(delta * Math.max(1, mediumSkip * 2));
+          }
+        }
+        if (monsterAny.__lodSkipCounter && onScreen) {
           monsterAny.__lodSkipCounter = 0;
         }
         continue;
@@ -1089,14 +1106,9 @@ export class Game {
 
       monsterAny.__lodSkipCounter = (monsterAny.__lodSkipCounter || 0) + 1;
 
-      if (distanceSq <= farDistanceSq) {
-        if (monsterAny.__lodSkipCounter % Math.max(1, mediumSkip) === 0) {
-          monster.update(delta * Math.max(1, mediumSkip));
-        }
-      } else {
-        if (monsterAny.__lodSkipCounter % Math.max(1, farSkip) === 0) {
-          monster.update(delta * Math.max(1, farSkip));
-        }
+      const skipFrames = onScreen ? Math.max(1, farSkip) : Math.max(1, farSkip * 2);
+      if (monsterAny.__lodSkipCounter % skipFrames === 0) {
+        monster.update(delta * skipFrames);
       }
     }
   }
