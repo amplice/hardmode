@@ -396,7 +396,7 @@ export interface Hitbox {
     params: HitboxParams;
     visualConfig: HitboxVisualConfig;
     graphics: PIXIGraphics | null;
-    draw(): PIXIGraphics;
+    draw(graphics: PIXIGraphics): PIXIGraphics;
     testHit(target: any, targetRadius?: number): boolean;
     getFacingRadians(): number;
     getFacingDegrees(): number;

@@ -84,7 +84,7 @@ abstract class Hitbox implements IHitbox {
     this.graphics = null;
   }
   
-  abstract draw(): PIXIGraphics;
+  abstract draw(graphics: PIXIGraphics): PIXIGraphics;
   abstract testHit(target: any, targetRadius?: number): boolean;
   
   getFacingRadians(): number { return directionStringToAngleRadians(this.facing); }
@@ -93,8 +93,8 @@ abstract class Hitbox implements IHitbox {
 
 // Rectangle hitbox implementation
 class RectangleHitbox extends Hitbox {
-  draw(): PIXIGraphics {
-    const graphics = new PIXI.Graphics();
+  draw(graphics: PIXIGraphics): PIXIGraphics {
+    graphics.clear();
     graphics.position.set(this.position.x, this.position.y);
     graphics.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
     graphics.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
@@ -121,8 +121,8 @@ class RectangleHitbox extends Hitbox {
 
 // Cone hitbox implementation
 class ConeHitbox extends Hitbox {
-  draw(): PIXIGraphics {
-    const graphics = new PIXI.Graphics();
+  draw(graphics: PIXIGraphics): PIXIGraphics {
+    graphics.clear();
     graphics.position.set(this.position.x, this.position.y);
     const facingAngle = this.getFacingRadians();
     const halfArcAngle = (this.params.angle! / 2) * (Math.PI / 180);
@@ -159,8 +159,8 @@ class ConeHitbox extends Hitbox {
 
 // Circle hitbox implementation
 class CircleHitbox extends Hitbox {
-  draw(): PIXIGraphics {
-    const graphics = new PIXI.Graphics();
+  draw(graphics: PIXIGraphics): PIXIGraphics {
+    graphics.clear();
     graphics.position.set(this.position.x, this.position.y);
     graphics.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
     graphics.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
@@ -181,22 +181,47 @@ export class CombatSystem {
   app: PIXIApplication;
   activeAttacks: ActiveAttack[];
   effectConfigs: Record<string, EffectConfig>;
-  
+  private hitboxGraphicsPool: PIXI.Graphics[];
+
   constructor(app: PIXIApplication) {
     this.app = app;
     this.activeAttacks = [];
     // Projectiles now handled server-side
     this.effectConfigs = (PLAYER_CONFIG as any).effects;
     // this.attackConfigs = PLAYER_CONFIG.attacks; // No longer needed if passed directly
+    this.hitboxGraphicsPool = [];
   }
-  
+
+  private acquireHitboxGraphics(): PIXI.Graphics {
+    const graphics = this.hitboxGraphicsPool.pop() || new PIXI.Graphics();
+    graphics.visible = true;
+    graphics.alpha = 1;
+    graphics.rotation = 0;
+    graphics.scale.set(1, 1);
+    graphics.position.set(0, 0);
+    return graphics;
+  }
+
+  private releaseHitboxGraphics(graphics: PIXI.Graphics): void {
+    if (graphics.parent) {
+      graphics.parent.removeChild(graphics);
+    }
+    graphics.clear();
+    graphics.position.set(0, 0);
+    graphics.rotation = 0;
+    graphics.scale.set(1, 1);
+    graphics.visible = false;
+    this.hitboxGraphicsPool.push(graphics);
+  }
+
   update(deltaTime: number): void {
     for (let i = this.activeAttacks.length - 1; i >= 0; i--) {
       const attack = this.activeAttacks[i];
       attack.lifetime -= deltaTime;
       if (attack.lifetime <= 0) {
-        if (attack.hitbox && attack.hitbox.graphics && attack.hitbox.graphics.parent) {
-          attack.hitbox.graphics.parent.removeChild(attack.hitbox.graphics);
+        if (attack.hitbox && attack.hitbox.graphics) {
+          this.releaseHitboxGraphics(attack.hitbox.graphics);
+          attack.hitbox.graphics = null;
         }
         this.activeAttacks.splice(i, 1);
       }
@@ -358,7 +383,8 @@ export class CombatSystem {
           attackConfig.hitboxType, attackConfig.hitboxParams, attackConfig.hitboxVisual
         );
         if (hitbox) {
-          const graphics = hitbox.draw();
+          const graphics = this.acquireHitboxGraphics();
+          hitbox.draw(graphics);
           (window as any).game.entityContainer.addChild(graphics); // Consider alternative to (window as any).game
           this.activeAttacks.push({
             attacker: entity,
