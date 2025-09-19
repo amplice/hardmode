@@ -84,7 +84,7 @@ abstract class Hitbox implements IHitbox {
     this.graphics = null;
   }
   
-  abstract draw(graphics: PIXIGraphics): PIXIGraphics;
+  abstract draw(graphics?: PIXIGraphics): PIXIGraphics;
   abstract testHit(target: any, targetRadius?: number): boolean;
   
   getFacingRadians(): number { return directionStringToAngleRadians(this.facing); }
@@ -93,16 +93,17 @@ abstract class Hitbox implements IHitbox {
 
 // Rectangle hitbox implementation
 class RectangleHitbox extends Hitbox {
-  draw(graphics: PIXIGraphics): PIXIGraphics {
-    graphics.clear();
-    graphics.position.set(this.position.x, this.position.y);
-    graphics.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
-    graphics.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
-    graphics.drawRect(-this.params.width! / 2, -this.params.length!, this.params.width!, this.params.length!);
-    graphics.rotation = this.getFacingRadians() + Math.PI / 2;
-    graphics.endFill();
-    this.graphics = graphics;
-    return graphics;
+  draw(graphics?: PIXIGraphics): PIXIGraphics {
+    const target = graphics ?? this.graphics ?? new PIXI.Graphics();
+    target.clear();
+    target.position.set(this.position.x, this.position.y);
+    target.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
+    target.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
+    target.drawRect(-this.params.width! / 2, -this.params.length!, this.params.width!, this.params.length!);
+    target.rotation = this.getFacingRadians() + Math.PI / 2;
+    target.endFill();
+    this.graphics = target;
+    return target;
   }
   testHit(target: any, targetRadius: number = 0): boolean {
     const dx = target.position.x - this.position.x;
@@ -121,26 +122,27 @@ class RectangleHitbox extends Hitbox {
 
 // Cone hitbox implementation
 class ConeHitbox extends Hitbox {
-  draw(graphics: PIXIGraphics): PIXIGraphics {
-    graphics.clear();
-    graphics.position.set(this.position.x, this.position.y);
+  draw(graphics?: PIXIGraphics): PIXIGraphics {
+    const target = graphics ?? this.graphics ?? new PIXI.Graphics();
+    target.clear();
+    target.position.set(this.position.x, this.position.y);
     const facingAngle = this.getFacingRadians();
     const halfArcAngle = (this.params.angle! / 2) * (Math.PI / 180);
     const startAngle = facingAngle - halfArcAngle;
     const endAngle = facingAngle + halfArcAngle;
-    graphics.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
-    graphics.moveTo(0, 0);
-    graphics.arc(0, 0, (this.params as any).range, startAngle, endAngle);
-    graphics.lineTo(0, 0);
-    graphics.endFill();
-    graphics.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
-    graphics.arc(0, 0, (this.params as any).range, startAngle, endAngle);
-    graphics.moveTo(0, 0);
-    graphics.lineTo(Math.cos(startAngle) * (this.params as any).range, Math.sin(startAngle) * (this.params as any).range);
-    graphics.moveTo(0, 0);
-    graphics.lineTo(Math.cos(endAngle) * (this.params as any).range, Math.sin(endAngle) * (this.params as any).range);
-    this.graphics = graphics;
-    return graphics;
+    target.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
+    target.moveTo(0, 0);
+    target.arc(0, 0, (this.params as any).range, startAngle, endAngle);
+    target.lineTo(0, 0);
+    target.endFill();
+    target.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
+    target.arc(0, 0, (this.params as any).range, startAngle, endAngle);
+    target.moveTo(0, 0);
+    target.lineTo(Math.cos(startAngle) * (this.params as any).range, Math.sin(startAngle) * (this.params as any).range);
+    target.moveTo(0, 0);
+    target.lineTo(Math.cos(endAngle) * (this.params as any).range, Math.sin(endAngle) * (this.params as any).range);
+    this.graphics = target;
+    return target;
   }
   testHit(target: any, targetRadius: number = 0): boolean {
     const dx = target.position.x - this.position.x;
@@ -159,15 +161,16 @@ class ConeHitbox extends Hitbox {
 
 // Circle hitbox implementation
 class CircleHitbox extends Hitbox {
-  draw(graphics: PIXIGraphics): PIXIGraphics {
-    graphics.clear();
-    graphics.position.set(this.position.x, this.position.y);
-    graphics.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
-    graphics.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
-    graphics.drawCircle(0, 0, this.params.radius!);
-    graphics.endFill();
-    this.graphics = graphics;
-    return graphics;
+  draw(graphics?: PIXIGraphics): PIXIGraphics {
+    const target = graphics ?? this.graphics ?? new PIXI.Graphics();
+    target.clear();
+    target.position.set(this.position.x, this.position.y);
+    target.beginFill(this.visualConfig.color, this.visualConfig.fillAlpha);
+    target.lineStyle(this.visualConfig.lineWidth, this.visualConfig.color, this.visualConfig.lineAlpha);
+    target.drawCircle(0, 0, this.params.radius!);
+    target.endFill();
+    this.graphics = target;
+    return target;
   }
   testHit(target: any, targetRadius: number = 0): boolean {
     const dx = target.position.x - this.position.x;
