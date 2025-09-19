@@ -1,12 +1,7 @@
-import { getDistance } from '../../shared/utils/MathUtils.js';
-import { MONSTER_STATS, GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
+import { GAME_CONSTANTS } from '../../shared/constants/GameConstants.js';
 import { Projectile, type ProjectileConfig, type ProjectileTarget } from '../entities/Projectile.js';
-import type { 
-    PlayerState, 
-    MonsterState,
-    Position,
-    ProjectileState
-} from '../../shared/types/GameTypes.js';
+import type { PlayerState, Position } from '../../shared/types/GameTypes.js';
+import type { MonsterManager, ServerMonsterState } from './MonsterManager.js';
 
 // Extended player state that includes legacy x, y fields for compatibility
 interface ServerPlayerState extends PlayerState {
@@ -15,37 +10,6 @@ interface ServerPlayerState extends PlayerState {
     class?: string; // Legacy field name for backward compatibility
     xp?: number;
     kills?: number;
-}
-
-// Extended monster state with server-specific fields
-interface ServerMonsterState extends MonsterState {
-    target: ServerPlayerState | null;
-    lastAttack: number;
-    attackAnimationStarted: number;
-    isAttackAnimating: boolean;
-    velocity: Position;
-    spawnTime: number;
-    lastUpdate: number;
-    collisionRadius: number;
-    stunTimer: number;
-    isStunned: boolean;
-    lodSkipCounter?: number;
-}
-
-// Extended projectile state with server-specific fields
-interface ServerProjectileState extends ProjectileState {
-    ownerId: string;
-    ownerType: string; // Player class or monster type
-    x: number;
-    y: number;
-    startX: number;
-    startY: number;
-    angle: number;
-    velocity: Position;
-    maxRange: number;
-    effectType: string;
-    active: boolean;
-    createdAt: number;
 }
 
 interface SocketIO {
@@ -80,8 +44,10 @@ export class ProjectileManager {
     private nextProjectileId: number;
     public damageProcessor?: DamageProcessor;
     private removalBuffer: string[];
+    private readonly monsterCollisionQueryRadius: number;
+    private nearbyMonstersScratch: ServerMonsterState[];
 
-    // Helper function to convert PlayerState to coordinate format for getDistance
+    // Helper function to convert PlayerState to coordinate format
     private playerToCoords(player: PlayerState): { x: number, y: number } {
         // Check if player already has x, y (legacy format)
         if ('x' in player && 'y' in player) {
@@ -109,6 +75,8 @@ export class ProjectileManager {
         this.projectiles = new Map();
         this.nextProjectileId = 1;
         this.removalBuffer = [];
+        this.monsterCollisionQueryRadius = 160; // Pixels; comfortably covers largest monster + tick travel distance
+        this.nearbyMonstersScratch = [];
     }
 
     createProjectile(owner: ProjectileOwner, data: ProjectileData): Projectile {
@@ -136,50 +104,58 @@ export class ProjectileManager {
         return projectile;
     }
 
-    update(deltaTime: number, players: Map<string, PlayerState>, monsters: Map<string, ServerMonsterState>): void {
+    update(deltaTime: number, players: Map<string, PlayerState>, monsterManager: MonsterManager): void {
         const projectilesToRemove = this.removalBuffer;
         projectilesToRemove.length = 0;
-        
+
+        const monsters = monsterManager.monsters;
+        const nearbyScratch = this.nearbyMonstersScratch;
+        const queryRadius = this.monsterCollisionQueryRadius;
+
         // Phase 6.1: Use class-based update and collision detection
         this.projectiles.forEach((projectile, id) => {
             // Update projectile position and check range
             const stillActive = projectile.update(deltaTime);
-            
+
             if (!stillActive) {
                 projectilesToRemove.push(id);
                 this.destroyProjectile(id, 'maxRange');
                 return;
             }
-            
-            // Check collisions based on projectile type
+
+            let projectileRemoved = false;
+
             if (projectile.shouldHitMonsters()) {
-                // Player projectiles hit monsters AND other players (if PvP enabled)
-                
-                // First check monster collisions (always enabled)
-                for (const [monsterId, monster] of Array.from(monsters.entries())) {
+                const projectilePosition = projectile.getPosition();
+                const nearbyMonsters = monsterManager.collectMonstersWithinRadius(
+                    projectilePosition.x,
+                    projectilePosition.y,
+                    queryRadius,
+                    nearbyScratch
+                );
+
+                for (const monster of nearbyMonsters) {
                     const target: ProjectileTarget = {
-                        id: monsterId,
+                        id: monster.id,
                         position: { x: monster.x, y: monster.y },
                         hp: monster.hp,
                         collisionRadius: monster.collisionRadius
                     };
-                    
-                    const hitResult = projectile.checkCollision(target);
-                    if (hitResult.hit) {
+
+                    if (projectile.checkCollision(target).hit) {
                         this.handleProjectileHit(projectile, monster, 'monster', players, monsters);
                         projectilesToRemove.push(id);
+                        projectileRemoved = true;
                         break; // Stop checking after first hit
                     }
                 }
-                
-                // Then check player collisions if PvP is enabled
-                if (GAME_CONSTANTS.PVP.ENABLED && !projectilesToRemove.includes(id)) {
-                    for (const [playerId, player] of Array.from(players.entries())) {
-                        // Skip the projectile owner
+
+                if (!projectileRemoved && GAME_CONSTANTS.PVP.ENABLED) {
+                    for (const [playerId, player] of players) {
                         if (playerId === projectile.ownerId) {
                             continue;
                         }
-                        
+
                         const playerCoords = this.playerToCoords(player);
                         const target: ProjectileTarget = {
                             id: playerId,
@@ -187,18 +163,18 @@ export class ProjectileManager {
                             hp: player.hp,
                             collisionRadius: GAME_CONSTANTS.PLAYER.COLLISION_RADIUS
                         };
-                        
-                        const hitResult = projectile.checkCollision(target);
-                        if (hitResult.hit) {
+
+                        if (projectile.checkCollision(target).hit) {
                             this.handleProjectileHit(projectile, player, 'player', players, monsters);
                             projectilesToRemove.push(id);
+                            projectileRemoved = true;
                             break; // Stop checking after first hit
                         }
                     }
                 }
             } else {
                 // Monster projectiles hit players
-                for (const [playerId, player] of Array.from(players.entries())) {
+                for (const [playerId, player] of players) {
                     const playerCoords = this.playerToCoords(player);
                     const target: ProjectileTarget = {
                         id: playerId,
@@ -206,17 +182,21 @@ export class ProjectileManager {
                         hp: player.hp,
                         collisionRadius: GAME_CONSTANTS.PLAYER.COLLISION_RADIUS
                     };
-                    
-                    const hitResult = projectile.checkCollision(target);
-                    if (hitResult.hit) {
+
+                    if (projectile.checkCollision(target).hit) {
                         this.handleProjectileHit(projectile, player, 'player', players, monsters);
                         projectilesToRemove.push(id);
+                        projectileRemoved = true;
                         break; // Stop checking after first hit
                     }
                 }
             }
+
+            if (projectileRemoved) {
+                return;
+            }
         });
-        
+
         // Remove inactive projectiles
         for (const id of projectilesToRemove) {
             this.projectiles.delete(id);

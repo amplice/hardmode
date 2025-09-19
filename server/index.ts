@@ -277,7 +277,7 @@ setInterval(() => {
         stageTime = stageNow;
     }
 
-    projectileManager.update(deltaTime, gameState.players, monsterManager.monsters);
+    projectileManager.update(deltaTime, gameState.players, monsterManager);
 
     if (ENABLE_SERVER_PROFILING) {
         const stageNow = performance.now();

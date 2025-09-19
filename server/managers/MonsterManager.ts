@@ -35,7 +35,7 @@ interface ServerPlayerState extends PlayerState {
 }
 
 // Extended monster state with server-specific fields
-interface ServerMonsterState extends MonsterState {
+export interface ServerMonsterState extends MonsterState {
     target: ServerPlayerState | null;
     lastAttack: number;
     attackAnimationStarted: number;
@@ -3353,6 +3353,41 @@ export class MonsterManager {
         }
 
         return visibleMonsters;
+    }
+
+    collectMonstersWithinRadius(
+        x: number,
+        y: number,
+        radius: number,
+        output: ServerMonsterState[] = []
+    ): ServerMonsterState[] {
+        output.length = 0;
+
+        const radiusSquared = radius * radius;
+        const bucketRadius = Math.max(1, Math.ceil(radius / this.bucketSize));
+        const baseBucketX = Math.floor(x / this.bucketSize);
+        const baseBucketY = Math.floor(y / this.bucketSize);
+
+        for (let bx = baseBucketX - bucketRadius; bx <= baseBucketX + bucketRadius; bx++) {
+            for (let by = baseBucketY - bucketRadius; by <= baseBucketY + bucketRadius; by++) {
+                const key = `${bx},${by}`;
+                const bucket = this.monsterBuckets.get(key);
+                if (!bucket) continue;
+
+                for (const monsterId of bucket) {
+                    const monster = this.monsters.get(monsterId);
+                    if (!monster) continue;
+
+                    const dx = monster.x - x;
+                    const dy = monster.y - y;
+                    if ((dx * dx + dy * dy) <= radiusSquared) {
+                        output.push(monster);
+                    }
+                }
+            }
+        }
+
+        return output;
     }
 
     getSerializedMonsters(visibleMonsters: Set<string>): any[] {
