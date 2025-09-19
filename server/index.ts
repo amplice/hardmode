@@ -144,7 +144,7 @@ const damageProcessor = new DamageProcessor(gameState, monsterManager, socketHan
 
 // Optional lightweight performance profiling (enabled by default)
 const ENABLE_SERVER_PROFILING: boolean = process.env.PROFILE_SERVER !== 'false';
-const PROFILE_LOG_INTERVAL_MS: number = parseInt(process.env.PROFILE_INTERVAL_MS || '10000', 10);
+const PROFILE_LOG_INTERVAL_MS: number = parseInt(process.env.PROFILE_INTERVAL_MS || '60000', 10);
 const SERVER_VIEW_DISTANCE_SQUARED: number = GAME_CONSTANTS.NETWORK.VIEW_DISTANCE * GAME_CONSTANTS.NETWORK.VIEW_DISTANCE;
 
 interface ServerPerfStats {

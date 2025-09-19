@@ -195,6 +195,7 @@ export class Game {
     const urlSearch = typeof window !== 'undefined' ? window.location.search : '';
     const searchParams = new URLSearchParams(urlSearch);
     let profilingEnabled = true;
+    let profilingInterval = 60000; // default 60s window for client perf samples
 
     if (searchParams.has('profileClient')) {
       profilingEnabled = searchParams.get('profileClient') !== '0';
@@ -206,8 +207,23 @@ export class Game {
         } else if (stored === 'true') {
           profilingEnabled = true;
         }
+
+        const storedInterval = typeof localStorage !== 'undefined' ? localStorage.getItem('hm_profile_client_interval') : null;
+        if (storedInterval) {
+          const parsedInterval = parseInt(storedInterval, 10);
+          if (!Number.isNaN(parsedInterval) && parsedInterval > 0) {
+            profilingInterval = parsedInterval;
+          }
+        }
       } catch (error) {
         // Ignore storage errors and keep default
+      }
+    }
+
+    if (searchParams.has('profileInterval')) {
+      const intervalParam = parseInt(searchParams.get('profileInterval') || '', 10);
+      if (!Number.isNaN(intervalParam) && intervalParam > 0) {
+        profilingInterval = intervalParam;
       }
     }
 
@@ -219,7 +235,7 @@ export class Game {
       simulation: 0,
       render: 0,
       lastLog: performance.now(),
-      logInterval: 5000
+      logInterval: profilingInterval
     };
     
     // Add latency debugging commands (will be available after game starts)
@@ -257,13 +273,23 @@ export class Game {
     // Initialize debug logger
     this.debugLogger = new DebugLogger();
     this.debugLogger.setupConsoleCommands();
-    
-    
+
+
     // Will be initialized when game starts
     this.projectileRenderer = null;
-    
+
     // Input throttling disabled - causes jerkiness
     // Anti-cheat is lenient enough to handle 60fps inputs
+  }
+
+  isWorldPositionInView(x: number, y: number, padding: number = 240): boolean {
+    const zoom = this.camera.zoom || 1;
+    const halfWidth = (this.app.screen.width / zoom) / 2 + padding;
+    const halfHeight = (this.app.screen.height / zoom) / 2 + padding;
+    const centerX = this.camera.x;
+    const centerY = this.camera.y;
+
+    return Math.abs(x - centerX) <= halfWidth && Math.abs(y - centerY) <= halfHeight;
   }
 
   // Apply server configuration to override client defaults
@@ -849,6 +875,12 @@ export class Game {
     // Initialize network smoothing target for remote players
     p.networkTargetPosition = { x: info.x, y: info.y };
     p.lastNetworkUpdate = performance.now();
+
+    const visible = this.isWorldPositionInView(info.x, info.y);
+    p.sprite.visible = visible;
+    if (p.animatedSprite) {
+      p.animatedSprite.visible = visible;
+    }
   }
 
   updateRemotePlayer(info: PlayerInfo & { movementDirection?: string | null; spawnProtectionTimer?: number }): void {
@@ -893,7 +925,15 @@ export class Game {
       p.movementDirection = null;
     }
 
-    p.animation.update();
+    const isVisible = this.isWorldPositionInView(p.position.x, p.position.y);
+    p.sprite.visible = isVisible;
+    if (p.animatedSprite) {
+      p.animatedSprite.visible = isVisible;
+    }
+
+    if (isVisible) {
+      p.animation.update();
+    }
     if (typeof info.hp === 'number') {
       p.hitPoints = info.hp;
       if (info.hp <= 0 && !p.isDead) {
@@ -938,6 +978,14 @@ export class Game {
         p.sprite.position.set(p.position.x, p.position.y);
       }
 
+      const isVisible = this.isWorldPositionInView(p.position.x, p.position.y);
+      if (p.sprite) {
+        p.sprite.visible = isVisible;
+      }
+      if (p.animatedSprite) {
+        p.animatedSprite.visible = isVisible;
+      }
+
       // Update health component to process damage stun timer
       if (p.health) {
         p.health.update(delta);
@@ -954,7 +1002,9 @@ export class Game {
         }
       }
 
-      p.animation.update();
+      if (isVisible) {
+        p.animation.update();
+      }
     }
   }
 
