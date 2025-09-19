@@ -118,12 +118,17 @@ export class Game {
   profilingEnabled: boolean;
   profilingStats: {
     frames: number;
-    total: number;
+    totalCPU: number;
     input: number;
     simulation: number;
     render: number;
+    frameIntervalTotal: number;
     lastLog: number;
     logInterval: number;
+    intervalMax: number;
+    cpuMax: number;
+    frameIntervals: number[];
+    cpuSamples: number[];
   };
   
   constructor() {
@@ -230,12 +235,17 @@ export class Game {
     this.profilingEnabled = profilingEnabled;
     this.profilingStats = {
       frames: 0,
-      total: 0,
+      totalCPU: 0,
       input: 0,
       simulation: 0,
       render: 0,
+      frameIntervalTotal: 0,
       lastLog: performance.now(),
-      logInterval: profilingInterval
+      logInterval: profilingInterval,
+      intervalMax: 0,
+      cpuMax: 0,
+      frameIntervals: [],
+      cpuSamples: []
     };
     
     // Add latency debugging commands (will be available after game starts)
@@ -280,6 +290,16 @@ export class Game {
 
     // Input throttling disabled - causes jerkiness
     // Anti-cheat is lenient enough to handle 60fps inputs
+  }
+
+  private computePercentile(values: number[], percentile: number): number {
+    if (!values.length) {
+      return 0;
+    }
+    const sorted = values.slice().sort((a, b) => a - b);
+    const clampedPercent = Math.min(Math.max(percentile, 0), 100);
+    const index = Math.min(sorted.length - 1, Math.floor((clampedPercent / 100) * (sorted.length - 1)));
+    return sorted[index];
   }
 
   isWorldPositionInView(x: number, y: number, padding: number = 240): boolean {
@@ -629,20 +649,36 @@ export class Game {
 
     if (this.profilingEnabled) {
       const frameEnd = performance.now();
+      const cpuTime = frameEnd - frameStart;
+      const frameInterval = this.app.ticker.elapsedMS || cpuTime;
+
       this.profilingStats.render += frameEnd - stageTime;
-      this.profilingStats.total += frameEnd - frameStart;
+      this.profilingStats.totalCPU += cpuTime;
+      this.profilingStats.frameIntervalTotal += frameInterval;
       this.profilingStats.frames += 1;
+      this.profilingStats.intervalMax = Math.max(this.profilingStats.intervalMax, frameInterval);
+      this.profilingStats.cpuMax = Math.max(this.profilingStats.cpuMax, cpuTime);
+      this.profilingStats.frameIntervals.push(frameInterval);
+      this.profilingStats.cpuSamples.push(cpuTime);
 
       if (frameEnd - this.profilingStats.lastLog >= this.profilingStats.logInterval && this.profilingStats.frames > 0) {
         const divisor = this.profilingStats.frames || 1;
-        const avgFrame = this.profilingStats.total / divisor;
+        const avgFrameCPU = this.profilingStats.totalCPU / divisor;
+        const avgFrameInterval = this.profilingStats.frameIntervalTotal / divisor;
         const avgInput = this.profilingStats.input / divisor;
         const avgSimulation = this.profilingStats.simulation / divisor;
         const avgRender = this.profilingStats.render / divisor;
+        const p95FrameCPU = this.computePercentile(this.profilingStats.cpuSamples, 95);
+        const p95FrameInterval = this.computePercentile(this.profilingStats.frameIntervals, 95);
 
         if (this.network && typeof this.network.sendClientPerfMetrics === 'function' && this.network.connected) {
           this.network.sendClientPerfMetrics({
-            avgFrame,
+            avgFrameCPU,
+            avgFrameInterval,
+            p95FrameCPU,
+            p95FrameInterval,
+            maxFrameCPU: this.profilingStats.cpuMax,
+            maxFrameInterval: this.profilingStats.intervalMax,
             avgInput,
             avgSimulation,
             avgRender,
@@ -650,18 +686,21 @@ export class Game {
           });
         }
 
-        console.log('[ClientPerf] avg frame %dms | input %dms | simulation %dms | render %dms (frames=%d)',
-          avgFrame.toFixed(3),
-          avgInput.toFixed(3),
-          avgSimulation.toFixed(3),
-          avgRender.toFixed(3),
-          this.profilingStats.frames);
+        console.log(
+          `[ClientPerf] cpu avg ${avgFrameCPU.toFixed(2)}ms | cpu p95 ${p95FrameCPU.toFixed(2)}ms | cpu max ${this.profilingStats.cpuMax.toFixed(2)}ms | ` +
+          `frame avg ${avgFrameInterval.toFixed(2)}ms | frame p95 ${p95FrameInterval.toFixed(2)}ms | frame max ${this.profilingStats.intervalMax.toFixed(2)}ms (frames=${this.profilingStats.frames})`
+        );
 
         this.profilingStats.frames = 0;
-        this.profilingStats.total = 0;
+        this.profilingStats.totalCPU = 0;
+        this.profilingStats.frameIntervalTotal = 0;
         this.profilingStats.input = 0;
         this.profilingStats.simulation = 0;
         this.profilingStats.render = 0;
+        this.profilingStats.intervalMax = 0;
+        this.profilingStats.cpuMax = 0;
+        this.profilingStats.frameIntervals.length = 0;
+        this.profilingStats.cpuSamples.length = 0;
         this.profilingStats.lastLog = frameEnd;
       }
     }

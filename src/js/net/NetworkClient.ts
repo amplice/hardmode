@@ -256,7 +256,12 @@ interface CacheStats {
 }
 
 interface ClientPerfPayload {
-    avgFrame: number;
+    avgFrameCPU: number;
+    avgFrameInterval: number;
+    p95FrameCPU: number;
+    p95FrameInterval: number;
+    maxFrameCPU: number;
+    maxFrameInterval: number;
     avgInput: number;
     avgSimulation: number;
     avgRender: number;

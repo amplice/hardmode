@@ -189,7 +189,12 @@ let serverPerfSnapshot: ServerPerfSnapshot = {
 
 interface ClientPerfSnapshot {
     socketId: string;
-    avgFrame: number;
+    avgFrameCPU: number;
+    avgFrameInterval: number;
+    p95FrameCPU: number;
+    p95FrameInterval: number;
+    maxFrameCPU: number;
+    maxFrameInterval: number;
     avgInput: number;
     avgSimulation: number;
     avgRender: number;
@@ -223,7 +228,12 @@ app.get('/metrics/server', (req, res) => {
 app.get('/metrics/client', (req, res) => {
     const clients = Array.from(clientPerfStats.values()).map(entry => ({
         socketId: entry.socketId,
-        avgFrame: Number(entry.avgFrame.toFixed(3)),
+        avgFrameCPU: Number(entry.avgFrameCPU.toFixed(3)),
+        avgFrameInterval: Number(entry.avgFrameInterval.toFixed(3)),
+        p95FrameCPU: Number(entry.p95FrameCPU.toFixed(3)),
+        p95FrameInterval: Number(entry.p95FrameInterval.toFixed(3)),
+        maxFrameCPU: Number(entry.maxFrameCPU.toFixed(3)),
+        maxFrameInterval: Number(entry.maxFrameInterval.toFixed(3)),
         avgInput: Number(entry.avgInput.toFixed(3)),
         avgSimulation: Number(entry.avgSimulation.toFixed(3)),
         avgRender: Number(entry.avgRender.toFixed(3)),

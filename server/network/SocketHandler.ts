@@ -74,7 +74,12 @@ interface NetworkOptimizer {
 
 interface ClientPerfStoreEntry {
     socketId: string;
-    avgFrame: number;
+    avgFrameCPU: number;
+    avgFrameInterval: number;
+    p95FrameCPU: number;
+    p95FrameInterval: number;
+    maxFrameCPU: number;
+    maxFrameInterval: number;
     avgInput: number;
     avgSimulation: number;
     avgRender: number;
@@ -508,9 +513,16 @@ export class SocketHandler {
             return;
         }
 
+        const avgFrameCPU = Number(data.avgFrameCPU ?? data.avgFrame) || 0;
+        const avgFrameInterval = Number(data.avgFrameInterval ?? data.avgFrame) || 0;
         const entry: ClientPerfStoreEntry = {
             socketId: socket.id,
-            avgFrame: Number(data.avgFrame) || 0,
+            avgFrameCPU,
+            avgFrameInterval,
+            p95FrameCPU: Number(data.p95FrameCPU ?? data.avgFrameCPU ?? data.avgFrame) || 0,
+            p95FrameInterval: Number(data.p95FrameInterval ?? data.avgFrameInterval ?? data.avgFrame) || 0,
+            maxFrameCPU: Number(data.maxFrameCPU ?? data.avgFrameCPU ?? data.avgFrame) || 0,
+            maxFrameInterval: Number(data.maxFrameInterval ?? data.avgFrameInterval ?? data.avgFrame) || 0,
             avgInput: Number(data.avgInput) || 0,
             avgSimulation: Number(data.avgSimulation) || 0,
             avgRender: Number(data.avgRender) || 0,

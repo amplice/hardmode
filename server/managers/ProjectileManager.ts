@@ -46,6 +46,7 @@ export class ProjectileManager {
     private removalBuffer: string[];
     private readonly monsterCollisionQueryRadius: number;
     private nearbyMonstersScratch: ServerMonsterState[];
+    private projectilePool: Projectile[];
 
     // Helper function to convert PlayerState to coordinate format
     private playerToCoords(player: PlayerState): { x: number, y: number } {
@@ -77,11 +78,12 @@ export class ProjectileManager {
         this.removalBuffer = [];
         this.monsterCollisionQueryRadius = 160; // Pixels; comfortably covers largest monster + tick travel distance
         this.nearbyMonstersScratch = [];
+        this.projectilePool = [];
     }
 
     createProjectile(owner: ProjectileOwner, data: ProjectileData): Projectile {
         const id = String(this.nextProjectileId++);
-        
+
         // Phase 6.1: Create projectile using class-based approach
         const config: ProjectileConfig = {
             id,
@@ -94,13 +96,16 @@ export class ProjectileManager {
             range: data.range,
             effectType: data.effectType
         };
-        
-        const projectile = new Projectile(config);
+
+        const projectile = this.projectilePool.pop() || new Projectile(config);
+        if (projectile) {
+            projectile.reset(config);
+        }
         this.projectiles.set(id, projectile);
-        
+
         // Notify all clients about new projectile
         this.io.emit('projectileCreated', projectile.getCreationData());
-        
+
         return projectile;
     }
 
@@ -199,7 +204,12 @@ export class ProjectileManager {
 
         // Remove inactive projectiles
         for (const id of projectilesToRemove) {
+            const projectile = this.projectiles.get(id);
+            if (!projectile) {
+                continue;
+            }
             this.projectiles.delete(id);
+            this.projectilePool.push(projectile);
         }
         projectilesToRemove.length = 0;
     }
@@ -332,6 +342,7 @@ export class ProjectileManager {
             // Clean up inactive projectiles
             if (!projectile.isActive()) {
                 this.projectiles.delete(id);
+                this.projectilePool.push(projectile);
             }
         });
     }

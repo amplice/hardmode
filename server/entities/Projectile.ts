@@ -58,56 +58,68 @@ export interface ProjectileHitResult {
  */
 export class Projectile {
     // Identity
-    public readonly id: string;
-    public readonly ownerId: string;
-    public readonly ownerType: string;
+    public id: string;
+    public ownerId: string;
+    public ownerType: string;
     
     // Position and movement
     private position: Position;
-    private readonly startPosition: Position;
-    private readonly velocity: Position;
-    private readonly angle: number;
-    private readonly speed: number;
+    private startPosition: Position;
+    private velocity: Position;
+    private angle: number;
+    private speed: number;
     
     // Combat properties
-    private readonly damage: number;
-    private readonly maxRange: number;
+    private damage: number;
+    private maxRange: number;
     private distanceTraveled: number;
     
     // Visual properties
-    public readonly effectType: string;
+    public effectType: string;
     
     // State
     private active: boolean;
-    private readonly createdAt: number;
+    private createdAt: number;
     
     constructor(config: ProjectileConfig) {
-        // Identity
+        this.id = '';
+        this.ownerId = '';
+        this.ownerType = 'player';
+        this.position = { x: 0, y: 0 };
+        this.startPosition = { x: 0, y: 0 };
+        this.velocity = { x: 0, y: 0 };
+        this.angle = 0;
+        this.speed = 700;
+        this.damage = 1;
+        this.maxRange = 600;
+        this.distanceTraveled = 0;
+        this.effectType = 'bow_shot_effect';
+        this.active = false;
+        this.createdAt = Date.now();
+        this.reset(config);
+    }
+
+    public reset(config: ProjectileConfig): void {
         this.id = config.id;
         this.ownerId = config.ownerId;
         this.ownerType = config.ownerType;
-        
-        // Position and movement
-        this.position = { ...config.startPosition };
-        this.startPosition = { ...config.startPosition };
+
+        this.startPosition.x = config.startPosition.x;
+        this.startPosition.y = config.startPosition.y;
+        this.position.x = config.startPosition.x;
+        this.position.y = config.startPosition.y;
+
         this.angle = config.angle;
         this.speed = config.speed || 700;
-        
-        // Calculate velocity from angle and speed
-        this.velocity = {
-            x: Math.cos(config.angle) * this.speed,
-            y: Math.sin(config.angle) * this.speed
-        };
-        
-        // Combat properties
-        this.damage = config.damage || 1;
-        this.maxRange = config.range || 600;
+        this.velocity.x = Math.cos(config.angle) * this.speed;
+        this.velocity.y = Math.sin(config.angle) * this.speed;
+
+        this.damage = config.damage ?? 1;
+        this.maxRange = config.range ?? 600;
         this.distanceTraveled = 0;
-        
-        // Visual properties
+
         this.effectType = config.effectType || 'bow_shot_effect';
-        
-        // State
+
         this.active = true;
         this.createdAt = Date.now();
     }
