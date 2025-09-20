@@ -1193,13 +1193,13 @@ export class Game {
     
     // Remove dead/dying monsters after animation
     if (info.state === 'dying' || info.hp <= 0) {
+      const deathDuration = Math.max((GAME_CONSTANTS.MONSTER as any)?.DEATH_LINGER_MS ?? 1500, 0);
+      monster.playDeathAnimation();
+
       setTimeout(() => {
-        if (monster && monster.sprite && monster.sprite.parent) {
-          monster.detachFromContainer();
-        }
+        monster.detachFromContainer();
         this.remoteMonsters?.delete(info.id);
-        // Removed monster
-      }, 1000); // Wait for death animation
+      }, deathDuration);
     }
   }
 
