@@ -1082,8 +1082,14 @@ export class Game {
 
       const monsterAny = monster as any;
 
+      const isDead = !monster.alive || monster.hitPoints <= 0;
       const withinFar = distanceSq <= farDistanceSq;
       const onScreen = withinFar && this.isWorldPositionInView(monster.position.x, monster.position.y, 192);
+
+      if (isDead) {
+        monster.attachToContainer(this.entityContainer);
+        continue;
+      }
 
       if (!withinFar) {
         monster.detachFromContainer();
@@ -1193,13 +1199,17 @@ export class Game {
     
     // Remove dead/dying monsters after animation
     if (info.state === 'dying' || info.hp <= 0) {
-      const deathDuration = Math.max((GAME_CONSTANTS.MONSTER as any)?.DEATH_LINGER_MS ?? 1500, 0);
-      monster.playDeathAnimation();
-
-      setTimeout(() => {
-        monster.detachFromContainer();
-        this.remoteMonsters?.delete(info.id);
-      }, deathDuration);
+      const monsterAny = monster as any;
+      if (!monsterAny.__deathTimer) {
+        const deathDuration = Math.max((GAME_CONSTANTS.MONSTER as any)?.DEATH_LINGER_MS ?? 1500, 0);
+        monster.playDeathAnimation();
+        monsterAny.__deathTimer = window.setTimeout(() => {
+          monster.detachFromContainer();
+          this.remoteMonsters?.delete(info.id);
+          monsterAny.__deathTimer = undefined;
+        }, deathDuration);
+      }
+      return;
     }
   }
 
