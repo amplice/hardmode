@@ -149,6 +149,8 @@ export class Monster {
     private spriteManager: SpriteManagerInterface;
     private parentContainer: PIXI.Container | null;
     private spriteDetached: boolean;
+    private skipAutoFade: boolean;
+    private fadingOut: boolean;
     
     // Movement (for legacy compatibility)
     public velocity?: Velocity;
@@ -184,6 +186,8 @@ export class Monster {
         this.sprite.position.set(this.position.x, this.position.y);
         this.parentContainer = null;
         this.spriteDetached = false;
+        this.skipAutoFade = false;
+        this.fadingOut = false;
 
         // Get sprite manager
         this.spriteManager = (window as any).game.systems.sprites;
@@ -528,8 +532,12 @@ export class Monster {
                 break;
                 
             case 'dying':
-                // Start fade out after death animation
-                this.startFadeOut();
+                if (this.animatedSprite) {
+                    this.animatedSprite.gotoAndStop(Math.max(this.animatedSprite.totalFrames - 1, 0));
+                }
+                if (!this.skipAutoFade) {
+                    this.startFadeOut();
+                }
                 break;
         }
     }
@@ -558,19 +566,38 @@ export class Monster {
         }
     }
     
-    private startFadeOut(): void {
-        // Fade out the sprite gradually
-        const fadeStep = () => {
-            this.sprite.alpha -= 0.05;
-            if (this.sprite.alpha > 0) {
-                requestAnimationFrame(fadeStep);
-            } else if (this.sprite.parent) {
-                this.sprite.parent.removeChild(this.sprite);
-                this.spriteDetached = true;
+    private startFadeOut(onComplete?: () => void): void {
+        if (this.fadingOut) {
+            return;
+        }
+        this.skipAutoFade = false;
+        this.fadingOut = true;
+        this.sprite.alpha = 1;
+
+        const finish = () => {
+            this.fadingOut = false;
+            this.detachFromContainer();
+            if (onComplete) {
+                onComplete();
             }
         };
 
-        fadeStep();
+        const step = () => {
+            if (this.sprite.alpha <= 0) {
+                finish();
+                return;
+            }
+
+            this.sprite.alpha = Math.max(0, this.sprite.alpha - 0.05);
+
+            if (this.sprite.alpha <= 0) {
+                finish();
+            } else {
+                requestAnimationFrame(step);
+            }
+        };
+
+        requestAnimationFrame(step);
     }
     
     updateFacing(): void {
@@ -821,6 +848,7 @@ export class Monster {
         }
 
         this.spriteDetached = false;
+        this.fadingOut = false;
         this.sprite.visible = true;
         (this.sprite as any).renderable = true;
         this.sprite.alpha = 1;
@@ -853,10 +881,16 @@ export class Monster {
         this.sprite.visible = false;
         (this.sprite as any).renderable = false;
         this.spriteDetached = true;
+        this.fadingOut = false;
+        this.skipAutoFade = false;
     }
 
     isSpriteAttached(): boolean {
         return !this.spriteDetached;
+    }
+
+    isFadingOut(): boolean {
+        return this.fadingOut;
     }
 
     playHitSound(): void {
@@ -873,9 +907,15 @@ export class Monster {
     }
     
     playDeathAnimation(): void {
-        // Switch to death animation
+        // Switch to death animation and hold pose until manual fade
+        this.skipAutoFade = true;
+        this.fadingOut = false;
         this.state = 'dying';
         this.updateAnimation();
+    }
+
+    beginDeathFade(onComplete?: () => void): void {
+        this.startFadeOut(onComplete);
     }
     
     // Legacy update method for local AI (no longer used in multiplayer)

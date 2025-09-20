@@ -1087,7 +1087,9 @@ export class Game {
       const onScreen = withinFar && this.isWorldPositionInView(monster.position.x, monster.position.y, 192);
 
       if (isDead) {
-        monster.attachToContainer(this.entityContainer);
+        if (!monster.isFadingOut() && !monster.isSpriteAttached() && withinFar) {
+          monster.attachToContainer(this.entityContainer);
+        }
         continue;
       }
 
@@ -1203,10 +1205,15 @@ export class Game {
       if (!monsterAny.__deathTimer) {
         const deathDuration = Math.max((GAME_CONSTANTS.MONSTER as any)?.DEATH_LINGER_MS ?? 1500, 0);
         monster.playDeathAnimation();
+        if (!monster.isSpriteAttached()) {
+          monster.attachToContainer(this.entityContainer);
+        }
         monsterAny.__deathTimer = window.setTimeout(() => {
-          monster.detachFromContainer();
-          this.remoteMonsters?.delete(info.id);
-          monsterAny.__deathTimer = undefined;
+          monsterAny.__deathTimer = 'fading';
+          monster.beginDeathFade(() => {
+            this.remoteMonsters?.delete(info.id);
+            monsterAny.__deathTimer = undefined;
+          });
         }, deathDuration);
       }
       return;
