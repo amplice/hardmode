@@ -917,6 +917,14 @@ export class Monster {
     beginDeathFade(onComplete?: () => void): void {
         this.startFadeOut(onComplete);
     }
+
+    prepareForServerDeath(): void {
+        if (this.skipAutoFade) {
+            return;
+        }
+        this.skipAutoFade = true;
+        this.fadingOut = false;
+    }
     
     // Legacy update method for local AI (no longer used in multiplayer)
 }

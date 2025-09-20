@@ -1196,11 +1196,17 @@ export class Game {
       // Created new monster
     }
     
+    const isServerDeath = info.state === 'dying' || info.hp <= 0;
+
+    if (isServerDeath) {
+      monster.prepareForServerDeath();
+    }
+
     // Update monster state from server
     monster.updateFromServer(info);
-    
+
     // Remove dead/dying monsters after animation
-    if (info.state === 'dying' || info.hp <= 0) {
+    if (isServerDeath) {
       const monsterAny = monster as any;
       if (!monsterAny.__deathTimer) {
         const deathDuration = Math.max((GAME_CONSTANTS.MONSTER as any)?.DEATH_LINGER_MS ?? 1500, 0);
