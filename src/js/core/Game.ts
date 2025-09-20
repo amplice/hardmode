@@ -1074,6 +1074,12 @@ export class Game {
       const dx = monster.position.x - playerX;
       const dy = monster.position.y - playerY;
       const distanceSq = dx * dx + dy * dy;
+
+      if (!monster.alive || monster.hitPoints <= 0) {
+        monster.detachFromContainer();
+        continue;
+      }
+
       const monsterAny = monster as any;
 
       const withinFar = distanceSq <= farDistanceSq;
