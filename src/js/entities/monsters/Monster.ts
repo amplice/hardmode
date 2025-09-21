@@ -48,7 +48,7 @@
 
 import * as PIXI from 'pixi.js';
 import { MONSTER_CONFIG } from '../../config/GameConfig.js';
-import { MONSTER_STATS } from '../../../../shared/constants/GameConstants.js';
+import { MONSTER_STATS, GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js';
 import { soundManager } from '../../systems/SoundManager.js';
 import { getMonsterSound } from '../../config/SoundConfig.js';
 import {
@@ -152,6 +152,11 @@ export class Monster {
     private skipAutoFade: boolean;
     private fadingOut: boolean;
     
+    // Death animation state (proper implementation)
+    private deathState: 'alive' | 'dying' | 'fading' | 'dead';
+    private deathAnimationTimer?: number;
+    private fadeStartTime?: number;
+    
     // Movement (for legacy compatibility)
     public velocity?: Velocity;
     public target?: PlayerInterface;
@@ -188,6 +193,11 @@ export class Monster {
         this.spriteDetached = false;
         this.skipAutoFade = false;
         this.fadingOut = false;
+        
+        // Initialize death state
+        this.deathState = 'alive';
+        this.deathAnimationTimer = undefined;
+        this.fadeStartTime = undefined;
 
         // Get sprite manager
         this.spriteManager = (window as any).game.systems.sprites;
@@ -907,23 +917,65 @@ export class Monster {
     }
     
     playDeathAnimation(): void {
-        // Switch to death animation and hold pose until manual fade
+        // Only start death animation if not already dying
+        if (this.deathState !== 'alive') {
+            return;
+        }
+        
+        // Transition to dying state
+        this.deathState = 'dying';
+        this.state = 'dying';
+        this.alive = false;
         this.skipAutoFade = true;
         this.fadingOut = false;
-        this.state = 'dying';
+        
+        // Update to death animation
         this.updateAnimation();
+        
+        // Start timer to begin fade after death animation plays
+        const deathLingerMs = GAME_CONSTANTS.MONSTER.DEATH_LINGER_MS || 1500;
+        this.deathAnimationTimer = window.setTimeout(() => {
+            this.beginDeathFade();
+        }, deathLingerMs);
     }
 
     beginDeathFade(onComplete?: () => void): void {
-        this.startFadeOut(onComplete);
+        // Only fade if in dying state
+        if (this.deathState !== 'dying') {
+            return;
+        }
+        
+        // Transition to fading state
+        this.deathState = 'fading';
+        this.fadeStartTime = Date.now();
+        
+        // Start the fade animation
+        this.startFadeOut(() => {
+            this.deathState = 'dead';
+            if (onComplete) {
+                onComplete();
+            }
+        });
     }
 
     prepareForServerDeath(): void {
-        if (this.skipAutoFade) {
-            return;
+        // This is now a no-op since we handle everything in playDeathAnimation
+        // Kept for backwards compatibility
+    }
+    
+    isPlayingDeathAnimation(): boolean {
+        return this.deathState === 'dying' || this.deathState === 'fading';
+    }
+    
+    isFullyDead(): boolean {
+        return this.deathState === 'dead';
+    }
+    
+    cleanupDeathTimer(): void {
+        if (this.deathAnimationTimer) {
+            window.clearTimeout(this.deathAnimationTimer);
+            this.deathAnimationTimer = undefined;
         }
-        this.skipAutoFade = true;
-        this.fadingOut = false;
     }
     
     // Legacy update method for local AI (no longer used in multiplayer)

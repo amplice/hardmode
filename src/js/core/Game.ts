@@ -1050,6 +1050,20 @@ export class Game {
   updateRemoteMonsters(delta: number): void {
     if (!this.remoteMonsters) return;
     const player = this.entities.player;
+    
+    // Clean up fully dead monsters
+    const monstersToRemove: string[] = [];
+    for (const [id, monster] of this.remoteMonsters.entries()) {
+      if (monster.isFullyDead()) {
+        monster.cleanupDeathTimer();
+        monster.detachFromContainer();
+        monstersToRemove.push(id);
+      }
+    }
+    for (const id of monstersToRemove) {
+      this.remoteMonsters.delete(id);
+    }
+    
     if (!player) {
       for (const monster of this.remoteMonsters.values()) {
         monster.update(delta);
@@ -1076,9 +1090,8 @@ export class Game {
       const distanceSq = dx * dx + dy * dy;
 
       if (!monster.alive || monster.hitPoints <= 0) {
-        // Don't detach dying monsters if they have an active death timer (playing death animation)
-        const monsterAny = monster as any;
-        if (!monsterAny.__deathTimer) {
+        // Don't detach monsters that are playing death animations
+        if (!monster.isPlayingDeathAnimation()) {
           monster.detachFromContainer();
         }
         continue;
@@ -1209,23 +1222,17 @@ export class Game {
     // Update monster state from server
     monster.updateFromServer(info);
 
-    // Remove dead/dying monsters after animation
+    // Handle death animation for dying monsters
     if (isServerDeath) {
-      const monsterAny = monster as any;
-      if (!monsterAny.__deathTimer) {
-        const deathDuration = Math.max((GAME_CONSTANTS.MONSTER as any)?.DEATH_LINGER_MS ?? 1500, 0);
-        monster.playDeathAnimation();
-        if (!monster.isSpriteAttached()) {
-          monster.attachToContainer(this.entityContainer);
-        }
-        monsterAny.__deathTimer = window.setTimeout(() => {
-          monsterAny.__deathTimer = 'fading';
-          monster.beginDeathFade(() => {
-            this.remoteMonsters?.delete(info.id);
-            monsterAny.__deathTimer = undefined;
-          });
-        }, deathDuration);
+      // Start death animation (it handles its own timing internally)
+      monster.playDeathAnimation();
+      
+      // Make sure sprite is attached so we can see the death animation
+      if (!monster.isSpriteAttached()) {
+        monster.attachToContainer(this.entityContainer);
       }
+      
+      // The monster will automatically fade and can be cleaned up when fully dead
       return;
     }
   }
