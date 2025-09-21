@@ -1076,7 +1076,11 @@ export class Game {
       const distanceSq = dx * dx + dy * dy;
 
       if (!monster.alive || monster.hitPoints <= 0) {
-        monster.detachFromContainer();
+        // Don't detach dying monsters if they have an active death timer (playing death animation)
+        const monsterAny = monster as any;
+        if (!monsterAny.__deathTimer) {
+          monster.detachFromContainer();
+        }
         continue;
       }
 
