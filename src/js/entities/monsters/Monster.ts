@@ -932,11 +932,26 @@ export class Monster {
         // Update to death animation
         this.updateAnimation();
         
-        // Start timer to begin fade after death animation plays
-        const deathLingerMs = GAME_CONSTANTS.MONSTER.DEATH_LINGER_MS || 1500;
-        this.deathAnimationTimer = window.setTimeout(() => {
-            this.beginDeathFade();
-        }, deathLingerMs);
+        // Make sure the death animation plays from the beginning
+        if (this.animatedSprite) {
+            this.animatedSprite.gotoAndPlay(0);
+            
+            // Set up callback for when animation completes
+            // Death animations don't loop, so onComplete will fire when it finishes
+            this.animatedSprite.onComplete = () => {
+                // Hold on the last frame (the corpse) for the linger duration
+                const deathLingerMs = GAME_CONSTANTS.MONSTER.DEATH_LINGER_MS || 1500;
+                this.deathAnimationTimer = window.setTimeout(() => {
+                    this.beginDeathFade();
+                }, deathLingerMs);
+            };
+        } else {
+            // Fallback if no sprite available
+            const deathLingerMs = GAME_CONSTANTS.MONSTER.DEATH_LINGER_MS || 1500;
+            this.deathAnimationTimer = window.setTimeout(() => {
+                this.beginDeathFade();
+            }, deathLingerMs);
+        }
     }
 
     beginDeathFade(onComplete?: () => void): void {
