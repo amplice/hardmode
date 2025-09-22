@@ -639,8 +639,9 @@ export class Monster {
         this.hitPoints -= amount;
         
         // Show damage number if game has damage number system
-        if (this.game && (this.game as any).damageNumberSystem) {
-            (this.game as any).damageNumberSystem.showDamage(
+        const game = (window as any).game;
+        if (game && game.damageNumberSystem) {
+            game.damageNumberSystem.showDamage(
                 this.position.x,
                 this.position.y - 40, // Above the monster
                 amount

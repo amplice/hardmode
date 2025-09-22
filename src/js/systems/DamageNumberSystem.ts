@@ -41,9 +41,9 @@ export class DamageNumberSystem {
         this.activeNumbers = new Set();
         
         // Create pool with configuration from GameConstants
-        const poolConfig = GAME_CONSTANTS.POOLS.DAMAGE_NUMBERS || {
-            MAX_SIZE: 50,
-            PRE_ALLOCATE: 10
+        const poolConfig = {
+            maxSize: GAME_CONSTANTS.POOLS.DAMAGE_NUMBERS.MAX_SIZE || 50,
+            preAllocate: GAME_CONSTANTS.POOLS.DAMAGE_NUMBERS.PRE_ALLOCATE || 10
         };
         
         this.damagePool = new ObjectPool<DamageNumber>(
@@ -133,7 +133,7 @@ export class DamageNumberSystem {
      * Show healing numbers (green)
      */
     showHealing(x: number, y: number, amount: number): void {
-        this.showDamage(x, y, `+${amount}`, 0x44FF44);
+        this.showDamage(x, y, amount, 0x44FF44);
     }
     
     /**
