@@ -46,6 +46,7 @@ import { SessionAntiCheat } from './systems/SessionAntiCheat.js';
 import { DamageProcessor } from './systems/DamageProcessor.js';
 import { SocketHandler } from './network/SocketHandler.js';
 import { NetworkOptimizer } from './network/NetworkOptimizer.js';
+import { MessageBatcher } from './network/MessageBatcher.js';
 import { setupDebugEndpoint } from './middleware/debugEndpoint.js';
 import type { PlayerState } from '../shared/types/GameTypes.js';
 
@@ -138,6 +139,7 @@ const lagCompensation = new LagCompensation();
 const sessionAntiCheat = new SessionAntiCheat(abilityManager as any);
 const inputProcessor = new InputProcessor(gameState as any, abilityManager as any, lagCompensation as any, sessionAntiCheat as any, serverWorldManager as any, powerupManager);
 const networkOptimizer = new NetworkOptimizer();
+const messageBatcher = new MessageBatcher(true); // Enable message batching
 const clientPerfStats: Map<string, ClientPerfSnapshot> = new Map();
 const socketHandler = new SocketHandler(io, gameState as any, monsterManager as any, projectileManager, abilityManager as any, inputProcessor, lagCompensation, sessionAntiCheat, SERVER_WORLD_SEED, networkOptimizer, clientPerfStats);
 const damageProcessor = new DamageProcessor(gameState, monsterManager, socketHandler, io, powerupManager);
@@ -369,7 +371,7 @@ setInterval(() => {
             (optimizedState as any).projectiles = serializedProjectiles;
             
             // Step 4: Send optimized payload with _updateType markers for client processing
-            socket.emit('state', optimizedState);
+            messageBatcher.queueMessage(socket, 'state', optimizedState);
         } else {
             // LEGACY PATH: Send complete objects (backwards compatibility)
             const filteredPlayers: any[] = [];
@@ -402,9 +404,12 @@ setInterval(() => {
                 monsters: monsterManager.getSerializedMonsters(visibleMonsters),
                 projectiles: serializedProjectiles
             };
-            socket.emit('state', state);
+            messageBatcher.queueMessage(socket, 'state', state);
         }
     });
+
+    // Flush all batched messages at the end of the tick
+    messageBatcher.flush();
 
     if (ENABLE_SERVER_PROFILING) {
         const tickEnd = performance.now();

@@ -495,6 +495,25 @@ export class NetworkClient {
             }
         });
 
+        // Handler for batched messages from server (message batching optimization)
+        this.socket.on('batch', (batch: { messages: Array<{ type: string; data: any }>, timestamp: number }) => {
+            // Process each message in the batch sequentially
+            for (const message of batch.messages) {
+                // Re-emit each message to trigger the existing handlers
+                // This maintains backward compatibility with existing message handlers
+                const event = message.type;
+                const data = message.data;
+                
+                // Find and call the registered handlers for this event type
+                const callbacks = (this.socket as any).listeners(event);
+                if (callbacks && callbacks.length > 0) {
+                    callbacks.forEach((callback: Function) => {
+                        callback(data);
+                    });
+                }
+            }
+        });
+
         this.socket.on('playerAttack', (data: { id: string; type: AttackType; facing: number }) => {
             if (data.id !== this.socket.id) {
                 // Convert facing number to string if needed
