@@ -57,8 +57,8 @@ import type {
 export const GAME_CONSTANTS = {
     // World settings - expanded for more content
     WORLD: {
-        WIDTH: 1000,  // Expanded world footprint to revisit larger playspace
-        HEIGHT: 1000, // Expanded world footprint to revisit larger playspace
+        WIDTH: 750,  // Optimized world size for current player capacity
+        HEIGHT: 750, // Optimized world size for current player capacity
         TILE_SIZE: 64,
         SEED: 42 // Default seed, server will override with generated seed
     },
@@ -66,14 +66,14 @@ export const GAME_CONSTANTS = {
     // Server tick rate
     TICK_RATE: 30,
     
-    // Spawn system - optimized for higher density
+    // Spawn system - optimized for 750x750 world
     SPAWN: {
-        MAX_MONSTERS: 500, // Tuned for current performance target
-        INITIAL_MONSTERS: 180, // Slightly more presence in larger world
+        MAX_MONSTERS: 400, // Tuned for 750x750 world size
+        INITIAL_MONSTERS: 150, // Appropriate density for 750x750
         INTERVAL: 1.0, // Moderate spawn cadence
         MIN_DISTANCE_FROM_PLAYER: 650, // Prevent pop-ins near player
-        MAX_DISTANCE_FROM_PLAYER: 9500, // Better fit for 1000 world
-        WORLD_EDGE_MARGIN: 3200 // Expanded to keep spawns off the edge
+        MAX_DISTANCE_FROM_PLAYER: 7500, // Better fit for 750x750 world
+        WORLD_EDGE_MARGIN: 2400 // Keep spawns off the edge
     },
     
     // Network settings
@@ -101,11 +101,23 @@ export const GAME_CONSTANTS = {
     MONSTER: {
         DAMAGE_STUN_DURATION: 0.36, // seconds - matches hit animation duration (15 frames at 0.7 speed)
         LOD: {
+            // Distance thresholds for LOD bands
+            NEAR_DISTANCE: 500,   // Full update rate within 500 pixels
+            MEDIUM_DISTANCE: 1000, // Reduced updates 500-1000 pixels
+            FAR_DISTANCE: 1500,   // Minimal updates 1000-1500 pixels
+            // Update multipliers for each band
             NEAR_MULTIPLIER: 1.0,
             MEDIUM_MULTIPLIER: 1.6,
             FAR_MULTIPLIER: 2.4,
+            // Frame skipping for performance
             MEDIUM_SKIP: 5,
-            FAR_SKIP: 10
+            FAR_SKIP: 10,
+            // Updates per frame limits
+            UPDATES_PER_FRAME: {
+                NEAR: 1.0,    // Always update
+                MEDIUM: 0.5,  // Update every other frame
+                FAR: 0.1      // Update every 10th frame
+            }
         },
         DEATH_LINGER_MS: 1500
     },
