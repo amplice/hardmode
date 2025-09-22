@@ -355,10 +355,9 @@ export class MonsterManager {
         let dormantCount = 0;
 
         for (const monster of Array.from(this.monsters.values())) {
+            // Skip updating dying monsters - let the timeout in killMonster handle cleanup
+            // This ensures clients receive the dying state before monster is removed
             if (monster.state === 'dying') {
-                this.cleanupMonsterTimeouts(monster.id);
-                this.removeMonsterFromBucket(monster);
-                this.monsters.delete(monster.id);
                 continue;
             }
 
