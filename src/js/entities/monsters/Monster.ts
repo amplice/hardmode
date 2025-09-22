@@ -542,11 +542,11 @@ export class Monster {
                 break;
                 
             case 'dying':
-                if (this.animatedSprite) {
-                    this.animatedSprite.gotoAndStop(Math.max(this.animatedSprite.totalFrames - 1, 0));
-                }
-                if (!this.skipAutoFade) {
-                    this.startFadeOut();
+                // Let the death animation play naturally - don't stop it on last frame
+                // The animation will handle stopping itself via onComplete
+                if (this.animatedSprite && !this.animatedSprite.playing) {
+                    // Only play if not already playing
+                    this.animatedSprite.play();
                 }
                 break;
         }
@@ -934,11 +934,18 @@ export class Monster {
         
         // Make sure the death animation plays from the beginning
         if (this.animatedSprite) {
+            // Death animations should not loop
+            this.animatedSprite.loop = false;
             this.animatedSprite.gotoAndPlay(0);
             
             // Set up callback for when animation completes
             // Death animations don't loop, so onComplete will fire when it finishes
             this.animatedSprite.onComplete = () => {
+                // Animation finished, now hold on the last frame (corpse)
+                if (this.animatedSprite) {
+                    this.animatedSprite.gotoAndStop(this.animatedSprite.totalFrames - 1);
+                }
+                
                 // Hold on the last frame (the corpse) for the linger duration
                 const deathLingerMs = GAME_CONSTANTS.MONSTER.DEATH_LINGER_MS || 1500;
                 this.deathAnimationTimer = window.setTimeout(() => {
