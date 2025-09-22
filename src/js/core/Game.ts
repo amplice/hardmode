@@ -58,6 +58,7 @@ import { LatencyTracker } from '../systems/LatencyTracker.js';
 import { ProjectileRenderer } from '../systems/ProjectileRenderer.js';
 import { PowerupRenderer } from '../systems/PowerupRenderer.js';
 import { AttackTelegraphRenderer } from '../systems/AttackTelegraphRenderer.js';
+import { DamageNumberSystem } from '../systems/DamageNumberSystem.js';
 import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 import { velocityToDirectionString } from '../utils/DirectionUtils.js';
 import { DebugLogger } from '../debug/DebugLogger.js';
@@ -112,6 +113,7 @@ export class Game {
   projectileRenderer?: any; // ProjectileRenderer
   powerupRenderer?: any; // PowerupRenderer
   telegraphRenderer?: AttackTelegraphRenderer;
+  damageNumberSystem?: DamageNumberSystem;
   debugLogger: DebugLogger;
   performanceOverlay?: any; // PerformanceOverlay
   worldData?: WorldData; // Store world data for biome lookups
@@ -599,6 +601,9 @@ export class Game {
     if (this.telegraphRenderer) {
       this.telegraphRenderer.update(deltaTimeSeconds);
     }
+    if (this.damageNumberSystem) {
+      this.damageNumberSystem.update(deltaTimeSeconds);
+    }
 
     if (this.profilingEnabled) {
       const nowStamp = performance.now();
@@ -867,6 +872,9 @@ export class Game {
     // Initialize telegraph renderer
     this.telegraphRenderer = new AttackTelegraphRenderer();
     this.entityContainer.addChild(this.telegraphRenderer.getContainer());
+    
+    // Initialize damage number system
+    this.damageNumberSystem = new DamageNumberSystem(this.entityContainer);
     
     // Initialize performance overlay
     this.performanceOverlay = new PerformanceOverlay();

@@ -638,6 +638,15 @@ export class Monster {
         
         this.hitPoints -= amount;
         
+        // Show damage number if game has damage number system
+        if (this.game && (this.game as any).damageNumberSystem) {
+            (this.game as any).damageNumberSystem.showDamage(
+                this.position.x,
+                this.position.y - 40, // Above the monster
+                amount
+            );
+        }
+        
         // Check for death
         if (this.hitPoints <= 0) {
             this.die(attacker);

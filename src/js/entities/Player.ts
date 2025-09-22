@@ -1441,6 +1441,15 @@ export class Player implements PlayerInterface {
     
     takeDamage(amount: number): void {
         this.health.takeDamage(amount);
+        
+        // Show damage number if game has damage number system
+        if (this.game && (this.game as any).damageNumberSystem) {
+            (this.game as any).damageNumberSystem.showDamage(
+                this.position.x,
+                this.position.y - 30, // Above the player
+                amount
+            );
+        }
     }
     
     showDamageEffect(): void {

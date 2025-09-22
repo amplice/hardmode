@@ -68,7 +68,7 @@ export const GAME_CONSTANTS = {
     
     // Spawn system - optimized for 750x750 world
     SPAWN: {
-        MAX_MONSTERS: 400, // Tuned for 750x750 world size
+        MAX_MONSTERS: 600, // Testing higher monster density
         INITIAL_MONSTERS: 150, // Appropriate density for 750x750
         INTERVAL: 1.0, // Moderate spawn cadence
         MIN_DISTANCE_FROM_PLAYER: 650, // Prevent pop-ins near player
@@ -152,6 +152,10 @@ export const GAME_CONSTANTS = {
         PROJECTILE: {
             MAX_SIZE: 100,     // Maximum projectile objects
             PRE_ALLOCATE: 20   // Pre-create this many at startup
+        },
+        DAMAGE_NUMBERS: {
+            MAX_SIZE: 50,      // Maximum damage text objects
+            PRE_ALLOCATE: 10   // Pre-create this many at startup
         }
     }
 };
