@@ -186,7 +186,7 @@ export class Game {
       physics: new PhysicsSystem(),
       world:   null,               // will init after tilesets
       combat:  new CombatSystem(this.app),
-      sprites: new SpriteManager()
+      sprites: new SpriteManager(GAME_CONSTANTS.RENDERING.USE_TEXTURE_ATLASES)
     };
 
     this.entities = { player: null } as any;

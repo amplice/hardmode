@@ -11,6 +11,7 @@
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG, MONSTER_CONFIG } from '../../config/GameConfig.js';
 import { directionStringToAnimationSuffix } from '../../utils/DirectionUtils.js';
+import { AtlasManager } from './AtlasManager.js';
 
 // Type definitions for sprite configurations
 interface FrameSize {
@@ -291,17 +292,47 @@ export class SpriteManager {
     private spriteScale: number;
     private frameWidth: number;
     private frameHeight: number;
+    private atlasManager: AtlasManager | null;
+    private useAtlases: boolean;
 
-    constructor() {
+    constructor(useAtlases: boolean = true) {
         this.textures = {};
         this.animations = {};
         this.loaded = false;
         this.spriteScale = 1;
         this.frameWidth = 128;
         this.frameHeight = 128;
+        this.atlasManager = null;
+        this.useAtlases = useAtlases;
     }
 
     async loadSprites(): Promise<void> {
+        // Try to load atlases first if enabled
+        if (this.useAtlases) {
+            try {
+                console.log('[SpriteManager] Attempting to load texture atlases...');
+                this.atlasManager = new AtlasManager();
+                await this.atlasManager.loadAtlases();
+                console.log('[SpriteManager] Successfully loaded texture atlases');
+                
+                // If atlases load successfully, we still need to fall back for now
+                // since we don't have actual atlas files yet
+                await this.loadIndividualSprites();
+            } catch (error) {
+                console.warn('[SpriteManager] Failed to load atlases, falling back to individual sprites:', error);
+                this.useAtlases = false;
+                await this.loadIndividualSprites();
+            }
+        } else {
+            await this.loadIndividualSprites();
+        }
+            
+        this.createAnimations();
+        this.loaded = true;
+        console.log("[SpriteManager] All sprites loaded successfully");
+    }
+
+    private async loadIndividualSprites(): Promise<void> {
         const promises: Promise<void>[] = [];
 
         for (const config of SPRITE_SHEET_CONFIG) {
@@ -338,10 +369,6 @@ export class SpriteManager {
         }
 
         await Promise.all(promises);
-            
-        this.createAnimations();
-        this.loaded = true;
-        console.log("Sprites loaded successfully");
     }
 
     private async loadSpritesheet(
@@ -352,7 +379,7 @@ export class SpriteManager {
         customFrameSize: FrameSize | null = null
     ): Promise<void> {
         return new Promise((resolve, reject) => {
-            PIXI.Assets.load(path).then(texture => {
+            PIXI.Assets.load(path).then((texture: any) => {
                 const frameWidth = customFrameSize ? customFrameSize.width : this.frameWidth;
                 const frameHeight = customFrameSize ? customFrameSize.height : this.frameHeight;
                 
@@ -379,7 +406,7 @@ export class SpriteManager {
                     this.textures[`${name}_${direction}`] = frames;
                 }
                 resolve();
-            }).catch(error => {
+            }).catch((error: any) => {
                 console.error(`Failed to load spritesheet ${path} for key ${name}:`, error);
                 reject(error);
             });
@@ -395,7 +422,7 @@ export class SpriteManager {
         frameSize: FrameSize
     ): Promise<void> {
         return new Promise((resolve, reject) => {
-            PIXI.Assets.load(path).then(texture => {
+            PIXI.Assets.load(path).then((texture: any) => {
                 const { width: frameWidth, height: frameHeight } = frameSize;
                 const frames: PIXI.Texture[] = [];
                 
@@ -414,7 +441,7 @@ export class SpriteManager {
                 }
                 this.textures[name] = frames;
                 resolve();
-            }).catch(error => {
+            }).catch((error: any) => {
                 console.error(`Failed to load effect spritesheet ${path} for key ${name}:`, error);
                 reject(error);
             });
@@ -423,13 +450,13 @@ export class SpriteManager {
 
     private async loadSingleTexture(name: string, path: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            PIXI.Assets.load(path).then(texture => {
+            PIXI.Assets.load(path).then((texture: any) => {
                 texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
                 // Store as single-item array to maintain consistency with the texture storage format
                 this.textures[name] = [texture];
                 console.log(`Loaded single texture ${name} from ${path}`);
                 resolve();
-            }).catch(error => {
+            }).catch((error: any) => {
                 console.error(`Failed to load texture ${path} for key ${name}:`, error);
                 reject(error);
             });

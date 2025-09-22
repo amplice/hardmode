@@ -157,6 +157,13 @@ export const GAME_CONSTANTS = {
             MAX_SIZE: 50,      // Maximum damage text objects
             PRE_ALLOCATE: 10   // Pre-create this many at startup
         }
+    },
+
+    // Rendering optimization settings
+    RENDERING: {
+        USE_TEXTURE_ATLASES: false,  // Enable texture atlases (set to true once atlas files are generated)
+        CHUNK_SIZE: 32,               // Tiles per chunk for chunked rendering
+        VIEW_DISTANCE: 768            // Pixels - render distance from player
     }
 };
 
