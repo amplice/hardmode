@@ -1367,6 +1367,19 @@ export class Game {
   }
   
   /**
+   * Show damage number at position - called by NetworkClient
+   */
+  showDamageNumber(position: Position, damage: number): void {
+    if (this.damageNumberSystem) {
+      this.damageNumberSystem.showDamage(
+        position.x,
+        position.y - 30, // Show above the entity
+        damage
+      );
+    }
+  }
+
+  /**
    * Setup debug monster spawning system
    * F4 toggles the system on/off
    * Number keys 1-8 spawn different monster types

@@ -86,6 +86,8 @@ export class DamageNumberSystem {
         damageNum.text.visible = false;
         damageNum.text.alpha = 1;
         damageNum.text.scale.set(1);
+        damageNum.text.style.fontSize = 20; // Reset to default font size
+        damageNum.duration = DamageNumberSystem.DURATION; // Reset to default duration
         damageNum.active = false;
         
         if (damageNum.text.parent) {
