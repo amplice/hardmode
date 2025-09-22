@@ -1,0 +1,244 @@
+{
+  "meta": {
+    "version": "1.0",
+    "type": "sprite-index",
+    "description": "Sprite sheet index for effects",
+    "generated": "2025-09-22T21:19:17.901Z"
+  },
+  "sprites": {
+    "effects_06": {
+      "path": "src/assets/sprites/effects/06.png",
+      "category": "effects",
+      "animation": "06",
+      "frames": null
+    },
+    "effects_20": {
+      "path": "src/assets/sprites/effects/20.png",
+      "category": "effects",
+      "animation": "20",
+      "frames": null
+    },
+    "effects_222": {
+      "path": "src/assets/sprites/effects/222.png",
+      "category": "effects",
+      "animation": "222",
+      "frames": null
+    },
+    "effects_351": {
+      "path": "src/assets/sprites/effects/351.png",
+      "category": "effects",
+      "animation": "351",
+      "frames": null
+    },
+    "effects_435": {
+      "path": "src/assets/sprites/effects/435.png",
+      "category": "effects",
+      "animation": "435",
+      "frames": null
+    },
+    "effects_438": {
+      "path": "src/assets/sprites/effects/438.png",
+      "category": "effects",
+      "animation": "438",
+      "frames": null
+    },
+    "effects_448": {
+      "path": "src/assets/sprites/effects/448.png",
+      "category": "effects",
+      "animation": "448",
+      "frames": null
+    },
+    "effects_453": {
+      "path": "src/assets/sprites/effects/453.png",
+      "category": "effects",
+      "animation": "453",
+      "frames": null
+    },
+    "effects_457": {
+      "path": "src/assets/sprites/effects/457.png",
+      "category": "effects",
+      "animation": "457",
+      "frames": null
+    },
+    "effects_458": {
+      "path": "src/assets/sprites/effects/458.png",
+      "category": "effects",
+      "animation": "458",
+      "frames": null
+    },
+    "effects_478": {
+      "path": "src/assets/sprites/effects/478.png",
+      "category": "effects",
+      "animation": "478",
+      "frames": null
+    },
+    "effects_529": {
+      "path": "src/assets/sprites/effects/529.png",
+      "category": "effects",
+      "animation": "529",
+      "frames": null
+    },
+    "effects_535": {
+      "path": "src/assets/sprites/effects/535.png",
+      "category": "effects",
+      "animation": "535",
+      "frames": null
+    },
+    "effects_574": {
+      "path": "src/assets/sprites/effects/574.png",
+      "category": "effects",
+      "animation": "574",
+      "frames": null
+    },
+    "effects_576": {
+      "path": "src/assets/sprites/effects/576.png",
+      "category": "effects",
+      "animation": "576",
+      "frames": null
+    },
+    "effects_579": {
+      "path": "src/assets/sprites/effects/579.png",
+      "category": "effects",
+      "animation": "579",
+      "frames": null
+    },
+    "effects_584": {
+      "path": "src/assets/sprites/effects/584.png",
+      "category": "effects",
+      "animation": "584",
+      "frames": null
+    },
+    "effects_589": {
+      "path": "src/assets/sprites/effects/589.png",
+      "category": "effects",
+      "animation": "589",
+      "frames": null
+    },
+    "effects_620": {
+      "path": "src/assets/sprites/effects/620.png",
+      "category": "effects",
+      "animation": "620",
+      "frames": null
+    },
+    "effects_638": {
+      "path": "src/assets/sprites/effects/638.png",
+      "category": "effects",
+      "animation": "638",
+      "frames": null
+    },
+    "effects_647": {
+      "path": "src/assets/sprites/effects/647.png",
+      "category": "effects",
+      "animation": "647",
+      "frames": null
+    },
+    "effects_676": {
+      "path": "src/assets/sprites/effects/676.png",
+      "category": "effects",
+      "animation": "676",
+      "frames": null
+    },
+    "effects_686": {
+      "path": "src/assets/sprites/effects/686.png",
+      "category": "effects",
+      "animation": "686",
+      "frames": null
+    },
+    "effects_706": {
+      "path": "src/assets/sprites/effects/706.png",
+      "category": "effects",
+      "animation": "706",
+      "frames": null
+    },
+    "effects_724": {
+      "path": "src/assets/sprites/effects/724.png",
+      "category": "effects",
+      "animation": "724",
+      "frames": null
+    },
+    "effects_guardianattack1-1": {
+      "path": "src/assets/sprites/effects/GuardianAttack1-1.png",
+      "category": "effects",
+      "animation": "GuardianAttack1-1",
+      "frames": null
+    },
+    "effects_guardianattack1": {
+      "path": "src/assets/sprites/effects/GuardianAttack1.png",
+      "category": "effects",
+      "animation": "GuardianAttack1",
+      "frames": null
+    },
+    "effects_guardianattack2": {
+      "path": "src/assets/sprites/effects/GuardianAttack2.png",
+      "category": "effects",
+      "animation": "GuardianAttack2",
+      "frames": null
+    },
+    "effects_knightstrikecast-1": {
+      "path": "src/assets/sprites/effects/KnightStrikeCast-1.png",
+      "category": "effects",
+      "animation": "KnightStrikeCast-1",
+      "frames": null
+    },
+    "effects_knightstrikecast-2 (2)": {
+      "path": "src/assets/sprites/effects/KnightStrikeCast-2 (2).png",
+      "category": "effects",
+      "animation": "KnightStrikeCast-2 (2)",
+      "frames": null
+    },
+    "effects_knightstrikecast": {
+      "path": "src/assets/sprites/effects/KnightStrikeCast.png",
+      "category": "effects",
+      "animation": "KnightStrikeCast",
+      "frames": null
+    },
+    "effects_knightstrikewindup": {
+      "path": "src/assets/sprites/effects/KnightStrikeWindup.png",
+      "category": "effects",
+      "animation": "KnightStrikeWindup",
+      "frames": null
+    },
+    "effects_levelup": {
+      "path": "src/assets/sprites/effects/LevelUp.png",
+      "category": "effects",
+      "animation": "LevelUp",
+      "frames": null
+    },
+    "effects_rogueattack1": {
+      "path": "src/assets/sprites/effects/RogueAttack1.png",
+      "category": "effects",
+      "animation": "RogueAttack1",
+      "frames": null
+    },
+    "effects_rogueattack2-a": {
+      "path": "src/assets/sprites/effects/RogueAttack2-A.png",
+      "category": "effects",
+      "animation": "RogueAttack2-A",
+      "frames": null
+    },
+    "effects_rogueattack2": {
+      "path": "src/assets/sprites/effects/RogueAttack2.png",
+      "category": "effects",
+      "animation": "RogueAttack2",
+      "frames": null
+    },
+    "effects_slash-1": {
+      "path": "src/assets/sprites/effects/Slash-1.png",
+      "category": "effects",
+      "animation": "Slash-1",
+      "frames": null
+    },
+    "effects_slash-2": {
+      "path": "src/assets/sprites/effects/Slash-2.png",
+      "category": "effects",
+      "animation": "Slash-2",
+      "frames": null
+    },
+    "effects_slash": {
+      "path": "src/assets/sprites/effects/Slash.png",
+      "category": "effects",
+      "animation": "Slash",
+      "frames": null
+    }
+  }
+}

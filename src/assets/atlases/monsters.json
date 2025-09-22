@@ -1,0 +1,1114 @@
+{
+  "meta": {
+    "version": "1.0",
+    "type": "sprite-index",
+    "description": "Sprite sheet index for monsters",
+    "generated": "2025-09-22T21:19:17.881Z"
+  },
+  "sprites": {
+    "ogre_180turn": {
+      "path": "src/assets/sprites/monsters/Ogre/180Turn.png",
+      "category": "Ogre",
+      "animation": "180Turn",
+      "frames": null
+    },
+    "ogre_attack1": {
+      "path": "src/assets/sprites/monsters/Ogre/Attack1.png",
+      "category": "Ogre",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "ogre_attack2": {
+      "path": "src/assets/sprites/monsters/Ogre/Attack2.png",
+      "category": "Ogre",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "ogre_attack3": {
+      "path": "src/assets/sprites/monsters/Ogre/Attack3.png",
+      "category": "Ogre",
+      "animation": "Attack3",
+      "frames": null
+    },
+    "ogre_attackrun": {
+      "path": "src/assets/sprites/monsters/Ogre/AttackRun.png",
+      "category": "Ogre",
+      "animation": "AttackRun",
+      "frames": null
+    },
+    "ogre_blockmid": {
+      "path": "src/assets/sprites/monsters/Ogre/BlockMid.png",
+      "category": "Ogre",
+      "animation": "BlockMid",
+      "frames": null
+    },
+    "ogre_blockstart": {
+      "path": "src/assets/sprites/monsters/Ogre/BlockStart.png",
+      "category": "Ogre",
+      "animation": "BlockStart",
+      "frames": null
+    },
+    "ogre_castspell": {
+      "path": "src/assets/sprites/monsters/Ogre/CastSpell.png",
+      "category": "Ogre",
+      "animation": "CastSpell",
+      "frames": null
+    },
+    "ogre_crouchidle": {
+      "path": "src/assets/sprites/monsters/Ogre/CrouchIdle.png",
+      "category": "Ogre",
+      "animation": "CrouchIdle",
+      "frames": null
+    },
+    "ogre_crouchrun": {
+      "path": "src/assets/sprites/monsters/Ogre/CrouchRun.png",
+      "category": "Ogre",
+      "animation": "CrouchRun",
+      "frames": null
+    },
+    "ogre_die": {
+      "path": "src/assets/sprites/monsters/Ogre/Die.png",
+      "category": "Ogre",
+      "animation": "Die",
+      "frames": null
+    },
+    "ogre_frontflip": {
+      "path": "src/assets/sprites/monsters/Ogre/FrontFlip.png",
+      "category": "Ogre",
+      "animation": "FrontFlip",
+      "frames": null
+    },
+    "ogre_idle": {
+      "path": "src/assets/sprites/monsters/Ogre/Idle.png",
+      "category": "Ogre",
+      "animation": "Idle",
+      "frames": null
+    },
+    "ogre_idle2": {
+      "path": "src/assets/sprites/monsters/Ogre/Idle2.png",
+      "category": "Ogre",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "ogre_pummel": {
+      "path": "src/assets/sprites/monsters/Ogre/Pummel.png",
+      "category": "Ogre",
+      "animation": "Pummel",
+      "frames": null
+    },
+    "ogre_quickshot": {
+      "path": "src/assets/sprites/monsters/Ogre/QuickShot.png",
+      "category": "Ogre",
+      "animation": "QuickShot",
+      "frames": null
+    },
+    "ogre_quickslide": {
+      "path": "src/assets/sprites/monsters/Ogre/QuickSlide.png",
+      "category": "Ogre",
+      "animation": "QuickSlide",
+      "frames": null
+    },
+    "ogre_rolling": {
+      "path": "src/assets/sprites/monsters/Ogre/Rolling.png",
+      "category": "Ogre",
+      "animation": "Rolling",
+      "frames": null
+    },
+    "ogre_run": {
+      "path": "src/assets/sprites/monsters/Ogre/Run.png",
+      "category": "Ogre",
+      "animation": "Run",
+      "frames": null
+    },
+    "ogre_runbackwards": {
+      "path": "src/assets/sprites/monsters/Ogre/RunBackwards.png",
+      "category": "Ogre",
+      "animation": "RunBackwards",
+      "frames": null
+    },
+    "ogre_sittingchair": {
+      "path": "src/assets/sprites/monsters/Ogre/SittingChair.png",
+      "category": "Ogre",
+      "animation": "SittingChair",
+      "frames": null
+    },
+    "ogre_slide": {
+      "path": "src/assets/sprites/monsters/Ogre/Slide.png",
+      "category": "Ogre",
+      "animation": "Slide",
+      "frames": null
+    },
+    "ogre_slideend": {
+      "path": "src/assets/sprites/monsters/Ogre/SlideEnd.png",
+      "category": "Ogre",
+      "animation": "SlideEnd",
+      "frames": null
+    },
+    "ogre_slidestart": {
+      "path": "src/assets/sprites/monsters/Ogre/SlideStart.png",
+      "category": "Ogre",
+      "animation": "SlideStart",
+      "frames": null
+    },
+    "ogre_special1": {
+      "path": "src/assets/sprites/monsters/Ogre/Special1.png",
+      "category": "Ogre",
+      "animation": "Special1",
+      "frames": null
+    },
+    "ogre_special2": {
+      "path": "src/assets/sprites/monsters/Ogre/Special2.png",
+      "category": "Ogre",
+      "animation": "Special2",
+      "frames": null
+    },
+    "ogre_strafeleft": {
+      "path": "src/assets/sprites/monsters/Ogre/StrafeLeft.png",
+      "category": "Ogre",
+      "animation": "StrafeLeft",
+      "frames": null
+    },
+    "ogre_straferight": {
+      "path": "src/assets/sprites/monsters/Ogre/StrafeRight.png",
+      "category": "Ogre",
+      "animation": "StrafeRight",
+      "frames": null
+    },
+    "ogre_takedamage": {
+      "path": "src/assets/sprites/monsters/Ogre/TakeDamage.png",
+      "category": "Ogre",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "ogre_unsheath": {
+      "path": "src/assets/sprites/monsters/Ogre/UnSheath.png",
+      "category": "Ogre",
+      "animation": "UnSheath",
+      "frames": null
+    },
+    "ogre_walk": {
+      "path": "src/assets/sprites/monsters/Ogre/Walk.png",
+      "category": "Ogre",
+      "animation": "Walk",
+      "frames": null
+    },
+    "skeleton_180turn": {
+      "path": "src/assets/sprites/monsters/Skeleton/180Turn.png",
+      "category": "Skeleton",
+      "animation": "180Turn",
+      "frames": null
+    },
+    "skeleton_attack1": {
+      "path": "src/assets/sprites/monsters/Skeleton/Attack1.png",
+      "category": "Skeleton",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "skeleton_attack2": {
+      "path": "src/assets/sprites/monsters/Skeleton/Attack2.png",
+      "category": "Skeleton",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "skeleton_attack3": {
+      "path": "src/assets/sprites/monsters/Skeleton/Attack3.png",
+      "category": "Skeleton",
+      "animation": "Attack3",
+      "frames": null
+    },
+    "skeleton_attackrun": {
+      "path": "src/assets/sprites/monsters/Skeleton/AttackRun.png",
+      "category": "Skeleton",
+      "animation": "AttackRun",
+      "frames": null
+    },
+    "skeleton_blockmid": {
+      "path": "src/assets/sprites/monsters/Skeleton/BlockMid.png",
+      "category": "Skeleton",
+      "animation": "BlockMid",
+      "frames": null
+    },
+    "skeleton_blockstart": {
+      "path": "src/assets/sprites/monsters/Skeleton/BlockStart.png",
+      "category": "Skeleton",
+      "animation": "BlockStart",
+      "frames": null
+    },
+    "skeleton_castspell": {
+      "path": "src/assets/sprites/monsters/Skeleton/CastSpell.png",
+      "category": "Skeleton",
+      "animation": "CastSpell",
+      "frames": null
+    },
+    "skeleton_crouchidle": {
+      "path": "src/assets/sprites/monsters/Skeleton/CrouchIdle.png",
+      "category": "Skeleton",
+      "animation": "CrouchIdle",
+      "frames": null
+    },
+    "skeleton_crouchrun": {
+      "path": "src/assets/sprites/monsters/Skeleton/CrouchRun.png",
+      "category": "Skeleton",
+      "animation": "CrouchRun",
+      "frames": null
+    },
+    "skeleton_die": {
+      "path": "src/assets/sprites/monsters/Skeleton/Die.png",
+      "category": "Skeleton",
+      "animation": "Die",
+      "frames": null
+    },
+    "skeleton_frontflip": {
+      "path": "src/assets/sprites/monsters/Skeleton/FrontFlip.png",
+      "category": "Skeleton",
+      "animation": "FrontFlip",
+      "frames": null
+    },
+    "skeleton_idle": {
+      "path": "src/assets/sprites/monsters/Skeleton/Idle.png",
+      "category": "Skeleton",
+      "animation": "Idle",
+      "frames": null
+    },
+    "skeleton_idle2": {
+      "path": "src/assets/sprites/monsters/Skeleton/Idle2.png",
+      "category": "Skeleton",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "skeleton_kick": {
+      "path": "src/assets/sprites/monsters/Skeleton/Kick.png",
+      "category": "Skeleton",
+      "animation": "Kick",
+      "frames": null
+    },
+    "skeleton_pummel": {
+      "path": "src/assets/sprites/monsters/Skeleton/Pummel.png",
+      "category": "Skeleton",
+      "animation": "Pummel",
+      "frames": null
+    },
+    "skeleton_quickshot": {
+      "path": "src/assets/sprites/monsters/Skeleton/QuickShot.png",
+      "category": "Skeleton",
+      "animation": "QuickShot",
+      "frames": null
+    },
+    "skeleton_quickslide": {
+      "path": "src/assets/sprites/monsters/Skeleton/QuickSlide.png",
+      "category": "Skeleton",
+      "animation": "QuickSlide",
+      "frames": null
+    },
+    "skeleton_rolling": {
+      "path": "src/assets/sprites/monsters/Skeleton/Rolling.png",
+      "category": "Skeleton",
+      "animation": "Rolling",
+      "frames": null
+    },
+    "skeleton_run": {
+      "path": "src/assets/sprites/monsters/Skeleton/Run.png",
+      "category": "Skeleton",
+      "animation": "Run",
+      "frames": null
+    },
+    "skeleton_runbackwards": {
+      "path": "src/assets/sprites/monsters/Skeleton/RunBackwards.png",
+      "category": "Skeleton",
+      "animation": "RunBackwards",
+      "frames": null
+    },
+    "skeleton_sittingchair": {
+      "path": "src/assets/sprites/monsters/Skeleton/SittingChair.png",
+      "category": "Skeleton",
+      "animation": "SittingChair",
+      "frames": null
+    },
+    "skeleton_special1": {
+      "path": "src/assets/sprites/monsters/Skeleton/Special1.png",
+      "category": "Skeleton",
+      "animation": "Special1",
+      "frames": null
+    },
+    "skeleton_special2": {
+      "path": "src/assets/sprites/monsters/Skeleton/Special2.png",
+      "category": "Skeleton",
+      "animation": "Special2",
+      "frames": null
+    },
+    "skeleton_strafeleft": {
+      "path": "src/assets/sprites/monsters/Skeleton/StrafeLeft.png",
+      "category": "Skeleton",
+      "animation": "StrafeLeft",
+      "frames": null
+    },
+    "skeleton_straferight": {
+      "path": "src/assets/sprites/monsters/Skeleton/StrafeRight.png",
+      "category": "Skeleton",
+      "animation": "StrafeRight",
+      "frames": null
+    },
+    "skeleton_takedamage": {
+      "path": "src/assets/sprites/monsters/Skeleton/TakeDamage.png",
+      "category": "Skeleton",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "skeleton_unsheath": {
+      "path": "src/assets/sprites/monsters/Skeleton/UnSheath.png",
+      "category": "Skeleton",
+      "animation": "UnSheath",
+      "frames": null
+    },
+    "skeleton_walk": {
+      "path": "src/assets/sprites/monsters/Skeleton/Walk.png",
+      "category": "Skeleton",
+      "animation": "Walk",
+      "frames": null
+    },
+    "elemental_attack1": {
+      "path": "src/assets/sprites/monsters/Elemental/Attack1.png",
+      "category": "Elemental",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "elemental_attack2": {
+      "path": "src/assets/sprites/monsters/Elemental/Attack2.png",
+      "category": "Elemental",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "elemental_attack3": {
+      "path": "src/assets/sprites/monsters/Elemental/Attack3.png",
+      "category": "Elemental",
+      "animation": "Attack3",
+      "frames": null
+    },
+    "elemental_attack4": {
+      "path": "src/assets/sprites/monsters/Elemental/Attack4.png",
+      "category": "Elemental",
+      "animation": "Attack4",
+      "frames": null
+    },
+    "elemental_die": {
+      "path": "src/assets/sprites/monsters/Elemental/Die.png",
+      "category": "Elemental",
+      "animation": "Die",
+      "frames": null
+    },
+    "elemental_idle": {
+      "path": "src/assets/sprites/monsters/Elemental/Idle.png",
+      "category": "Elemental",
+      "animation": "Idle",
+      "frames": null
+    },
+    "elemental_idle2": {
+      "path": "src/assets/sprites/monsters/Elemental/Idle2.png",
+      "category": "Elemental",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "elemental_run": {
+      "path": "src/assets/sprites/monsters/Elemental/Run.png",
+      "category": "Elemental",
+      "animation": "Run",
+      "frames": null
+    },
+    "elemental_takedamage": {
+      "path": "src/assets/sprites/monsters/Elemental/TakeDamage.png",
+      "category": "Elemental",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "elemental_taunt": {
+      "path": "src/assets/sprites/monsters/Elemental/Taunt.png",
+      "category": "Elemental",
+      "animation": "Taunt",
+      "frames": null
+    },
+    "elemental_walk": {
+      "path": "src/assets/sprites/monsters/Elemental/Walk.png",
+      "category": "Elemental",
+      "animation": "Walk",
+      "frames": null
+    },
+    "ghoul_attack1": {
+      "path": "src/assets/sprites/monsters/Ghoul/Attack1.png",
+      "category": "Ghoul",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "ghoul_attack2": {
+      "path": "src/assets/sprites/monsters/Ghoul/Attack2.png",
+      "category": "Ghoul",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "ghoul_attack3": {
+      "path": "src/assets/sprites/monsters/Ghoul/Attack3.png",
+      "category": "Ghoul",
+      "animation": "Attack3",
+      "frames": null
+    },
+    "ghoul_attack4": {
+      "path": "src/assets/sprites/monsters/Ghoul/Attack4.png",
+      "category": "Ghoul",
+      "animation": "Attack4",
+      "frames": null
+    },
+    "ghoul_attack5": {
+      "path": "src/assets/sprites/monsters/Ghoul/Attack5.png",
+      "category": "Ghoul",
+      "animation": "Attack5",
+      "frames": null
+    },
+    "ghoul_crouchrun": {
+      "path": "src/assets/sprites/monsters/Ghoul/CrouchRun.png",
+      "category": "Ghoul",
+      "animation": "CrouchRun",
+      "frames": null
+    },
+    "ghoul_die": {
+      "path": "src/assets/sprites/monsters/Ghoul/Die.png",
+      "category": "Ghoul",
+      "animation": "Die",
+      "frames": null
+    },
+    "ghoul_die2": {
+      "path": "src/assets/sprites/monsters/Ghoul/Die2.png",
+      "category": "Ghoul",
+      "animation": "Die2",
+      "frames": null
+    },
+    "ghoul_idle": {
+      "path": "src/assets/sprites/monsters/Ghoul/Idle.png",
+      "category": "Ghoul",
+      "animation": "Idle",
+      "frames": null
+    },
+    "ghoul_idle2": {
+      "path": "src/assets/sprites/monsters/Ghoul/Idle2.png",
+      "category": "Ghoul",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "ghoul_run": {
+      "path": "src/assets/sprites/monsters/Ghoul/Run.png",
+      "category": "Ghoul",
+      "animation": "Run",
+      "frames": null
+    },
+    "ghoul_takedamage": {
+      "path": "src/assets/sprites/monsters/Ghoul/TakeDamage.png",
+      "category": "Ghoul",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "ghoul_taunt": {
+      "path": "src/assets/sprites/monsters/Ghoul/Taunt.png",
+      "category": "Ghoul",
+      "animation": "Taunt",
+      "frames": null
+    },
+    "ghoul_wakeup": {
+      "path": "src/assets/sprites/monsters/Ghoul/WakeUp.png",
+      "category": "Ghoul",
+      "animation": "WakeUp",
+      "frames": null
+    },
+    "ghoul_walk": {
+      "path": "src/assets/sprites/monsters/Ghoul/Walk.png",
+      "category": "Ghoul",
+      "animation": "Walk",
+      "frames": null
+    },
+    "wildarcher_180turn": {
+      "path": "src/assets/sprites/monsters/WildArcher/180Turn.png",
+      "category": "WildArcher",
+      "animation": "180Turn",
+      "frames": null
+    },
+    "wildarcher_attack1": {
+      "path": "src/assets/sprites/monsters/WildArcher/Attack1.png",
+      "category": "WildArcher",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "wildarcher_attack2": {
+      "path": "src/assets/sprites/monsters/WildArcher/Attack2.png",
+      "category": "WildArcher",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "wildarcher_attack3": {
+      "path": "src/assets/sprites/monsters/WildArcher/Attack3.png",
+      "category": "WildArcher",
+      "animation": "Attack3",
+      "frames": null
+    },
+    "wildarcher_attackrun": {
+      "path": "src/assets/sprites/monsters/WildArcher/AttackRun.png",
+      "category": "WildArcher",
+      "animation": "AttackRun",
+      "frames": null
+    },
+    "wildarcher_blockmid": {
+      "path": "src/assets/sprites/monsters/WildArcher/BlockMid.png",
+      "category": "WildArcher",
+      "animation": "BlockMid",
+      "frames": null
+    },
+    "wildarcher_blockstart": {
+      "path": "src/assets/sprites/monsters/WildArcher/BlockStart.png",
+      "category": "WildArcher",
+      "animation": "BlockStart",
+      "frames": null
+    },
+    "wildarcher_castspell": {
+      "path": "src/assets/sprites/monsters/WildArcher/CastSpell.png",
+      "category": "WildArcher",
+      "animation": "CastSpell",
+      "frames": null
+    },
+    "wildarcher_crouchidle": {
+      "path": "src/assets/sprites/monsters/WildArcher/CrouchIdle.png",
+      "category": "WildArcher",
+      "animation": "CrouchIdle",
+      "frames": null
+    },
+    "wildarcher_crouchrun": {
+      "path": "src/assets/sprites/monsters/WildArcher/CrouchRun.png",
+      "category": "WildArcher",
+      "animation": "CrouchRun",
+      "frames": null
+    },
+    "wildarcher_die": {
+      "path": "src/assets/sprites/monsters/WildArcher/Die.png",
+      "category": "WildArcher",
+      "animation": "Die",
+      "frames": null
+    },
+    "wildarcher_frontflip": {
+      "path": "src/assets/sprites/monsters/WildArcher/FrontFlip.png",
+      "category": "WildArcher",
+      "animation": "FrontFlip",
+      "frames": null
+    },
+    "wildarcher_idle": {
+      "path": "src/assets/sprites/monsters/WildArcher/Idle.png",
+      "category": "WildArcher",
+      "animation": "Idle",
+      "frames": null
+    },
+    "wildarcher_idle2": {
+      "path": "src/assets/sprites/monsters/WildArcher/Idle2.png",
+      "category": "WildArcher",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "wildarcher_kick": {
+      "path": "src/assets/sprites/monsters/WildArcher/Kick.png",
+      "category": "WildArcher",
+      "animation": "Kick",
+      "frames": null
+    },
+    "wildarcher_pummel": {
+      "path": "src/assets/sprites/monsters/WildArcher/Pummel.png",
+      "category": "WildArcher",
+      "animation": "Pummel",
+      "frames": null
+    },
+    "wildarcher_quickshot": {
+      "path": "src/assets/sprites/monsters/WildArcher/QuickShot.png",
+      "category": "WildArcher",
+      "animation": "QuickShot",
+      "frames": null
+    },
+    "wildarcher_quickslide": {
+      "path": "src/assets/sprites/monsters/WildArcher/QuickSlide.png",
+      "category": "WildArcher",
+      "animation": "QuickSlide",
+      "frames": null
+    },
+    "wildarcher_rolling": {
+      "path": "src/assets/sprites/monsters/WildArcher/Rolling.png",
+      "category": "WildArcher",
+      "animation": "Rolling",
+      "frames": null
+    },
+    "wildarcher_run": {
+      "path": "src/assets/sprites/monsters/WildArcher/Run.png",
+      "category": "WildArcher",
+      "animation": "Run",
+      "frames": null
+    },
+    "wildarcher_runbackwards": {
+      "path": "src/assets/sprites/monsters/WildArcher/RunBackwards.png",
+      "category": "WildArcher",
+      "animation": "RunBackwards",
+      "frames": null
+    },
+    "wildarcher_sittingchair": {
+      "path": "src/assets/sprites/monsters/WildArcher/SittingChair.png",
+      "category": "WildArcher",
+      "animation": "SittingChair",
+      "frames": null
+    },
+    "wildarcher_slide": {
+      "path": "src/assets/sprites/monsters/WildArcher/Slide.png",
+      "category": "WildArcher",
+      "animation": "Slide",
+      "frames": null
+    },
+    "wildarcher_slideend": {
+      "path": "src/assets/sprites/monsters/WildArcher/SlideEnd.png",
+      "category": "WildArcher",
+      "animation": "SlideEnd",
+      "frames": null
+    },
+    "wildarcher_slidestart": {
+      "path": "src/assets/sprites/monsters/WildArcher/SlideStart.png",
+      "category": "WildArcher",
+      "animation": "SlideStart",
+      "frames": null
+    },
+    "wildarcher_special1": {
+      "path": "src/assets/sprites/monsters/WildArcher/Special1.png",
+      "category": "WildArcher",
+      "animation": "Special1",
+      "frames": null
+    },
+    "wildarcher_special2": {
+      "path": "src/assets/sprites/monsters/WildArcher/Special2.png",
+      "category": "WildArcher",
+      "animation": "Special2",
+      "frames": null
+    },
+    "wildarcher_strafeleft": {
+      "path": "src/assets/sprites/monsters/WildArcher/StrafeLeft.png",
+      "category": "WildArcher",
+      "animation": "StrafeLeft",
+      "frames": null
+    },
+    "wildarcher_straferight": {
+      "path": "src/assets/sprites/monsters/WildArcher/StrafeRight.png",
+      "category": "WildArcher",
+      "animation": "StrafeRight",
+      "frames": null
+    },
+    "wildarcher_takedamage": {
+      "path": "src/assets/sprites/monsters/WildArcher/TakeDamage.png",
+      "category": "WildArcher",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "wildarcher_unsheath": {
+      "path": "src/assets/sprites/monsters/WildArcher/UnSheath.png",
+      "category": "WildArcher",
+      "animation": "UnSheath",
+      "frames": null
+    },
+    "wildarcher_walk": {
+      "path": "src/assets/sprites/monsters/WildArcher/Walk.png",
+      "category": "WildArcher",
+      "animation": "Walk",
+      "frames": null
+    },
+    "darkmage_180turn": {
+      "path": "src/assets/sprites/monsters/DarkMage/180Turn.png",
+      "category": "DarkMage",
+      "animation": "180Turn",
+      "frames": null
+    },
+    "darkmage_attack1": {
+      "path": "src/assets/sprites/monsters/DarkMage/Attack1.png",
+      "category": "DarkMage",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "darkmage_attack2": {
+      "path": "src/assets/sprites/monsters/DarkMage/Attack2.png",
+      "category": "DarkMage",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "darkmage_attack3": {
+      "path": "src/assets/sprites/monsters/DarkMage/Attack3.png",
+      "category": "DarkMage",
+      "animation": "Attack3",
+      "frames": null
+    },
+    "darkmage_attackrun": {
+      "path": "src/assets/sprites/monsters/DarkMage/AttackRun.png",
+      "category": "DarkMage",
+      "animation": "AttackRun",
+      "frames": null
+    },
+    "darkmage_blockmid": {
+      "path": "src/assets/sprites/monsters/DarkMage/BlockMid.png",
+      "category": "DarkMage",
+      "animation": "BlockMid",
+      "frames": null
+    },
+    "darkmage_blockstart": {
+      "path": "src/assets/sprites/monsters/DarkMage/BlockStart.png",
+      "category": "DarkMage",
+      "animation": "BlockStart",
+      "frames": null
+    },
+    "darkmage_castspell": {
+      "path": "src/assets/sprites/monsters/DarkMage/CastSpell.png",
+      "category": "DarkMage",
+      "animation": "CastSpell",
+      "frames": null
+    },
+    "darkmage_crouchidle": {
+      "path": "src/assets/sprites/monsters/DarkMage/CrouchIdle.png",
+      "category": "DarkMage",
+      "animation": "CrouchIdle",
+      "frames": null
+    },
+    "darkmage_crouchrun": {
+      "path": "src/assets/sprites/monsters/DarkMage/CrouchRun.png",
+      "category": "DarkMage",
+      "animation": "CrouchRun",
+      "frames": null
+    },
+    "darkmage_die": {
+      "path": "src/assets/sprites/monsters/DarkMage/Die.png",
+      "category": "DarkMage",
+      "animation": "Die",
+      "frames": null
+    },
+    "darkmage_frontflip": {
+      "path": "src/assets/sprites/monsters/DarkMage/FrontFlip.png",
+      "category": "DarkMage",
+      "animation": "FrontFlip",
+      "frames": null
+    },
+    "darkmage_idle": {
+      "path": "src/assets/sprites/monsters/DarkMage/Idle.png",
+      "category": "DarkMage",
+      "animation": "Idle",
+      "frames": null
+    },
+    "darkmage_idle2": {
+      "path": "src/assets/sprites/monsters/DarkMage/Idle2.png",
+      "category": "DarkMage",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "darkmage_kick": {
+      "path": "src/assets/sprites/monsters/DarkMage/Kick.png",
+      "category": "DarkMage",
+      "animation": "Kick",
+      "frames": null
+    },
+    "darkmage_pummel": {
+      "path": "src/assets/sprites/monsters/DarkMage/Pummel.png",
+      "category": "DarkMage",
+      "animation": "Pummel",
+      "frames": null
+    },
+    "darkmage_quickshot": {
+      "path": "src/assets/sprites/monsters/DarkMage/QuickShot.png",
+      "category": "DarkMage",
+      "animation": "QuickShot",
+      "frames": null
+    },
+    "darkmage_quickslide": {
+      "path": "src/assets/sprites/monsters/DarkMage/QuickSlide.png",
+      "category": "DarkMage",
+      "animation": "QuickSlide",
+      "frames": null
+    },
+    "darkmage_rolling": {
+      "path": "src/assets/sprites/monsters/DarkMage/Rolling.png",
+      "category": "DarkMage",
+      "animation": "Rolling",
+      "frames": null
+    },
+    "darkmage_run": {
+      "path": "src/assets/sprites/monsters/DarkMage/Run.png",
+      "category": "DarkMage",
+      "animation": "Run",
+      "frames": null
+    },
+    "darkmage_runbackwards": {
+      "path": "src/assets/sprites/monsters/DarkMage/RunBackwards.png",
+      "category": "DarkMage",
+      "animation": "RunBackwards",
+      "frames": null
+    },
+    "darkmage_sittingchair": {
+      "path": "src/assets/sprites/monsters/DarkMage/SittingChair.png",
+      "category": "DarkMage",
+      "animation": "SittingChair",
+      "frames": null
+    },
+    "darkmage_slide": {
+      "path": "src/assets/sprites/monsters/DarkMage/Slide.png",
+      "category": "DarkMage",
+      "animation": "Slide",
+      "frames": null
+    },
+    "darkmage_slideend": {
+      "path": "src/assets/sprites/monsters/DarkMage/SlideEnd.png",
+      "category": "DarkMage",
+      "animation": "SlideEnd",
+      "frames": null
+    },
+    "darkmage_slidestart": {
+      "path": "src/assets/sprites/monsters/DarkMage/SlideStart.png",
+      "category": "DarkMage",
+      "animation": "SlideStart",
+      "frames": null
+    },
+    "darkmage_special1": {
+      "path": "src/assets/sprites/monsters/DarkMage/Special1.png",
+      "category": "DarkMage",
+      "animation": "Special1",
+      "frames": null
+    },
+    "darkmage_special2": {
+      "path": "src/assets/sprites/monsters/DarkMage/Special2.png",
+      "category": "DarkMage",
+      "animation": "Special2",
+      "frames": null
+    },
+    "darkmage_strafeleft": {
+      "path": "src/assets/sprites/monsters/DarkMage/StrafeLeft.png",
+      "category": "DarkMage",
+      "animation": "StrafeLeft",
+      "frames": null
+    },
+    "darkmage_straferight": {
+      "path": "src/assets/sprites/monsters/DarkMage/StrafeRight.png",
+      "category": "DarkMage",
+      "animation": "StrafeRight",
+      "frames": null
+    },
+    "darkmage_takedamage": {
+      "path": "src/assets/sprites/monsters/DarkMage/TakeDamage.png",
+      "category": "DarkMage",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "darkmage_unsheath": {
+      "path": "src/assets/sprites/monsters/DarkMage/UnSheath.png",
+      "category": "DarkMage",
+      "animation": "UnSheath",
+      "frames": null
+    },
+    "darkmage_walk": {
+      "path": "src/assets/sprites/monsters/DarkMage/Walk.png",
+      "category": "DarkMage",
+      "animation": "Walk",
+      "frames": null
+    },
+    "wolf_attack1": {
+      "path": "src/assets/sprites/monsters/Wolf/Attack1.png",
+      "category": "Wolf",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "wolf_attack2": {
+      "path": "src/assets/sprites/monsters/Wolf/Attack2.png",
+      "category": "Wolf",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "wolf_attack3": {
+      "path": "src/assets/sprites/monsters/Wolf/Attack3.png",
+      "category": "Wolf",
+      "animation": "Attack3",
+      "frames": null
+    },
+    "wolf_attack4": {
+      "path": "src/assets/sprites/monsters/Wolf/Attack4.png",
+      "category": "Wolf",
+      "animation": "Attack4",
+      "frames": null
+    },
+    "wolf_die": {
+      "path": "src/assets/sprites/monsters/Wolf/Die.png",
+      "category": "Wolf",
+      "animation": "Die",
+      "frames": null
+    },
+    "wolf_howl": {
+      "path": "src/assets/sprites/monsters/Wolf/Howl.png",
+      "category": "Wolf",
+      "animation": "Howl",
+      "frames": null
+    },
+    "wolf_idle": {
+      "path": "src/assets/sprites/monsters/Wolf/Idle.png",
+      "category": "Wolf",
+      "animation": "Idle",
+      "frames": null
+    },
+    "wolf_idle2": {
+      "path": "src/assets/sprites/monsters/Wolf/Idle2.png",
+      "category": "Wolf",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "wolf_run": {
+      "path": "src/assets/sprites/monsters/Wolf/Run.png",
+      "category": "Wolf",
+      "animation": "Run",
+      "frames": null
+    },
+    "wolf_sneak": {
+      "path": "src/assets/sprites/monsters/Wolf/Sneak.png",
+      "category": "Wolf",
+      "animation": "Sneak",
+      "frames": null
+    },
+    "wolf_takedamage": {
+      "path": "src/assets/sprites/monsters/Wolf/TakeDamage.png",
+      "category": "Wolf",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "wolf_walk": {
+      "path": "src/assets/sprites/monsters/Wolf/Walk.png",
+      "category": "Wolf",
+      "animation": "Walk",
+      "frames": null
+    },
+    "wingeddemon_attack1": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Attack1.png",
+      "category": "WingedDemon",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "wingeddemon_attack2": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Attack2.png",
+      "category": "WingedDemon",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "wingeddemon_attack3": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Attack3.png",
+      "category": "WingedDemon",
+      "animation": "Attack3",
+      "frames": null
+    },
+    "wingeddemon_attack4": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Attack4.png",
+      "category": "WingedDemon",
+      "animation": "Attack4",
+      "frames": null
+    },
+    "wingeddemon_attack5": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Attack5.png",
+      "category": "WingedDemon",
+      "animation": "Attack5",
+      "frames": null
+    },
+    "wingeddemon_attackrun": {
+      "path": "src/assets/sprites/monsters/WingedDemon/AttackRun.png",
+      "category": "WingedDemon",
+      "animation": "AttackRun",
+      "frames": null
+    },
+    "wingeddemon_attackrun2": {
+      "path": "src/assets/sprites/monsters/WingedDemon/AttackRun2.png",
+      "category": "WingedDemon",
+      "animation": "AttackRun2",
+      "frames": null
+    },
+    "wingeddemon_crouchidle": {
+      "path": "src/assets/sprites/monsters/WingedDemon/CrouchIdle.png",
+      "category": "WingedDemon",
+      "animation": "CrouchIdle",
+      "frames": null
+    },
+    "wingeddemon_crouchrun": {
+      "path": "src/assets/sprites/monsters/WingedDemon/CrouchRun.png",
+      "category": "WingedDemon",
+      "animation": "CrouchRun",
+      "frames": null
+    },
+    "wingeddemon_die": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Die.png",
+      "category": "WingedDemon",
+      "animation": "Die",
+      "frames": null
+    },
+    "wingeddemon_idle": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Idle.png",
+      "category": "WingedDemon",
+      "animation": "Idle",
+      "frames": null
+    },
+    "wingeddemon_idle2": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Idle2.png",
+      "category": "WingedDemon",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "wingeddemon_idle3": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Idle3.png",
+      "category": "WingedDemon",
+      "animation": "Idle3",
+      "frames": null
+    },
+    "wingeddemon_idle4": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Idle4.png",
+      "category": "WingedDemon",
+      "animation": "Idle4",
+      "frames": null
+    },
+    "wingeddemon_run": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Run.png",
+      "category": "WingedDemon",
+      "animation": "Run",
+      "frames": null
+    },
+    "wingeddemon_runbackwards": {
+      "path": "src/assets/sprites/monsters/WingedDemon/RunBackwards.png",
+      "category": "WingedDemon",
+      "animation": "RunBackwards",
+      "frames": null
+    },
+    "wingeddemon_special1": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Special1.png",
+      "category": "WingedDemon",
+      "animation": "Special1",
+      "frames": null
+    },
+    "wingeddemon_strafeleft": {
+      "path": "src/assets/sprites/monsters/WingedDemon/StrafeLeft.png",
+      "category": "WingedDemon",
+      "animation": "StrafeLeft",
+      "frames": null
+    },
+    "wingeddemon_straferight": {
+      "path": "src/assets/sprites/monsters/WingedDemon/StrafeRight.png",
+      "category": "WingedDemon",
+      "animation": "StrafeRight",
+      "frames": null
+    },
+    "wingeddemon_takedamage": {
+      "path": "src/assets/sprites/monsters/WingedDemon/TakeDamage.png",
+      "category": "WingedDemon",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "wingeddemon_taunt": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Taunt.png",
+      "category": "WingedDemon",
+      "animation": "Taunt",
+      "frames": null
+    },
+    "wingeddemon_walk": {
+      "path": "src/assets/sprites/monsters/WingedDemon/Walk.png",
+      "category": "WingedDemon",
+      "animation": "Walk",
+      "frames": null
+    }
+  }
+}

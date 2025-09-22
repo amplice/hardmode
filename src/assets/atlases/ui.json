@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "version": "1.0",
+    "type": "sprite-index",
+    "description": "Sprite sheet index for ui",
+    "generated": "2025-09-22T21:19:17.904Z"
+  },
+  "sprites": {
+    "powerups_armor_powerup": {
+      "path": "src/assets/sprites/powerups/armor_powerup.png",
+      "category": "powerups",
+      "animation": "armor_powerup",
+      "frames": null
+    },
+    "powerups_attack_powerup": {
+      "path": "src/assets/sprites/powerups/attack_powerup.png",
+      "category": "powerups",
+      "animation": "attack_powerup",
+      "frames": null
+    },
+    "powerups_attack_powerup_1": {
+      "path": "src/assets/sprites/powerups/attack_powerup_1.png",
+      "category": "powerups",
+      "animation": "attack_powerup_1",
+      "frames": null
+    },
+    "powerups_fc1042": {
+      "path": "src/assets/sprites/powerups/fc1042.png",
+      "category": "powerups",
+      "animation": "fc1042",
+      "frames": null
+    },
+    "powerups_fc1043": {
+      "path": "src/assets/sprites/powerups/fc1043.png",
+      "category": "powerups",
+      "animation": "fc1043",
+      "frames": null
+    },
+    "powerups_fc1047": {
+      "path": "src/assets/sprites/powerups/fc1047.png",
+      "category": "powerups",
+      "animation": "fc1047",
+      "frames": null
+    },
+    "powerups_fc123": {
+      "path": "src/assets/sprites/powerups/fc123.png",
+      "category": "powerups",
+      "animation": "fc123",
+      "frames": null
+    },
+    "powerups_fc1529": {
+      "path": "src/assets/sprites/powerups/fc1529.png",
+      "category": "powerups",
+      "animation": "fc1529",
+      "frames": null
+    },
+    "powerups_fc1535": {
+      "path": "src/assets/sprites/powerups/fc1535.png",
+      "category": "powerups",
+      "animation": "fc1535",
+      "frames": null
+    },
+    "powerups_fc1585": {
+      "path": "src/assets/sprites/powerups/fc1585.png",
+      "category": "powerups",
+      "animation": "fc1585",
+      "frames": null
+    },
+    "powerups_fc1588": {
+      "path": "src/assets/sprites/powerups/fc1588.png",
+      "category": "powerups",
+      "animation": "fc1588",
+      "frames": null
+    },
+    "powerups_fc1590": {
+      "path": "src/assets/sprites/powerups/fc1590.png",
+      "category": "powerups",
+      "animation": "fc1590",
+      "frames": null
+    },
+    "powerups_fc1665": {
+      "path": "src/assets/sprites/powerups/fc1665.png",
+      "category": "powerups",
+      "animation": "fc1665",
+      "frames": null
+    },
+    "powerups_fc1668": {
+      "path": "src/assets/sprites/powerups/fc1668.png",
+      "category": "powerups",
+      "animation": "fc1668",
+      "frames": null
+    },
+    "powerups_fc1670": {
+      "path": "src/assets/sprites/powerups/fc1670.png",
+      "category": "powerups",
+      "animation": "fc1670",
+      "frames": null
+    },
+    "powerups_fc1918": {
+      "path": "src/assets/sprites/powerups/fc1918.png",
+      "category": "powerups",
+      "animation": "fc1918",
+      "frames": null
+    },
+    "powerups_fc611": {
+      "path": "src/assets/sprites/powerups/fc611.png",
+      "category": "powerups",
+      "animation": "fc611",
+      "frames": null
+    },
+    "powerups_fc664": {
+      "path": "src/assets/sprites/powerups/fc664.png",
+      "category": "powerups",
+      "animation": "fc664",
+      "frames": null
+    },
+    "powerups_fc729": {
+      "path": "src/assets/sprites/powerups/fc729.png",
+      "category": "powerups",
+      "animation": "fc729",
+      "frames": null
+    },
+    "powerups_fc736": {
+      "path": "src/assets/sprites/powerups/fc736.png",
+      "category": "powerups",
+      "animation": "fc736",
+      "frames": null
+    },
+    "powerups_health_powerup": {
+      "path": "src/assets/sprites/powerups/health_powerup.png",
+      "category": "powerups",
+      "animation": "health_powerup",
+      "frames": null
+    },
+    "powerups_invulnerability_powerup": {
+      "path": "src/assets/sprites/powerups/invulnerability_powerup.png",
+      "category": "powerups",
+      "animation": "invulnerability_powerup",
+      "frames": null
+    },
+    "powerups_speed_powerup": {
+      "path": "src/assets/sprites/powerups/speed_powerup.png",
+      "category": "powerups",
+      "animation": "speed_powerup",
+      "frames": null
+    },
+    "powerups_speed_powerup_3": {
+      "path": "src/assets/sprites/powerups/speed_powerup_3.png",
+      "category": "powerups",
+      "animation": "speed_powerup_3",
+      "frames": null
+    }
+  }
+}

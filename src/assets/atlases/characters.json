@@ -1,0 +1,742 @@
+{
+  "meta": {
+    "version": "1.0",
+    "type": "sprite-index",
+    "description": "Sprite sheet index for characters",
+    "generated": "2025-09-22T21:19:17.869Z"
+  },
+  "sprites": {
+    "knight_180turn": {
+      "path": "src/assets/sprites/characters/Knight/180Turn.png",
+      "category": "Knight",
+      "animation": "180Turn",
+      "frames": null
+    },
+    "knight_attack1": {
+      "path": "src/assets/sprites/characters/Knight/Attack1.png",
+      "category": "Knight",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "knight_attack2": {
+      "path": "src/assets/sprites/characters/Knight/Attack2.png",
+      "category": "Knight",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "knight_castspell": {
+      "path": "src/assets/sprites/characters/Knight/CastSpell.png",
+      "category": "Knight",
+      "animation": "CastSpell",
+      "frames": null
+    },
+    "knight_crouchidle": {
+      "path": "src/assets/sprites/characters/Knight/CrouchIdle.png",
+      "category": "Knight",
+      "animation": "CrouchIdle",
+      "frames": null
+    },
+    "knight_crouchrun": {
+      "path": "src/assets/sprites/characters/Knight/CrouchRun.png",
+      "category": "Knight",
+      "animation": "CrouchRun",
+      "frames": null
+    },
+    "knight_die": {
+      "path": "src/assets/sprites/characters/Knight/Die.png",
+      "category": "Knight",
+      "animation": "Die",
+      "frames": null
+    },
+    "knight_frontflip": {
+      "path": "src/assets/sprites/characters/Knight/FrontFlip.png",
+      "category": "Knight",
+      "animation": "FrontFlip",
+      "frames": null
+    },
+    "knight_idle": {
+      "path": "src/assets/sprites/characters/Knight/Idle.png",
+      "category": "Knight",
+      "animation": "Idle",
+      "frames": null
+    },
+    "knight_idle2": {
+      "path": "src/assets/sprites/characters/Knight/Idle2.png",
+      "category": "Knight",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "knight_kick": {
+      "path": "src/assets/sprites/characters/Knight/Kick.png",
+      "category": "Knight",
+      "animation": "Kick",
+      "frames": null
+    },
+    "knight_melee2": {
+      "path": "src/assets/sprites/characters/Knight/Melee2.png",
+      "category": "Knight",
+      "animation": "Melee2",
+      "frames": null
+    },
+    "knight_meleerun": {
+      "path": "src/assets/sprites/characters/Knight/MeleeRun.png",
+      "category": "Knight",
+      "animation": "MeleeRun",
+      "frames": null
+    },
+    "knight_meleespin": {
+      "path": "src/assets/sprites/characters/Knight/MeleeSpin.png",
+      "category": "Knight",
+      "animation": "MeleeSpin",
+      "frames": null
+    },
+    "knight_pummel": {
+      "path": "src/assets/sprites/characters/Knight/Pummel.png",
+      "category": "Knight",
+      "animation": "Pummel",
+      "frames": null
+    },
+    "knight_rolling": {
+      "path": "src/assets/sprites/characters/Knight/Rolling.png",
+      "category": "Knight",
+      "animation": "Rolling",
+      "frames": null
+    },
+    "knight_run": {
+      "path": "src/assets/sprites/characters/Knight/Run.png",
+      "category": "Knight",
+      "animation": "Run",
+      "frames": null
+    },
+    "knight_runbackwards": {
+      "path": "src/assets/sprites/characters/Knight/RunBackwards.png",
+      "category": "Knight",
+      "animation": "RunBackwards",
+      "frames": null
+    },
+    "knight_shieldblockmid": {
+      "path": "src/assets/sprites/characters/Knight/ShieldBlockMid.png",
+      "category": "Knight",
+      "animation": "ShieldBlockMid",
+      "frames": null
+    },
+    "knight_shieldblockstart": {
+      "path": "src/assets/sprites/characters/Knight/ShieldBlockStart.png",
+      "category": "Knight",
+      "animation": "ShieldBlockStart",
+      "frames": null
+    },
+    "knight_slide": {
+      "path": "src/assets/sprites/characters/Knight/Slide.png",
+      "category": "Knight",
+      "animation": "Slide",
+      "frames": null
+    },
+    "knight_slideend": {
+      "path": "src/assets/sprites/characters/Knight/SlideEnd.png",
+      "category": "Knight",
+      "animation": "SlideEnd",
+      "frames": null
+    },
+    "knight_slidestart": {
+      "path": "src/assets/sprites/characters/Knight/SlideStart.png",
+      "category": "Knight",
+      "animation": "SlideStart",
+      "frames": null
+    },
+    "knight_special2": {
+      "path": "src/assets/sprites/characters/Knight/Special2.png",
+      "category": "Knight",
+      "animation": "Special2",
+      "frames": null
+    },
+    "knight_strafeleft": {
+      "path": "src/assets/sprites/characters/Knight/StrafeLeft.png",
+      "category": "Knight",
+      "animation": "StrafeLeft",
+      "frames": null
+    },
+    "knight_straferight": {
+      "path": "src/assets/sprites/characters/Knight/StrafeRight.png",
+      "category": "Knight",
+      "animation": "StrafeRight",
+      "frames": null
+    },
+    "knight_takedamage": {
+      "path": "src/assets/sprites/characters/Knight/TakeDamage.png",
+      "category": "Knight",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "knight_unsheathsword": {
+      "path": "src/assets/sprites/characters/Knight/UnSheathSword.png",
+      "category": "Knight",
+      "animation": "UnSheathSword",
+      "frames": null
+    },
+    "knight_walk": {
+      "path": "src/assets/sprites/characters/Knight/Walk.png",
+      "category": "Knight",
+      "animation": "Walk",
+      "frames": null
+    },
+    "guardian_180turn": {
+      "path": "src/assets/sprites/characters/Guardian/180Turn.png",
+      "category": "Guardian",
+      "animation": "180Turn",
+      "frames": null
+    },
+    "guardian_attack1": {
+      "path": "src/assets/sprites/characters/Guardian/Attack1.png",
+      "category": "Guardian",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "guardian_attack2": {
+      "path": "src/assets/sprites/characters/Guardian/Attack2.png",
+      "category": "Guardian",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "guardian_attack3": {
+      "path": "src/assets/sprites/characters/Guardian/Attack3.png",
+      "category": "Guardian",
+      "animation": "Attack3",
+      "frames": null
+    },
+    "guardian_attackrun": {
+      "path": "src/assets/sprites/characters/Guardian/AttackRun.png",
+      "category": "Guardian",
+      "animation": "AttackRun",
+      "frames": null
+    },
+    "guardian_blockmid": {
+      "path": "src/assets/sprites/characters/Guardian/BlockMid.png",
+      "category": "Guardian",
+      "animation": "BlockMid",
+      "frames": null
+    },
+    "guardian_blockstart": {
+      "path": "src/assets/sprites/characters/Guardian/BlockStart.png",
+      "category": "Guardian",
+      "animation": "BlockStart",
+      "frames": null
+    },
+    "guardian_castspell": {
+      "path": "src/assets/sprites/characters/Guardian/CastSpell.png",
+      "category": "Guardian",
+      "animation": "CastSpell",
+      "frames": null
+    },
+    "guardian_crouchidle": {
+      "path": "src/assets/sprites/characters/Guardian/CrouchIdle.png",
+      "category": "Guardian",
+      "animation": "CrouchIdle",
+      "frames": null
+    },
+    "guardian_crouchrun": {
+      "path": "src/assets/sprites/characters/Guardian/CrouchRun.png",
+      "category": "Guardian",
+      "animation": "CrouchRun",
+      "frames": null
+    },
+    "guardian_die": {
+      "path": "src/assets/sprites/characters/Guardian/Die.png",
+      "category": "Guardian",
+      "animation": "Die",
+      "frames": null
+    },
+    "guardian_frontflip": {
+      "path": "src/assets/sprites/characters/Guardian/FrontFlip.png",
+      "category": "Guardian",
+      "animation": "FrontFlip",
+      "frames": null
+    },
+    "guardian_idle": {
+      "path": "src/assets/sprites/characters/Guardian/Idle.png",
+      "category": "Guardian",
+      "animation": "Idle",
+      "frames": null
+    },
+    "guardian_idle2": {
+      "path": "src/assets/sprites/characters/Guardian/Idle2.png",
+      "category": "Guardian",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "guardian_kick": {
+      "path": "src/assets/sprites/characters/Guardian/Kick.png",
+      "category": "Guardian",
+      "animation": "Kick",
+      "frames": null
+    },
+    "guardian_pummel": {
+      "path": "src/assets/sprites/characters/Guardian/Pummel.png",
+      "category": "Guardian",
+      "animation": "Pummel",
+      "frames": null
+    },
+    "guardian_quickshot": {
+      "path": "src/assets/sprites/characters/Guardian/QuickShot.png",
+      "category": "Guardian",
+      "animation": "QuickShot",
+      "frames": null
+    },
+    "guardian_quickslide": {
+      "path": "src/assets/sprites/characters/Guardian/QuickSlide.png",
+      "category": "Guardian",
+      "animation": "QuickSlide",
+      "frames": null
+    },
+    "guardian_rolling": {
+      "path": "src/assets/sprites/characters/Guardian/Rolling.png",
+      "category": "Guardian",
+      "animation": "Rolling",
+      "frames": null
+    },
+    "guardian_run": {
+      "path": "src/assets/sprites/characters/Guardian/Run.png",
+      "category": "Guardian",
+      "animation": "Run",
+      "frames": null
+    },
+    "guardian_runbackwards": {
+      "path": "src/assets/sprites/characters/Guardian/RunBackwards.png",
+      "category": "Guardian",
+      "animation": "RunBackwards",
+      "frames": null
+    },
+    "guardian_sittingchair": {
+      "path": "src/assets/sprites/characters/Guardian/SittingChair.png",
+      "category": "Guardian",
+      "animation": "SittingChair",
+      "frames": null
+    },
+    "guardian_special1": {
+      "path": "src/assets/sprites/characters/Guardian/Special1.png",
+      "category": "Guardian",
+      "animation": "Special1",
+      "frames": null
+    },
+    "guardian_special2": {
+      "path": "src/assets/sprites/characters/Guardian/Special2.png",
+      "category": "Guardian",
+      "animation": "Special2",
+      "frames": null
+    },
+    "guardian_strafeleft": {
+      "path": "src/assets/sprites/characters/Guardian/StrafeLeft.png",
+      "category": "Guardian",
+      "animation": "StrafeLeft",
+      "frames": null
+    },
+    "guardian_straferight": {
+      "path": "src/assets/sprites/characters/Guardian/StrafeRight.png",
+      "category": "Guardian",
+      "animation": "StrafeRight",
+      "frames": null
+    },
+    "guardian_takedamage": {
+      "path": "src/assets/sprites/characters/Guardian/TakeDamage.png",
+      "category": "Guardian",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "guardian_unsheath": {
+      "path": "src/assets/sprites/characters/Guardian/UnSheath.png",
+      "category": "Guardian",
+      "animation": "UnSheath",
+      "frames": null
+    },
+    "guardian_walk": {
+      "path": "src/assets/sprites/characters/Guardian/Walk.png",
+      "category": "Guardian",
+      "animation": "Walk",
+      "frames": null
+    },
+    "hunter_180turn": {
+      "path": "src/assets/sprites/characters/Hunter/180Turn.png",
+      "category": "Hunter",
+      "animation": "180Turn",
+      "frames": null
+    },
+    "hunter_attack1": {
+      "path": "src/assets/sprites/characters/Hunter/Attack1.png",
+      "category": "Hunter",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "hunter_attack2": {
+      "path": "src/assets/sprites/characters/Hunter/Attack2.png",
+      "category": "Hunter",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "hunter_attack3": {
+      "path": "src/assets/sprites/characters/Hunter/Attack3.png",
+      "category": "Hunter",
+      "animation": "Attack3",
+      "frames": null
+    },
+    "hunter_attackrun": {
+      "path": "src/assets/sprites/characters/Hunter/AttackRun.png",
+      "category": "Hunter",
+      "animation": "AttackRun",
+      "frames": null
+    },
+    "hunter_backflip": {
+      "path": "src/assets/sprites/characters/Hunter/BackFlip.png",
+      "category": "Hunter",
+      "animation": "BackFlip",
+      "frames": null
+    },
+    "hunter_backroll": {
+      "path": "src/assets/sprites/characters/Hunter/BackRoll.png",
+      "category": "Hunter",
+      "animation": "BackRoll",
+      "frames": null
+    },
+    "hunter_blockmid": {
+      "path": "src/assets/sprites/characters/Hunter/BlockMid.png",
+      "category": "Hunter",
+      "animation": "BlockMid",
+      "frames": null
+    },
+    "hunter_blockstart": {
+      "path": "src/assets/sprites/characters/Hunter/BlockStart.png",
+      "category": "Hunter",
+      "animation": "BlockStart",
+      "frames": null
+    },
+    "hunter_castspell": {
+      "path": "src/assets/sprites/characters/Hunter/CastSpell.png",
+      "category": "Hunter",
+      "animation": "CastSpell",
+      "frames": null
+    },
+    "hunter_crouchidle": {
+      "path": "src/assets/sprites/characters/Hunter/CrouchIdle.png",
+      "category": "Hunter",
+      "animation": "CrouchIdle",
+      "frames": null
+    },
+    "hunter_crouchrun": {
+      "path": "src/assets/sprites/characters/Hunter/CrouchRun.png",
+      "category": "Hunter",
+      "animation": "CrouchRun",
+      "frames": null
+    },
+    "hunter_die": {
+      "path": "src/assets/sprites/characters/Hunter/Die.png",
+      "category": "Hunter",
+      "animation": "Die",
+      "frames": null
+    },
+    "hunter_frontflip": {
+      "path": "src/assets/sprites/characters/Hunter/FrontFlip.png",
+      "category": "Hunter",
+      "animation": "FrontFlip",
+      "frames": null
+    },
+    "hunter_idle": {
+      "path": "src/assets/sprites/characters/Hunter/Idle.png",
+      "category": "Hunter",
+      "animation": "Idle",
+      "frames": null
+    },
+    "hunter_idle2": {
+      "path": "src/assets/sprites/characters/Hunter/Idle2.png",
+      "category": "Hunter",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "hunter_kick": {
+      "path": "src/assets/sprites/characters/Hunter/Kick.png",
+      "category": "Hunter",
+      "animation": "Kick",
+      "frames": null
+    },
+    "hunter_quickshot": {
+      "path": "src/assets/sprites/characters/Hunter/QuickShot.png",
+      "category": "Hunter",
+      "animation": "QuickShot",
+      "frames": null
+    },
+    "hunter_rolling": {
+      "path": "src/assets/sprites/characters/Hunter/Rolling.png",
+      "category": "Hunter",
+      "animation": "Rolling",
+      "frames": null
+    },
+    "hunter_run": {
+      "path": "src/assets/sprites/characters/Hunter/Run.png",
+      "category": "Hunter",
+      "animation": "Run",
+      "frames": null
+    },
+    "hunter_runbackwards": {
+      "path": "src/assets/sprites/characters/Hunter/RunBackwards.png",
+      "category": "Hunter",
+      "animation": "RunBackwards",
+      "frames": null
+    },
+    "hunter_sittingchair": {
+      "path": "src/assets/sprites/characters/Hunter/SittingChair.png",
+      "category": "Hunter",
+      "animation": "SittingChair",
+      "frames": null
+    },
+    "hunter_slide": {
+      "path": "src/assets/sprites/characters/Hunter/Slide.png",
+      "category": "Hunter",
+      "animation": "Slide",
+      "frames": null
+    },
+    "hunter_slideend": {
+      "path": "src/assets/sprites/characters/Hunter/SlideEnd.png",
+      "category": "Hunter",
+      "animation": "SlideEnd",
+      "frames": null
+    },
+    "hunter_slidestart": {
+      "path": "src/assets/sprites/characters/Hunter/SlideStart.png",
+      "category": "Hunter",
+      "animation": "SlideStart",
+      "frames": null
+    },
+    "hunter_special1": {
+      "path": "src/assets/sprites/characters/Hunter/Special1.png",
+      "category": "Hunter",
+      "animation": "Special1",
+      "frames": null
+    },
+    "hunter_special2": {
+      "path": "src/assets/sprites/characters/Hunter/Special2.png",
+      "category": "Hunter",
+      "animation": "Special2",
+      "frames": null
+    },
+    "hunter_strafeleft": {
+      "path": "src/assets/sprites/characters/Hunter/StrafeLeft.png",
+      "category": "Hunter",
+      "animation": "StrafeLeft",
+      "frames": null
+    },
+    "hunter_straferight": {
+      "path": "src/assets/sprites/characters/Hunter/StrafeRight.png",
+      "category": "Hunter",
+      "animation": "StrafeRight",
+      "frames": null
+    },
+    "hunter_takedamage": {
+      "path": "src/assets/sprites/characters/Hunter/TakeDamage.png",
+      "category": "Hunter",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "hunter_unsheath": {
+      "path": "src/assets/sprites/characters/Hunter/UnSheath.png",
+      "category": "Hunter",
+      "animation": "UnSheath",
+      "frames": null
+    },
+    "hunter_walk": {
+      "path": "src/assets/sprites/characters/Hunter/Walk.png",
+      "category": "Hunter",
+      "animation": "Walk",
+      "frames": null
+    },
+    "rogue_180turn": {
+      "path": "src/assets/sprites/characters/Rogue/180Turn.png",
+      "category": "Rogue",
+      "animation": "180Turn",
+      "frames": null
+    },
+    "rogue_attack1": {
+      "path": "src/assets/sprites/characters/Rogue/Attack1.png",
+      "category": "Rogue",
+      "animation": "Attack1",
+      "frames": null
+    },
+    "rogue_attack2": {
+      "path": "src/assets/sprites/characters/Rogue/Attack2.png",
+      "category": "Rogue",
+      "animation": "Attack2",
+      "frames": null
+    },
+    "rogue_attack3": {
+      "path": "src/assets/sprites/characters/Rogue/Attack3.png",
+      "category": "Rogue",
+      "animation": "Attack3",
+      "frames": null
+    },
+    "rogue_attackrun": {
+      "path": "src/assets/sprites/characters/Rogue/AttackRun.png",
+      "category": "Rogue",
+      "animation": "AttackRun",
+      "frames": null
+    },
+    "rogue_blockmid": {
+      "path": "src/assets/sprites/characters/Rogue/BlockMid.png",
+      "category": "Rogue",
+      "animation": "BlockMid",
+      "frames": null
+    },
+    "rogue_blockstart": {
+      "path": "src/assets/sprites/characters/Rogue/BlockStart.png",
+      "category": "Rogue",
+      "animation": "BlockStart",
+      "frames": null
+    },
+    "rogue_castspell": {
+      "path": "src/assets/sprites/characters/Rogue/CastSpell.png",
+      "category": "Rogue",
+      "animation": "CastSpell",
+      "frames": null
+    },
+    "rogue_crouchidle": {
+      "path": "src/assets/sprites/characters/Rogue/CrouchIdle.png",
+      "category": "Rogue",
+      "animation": "CrouchIdle",
+      "frames": null
+    },
+    "rogue_crouchrun": {
+      "path": "src/assets/sprites/characters/Rogue/CrouchRun.png",
+      "category": "Rogue",
+      "animation": "CrouchRun",
+      "frames": null
+    },
+    "rogue_die": {
+      "path": "src/assets/sprites/characters/Rogue/Die.png",
+      "category": "Rogue",
+      "animation": "Die",
+      "frames": null
+    },
+    "rogue_frontflip": {
+      "path": "src/assets/sprites/characters/Rogue/FrontFlip.png",
+      "category": "Rogue",
+      "animation": "FrontFlip",
+      "frames": null
+    },
+    "rogue_idle": {
+      "path": "src/assets/sprites/characters/Rogue/Idle.png",
+      "category": "Rogue",
+      "animation": "Idle",
+      "frames": null
+    },
+    "rogue_idle2": {
+      "path": "src/assets/sprites/characters/Rogue/Idle2.png",
+      "category": "Rogue",
+      "animation": "Idle2",
+      "frames": null
+    },
+    "rogue_kick": {
+      "path": "src/assets/sprites/characters/Rogue/Kick.png",
+      "category": "Rogue",
+      "animation": "Kick",
+      "frames": null
+    },
+    "rogue_pummel": {
+      "path": "src/assets/sprites/characters/Rogue/Pummel.png",
+      "category": "Rogue",
+      "animation": "Pummel",
+      "frames": null
+    },
+    "rogue_quickshot": {
+      "path": "src/assets/sprites/characters/Rogue/QuickShot.png",
+      "category": "Rogue",
+      "animation": "QuickShot",
+      "frames": null
+    },
+    "rogue_quickslide": {
+      "path": "src/assets/sprites/characters/Rogue/QuickSlide.png",
+      "category": "Rogue",
+      "animation": "QuickSlide",
+      "frames": null
+    },
+    "rogue_rolling": {
+      "path": "src/assets/sprites/characters/Rogue/Rolling.png",
+      "category": "Rogue",
+      "animation": "Rolling",
+      "frames": null
+    },
+    "rogue_run": {
+      "path": "src/assets/sprites/characters/Rogue/Run.png",
+      "category": "Rogue",
+      "animation": "Run",
+      "frames": null
+    },
+    "rogue_runbackwards": {
+      "path": "src/assets/sprites/characters/Rogue/RunBackwards.png",
+      "category": "Rogue",
+      "animation": "RunBackwards",
+      "frames": null
+    },
+    "rogue_sittingchair": {
+      "path": "src/assets/sprites/characters/Rogue/SittingChair.png",
+      "category": "Rogue",
+      "animation": "SittingChair",
+      "frames": null
+    },
+    "rogue_slide": {
+      "path": "src/assets/sprites/characters/Rogue/Slide.png",
+      "category": "Rogue",
+      "animation": "Slide",
+      "frames": null
+    },
+    "rogue_slideend": {
+      "path": "src/assets/sprites/characters/Rogue/SlideEnd.png",
+      "category": "Rogue",
+      "animation": "SlideEnd",
+      "frames": null
+    },
+    "rogue_slidestart": {
+      "path": "src/assets/sprites/characters/Rogue/SlideStart.png",
+      "category": "Rogue",
+      "animation": "SlideStart",
+      "frames": null
+    },
+    "rogue_special1": {
+      "path": "src/assets/sprites/characters/Rogue/Special1.png",
+      "category": "Rogue",
+      "animation": "Special1",
+      "frames": null
+    },
+    "rogue_special2": {
+      "path": "src/assets/sprites/characters/Rogue/Special2.png",
+      "category": "Rogue",
+      "animation": "Special2",
+      "frames": null
+    },
+    "rogue_strafeleft": {
+      "path": "src/assets/sprites/characters/Rogue/StrafeLeft.png",
+      "category": "Rogue",
+      "animation": "StrafeLeft",
+      "frames": null
+    },
+    "rogue_straferight": {
+      "path": "src/assets/sprites/characters/Rogue/StrafeRight.png",
+      "category": "Rogue",
+      "animation": "StrafeRight",
+      "frames": null
+    },
+    "rogue_takedamage": {
+      "path": "src/assets/sprites/characters/Rogue/TakeDamage.png",
+      "category": "Rogue",
+      "animation": "TakeDamage",
+      "frames": null
+    },
+    "rogue_unsheath": {
+      "path": "src/assets/sprites/characters/Rogue/UnSheath.png",
+      "category": "Rogue",
+      "animation": "UnSheath",
+      "frames": null
+    },
+    "rogue_walk": {
+      "path": "src/assets/sprites/characters/Rogue/Walk.png",
+      "category": "Rogue",
+      "animation": "Walk",
+      "frames": null
+    }
+  }
+}
