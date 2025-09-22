@@ -29,7 +29,7 @@
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG } from '../config/GameConfig.js';
 import { ObjectPool } from '../utils/ObjectPool.js';
-import { GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js';
+import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 
 // Interface for projectile creation data
 interface ProjectileData {

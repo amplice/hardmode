@@ -50,7 +50,7 @@
 // src/js/systems/CombatSystem.ts
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG } from '../config/GameConfig.js';
-import { GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js';
+import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 import { 
     directionStringToAngleRadians, 
     directionStringToAngleDegrees 

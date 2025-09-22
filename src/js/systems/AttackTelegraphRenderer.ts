@@ -15,7 +15,7 @@
 
 import * as PIXI from 'pixi.js';
 import { PIXIPoolFactory } from '../utils/ObjectPool.js';
-import { GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js';
+import { GAME_CONSTANTS } from '../../../shared/constants/GameConstants.js';
 
 export interface TelegraphConfig {
     shape: 'rectangle' | 'cone' | 'circle';
