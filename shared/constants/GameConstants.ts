@@ -137,6 +137,22 @@ export const GAME_CONSTANTS = {
         ENABLE_TILE_LOGGING: false, // Toggle for tile debug logs
         ENABLE_MONSTER_LOGGING: false, // Toggle for monster debug logs
         ENABLE_COMBAT_LOGGING: false // Toggle for combat debug logs
+    },
+    
+    // Object Pool settings - prevents memory leaks from unbounded growth
+    POOLS: {
+        HITBOX_GRAPHICS: {
+            MAX_SIZE: 50,      // Maximum graphics objects for combat hitboxes
+            PRE_ALLOCATE: 10   // Pre-create this many at startup
+        },
+        ATTACK_TELEGRAPH: {
+            MAX_SIZE: 30,      // Maximum graphics for attack telegraphs
+            PRE_ALLOCATE: 5    // Pre-create this many at startup
+        },
+        PROJECTILE: {
+            MAX_SIZE: 100,     // Maximum projectile objects
+            PRE_ALLOCATE: 20   // Pre-create this many at startup
+        }
     }
 };
 

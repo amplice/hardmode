@@ -50,10 +50,12 @@
 // src/js/systems/CombatSystem.ts
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG } from '../config/GameConfig.js';
+import { GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js';
 import { 
     directionStringToAngleRadians, 
     directionStringToAngleDegrees 
 } from '../utils/DirectionUtils.js';
+import { PIXIPoolFactory } from '../utils/ObjectPool.js';
 import type {
     Position,
     Hitbox as IHitbox,
@@ -184,7 +186,10 @@ export class CombatSystem {
   app: PIXIApplication;
   activeAttacks: ActiveAttack[];
   effectConfigs: Record<string, EffectConfig>;
-  private hitboxGraphicsPool: PIXI.Graphics[];
+  private hitboxGraphicsPool = PIXIPoolFactory.createGraphicsPool(
+    GAME_CONSTANTS.POOLS.HITBOX_GRAPHICS.MAX_SIZE,
+    GAME_CONSTANTS.POOLS.HITBOX_GRAPHICS.PRE_ALLOCATE
+  );
 
   constructor(app: PIXIApplication) {
     this.app = app;
@@ -192,11 +197,10 @@ export class CombatSystem {
     // Projectiles now handled server-side
     this.effectConfigs = (PLAYER_CONFIG as any).effects;
     // this.attackConfigs = PLAYER_CONFIG.attacks; // No longer needed if passed directly
-    this.hitboxGraphicsPool = [];
   }
 
   private acquireHitboxGraphics(): PIXI.Graphics {
-    const graphics = this.hitboxGraphicsPool.pop() || new PIXI.Graphics();
+    const graphics = this.hitboxGraphicsPool.acquire();
     graphics.visible = true;
     graphics.alpha = 1;
     graphics.rotation = 0;
@@ -210,11 +214,7 @@ export class CombatSystem {
       graphics.parent.removeChild(graphics);
     }
     graphics.clear();
-    graphics.position.set(0, 0);
-    graphics.rotation = 0;
-    graphics.scale.set(1, 1);
-    graphics.visible = false;
-    this.hitboxGraphicsPool.push(graphics);
+    this.hitboxGraphicsPool.release(graphics);
   }
 
   update(deltaTime: number): void {

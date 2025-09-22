@@ -28,6 +28,8 @@
 
 import * as PIXI from 'pixi.js';
 import { PLAYER_CONFIG } from '../config/GameConfig.js';
+import { ObjectPool } from '../utils/ObjectPool.js';
+import { GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js';
 
 // Interface for projectile creation data
 interface ProjectileData {
@@ -76,7 +78,7 @@ export class ProjectileRenderer {
     private game: GameInterface;
     private projectiles: Map<string, RenderedProjectile>;
     private container: PIXI.Container;
-    private projectilePool: RenderedProjectile[];
+    private projectilePool: ObjectPool<RenderedProjectile>;
 
     constructor(game: GameInterface) {
         this.game = game;
@@ -84,7 +86,69 @@ export class ProjectileRenderer {
         this.container = new PIXI.Container();
         this.container.zIndex = 100; // Above entities
         game.entityContainer.addChild(this.container);
-        this.projectilePool = [];
+        
+        // Create object pool for projectiles
+        this.projectilePool = new ObjectPool<RenderedProjectile>(
+            // Create function
+            () => ({
+                id: '',
+                sprite: new PIXI.Container(),
+                x: 0,
+                y: 0,
+                angle: 0,
+                speed: 0,
+                velocity: { x: 0, y: 0 },
+                effectType: undefined,
+                graphics: undefined,
+                effect: undefined,
+                targetX: 0,
+                targetY: 0,
+                lastServerUpdate: 0,
+                smoothingSpeed: 18
+            }),
+            // Reset function
+            (proj) => {
+                proj.id = '';
+                proj.x = 0;
+                proj.y = 0;
+                proj.angle = 0;
+                proj.speed = 0;
+                proj.velocity.x = 0;
+                proj.velocity.y = 0;
+                proj.targetX = 0;
+                proj.targetY = 0;
+                proj.lastServerUpdate = 0;
+                proj.smoothingSpeed = 18;
+                proj.effectType = undefined;
+                if (proj.graphics) {
+                    proj.graphics.clear();
+                    proj.graphics.visible = false;
+                }
+                if (proj.effect) {
+                    proj.effect.stop();
+                    proj.effect.visible = false;
+                }
+                if (proj.sprite.parent) {
+                    proj.sprite.parent.removeChild(proj.sprite);
+                }
+                proj.sprite.visible = false;
+                proj.sprite.renderable = false;
+            },
+            { 
+                maxSize: GAME_CONSTANTS.POOLS.PROJECTILE.MAX_SIZE, 
+                preAllocate: GAME_CONSTANTS.POOLS.PROJECTILE.PRE_ALLOCATE 
+            },
+            // Destroy function
+            (proj) => {
+                if (proj.graphics) {
+                    proj.graphics.destroy();
+                }
+                if (proj.effect) {
+                    proj.effect.destroy();
+                }
+                proj.sprite.destroy();
+            }
+        );
     }
 
     createProjectile(data: ProjectileData): void {
@@ -92,22 +156,7 @@ export class ProjectileRenderer {
         if (this.projectiles.has(data.id)) return;
         
         const now = performance.now();
-        const projectile = this.projectilePool.pop() ?? {
-            id: data.id,
-            sprite: new PIXI.Container(),
-            x: data.x,
-            y: data.y,
-            angle: data.angle,
-            speed: data.speed,
-            velocity: { x: 0, y: 0 },
-            effectType: undefined,
-            graphics: undefined,
-            effect: undefined,
-            targetX: data.x,
-            targetY: data.y,
-            lastServerUpdate: now,
-            smoothingSpeed: 18
-        };
+        const projectile = this.projectilePool.acquire();
 
         projectile.id = data.id;
         projectile.x = data.x;
@@ -314,23 +363,6 @@ export class ProjectileRenderer {
     }
 
     private releaseProjectile(projectile: RenderedProjectile): void {
-        if (projectile.effect) {
-            projectile.effect.stop();
-            if (projectile.effect.parent) {
-                projectile.effect.parent.removeChild(projectile.effect);
-            }
-            projectile.effect.visible = true;
-        }
-        if (projectile.graphics) {
-            projectile.graphics.visible = true;
-        }
-        projectile.sprite.visible = false;
-        projectile.sprite.renderable = false;
-        if (projectile.sprite.parent) {
-            projectile.sprite.parent.removeChild(projectile.sprite);
-        }
-        projectile.effectType = undefined;
-        projectile.id = '';
-        this.projectilePool.push(projectile);
+        this.projectilePool.release(projectile);
     }
 }

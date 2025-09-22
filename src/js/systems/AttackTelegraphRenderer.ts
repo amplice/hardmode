@@ -14,6 +14,8 @@
  */
 
 import * as PIXI from 'pixi.js';
+import { PIXIPoolFactory } from '../utils/ObjectPool.js';
+import { GAME_CONSTANTS } from '../../../../shared/constants/GameConstants.js';
 
 export interface TelegraphConfig {
     shape: 'rectangle' | 'cone' | 'circle';
@@ -53,12 +55,14 @@ export class AttackTelegraphRenderer {
         startTime: number;
         endTime: number;
     }>;
-    private graphicsPool: PIXI.Graphics[];
+    private graphicsPool = PIXIPoolFactory.createGraphicsPool(
+        GAME_CONSTANTS.POOLS.ATTACK_TELEGRAPH.MAX_SIZE,
+        GAME_CONSTANTS.POOLS.ATTACK_TELEGRAPH.PRE_ALLOCATE
+    );
 
     constructor() {
         this.container = new PIXI.Container();
         this.activeTelegraphs = new Map();
-        this.graphicsPool = [];
     }
 
     getContainer(): PIXI.Container {
@@ -211,7 +215,7 @@ export class AttackTelegraphRenderer {
     }
 
     private acquireGraphics(): PIXI.Graphics {
-        const graphics = this.graphicsPool.pop() || new PIXI.Graphics();
+        const graphics = this.graphicsPool.acquire();
         graphics.visible = true;
         graphics.alpha = 1;
         graphics.rotation = 0;
@@ -226,7 +230,7 @@ export class AttackTelegraphRenderer {
         graphics.clear();
         graphics.visible = false;
         graphics.alpha = 0;
-        this.graphicsPool.push(graphics);
+        this.graphicsPool.release(graphics);
     }
 
     /**
