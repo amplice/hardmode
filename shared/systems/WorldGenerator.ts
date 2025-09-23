@@ -320,44 +320,45 @@ export class SharedWorldGenerator {
     }
     
     /**
-     * Generate desert biome region in hot+dry areas (bottom-left corner)
+     * Generate desert biome region in bottom-left corner (mirrors snow generation logic)
      */
     private generateDesertBiomeRegion(biomeData: number[][], climate: { temperature: number[][], moisture: number[][] }): void {
-        console.log('[BiomeGeneration] Creating desert biome in hot+dry regions...');
+        // Define the center of desert biome (bottom-left quarter) - opposite of snow
+        const desertCenterX = this.width * 0.25;  // Left side (opposite of snow's 0.75)
+        const desertCenterY = this.height * 0.75; // Bottom side (opposite of snow's 0.25)
         
-        // Focus on bottom-left corner for desert placement
-        // Bottom = hot (high y values), Left = low x values
-        const desertStartY = Math.floor(this.height * 0.6); // Start from 60% down
-        const desertEndX = Math.floor(this.width * 0.4); // Cover left 40% of map
+        // Base radius to cover roughly 1/4 of the map (same as snow)
+        const baseRadius = Math.min(this.width, this.height) * 0.35;
         
-        let desertTileCount = 0;
-        
-        for (let y = desertStartY; y < this.height; y++) {
-            for (let x = 0; x < desertEndX; x++) {
-                const temp = climate.temperature[y][x];
-                const moisture = climate.moisture[y][x];
+        // Use noise to create natural, irregular borders (same approach as snow)
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                const dx = x - desertCenterX;
+                const dy = y - desertCenterY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
                 
-                // More lenient conditions for desert generation
-                // Hot (bottom area) + not too wet = desert
-                if (temp > 0.6 && moisture < 0.5) {
-                    // Add some noise to create natural borders
-                    const borderNoise = this.noise2D(x * 0.05, y * 0.05);
-                    const distFromEdge = Math.min(
-                        (y - desertStartY) / (this.height - desertStartY),
-                        (desertEndX - x) / desertEndX
-                    );
-                    
-                    // Create desert with natural edges
-                    if (distFromEdge + borderNoise * 0.3 > 0.2) {
-                        // Randomly choose between light and dark sand
-                        biomeData[y][x] = Math.random() < 0.7 ? BIOME_TYPES.LIGHT_SAND : BIOME_TYPES.DARK_SAND;
-                        desertTileCount++;
-                    }
+                // Use noise to vary the border (same as snow)
+                const angle = Math.atan2(dy, dx);
+                const noiseValue = this.noise2D(
+                    Math.cos(angle) * 2,
+                    Math.sin(angle) * 2
+                ) + this.noise2D(x * 0.01, y * 0.01) * 0.5;
+                
+                // Adjust radius based on noise for natural borders
+                const adjustedRadius = baseRadius + noiseValue * baseRadius * 0.3;
+                
+                // Additional bias to extend more into the bottom-left corner (opposite of snow)
+                const cornerBias = Math.max(0, 
+                    (this.width * 0.5 - x) / (this.width * 0.5) +  // Bias toward left (opposite of snow)
+                    (y - this.height * 0.5) / (this.height * 0.5)   // Bias toward bottom (opposite of snow)
+                ) * baseRadius * 0.2;
+                
+                if (distance < adjustedRadius + cornerBias) {
+                    // Randomly choose between light and dark sand (70% light, 30% dark)
+                    biomeData[y][x] = Math.random() < 0.7 ? BIOME_TYPES.LIGHT_SAND : BIOME_TYPES.DARK_SAND;
                 }
             }
         }
-        
-        console.log(`[BiomeGeneration] Created ${desertTileCount} desert tiles in bottom-left region`);
     }
     
     /**
