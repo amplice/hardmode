@@ -82,8 +82,8 @@ interface GameInterface {
     updateRemotePlayer(playerState: any): void;
     addOrUpdateMonster(monsterData: any): void;
     remotePlayerAttack(id: string, type: string, facing?: string): void;
-    showDamageNumber?(position: Position, damage: number): void;
-    showXpGain?(position: Position, xp: number): void;
+    showDamageNumber?(position: { x: number, y: number }, damage: number): void;
+    showXpGain?(position: { x: number, y: number }, xp: number): void;
     applyServerConfig(config: any): void;
 }
 

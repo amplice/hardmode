@@ -1,0 +1,9 @@
+tree1 - 160x256
+tree2 - 160x288
+tree3 - 160x224
+
+old_tree1 - 160x256
+old_tree2 - 160x288
+old_tree3 - 160x224
+
+big_tree - 352x416

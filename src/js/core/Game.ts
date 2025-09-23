@@ -1369,7 +1369,7 @@ export class Game {
   /**
    * Show damage number at position - called by NetworkClient
    */
-  showDamageNumber(position: Position, damage: number): void {
+  showDamageNumber(position: { x: number, y: number }, damage: number): void {
     if (this.damageNumberSystem) {
       this.damageNumberSystem.showDamage(
         position.x,

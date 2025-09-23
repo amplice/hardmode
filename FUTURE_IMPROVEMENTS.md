@@ -8,6 +8,7 @@ This document tracks potential improvements and feature ideas for the game.
 - Q and E ability slots for additional spells
 - Additional monster types and variants
 - Enhanced monster pathfinding (already using A* but could be improved)
+- finish adding sounds (think we're missing player death for example as well as some other stuff)
 
 ## **Performance Optimizations**
 
