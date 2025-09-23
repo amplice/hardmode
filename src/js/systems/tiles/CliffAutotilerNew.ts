@@ -1318,8 +1318,9 @@ export class CliffAutotiler {
     
     /**
      * Determine desert sand transition type (dark sand to light sand)
-     * Desert tileset has transition tiles at rows 26-30, columns 30-34
-     * These tiles show dark sand on outside, light sand on inside (reversed from grass)
+     * Uses EXACT SAME LOGIC as white snow to blue snow transitions
+     * Desert tileset has transition tiles at rows 24-30, columns 30-34
+     * These tiles show dark sand transitioning to light sand (no transparency needed)
      */
     private determineDesertTransitionType(bitmask: number): TransitionCoordinates | null {
         // Extract direction bits
@@ -1332,43 +1333,29 @@ export class CliffAutotiler {
         const hasSoutheast = (bitmask & this.BITS.SOUTHEAST) !== 0;
         const hasSouthwest = (bitmask & this.BITS.SOUTHWEST) !== 0;
         
-        // Desert transition tiles are at rows 26-30, columns 30-34
-        // Row 24, cols 30-31: inner corner pieces (NW, NE)
-        // Row 25, cols 30-31: inner corner pieces (SW, SE)
-        // Rows 26-30: main transition tiles
+        // EXACT SAME LOGIC as white snow to blue snow transitions
+        // but with desert tileset coordinates (rows 24-30, columns 30-34)
         
         // Priority 1: Inner corners (when two adjacent cardinals have light sand)
         // These create the inner corner effect where dark sand wraps around light sand
-        if (hasNorth && hasWest && !hasNorthwest) return { row: 24, col: 30, type: "inner NW corner" };
-        if (hasNorth && hasEast && !hasNortheast) return { row: 24, col: 31, type: "inner NE corner" };
-        if (hasSouth && hasWest && !hasSouthwest) return { row: 25, col: 30, type: "inner SW corner" };
-        if (hasSouth && hasEast && !hasSoutheast) return { row: 25, col: 31, type: "inner SE corner" };
+        if (hasSouth && hasEast) return { row: 24, col: 32, type: "NW inner corner (light sand SE)" };
+        if (hasSouth && hasWest) return { row: 24, col: 33, type: "NE inner corner (light sand SW)" };
+        if (hasNorth && hasEast) return { row: 25, col: 32, type: "SW inner corner (light sand NE)" };
+        if (hasNorth && hasWest) return { row: 25, col: 33, type: "SE inner corner (light sand NW)" };
         
         // Priority 2: Outer diagonal edges (diagonal only, no adjacent cardinals)
-        // Light sand to the southeast only = northwest outer corner of light sand area
         if (hasSoutheast && !hasSouth && !hasEast) return { row: 26, col: 30, type: "NW outer diagonal" };
         if (hasSouthwest && !hasSouth && !hasWest) return { row: 26, col: 34, type: "NE outer diagonal" };
         if (hasNortheast && !hasNorth && !hasEast) return { row: 30, col: 30, type: "SW outer diagonal" };
         if (hasNorthwest && !hasNorth && !hasWest) return { row: 30, col: 34, type: "SE outer diagonal" };
         
         // Priority 3: Single cardinal edges
-        // Light sand to the south = north edge of light sand area
         if (hasSouth && !hasEast && !hasNorth && !hasWest) return { row: 26, col: 31, type: "N edge" };
         if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 27, col: 30, type: "W edge" };
-        if (hasWest && !hasNorth && !hasSouth && !hasEast) return { row: 28, col: 34, type: "E edge" };
+        if (hasWest && !hasNorth && !hasSouth && !hasEast) return { row: 27, col: 34, type: "E edge" };
         if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 30, col: 31, type: "S edge" };
         
         // Priority 4: Edge variants and combinations
-        if (hasSouth && !hasNorth) {
-            if (hasWest || hasEast) return { row: 26, col: 32, type: "N edge variant" };
-            return { row: 26, col: 33, type: "N edge variant 2" };
-        }
-        
-        if (hasNorth && !hasSouth) {
-            if (hasWest || hasEast) return { row: 30, col: 32, type: "S edge variant" };
-            return { row: 30, col: 33, type: "S edge variant 2" };
-        }
-        
         if (hasWest && !hasEast) {
             if (hasNorth || hasSouth) return { row: 28, col: 34, type: "E edge variant" };
             return { row: 29, col: 34, type: "E edge variant 2" };
@@ -1379,10 +1366,20 @@ export class CliffAutotiler {
             return { row: 29, col: 30, type: "W edge variant 2" };
         }
         
+        if (hasSouth && !hasNorth) {
+            if (hasWest || hasEast) return { row: 26, col: 32, type: "N edge variant" };
+            return { row: 26, col: 33, type: "N edge variant 2" };
+        }
+        
+        if (hasNorth && !hasSouth) {
+            if (hasWest || hasEast) return { row: 30, col: 32, type: "S edge variant" };
+            return { row: 30, col: 33, type: "S edge variant 2" };
+        }
+        
         // Priority 5: Fallback for any cardinal direction
         if (hasSouth) return { row: 26, col: 31, type: "N edge fallback" };
         if (hasEast) return { row: 27, col: 30, type: "W edge fallback" };
-        if (hasWest) return { row: 28, col: 34, type: "E edge fallback" };
+        if (hasWest) return { row: 27, col: 34, type: "E edge fallback" };
         if (hasNorth) return { row: 30, col: 31, type: "S edge fallback" };
         
         return null;
