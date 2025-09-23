@@ -330,7 +330,7 @@ export class SharedWorldGenerator {
         // Base radius to cover roughly 1/4 of the map (same as snow)
         const baseRadius = Math.min(this.width, this.height) * 0.35;
         
-        // Use noise to create natural, irregular borders (same approach as snow)
+        // First, create all desert tiles as LIGHT_SAND (like snow starts all white)
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 const dx = x - desertCenterX;
@@ -354,8 +354,24 @@ export class SharedWorldGenerator {
                 ) * baseRadius * 0.2;
                 
                 if (distance < adjustedRadius + cornerBias) {
-                    // Randomly choose between light and dark sand (70% light, 30% dark)
-                    biomeData[y][x] = Math.random() < 0.7 ? BIOME_TYPES.LIGHT_SAND : BIOME_TYPES.DARK_SAND;
+                    // Start with all light sand (will create dark sand patches later)
+                    biomeData[y][x] = BIOME_TYPES.LIGHT_SAND;
+                }
+            }
+        }
+        
+        // Now create coherent patches of dark sand using noise (similar to snow plateau variants)
+        // Use Perlin noise to create organic blob-shaped regions
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+                if (biomeData[y][x] === BIOME_TYPES.LIGHT_SAND) {
+                    // Use lower frequency noise for larger coherent patches
+                    const noiseValue = this.noise2D(x * 0.015, y * 0.015);
+                    
+                    // Create dark sand patches where noise is above threshold (30% coverage)
+                    if (noiseValue > 0.2) {
+                        biomeData[y][x] = BIOME_TYPES.DARK_SAND;
+                    }
                 }
             }
         }
