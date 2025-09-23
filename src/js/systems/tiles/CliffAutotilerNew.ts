@@ -1193,6 +1193,7 @@ export class CliffAutotiler {
         
         // Calculate bitmask for desert neighbors (both light and dark sand)
         let desertBitmask = 0;
+        let neighborSandType: number | null = null; // Track which type of sand we're adjacent to
         
         // Check all 8 directions for desert
         const directions = [
@@ -1215,12 +1216,33 @@ export class CliffAutotiler {
                 // Check for both light sand and dark sand
                 if (neighborBiome === BIOME_TYPES.LIGHT_SAND || neighborBiome === BIOME_TYPES.DARK_SAND) {
                     desertBitmask |= dir.bit;
+                    // Track the sand type (prioritize the first cardinal direction found)
+                    if (neighborSandType === null && (dir.bit === this.BITS.NORTH || 
+                        dir.bit === this.BITS.EAST || dir.bit === this.BITS.SOUTH || 
+                        dir.bit === this.BITS.WEST)) {
+                        neighborSandType = neighborBiome;
+                    }
                 }
             }
         }
         
         // No desert neighbors = no transition
         if (desertBitmask === 0) return null;
+        
+        // If we didn't find a cardinal neighbor, check diagonals for sand type
+        if (neighborSandType === null) {
+            for (const dir of directions) {
+                const nx = x + dir.dx;
+                const ny = y + dir.dy;
+                if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                    const neighborBiome = biomeData[ny][nx];
+                    if (neighborBiome === BIOME_TYPES.LIGHT_SAND || neighborBiome === BIOME_TYPES.DARK_SAND) {
+                        neighborSandType = neighborBiome;
+                        break;
+                    }
+                }
+            }
+        }
         
         // Determine transition tile based on bitmask
         // Using same logic as grass-to-snow transitions (transparency tiles)
@@ -1234,7 +1256,10 @@ export class CliffAutotiler {
         // For grass-to-desert, we need (same pattern as grass-to-snow):
         // 1. Desert tile as the base (what shows through the transparent parts)
         // 2. Green grass transparency tile as overlay
-        const desertTexture = this.tilesets.getRandomLightSand(); // Use light sand as base
+        // Use the appropriate sand type as base (dark or light depending on neighbor)
+        const desertTexture = neighborSandType === BIOME_TYPES.DARK_SAND ? 
+            this.tilesets.getRandomDarkSand() : 
+            this.tilesets.getRandomLightSand();
         if (!desertTexture) return null;
         
         // Return desert base with grass transparency overlay (same structure as snow)
