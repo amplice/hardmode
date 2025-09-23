@@ -239,10 +239,13 @@ export class SharedWorldGenerator {
         // Create snow biome in top-right quarter with natural border variation
         this.generateSnowBiomeRegion(biomeData);
         
+        // Create desert biome in hot+dry regions (bottom areas)
+        this.generateDesertBiomeRegion(biomeData, climate);
+        
         // Flatten any plateaus that would cross biome boundaries
         this.flattenCrossBiomePlateaus(elevationData, biomeData);
         
-        // Create a mask of tiles that must remain green grass (near snow borders)
+        // Create a mask of tiles that must remain green grass (near snow/desert borders)
         const mustBeGreenGrass = this.createGreenGrassMask(biomeData);
         
         // Now apply the variant system (green/dark grass) within the grass biome
@@ -314,6 +317,47 @@ export class SharedWorldGenerator {
                 }
             }
         }
+    }
+    
+    /**
+     * Generate desert biome region in hot+dry areas (bottom-left corner)
+     */
+    private generateDesertBiomeRegion(biomeData: number[][], climate: { temperature: number[][], moisture: number[][] }): void {
+        console.log('[BiomeGeneration] Creating desert biome in hot+dry regions...');
+        
+        // Focus on bottom-left corner for desert placement
+        // Bottom = hot (high y values), Left = low x values
+        const desertStartY = Math.floor(this.height * 0.6); // Start from 60% down
+        const desertEndX = Math.floor(this.width * 0.4); // Cover left 40% of map
+        
+        let desertTileCount = 0;
+        
+        for (let y = desertStartY; y < this.height; y++) {
+            for (let x = 0; x < desertEndX; x++) {
+                const temp = climate.temperature[y][x];
+                const moisture = climate.moisture[y][x];
+                
+                // More lenient conditions for desert generation
+                // Hot (bottom area) + not too wet = desert
+                if (temp > 0.6 && moisture < 0.5) {
+                    // Add some noise to create natural borders
+                    const borderNoise = this.noise2D(x * 0.05, y * 0.05);
+                    const distFromEdge = Math.min(
+                        (y - desertStartY) / (this.height - desertStartY),
+                        (desertEndX - x) / desertEndX
+                    );
+                    
+                    // Create desert with natural edges
+                    if (distFromEdge + borderNoise * 0.3 > 0.2) {
+                        // Randomly choose between light and dark sand
+                        biomeData[y][x] = Math.random() < 0.7 ? BIOME_TYPES.LIGHT_SAND : BIOME_TYPES.DARK_SAND;
+                        desertTileCount++;
+                    }
+                }
+            }
+        }
+        
+        console.log(`[BiomeGeneration] Created ${desertTileCount} desert tiles in bottom-left region`);
     }
     
     /**
@@ -954,10 +998,14 @@ export class SharedWorldGenerator {
             mask[y] = new Array(this.width).fill(false);
         }
         
-        // Mark all grass tiles within 2 tiles of snow
+        // Mark all grass tiles within 2 tiles of snow or desert
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                if (biomeData[y][x] === BIOME_TYPES.SNOW) {
+                const biome = biomeData[y][x];
+                // Check if this is snow or desert
+                if (biome === BIOME_TYPES.SNOW || 
+                    biome === BIOME_TYPES.LIGHT_SAND || 
+                    biome === BIOME_TYPES.DARK_SAND) {
                     // Check in a 2-tile radius
                     for (let dy = -2; dy <= 2; dy++) {
                         for (let dx = -2; dx <= 2; dx++) {
