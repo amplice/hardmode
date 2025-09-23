@@ -63,6 +63,7 @@ interface TileResult {
     texture: Texture | null;
     type: string;
     needsGrassBase?: boolean;
+    needsSandBase?: boolean;  // For grass-to-desert transition tiles
     overlay?: {
         texture: Texture;
         type: string;
@@ -112,15 +113,22 @@ export class CliffAutotiler {
      * @param biomeId - The biome type (0=grass, 1=dark grass, 2=snow)
      * @param snowVariant - Snow variant (0=white, 1=blue, 2=grey) - only used when biomeId is snow
      */
-    private determineTileType(bitmask: number, isDarkGrass: boolean = false, biomeId: number = 0, snowVariant: number = 0): TileCoordinates {
+    private determineTileType(bitmask: number, isDarkVariant: boolean = false, biomeId: number = 0, snowVariant: number = 0): TileCoordinates {
+        // Determine if this is desert biome
+        const isDesert = biomeId === BIOME_TYPES.LIGHT_SAND || biomeId === BIOME_TYPES.DARK_SAND;
+        
         // Base column offset for biome
         let colOffset = 0;
         if (biomeId === BIOME_TYPES.SNOW) {
             // Snow uses different tileset with variant-based offsets
             // White = 0, Blue = +12, Grey = +24
             colOffset = snowVariant * 12;
-        } else if (isDarkGrass) {
-            colOffset = 11; // Dark grass
+        } else if (isDesert) {
+            // Desert: light sand = 0, dark sand = +10
+            colOffset = isDarkVariant ? 10 : 0;
+        } else if (isDarkVariant) {
+            // Grass: green = 0, dark = +11
+            colOffset = 11;
         }
         // Check cardinal directions
         const hasNorth = (bitmask & this.BITS.NORTH) !== 0;
@@ -135,20 +143,30 @@ export class CliffAutotiler {
         const hasSouthwest = (bitmask & this.BITS.SOUTHWEST) !== 0;
         
         // Priority 1: Corners (two adjacent cardinals)
+        // Desert uses column 5 for NE/SE corners, grass uses column 6
+        const neCornerCol = isDesert ? 5 : 6;
         if (hasNorth && hasWest) return { row: 0, col: 0 + colOffset, type: "NW corner" };
-        if (hasNorth && hasEast) return { row: 0, col: 6 + colOffset, type: "NE corner" };
+        if (hasNorth && hasEast) return { row: 0, col: neCornerCol + colOffset, type: "NE corner" };
         if (hasSouth && hasWest) return { row: 5, col: 0 + colOffset, type: "SW corner" };
-        if (hasSouth && hasEast) return { row: 5, col: 6 + colOffset, type: "SE corner" };
+        if (hasSouth && hasEast) return { row: 5, col: neCornerCol + colOffset, type: "SE corner" };
         
         // Priority 2: Pure diagonal inner corners (diagonal but NO adjacent cardinals)
-        if (hasNorthwest && !hasNorth && !hasWest) return { row: 2, col: 7 + colOffset, type: "NW inner corner" };
-        if (hasNortheast && !hasNorth && !hasEast) return { row: 2, col: 10 + colOffset, type: "NE inner corner" };
-        if (hasSouthwest && !hasSouth && !hasWest) return { row: 4, col: 8 + colOffset, type: "SW inner corner" };
-        if (hasSoutheast && !hasSouth && !hasEast) return { row: 4, col: 9 + colOffset, type: "SE inner corner" };
+        // Desert inner corners are offset by -1 column compared to grass
+        if (isDesert) {
+            if (hasNorthwest && !hasNorth && !hasWest) return { row: 2, col: 6 + colOffset, type: "NW inner corner" };
+            if (hasNortheast && !hasNorth && !hasEast) return { row: 2, col: 9 + colOffset, type: "NE inner corner" };
+            if (hasSouthwest && !hasSouth && !hasWest) return { row: 4, col: 7 + colOffset, type: "SW inner corner" };
+            if (hasSoutheast && !hasSouth && !hasEast) return { row: 4, col: 8 + colOffset, type: "SE inner corner" };
+        } else {
+            if (hasNorthwest && !hasNorth && !hasWest) return { row: 2, col: 7 + colOffset, type: "NW inner corner" };
+            if (hasNortheast && !hasNorth && !hasEast) return { row: 2, col: 10 + colOffset, type: "NE inner corner" };
+            if (hasSouthwest && !hasSouth && !hasWest) return { row: 4, col: 8 + colOffset, type: "SW inner corner" };
+            if (hasSoutheast && !hasSouth && !hasEast) return { row: 4, col: 9 + colOffset, type: "SE inner corner" };
+        }
         
         // Priority 3: Single cardinal edges
         if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 0, col: 1 + colOffset, type: "top edge" };
-        if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 1, col: 6 + colOffset, type: "right edge" };
+        if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 1, col: neCornerCol + colOffset, type: "right edge" };
         if (hasSouth && !hasNorth && !hasEast && !hasWest) return { row: 5, col: 1 + colOffset, type: "bottom edge" };
         if (hasWest && !hasNorth && !hasEast && !hasSouth) return { row: 1, col: 0 + colOffset, type: "left edge" };
         
@@ -161,8 +179,8 @@ export class CliffAutotiler {
         
         // East edge variants
         if (hasEast && !hasWest) {
-            if (hasNorth || hasSouth) return { row: 2, col: 6 + colOffset, type: "right edge variant" };
-            return { row: 3, col: 6 + colOffset, type: "right edge variant 2" };
+            if (hasNorth || hasSouth) return { row: 2, col: neCornerCol + colOffset, type: "right edge variant" };
+            return { row: 3, col: neCornerCol + colOffset, type: "right edge variant 2" };
         }
         
         // North edge variants
@@ -189,7 +207,7 @@ export class CliffAutotiler {
             col: 1 + colOffset, 
             type: "grass", 
             useVariations: true,
-            isDarkGrass: isDarkGrass
+            isDarkGrass: isDarkVariant && !isDesert
         };
     }
     
@@ -243,10 +261,13 @@ export class CliffAutotiler {
         }
         
         // STEP 1: BIOME DETERMINATION FIRST
-        // Determine biome type (0=green grass, 1=dark grass, 2=snow) - this drives everything else
+        // Determine biome type - this drives everything else
         const biomeId = biomeData && biomeData[y] ? biomeData[y][x] : 0;
         const isDarkGrass = biomeId === BIOME_TYPES.DARK_GRASS;
         const isSnow = biomeId === BIOME_TYPES.SNOW;
+        const isLightSand = biomeId === BIOME_TYPES.LIGHT_SAND;
+        const isDarkSand = biomeId === BIOME_TYPES.DARK_SAND;
+        const isDesert = isLightSand || isDarkSand;
         const currentElevation = elevationData[y] && elevationData[y][x] !== undefined ? elevationData[y][x] : 0;
         
         // Debug logging for biome selection (only log occasionally to avoid spam)
@@ -280,37 +301,44 @@ export class CliffAutotiler {
             // This prevents both boundary tiles from becoming transitions
             if (biomeId === BIOME_TYPES.GRASS) {  // Only apply transitions to GREEN tiles (biomeId 0)
                 
-                // But don't apply grass transitions if there's snow nearby
-                // Check for snow neighbors first
+                // Check for different neighbor types
                 let hasSnowNeighbor = false;
+                let hasDesertNeighbor = false;
+                
                 if (biomeData) {
                     const width = biomeData[0].length;
                     const height = biomeData.length;
                     
-                    
-                    // Quick check for any snow neighbors
+                    // Quick check for any snow or desert neighbors
                     for (let dy = -1; dy <= 1; dy++) {
                         for (let dx = -1; dx <= 1; dx++) {
                             if (dx === 0 && dy === 0) continue;
                             const nx = x + dx;
                             const ny = y + dy;
                             if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
-                                if (biomeData[ny][nx] === BIOME_TYPES.SNOW) {
+                                const neighborBiome = biomeData[ny][nx];
+                                if (neighborBiome === BIOME_TYPES.SNOW) {
                                     hasSnowNeighbor = true;
-                                    break;
+                                } else if (neighborBiome === BIOME_TYPES.LIGHT_SAND || neighborBiome === BIOME_TYPES.DARK_SAND) {
+                                    hasDesertNeighbor = true;
                                 }
                             }
                         }
-                        if (hasSnowNeighbor) break;
                     }
                 }
                 
-                // Check for transitions
+                // Check for transitions in priority order
                 if (hasSnowNeighbor) {
                     // Apply grass-to-snow transitions
                     const snowTransitionTile = this.getGrassToSnowTransitionTile(x, y, biomeData);
                     if (snowTransitionTile) {
                         return snowTransitionTile;
+                    }
+                } else if (hasDesertNeighbor) {
+                    // Apply grass-to-desert transitions
+                    const desertTransitionTile = this.getGrassToDesertTransition(x, y, biomeData);
+                    if (desertTransitionTile) {
+                        return desertTransitionTile;
                     }
                 } else {
                     // Apply grass-to-dark-grass transitions  
@@ -321,7 +349,24 @@ export class CliffAutotiler {
                 }
             }
             
-            // No transition needed - use biome-appropriate pure tiles
+            // Desert biomes - handle desert tiles and transitions
+            if (isDesert) {
+                // For desert, DARK sand gets transitions when adjacent to light sand (opposite of grass)
+                if (isDarkSand) {
+                    const desertTransitionTile = this.getDesertSandTransition(x, y, biomeData);
+                    if (desertTransitionTile) {
+                        return desertTransitionTile;
+                    }
+                }
+                
+                // Return pure desert tile
+                return {
+                    texture: isLightSand ? this.tilesets.getRandomLightSand() : this.tilesets.getRandomDarkSand(),
+                    type: 'desert'
+                };
+            }
+            
+            // No transition needed - use biome-appropriate pure grass tiles
             return { 
                 texture: isDarkGrass ? this.tilesets.getRandomPureDarkGrass() : this.tilesets.getRandomPureGrass(),
                 type: 'grass'
@@ -331,15 +376,16 @@ export class CliffAutotiler {
         // Elevated tiles - cliff generation using biome-appropriate tileset
         const bitmask = this.calculateBitmask(x, y, elevationData);
         const snowVariant = (isSnow && snowVariantData && snowVariantData[y]) ? snowVariantData[y][x] : 0;
-        let tileCoords = this.determineTileType(bitmask, isDarkGrass, biomeId, snowVariant);
+        let tileCoords = this.determineTileType(bitmask, isDarkGrass || isDarkSand, biomeId, snowVariant);
         
-        // Randomize bottom edge tiles (columns 1-5 for horizontal edges)
+        // Randomize bottom edge tiles (desert uses columns 1-4, grass uses 1-5)
         if (tileCoords.type.includes("bottom edge") && tileCoords.row === 5) {
             // Only randomize if it's using the basic bottom edge tile (col 1)
             // Other variants (cols 2-4) are already properly assigned by determineTileType
             if (tileCoords.col === 1) {
                 tileCoords = { ...tileCoords }; // Copy to avoid modifying original
-                tileCoords.col = 1 + Math.floor(Math.random() * 5); // Columns 1-5 only
+                const maxCols = isDesert ? 4 : 5; // Desert has 4 variations, grass has 5
+                tileCoords.col = 1 + Math.floor(Math.random() * maxCols);
             }
         }
         
@@ -363,10 +409,14 @@ export class CliffAutotiler {
         // Use appropriate texture based on tile type and biome
         let texture: Texture | null = null;
         if (tileCoords.useVariations && tileCoords.type === "grass") {
-            // Use grass/snow variations for plateau interiors based on biome
+            // Use biome-appropriate variations for plateau interiors
             if (isSnow) {
                 const snowVariant = snowVariantData && snowVariantData[y] ? snowVariantData[y][x] : 0;
                 texture = this.tilesets.getRandomSnowTile(snowVariant);
+            } else if (isDesert) {
+                texture = isLightSand ? 
+                    this.tilesets.getRandomLightSand() : 
+                    this.tilesets.getRandomDarkSand();
             } else {
                 texture = tileCoords.isDarkGrass ? 
                     this.tilesets.getRandomPlateauDarkGrass() : 
@@ -374,7 +424,9 @@ export class CliffAutotiler {
             }
         } else {
             // Use exact tile for cliff edges, corners, etc.
-            const tileset = isSnow ? this.tilesets.textures.snow : this.tilesets.textures.terrain;
+            const tileset = isSnow ? this.tilesets.textures.snow : 
+                          isDesert ? this.tilesets.textures.desert :
+                          this.tilesets.textures.terrain;
             const row = tileset[tileCoords.row];
             if (row && row[tileCoords.col]) {
                 texture = row[tileCoords.col];
@@ -1126,6 +1178,203 @@ export class CliffAutotiler {
         if (hasEast) return { row: 39, col: 0, type: "W edge fallback" };
         if (hasWest) return { row: 40, col: 4, type: "E edge fallback" };
         if (hasNorth) return { row: 42, col: 1, type: "S edge fallback" };
+        
+        return null;
+    }
+    
+    /**
+     * Get grass-to-desert transition tile
+     * Green grass gets transition tiles when adjacent to sand
+     */
+    private getGrassToDesertTransition(x: number, y: number, biomeData?: number[][]): TileResult | null {
+        if (!biomeData) return null;
+        
+        const width = biomeData[0].length;
+        const height = biomeData.length;
+        
+        // Calculate bitmask for desert neighbors (both light and dark sand)
+        let desertBitmask = 0;
+        
+        // Check all 8 directions for desert
+        const directions = [
+            { dx: 0, dy: -1, bit: this.BITS.NORTH },
+            { dx: 1, dy: -1, bit: this.BITS.NORTHEAST },
+            { dx: 1, dy: 0, bit: this.BITS.EAST },
+            { dx: 1, dy: 1, bit: this.BITS.SOUTHEAST },
+            { dx: 0, dy: 1, bit: this.BITS.SOUTH },
+            { dx: -1, dy: 1, bit: this.BITS.SOUTHWEST },
+            { dx: -1, dy: 0, bit: this.BITS.WEST },
+            { dx: -1, dy: -1, bit: this.BITS.NORTHWEST }
+        ];
+        
+        for (const dir of directions) {
+            const nx = x + dir.dx;
+            const ny = y + dir.dy;
+            
+            if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                const neighborBiome = biomeData[ny][nx];
+                // Check for both light sand and dark sand
+                if (neighborBiome === BIOME_TYPES.LIGHT_SAND || neighborBiome === BIOME_TYPES.DARK_SAND) {
+                    desertBitmask |= dir.bit;
+                }
+            }
+        }
+        
+        // No desert neighbors = no transition
+        if (desertBitmask === 0) return null;
+        
+        // Determine transition tile based on bitmask
+        // Using same logic as grass-to-snow transitions (transparency tiles)
+        const transitionCoords = this.determineGrassToDesertTransitionType(desertBitmask);
+        if (!transitionCoords) return null;
+        
+        // Get texture from grass tileset (rows 37-43 for transparency)
+        const texture = this.tilesets.textures.terrain[transitionCoords.row]?.[transitionCoords.col] || null;
+        if (!texture) return null;
+        
+        return {
+            texture: texture,
+            type: `grass_desert_transition_${transitionCoords.row},${transitionCoords.col}`,
+            needsSandBase: true // Indicates sand should be drawn underneath
+        };
+    }
+    
+    /**
+     * Determine grass-to-desert transition type using transparency tiles
+     * Uses same logic as grass-to-snow but for desert
+     */
+    private determineGrassToDesertTransitionType(bitmask: number): TransitionCoordinates | null {
+        // Use the same transparency tiles as grass-to-snow (rows 37-43, cols 0-4)
+        // This provides consistent transition behavior
+        return this.determineGrassToSnowTransitionType(bitmask);
+    }
+    
+    /**
+     * Get desert sand transition tile (dark sand to light sand)
+     * Dark sand gets transition tiles when adjacent to light sand
+     * Uses desert tileset rows 26-30, columns 30-34
+     */
+    private getDesertSandTransition(x: number, y: number, biomeData?: number[][]): TileResult | null {
+        if (!biomeData) return null;
+        
+        const width = biomeData[0].length;
+        const height = biomeData.length;
+        const currentBiome = biomeData[y][x];
+        
+        // Only dark sand gets transitions to light sand
+        if (currentBiome !== BIOME_TYPES.DARK_SAND) return null;
+        
+        // Calculate bitmask for light sand neighbors
+        let lightSandBitmask = 0;
+        
+        // Check all 8 directions for light sand
+        const directions = [
+            { dx: 0, dy: -1, bit: this.BITS.NORTH },
+            { dx: 1, dy: -1, bit: this.BITS.NORTHEAST },
+            { dx: 1, dy: 0, bit: this.BITS.EAST },
+            { dx: 1, dy: 1, bit: this.BITS.SOUTHEAST },
+            { dx: 0, dy: 1, bit: this.BITS.SOUTH },
+            { dx: -1, dy: 1, bit: this.BITS.SOUTHWEST },
+            { dx: -1, dy: 0, bit: this.BITS.WEST },
+            { dx: -1, dy: -1, bit: this.BITS.NORTHWEST }
+        ];
+        
+        for (const dir of directions) {
+            const nx = x + dir.dx;
+            const ny = y + dir.dy;
+            
+            if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                if (biomeData[ny][nx] === BIOME_TYPES.LIGHT_SAND) {
+                    lightSandBitmask |= dir.bit;
+                }
+            }
+        }
+        
+        // No light sand neighbors = no transition
+        if (lightSandBitmask === 0) return null;
+        
+        // Determine transition tile based on bitmask
+        const transitionCoords = this.determineDesertTransitionType(lightSandBitmask);
+        if (!transitionCoords) return null;
+        
+        // Get texture from desert tileset
+        const texture = this.tilesets.getDesertTileAt(transitionCoords.row, transitionCoords.col);
+        if (!texture) return null;
+        
+        return {
+            texture: texture,
+            type: `desert_sand_transition_${transitionCoords.row},${transitionCoords.col}`
+        };
+    }
+    
+    /**
+     * Determine desert sand transition type (dark sand to light sand)
+     * Desert tileset has transition tiles at rows 26-30, columns 30-34
+     * These tiles show dark sand on outside, light sand on inside (reversed from grass)
+     */
+    private determineDesertTransitionType(bitmask: number): TransitionCoordinates | null {
+        // Extract direction bits
+        const hasNorth = (bitmask & this.BITS.NORTH) !== 0;
+        const hasEast = (bitmask & this.BITS.EAST) !== 0;
+        const hasSouth = (bitmask & this.BITS.SOUTH) !== 0;
+        const hasWest = (bitmask & this.BITS.WEST) !== 0;
+        const hasNortheast = (bitmask & this.BITS.NORTHEAST) !== 0;
+        const hasNorthwest = (bitmask & this.BITS.NORTHWEST) !== 0;
+        const hasSoutheast = (bitmask & this.BITS.SOUTHEAST) !== 0;
+        const hasSouthwest = (bitmask & this.BITS.SOUTHWEST) !== 0;
+        
+        // Desert transition tiles are at rows 26-30, columns 30-34
+        // Row 24, cols 30-31: inner corner pieces (NW, NE)
+        // Row 25, cols 30-31: inner corner pieces (SW, SE)
+        // Rows 26-30: main transition tiles
+        
+        // Priority 1: Inner corners (when two adjacent cardinals have light sand)
+        // These create the inner corner effect where dark sand wraps around light sand
+        if (hasNorth && hasWest && !hasNorthwest) return { row: 24, col: 30, type: "inner NW corner" };
+        if (hasNorth && hasEast && !hasNortheast) return { row: 24, col: 31, type: "inner NE corner" };
+        if (hasSouth && hasWest && !hasSouthwest) return { row: 25, col: 30, type: "inner SW corner" };
+        if (hasSouth && hasEast && !hasSoutheast) return { row: 25, col: 31, type: "inner SE corner" };
+        
+        // Priority 2: Outer diagonal edges (diagonal only, no adjacent cardinals)
+        // Light sand to the southeast only = northwest outer corner of light sand area
+        if (hasSoutheast && !hasSouth && !hasEast) return { row: 26, col: 30, type: "NW outer diagonal" };
+        if (hasSouthwest && !hasSouth && !hasWest) return { row: 26, col: 34, type: "NE outer diagonal" };
+        if (hasNortheast && !hasNorth && !hasEast) return { row: 30, col: 30, type: "SW outer diagonal" };
+        if (hasNorthwest && !hasNorth && !hasWest) return { row: 30, col: 34, type: "SE outer diagonal" };
+        
+        // Priority 3: Single cardinal edges
+        // Light sand to the south = north edge of light sand area
+        if (hasSouth && !hasEast && !hasNorth && !hasWest) return { row: 26, col: 31, type: "N edge" };
+        if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 27, col: 30, type: "W edge" };
+        if (hasWest && !hasNorth && !hasSouth && !hasEast) return { row: 28, col: 34, type: "E edge" };
+        if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 30, col: 31, type: "S edge" };
+        
+        // Priority 4: Edge variants and combinations
+        if (hasSouth && !hasNorth) {
+            if (hasWest || hasEast) return { row: 26, col: 32, type: "N edge variant" };
+            return { row: 26, col: 33, type: "N edge variant 2" };
+        }
+        
+        if (hasNorth && !hasSouth) {
+            if (hasWest || hasEast) return { row: 30, col: 32, type: "S edge variant" };
+            return { row: 30, col: 33, type: "S edge variant 2" };
+        }
+        
+        if (hasWest && !hasEast) {
+            if (hasNorth || hasSouth) return { row: 28, col: 34, type: "E edge variant" };
+            return { row: 29, col: 34, type: "E edge variant 2" };
+        }
+        
+        if (hasEast && !hasWest) {
+            if (hasNorth || hasSouth) return { row: 28, col: 30, type: "W edge variant" };
+            return { row: 29, col: 30, type: "W edge variant 2" };
+        }
+        
+        // Priority 5: Fallback for any cardinal direction
+        if (hasSouth) return { row: 26, col: 31, type: "N edge fallback" };
+        if (hasEast) return { row: 27, col: 30, type: "W edge fallback" };
+        if (hasWest) return { row: 28, col: 34, type: "E edge fallback" };
+        if (hasNorth) return { row: 30, col: 31, type: "S edge fallback" };
         
         return null;
     }

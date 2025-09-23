@@ -330,12 +330,14 @@ export class SharedWorldGenerator {
                 biomes.add(biomeData[y][x]);
             }
             
-            // If plateau spans multiple major biomes (not just grass variants)
+            // If plateau spans multiple major biomes (not just grass/sand variants)
             const hasSnow = biomes.has(BIOME_TYPES.SNOW);
             const hasGrass = biomes.has(BIOME_TYPES.GRASS) || biomes.has(BIOME_TYPES.DARK_GRASS);
+            const hasSand = biomes.has(BIOME_TYPES.LIGHT_SAND) || biomes.has(BIOME_TYPES.DARK_SAND);
             
-            if (hasSnow && hasGrass) {
-                console.log(`[WorldGenerator] Flattening plateau that crosses snow/grass boundary (${plateau.length} tiles)`);
+            // Flatten if plateau crosses major biome boundaries
+            if ((hasSnow && hasGrass) || (hasSnow && hasSand) || (hasGrass && hasSand)) {
+                console.log(`[WorldGenerator] Flattening plateau that crosses major biome boundary (${plateau.length} tiles)`);
                 
                 // Flatten the entire plateau
                 for (const {x, y} of plateau) {
@@ -739,10 +741,12 @@ export class SharedWorldGenerator {
             for (let x = 0; x < this.width; x++) {
                 const biomeType = biomeData[y][x];
                 
-                // Skip if not a supported biome
+                // Skip if not a supported biome (skip desert for now - no decoratives yet)
                 if (biomeType !== BIOME_TYPES.GRASS && 
                     biomeType !== BIOME_TYPES.DARK_GRASS && 
-                    biomeType !== BIOME_TYPES.SNOW) continue;
+                    biomeType !== BIOME_TYPES.SNOW &&
+                    biomeType !== BIOME_TYPES.LIGHT_SAND &&
+                    biomeType !== BIOME_TYPES.DARK_SAND) continue;
                 
                 // Skip if already occupied by decorative element
                 if (decorativeElements[y][x] !== null) continue;
@@ -772,6 +776,9 @@ export class SharedWorldGenerator {
                     } else {
                         continue; // No placement
                     }
+                } else if (biomeType === BIOME_TYPES.LIGHT_SAND || biomeType === BIOME_TYPES.DARK_SAND) {
+                    // Desert biome - skip decoratives for now (no desert decoratives implemented yet)
+                    continue;
                 } else {
                     // Grass biome logic (existing)
                     const rand = this.random();
@@ -1071,8 +1078,7 @@ export class SharedWorldGenerator {
 
     /**
      * Determine biome type from climate conditions
-     * Snow biome is fully implemented with 3 color variants
-     * Desert and Marsh biomes map to grass types until assets are ready
+     * Snow biome in top-right (cold), Desert biome in bottom-left (hot+dry)
      */
     determineBiomeType(temperature: number, moisture: number): number {
         // Cold + Any moisture = Snow
@@ -1080,14 +1086,15 @@ export class SharedWorldGenerator {
             return BIOME_TYPES.SNOW;
         }
         
-        // Hot + Dry = Desert → Light grass (temporary)
+        // Hot + Dry = Desert (now properly implemented!)
         if (temperature > 0.7 && moisture < 0.3) {
-            return BIOME_TYPES.GRASS; // Desert placeholder
+            // Randomly choose between light and dark sand
+            return Math.random() < 0.7 ? BIOME_TYPES.LIGHT_SAND : BIOME_TYPES.DARK_SAND;
         }
         
-        // Any temperature + Very Wet = Marsh → Dark grass (temporary)
+        // Any temperature + Very Wet = Marsh → Dark grass
         if (moisture > 0.75) {
-            return BIOME_TYPES.DARK_GRASS; // Marsh placeholder
+            return BIOME_TYPES.DARK_GRASS;
         }
         
         // Moderate conditions = Grass
@@ -1103,7 +1110,7 @@ export class SharedWorldGenerator {
      * Log statistics about generated biomes
      */
     logBiomeStatistics(biomeData: number[][]): void {
-        const counts = { 0: 0, 1: 0, 2: 0 };
+        const counts = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 };
         const totalTiles = this.width * this.height;
         
         for (let y = 0; y < this.height; y++) {
@@ -1118,7 +1125,9 @@ export class SharedWorldGenerator {
         const biomeNames = {
             0: 'Grass',
             1: 'Dark Grass',
-            2: 'Snow'
+            2: 'Snow',
+            3: 'Light Sand',
+            4: 'Dark Sand'
         };
         
         console.log('[BiomeGeneration] Biome distribution:');

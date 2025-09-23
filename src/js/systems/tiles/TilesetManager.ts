@@ -44,6 +44,7 @@ import { GAME_CONSTANTS, BIOME_TYPES } from '../../../../shared/constants/GameCo
 interface TextureArrays {
     terrain: (Texture | null)[][];
     snow: (Texture | null)[][];
+    desert: (Texture | null)[][];
     plants: Texture[];
     decorative?: (Texture | null)[][];
     snowDecorative?: (Texture | null)[][];
@@ -69,6 +70,12 @@ export class TilesetManager {
     private decorativeGrassVariations: Texture[];
     private decorativeDarkGrassVariations: Texture[];
     
+    // Desert tile references
+    public basicLightSandTile: Texture | null;
+    public basicDarkSandTile: Texture | null;
+    private lightSandVariations: Texture[];
+    private darkSandVariations: Texture[];
+    
     // Snow tile references
     private snowAltTiles: Texture[][] = []; // Alt tiles for each variant [variant][tiles]
     private snowRockTiles: Texture[][] = [[], [], []];  // Rock decorative tiles [variant][tiles]
@@ -91,6 +98,7 @@ export class TilesetManager {
         this.textures = {
             terrain: [],      // All terrain tiles from MainLev2.0
             snow: [],         // Snow tiles from snow/MainLev2.0.png
+            desert: [],       // Desert tiles from desert/MainLev2.0.png
             plants: []        // Empty array - decorations now come from biome-specific tilesets
         };
         
@@ -103,6 +111,10 @@ export class TilesetManager {
         this.commonDarkGrassVariations = [];
         this.decorativeGrassVariations = [];
         this.decorativeDarkGrassVariations = [];
+        this.basicLightSandTile = null;
+        this.basicDarkSandTile = null;
+        this.lightSandVariations = [];
+        this.darkSandVariations = [];
         this.pureGrassTiles = [];
         this.pureDarkGrassTiles = [];
         
@@ -113,6 +125,7 @@ export class TilesetManager {
         Assets.addBundle('tilesets', {
             terrain: terrainTileset,
             snow: 'assets/sprites/tiles/snow/MainLev2.0.png',
+            desert: 'assets/sprites/tiles/desert/MainLev2.0.png',
             decorative: 'assets/sprites/tiles/grass/decorative.png',
             snowDecorative: 'assets/sprites/tiles/snow/decorative.png',
             // Tree animations
@@ -152,6 +165,13 @@ export class TilesetManager {
         }
         this.sliceSnowTileset(snowTexture.baseTexture);
         
+        // Load desert tileset
+        const desertTexture = Assets.get('desert');
+        if (!desertTexture) {
+            throw new Error("Failed to load desert texture");
+        }
+        this.sliceDesertTileset(desertTexture.baseTexture);
+        
         // Load decorative tileset
         const decorativeTexture = Assets.get('decorative');
         if (decorativeTexture) {
@@ -173,6 +193,7 @@ export class TilesetManager {
         console.log(`[DEBUG] Using ${GAME_CONSTANTS.DEBUG.USE_DEBUG_TILESET ? 'DEBUG' : 'regular'} tileset`);
         console.log(`[DEBUG] Loaded terrain texture rows: ${this.textures.terrain.length}`);
         console.log(`[DEBUG] Loaded snow texture rows: ${this.textures.snow.length}`);
+        console.log(`[DEBUG] Loaded desert texture rows: ${this.textures.desert.length}`);
         console.log(`[DEBUG] Loaded decorative elements: ${this.decorativeElementMap.size}`);
     }
     
@@ -417,6 +438,55 @@ export class TilesetManager {
         console.log(`  Grey: ${this.snowAltTiles[2].length} alt, ${this.snowRockTiles[2].length} rock, ${this.snowVegetationTiles[2].length} vegetation`);
     }
     
+    private sliceDesertTileset(baseTexture: BaseTexture): void {
+        const tileSize = this.tileSize;
+        
+        // Load the ENTIRE desert tileset to avoid missing tiles
+        const tilesWide = Math.floor(baseTexture.width / tileSize);
+        const tilesHigh = Math.floor(baseTexture.height / tileSize);
+        
+        this.textures.desert = [];
+        
+        // Load every single tile in the entire tileset
+        for (let row = 0; row < tilesHigh; row++) {
+            this.textures.desert[row] = [];
+            for (let col = 0; col < tilesWide; col++) {
+                this.textures.desert[row][col] = new Texture(
+                    baseTexture,
+                    new Rectangle(col * tileSize, row * tileSize, tileSize, tileSize)
+                );
+            }
+        }
+        
+        console.log(`[TilesetManager] Loaded entire desert tileset: ${tilesWide}x${tilesHigh} tiles`);
+        
+        // Store basic sand tiles
+        this.basicLightSandTile = this.textures.desert[1][1];  // Light sand at (1,1)
+        this.basicDarkSandTile = this.textures.desert[1][11];  // Dark sand at (1,11) (+10 column offset)
+        
+        // Store light sand variations (similar to grass variations pattern)
+        this.lightSandVariations = [];
+        // Add some basic variations from row 1
+        for (let col = 2; col <= 4; col++) {
+            if (this.textures.desert[1] && this.textures.desert[1][col]) {
+                this.lightSandVariations.push(this.textures.desert[1][col]!);
+            }
+        }
+        
+        // Store dark sand variations
+        this.darkSandVariations = [];
+        // Add some basic variations from row 1 with +10 offset
+        for (let col = 12; col <= 14; col++) {
+            if (this.textures.desert[1] && this.textures.desert[1][col]) {
+                this.darkSandVariations.push(this.textures.desert[1][col]!);
+            }
+        }
+        
+        console.log(`[TilesetManager] Desert tiles loaded:`);
+        console.log(`  Light sand: ${this.lightSandVariations.length} variations`);
+        console.log(`  Dark sand: ${this.darkSandVariations.length} variations`);
+    }
+    
     private slicePlantsTileset(baseTexture: BaseTexture): Texture[] {
         const tileSize = 16;
         const textures: Texture[] = [];
@@ -619,6 +689,32 @@ export class TilesetManager {
     getSnowTileAt(row: number, col: number): Texture | null {
         if (this.textures.snow[row] && this.textures.snow[row][col]) {
             return this.textures.snow[row][col];
+        }
+        return null;
+    }
+    
+    // Get random light sand tile
+    getRandomLightSand(): Texture | null {
+        // 90% basic tile, 10% variations
+        if (Math.random() < 0.9 || this.lightSandVariations.length === 0) {
+            return this.basicLightSandTile;
+        }
+        return this.lightSandVariations[Math.floor(Math.random() * this.lightSandVariations.length)];
+    }
+    
+    // Get random dark sand tile
+    getRandomDarkSand(): Texture | null {
+        // 90% basic tile, 10% variations
+        if (Math.random() < 0.9 || this.darkSandVariations.length === 0) {
+            return this.basicDarkSandTile;
+        }
+        return this.darkSandVariations[Math.floor(Math.random() * this.darkSandVariations.length)];
+    }
+    
+    // Get desert tile at specific coordinates
+    getDesertTileAt(row: number, col: number): Texture | null {
+        if (this.textures.desert[row] && this.textures.desert[row][col]) {
+            return this.textures.desert[row][col];
         }
         return null;
     }

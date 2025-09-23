@@ -732,5 +732,7 @@ export const ATTACK_DEFINITIONS = {
 export const BIOME_TYPES = {
     GRASS: 0,
     DARK_GRASS: 1,
-    SNOW: 2
+    SNOW: 2,
+    LIGHT_SAND: 3,
+    DARK_SAND: 4
 };
