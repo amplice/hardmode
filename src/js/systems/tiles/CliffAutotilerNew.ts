@@ -63,7 +63,6 @@ interface TileResult {
     texture: Texture | null;
     type: string;
     needsGrassBase?: boolean;
-    needsSandBase?: boolean;  // For grass-to-desert transition tiles
     overlay?: {
         texture: Texture;
         type: string;
@@ -1228,14 +1227,24 @@ export class CliffAutotiler {
         const transitionCoords = this.determineGrassToDesertTransitionType(desertBitmask);
         if (!transitionCoords) return null;
         
-        // Get texture from grass tileset (rows 37-43 for transparency)
-        const texture = this.tilesets.textures.terrain[transitionCoords.row]?.[transitionCoords.col] || null;
-        if (!texture) return null;
+        // Get grass transparency overlay texture from grass tileset (rows 37-43)
+        const overlayTexture = this.tilesets.textures.terrain[transitionCoords.row]?.[transitionCoords.col];
+        if (!overlayTexture) return null;
         
+        // For grass-to-desert, we need (same pattern as grass-to-snow):
+        // 1. Desert tile as the base (what shows through the transparent parts)
+        // 2. Green grass transparency tile as overlay
+        const desertTexture = this.tilesets.getRandomLightSand(); // Use light sand as base
+        if (!desertTexture) return null;
+        
+        // Return desert base with grass transparency overlay (same structure as snow)
         return {
-            texture: texture,
-            type: `grass_desert_transition_${transitionCoords.row},${transitionCoords.col}`,
-            needsSandBase: true // Indicates sand should be drawn underneath
+            texture: desertTexture,
+            type: 'desert_with_grass_overlay',
+            overlay: {
+                texture: overlayTexture,
+                type: `grass_to_desert_transition_${transitionCoords.row},${transitionCoords.col}`
+            }
         };
     }
     
