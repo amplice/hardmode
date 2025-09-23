@@ -710,6 +710,106 @@ Same patterns as light set but offset by 5 rows (e.g., (0,0) becomes (5,0)).
 - Low frequency to avoid cluttering the world
 - Must check full footprint is valid before placement
 
+## 🏜️ **TILESET ORGANIZATION**
+
+### **Desert Tileset (MainLev2.0.png) - src/assets/sprites/tiles/desert/**
+
+The desert tileset follows a similar structure to grass but with different column counts:
+
+#### **Main Structure - Column-based Variants:**
+- **Columns 0-9**: Light sand tiles (base desert biome)
+- **Columns 10-19**: Dark sand tiles (dark desert variant) - exactly +10 column offset from light sand
+
+#### **Cliff/Transition Tiles (Rows 0-6):**
+**Note:** Desert uses 5-wide cliff patterns vs grass's 6-wide
+
+**Row 0 - Top edges:**
+- Col 0: NW corner
+- Cols 1-4: Top edge variations (for randomization)
+- Col 5: NE corner
+
+**Rows 1-4 - Side edges and variations:**
+- Col 0: Left edge variations
+- Cols 1-4: Interior/filler variations
+- Col 5: Right edge variations
+
+**Row 5 - Bottom edges:**
+- Col 0: SW corner
+- Cols 1-4: Bottom edge variations (randomized)
+- Col 5: SE corner
+
+**Row 6 - Bottom cliff extensions:**
+- Must be placed below all Row 5 tiles (2-tile cliff height effect)
+
+**Inner Corners (Offset by 1 column vs grass):**
+- Columns 6-9 in desert = Columns 7-10 in grass
+- (2,6): NW inner corner
+- (2,9): NE inner corner
+- (4,7): SW inner corner
+- (4,8): SE inner corner
+
+#### **Basic Ground Tiles:**
+- **(1,1)**: Basic light sand tile
+- **(1,11)**: Basic dark sand tile (column 1 + 10 offset)
+
+#### **Elevation Connections:**
+- No stairs - uses ramps/inclines instead (not yet implemented)
+
+#### **Desert Transition Tiles (Dark Sand → Light Sand):**
+**REVERSED from grass!** Dark sand gets transitions when adjacent to light sand.
+
+**Rows 24-25 - Inner Corners:**
+- (24,30): NW inner corner - used when light sand is SE
+- (24,31): NE inner corner - used when light sand is SW
+- (25,30): SW inner corner - used when light sand is NE
+- (25,31): SE inner corner - used when light sand is NW
+
+**Rows 26-30, Columns 30-34 - Edge Transitions:**
+Dark sand on outside, light sand on inside (opposite of grass pattern)
+- Row 26: North edges and variants
+- Row 27: West edges 
+- Row 28: Mixed edges
+- Row 29: Edge variants
+- Row 30: South edges and variants
+
+### **Biome Transition Tiles System**
+
+The game uses **unidirectional transitions** - only the "source" biome tiles get transition overlays when adjacent to other biomes:
+
+#### **Green Grass → Dark Grass Transitions:**
+- Only GREEN grass tiles (biome ID 0) receive transition tiles
+- Dark grass tiles remain unchanged at boundaries
+- Prevents double transitions at biome edges
+- Located in grass tileset rows 11-12, various columns
+
+#### **Green Grass → Snow Transitions:**
+When green grass is adjacent to snow:
+- Green grass tiles get snow transition overlays
+- Snow tiles remain pure snow
+- Creates natural-looking edges with snow "bleeding" into grass
+- Transition tiles show partial snow coverage on grass base
+
+#### **Snow Variant Transitions (within snow biome):**
+Snow has 3 variants (white, blue, grey):
+- White snow gets transitions when adjacent to blue/grey variants
+- Blue and grey snow don't get transitions (they're the "destination")
+- Creates natural variation within the snow biome
+
+#### **Transition Selection Logic:**
+```typescript
+// Simplified transition logic from CliffAutotilerNew.ts
+if (currentBiome === GRASS) {
+  if (hasSnowNeighbor) {
+    // Apply grass-to-snow transition
+  } else if (hasDarkGrassNeighbor) {
+    // Apply grass-to-dark-grass transition
+  }
+}
+// Dark grass and snow tiles don't get transitions
+```
+
+The key insight: Transitions are **one-way overlays** applied to the "lighter" or "base" biome to create smooth visual blending without both tiles trying to transition.
+
 ## 🧹 **DOCUMENTATION STATUS**
 
 ### **Cleanup Completed (September 17, 2025)**
