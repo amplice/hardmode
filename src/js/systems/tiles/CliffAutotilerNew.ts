@@ -63,6 +63,7 @@ interface TileResult {
     texture: Texture | null;
     type: string;
     needsGrassBase?: boolean;
+    needsSandBase?: boolean;
     overlay?: {
         texture: Texture;
         type: string;
@@ -451,9 +452,15 @@ export class CliffAutotiler {
             }
         }
         
+        // Check if this is a cliff corner in desert biome that needs sand underlay
+        const needsSandBase = (isDesert && 
+            (tileCoords.type === "NW corner" || tileCoords.type === "NE corner" || 
+             tileCoords.type === "SW corner" || tileCoords.type === "SE corner"));
+        
         return {
             texture: texture,
-            type: `${tileCoords.row},${tileCoords.col}`
+            type: `${tileCoords.row},${tileCoords.col}`,
+            needsSandBase: needsSandBase || undefined
         };
     }
     
@@ -472,6 +479,8 @@ export class CliffAutotiler {
         const biomeId = biomeData && biomeData[y] ? biomeData[y][x] : 0;
         const isDarkGrass = biomeId === BIOME_TYPES.DARK_GRASS;
         const isSnow = biomeId === BIOME_TYPES.SNOW;
+        const isDesert = biomeId === BIOME_TYPES.LIGHT_SAND || biomeId === BIOME_TYPES.DARK_SAND;
+        const isDarkSand = biomeId === BIOME_TYPES.DARK_SAND;
         
         const width = elevationData[0].length;
         const height = elevationData.length;
@@ -494,7 +503,10 @@ export class CliffAutotiler {
             if (row === 5) {
                 // For extension tiles, we need to handle biome offset correctly
                 // The extension row (6) has the same structure as main tileset
-                const tileset = isSnow ? this.tilesets.textures.snow : this.tilesets.textures.terrain;
+                // IMPORTANT: Use the correct tileset based on biome
+                const tileset = isSnow ? this.tilesets.textures.snow : 
+                              isDesert ? this.tilesets.textures.desert :
+                              this.tilesets.textures.terrain;
                 const extensionRow = tileset[6];
                 
                 // For snow, we need to use the correct variant column
@@ -530,11 +542,14 @@ export class CliffAutotiler {
             // This ensures extensions are created even if processed tile data is missing
             const bitmask = this.calculateBitmask(x, y, elevationData);
             const snowVariant = (isSnow && snowVariantData && snowVariantData[y]) ? snowVariantData[y][x] : 0;
-            const tileCoords = this.determineTileType(bitmask, isDarkGrass, biomeId, snowVariant);
+            const tileCoords = this.determineTileType(bitmask, isDarkGrass || isDarkSand, biomeId, snowVariant);
             
             if (tileCoords.row === 5) {
                 // This is a bottom edge tile that needs an extension
-                const tileset = isSnow ? this.tilesets.textures.snow : this.tilesets.textures.terrain;
+                // Use appropriate tileset based on biome
+                const tileset = isSnow ? this.tilesets.textures.snow : 
+                              isDesert ? this.tilesets.textures.desert :
+                              this.tilesets.textures.terrain;
                 const extensionRow = tileset[6];
                 if (extensionRow && extensionRow[tileCoords.col]) {
                     const extensionTexture = extensionRow[tileCoords.col];

@@ -541,6 +541,9 @@ export class ClientWorldRenderer {
                     const cliffBiome = this.biomeData && this.biomeData[y] ? this.biomeData[y][x] : 0;
                     const isDarkGrassCliff = cliffBiome === 1;
                     const isSnowCliff = cliffBiome === 2;
+                    const isLightSandCliff = cliffBiome === 3;
+                    const isDarkSandCliff = cliffBiome === 4;
+                    const isDesertCliff = isLightSandCliff || isDarkSandCliff;
                     
                     if (isSnowCliff) {
                         // For snow cliffs, place a full snow ground tile as base
@@ -550,9 +553,23 @@ export class ClientWorldRenderer {
                             baseSprite.scale.set(this.tileSize / 32, this.tileSize / 32);
                             tile.container.addChild(baseSprite);
                         }
+                    } else if (isDesertCliff && tileResult.needsSandBase) {
+                        // For desert cliff corners, use sand texture as base
+                        const sandTexture = isDarkSandCliff ? 
+                            this.tilesets.getRandomDarkSand() : 
+                            this.tilesets.getRandomLightSand();
+                        
+                        if (sandTexture) {
+                            const sandBase = new PIXI.Sprite(sandTexture);
+                            sandBase.scale.set(this.tileSize / 32, this.tileSize / 32);
+                            tile.container.addChild(sandBase);
+                        }
                     } else {
-                        // For grass cliffs, use solid color fill as before
-                        const baseColor = isDarkGrassCliff ? 0x2a3a1c : 0x3e5b24;
+                        // For grass cliffs and non-corner desert cliffs, use solid color fill
+                        let baseColor = isDarkGrassCliff ? 0x2a3a1c : 0x3e5b24; // grass colors
+                        if (isDesertCliff) {
+                            baseColor = isDarkSandCliff ? 0xC49660 : 0xE8D4A0; // sandy colors
+                        }
                         const colorFill = new PIXI.Graphics();
                         colorFill.beginFill(baseColor);
                         colorFill.drawRect(0, 0, this.tileSize, this.tileSize);
