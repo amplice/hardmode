@@ -282,12 +282,32 @@ export class SocketHandler {
     private handlePlayerUpdate(socket: Socket, data: PlayerUpdateData): void {
         const player = this.gameState.getPlayer(socket.id);
         if (!player) return;
-        
+
+        // Validate data types and bounds - prevent teleport exploits
+        if (typeof data.x !== 'number' || typeof data.y !== 'number' ||
+            !Number.isFinite(data.x) || !Number.isFinite(data.y)) {
+            console.warn(`[SocketHandler] Invalid position data from ${socket.id}: x=${data.x}, y=${data.y}`);
+            return;
+        }
+
+        // Bounds check - world is 750 tiles * 64 pixels = 48000 pixels max
+        const maxWorldCoord = 750 * 64; // GAME_CONSTANTS.WORLD.WIDTH * GAME_CONSTANTS.WORLD.TILE_SIZE
+        if (data.x < 0 || data.x > maxWorldCoord || data.y < 0 || data.y > maxWorldCoord) {
+            console.warn(`[SocketHandler] Out of bounds position from ${socket.id}: x=${data.x}, y=${data.y}`);
+            return;
+        }
+
+        // Validate facing is a finite number
+        if (typeof data.facing !== 'number' || !Number.isFinite(data.facing)) {
+            console.warn(`[SocketHandler] Invalid facing from ${socket.id}: ${data.facing}`);
+            return;
+        }
+
         // Ignore position updates if player is in a server-controlled ability
         if (this.abilityManager.activeAbilities.has(player.id)) {
             return; // Server controls position during abilities
         }
-        
+
         // Update player position and facing - handle both legacy and TypeScript formats
         if ('x' in player && 'y' in player) {
             // Legacy format with direct x, y properties

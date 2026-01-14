@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **⚠️ LIVING DOCUMENT**: This file should be updated whenever changes occur that are significant enough to affect development understanding. As the game evolves, this documentation evolves with it.
 
-**✅ DOCUMENTATION VERIFIED**: September 17, 2025 - Comprehensive codebase audit completed. **100% accuracy confirmed**. All systems, optimizations, and implementation details verified against actual source code through systematic file-by-file analysis. **Updated with complete TypeScript migration, PowerupManager, SoundManager, and current architecture.**
+**✅ DOCUMENTATION VERIFIED**: January 14, 2026 - Comprehensive code review completed with bug fixes. All systems verified against source code. **Updated with January 2026 bug fixes: PIXI memory leaks, security validation, type definitions, and network performance optimizations.**
 
 ## Project Vision
 
@@ -28,7 +28,7 @@ This is a **functional 2D multiplayer MMORPG** that works well for 30+ concurren
 
 ## Repository Overview
 
-2D pixel-art MMORPG called "Hardmode" built with PIXI.js 7.4.3. Real-time multiplayer with deterministic world generation, advanced networking, and optimized rendering for 500x500 worlds.
+2D pixel-art MMORPG called "Hardmode" built with PIXI.js 7.4.3. Real-time multiplayer with deterministic world generation, advanced networking, and optimized rendering for 750x750 worlds.
 
 ## Development Commands
 
@@ -153,7 +153,7 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
 - **Per-Client Optimization**: Personalized updates based on view distance
 - **Anti-Cheat Protection**: Time-windowed validation with movement bounds checking
 
-### **Performance Systems** *(Scales to 500x500 worlds)*
+### **Performance Systems** *(Scales to 750x750 worlds)*
 - **Chunked Rendering**: 32x32 chunk system with 3x3 loading pattern
 - **Monster LOD System**: Distance-based update frequencies (near/medium/far/dormant)
 - **View Distance Culling**: Area of Interest filtering for network and rendering
@@ -189,7 +189,7 @@ Open `http://localhost:3000` to play. Supports multiple browser windows for loca
 
 ### **Shared** (`shared/`)
 - **Systems**: CollisionMask.ts (300+ lines), WorldGenerator.ts (plateau-first generation)
-- **Utils**: MathUtils.ts, GameConstants.ts (500x500 world config)
+- **Utils**: MathUtils.ts, GameConstants.ts (750x750 world config)
 - **Types**: GameTypes.ts, comprehensive TypeScript type definitions
 - **Factories**: EntityFactories.ts, MonsterFactory.ts for type-safe entity creation
 - **Constants**: Centralized configuration ensuring client-server sync
@@ -360,7 +360,7 @@ class AStarPathfinding {
         this.TILE_SIZE = 64;
         this.MAX_SEARCH_DISTANCE = 500; // tiles, prevents infinite searches
         
-        // Build 500x500 grids for pathfinding (matching world size)
+        // Build 750x750 grids for pathfinding (matching world size)
         this.buildWalkabilityGrid();  // Which tiles can be walked on
         this.buildElevationGrid();    // Elevation data for each tile
         this.buildStairGrid();        // Where stairs are located
@@ -420,7 +420,7 @@ const canMoveToPosition = this.collisionMask.canMove(
 - **Position threshold tuning** (0.5px → 0.1px) for smooth movement
 
 ### **Rendering Performance**  
-- **500x500 world support** through chunked rendering system
+- **750x750 world support** through chunked rendering system
 - **3x3 chunk loading** maintains 60fps with large worlds
 - **32x32 chunk size** balances memory usage and performance
 
@@ -441,7 +441,7 @@ const canMoveToPosition = this.collisionMask.canMove(
 8. **Minimum plateau size** - 64 tiles (8x8) minimum prevents tiny plateau formations
 9. **Geometric cliff cleanup** - Edge-based detection removes single diagonal protrusions for clean cliff edges
 10. **Monster movement validation** - Uses canMove() instead of isWalkable() to check entire path and prevent wall clipping
-11. **Coordinate system clarity** - GAME_CONSTANTS.WORLD.WIDTH/HEIGHT are in tiles (500 tiles × 64 pixels/tile = 32000 pixels total)
+11. **Coordinate system clarity** - GAME_CONSTANTS.WORLD.WIDTH/HEIGHT are in tiles (750 tiles × 64 pixels/tile = 48000 pixels total)
 
 ## 🔗 **INTEGRATION POINTS**
 
@@ -452,6 +452,112 @@ const canMoveToPosition = this.collisionMask.canMove(
 - **Plateau-first generation**: Eliminates plateau-biome overlaps through generation order
 - **Buffer zone consistency**: 2-tile buffers ensure single-biome plateaus
 - **Geometric cleanup**: Edge-based detection for coherent cliff formations
+
+## 🔧 **JANUARY 2026 CODE REVIEW - BUG FIXES**
+
+### **Critical Bugs Fixed**
+
+1. **PIXI.js Memory Leaks in Player.ts** (7 locations fixed)
+   - **Problem**: Animated sprites were being removed from parent containers but not destroyed, causing memory accumulation
+   - **Fix**: Added `.destroy()` calls after removing sprites from parent in all animation state transitions
+   - **Files**: `src/js/entities/Player.ts` - AnimationComponent methods
+   - **Pattern**: Changed from `sprite.removeChild(animatedSprite)` to proper cleanup with `animatedSprite.destroy()`
+
+2. **Security Vulnerability in SocketHandler.ts**
+   - **Problem**: Player position updates had no validation, allowing potential teleport exploits
+   - **Fix**: Added bounds checking and type validation for all incoming position data
+   - **File**: `server/network/SocketHandler.ts` - `handlePlayerUpdate()` method
+   - **Validation**: Checks for NaN, Infinity, and world boundary violations (max 750 tiles * 64 pixels)
+
+3. **AttackDefinition Type Missing 'archetype' Field**
+   - **Problem**: Type definition didn't include the `archetype` field that all ATTACK_DEFINITIONS used
+   - **Fix**: Added `AttackArchetype` type union and `archetype` field to `AttackDefinition` interface
+   - **File**: `shared/types/GameTypes.ts`
+
+4. **CollisionMask.serialize() Missing Return Type**
+   - **Problem**: Method had implicit return type, causing TypeScript strictness issues
+   - **Fix**: Added explicit return type annotation
+   - **File**: `shared/systems/CollisionMask.ts`
+
+### **Performance Optimizations**
+
+1. **NetworkOptimizer Deep Clone Performance**
+   - **Problem**: Using `JSON.parse(JSON.stringify())` for deep cloning - called per entity per client per tick
+   - **Fix**: Replaced with efficient `deepClone()` method that only clones nested objects when necessary
+   - **File**: `server/network/NetworkOptimizer.ts`
+   - **Impact**: Significantly reduced CPU overhead in the hot path of the network loop
+
+### **Terrain Fixes**
+
+1. **Sand-to-Snow Transitions**
+   - **Problem**: Sand tiles weren't checking for snow neighbors, causing missing transitions
+   - **Fix**: Added `getSandToSnowTransition()` and snow neighbor detection in desert biome handling
+   - **File**: `src/js/systems/tiles/CliffAutotilerNew.ts`
+
+### **Remaining Known Issues (Not Yet Fixed)**
+
+1. **Event listener cleanup in Game.ts** - Some keyboard/mouse listeners may not be removed on game end
+2. **Hunter projectile attack state machine** - Minor state transition edge cases
+3. **Delta merge validation** - State reconciliation could use additional validation
+4. **View distance pop-in** - Monsters appearing suddenly at view distance boundary
+
+## 🚀 **IMPROVEMENT RECOMMENDATIONS & NEXT STEPS**
+
+### **High Priority - Performance & Stability**
+
+1. **Event Listener Cleanup**
+   - Add proper `destroy()` method to Game.ts that removes all window/document event listeners
+   - Prevents memory leaks during game restarts or disconnects
+
+2. **View Distance Smoothing**
+   - Add fade-in/fade-out for monsters entering/leaving view distance
+   - Reduces jarring "pop-in" effect at view distance boundaries
+   - Implement gradual alpha transition over 200-500ms
+
+3. **State Reconciliation Validation**
+   - Add checksum/hash validation for delta merges
+   - Detect and recover from state corruption automatically
+
+### **Medium Priority - Gameplay Enhancement**
+
+1. **Monster Variety & Scaling**
+   - Add elite/champion monster variants with enhanced abilities
+   - Implement zone-based difficulty scaling
+   - Add more special attack patterns for variety
+
+2. **Combat Feel Improvements**
+   - Add screen shake on heavy hits
+   - Enhance hit feedback with particle effects
+   - Add brief invulnerability frames after taking damage
+
+3. **Audio Polish**
+   - Add ambient environmental sounds per biome
+   - Implement sound priority system for crowded combat
+   - Add footstep sound variation based on terrain type
+
+### **Lower Priority - Future Features**
+
+1. **Social Features**
+   - Add party system for grouped play
+   - Implement basic chat functionality
+   - Add friend list and player status
+
+2. **World Interaction**
+   - Add interactive world objects (chests, shrines)
+   - Implement destructible environment elements
+   - Add quest-like objectives for structured gameplay
+
+3. **Visual Polish**
+   - Add weather effects (rain, snow particles)
+   - Implement day/night cycle with lighting changes
+   - Add more terrain variety (water, bridges)
+
+### **Technical Debt to Address**
+
+1. **Test Coverage** - Add unit tests for critical game logic (combat, collision, networking)
+2. **Error Boundaries** - Add client-side error recovery without full page reload
+3. **Metrics/Telemetry** - Add server-side metrics for performance monitoring
+4. **Documentation** - Add inline JSDoc for complex functions
 
 ## Credential Storage
 
@@ -531,7 +637,7 @@ curl --request POST \
 - **Minimum Size Enforcement**: 64 tiles (8x8) minimum prevents tiny plateau formations
 - **Geometric Edge Cleanup**: Edge-based detection removes single diagonal cliff protrusions
 - **Cliff Extension Fix**: Fallback logic ensures bottom cliff extensions are never missing
-- **500x500 World Support**: Full terrain generation scales to large worlds with performance optimization
+- **750x750 World Support**: Full terrain generation scales to large worlds with performance optimization
 
 ### **Key Implementation Parameters (Current)**
 ```typescript
@@ -545,8 +651,8 @@ const distanceInfluence = 0.6;  // 60% distance for coherence
 
 // World configuration
 WORLD: {
-    WIDTH: 500,   // Current world size
-    HEIGHT: 500,  // Current world size
+    WIDTH: 750,   // Current world size
+    HEIGHT: 750,  // Current world size
     TILE_SIZE: 64
 }
 ```
@@ -556,7 +662,7 @@ WORLD: {
 - **Clean Cliff Edges**: Geometric cleanup prevents visual artifacts
 - **Natural Plateau Shapes**: Balanced noise creates organic but coherent forms
 - **Consistent Extensions**: Fallback logic prevents missing bottom cliff tiles
-- **Large World Support**: Optimized for 500x500 with chunked rendering
+- **Large World Support**: Optimized for 750x750 with chunked rendering
 
 ## 🎮 **MONSTER SPECIAL ATTACKS SYSTEM**
 

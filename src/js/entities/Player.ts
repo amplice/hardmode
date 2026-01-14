@@ -342,9 +342,12 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
     */
     
     setupAnimations(): void {
-        // Remove placeholder if it exists
-        if (this.owner.placeholder && this.owner.placeholder.parent) {
-            this.owner.sprite.removeChild(this.owner.placeholder);
+        // Remove and destroy placeholder to prevent memory leak
+        if (this.owner.placeholder) {
+            if (this.owner.placeholder.parent) {
+                this.owner.sprite.removeChild(this.owner.placeholder);
+            }
+            this.owner.placeholder.destroy();
             this.owner.placeholder = null;
         }
         
@@ -371,11 +374,14 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
     }
     
     changeAnimation(animationName: string): void {
-        // Remove old sprite and create new one
-        if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
-            this.owner.sprite.removeChild(this.owner.animatedSprite);
+        // Remove and destroy old sprite to prevent memory leaks
+        if (this.owner.animatedSprite) {
+            if (this.owner.animatedSprite.parent) {
+                this.owner.sprite.removeChild(this.owner.animatedSprite);
+            }
+            this.owner.animatedSprite.destroy();
         }
-        
+
         this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(animationName);
         if (this.owner.animatedSprite) {
             this.owner.animatedSprite.play();
@@ -505,8 +511,12 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
           const rollAnimName = `${classPrefix}_roll_${this.getFacingAnimationKey()}`;
           this.owner.currentAnimation = rollAnimName;
 
-          if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
-            this.owner.sprite.removeChild(this.owner.animatedSprite);
+          // Destroy old sprite to prevent memory leak
+          if (this.owner.animatedSprite) {
+            if (this.owner.animatedSprite.parent) {
+              this.owner.sprite.removeChild(this.owner.animatedSprite);
+            }
+            this.owner.animatedSprite.destroy();
           }
 
           this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(rollAnimName);
@@ -527,11 +537,14 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
           const attackAnimName = `${classPrefix}_attack2_${this.getFacingAnimationKey()}`;
           this.owner.currentAnimation = attackAnimName;
           
-          // Remove old sprite and create new attack animation
-          if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
-            this.owner.sprite.removeChild(this.owner.animatedSprite);
+          // Destroy old sprite to prevent memory leak
+          if (this.owner.animatedSprite) {
+            if (this.owner.animatedSprite.parent) {
+              this.owner.sprite.removeChild(this.owner.animatedSprite);
+            }
+            this.owner.animatedSprite.destroy();
           }
-          
+
           this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(attackAnimName);
           if (this.owner.animatedSprite) {
             // Don't loop the jump attack animation
@@ -554,18 +567,21 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
         );
         this.owner.currentAnimation = attackAnimName;
         
-        // Remove old sprite and create new attack animation
-        if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
-            this.owner.sprite.removeChild(this.owner.animatedSprite);
+        // Destroy old sprite to prevent memory leak
+        if (this.owner.animatedSprite) {
+            if (this.owner.animatedSprite.parent) {
+                this.owner.sprite.removeChild(this.owner.animatedSprite);
+            }
+            this.owner.animatedSprite.destroy();
         }
-        
+
         this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(attackAnimName);
         if (this.owner.animatedSprite) {
             // Don't loop the attack animation
             this.owner.animatedSprite.loop = false;
             this.owner.animatedSprite.play();
             this.owner.sprite.addChild(this.owner.animatedSprite);
-            
+
             // Set up animation complete callback
             this.owner.animatedSprite.onComplete = () => this.onAnimationComplete();
             this.applyCurrentTints();
@@ -582,11 +598,14 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
             const damageAnimName = `${classPrefix}_take_damage_${this.getFacingAnimationKey()}`;
             this.owner.currentAnimation = damageAnimName;
             
-            // Remove old sprite and create new take damage animation
-            if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
-                this.owner.sprite.removeChild(this.owner.animatedSprite);
+            // Destroy old sprite to prevent memory leak
+            if (this.owner.animatedSprite) {
+                if (this.owner.animatedSprite.parent) {
+                    this.owner.sprite.removeChild(this.owner.animatedSprite);
+                }
+                this.owner.animatedSprite.destroy();
             }
-            
+
             this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(damageAnimName);
             if (this.owner.animatedSprite) {
                 // Don't loop the take damage animation
@@ -640,11 +659,14 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
             const deathAnimName = `${classPrefix}_die_${this.getFacingAnimationKey()}`;
             this.owner.currentAnimation = deathAnimName;
             
-            // Remove old sprite and create new death animation
-            if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
-                this.owner.sprite.removeChild(this.owner.animatedSprite);
+            // Destroy old sprite to prevent memory leak
+            if (this.owner.animatedSprite) {
+                if (this.owner.animatedSprite.parent) {
+                    this.owner.sprite.removeChild(this.owner.animatedSprite);
+                }
+                this.owner.animatedSprite.destroy();
             }
-            
+
             this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(deathAnimName);
             if (this.owner.animatedSprite) {
                 // Don't loop the death animation
@@ -1002,8 +1024,11 @@ class HealthComponent extends BaseComponent implements IHealthComponent {
         
         // Reset animation to idle and clear any death animation
         this.owner.currentAnimation = null;
-        if (this.owner.animatedSprite && this.owner.animatedSprite.parent) {
-            this.owner.sprite.removeChild(this.owner.animatedSprite);
+        if (this.owner.animatedSprite) {
+            if (this.owner.animatedSprite.parent) {
+                this.owner.sprite.removeChild(this.owner.animatedSprite);
+            }
+            this.owner.animatedSprite.destroy();
             this.owner.animatedSprite = null;
         }
         this.owner.animation.update(16);

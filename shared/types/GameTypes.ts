@@ -163,6 +163,18 @@ export interface InputCommand {
 }
 
 /**
+ * Attack archetype types - defines how the attack executes
+ */
+export type AttackArchetype =
+    | 'standard_melee'    // Basic melee attack with hitbox
+    | 'jump_attack'       // Leap then attack
+    | 'projectile'        // Fire projectile
+    | 'dash_attack'       // Dash forward while attacking
+    | 'multi_hit_melee'   // Multiple hits in sequence (e.g., ogre spin)
+    | 'teleport_melee'    // Teleport to target then attack
+    | 'multi_projectile'; // Fire multiple projectiles
+
+/**
  * Attack definition structure
  */
 export interface AttackDefinition {
@@ -171,6 +183,7 @@ export interface AttackDefinition {
     windupTime: number;
     recoveryTime: number;
     cooldown: number;
+    archetype: AttackArchetype;
     hitboxType: HitboxType;
     hitboxParams: HitboxParams;
     effectSequence?: EffectDefinition[];

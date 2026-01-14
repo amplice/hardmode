@@ -79,6 +79,43 @@ export class NetworkOptimizer {
     }
 
     /**
+     * Efficient deep clone that avoids JSON.parse(JSON.stringify()) overhead
+     * For game state objects, most fields are primitives that don't need cloning
+     * Only arrays and nested objects need actual deep cloning
+     */
+    private deepClone<T>(value: T): T {
+        // Primitives don't need cloning
+        if (value === null || value === undefined) return value;
+        if (typeof value !== 'object') return value;
+
+        // Arrays need shallow clone (game state arrays contain primitives)
+        if (Array.isArray(value)) {
+            return value.slice() as unknown as T;
+        }
+
+        // For objects, do a shallow clone (handles Position, etc.)
+        // Game state objects are flat - no deeply nested structures
+        const cloned: any = {};
+        for (const key in value) {
+            if (Object.prototype.hasOwnProperty.call(value, key)) {
+                const fieldValue = (value as any)[key];
+                // Only clone nested objects/arrays, not primitives
+                if (fieldValue !== null && typeof fieldValue === 'object') {
+                    if (Array.isArray(fieldValue)) {
+                        cloned[key] = fieldValue.slice();
+                    } else {
+                        // Shallow clone for nested objects (Position has x,y primitives)
+                        cloned[key] = { ...fieldValue };
+                    }
+                } else {
+                    cloned[key] = fieldValue;
+                }
+            }
+        }
+        return cloned;
+    }
+
+    /**
      * Validate that critical fields are present in state object
      * Logs warnings in development mode to catch serialization issues early
      */
@@ -140,13 +177,8 @@ export class NetworkOptimizer {
         
         // FULL UPDATE PATH: First contact or forced refresh
         if (forceFullUpdate || !this.lastSentState.has(stateKey)) {
-            // Deep clone the state safely
-            try {
-                this.lastSentState.set(stateKey, JSON.parse(JSON.stringify(currentState)));
-            } catch (e) {
-                console.error(`[NetworkOptimizer] Failed to serialize state for ${entityId}:`, e);
-                return { id: entityId, _updateType: 'error' };
-            }
+            // Deep clone the state using efficient method
+            this.lastSentState.set(stateKey, this.deepClone(currentState));
             return { id: entityId, _updateType: 'full', ...currentState };
         }
 
@@ -156,12 +188,7 @@ export class NetworkOptimizer {
         // Ensure lastState is an object - defensive programming
         if (!lastState || typeof lastState !== 'object') {
             console.warn(`[NetworkOptimizer] Invalid lastState for ${stateKey}, forcing full update`);
-            try {
-                this.lastSentState.set(stateKey, JSON.parse(JSON.stringify(currentState)));
-            } catch (e) {
-                console.error(`[NetworkOptimizer] Failed to serialize state for ${entityId}:`, e);
-                return { id: entityId, _updateType: 'error' };
-            }
+            this.lastSentState.set(stateKey, this.deepClone(currentState));
             return { id: entityId, _updateType: 'full', ...currentState };
         }
         
@@ -175,29 +202,19 @@ export class NetworkOptimizer {
         for (const field of criticalFields) {
             if (currentState[field] !== undefined) {
                 delta[field] = currentState[field];
-                // Safely deep clone the field
-                try {
-                    lastState[field] = JSON.parse(JSON.stringify(currentState[field]));
-                } catch (e) {
-                    // If serialization fails, just use direct assignment
-                    lastState[field] = currentState[field];
-                }
+                // Clone the field value to track state
+                lastState[field] = this.deepClone(currentState[field]);
             }
         }
 
         // CHANGE DETECTION: Include only modified non-critical fields
         for (const key in currentState) {
             if (criticalFields.includes(key)) continue; // Already handled above
-            
+
             if (this.hasPropertyChanged(lastState[key], currentState[key])) {
                 delta[key] = currentState[key];
-                // Safely deep clone the field
-                try {
-                    lastState[key] = JSON.parse(JSON.stringify(currentState[key]));
-                } catch (e) {
-                    // If serialization fails, just use direct assignment
-                    lastState[key] = currentState[key];
-                }
+                // Clone the field value to track state
+                lastState[key] = this.deepClone(currentState[key]);
                 hasChanges = true;
             }
         }

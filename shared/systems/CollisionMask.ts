@@ -319,7 +319,7 @@ export class CollisionMask {
     /**
      * Get collision mask data for serialization/network transfer
      */
-    serialize() {
+    serialize(): { width: number; height: number; tileSize: number; mask: boolean[][] } {
         return {
             width: this.width,
             height: this.height,
