@@ -1404,7 +1404,12 @@ export class CliffAutotiler {
 
     /**
      * Determine sand-to-snow transition type using snow transparency tiles
-     * Uses same logic pattern as grass-to-snow but with snow tileset rows 36-42, cols 0-4
+     * Uses snow tileset rows 36-42, cols 0-4
+     *
+     * IMPORTANT: Directions are INVERTED from grass-to-snow because:
+     * - Grass-to-snow: grass overlay on snow base (grass covers where snow ISN'T)
+     * - Sand-to-snow: snow overlay on sand base (snow covers where snow IS)
+     * So when snow is to the SOUTH, we need a tile with snow ON the south side.
      */
     private determineSandToSnowTransitionType(bitmask: number): TransitionCoordinates | null {
         // Check cardinal directions
@@ -1422,53 +1427,57 @@ export class CliffAutotiler {
         // Use columns 0-4 for snow transparency tiles in snow tileset
         const baseCol = 0;
 
-        // Same logic as grass-to-snow but using snow tileset rows 36-42
-        // (offset by -1 from grass transparency rows 37-43)
+        // Directions INVERTED from grass-to-snow:
+        // - Snow to south → need S edge tile (snow on south side)
+        // - Snow to north → need N edge tile (snow on north side)
 
         // Priority 1: Inner corners (two adjacent cardinals)
-        if (hasSouth && hasEast) return { row: 36, col: baseCol + 2, type: "NW inner corner (snow SE)" };
-        if (hasSouth && hasWest) return { row: 36, col: baseCol + 3, type: "NE inner corner (snow SW)" };
-        if (hasNorth && hasEast) return { row: 37, col: baseCol + 2, type: "SW inner corner (snow NE)" };
-        if (hasNorth && hasWest) return { row: 37, col: baseCol + 3, type: "SE inner corner (snow NW)" };
+        // Snow SE → need SE inner corner (snow on SE)
+        if (hasSouth && hasEast) return { row: 37, col: baseCol + 2, type: "SE inner corner (snow SE)" };
+        if (hasSouth && hasWest) return { row: 37, col: baseCol + 3, type: "SW inner corner (snow SW)" };
+        if (hasNorth && hasEast) return { row: 36, col: baseCol + 2, type: "NE inner corner (snow NE)" };
+        if (hasNorth && hasWest) return { row: 36, col: baseCol + 3, type: "NW inner corner (snow NW)" };
 
         // Priority 2: Outer diagonal edges (diagonal only, no adjacent cardinals)
-        if (hasSoutheast && !hasSouth && !hasEast) return { row: 38, col: baseCol + 0, type: "NW outer diagonal" };
-        if (hasSouthwest && !hasSouth && !hasWest) return { row: 38, col: baseCol + 4, type: "NE outer diagonal" };
-        if (hasNortheast && !hasNorth && !hasEast) return { row: 42, col: baseCol + 0, type: "SW outer diagonal" };
-        if (hasNorthwest && !hasNorth && !hasWest) return { row: 42, col: baseCol + 4, type: "SE outer diagonal" };
+        // Snow SE only → need SE outer diagonal
+        if (hasSoutheast && !hasSouth && !hasEast) return { row: 42, col: baseCol + 0, type: "SE outer diagonal" };
+        if (hasSouthwest && !hasSouth && !hasWest) return { row: 42, col: baseCol + 4, type: "SW outer diagonal" };
+        if (hasNortheast && !hasNorth && !hasEast) return { row: 38, col: baseCol + 0, type: "NE outer diagonal" };
+        if (hasNorthwest && !hasNorth && !hasWest) return { row: 38, col: baseCol + 4, type: "NW outer diagonal" };
 
         // Priority 3: Single cardinal edges
-        if (hasSouth && !hasEast && !hasNorth && !hasWest) return { row: 38, col: baseCol + 1, type: "N edge" };
-        if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 39, col: baseCol + 0, type: "W edge" };
-        if (hasWest && !hasNorth && !hasSouth && !hasEast) return { row: 40, col: baseCol + 4, type: "E edge" };
-        if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 42, col: baseCol + 1, type: "S edge" };
+        // Snow to south → need S edge (snow on south side of tile)
+        if (hasSouth && !hasEast && !hasNorth && !hasWest) return { row: 42, col: baseCol + 1, type: "S edge" };
+        if (hasEast && !hasNorth && !hasSouth && !hasWest) return { row: 40, col: baseCol + 4, type: "E edge" };
+        if (hasWest && !hasNorth && !hasSouth && !hasEast) return { row: 39, col: baseCol + 0, type: "W edge" };
+        if (hasNorth && !hasEast && !hasSouth && !hasWest) return { row: 38, col: baseCol + 1, type: "N edge" };
 
         // Priority 4: Edge variants and combinations
         if (hasWest && !hasEast) {
+            if (hasNorth || hasSouth) return { row: 39, col: baseCol + 0, type: "W edge variant" };
+            return { row: 41, col: baseCol + 0, type: "W edge variant 2" };
+        }
+
+        if (hasEast && !hasWest) {
             if (hasNorth || hasSouth) return { row: 40, col: baseCol + 4, type: "E edge variant" };
             return { row: 41, col: baseCol + 4, type: "E edge variant 2" };
         }
 
-        if (hasEast && !hasWest) {
-            if (hasNorth || hasSouth) return { row: 40, col: baseCol + 0, type: "W edge variant" };
-            return { row: 41, col: baseCol + 0, type: "W edge variant 2" };
-        }
-
         if (hasSouth && !hasNorth) {
-            if (hasWest || hasEast) return { row: 38, col: baseCol + 2, type: "N edge variant" };
-            return { row: 38, col: baseCol + 3, type: "N edge variant 2" };
-        }
-
-        if (hasNorth && !hasSouth) {
             if (hasWest || hasEast) return { row: 42, col: baseCol + 2, type: "S edge variant" };
             return { row: 42, col: baseCol + 3, type: "S edge variant 2" };
         }
 
+        if (hasNorth && !hasSouth) {
+            if (hasWest || hasEast) return { row: 38, col: baseCol + 2, type: "N edge variant" };
+            return { row: 38, col: baseCol + 3, type: "N edge variant 2" };
+        }
+
         // Priority 5: Fallback for any cardinal direction
-        if (hasSouth) return { row: 38, col: baseCol + 1, type: "N edge fallback" };
-        if (hasEast) return { row: 39, col: baseCol + 0, type: "W edge fallback" };
-        if (hasWest) return { row: 40, col: baseCol + 4, type: "E edge fallback" };
-        if (hasNorth) return { row: 42, col: baseCol + 1, type: "S edge fallback" };
+        if (hasSouth) return { row: 42, col: baseCol + 1, type: "S edge fallback" };
+        if (hasEast) return { row: 40, col: baseCol + 4, type: "E edge fallback" };
+        if (hasWest) return { row: 39, col: baseCol + 0, type: "W edge fallback" };
+        if (hasNorth) return { row: 38, col: baseCol + 1, type: "N edge fallback" };
 
         // No transition needed
         return null;
