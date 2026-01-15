@@ -342,12 +342,11 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
     */
     
     setupAnimations(): void {
-        // Remove and destroy placeholder to prevent memory leak
+        // Remove placeholder
         if (this.owner.placeholder) {
             if (this.owner.placeholder.parent) {
                 this.owner.sprite.removeChild(this.owner.placeholder);
             }
-            this.owner.placeholder.destroy();
             this.owner.placeholder = null;
         }
         
@@ -374,12 +373,11 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
     }
     
     changeAnimation(animationName: string): void {
-        // Remove and destroy old sprite to prevent memory leaks
+        // Remove old sprite
         if (this.owner.animatedSprite) {
             if (this.owner.animatedSprite.parent) {
                 this.owner.sprite.removeChild(this.owner.animatedSprite);
             }
-            this.owner.animatedSprite.destroy();
         }
 
         this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(animationName);
@@ -511,12 +509,11 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
           const rollAnimName = `${classPrefix}_roll_${this.getFacingAnimationKey()}`;
           this.owner.currentAnimation = rollAnimName;
 
-          // Destroy old sprite to prevent memory leak
+          // Remove old sprite
           if (this.owner.animatedSprite) {
             if (this.owner.animatedSprite.parent) {
               this.owner.sprite.removeChild(this.owner.animatedSprite);
             }
-            this.owner.animatedSprite.destroy();
           }
 
           this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(rollAnimName);
@@ -537,12 +534,11 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
           const attackAnimName = `${classPrefix}_attack2_${this.getFacingAnimationKey()}`;
           this.owner.currentAnimation = attackAnimName;
           
-          // Destroy old sprite to prevent memory leak
+          // Remove old sprite
           if (this.owner.animatedSprite) {
             if (this.owner.animatedSprite.parent) {
               this.owner.sprite.removeChild(this.owner.animatedSprite);
             }
-            this.owner.animatedSprite.destroy();
           }
 
           this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(attackAnimName);
@@ -566,13 +562,12 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
             this.owner.characterClass
         );
         this.owner.currentAnimation = attackAnimName;
-        
-        // Destroy old sprite to prevent memory leak
+
+        // Remove old sprite
         if (this.owner.animatedSprite) {
             if (this.owner.animatedSprite.parent) {
                 this.owner.sprite.removeChild(this.owner.animatedSprite);
             }
-            this.owner.animatedSprite.destroy();
         }
 
         this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(attackAnimName);
@@ -597,13 +592,12 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
             // Get take damage animation for current facing direction
             const damageAnimName = `${classPrefix}_take_damage_${this.getFacingAnimationKey()}`;
             this.owner.currentAnimation = damageAnimName;
-            
-            // Destroy old sprite to prevent memory leak
+
+            // Remove old sprite
             if (this.owner.animatedSprite) {
                 if (this.owner.animatedSprite.parent) {
                     this.owner.sprite.removeChild(this.owner.animatedSprite);
                 }
-                this.owner.animatedSprite.destroy();
             }
 
             this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(damageAnimName);
@@ -658,13 +652,12 @@ class AnimationComponent extends BaseComponent implements IAnimationComponent {
             // Get death animation for current facing direction
             const deathAnimName = `${classPrefix}_die_${this.getFacingAnimationKey()}`;
             this.owner.currentAnimation = deathAnimName;
-            
-            // Destroy old sprite to prevent memory leak
+
+            // Remove old sprite
             if (this.owner.animatedSprite) {
                 if (this.owner.animatedSprite.parent) {
                     this.owner.sprite.removeChild(this.owner.animatedSprite);
                 }
-                this.owner.animatedSprite.destroy();
             }
 
             this.owner.animatedSprite = this.owner.spriteManager.createAnimatedSprite(deathAnimName);
@@ -947,11 +940,20 @@ class HealthComponent extends BaseComponent implements IHealthComponent {
         if (this.owner.isLocalPlayer) {
           soundManager.play('player_hurt');
         }
-        
+
+        // Clear attack state - taking damage interrupts any attack in progress
+        // This prevents isAttacking from getting stuck when the attack animation
+        // is replaced by the damage animation (onAnimationComplete never fires)
+        if (this.owner.isAttacking) {
+            this.owner.isAttacking = false;
+            this.owner.attackHitFrameReached = false;
+            this.owner.currentAttackType = null;
+        }
+
         // Start take damage stun and animation
         this.owner.isTakingDamage = true;
         this.owner.damageStunTimer = this.owner.damageStunDuration;
-        
+
         // Play take damage animation
         this.owner.animation.playDamageAnimation();
       }
@@ -1028,7 +1030,6 @@ class HealthComponent extends BaseComponent implements IHealthComponent {
             if (this.owner.animatedSprite.parent) {
                 this.owner.sprite.removeChild(this.owner.animatedSprite);
             }
-            this.owner.animatedSprite.destroy();
             this.owner.animatedSprite = null;
         }
         this.owner.animation.update(16);
@@ -1484,11 +1485,18 @@ export class Player implements PlayerInterface {
         if (this.hitPoints <= 0 || this.isDying || this.isDead) {
             return;
         }
-        
+
+        // Clear attack state - taking damage interrupts any attack in progress
+        if (this.isAttacking) {
+            this.isAttacking = false;
+            this.attackHitFrameReached = false;
+            this.currentAttackType = null;
+        }
+
         // Set damage state
         this.isTakingDamage = true;
         this.damageStunTimer = this.damageStunDuration;
-        
+
         // Play damage animation with red tint
         this.animation.playDamageAnimation();
     }

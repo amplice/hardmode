@@ -457,11 +457,11 @@ const canMoveToPosition = this.collisionMask.canMove(
 
 ### **Critical Bugs Fixed**
 
-1. **PIXI.js Memory Leaks in Player.ts** (7 locations fixed)
-   - **Problem**: Animated sprites were being removed from parent containers but not destroyed, causing memory accumulation
-   - **Fix**: Added `.destroy()` calls after removing sprites from parent in all animation state transitions
+1. ~~**PIXI.js Memory Leaks in Player.ts**~~ **(ROLLED BACK)**
+   - **Original Fix**: Added `.destroy()` calls after removing sprites from parent
+   - **Rollback Reason**: Caused intermittent gameplay bugs (player freezing, animation issues)
+   - **Current State**: Using `removeChild()` only without `destroy()` - sprites handled by PIXI garbage collection
    - **Files**: `src/js/entities/Player.ts` - AnimationComponent methods
-   - **Pattern**: Changed from `sprite.removeChild(animatedSprite)` to proper cleanup with `animatedSprite.destroy()`
 
 2. **Security Vulnerability in SocketHandler.ts**
    - **Problem**: Player position updates had no validation, allowing potential teleport exploits
@@ -481,18 +481,19 @@ const canMoveToPosition = this.collisionMask.canMove(
 
 ### **Performance Optimizations**
 
-1. **NetworkOptimizer Deep Clone Performance**
-   - **Problem**: Using `JSON.parse(JSON.stringify())` for deep cloning - called per entity per client per tick
-   - **Fix**: Replaced with efficient `deepClone()` method that only clones nested objects when necessary
+1. ~~**NetworkOptimizer Deep Clone Performance**~~ **(ROLLED BACK)**
+   - **Original Fix**: Replaced `JSON.parse(JSON.stringify())` with custom `deepClone()` method
+   - **Rollback Reason**: Suspected cause of intermittent bugs (wolf disappearing, dark mage animation issues)
+   - **Current State**: Using standard `JSON.parse(JSON.stringify())` with try/catch for state cloning
    - **File**: `server/network/NetworkOptimizer.ts`
-   - **Impact**: Significantly reduced CPU overhead in the hot path of the network loop
 
 ### **Terrain Fixes**
 
-1. **Sand-to-Snow Transitions**
-   - **Problem**: Sand tiles weren't checking for snow neighbors, causing missing transitions
-   - **Fix**: Added `getSandToSnowTransition()` and snow neighbor detection in desert biome handling
-   - **File**: `src/js/systems/tiles/CliffAutotilerNew.ts`
+1. **Biome Reorganization** (replaces sand-to-snow transitions)
+   - **Problem**: Snow next to sand didn't make geographic sense
+   - **Fix**: Reorganized biomes into horizontal bands - snow (north), grass (middle), desert (south)
+   - **Files**: `shared/systems/WorldGenerator.ts` - `generateSnowBiomeRegion()`, `generateDesertBiomeRegion()`
+   - **Result**: Snow and sand biomes no longer adjacent, eliminating need for snow-sand transitions
 
 ### **Remaining Known Issues (Not Yet Fixed)**
 

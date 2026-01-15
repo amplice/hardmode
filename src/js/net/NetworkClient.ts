@@ -596,6 +596,12 @@ export class NetworkClient {
                         this.game.entities.player.health.die();
                     } else if (data.hp > 0 && !this.game.entities.player.isDying && !this.game.entities.player.isDead) {
                         // Show damage effects without applying damage again
+                        // Clear attack state - taking damage interrupts any attack in progress
+                        if (this.game.entities.player.isAttacking) {
+                            this.game.entities.player.isAttacking = false;
+                            this.game.entities.player.attackHitFrameReached = false;
+                            this.game.entities.player.currentAttackType = null;
+                        }
                         this.game.entities.player.isTakingDamage = true;
                         this.game.entities.player.damageStunTimer = this.game.entities.player.damageStunDuration;
                         this.game.entities.player.animation.playDamageAnimation();
