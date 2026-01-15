@@ -279,40 +279,25 @@ export class SharedWorldGenerator {
     }
     
     /**
-     * Generate snow biome region in top-right quarter with natural borders
+     * Generate snow biome region in the NORTHERN part of the map
+     * Creates a horizontal band with natural wavy borders
      */
     private generateSnowBiomeRegion(biomeData: number[][]): void {
-        // Define the center of snow biome (top-right quarter)
-        const snowCenterX = this.width * 0.75;
-        const snowCenterY = this.height * 0.25;
-        
-        // Base radius to cover roughly 1/4 of the map
-        const baseRadius = Math.min(this.width, this.height) * 0.35;
-        
-        // Use noise to create natural, irregular borders
+        // Snow covers roughly the top 30% of the map
+        const snowBaseY = this.height * 0.30;
+
+        // Use noise to create wavy, natural borders
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                const dx = x - snowCenterX;
-                const dy = y - snowCenterY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                // Use noise to vary the border
-                const angle = Math.atan2(dy, dx);
-                const noiseValue = this.noise2D(
-                    Math.cos(angle) * 2,
-                    Math.sin(angle) * 2
-                ) + this.noise2D(x * 0.01, y * 0.01) * 0.5;
-                
-                // Adjust radius based on noise for natural borders
-                const adjustedRadius = baseRadius + noiseValue * baseRadius * 0.3;
-                
-                // Additional bias to extend more into the top-right corner
-                const cornerBias = Math.max(0, 
-                    (x - this.width * 0.5) / (this.width * 0.5) + 
-                    (this.height * 0.5 - y) / (this.height * 0.5)
-                ) * baseRadius * 0.2;
-                
-                if (distance < adjustedRadius + cornerBias) {
+                // Use noise to vary the border horizontally
+                const noiseValue = this.noise2D(x * 0.008, 0) * 0.5 +
+                                   this.noise2D(x * 0.02, 0.5) * 0.3 +
+                                   this.noise2D(x * 0.05, 1.0) * 0.2;
+
+                // Adjust the snow border based on noise (varies by ~15% of map height)
+                const adjustedBorderY = snowBaseY + noiseValue * this.height * 0.15;
+
+                if (y < adjustedBorderY) {
                     biomeData[y][x] = BIOME_TYPES.SNOW;
                 }
             }
@@ -320,55 +305,39 @@ export class SharedWorldGenerator {
     }
     
     /**
-     * Generate desert biome region in bottom-left corner (mirrors snow generation logic)
+     * Generate desert biome region in the SOUTHERN part of the map
+     * Creates a horizontal band with natural wavy borders
      */
     private generateDesertBiomeRegion(biomeData: number[][], climate: { temperature: number[][], moisture: number[][] }): void {
-        // Define the center of desert biome (bottom-left quarter) - opposite of snow
-        const desertCenterX = this.width * 0.25;  // Left side (opposite of snow's 0.75)
-        const desertCenterY = this.height * 0.75; // Bottom side (opposite of snow's 0.25)
-        
-        // Base radius to cover roughly 1/4 of the map (same as snow)
-        const baseRadius = Math.min(this.width, this.height) * 0.35;
-        
-        // First, create all desert tiles as LIGHT_SAND (like snow starts all white)
+        // Desert covers roughly the bottom 30% of the map
+        const desertBaseY = this.height * 0.70;
+
+        // First pass: create desert tiles with wavy border
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
-                const dx = x - desertCenterX;
-                const dy = y - desertCenterY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                // Use noise to vary the border (same as snow)
-                const angle = Math.atan2(dy, dx);
-                const noiseValue = this.noise2D(
-                    Math.cos(angle) * 2,
-                    Math.sin(angle) * 2
-                ) + this.noise2D(x * 0.01, y * 0.01) * 0.5;
-                
-                // Adjust radius based on noise for natural borders
-                const adjustedRadius = baseRadius + noiseValue * baseRadius * 0.3;
-                
-                // Additional bias to extend more into the bottom-left corner (opposite of snow)
-                const cornerBias = Math.max(0, 
-                    (this.width * 0.5 - x) / (this.width * 0.5) +  // Bias toward left (opposite of snow)
-                    (y - this.height * 0.5) / (this.height * 0.5)   // Bias toward bottom (opposite of snow)
-                ) * baseRadius * 0.2;
-                
-                if (distance < adjustedRadius + cornerBias) {
-                    // Start with all light sand (will create dark sand patches later)
+                // Use noise to vary the border horizontally (different seed than snow)
+                const noiseValue = this.noise2D(x * 0.008, 10) * 0.5 +
+                                   this.noise2D(x * 0.02, 10.5) * 0.3 +
+                                   this.noise2D(x * 0.05, 11.0) * 0.2;
+
+                // Adjust the desert border based on noise (varies by ~15% of map height)
+                const adjustedBorderY = desertBaseY + noiseValue * this.height * 0.15;
+
+                if (y > adjustedBorderY) {
+                    // Start with all light sand
                     biomeData[y][x] = BIOME_TYPES.LIGHT_SAND;
                 }
             }
         }
-        
-        // Now create coherent patches of dark sand using noise (similar to snow plateau variants)
-        // Use Perlin noise to create organic blob-shaped regions
+
+        // Second pass: create coherent patches of dark sand using noise
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 if (biomeData[y][x] === BIOME_TYPES.LIGHT_SAND) {
                     // Use lower frequency noise for larger coherent patches
                     const noiseValue = this.noise2D(x * 0.015, y * 0.015);
-                    
-                    // Create dark sand patches where noise is above threshold (30% coverage)
+
+                    // Create dark sand patches where noise is above threshold (~30% coverage)
                     if (noiseValue > 0.2) {
                         biomeData[y][x] = BIOME_TYPES.DARK_SAND;
                     }

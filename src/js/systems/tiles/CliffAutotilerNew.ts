@@ -282,36 +282,6 @@ export class CliffAutotiler {
             if (isSnow) {
                 const snowVariant = snowVariantData && snowVariantData[y] ? snowVariantData[y][x] : 0;
 
-                // Check for sand neighbors first (snow-to-sand transitions like grass-to-sand)
-                if (biomeData) {
-                    let hasSandNeighbor = false;
-                    const width = biomeData[0].length;
-                    const height = biomeData.length;
-
-                    for (let dy = -1; dy <= 1; dy++) {
-                        for (let dx = -1; dx <= 1; dx++) {
-                            if (dx === 0 && dy === 0) continue;
-                            const nx = x + dx;
-                            const ny = y + dy;
-                            if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
-                                const neighborBiome = biomeData[ny][nx];
-                                if (neighborBiome === BIOME_TYPES.LIGHT_SAND || neighborBiome === BIOME_TYPES.DARK_SAND) {
-                                    hasSandNeighbor = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (hasSandNeighbor) break;
-                    }
-
-                    if (hasSandNeighbor) {
-                        const snowToSandTile = this.getSnowToSandTransition(x, y, biomeData);
-                        if (snowToSandTile) {
-                            return snowToSandTile;
-                        }
-                    }
-                }
-
                 // Check for snow variant transitions (only white snow gets transitions)
                 if (snowVariant === 0 && snowVariantData) { // White snow
                     const snowTransitionTile = this.getSnowVariantTransitionTile(x, y, snowVariantData);
@@ -1326,101 +1296,6 @@ export class CliffAutotiler {
         // Use the same transparency tiles as grass-to-snow (rows 37-43, cols 0-4)
         // This provides consistent transition behavior
         return this.determineGrassToSnowTransitionType(bitmask);
-    }
-
-    /**
-     * Get snow-to-sand transition tile
-     * EXACT SAME LOGIC as getGrassToDesertTransition
-     * Snow tiles get transition when adjacent to sand
-     */
-    private getSnowToSandTransition(x: number, y: number, biomeData?: number[][]): TileResult | null {
-        if (!biomeData) return null;
-
-        const width = biomeData[0].length;
-        const height = biomeData.length;
-
-        // Calculate bitmask for sand neighbors (both light and dark sand)
-        let sandBitmask = 0;
-        let neighborSandType: number | null = null; // Track which type of sand we're adjacent to
-
-        // Check all 8 directions for sand
-        const directions = [
-            { dx: 0, dy: -1, bit: this.BITS.NORTH },
-            { dx: 1, dy: -1, bit: this.BITS.NORTHEAST },
-            { dx: 1, dy: 0, bit: this.BITS.EAST },
-            { dx: 1, dy: 1, bit: this.BITS.SOUTHEAST },
-            { dx: 0, dy: 1, bit: this.BITS.SOUTH },
-            { dx: -1, dy: 1, bit: this.BITS.SOUTHWEST },
-            { dx: -1, dy: 0, bit: this.BITS.WEST },
-            { dx: -1, dy: -1, bit: this.BITS.NORTHWEST }
-        ];
-
-        for (const dir of directions) {
-            const nx = x + dir.dx;
-            const ny = y + dir.dy;
-
-            if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
-                const neighborBiome = biomeData[ny][nx];
-                // Check for both light sand and dark sand
-                if (neighborBiome === BIOME_TYPES.LIGHT_SAND || neighborBiome === BIOME_TYPES.DARK_SAND) {
-                    sandBitmask |= dir.bit;
-                    // Track the sand type (prioritize the first cardinal direction found)
-                    if (neighborSandType === null && (dir.bit === this.BITS.NORTH ||
-                        dir.bit === this.BITS.EAST || dir.bit === this.BITS.SOUTH ||
-                        dir.bit === this.BITS.WEST)) {
-                        neighborSandType = neighborBiome;
-                    }
-                }
-            }
-        }
-
-        // No sand neighbors = no transition
-        if (sandBitmask === 0) return null;
-
-        // If we didn't find a cardinal neighbor, check diagonals for sand type
-        if (neighborSandType === null) {
-            for (const dir of directions) {
-                const nx = x + dir.dx;
-                const ny = y + dir.dy;
-                if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
-                    const neighborBiome = biomeData[ny][nx];
-                    if (neighborBiome === BIOME_TYPES.LIGHT_SAND || neighborBiome === BIOME_TYPES.DARK_SAND) {
-                        neighborSandType = neighborBiome;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Determine transition tile based on bitmask
-        // Using same logic as grass-to-desert (which uses grass-to-snow)
-        const transitionCoords = this.determineGrassToSnowTransitionType(sandBitmask);
-        if (!transitionCoords) return null;
-
-        // Get snow transparency overlay texture from snow tileset (rows 36-42, same layout as grass rows 37-43)
-        // Subtract 1 from row to convert from grass coordinates to snow coordinates
-        const snowRow = transitionCoords.row - 1;
-        const overlayTexture = this.tilesets.textures.snow[snowRow]?.[transitionCoords.col];
-        if (!overlayTexture) return null;
-
-        // For snow-to-sand (same pattern as grass-to-desert):
-        // 1. Sand tile as the base (what shows through the transparent parts)
-        // 2. Snow transparency tile as overlay
-        // Use the appropriate sand type as base (dark or light depending on neighbor)
-        const sandTexture = neighborSandType === BIOME_TYPES.DARK_SAND ?
-            this.tilesets.getRandomDarkSand() :
-            this.tilesets.getRandomLightSand();
-        if (!sandTexture) return null;
-
-        // Return sand base with snow transparency overlay (same structure as grass-to-desert)
-        return {
-            texture: sandTexture,
-            type: 'sand_with_snow_overlay',
-            overlay: {
-                texture: overlayTexture,
-                type: `snow_to_sand_transition_${snowRow},${transitionCoords.col}`
-            }
-        };
     }
 
     /**
