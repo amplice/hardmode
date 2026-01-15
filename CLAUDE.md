@@ -14,6 +14,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Pure skill focus**: No items/crafting/inventory - just combat - *✅ Fully implemented*
 - **Level 1 can beat Level 10** through superior positioning and timing - *✅ Works, though level 10 has significant advantages*
 
+**Scale Goals (TODO):**
+- **Substantially larger world** - Current 750x750 tiles should expand significantly, possibly with world wrapping (toroidal topology) so players never hit edges
+- **Substantially more monsters** - Dense monster population to create constant danger and action
+- **100 concurrent players** - Target remains ~100 max players
+
 ## Current Implementation Status: **WORKING MULTIPLAYER GAME**
 
 ### Architecture Reality
