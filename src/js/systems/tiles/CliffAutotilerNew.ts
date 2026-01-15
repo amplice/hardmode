@@ -1379,8 +1379,15 @@ export class CliffAutotiler {
         // Snow transparency tiles are at rows 36-42 (grass is 37-43), so subtract 1
         const snowRow = transitionCoords.row - 1;
 
+        // FLIP both horizontally and vertically to get the opposite tile
+        // Snow tiles need the inverse orientation from grass tiles
+        // Vertical flip: 36 + 42 - row = 78 - row (maps 36↔42, 37↔41, 38↔40, 39 stays)
+        // Horizontal flip: 4 - col (maps 0↔4, 1↔3, 2 stays)
+        const flippedRow = 78 - snowRow;
+        const flippedCol = 4 - transitionCoords.col;
+
         // Get snow transparency overlay texture from snow tileset
-        const overlayTexture = this.tilesets.textures.snow[snowRow]?.[transitionCoords.col];
+        const overlayTexture = this.tilesets.textures.snow[flippedRow]?.[flippedCol];
         if (!overlayTexture) return null;
 
         // For sand-to-snow (same pattern as grass-to-desert):
@@ -1397,7 +1404,7 @@ export class CliffAutotiler {
             type: 'sand_with_snow_overlay',
             overlay: {
                 texture: overlayTexture,
-                type: `sand_to_snow_transition_${snowRow},${transitionCoords.col}`
+                type: `sand_to_snow_transition_${flippedRow},${flippedCol}`
             }
         };
     }
