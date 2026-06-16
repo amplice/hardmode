@@ -1,6 +1,6 @@
 param(
   [string]$Remote = "origin",
-  [string]$Branch = "main"
+  [string]$Branch = "local-events-pages"
 )
 
 $ErrorActionPreference = "Stop"
@@ -42,7 +42,7 @@ if ($InsideWorkTree.ExitCode -ne 0 -or ($InsideWorkTree.Output -join "").Trim() 
 
 $RemoteUrl = Invoke-CommandAllowFailure -FilePath "git" -Arguments @("remote", "get-url", $Remote)
 if ($RemoteUrl.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace(($RemoteUrl.Output -join "").Trim())) {
-  throw "No git remote named '$Remote' is configured. Add one with: git remote add $Remote https://github.com/amplice/local-events.git"
+  throw "No git remote named '$Remote' is configured. Add one with: git remote add $Remote https://github.com/amplice/hardmode.git"
 }
 
 & git add -- index.html .nojekyll

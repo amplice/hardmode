@@ -8,22 +8,17 @@ The event data is embedded in the `<script type="application/json" id="calendarD
 
 Use GitHub Pages for a stable public URL that updates whenever this folder pushes changes.
 
-One-time setup:
-
-```powershell
-git init -b main
-git add .
-git commit -m "Publish local events site"
-git remote add origin https://github.com/amplice/local-events.git
-git push -u origin main
-```
-
-Create the empty public repository first at `https://github.com/new` with the name `local-events`. Do not add a README, license, or `.gitignore` on GitHub because this folder already has them.
-
-In the GitHub repository, enable Pages from `Settings > Pages > Build and deployment > Source: Deploy from a branch`, then choose `main` and `/ (root)`. The public URL will be:
+This folder publishes to the `local-events-pages` branch of `amplice/hardmode`, leaving `hardmode/main` untouched. The public URL is:
 
 ```text
-https://amplice.github.io/local-events/
+https://amplice.github.io/hardmode/
+```
+
+Remote setup:
+
+```powershell
+git remote add origin https://github.com/amplice/hardmode.git
+git push -u origin main:local-events-pages
 ```
 
 Manual publish after editing `index.html`:
