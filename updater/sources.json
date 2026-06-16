@@ -1,0 +1,116 @@
+{
+  "knownSources": [
+    {
+      "name": "Surbiton Partnership / The Good Life",
+      "url": "https://surbitonpartnership.co.uk/whats-on/",
+      "checkFor": ["Surbiton events", "The Lamb", "cornerHOUSE", "farmers market", "local talks", "family events"]
+    },
+    {
+      "name": "Rose Theatre",
+      "url": "https://www.rosetheatre.org/whats-on",
+      "checkFor": ["theatre", "family theatre", "free cafe music", "daytime music", "comedy", "talks"]
+    },
+    {
+      "name": "The Lamb Surbiton",
+      "url": "https://www.lambsurbiton.co.uk/live-music-surbiton",
+      "checkFor": ["live music", "Fiddly Diddly", "Irish folk sessions", "life drawing"]
+    },
+    {
+      "name": "Whelan's Kingston",
+      "url": "https://whelanspubs.co.uk/whelans-irish-traditional/whelans-kingston/",
+      "checkFor": ["Irish trad night", "traditional Irish music"]
+    },
+    {
+      "name": "Hampton Court Palace / Historic Royal Palaces",
+      "url": "https://www.hrp.org.uk/hampton-court-palace/whats-on/",
+      "checkFor": ["family events", "member events", "music", "outdoor events", "heritage"]
+    },
+    {
+      "name": "Hampton Court Palace Festival",
+      "url": "https://hamptoncourtpalacefestival.com/",
+      "checkFor": ["open-air music", "major concerts"]
+    },
+    {
+      "name": "Malden DSME / Thames Ditton Miniature Railway",
+      "url": "https://malden-dsme.org/",
+      "checkFor": ["public running days", "gala days", "family railway days"]
+    },
+    {
+      "name": "Canbury Bandstand Concerts",
+      "url": "https://www.facebook.com/CanburyBandstandConcerts/",
+      "checkFor": ["free bandstand concerts", "Sunday music", "outdoor music"]
+    },
+    {
+      "name": "Kingston Libraries",
+      "url": "https://kingston.events.mylibrary.digital/",
+      "checkFor": ["kids", "music", "craft", "author talks", "library events"]
+    },
+    {
+      "name": "Kingston Heritage",
+      "url": "https://www.kingstonheritage.org.uk/",
+      "checkFor": ["Athelstan", "heritage festivals", "museum events", "family heritage"]
+    },
+    {
+      "name": "Surbiton Festival",
+      "url": "https://www.surbitonfestival.co.uk/events/",
+      "checkFor": ["Surbiton Festival", "market day", "parade", "music"]
+    },
+    {
+      "name": "The Fighting Cocks / Ents24",
+      "url": "https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit",
+      "checkFor": ["gigs", "open mic", "music", "alternative events"]
+    },
+    {
+      "name": "Banquet Records",
+      "url": "https://www.banquetrecords.com/events",
+      "checkFor": ["Kingston music", "album release shows"]
+    },
+    {
+      "name": "the cornerHOUSE",
+      "url": "https://www.thecornerhouse.org/",
+      "checkFor": ["theatre", "music", "talks", "family events"]
+    },
+    {
+      "name": "Kingston First / Visit Kingston",
+      "url": "https://www.visitkingston.co.uk/",
+      "checkFor": ["festivals", "town centre events", "markets", "family days"]
+    },
+    {
+      "name": "Southbank Centre family listings",
+      "url": "https://www.southbankcentre.co.uk/whats-on/?artform-filter=family-young-people",
+      "checkFor": ["Waterloo", "South Bank", "family events", "under-5s", "free family music", "children's theatre", "interactive installations"]
+    },
+    {
+      "name": "Polka Theatre Wimbledon",
+      "url": "https://polkatheatre.com/shows/",
+      "checkFor": ["Wimbledon", "children's theatre", "early years theatre", "family theatre", "toddler-friendly shows"]
+    },
+    {
+      "name": "National Trust - Morden Hall Park",
+      "url": "https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events",
+      "checkFor": ["outdoor family theatre", "family trails", "under-5s outdoor events", "Morden", "Wimbledon edge"]
+    },
+    {
+      "name": "Abundance Wimbledon",
+      "url": "https://www.abundancewimbledon.com/",
+      "checkFor": ["Fruit Day", "family food festival", "apple pressing", "children's activities", "Wimbledon"]
+    }
+  ],
+  "searchQueries": [
+    "Surbiton daytime free music events",
+    "Surbiton The Lamb live music Fiddly Diddly",
+    "Kingston upon Thames free daytime music events",
+    "Surbiton Kingston kid friendly theatre music events",
+    "Canbury Bandstand concerts 2026",
+    "Thames Ditton Miniature Railway public running days 2026",
+    "Hampton Court Palace family events 2026",
+    "Kingston heritage Athelstan festival 2026",
+    "Surbiton Shakespeare in the park 2026",
+    "Irish traditional music session Surbiton Kingston",
+    "Waterloo South Bank family children events 2026",
+    "Southbank Centre family young people events 2026",
+    "Polka Theatre Wimbledon children's theatre 2026",
+    "Wimbledon family events children 2026",
+    "Morden Hall Park family theatre trail 2026"
+  ]
+}

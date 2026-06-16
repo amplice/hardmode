@@ -1,0 +1,14 @@
+{
+  "name": "surbiton-local-events",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "update": "node updater/update-calendar.mjs",
+    "update:apply": "node updater/update-calendar.mjs --apply",
+    "update:prune": "node updater/update-calendar.mjs --prune-only",
+    "update:prune:apply": "node updater/update-calendar.mjs --prune-only --apply",
+    "validate": "node updater/validate-calendar.mjs",
+    "publish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/publish-site.ps1"
+  }
+}

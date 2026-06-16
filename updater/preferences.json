@@ -1,0 +1,97 @@
+{
+  "profileName": "Surbiton family music/theatre/folk profile",
+  "areaFocus": [
+    "Surbiton",
+    "Berrylands",
+    "Tolworth",
+    "Kingston",
+    "Long Ditton",
+    "Thames Ditton",
+    "Hampton Court",
+    "Waterloo / South Bank",
+    "Wimbledon",
+    "Morden Hall Park / Wimbledon edge",
+    "nearby places that are genuinely easy from Surbiton"
+  ],
+  "highValue": [
+    "music",
+    "theatre",
+    "daytime music",
+    "free music",
+    "kid-friendly events suitable for a 2 year old",
+    "The Lamb Surbiton",
+    "Irish/trad/folk sessions",
+    "Scottish country dancing and folk dancing",
+    "Hampton Court Palace member-relevant events",
+    "Thames Ditton Miniature Railway public running days",
+    "Canbury Bandstand concerts",
+    "outdoor arts, Shakespeare, park performances",
+    "distinctive local festivals and fairs",
+    "Surbiton Festival",
+    "Kingston heritage / Athelstan-style events when current-year confirmed",
+    "farmers markets and genuinely good community market days",
+    "Southbank Centre family events if easy from Waterloo and meaningfully family-friendly",
+    "Polka Theatre Wimbledon children’s theatre",
+    "Wimbledon family festivals and outdoor family theatre"
+  ],
+  "keepIfInteresting": [
+    "outer-edge events such as Hampton Court, Ham, East Molesey, Esher or Sandown when they are unusual, high quality, music/theatre/family/outdoor, or otherwise worth travelling for",
+    "Waterloo / South Bank and Wimbledon events when they are family-friendly, music, theatre, outdoor, free/daytime, or unusually high quality",
+    "choir events only when public performances, concerts, open rehearsals, or unusually relevant",
+    "libraries when kid-friendly, music, arts, author, craft, or genuinely useful community programming"
+  ],
+  "removeOrAvoid": [
+    "Repair Cafe",
+    "pub quizzes",
+    "business networking",
+    "business conferences",
+    "admin or advice drop-ins",
+    "routine civic drop-ins",
+    "tarot",
+    "breathwork",
+    "sound baths",
+    "Kundalini",
+    "psychic/holistic fairs",
+    "generic wellbeing appointment listings",
+    "Lifting Spirits wellbeing hub",
+    "Alcheme appointment-style listings",
+    "yoga",
+    "pilates",
+    "zumba",
+    "routine fitness classes",
+    "seniors-only or 60+ events",
+    "U3A",
+    "school-only or member-only events unless public access is explicit and the event is otherwise highly relevant"
+  ],
+  "sourceTrust": {
+    "prefer": [
+      "official venue pages",
+      "official organiser pages",
+      "council/library event pages",
+      "Rose Theatre event detail pages",
+      "The Lamb live music page",
+      "Hampton Court / Historic Royal Palaces",
+      "Malden DSME / Thames Ditton Miniature Railway",
+      "Surbiton Partnership / The Good Life",
+      "Kingston Heritage",
+      "Canbury Bandstand organiser pages"
+    ],
+    "useWithCaution": [
+      "social snippets",
+      "aggregators",
+      "old pages updated in 2026 but still describing 2025 dates",
+      "pages with no explicit current-year date"
+    ]
+  },
+  "reviewPolicy": {
+    "autoRemovePastEvents": true,
+    "defaultMode": "review-first",
+    "doNotAddWithoutDate": true,
+    "doNotAddPastEvents": true,
+    "splitSelectedDateSeries": true,
+    "splitMonthlyOrIrregularRepeatsIntoSeparateEvents": true,
+    "allowRangesForWeeklyBlocksAndTrueMultiDayRuns": true,
+    "markInferredRowsVerify": true,
+    "preferSpecificEventUrls": true
+  }
+}

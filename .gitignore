@@ -1,0 +1,4 @@
+node_modules/
+updater/.env.local
+updater/backups/
+updater/logs/
