@@ -7,6 +7,25 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 Set-Location $RepoRoot
 
+function Invoke-CommandAllowFailure {
+  param(
+    [string]$FilePath,
+    [string[]]$Arguments
+  )
+
+  $PreviousPreference = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    $Output = & $FilePath @Arguments 2>$null
+    return [pscustomobject]@{
+      Output = $Output
+      ExitCode = $LASTEXITCODE
+    }
+  } finally {
+    $ErrorActionPreference = $PreviousPreference
+  }
+}
+
 if (!(Test-Path "index.html")) {
   throw "Could not find index.html in $RepoRoot"
 }
@@ -16,13 +35,13 @@ if ($LASTEXITCODE -ne 0) {
   throw "Validation failed; not publishing."
 }
 
-$InsideWorkTree = & git rev-parse --is-inside-work-tree 2>$null
-if ($LASTEXITCODE -ne 0 -or $InsideWorkTree.Trim() -ne "true") {
+$InsideWorkTree = Invoke-CommandAllowFailure -FilePath "git" -Arguments @("rev-parse", "--is-inside-work-tree")
+if ($InsideWorkTree.ExitCode -ne 0 -or ($InsideWorkTree.Output -join "").Trim() -ne "true") {
   throw "This folder is not a git repository. Run git init -b main before publishing."
 }
 
-$RemoteUrl = & git remote get-url $Remote 2>$null
-if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($RemoteUrl)) {
+$RemoteUrl = Invoke-CommandAllowFailure -FilePath "git" -Arguments @("remote", "get-url", $Remote)
+if ($RemoteUrl.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace(($RemoteUrl.Output -join "").Trim())) {
   throw "No git remote named '$Remote' is configured. Add one with: git remote add $Remote https://github.com/amplice/local-events.git"
 }
 
@@ -31,8 +50,8 @@ if ($LASTEXITCODE -ne 0) {
   throw "Could not stage site files."
 }
 
-& git diff --cached --quiet
-$DiffExitCode = $LASTEXITCODE
+$DiffResult = Invoke-CommandAllowFailure -FilePath "git" -Arguments @("diff", "--cached", "--quiet")
+$DiffExitCode = $DiffResult.ExitCode
 if ($DiffExitCode -eq 0) {
   Write-Host "No site changes to publish."
   exit 0

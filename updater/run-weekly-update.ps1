@@ -24,8 +24,16 @@ if ($UpdateExitCode -ne 0) {
 }
 
 if ($Apply) {
-  $OriginUrl = & git remote get-url origin 2>$null
-  if ($LASTEXITCODE -eq 0 -and ![string]::IsNullOrWhiteSpace($OriginUrl)) {
+  $PreviousPreference = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    $OriginUrl = & git remote get-url origin 2>$null
+    $OriginExitCode = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $PreviousPreference
+  }
+
+  if ($OriginExitCode -eq 0 -and ![string]::IsNullOrWhiteSpace(($OriginUrl -join "").Trim())) {
     "`n--- publish ---" | Out-File -FilePath $RunLog -Append -Encoding utf8
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "publish-site.ps1") *>> $RunLog
     exit $LASTEXITCODE
