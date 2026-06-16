@@ -1,6 +1,6 @@
 param(
   [string]$Remote = "origin",
-  [string]$Branch = "local-events-pages"
+  [string]$Branch = "gh-pages"
 )
 
 $ErrorActionPreference = "Stop"

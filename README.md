@@ -8,7 +8,7 @@ The event data is embedded in the `<script type="application/json" id="calendarD
 
 Use GitHub Pages for a stable public URL that updates whenever this folder pushes changes.
 
-This folder publishes to the `local-events-pages` branch of `amplice/hardmode`, leaving `hardmode/main` untouched. The public URL is:
+This folder publishes to the `gh-pages` branch of `amplice/hardmode`, leaving `hardmode/main` untouched. The public URL is:
 
 ```text
 https://amplice.github.io/hardmode/
@@ -18,7 +18,7 @@ Remote setup:
 
 ```powershell
 git remote add origin https://github.com/amplice/hardmode.git
-git push -u origin main:local-events-pages
+git push -u origin main:gh-pages
 ```
 
 Manual publish after editing `index.html`:
