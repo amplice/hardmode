@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-06-18T15:13:34.196Z",
+  "dateBasis": "2026-06-18",
+  "summary": "Added the Elm Tree mural unveiling and upgraded the calendar with favourites, hidden rows, shareable filters, best-bets, richer event facts, a live ICS feed and PWA/offline support.",
+  "added": [
+    "2026-06-20 Mural Unveiling at The Elm Tree",
+    "Best bets view",
+    "Favourites and hidden rows",
+    "Shareable filter URLs",
+    "Subscribable events.ics feed",
+    "PWA/offline files"
+  ],
+  "updated": [
+    "Split index.html into external data, CSS and JavaScript",
+    "Added derived travel, age, booking, indoor/outdoor and map fields"
+  ],
+  "removed": [],
+  "counts": {
+    "events": 306,
+    "recurring": 53
+  }
+}

@@ -1,0 +1,2988 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Surbiton Local Events//Calendar//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Surbiton + Nearby Events
+X-WR-TIMEZONE:Europe/London
+BEGIN:VEVENT
+UID:e1@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Canbury Camera Club exhibition: Life
+DTSTART;TZID=Europe/London:20260324T100000
+DTEND;TZID=Europe/London:20260618T150000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Free exhibition continues until 18 June.\nTravel: Easy local trip\nConfidence: High\nSource: https://rosetheatre.org/whats-on/
+URL:https://rosetheatre.org/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e763@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Capture Kingston 2026: Kingston By Night
+DTSTART;TZID=Europe/London:20260415T123000
+DTEND;TZID=Europe/London:20261031T170000
+LOCATION:Kingston Heritage / borough-wide photography competition\, Kingston
+DESCRIPTION:Annual Kingston photography competition on the theme Kingston By Night\; entries become part of the historical collection.\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.kingstonheritage.org.uk/events/capture-kingston-2026-kingston-night
+URL:https://www.kingstonheritage.org.uk/events/capture-kingston-2026-kingston-night
+END:VEVENT
+BEGIN:VEVENT
+UID:e2@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:A Simultaneous Agreement
+DTSTART;VALUE=DATE:20260423
+DTEND;VALUE=DATE:20260701
+LOCATION:Stanley Picker Gallery\, Kingston
+DESCRIPTION:Exhibition runs 23 Apr–18 Jul\; active throughout May/June.\nTravel: Easy local trip\nConfidence: High\nSource: https://www.stanleypickergallery.org/
+URL:https://www.stanleypickergallery.org/
+END:VEVENT
+BEGIN:VEVENT
+UID:e4@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:REMET Art Prize 2026
+DTSTART;VALUE=DATE:20260430
+DTEND;VALUE=DATE:20260628
+LOCATION:Dorich House Museum\, Kingston / Kingston Hill
+DESCRIPTION:Exhibition runs 30 Apr–27 Jun.\nTravel: Easy local trip\nConfidence: High\nSource: https://www.dorichhousemuseum.org.uk/whats-on/
+URL:https://www.dorichhousemuseum.org.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e13@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Kingston Glamour exhibition
+DTSTART;VALUE=DATE:20260509
+DTEND;VALUE=DATE:20260701
+LOCATION:Kingston Museum\, Kingston
+DESCRIPTION:Museum exhibition exploring creative entrepreneurs 1920s–1970s\; exact opening date in May should be verified.\nTravel: Easy local trip\nConfidence: Medium\nSource: https://www.kingstonheritage.org.uk/
+URL:https://www.kingstonheritage.org.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:e15@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Quirky Kingston Tours
+DTSTART;VALUE=DATE:20260509
+DTEND;VALUE=DATE:20260701
+LOCATION:Kingston Museum / town centre\, Kingston
+DESCRIPTION:Tour series listed from 9 May to 11 July.\nTravel: Easy local trip\nConfidence: Medium/high\nSource: https://www.kingstonheritage.org.uk/
+URL:https://www.kingstonheritage.org.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:e756@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Inky Pathways Adult Art Workshops
+DTSTART;TZID=Europe/London:20260603T103000
+DTEND;TZID=Europe/London:20260701T123000
+LOCATION:Rose Café\, Kingston
+DESCRIPTION:Creative Wednesday-morning art workshops in the Rose Café.\nCost: Ticketed / booking via organiser\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e771@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:REPLAY: A Limitless Recycled Playground
+DTSTART;TZID=Europe/London:20260604T100000
+DTEND;TZID=Europe/London:20260604T110000
+LOCATION:Royal Festival Hall\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Self-led recycled playground experience for ages 6 months-11 years\; one-hour visit with 45 minutes of play.\nCost: From GBP 7.50 + booking fee\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/replay-a-limitless-recycled-playground/
+URL:https://www.southbankcentre.co.uk/whats-on/replay-a-limitless-recycled-playground/
+END:VEVENT
+BEGIN:VEVENT
+UID:e772@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:REPLAY: Relaxed
+DTSTART;TZID=Europe/London:20260604T100000
+DTEND;TZID=Europe/London:20260604T110000
+LOCATION:Royal Festival Hall\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Gentler\, less busy relaxed sessions of REPLAY for families who may benefit from a quieter play environment.\nCost: Ticketed\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/?artform-filter=family-young-people
+URL:https://www.southbankcentre.co.uk/whats-on/?artform-filter=family-young-people
+END:VEVENT
+BEGIN:VEVENT
+UID:e798@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Henry the Heron's Riverbank Self-Led Trail
+DTSTART;TZID=Europe/London:20260608T100000
+DTEND;TZID=Europe/London:20260831T160000
+LOCATION:Morden Hall Park\, Morden / Wimbledon edge
+DESCRIPTION:River Wandle-themed summer trail with active play elements\; useful Wimbledon-adjacent family outing.\nCost: Check listing\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: Medium/high\nSource: https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/4d8fd314-9823-4816-b907-a181300dee61
+URL:https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/4d8fd314-9823-4816-b907-a181300dee61
+END:VEVENT
+BEGIN:VEVENT
+UID:e773@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Luke Jerram: Stepping Out
+DTSTART;VALUE=DATE:20260610
+DTEND;VALUE=DATE:20261001
+LOCATION:Riverside Terrace\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Interactive installation where your feet make the music\; a strong easy-train family add-on while at South Bank.\nCost: Free\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: Medium/high\nSource: https://www.southbankcentre.co.uk/whats-on/family-young-people/gruffalo
+URL:https://www.southbankcentre.co.uk/whats-on/family-young-people/gruffalo
+END:VEVENT
+BEGIN:VEVENT
+UID:e783@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Rapping Princess
+DTSTART;TZID=Europe/London:20260610T100000
+DTEND;TZID=Europe/London:20260610T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Funky fairytale at dedicated children's theatre\; for ages 3-8.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/shows/
+URL:https://polkatheatre.com/shows/
+END:VEVENT
+BEGIN:VEVENT
+UID:e417@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:KMS Primary Singing Festival
+DTSTART;VALUE=DATE:20260615
+DTEND;VALUE=DATE:20260619
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Festival runs 15-18 June.\nTravel: Easy local trip\nAge guidance: Family-friendly\nConfidence: High\nSource: https://rosetheatre.org/whats-on/
+URL:https://rosetheatre.org/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e824@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Quentin Blake: The Southbank Parade
+DTSTART;TZID=Europe/London:20260617T100000
+DTEND;TZID=Europe/London:20261108T230000
+LOCATION:Royal Festival Hall / Southbank Centre site-wide\, Waterloo / South Bank
+DESCRIPTION:Free all-ages Quentin Blake illustration installation across Southbank Centre\, including indoor spaces and outdoor characters.\nCost: Free\; no ticket required\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/quentin-blake-the-southbank-parade/
+URL:https://www.southbankcentre.co.uk/whats-on/quentin-blake-the-southbank-parade/
+END:VEVENT
+BEGIN:VEVENT
+UID:e825@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:TONIC FLOW: A Communal Chorus in Colour and Sound
+DTSTART;TZID=Europe/London:20260617T100000
+DTEND;TZID=Europe/London:20260920T220000
+LOCATION:Mandela Walk\, Royal Festival Hall\, Waterloo / South Bank
+DESCRIPTION:Free all-ages collaborative colour and sound installation co-created with young sanctuary-seeking artists and Southbank Centre Youth Voices.\nCost: Free\; no ticket required\nTravel: Easy by train\nAge guidance: Family-friendly\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/tonic-flow-a-communal-chorus-in-colour-and-sound/
+URL:https://www.southbankcentre.co.uk/whats-on/tonic-flow-a-communal-chorus-in-colour-and-sound/
+END:VEVENT
+BEGIN:VEVENT
+UID:e452@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Vital Village Art Classes
+DTSTART;TZID=Europe/London:20260618T103000
+DTEND;TZID=Europe/London:20260618T123000
+LOCATION:Vital Village Community Hub\, Mercer Close\, Thames Ditton
+DESCRIPTION:Friendly art class welcoming beginners and experienced creatives.\nCost: Paid / booking likely\nTravel: Easy local trip\nConfidence: High / later dates inferred\nSource: https://www.vitalvillage.co.uk/event-list
+URL:https://www.vitalvillage.co.uk/event-list
+END:VEVENT
+BEGIN:VEVENT
+UID:e581@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Adult Art Group
+DTSTART;TZID=Europe/London:20260618T140000
+DTEND;TZID=Europe/London:20260618T150000
+LOCATION:Tolworth Community Library\, Tolworth
+DESCRIPTION:Adult art group session at Tolworth Community Library.\nTravel: Walkable / very local\nConfidence: High / live library index\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e454@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Elvis Costello & The Imposters with Charlie Sexton
+DTSTART;TZID=Europe/London:20260618T190000
+DTEND;TZID=Europe/London:20260618T200000
+LOCATION:Hampton Court Palace Festival\, Hampton Court
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://hamptoncourtpalacefestival.com/
+URL:https://hamptoncourtpalacefestival.com/
+END:VEVENT
+BEGIN:VEVENT
+UID:e455@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Jaz Kahina Live
+DTSTART;TZID=Europe/London:20260618T190000
+DTEND;TZID=Europe/London:20260618T200000
+LOCATION:Ram Jam Records\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://ramjamrecords.co.uk/events/
+URL:https://ramjamrecords.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e456@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Scottish country dancing
+DTSTART;TZID=Europe/London:20260618T200000
+DTEND;TZID=Europe/London:20260618T220000
+LOCATION:St Mark's Church Hall\, Surbiton
+DESCRIPTION:Cost: £4-£5\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.surbitoncaledonian.co.uk/next-dance-evening
+URL:https://www.surbitoncaledonian.co.uk/next-dance-evening
+END:VEVENT
+BEGIN:VEVENT
+UID:e457@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Jam-Pact / jam session at the Elm Tree
+DTSTART;TZID=Europe/London:20260618T203000
+DTEND;TZID=Europe/London:20260618T230000
+LOCATION:The Elm Tree\, Surbiton
+DESCRIPTION:Weekly live music/open mic/improvised jam session\; June dates inferred from weekly listing.\nCost: Free\nTravel: Walkable / very local\nConfidence: Medium (recurring inferred)\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e458@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Babes and Tots
+DTSTART;TZID=Europe/London:20260619T093000
+DTEND;TZID=Europe/London:20260619T113000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:Term-time Friday parent-and-toddler group.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: Medium/high\nSource: https://www.stmaryslongditton.org.uk/events
+URL:https://www.stmaryslongditton.org.uk/events
+END:VEVENT
+BEGIN:VEVENT
+UID:e459@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Free organ recital
+DTSTART;TZID=Europe/London:20260619T131500
+DTEND;TZID=Europe/London:20260619T141500
+LOCATION:All Saints Kingston\, Kingston
+DESCRIPTION:Friday lunchtime organ-recital series\; check performer schedule.\nCost: Free\nTravel: Easy local trip\nConfidence: Medium (series pattern)\nSource: https://www.allsaintskingston.co.uk/events/
+URL:https://www.allsaintskingston.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e460@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Film Friday
+DTSTART;TZID=Europe/London:20260619T140000
+DTEND;TZID=Europe/London:20260619T150000
+LOCATION:St Mary's Long Ditton Community Hall\, Long Ditton
+DESCRIPTION:Cost: Donations welcome\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.stmaryslongditton.org.uk/events
+URL:https://www.stmaryslongditton.org.uk/events
+END:VEVENT
+BEGIN:VEVENT
+UID:e584@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rummikub
+DTSTART;TZID=Europe/London:20260619T143000
+DTEND;TZID=Europe/London:20260619T153000
+LOCATION:Tolworth Community Library\, Tolworth
+DESCRIPTION:Board/card game social at Tolworth Community Library.\nTravel: Walkable / very local\nConfidence: High / live library index\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e461@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Sophie Ellis-Bextor
+DTSTART;TZID=Europe/London:20260619T190000
+DTEND;TZID=Europe/London:20260619T200000
+LOCATION:Hampton Court Palace Festival\, Hampton Court
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://hamptoncourtpalacefestival.com/
+URL:https://hamptoncourtpalacefestival.com/
+END:VEVENT
+BEGIN:VEVENT
+UID:e462@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Craig Revel Horwood
+DTSTART;TZID=Europe/London:20260619T193000
+DTEND;TZID=Europe/London:20260619T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://rosetheatre.org/whats-on/
+URL:https://rosetheatre.org/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e463@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Eggshells
+DTSTART;TZID=Europe/London:20260619T193000
+DTEND;TZID=Europe/London:20260619T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Two-night run at the cornerHOUSE.\nTravel: Walkable / very local\nConfidence: High\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e464@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Wrestlemosh club night
+DTSTART;TZID=Europe/London:20260619T200000
+DTEND;TZID=Europe/London:20260619T210000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://www.the-fighting-cocks.co.uk/events/
+URL:https://www.the-fighting-cocks.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e465@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Surbiton Farmers' Market
+DTSTART;TZID=Europe/London:20260620T090000
+DTEND;TZID=Europe/London:20260620T130000
+LOCATION:Maple Road\, Surbiton
+DESCRIPTION:Cost: Free entry\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.surbitonfarmersmarket.co.uk/
+URL:https://www.surbitonfarmersmarket.co.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:e784@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Arthur
+DTSTART;TZID=Europe/London:20260620T100000
+DTEND;TZID=Europe/London:20260620T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Polka Theatre family show for ages 6-12.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/shows/
+URL:https://polkatheatre.com/shows/
+END:VEVENT
+BEGIN:VEVENT
+UID:e466@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Board Game Day with Shakes & Ladders
+DTSTART;TZID=Europe/London:20260620T110000
+DTEND;TZID=Europe/London:20260620T160000
+LOCATION:Rose Café\, Kingston
+DESCRIPTION:Cost: Free\nTravel: Easy local trip\nConfidence: High\nSource: https://rosetheatre.org/whats-on/
+URL:https://rosetheatre.org/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e467@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Warhammer Kill Team
+DTSTART;TZID=Europe/London:20260620T140000
+DTEND;TZID=Europe/London:20260620T150000
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Travel: Walkable / very local\nConfidence: Medium/high\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e-mural-elm-tree-2026-06-20@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Mural Unveiling at The Elm Tree
+DTSTART;TZID=Europe/London:20260620T140000
+DTEND;TZID=Europe/London:20260620T190000
+LOCATION:The Elm Tree\, Surbiton
+DESCRIPTION:Public unveiling of the new long-side-wall mural at The Elm Tree\, delivered with Surbiton Town Centre Partnership. Food\, music and entertainment start at 2pm\; official unveiling during the afternoon.\nCost: Free\nTravel: Walkable / very local\nConfidence: High\nSource: https://surbitonpartnership.co.uk/event/mural-unveiling/
+URL:https://surbitonpartnership.co.uk/event/mural-unveiling/
+END:VEVENT
+BEGIN:VEVENT
+UID:e468@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:80s Classical
+DTSTART;TZID=Europe/London:20260620T190000
+DTEND;TZID=Europe/London:20260620T200000
+LOCATION:Hampton Court Palace Festival\, Hampton Court
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://hamptoncourtpalacefestival.com/
+URL:https://hamptoncourtpalacefestival.com/
+END:VEVENT
+BEGIN:VEVENT
+UID:e469@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:RUENA x HENKA + guests
+DTSTART;TZID=Europe/London:20260620T190000
+DTEND;TZID=Europe/London:20260620T200000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://www.the-fighting-cocks.co.uk/events/
+URL:https://www.the-fighting-cocks.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e470@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Across the Universe: Beatles 1966–70
+DTSTART;TZID=Europe/London:20260620T193000
+DTEND;TZID=Europe/London:20260620T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://rosetheatre.org/whats-on/
+URL:https://rosetheatre.org/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e471@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Kingston Choral Society: Midsummer Music – Make Our Garden Grow
+DTSTART;TZID=Europe/London:20260620T193000
+DTEND;TZID=Europe/London:20260620T203000
+LOCATION:St Andrew's Church\, Surbiton
+DESCRIPTION:Choral celebration of nature\; conducted by Andrew Griffiths.\nCost: From £15\nTravel: Walkable / very local\nConfidence: High\nSource: https://kingstonchoralsociety.org.uk/concerts/kcs-summer-concert/
+URL:https://kingstonchoralsociety.org.uk/concerts/kcs-summer-concert/
+END:VEVENT
+BEGIN:VEVENT
+UID:e473@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Garden Volunteering St Andrew's Square
+DTSTART;TZID=Europe/London:20260621T100000
+DTEND;TZID=Europe/London:20260621T110000
+LOCATION:St Andrew's Square\, Surbiton
+DESCRIPTION:Travel: Walkable / very local\nConfidence: High\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e474@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Thames Ditton Miniature Railway: Special Needs & Charity Day
+DTSTART;TZID=Europe/London:20260621T130000
+DTEND;TZID=Europe/London:20260621T160000
+LOCATION:Malden DSME / Thames Ditton Miniature Railway\, Thames Ditton
+DESCRIPTION:Special Needs & Charity Day from the Malden DSME calendar\; check public ticketing/access before publishing.\nCost: Ticketed / invitation\; verify\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / verify access\nSource: https://www.malden-dsme.org/Events/Calendar
+URL:https://www.malden-dsme.org/Events/Calendar
+END:VEVENT
+BEGIN:VEVENT
+UID:e475@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Kingston Music Service Open Rehearsals
+DTSTART;TZID=Europe/London:20260621T140000
+DTEND;TZID=Europe/London:20260621T150000
+LOCATION:All Saints Kingston\, Kingston
+DESCRIPTION:Cost: Free\nTravel: Easy local trip\nConfidence: Medium/high\nSource: https://www.allsaintskingston.co.uk/events/
+URL:https://www.allsaintskingston.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e476@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Canbury Bandstand Concerts: performer TBC
+DTSTART;TZID=Europe/London:20260621T150000
+DTEND;TZID=Europe/London:20260621T170000
+LOCATION:Canbury Gardens Bandstand\, Kingston
+DESCRIPTION:Free summer Sunday live music by the Thames\; date appears on 2026 Canbury Bandstand listing/poster\, but accessible snippets did not expose the performer name.\nCost: Free\nTravel: Easy local trip\nConfidence: Medium (date listed\; performer not visible in accessible snippet)\nSource: https://www.facebook.com/100072240756380/posts/drumroll-please-canbury-bandstand-concerts-are-pleased-to-present-this-years-sum/932170432534307/
+URL:https://www.facebook.com/100072240756380/posts/drumroll-please-canbury-bandstand-concerts-are-pleased-to-present-this-years-sum/932170432534307/
+END:VEVENT
+BEGIN:VEVENT
+UID:e477@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Ram Jam Jazz Jam
+DTSTART;TZID=Europe/London:20260621T150000
+DTEND;TZID=Europe/London:20260621T180000
+LOCATION:Ram Jam Records\, Kingston
+DESCRIPTION:Cost: £5 audience / £10 performers\nTravel: Easy local trip\nConfidence: High\nSource: https://ramjamrecords.co.uk/events/
+URL:https://ramjamrecords.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e478@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Choral Evensong
+DTSTART;TZID=Europe/London:20260621T180000
+DTEND;TZID=Europe/London:20260621T190000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:Travel: Walkable / very local\nConfidence: High\nSource: https://www.stmaryslongditton.org.uk/events
+URL:https://www.stmaryslongditton.org.uk/events
+END:VEVENT
+BEGIN:VEVENT
+UID:e482@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:James Acaster
+DTSTART;TZID=Europe/London:20260621T200000
+DTEND;TZID=Europe/London:20260621T210000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Rose listing shows sold out.\nTravel: Easy local trip\nConfidence: High\nSource: https://rosetheatre.org/whats-on/
+URL:https://rosetheatre.org/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e483@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Mark Thomas + special guest – Crack Comedy previews
+DTSTART;TZID=Europe/London:20260621T200000
+DTEND;TZID=Europe/London:20260621T230000
+LOCATION:Ram Jam Records\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://ramjamrecords.co.uk/events/
+URL:https://ramjamrecords.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e484@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:London Ultra
+DTSTART;VALUE=DATE:20260621
+DTEND;VALUE=DATE:20260622
+LOCATION:Kingston/Richmond/Thames route\, Kingston / wider
+DESCRIPTION:25km and 55km races in regional running calendar.\nTravel: Easy local trip\nConfidence: Medium/high\nSource: https://riverthamesrunning.co.uk/
+URL:https://riverthamesrunning.co.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:e486@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Bridge Group
+DTSTART;TZID=Europe/London:20260622T103000
+DTEND;TZID=Europe/London:20260622T130000
+LOCATION:Vital Village Community Hub\, Mercer Close\, Thames Ditton
+DESCRIPTION:Friendly bridge group supported by Vital Village volunteers.\nCost: £2 contribution\nTravel: Easy local trip\nConfidence: High / later dates inferred\nSource: https://www.vitalvillage.co.uk/event-list
+URL:https://www.vitalvillage.co.uk/event-list
+END:VEVENT
+BEGIN:VEVENT
+UID:e488@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Monday Chess Club
+DTSTART;TZID=Europe/London:20260622T153000
+DTEND;TZID=Europe/London:20260622T163000
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Library chess club\; dates inferred from library series (May half term may affect 25 May).\nCost: Free\nTravel: Walkable / very local\nConfidence: Medium (recurring inferred)\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e489@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Kingston Camera Club weekly meeting
+DTSTART;TZID=Europe/London:20260622T200000
+DTEND;TZID=Europe/London:20260622T220000
+LOCATION:St Andrew's Church Hall\, Ham
+DESCRIPTION:Weekly camera club meeting\; 1 June is directly listed\, later June follows weekly club pattern and should be verified for programme details.\nCost: Prospective members may visit free twice\; membership after\nTravel: Easy local trip\nConfidence: Medium / recurring pattern\nSource: https://www.kingston.gov.uk/events
+URL:https://www.kingston.gov.uk/events
+END:VEVENT
+BEGIN:VEVENT
+UID:e491@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Stay & Play
+DTSTART;TZID=Europe/London:20260623T093000
+DTEND;TZID=Europe/London:20260623T133000
+LOCATION:Vital Village Community Hub\, Mercer Close\, Thames Ditton
+DESCRIPTION:Relaxed free-play and social session for pre-schoolers and parents/carers.\nCost: Free or low-cost\; verify\nTravel: Easy local trip\nAge guidance: Family-friendly\nConfidence: High / later dates inferred\nSource: https://www.vitalvillage.co.uk/event-list
+URL:https://www.vitalvillage.co.uk/event-list
+END:VEVENT
+BEGIN:VEVENT
+UID:e566@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rhyme Time
+DTSTART;TZID=Europe/London:20260623T101500
+DTEND;TZID=Europe/London:20260623T111500
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Surbiton Library Rhyme Time sessions at 10:15 for ages 0–5 and 11:00 for ages 0–1\; booking required.\nCost: Free\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/series?sn=Rhyme+Time+Surbiton
+URL:https://kingston.events.mylibrary.digital/series?sn=Rhyme+Time+Surbiton
+END:VEVENT
+BEGIN:VEVENT
+UID:e574@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rhyme Time & Storytime
+DTSTART;TZID=Europe/London:20260623T103000
+DTEND;TZID=Europe/London:20260623T113000
+LOCATION:Tolworth Community Library\, Tolworth
+DESCRIPTION:Tolworth Community Library rhyme time and storytime for ages 0–4.\nCost: Free\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / live library index\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e494@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:KSS 60th Anniversary Afternoon Tea celebration
+DTSTART;TZID=Europe/London:20260623T123000
+DTEND;TZID=Europe/London:20260623T160000
+LOCATION:Glenmore House\, Surbiton
+DESCRIPTION:Music\, dancing\, food\; Kingston Association for Blind / KSS listing.\nCost: £10\nTravel: Walkable / very local\nConfidence: Medium/high\nSource: https://kingstonassociationforblind.org/whats-on-3/
+URL:https://kingstonassociationforblind.org/whats-on-3/
+END:VEVENT
+BEGIN:VEVENT
+UID:e495@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Scrabble Club
+DTSTART;TZID=Europe/London:20260623T140000
+DTEND;TZID=Europe/London:20260623T150000
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Cost: Free\nTravel: Walkable / very local\nConfidence: Medium/high\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e497@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Artist Irina Taneva's new show
+DTSTART;TZID=Europe/London:20260623T183000
+DTEND;TZID=Europe/London:20260623T193000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Travel: Walkable / very local\nConfidence: High\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e498@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Ditton Bridge Club
+DTSTART;TZID=Europe/London:20260623T190000
+DTEND;TZID=Europe/London:20260623T220000
+LOCATION:Vital Village Community Hub\, Mercer Close\, Thames Ditton
+DESCRIPTION:EBU-affiliated duplicate bridge session for intermediate players and above.\nCost: See organiser\nTravel: Easy local trip\nAge guidance: Family-friendly\nConfidence: High / later dates inferred\nSource: https://www.vitalvillage.co.uk/event-list
+URL:https://www.vitalvillage.co.uk/event-list
+END:VEVENT
+BEGIN:VEVENT
+UID:e499@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Dungeons & Dragons night
+DTSTART;TZID=Europe/London:20260623T190000
+DTEND;TZID=Europe/London:20260623T200000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://www.the-fighting-cocks.co.uk/events/
+URL:https://www.the-fighting-cocks.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e502@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Enchanted Child - Music for Toddlers
+DTSTART;TZID=Europe/London:20260624T093000
+DTEND;TZID=Europe/London:20260624T103000
+LOCATION:Vital Village Community Hub\, Mercer Close\, Thames Ditton
+DESCRIPTION:Toddler music session from Vital Village weekly listing.\nCost: Paid / booking likely\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: Medium / recurring pattern\nSource: https://www.vitalvillage.co.uk/event-list
+URL:https://www.vitalvillage.co.uk/event-list
+END:VEVENT
+BEGIN:VEVENT
+UID:e505@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Knit & Natter
+DTSTART;TZID=Europe/London:20260624T110000
+DTEND;TZID=Europe/London:20260624T120000
+LOCATION:Tolworth Community Library\, Tolworth
+DESCRIPTION:Knit & Natter adult event\; later June dates inferred from weekly pattern.\nCost: Free\nTravel: Walkable / very local\nConfidence: Medium (some dates inferred)\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e578@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Reading Retreat at Tolworth Community Library
+DTSTART;TZID=Europe/London:20260624T143000
+DTEND;TZID=Europe/London:20260624T153000
+LOCATION:Tolworth Community Library\, Tolworth
+DESCRIPTION:Adult reading retreat at Tolworth Community Library.\nTravel: Walkable / very local\nConfidence: High / live library index\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e506@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Carter Sampson live
+DTSTART;TZID=Europe/London:20260624T190000
+DTEND;TZID=Europe/London:20260624T223000
+LOCATION:Ex Cellar Wine Cafe\, Surbiton
+DESCRIPTION:Travel: Walkable / very local\nConfidence: High\nSource: https://www.excellar.co.uk/blog/carter-sampson-live
+URL:https://www.excellar.co.uk/blog/carter-sampson-live
+END:VEVENT
+BEGIN:VEVENT
+UID:e508@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Ram Jam Open Mic
+DTSTART;TZID=Europe/London:20260624T190000
+DTEND;TZID=Europe/London:20260624T200000
+LOCATION:Ram Jam Records\, Kingston
+DESCRIPTION:Cost: Free\nTravel: Easy local trip\nConfidence: High\nSource: https://ramjamrecords.co.uk/events/
+URL:https://ramjamrecords.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e510@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Fellers men's chat
+DTSTART;TZID=Europe/London:20260624T200000
+DTEND;TZID=Europe/London:20260624T210000
+LOCATION:St George's Church\, Tolworth
+DESCRIPTION:Travel: Walkable / very local\nConfidence: High\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e511@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Regency Dance Classes
+DTSTART;TZID=Europe/London:20260624T203000
+DTEND;TZID=Europe/London:20260624T213000
+LOCATION:St Mark's Church Hall\, Surbiton
+DESCRIPTION:Cost: £6\nTravel: Walkable / very local\nConfidence: High\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e727@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Fiddly Diddly @ The Lamb
+DTSTART;VALUE=DATE:20260624
+DTEND;VALUE=DATE:20260625
+LOCATION:The Lamb\, Surbiton
+DESCRIPTION:Informal acoustic jam with local Irish folk musicians on the last Wednesday of the month.\nTravel: Walkable / very local\nConfidence: High / venue listing\nSource: https://www.lambsurbiton.co.uk/live-music-surbiton
+URL:https://www.lambsurbiton.co.uk/live-music-surbiton
+END:VEVENT
+BEGIN:VEVENT
+UID:e512@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Thames Relay Walk: Kingston to Kew section
+DTSTART;VALUE=DATE:20260624
+DTEND;VALUE=DATE:20260625
+LOCATION:Kingston riverside / Canbury area\, Kingston / Canbury
+DESCRIPTION:Kingston-to-Kew section of the Thames Relay Walk hosted by Thames Landscape Strategy\; details to come.\nCost: Free / booking likely\nTravel: Easy local trip\nConfidence: Medium / details TBC\nSource: https://canburyresidents.org.uk/
+URL:https://canburyresidents.org.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:e777@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Lambeth Music Service: Musitrax Festival 2026
+DTSTART;VALUE=DATE:20260625
+DTEND;VALUE=DATE:20260626
+LOCATION:The Clore Ballroom\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Young musicians at an accessible Southbank free event\; useful easy-train family music option.\nCost: Free\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/?artform-filter=family-young-people
+URL:https://www.southbankcentre.co.uk/whats-on/?artform-filter=family-young-people
+END:VEVENT
+BEGIN:VEVENT
+UID:e519@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:FUSE International
+DTSTART;TZID=Europe/London:20260625T100000
+DTEND;TZID=Europe/London:20260705T210000
+LOCATION:Rose Theatre\, ACT Theatre\, FUSEBOX and other Kingston venues\, Kingston
+DESCRIPTION:Update date range and venue detail from the current official Rose listing.\nCost: Free–paid\; check programme\nTravel: Easy local trip\nConfidence: High\nSource: https://www.rosetheatre.org/whats-on/fuse-international-9p45
+URL:https://www.rosetheatre.org/whats-on/fuse-international-9p45
+END:VEVENT
+BEGIN:VEVENT
+UID:e514@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Vital Village Art Classes
+DTSTART;TZID=Europe/London:20260625T103000
+DTEND;TZID=Europe/London:20260625T123000
+LOCATION:Vital Village Community Hub\, Mercer Close\, Thames Ditton
+DESCRIPTION:Friendly art class welcoming beginners and experienced creatives.\nCost: Paid / booking likely\nTravel: Easy local trip\nConfidence: High / later dates inferred\nSource: https://www.vitalvillage.co.uk/event-list
+URL:https://www.vitalvillage.co.uk/event-list
+END:VEVENT
+BEGIN:VEVENT
+UID:e516@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:New Blood June
+DTSTART;TZID=Europe/London:20260625T193000
+DTEND;TZID=Europe/London:20260625T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Free-entry 18+ new bands night per venue page.\nTravel: Easy local trip\nConfidence: High\nSource: https://www.the-fighting-cocks.co.uk/events/
+URL:https://www.the-fighting-cocks.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e517@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Scottish country dancing end-of-season party
+DTSTART;TZID=Europe/London:20260625T200000
+DTEND;TZID=Europe/London:20260625T220000
+LOCATION:St Mark's Church Hall\, Surbiton
+DESCRIPTION:End-of-season party / bring-and-share supper.\nCost: £4-£5\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.surbitoncaledonian.co.uk/calendar
+URL:https://www.surbitoncaledonian.co.uk/calendar
+END:VEVENT
+BEGIN:VEVENT
+UID:e518@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Jam-Pact / jam session at the Elm Tree
+DTSTART;TZID=Europe/London:20260625T203000
+DTEND;TZID=Europe/London:20260625T230000
+LOCATION:The Elm Tree\, Surbiton
+DESCRIPTION:Weekly live music/open mic/improvised jam session\; June dates inferred from weekly listing.\nCost: Free\nTravel: Walkable / very local\nConfidence: Medium (recurring inferred)\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e520@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Babes and Tots
+DTSTART;TZID=Europe/London:20260626T093000
+DTEND;TZID=Europe/London:20260626T113000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:Term-time Friday parent-and-toddler group.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: Medium/high\nSource: https://www.stmaryslongditton.org.uk/events
+URL:https://www.stmaryslongditton.org.uk/events
+END:VEVENT
+BEGIN:VEVENT
+UID:e778@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rug Rhymes: Summer
+DTSTART;TZID=Europe/London:20260626T100000
+DTEND;TZID=Europe/London:20260626T110000
+LOCATION:National Poetry Library\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Playful nursery-rhyme session for under-5s and grown-ups.\nCost: Check listing\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/?artform-filter=family-young-people
+URL:https://www.southbankcentre.co.uk/whats-on/?artform-filter=family-young-people
+END:VEVENT
+BEGIN:VEVENT
+UID:e765@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Melbury Music Quintet
+DTSTART;TZID=Europe/London:20260626T120000
+DTEND;TZID=Europe/London:20260626T140000
+LOCATION:Rose Cafe\, Kingston
+DESCRIPTION:Free Rose Cafe session with Melbury Music Quintet playing jazz\, blues\, pop and soul.\nCost: Free\nTravel: Walkable / very local\nAge guidance: Family-friendly\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e521@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Free organ recital
+DTSTART;TZID=Europe/London:20260626T131500
+DTEND;TZID=Europe/London:20260626T141500
+LOCATION:All Saints Kingston\, Kingston
+DESCRIPTION:Friday lunchtime organ-recital series\; check performer schedule.\nCost: Free\nTravel: Easy local trip\nConfidence: Medium (series pattern)\nSource: https://www.allsaintskingston.co.uk/events/
+URL:https://www.allsaintskingston.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e522@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Friday Night Comedy
+DTSTART;TZID=Europe/London:20260626T190000
+DTEND;TZID=Europe/London:20260626T220000
+LOCATION:The Grey Horse / Ram Jam\, Kingston
+DESCRIPTION:Cost: ~£20.66\nTravel: Easy local trip\nConfidence: Medium\nSource: https://ramjamrecords.co.uk/events/
+URL:https://ramjamrecords.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e523@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:NGS Open Garden: 5 Pemberton Road
+DTSTART;TZID=Europe/London:20260626T190000
+DTEND;TZID=Europe/London:20260626T210000
+LOCATION:5 Pemberton Road\, East Molesey
+DESCRIPTION:Evening National Garden Scheme opening with wine\; Molesey/Thames-side.\nCost: Adult £5\; child free\nTravel: Easy local trip\nAge guidance: Family-friendly\nConfidence: High\nSource: https://ngs.org.uk/gardens/5-pemberton-road-kt8/
+URL:https://ngs.org.uk/gardens/5-pemberton-road-kt8/
+END:VEVENT
+BEGIN:VEVENT
+UID:e524@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Kingston Stitchers: Members Evening
+DTSTART;TZID=Europe/London:20260626T191500
+DTEND;TZID=Europe/London:20260626T213000
+LOCATION:St Mark's Church Hall\, Surbiton
+DESCRIPTION:June meeting from Kingston Stitchers programme\; public guest arrangements should be verified before listing.\nCost: Members / guests verify\nTravel: Walkable / very local\nConfidence: Medium / verify guest access\nSource: https://kingstonstitchers.com/programme-of-talks-2/
+URL:https://kingstonstitchers.com/programme-of-talks-2/
+END:VEVENT
+BEGIN:VEVENT
+UID:e525@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:K-POP All Stars Tribute
+DTSTART;TZID=Europe/London:20260626T193000
+DTEND;TZID=Europe/London:20260626T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Keep 26 June performance and note there is also a separate 1 August matinee row proposed.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High\nSource: https://www.rosetheatre.org/whats-on/k-pop-all-stars-tribute-hqfz
+URL:https://www.rosetheatre.org/whats-on/k-pop-all-stars-tribute-hqfz
+END:VEVENT
+BEGIN:VEVENT
+UID:e526@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Poetry Night with Cheese Buffet
+DTSTART;TZID=Europe/London:20260626T193000
+DTEND;TZID=Europe/London:20260626T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Travel: Walkable / very local\nConfidence: High\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e527@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Simon Love & The Old Romantics / The Metatrons / Subliminal Girls
+DTSTART;TZID=Europe/London:20260626T193000
+DTEND;TZID=Europe/London:20260626T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://www.the-fighting-cocks.co.uk/events/
+URL:https://www.the-fighting-cocks.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e528@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Irvine's Family Funfair
+DTSTART;VALUE=DATE:20260626
+DTEND;VALUE=DATE:20260706
+LOCATION:Fairfield Recreation Ground\, Kingston
+DESCRIPTION:Family funfair in Fairfield Recreation Ground\, running into early July\; exact daily hours to verify.\nCost: Paid rides\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: Medium / verify times\nSource: https://familiesonline.co.uk/london-upon-thames/whats-on-for-families-in-richmond-kingston-north-surrey-in-may-and-june-2026/
+URL:https://familiesonline.co.uk/london-upon-thames/whats-on-for-families-in-richmond-kingston-north-surrey-in-may-and-june-2026/
+END:VEVENT
+BEGIN:VEVENT
+UID:e529@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:REMET Art Prize 2026 exhibition closes
+DTSTART;VALUE=DATE:20260627
+DTEND;VALUE=DATE:20260628
+LOCATION:Dorich House Museum\, Kingston / Kingston Hill
+DESCRIPTION:Exhibition ran 30 Apr–27 Jun.\nTravel: Easy local trip\nConfidence: High\nSource: https://www.dorichhousemuseum.org.uk/whats-on/
+URL:https://www.dorichhousemuseum.org.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e758@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Members-only Early Gardens Access
+DTSTART;TZID=Europe/London:20260627T090000
+DTEND;TZID=Europe/London:20260627T100000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Quiet early access to selected Hampton Court gardens before public opening.\nCost: Free\; advance booking required\; members only\nTravel: Easy local trip\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/members-only-early-gardens-access/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/members-only-early-gardens-access/
+END:VEVENT
+BEGIN:VEVENT
+UID:e530@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Thames Ditton Farmers Market
+DTSTART;TZID=Europe/London:20260627T090000
+DTEND;TZID=Europe/London:20260627T130000
+LOCATION:Mercer Close\, Thames Ditton
+DESCRIPTION:Volunteer-run fourth-Saturday community market\; time from local-market listings\, pattern from official site.\nCost: Free entry\nTravel: Easy local trip\nConfidence: High / time from local listing\nSource: https://www.thamesdittonfarmersmarket.co.uk/
+URL:https://www.thamesdittonfarmersmarket.co.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:e531@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Christ Church CofE Primary School Summer Fair
+DTSTART;TZID=Europe/London:20260627T110000
+DTEND;TZID=Europe/London:20260627T143000
+LOCATION:Christ Church CofE Primary School\, Surbiton
+DESCRIPTION:PSA summer fair\; fair-board listing confirms date/time.\nCost: Free entry / spend at stalls\; verify\nTravel: Walkable / very local\nAge guidance: Family-friendly\nConfidence: High\nSource: https://christchurchpsasurbiton.charityhive.co.uk/tickets/26/summer-fair-boards-2026
+URL:https://christchurchpsasurbiton.charityhive.co.uk/tickets/26/summer-fair-boards-2026
+END:VEVENT
+BEGIN:VEVENT
+UID:e532@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:St Paul's Catholic Primary School Summer Fair
+DTSTART;TZID=Europe/London:20260627T120000
+DTEND;TZID=Europe/London:20260627T150000
+LOCATION:St Paul's Catholic Primary School\, Thames Ditton
+DESCRIPTION:School association summer fair\; social listing gives date/time and Thames Ditton venue.\nCost: Free entry / spend at stalls\; verify\nTravel: Easy local trip\nAge guidance: Family-friendly\nConfidence: Medium / social snippet\nSource: https://www.instagram.com/p/DLhjJECumy9/
+URL:https://www.instagram.com/p/DLhjJECumy9/
+END:VEVENT
+BEGIN:VEVENT
+UID:e567@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Decolonisation creative writing workshop: Be part of history
+DTSTART;TZID=Europe/London:20260627T130000
+DTEND;TZID=Europe/London:20260627T140000
+LOCATION:Tolworth Community Library\, Tolworth
+DESCRIPTION:Creative writing and local history workshop listed by Kingston Libraries.\nCost: Free\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / live library index\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e533@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:ABBA Tribute Night
+DTSTART;TZID=Europe/London:20260627T193000
+DTEND;TZID=Europe/London:20260627T203000
+LOCATION:Surbiton Royal British Legion\, Surbiton
+DESCRIPTION:Travel: Walkable / very local\nConfidence: High\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e534@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Kingston Philharmonia Summer Concert
+DTSTART;TZID=Europe/London:20260627T193000
+DTEND;TZID=Europe/London:20260627T213000
+LOCATION:St Andrew's Church\, Surbiton
+DESCRIPTION:Vaughan Williams and Mahler programme.\nCost: £5-£15\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.kingstonphilharmonia.org.uk/
+URL:https://www.kingstonphilharmonia.org.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:e535@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Albion / Tempest Saint
+DTSTART;TZID=Europe/London:20260627T200000
+DTEND;TZID=Europe/London:20260627T210000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://www.the-fighting-cocks.co.uk/events/
+URL:https://www.the-fighting-cocks.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e536@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Soul Immigrants
+DTSTART;TZID=Europe/London:20260627T200000
+DTEND;TZID=Europe/London:20260627T215000
+LOCATION:Ram Jam Records\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://ramjamrecords.co.uk/events/
+URL:https://ramjamrecords.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e537@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Forge Experience Day
+DTSTART;TZID=Europe/London:20260628T093000
+DTEND;TZID=Europe/London:20260628T103000
+LOCATION:Surbiton Community Forge\, Tolworth Main Allotments\, Tolworth
+DESCRIPTION:Cost: Paid\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.eventbrite.co.uk/o/the-community-brain-54267289413
+URL:https://www.eventbrite.co.uk/o/the-community-brain-54267289413
+END:VEVENT
+BEGIN:VEVENT
+UID:e779@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Mozart's Jupiter by Heart: Family Edit
+DTSTART;TZID=Europe/London:20260628T140000
+DTEND;TZID=Europe/London:20260628T150000
+LOCATION:Royal Festival Hall\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Immersive Aurora Orchestra family concert\; step inside Mozart?s Jupiter Symphony.\nCost: From GBP 22 + booking fee\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/mozarts-jupiter-by-heart-family-edit/
+URL:https://www.southbankcentre.co.uk/whats-on/mozarts-jupiter-by-heart-family-edit/
+END:VEVENT
+BEGIN:VEVENT
+UID:e538@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Canbury Bandstand Concerts: performer TBC
+DTSTART;TZID=Europe/London:20260628T150000
+DTEND;TZID=Europe/London:20260628T170000
+LOCATION:Canbury Gardens Bandstand\, Kingston
+DESCRIPTION:Free summer Sunday live music by the Thames\; date appears on 2026 Canbury Bandstand listing/poster\, but accessible snippets did not expose the performer name.\nCost: Free\nTravel: Easy local trip\nConfidence: Medium (date listed\; performer not visible in accessible snippet)\nSource: https://www.facebook.com/100072240756380/posts/drumroll-please-canbury-bandstand-concerts-are-pleased-to-present-this-years-sum/932170432534307/
+URL:https://www.facebook.com/100072240756380/posts/drumroll-please-canbury-bandstand-concerts-are-pleased-to-present-this-years-sum/932170432534307/
+END:VEVENT
+BEGIN:VEVENT
+UID:e539@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Shakespeare in the Square
+DTSTART;TZID=Europe/London:20260628T163000
+DTEND;TZID=Europe/London:20260628T173000
+LOCATION:St Andrew's Square\, Surbiton
+DESCRIPTION:Outdoor Shakespeare/theatre in St Andrew's Square.\nTravel: Walkable / very local\nConfidence: High\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e540@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Cock Pit / Open Mic
+DTSTART;TZID=Europe/London:20260628T180000
+DTEND;TZID=Europe/London:20260628T190000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://www.the-fighting-cocks.co.uk/events/
+URL:https://www.the-fighting-cocks.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e544@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Matt Forde + Bella Hull – Crack Comedy previews
+DTSTART;TZID=Europe/London:20260628T200000
+DTEND;TZID=Europe/London:20260628T230000
+LOCATION:Ram Jam Records\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://ramjamrecords.co.uk/events/
+URL:https://ramjamrecords.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e546@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Bridge Group
+DTSTART;TZID=Europe/London:20260629T103000
+DTEND;TZID=Europe/London:20260629T130000
+LOCATION:Vital Village Community Hub\, Mercer Close\, Thames Ditton
+DESCRIPTION:Friendly bridge group supported by Vital Village volunteers.\nCost: £2 contribution\nTravel: Easy local trip\nConfidence: High / later dates inferred\nSource: https://www.vitalvillage.co.uk/event-list
+URL:https://www.vitalvillage.co.uk/event-list
+END:VEVENT
+BEGIN:VEVENT
+UID:e548@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Monday Chess Club
+DTSTART;TZID=Europe/London:20260629T153000
+DTEND;TZID=Europe/London:20260629T163000
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Library chess club\; dates inferred from library series (May half term may affect 25 May).\nCost: Free\nTravel: Walkable / very local\nConfidence: Medium (recurring inferred)\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e549@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Comedy Course
+DTSTART;TZID=Europe/London:20260629T190000
+DTEND;TZID=Europe/London:20260629T220000
+LOCATION:Ram Jam Records\, Kingston
+DESCRIPTION:Travel: Easy local trip\nConfidence: High\nSource: https://ramjamrecords.co.uk/events/
+URL:https://ramjamrecords.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e550@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Kingston Camera Club weekly meeting
+DTSTART;TZID=Europe/London:20260629T200000
+DTEND;TZID=Europe/London:20260629T220000
+LOCATION:St Andrew's Church Hall\, Ham
+DESCRIPTION:Weekly camera club meeting\; 1 June is directly listed\, later June follows weekly club pattern and should be verified for programme details.\nCost: Prospective members may visit free twice\; membership after\nTravel: Easy local trip\nConfidence: Medium / recurring pattern\nSource: https://www.kingston.gov.uk/events
+URL:https://www.kingston.gov.uk/events
+END:VEVENT
+BEGIN:VEVENT
+UID:e552@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Stay & Play
+DTSTART;TZID=Europe/London:20260630T093000
+DTEND;TZID=Europe/London:20260630T133000
+LOCATION:Vital Village Community Hub\, Mercer Close\, Thames Ditton
+DESCRIPTION:Relaxed free-play and social session for pre-schoolers and parents/carers.\nCost: Free or low-cost\; verify\nTravel: Easy local trip\nAge guidance: Family-friendly\nConfidence: High / later dates inferred\nSource: https://www.vitalvillage.co.uk/event-list
+URL:https://www.vitalvillage.co.uk/event-list
+END:VEVENT
+BEGIN:VEVENT
+UID:e553@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rhyme Time
+DTSTART;TZID=Europe/London:20260630T101500
+DTEND;TZID=Europe/London:20260630T111500
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Cost: Free\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: Medium/high\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e555@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Scrabble Club
+DTSTART;TZID=Europe/London:20260630T140000
+DTEND;TZID=Europe/London:20260630T150000
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Cost: Free\nTravel: Walkable / very local\nConfidence: Medium/high\nSource: https://kingston.events.mylibrary.digital/
+URL:https://kingston.events.mylibrary.digital/
+END:VEVENT
+BEGIN:VEVENT
+UID:e557@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Ditton Bridge Club
+DTSTART;TZID=Europe/London:20260630T190000
+DTEND;TZID=Europe/London:20260630T220000
+LOCATION:Vital Village Community Hub\, Mercer Close\, Thames Ditton
+DESCRIPTION:EBU-affiliated duplicate bridge session for intermediate players and above.\nCost: See organiser\nTravel: Easy local trip\nAge guidance: Family-friendly\nConfidence: High / later dates inferred\nSource: https://www.vitalvillage.co.uk/event-list
+URL:https://www.vitalvillage.co.uk/event-list
+END:VEVENT
+BEGIN:VEVENT
+UID:e559@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Meet author Genevieve Marenghi
+DTSTART;TZID=Europe/London:20260630T193000
+DTEND;TZID=Europe/London:20260630T203000
+LOCATION:the cornerHOUSE / local venue\, Surbiton
+DESCRIPTION:GoodLife source printed 7:30am\; likely 7:30pm — verify before publishing.\nTravel: Walkable / very local\nConfidence: Medium (source time likely typo)\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e785@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Take Flight
+DTSTART;TZID=Europe/London:20260701T100000
+DTEND;TZID=Europe/London:20260701T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Aerial theatre show for ages 0-2 and grown-ups\; especially relevant for a toddler.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/shows/
+URL:https://polkatheatre.com/shows/
+END:VEVENT
+BEGIN:VEVENT
+UID:e759@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:KAE Celebration of Learning
+DTSTART;TZID=Europe/London:20260701T120000
+DTEND;TZID=Europe/London:20260817T160000
+LOCATION:Rose Theatre / Rose Café\, Kingston
+DESCRIPTION:Kingston Adult Education learning showcase in the Rose Café.\nCost: Free\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e588@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Lost at Sea\, stage show
+DTSTART;TZID=Europe/London:20260701T140000
+DTEND;TZID=Europe/London:20260701T150000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Kingston Adult Drama group performs Lost at Sea at the cornerHOUSE.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e682@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Mary in the Junkyard
+DTSTART;TZID=Europe/London:20260702T193000
+DTEND;TZID=Europe/London:20260702T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e589@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Babes & Tots Group
+DTSTART;TZID=Europe/London:20260703T090000
+DTEND;TZID=Europe/London:20260703T100000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:Weekly term-time group for little ones and carers at St Mary's Long Ditton.\nTravel: Easy local trip\nAge guidance: Family-friendly\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e766@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Jazz Fridays - Featuring the Cafe Jazz Band
+DTSTART;TZID=Europe/London:20260703T103000
+DTEND;TZID=Europe/London:20260703T123000
+LOCATION:Rose Cafe\, Kingston
+DESCRIPTION:Free selected-Friday live jazz session in the Rose Cafe\, with Cafe Jazz Band tunes from the great American Songbook.\nCost: Free\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on/jazz-fridays-hdbz
+URL:https://www.rosetheatre.org/whats-on/jazz-fridays-hdbz
+END:VEVENT
+BEGIN:VEVENT
+UID:e590@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Friendship Lunch
+DTSTART;TZID=Europe/London:20260703T120000
+DTEND;TZID=Europe/London:20260703T130000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:Home-cooked two-course lunch at St Mary's Long Ditton\; booking essential.\nTravel: Easy local trip\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e683@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Ghosts of Seattle
+DTSTART;TZID=Europe/London:20260703T193000
+DTEND;TZID=Europe/London:20260703T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e591@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hollyfest 2026
+DTSTART;TZID=Europe/London:20260704T140000
+DTEND;TZID=Europe/London:20260704T150000
+LOCATION:Hollyfield School\, Surbiton
+DESCRIPTION:Hollyfield School summer fling with music stages\, food\, bar\, inflatables and raffle.\nTravel: Walkable / very local\nAge guidance: Family-friendly\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e592@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Frozen Jr live on stage
+DTSTART;TZID=Europe/London:20260704T190000
+DTEND;TZID=Europe/London:20260704T200000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:South Side Theatre junior academy cast at the cornerHOUSE.\nTravel: Walkable / very local\nAge guidance: Family-friendly\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e593@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Bobby Davro on stage
+DTSTART;TZID=Europe/London:20260704T193000
+DTEND;TZID=Europe/London:20260704T203000
+LOCATION:Surbiton Royal British Legion\, Surbiton
+DESCRIPTION:Comedy night at Surbiton Royal British Legion.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e752@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:FUSE International highlight: Growl
+DTSTART;TZID=Europe/London:20260704T193000
+DTEND;TZID=Europe/London:20260704T203000
+LOCATION:Rose Theatre / FUSE International venues\, Kingston
+DESCRIPTION:Family musical presented as a FUSE International highlight\, featuring National Youth Music Theatre with international youth performers.\nCost: Ticketed / check FUSE\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.rosetheatre.org/whats-on/fuse-international-9p45
+URL:https://www.rosetheatre.org/whats-on/fuse-international-9p45
+END:VEVENT
+BEGIN:VEVENT
+UID:e594@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Free Surbiton Walking Tour
+DTSTART;TZID=Europe/London:20260705T110000
+DTEND;TZID=Europe/London:20260705T120000
+LOCATION:Starts outside Surbiton Station\, Surbiton
+DESCRIPTION:Monthly Kingston Tour Guides walking tour from Surbiton Station.\nCost: Free\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e747@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Thames Ditton Miniature Railway: Public Running Day
+DTSTART;TZID=Europe/London:20260705T130000
+DTEND;TZID=Europe/London:20260705T160000
+LOCATION:Malden DSME / Thames Ditton Miniature Railway\, Thames Ditton
+DESCRIPTION:Public running afternoon at Thames Ditton Miniature Railway.\nCost: Ticketed\; tickets usually released two weeks before\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.malden-dsme.org/Events/Calendar/View?id=1435
+URL:https://www.malden-dsme.org/Events/Calendar/View?id=1435
+END:VEVENT
+BEGIN:VEVENT
+UID:e595@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Singalong
+DTSTART;TZID=Europe/London:20260706T140000
+DTEND;TZID=Europe/London:20260706T150000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Free cornerHOUSE singalong with tea and cake.\nCost: Free\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e760@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:West Side Story
+DTSTART;TZID=Europe/London:20260706T193000
+DTEND;TZID=Europe/London:20260706T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Coombe Academy of Performing Arts presents West Side Story at the Rose.\nCost: Ticketed\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e805@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rhyme Time
+DTSTART;TZID=Europe/London:20260707T101500
+DTEND;TZID=Europe/London:20260707T111500
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Songs and rhymes for babies and toddlers\; official series shows 10:15 and 11:00 sessions.\nCost: Free\; booking info on listing\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://kingston.events.mylibrary.digital/series?sn=Rhyme+Time+Surbiton
+URL:https://kingston.events.mylibrary.digital/series?sn=Rhyme+Time+Surbiton
+END:VEVENT
+BEGIN:VEVENT
+UID:e596@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Richard III and Surrey
+DTSTART;TZID=Europe/London:20260707T193000
+DTEND;TZID=Europe/London:20260707T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Surbiton & District Historical Society talk by Mike Page.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e786@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:There's a Tiger in the Garden
+DTSTART;TZID=Europe/London:20260708T100000
+DTEND;TZID=Europe/London:20260708T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Polka Theatre family show for ages 3-7.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/shows/
+URL:https://polkatheatre.com/shows/
+END:VEVENT
+BEGIN:VEVENT
+UID:e715@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Lego Robotics Club
+DTSTART;TZID=Europe/London:20260708T160000
+DTEND;TZID=Europe/London:20260708T170000
+LOCATION:Hook and Chessington Library\, Hook / Chessington
+DESCRIPTION:Monthly Lego Robotics Club at Hook and Chessington Library\; booking required.\nCost: Free\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=320679
+URL:https://kingston.events.mylibrary.digital/event?id=320679
+END:VEVENT
+BEGIN:VEVENT
+UID:e598@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Regency Dancing
+DTSTART;TZID=Europe/London:20260708T203000
+DTEND;TZID=Europe/London:20260708T213000
+LOCATION:St Mark's Church Hall\, Surbiton
+DESCRIPTION:Mrs Bennet?s Wednesday class at St Mark?s Church Hall.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e657@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Lion Inside
+DTSTART;VALUE=DATE:20260709
+DTEND;VALUE=DATE:20260713
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Family theatre based on the bestselling picture book.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e599@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:St Mary's Babes & Tots Group
+DTSTART;TZID=Europe/London:20260710T090000
+DTEND;TZID=Europe/London:20260710T100000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:Correct encoding in title\; weekly term-time group for little ones and carers.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e780@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rug Rhymes: Summer
+DTSTART;TZID=Europe/London:20260710T100000
+DTEND;TZID=Europe/London:20260710T110000
+LOCATION:National Poetry Library\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Second listed summer Rug Rhymes session for under-5s and grown-ups.\nCost: Check listing\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/?artform-filter=family-young-people
+URL:https://www.southbankcentre.co.uk/whats-on/?artform-filter=family-young-people
+END:VEVENT
+BEGIN:VEVENT
+UID:e739@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Henry VIII's Joust
+DTSTART;VALUE=DATE:20260711
+DTEND;VALUE=DATE:20260713
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Live Tudor jousting event at Hampton Court Palace.\nCost: Included in palace admission\; members go free with booking as required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/henry-viiis-joust/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/henry-viiis-joust/
+END:VEVENT
+BEGIN:VEVENT
+UID:e806@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rhyme Time
+DTSTART;TZID=Europe/London:20260714T101500
+DTEND;TZID=Europe/London:20260714T111500
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Songs and rhymes for babies and toddlers\; official series shows 10:15 and 11:00 sessions.\nCost: Free\; booking info on listing\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://kingston.events.mylibrary.digital/series?sn=Rhyme+Time+Surbiton
+URL:https://kingston.events.mylibrary.digital/series?sn=Rhyme+Time+Surbiton
+END:VEVENT
+BEGIN:VEVENT
+UID:e684@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Dungeons and Dragons
+DTSTART;TZID=Europe/London:20260714T190000
+DTEND;TZID=Europe/London:20260714T200000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e601@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Libyan Embassy Siege talk
+DTSTART;TZID=Europe/London:20260715T120000
+DTEND;TZID=Europe/London:20260715T130000
+LOCATION:Glenmore House\, Surbiton
+DESCRIPTION:Surbiton Probus lunch talk at Glenmore House.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e602@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Concert for Charity
+DTSTART;TZID=Europe/London:20260715T123000
+DTEND;TZID=Europe/London:20260715T133000
+LOCATION:Surbiton venue TBC\, Surbiton
+DESCRIPTION:Euphonix community choir charity concert linked to Tom Allen fundraising.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e761@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:History of Cheese in Henry VIII’s Kitchens
+DTSTART;TZID=Europe/London:20260715T183000
+DTEND;TZID=Europe/London:20260715T193000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:After-hours members-only talk and tasting in Henry VIII’s Kitchens.\nCost: £35\; members only\; advance booking required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/members-only-evening-history-of-cheese-in-henry-viii-s-kitchens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/members-only-evening-history-of-cheese-in-henry-viii-s-kitchens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e603@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Talk on Women's Suffrage
+DTSTART;TZID=Europe/London:20260715T200000
+DTEND;TZID=Europe/London:20260715T210000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:BookBox talk at St Mary's Long Ditton by Sarah Quail.\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e764@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Jazz with the Half-Diminished Band
+DTSTART;TZID=Europe/London:20260716T120000
+DTEND;TZID=Europe/London:20260716T140000
+LOCATION:Rose Cafe\, Kingston
+DESCRIPTION:Free lunchtime jazz with Half-Diminished playing jazz standards\, blues\, pop and rock numbers.\nCost: Free\nTravel: Easy local trip\nAge guidance: Family-friendly\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on/351/free-lunchtime-jazz-with-half-diminished-playing-a-mix-of-jazz-standards-as-well-as-blues-pop-and-rock-numbers/jazz-with-the-half-diminished-band
+URL:https://www.rosetheatre.org/whats-on/351/free-lunchtime-jazz-with-half-diminished-playing-a-mix-of-jazz-standards-as-well-as-blues-pop-and-rock-numbers/jazz-with-the-half-diminished-band
+END:VEVENT
+BEGIN:VEVENT
+UID:e658@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Simon & Garfunkel Story
+DTSTART;TZID=Europe/London:20260716T193000
+DTEND;TZID=Europe/London:20260716T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Music tribute show.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e767@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Jazz Fridays - Featuring the Cafe Jazz Band
+DTSTART;TZID=Europe/London:20260717T103000
+DTEND;TZID=Europe/London:20260717T123000
+LOCATION:Rose Cafe\, Kingston
+DESCRIPTION:Free selected-Friday live jazz session in the Rose Cafe\, with Cafe Jazz Band tunes from the great American Songbook.\nCost: Free\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on/jazz-fridays-hdbz
+URL:https://www.rosetheatre.org/whats-on/jazz-fridays-hdbz
+END:VEVENT
+BEGIN:VEVENT
+UID:e604@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Film Afternoon
+DTSTART;TZID=Europe/London:20260717T140000
+DTEND;TZID=Europe/London:20260717T150000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:Free film afternoon at St Mary's Long Ditton\, donations welcome.\nTravel: Easy local trip\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e659@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Radio Gaga - The Ultimate Celebration of Queen
+DTSTART;TZID=Europe/London:20260717T193000
+DTEND;TZID=Europe/London:20260717T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Queen tribute show.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e605@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Surbiton Farmers' Market
+DTSTART;TZID=Europe/London:20260718T090000
+DTEND;TZID=Europe/London:20260718T130000
+LOCATION:Maple Road\, Surbiton
+DESCRIPTION:Monthly farmers market in Maple Road.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e660@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Glenn Miller Orchestra
+DTSTART;TZID=Europe/London:20260718T183000
+DTEND;TZID=Europe/London:20260718T193000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Live big-band concert.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e740@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Henry VIII's Joust
+DTSTART;VALUE=DATE:20260718
+DTEND;VALUE=DATE:20260720
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Second weekend of Hampton Court Palace’s live Tudor jousting event.\nCost: Included in palace admission\; members go free with booking as required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/henry-viiis-joust/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/henry-viiis-joust/
+END:VEVENT
+BEGIN:VEVENT
+UID:e606@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Singalong
+DTSTART;TZID=Europe/London:20260720T140000
+DTEND;TZID=Europe/London:20260720T150000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Free cornerHOUSE singalong with tea and cake.\nCost: Free\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e685@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Drink & Draw July
+DTSTART;TZID=Europe/London:20260721T190000
+DTEND;TZID=Europe/London:20260721T200000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e607@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:How Birds Work - illustrated talk
+DTSTART;TZID=Europe/London:20260721T193000
+DTEND;TZID=Europe/London:20260721T203000
+LOCATION:Surbiton Hill Methodist Church\, Surbiton
+DESCRIPTION:Surbiton Bird Club monthly meeting.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e608@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Fellers Club
+DTSTART;TZID=Europe/London:20260722T200000
+DTEND;TZID=Europe/London:20260722T210000
+LOCATION:St George's Church\, Tolworth
+DESCRIPTION:Monthly men's group at St George's\, Tolworth.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e781@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Steel Rising
+DTSTART;TZID=Europe/London:20260724T120000
+DTEND;TZID=Europe/London:20260724T130000
+LOCATION:Riverside Terrace\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Free daytime steel pan performances by youth ensembles on the Riverside Terrace.\nCost: Free\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/family-young-people/gruffalo
+URL:https://www.southbankcentre.co.uk/whats-on/family-young-people/gruffalo
+END:VEVENT
+BEGIN:VEVENT
+UID:e800@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Family Theatre: Pinocchio by Illyria
+DTSTART;TZID=Europe/London:20260725T140000
+DTEND;TZID=Europe/London:20260725T153500
+LOCATION:Morden Hall Park\, Morden / Wimbledon edge
+DESCRIPTION:Outdoor musical family theatre in the Rose Garden\; recommended 5+ but younger children welcome and age 2-and-under free.\nCost: Adult GBP 16 / child GBP 12\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/4d8fd314-9823-4816-b907-a181300dee61
+URL:https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/4d8fd314-9823-4816-b907-a181300dee61
+END:VEVENT
+BEGIN:VEVENT
+UID:e741@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Havoc at Hampton Court Palace
+DTSTART;VALUE=DATE:20260725
+DTEND;VALUE=DATE:20260824
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Beano-themed summer adventure with Dennis and friends around Hampton Court Palace.\nCost: Included in palace admission\; members go free\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/beano-havoc-at-hampton-court-palace/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/beano-havoc-at-hampton-court-palace/
+END:VEVENT
+BEGIN:VEVENT
+UID:e801@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Family Theatre: Pinocchio by Illyria
+DTSTART;TZID=Europe/London:20260726T110000
+DTEND;TZID=Europe/London:20260726T123500
+LOCATION:Morden Hall Park\, Morden / Wimbledon edge
+DESCRIPTION:Outdoor musical family theatre in the Rose Garden\; recommended 5+ but younger children welcome and age 2-and-under free.\nCost: Adult GBP 16 / child GBP 12\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/4d8fd314-9823-4816-b907-a181300dee61
+URL:https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/4d8fd314-9823-4816-b907-a181300dee61
+END:VEVENT
+BEGIN:VEVENT
+UID:e686@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Open Mic
+DTSTART;TZID=Europe/London:20260726T193000
+DTEND;TZID=Europe/London:20260726T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e661@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rose Youth Theatre Summer Schools 2026
+DTSTART;TZID=Europe/London:20260727T093000
+DTEND;TZID=Europe/London:20260727T103000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Rose Youth Theatre summer schools.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e807@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Relaxed Morning in the Magic Garden
+DTSTART;TZID=Europe/London:20260728T093000
+DTEND;TZID=Europe/London:20260728T110000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Quiet Magic Garden session for neurodivergent and learning-disabled children\, families and friends.\nCost: Separate ticket\; advance booking required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e702@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Adult Book Group
+DTSTART;TZID=Europe/London:20260728T140000
+DTEND;TZID=Europe/London:20260728T150000
+LOCATION:Tolworth Community Library\, Tolworth
+DESCRIPTION:Monthly adult book group\; library provides the book.\nCost: Free\nTravel: Walkable / very local\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=253071
+URL:https://kingston.events.mylibrary.digital/event?id=253071
+END:VEVENT
+BEGIN:VEVENT
+UID:e687@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Dungeons and Dragons
+DTSTART;TZID=Europe/London:20260728T190000
+DTEND;TZID=Europe/London:20260728T200000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e728@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Fiddly Diddly @ The Lamb
+DTSTART;VALUE=DATE:20260729
+DTEND;VALUE=DATE:20260730
+LOCATION:The Lamb\, Surbiton
+DESCRIPTION:Informal acoustic jam with local Irish folk musicians on the last Wednesday of the month.\nTravel: Walkable / very local\nConfidence: High / venue listing\nSource: https://www.lambsurbiton.co.uk/live-music-surbiton
+URL:https://www.lambsurbiton.co.uk/live-music-surbiton
+END:VEVENT
+BEGIN:VEVENT
+UID:e742@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Members-Only Picnic Evening
+DTSTART;TZID=Europe/London:20260731T180000
+DTEND;TZID=Europe/London:20260731T203000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Members-only after-hours picnic evening in the Great Fountain Garden and Wilderness.\nCost: £5 member adults\; children on membership free\; advance ticket required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/members-only-bring-your-own-picnic-evening/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/members-only-bring-your-own-picnic-evening/
+END:VEVENT
+BEGIN:VEVENT
+UID:e688@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Asleep at the Helm + Iridium + Kila Kosa
+DTSTART;TZID=Europe/London:20260731T193000
+DTEND;TZID=Europe/London:20260731T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e753@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:K-POP All Stars Tribute
+DTSTART;TZID=Europe/London:20260801T150000
+DTEND;TZID=Europe/London:20260801T160000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Additional matinee performance of the K-POP tribute show already listed for 26 June.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.rosetheatre.org/whats-on/k-pop-all-stars-tribute-hqfz
+URL:https://www.rosetheatre.org/whats-on/k-pop-all-stars-tribute-hqfz
+END:VEVENT
+BEGIN:VEVENT
+UID:e808@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Relaxed Morning in the Magic Garden
+DTSTART;TZID=Europe/London:20260802T093000
+DTEND;TZID=Europe/London:20260802T110000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Quiet Magic Garden session for neurodivergent and learning-disabled children\, families and friends.\nCost: Separate ticket\; advance booking required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e610@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Surbiton History Walk
+DTSTART;TZID=Europe/London:20260802T110000
+DTEND;TZID=Europe/London:20260802T120000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Monthly Kingston Tour Guides walking tour from Surbiton Station.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e748@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Thames Ditton Miniature Railway: Public Running Day
+DTSTART;TZID=Europe/London:20260802T130000
+DTEND;TZID=Europe/London:20260802T160000
+LOCATION:Malden DSME / Thames Ditton Miniature Railway\, Thames Ditton
+DESCRIPTION:Public running afternoon at Thames Ditton Miniature Railway.\nCost: Ticketed\; tickets usually released two weeks before\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.malden-dsme.org/Events/Calendar/View?id=1436
+URL:https://www.malden-dsme.org/Events/Calendar/View?id=1436
+END:VEVENT
+BEGIN:VEVENT
+UID:e662@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Legend - The Music of Bob Marley
+DTSTART;TZID=Europe/London:20260802T193000
+DTEND;TZID=Europe/London:20260802T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Reggae tribute show.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e663@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Ministry of Science Live!
+DTSTART;VALUE=DATE:20260803
+DTEND;VALUE=DATE:20260810
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Family science show from the West End.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e611@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Talk on Shakespeare
+DTSTART;TZID=Europe/London:20260804T193000
+DTEND;TZID=Europe/London:20260804T203000
+LOCATION:Surbiton / nearby venue\, Surbiton
+DESCRIPTION:Surbiton & District Historical Society monthly talk.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e802@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Family Theatre: Peter Rabbit
+DTSTART;TZID=Europe/London:20260807T113000
+DTEND;TZID=Europe/London:20260807T123000
+LOCATION:Morden Hall Park\, Morden / Wimbledon edge
+DESCRIPTION:Outdoor Beatrix Potter family theatre in the Rose Garden\; recommended 3+\, age 2-and-under free.\nCost: Adult GBP 16 / child GBP 12\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/ddedc822-cbac-447b-8cd2-126bc8ce6d0b
+URL:https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/ddedc822-cbac-447b-8cd2-126bc8ce6d0b
+END:VEVENT
+BEGIN:VEVENT
+UID:e803@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Family Theatre: Peter Rabbit
+DTSTART;TZID=Europe/London:20260808T113000
+DTEND;TZID=Europe/London:20260808T123000
+LOCATION:Morden Hall Park\, Morden / Wimbledon edge
+DESCRIPTION:Outdoor Beatrix Potter family theatre in the Rose Garden\; recommended 3+\, age 2-and-under free.\nCost: Adult GBP 16 / child GBP 12\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/ddedc822-cbac-447b-8cd2-126bc8ce6d0b
+URL:https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/ddedc822-cbac-447b-8cd2-126bc8ce6d0b
+END:VEVENT
+BEGIN:VEVENT
+UID:e612@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Woody Guthrie Story\, live on stage
+DTSTART;TZID=Europe/London:20260811T193000
+DTEND;TZID=Europe/London:20260811T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Fire & Dust by Reg Meuross and The Strike at the cornerHOUSE.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e716@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Lego Robotics Club
+DTSTART;TZID=Europe/London:20260812T160000
+DTEND;TZID=Europe/London:20260812T170000
+LOCATION:Hook and Chessington Library\, Hook / Chessington
+DESCRIPTION:Monthly Lego Robotics Club at Hook and Chessington Library\; booking required.\nCost: Free\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=320679
+URL:https://kingston.events.mylibrary.digital/event?id=320679
+END:VEVENT
+BEGIN:VEVENT
+UID:e664@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Cat in the Hat
+DTSTART;VALUE=DATE:20260813
+DTEND;VALUE=DATE:20260817
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Family theatre.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e743@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Members-Only Picnic Evening
+DTSTART;TZID=Europe/London:20260814T180000
+DTEND;TZID=Europe/London:20260814T203000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Second members-only after-hours picnic evening in the palace gardens.\nCost: £5 member adults\; children on membership free\; advance ticket required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/members-only-bring-your-own-picnic-evening/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/members-only-bring-your-own-picnic-evening/
+END:VEVENT
+BEGIN:VEVENT
+UID:e614@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Surbiton Farmers' Market
+DTSTART;TZID=Europe/London:20260815T090000
+DTEND;TZID=Europe/London:20260815T130000
+LOCATION:Maple Road\, Surbiton
+DESCRIPTION:Monthly farmers market in Maple Road.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e689@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Dusk Brothers
+DTSTART;TZID=Europe/London:20260815T193000
+DTEND;TZID=Europe/London:20260815T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e615@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Bach to Baby concert at St Mark's
+DTSTART;TZID=Europe/London:20260818T110000
+DTEND;TZID=Europe/London:20260818T120000
+LOCATION:St Mark's Church\, Surbiton
+DESCRIPTION:Correct encoding in title\; baby- and toddler-friendly concert at St Mark's.\nCost: Ticketed\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e690@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Drink & Draw August
+DTSTART;TZID=Europe/London:20260818T190000
+DTEND;TZID=Europe/London:20260818T200000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e809@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Relaxed Morning in the Magic Garden
+DTSTART;TZID=Europe/London:20260819T093000
+DTEND;TZID=Europe/London:20260819T110000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Quiet Magic Garden session for neurodivergent and learning-disabled children\, families and friends.\nCost: Separate ticket\; advance booking required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e616@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Spy School talk
+DTSTART;TZID=Europe/London:20260819T120000
+DTEND;TZID=Europe/London:20260819T130000
+LOCATION:Glenmore House\, Surbiton
+DESCRIPTION:Surbiton Probus lunch talk on Wanborough Manor and the Surrey School for Spies.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e703@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Adult Book Group
+DTSTART;TZID=Europe/London:20260825T140000
+DTEND;TZID=Europe/London:20260825T150000
+LOCATION:Tolworth Community Library\, Tolworth
+DESCRIPTION:Monthly adult book group\; library provides the book.\nCost: Free\nTravel: Walkable / very local\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=253071
+URL:https://kingston.events.mylibrary.digital/event?id=253071
+END:VEVENT
+BEGIN:VEVENT
+UID:e729@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Fiddly Diddly @ The Lamb
+DTSTART;VALUE=DATE:20260826
+DTEND;VALUE=DATE:20260827
+LOCATION:The Lamb\, Surbiton
+DESCRIPTION:Informal acoustic jam with local Irish folk musicians on the last Wednesday of the month.\nTravel: Walkable / very local\nConfidence: High / venue listing\nSource: https://www.lambsurbiton.co.uk/live-music-surbiton
+URL:https://www.lambsurbiton.co.uk/live-music-surbiton
+END:VEVENT
+BEGIN:VEVENT
+UID:e744@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hampton Court Palace Food Festival
+DTSTART;TZID=Europe/London:20260829T100000
+DTEND;TZID=Europe/London:20260831T180000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Bank-holiday food festival with producers\, family activities\, characters and bandstand music.\nCost: Included in palace admission\; members go free with pre-booking required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-food-festival/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-food-festival/
+END:VEVENT
+BEGIN:VEVENT
+UID:e812@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Thames Ditton Miniature Railway: Public Running Day
+DTSTART;TZID=Europe/London:20260830T130000
+DTEND;TZID=Europe/London:20260830T160000
+LOCATION:Malden DSME / Thames Ditton Miniature Railway\, Thames Ditton
+DESCRIPTION:Additional August public running day at the miniature railway\, with online tickets and ticket-office sales from 13:00 if available.\nCost: Ticketed\; tickets usually released two weeks before\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.malden-dsme.org/Events/Calendar/View?id=1437
+URL:https://www.malden-dsme.org/Events/Calendar/View?id=1437
+END:VEVENT
+BEGIN:VEVENT
+UID:e691@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Open Mic
+DTSTART;TZID=Europe/London:20260830T193000
+DTEND;TZID=Europe/London:20260830T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e749@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Thames Ditton Miniature Railway: Bank Holiday Public Running Day
+DTSTART;TZID=Europe/London:20260831T130000
+DTEND;TZID=Europe/London:20260831T160000
+LOCATION:Malden DSME / Thames Ditton Miniature Railway\, Thames Ditton
+DESCRIPTION:Bank-holiday public running afternoon at Thames Ditton Miniature Railway.\nCost: Ticketed\; tickets usually released two weeks before\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.malden-dsme.org/Events/Calendar/View?id=1438
+URL:https://www.malden-dsme.org/Events/Calendar/View?id=1438
+END:VEVENT
+BEGIN:VEVENT
+UID:e617@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The History of Seething Wells
+DTSTART;TZID=Europe/London:20260901T193000
+DTEND;TZID=Europe/London:20260901T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Surbiton & District Historical Society talk by David Kennedy.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e768@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Jazz Fridays - Featuring the Cafe Jazz Band
+DTSTART;TZID=Europe/London:20260904T103000
+DTEND;TZID=Europe/London:20260904T123000
+LOCATION:Rose Cafe\, Kingston
+DESCRIPTION:Free selected-Friday live jazz session in the Rose Cafe\, with Cafe Jazz Band tunes from the great American Songbook.\nCost: Free\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on/jazz-fridays-hdbz
+URL:https://www.rosetheatre.org/whats-on/jazz-fridays-hdbz
+END:VEVENT
+BEGIN:VEVENT
+UID:e820@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rug Rhymes: Autumn
+DTSTART;TZID=Europe/London:20260904T110000
+DTEND;TZID=Europe/London:20260904T113000
+LOCATION:National Poetry Library\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Under-5s poetry and nursery-rhyme session with National Poetry Library puppets Federico and Firebird.\nCost: £4\; admits one child and one adult\; no booking fee\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
+URL:https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
+END:VEVENT
+BEGIN:VEVENT
+UID:e692@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Los Fastidios and guests
+DTSTART;TZID=Europe/London:20260904T193000
+DTEND;TZID=Europe/London:20260904T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e706@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Stitch Saturdays
+DTSTART;TZID=Europe/London:20260905T103000
+DTEND;TZID=Europe/London:20260905T123000
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Informal stitch and chat at Surbiton Library\; first Saturday monthly except August and December.\nCost: Free\nTravel: Walkable / very local\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=252876
+URL:https://kingston.events.mylibrary.digital/event?id=252876
+END:VEVENT
+BEGIN:VEVENT
+UID:e665@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Live at the Rose with Lou Sanders
+DTSTART;TZID=Europe/London:20260905T193000
+DTEND;TZID=Europe/London:20260905T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Comedy night with Lou Sanders\, Jeff Innocent\, Eli Hart and Eshaan Akbar.\nCost: Ticketed\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e618@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Walking Tour of Surbiton
+DTSTART;TZID=Europe/London:20260906T110000
+DTEND;TZID=Europe/London:20260906T120000
+LOCATION:Starts outside Surbiton Station\, Surbiton
+DESCRIPTION:Monthly Kingston Tour Guides walking tour from Surbiton Station.\nCost: Free\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e750@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Thames Ditton Miniature Railway: Public Running Day
+DTSTART;TZID=Europe/London:20260906T130000
+DTEND;TZID=Europe/London:20260906T160000
+LOCATION:Malden DSME / Thames Ditton Miniature Railway\, Thames Ditton
+DESCRIPTION:Public running afternoon at Thames Ditton Miniature Railway.\nCost: Ticketed\; tickets usually released two weeks before\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.malden-dsme.org/Events/Calendar/View?id=1439
+URL:https://www.malden-dsme.org/Events/Calendar/View?id=1439
+END:VEVENT
+BEGIN:VEVENT
+UID:e666@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:House of Fun
+DTSTART;TZID=Europe/London:20260906T193000
+DTEND;TZID=Europe/London:20260906T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:2Tone and ska revival show.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e620@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Gerry Colvin live on stage
+DTSTART;TZID=Europe/London:20260908T193000
+DTEND;TZID=Europe/London:20260908T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Gerry Colvin band night at the cornerHOUSE.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e621@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Surbiton Neighbourhood Committee meeting
+DTSTART;TZID=Europe/London:20260908T193000
+DTEND;TZID=Europe/London:20260908T203000
+LOCATION:Surbiton / nearby venue\, Surbiton
+DESCRIPTION:Surbiton councillors neighbourhood committee at Glenmore House.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e667@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Makings of a Murderer
+DTSTART;TZID=Europe/London:20260908T193000
+DTEND;TZID=Europe/London:20260908T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Talk: The Undercover Detective.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e717@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Lego Robotics Club
+DTSTART;TZID=Europe/London:20260909T160000
+DTEND;TZID=Europe/London:20260909T170000
+LOCATION:Hook and Chessington Library\, Hook / Chessington
+DESCRIPTION:Monthly Lego Robotics Club at Hook and Chessington Library\; booking required.\nCost: Free\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=320679
+URL:https://kingston.events.mylibrary.digital/event?id=320679
+END:VEVENT
+BEGIN:VEVENT
+UID:e622@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:David Le Vay art show
+DTSTART;TZID=Europe/London:20260909T190000
+DTEND;TZID=Europe/London:20260909T200000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Meet the Artist event at the cornerHOUSE.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e623@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Meet the Artist Night - Emma Burton
+DTSTART;TZID=Europe/London:20260909T190000
+DTEND;TZID=Europe/London:20260909T200000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Meet the Artist event for Emma Burton at the cornerHOUSE.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e821@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rug Rhymes: Autumn
+DTSTART;TZID=Europe/London:20260911T110000
+DTEND;TZID=Europe/London:20260911T113000
+LOCATION:National Poetry Library\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Under-5s poetry and nursery-rhyme session with National Poetry Library puppets Federico and Firebird.\nCost: £4\; admits one child and one adult\; no booking fee\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
+URL:https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
+END:VEVENT
+BEGIN:VEVENT
+UID:e804@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Abundance Wimbledon Fruit Day
+DTSTART;TZID=Europe/London:20260912T110000
+DTEND;TZID=Europe/London:20260912T143000
+LOCATION:St Mark's Church Hall\, Wimbledon
+DESCRIPTION:Family-friendly fruit day with apple pressing\, children's pie-making\, competitions\, stalls and ukulele-band music.\nCost: Free entry / stalls\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.abundancewimbledon.com/
+URL:https://www.abundancewimbledon.com/
+END:VEVENT
+BEGIN:VEVENT
+UID:e624@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Meet the Neighbours
+DTSTART;TZID=Europe/London:20260912T120000
+DTEND;TZID=Europe/London:20260912T130000
+LOCATION:St George's Church\, Tolworth
+DESCRIPTION:Community event on the lawn at St George's\, Tolworth.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e813@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hampton Court Palace Garden Open Day
+DTSTART;VALUE=DATE:20260912
+DTEND;VALUE=DATE:20260913
+LOCATION:Hampton Court Palace gardens\, Hampton Court
+DESCRIPTION:Selected free garden open day\; no tickets or pre-booking required for garden entry.\nCost: Free garden entry\; palace\, Maze and Magic Garden still ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e810@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Relaxed Morning in the Magic Garden
+DTSTART;TZID=Europe/London:20260913T093000
+DTEND;TZID=Europe/London:20260913T110000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Quiet Magic Garden session for neurodivergent and learning-disabled children\, families and friends.\nCost: Separate ticket\; advance booking required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e814@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hampton Court Palace Garden Open Day
+DTSTART;VALUE=DATE:20260913
+DTEND;VALUE=DATE:20260914
+LOCATION:Hampton Court Palace gardens\, Hampton Court
+DESCRIPTION:Selected free garden open day\; no tickets or pre-booking required for garden entry.\nCost: Free garden entry\; palace\, Maze and Magic Garden still ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e625@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Birds of the Horn of Africa - illustrated talk
+DTSTART;TZID=Europe/London:20260915T193000
+DTEND;TZID=Europe/London:20260915T203000
+LOCATION:Surbiton Hill Methodist Church\, Surbiton
+DESCRIPTION:Surbiton Bird Club talk by John Caddick.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e626@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Parkinson's talk
+DTSTART;TZID=Europe/London:20260916T120000
+DTEND;TZID=Europe/London:20260916T130000
+LOCATION:Glenmore House\, Surbiton
+DESCRIPTION:Surbiton Probus lunch talk by Arthur Hook.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e762@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:History of Cheese in Henry VIII’s Kitchens
+DTSTART;TZID=Europe/London:20260916T183000
+DTEND;TZID=Europe/London:20260916T193000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:After-hours members-only talk and tasting in Henry VIII’s Kitchens.\nCost: £35\; members only\; advance booking required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/members-only-evening-history-of-cheese-in-henry-viii-s-kitchens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/members-only-evening-history-of-cheese-in-henry-viii-s-kitchens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e627@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Andrew's Biographer Tells All
+DTSTART;TZID=Europe/London:20260916T200000
+DTEND;TZID=Europe/London:20260916T210000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:BookBox talk with Andrew Lownie at St Mary's Long Ditton.\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e769@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Jazz Fridays - Featuring the Cafe Jazz Band
+DTSTART;TZID=Europe/London:20260918T103000
+DTEND;TZID=Europe/London:20260918T123000
+LOCATION:Rose Cafe\, Kingston
+DESCRIPTION:Free selected-Friday live jazz session in the Rose Cafe\, with Cafe Jazz Band tunes from the great American Songbook.\nCost: Free\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on/jazz-fridays-hdbz
+URL:https://www.rosetheatre.org/whats-on/jazz-fridays-hdbz
+END:VEVENT
+BEGIN:VEVENT
+UID:e668@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Three Men in a Boat
+DTSTART;VALUE=DATE:20260918
+DTEND;VALUE=DATE:20261011
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Rose Theatre production: a new comedy based on Jerome K. Jerome’s novel.\nCost: Ticketed\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e628@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Surbiton Farmers' Market
+DTSTART;TZID=Europe/London:20260919T090000
+DTEND;TZID=Europe/London:20260919T130000
+LOCATION:Maple Road\, Surbiton
+DESCRIPTION:Monthly farmers market in Maple Road.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e788@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Big Dreams: MC Grammar
+DTSTART;TZID=Europe/London:20260919T100000
+DTEND;TZID=Europe/London:20260919T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Big Dreams festival performance for ages 3-7.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/shows/
+URL:https://polkatheatre.com/shows/
+END:VEVENT
+BEGIN:VEVENT
+UID:e787@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Big Dreams: Multicolore
+DTSTART;TZID=Europe/London:20260919T100000
+DTEND;TZID=Europe/London:20260919T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Big Dreams festival show for ages 18 months-6 years.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Family-friendly\nConfidence: High\nSource: https://polkatheatre.com/shows/
+URL:https://polkatheatre.com/shows/
+END:VEVENT
+BEGIN:VEVENT
+UID:e693@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Chocolate Star Fish
+DTSTART;TZID=Europe/London:20260919T193000
+DTEND;TZID=Europe/London:20260919T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e789@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Big Dreams: Family Rave
+DTSTART;TZID=Europe/London:20260920T100000
+DTEND;TZID=Europe/London:20260920T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Big Dreams family rave for ages 0-4.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/shows/
+URL:https://polkatheatre.com/shows/
+END:VEVENT
+BEGIN:VEVENT
+UID:e790@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Big Dreams: Nick Sharratt - Once Upon a Drawalong
+DTSTART;TZID=Europe/London:20260920T100000
+DTEND;TZID=Europe/London:20260920T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Drawalong with Nick Sharratt for ages 3-7.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/shows/
+URL:https://polkatheatre.com/shows/
+END:VEVENT
+BEGIN:VEVENT
+UID:e629@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Meet the Fellers
+DTSTART;TZID=Europe/London:20260923T200000
+DTEND;TZID=Europe/London:20260923T210000
+LOCATION:St George's Church\, Tolworth
+DESCRIPTION:Monthly men's group at St George's\, Tolworth.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e725@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Surbiton Festival 2026 official market day
+DTSTART;TZID=Europe/London:20260926T100000
+DTEND;TZID=Europe/London:20260926T160000
+LOCATION:Surbiton town centre\, Surbiton
+DESCRIPTION:Official Surbiton Festival market day with parade\, live music\, family activities\, food and drink\; volunteer-run community event.\nCost: Free\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / official festival page\nSource: https://www.surbitonfestival.co.uk/events/
+URL:https://www.surbitonfestival.co.uk/events/
+END:VEVENT
+BEGIN:VEVENT
+UID:e694@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Fall Of Atlantis + Sigils + Scars of Protest
+DTSTART;TZID=Europe/London:20260926T193000
+DTEND;TZID=Europe/London:20260926T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e669@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:An Evening with Nigel Owens MBE
+DTSTART;TZID=Europe/London:20260927T193000
+DTEND;TZID=Europe/London:20260927T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Talk at Rose Theatre.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e695@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Open Mic
+DTSTART;TZID=Europe/London:20260927T193000
+DTEND;TZID=Europe/London:20260927T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e704@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Adult Book Group
+DTSTART;TZID=Europe/London:20260929T140000
+DTEND;TZID=Europe/London:20260929T150000
+LOCATION:Tolworth Community Library\, Tolworth
+DESCRIPTION:Monthly adult book group\; library provides the book.\nCost: Free\nTravel: Walkable / very local\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=253071
+URL:https://kingston.events.mylibrary.digital/event?id=253071
+END:VEVENT
+BEGIN:VEVENT
+UID:e730@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Fiddly Diddly @ The Lamb
+DTSTART;VALUE=DATE:20260930
+DTEND;VALUE=DATE:20261001
+LOCATION:The Lamb\, Surbiton
+DESCRIPTION:Informal acoustic jam with local Irish folk musicians on the last Wednesday of the month.\nTravel: Walkable / very local\nConfidence: High / venue listing\nSource: https://www.lambsurbiton.co.uk/live-music-surbiton
+URL:https://www.lambsurbiton.co.uk/live-music-surbiton
+END:VEVENT
+BEGIN:VEVENT
+UID:e791@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Three Little Pigs
+DTSTART;TZID=Europe/London:20261001T100000
+DTEND;TZID=Europe/London:20261001T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Polka Theatre show for ages 3-7.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/shows/page/2/
+URL:https://polkatheatre.com/shows/page/2/
+END:VEVENT
+BEGIN:VEVENT
+UID:e707@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Stitch Saturdays
+DTSTART;TZID=Europe/London:20261003T103000
+DTEND;TZID=Europe/London:20261003T123000
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Informal stitch and chat at Surbiton Library\; first Saturday monthly except August and December.\nCost: Free\nTravel: Walkable / very local\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=252876
+URL:https://kingston.events.mylibrary.digital/event?id=252876
+END:VEVENT
+BEGIN:VEVENT
+UID:e811@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Relaxed Morning in the Magic Garden
+DTSTART;TZID=Europe/London:20261004T093000
+DTEND;TZID=Europe/London:20261004T110000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Quiet Magic Garden session for neurodivergent and learning-disabled children\, families and friends.\nCost: Separate ticket\; advance booking required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e631@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Walking Through Surbiton's History
+DTSTART;TZID=Europe/London:20261004T110000
+DTEND;TZID=Europe/London:20261004T120000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Monthly Kingston Tour Guides walking tour from Surbiton Station.\nCost: Free\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e751@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Thames Ditton Miniature Railway: Public Running Day
+DTSTART;TZID=Europe/London:20261004T130000
+DTEND;TZID=Europe/London:20261004T160000
+LOCATION:Malden DSME / Thames Ditton Miniature Railway\, Thames Ditton
+DESCRIPTION:Public running afternoon at Thames Ditton Miniature Railway.\nCost: Ticketed\; tickets usually released two weeks before\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.malden-dsme.org/Events/Calendar/View?id=1440
+URL:https://www.malden-dsme.org/Events/Calendar/View?id=1440
+END:VEVENT
+BEGIN:VEVENT
+UID:e670@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Tim Peake: Astronauts
+DTSTART;TZID=Europe/London:20261004T140000
+DTEND;TZID=Europe/London:20261004T150000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:The Quest to Explore Space tour.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e724@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Alien Chicks album-release show
+DTSTART;TZID=Europe/London:20261005T190000
+DTEND;TZID=Europe/London:20261005T200000
+LOCATION:Banquet Records / Kingston venue\, Kingston
+DESCRIPTION:Banquet Records Kingston event listed for October 2026.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/banquet-records
+URL:https://www.ents24.com/kingston-upon-thames-events/banquet-records
+END:VEVENT
+BEGIN:VEVENT
+UID:e632@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Agatha Christie and True Crime
+DTSTART;TZID=Europe/London:20261006T193000
+DTEND;TZID=Europe/London:20261006T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Surbiton & District Historical Society talk by Dr Jonathan Oates.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e633@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Meet author Tim Flower
+DTSTART;TZID=Europe/London:20261007T193000
+DTEND;TZID=Europe/London:20261007T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Author interview at the cornerHOUSE.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e822@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rug Rhymes: Autumn
+DTSTART;TZID=Europe/London:20261009T110000
+DTEND;TZID=Europe/London:20261009T113000
+LOCATION:National Poetry Library\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Under-5s poetry and nursery-rhyme session with National Poetry Library puppets Federico and Firebird.\nCost: £4\; admits one child and one adult\; no booking fee\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
+URL:https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
+END:VEVENT
+BEGIN:VEVENT
+UID:e792@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Toto
+DTSTART;TZID=Europe/London:20261010T100000
+DTEND;TZID=Europe/London:20261010T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Polka Theatre show for ages 3-8.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/shows/page/2/
+URL:https://polkatheatre.com/shows/page/2/
+END:VEVENT
+BEGIN:VEVENT
+UID:e696@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Red Hot Tribute Peppers
+DTSTART;TZID=Europe/London:20261010T193000
+DTEND;TZID=Europe/London:20261010T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e815@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hampton Court Palace Garden Open Day
+DTSTART;VALUE=DATE:20261010
+DTEND;VALUE=DATE:20261011
+LOCATION:Hampton Court Palace gardens\, Hampton Court
+DESCRIPTION:Selected free garden open day\; no tickets or pre-booking required for garden entry.\nCost: Free garden entry\; palace\, Maze and Magic Garden still ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e816@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hampton Court Palace Garden Open Day
+DTSTART;VALUE=DATE:20261011
+DTEND;VALUE=DATE:20261012
+LOCATION:Hampton Court Palace gardens\, Hampton Court
+DESCRIPTION:Selected free garden open day\; no tickets or pre-booking required for garden entry.\nCost: Free garden entry\; palace\, Maze and Magic Garden still ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e671@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Jane Eyre
+DTSTART;VALUE=DATE:20261013
+DTEND;VALUE=DATE:20261025
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Drama based on Charlotte Bronte.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e635@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Wilderness Yet live on stage
+DTSTART;TZID=Europe/London:20261013T193000
+DTEND;TZID=Europe/London:20261013T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Folk trio performance at the cornerHOUSE.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e718@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Lego Robotics Club
+DTSTART;TZID=Europe/London:20261014T160000
+DTEND;TZID=Europe/London:20261014T170000
+LOCATION:Hook and Chessington Library\, Hook / Chessington
+DESCRIPTION:Monthly Lego Robotics Club at Hook and Chessington Library\; booking required.\nCost: Free\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=320679
+URL:https://kingston.events.mylibrary.digital/event?id=320679
+END:VEVENT
+BEGIN:VEVENT
+UID:e636@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Why Poetry Matters
+DTSTART;TZID=Europe/London:20261014T200000
+DTEND;TZID=Europe/London:20261014T210000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:BookBox poetry workshop at St Mary's Long Ditton.\nTravel: Easy local trip\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e823@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Rug Rhymes: Autumn
+DTSTART;TZID=Europe/London:20261016T110000
+DTEND;TZID=Europe/London:20261016T113000
+LOCATION:National Poetry Library\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Under-5s poetry and nursery-rhyme session with National Poetry Library puppets Federico and Firebird.\nCost: £4\; admits one child and one adult\; no booking fee\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
+URL:https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
+END:VEVENT
+BEGIN:VEVENT
+UID:e637@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Surbiton Farmers' Market
+DTSTART;TZID=Europe/London:20261017T090000
+DTEND;TZID=Europe/London:20261017T130000
+LOCATION:Maple Road\, Surbiton
+DESCRIPTION:Monthly farmers market in Maple Road.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e638@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Aeronautical talk
+DTSTART;TZID=Europe/London:20261021T120000
+DTEND;TZID=Europe/London:20261021T130000
+LOCATION:Glenmore House\, Surbiton
+DESCRIPTION:Surbiton Probus lunch talk: From Spitfire to TSR2 in Just 28 Years.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e697@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Open Mic
+DTSTART;TZID=Europe/London:20261025T193000
+DTEND;TZID=Europe/London:20261025T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e705@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Adult Book Group
+DTSTART;TZID=Europe/London:20261027T140000
+DTEND;TZID=Europe/London:20261027T150000
+LOCATION:Tolworth Community Library\, Tolworth
+DESCRIPTION:Monthly adult book group\; library provides the book.\nCost: Free\nTravel: Walkable / very local\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=253071
+URL:https://kingston.events.mylibrary.digital/event?id=253071
+END:VEVENT
+BEGIN:VEVENT
+UID:e639@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Fellers Men's Group
+DTSTART;TZID=Europe/London:20261028T200000
+DTEND;TZID=Europe/London:20261028T210000
+LOCATION:St George's Church\, Tolworth
+DESCRIPTION:Monthly men's group at St George's\, Tolworth.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e731@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Fiddly Diddly @ The Lamb
+DTSTART;VALUE=DATE:20261028
+DTEND;VALUE=DATE:20261029
+LOCATION:The Lamb\, Surbiton
+DESCRIPTION:Informal acoustic jam with local Irish folk musicians on the last Wednesday of the month.\nTravel: Walkable / very local\nConfidence: High / venue listing\nSource: https://www.lambsurbiton.co.uk/live-music-surbiton
+URL:https://www.lambsurbiton.co.uk/live-music-surbiton
+END:VEVENT
+BEGIN:VEVENT
+UID:e640@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Walking Through Surbiton History
+DTSTART;TZID=Europe/London:20261101T110000
+DTEND;TZID=Europe/London:20261101T120000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Monthly Kingston Tour Guides walking tour from Surbiton Station.\nCost: Free\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e641@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Kingston Power Station talk
+DTSTART;TZID=Europe/London:20261103T193000
+DTEND;TZID=Europe/London:20261103T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Surbiton & District Historical Society talk by Stephen Fielding.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e793@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Sleep Show
+DTSTART;TZID=Europe/London:20261104T100000
+DTEND;TZID=Europe/London:20261104T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Polka Theatre show for ages 3-6.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/shows/page/2/
+URL:https://polkatheatre.com/shows/page/2/
+END:VEVENT
+BEGIN:VEVENT
+UID:e672@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Miss Americana - A Tribute to Taylor Swift
+DTSTART;TZID=Europe/London:20261106T193000
+DTEND;TZID=Europe/London:20261106T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Music tribute show.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e642@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Model Railway Show
+DTSTART;TZID=Europe/London:20261107T100000
+DTEND;TZID=Europe/London:20261107T110000
+LOCATION:Tolworth Recreation Centre\, Tolworth
+DESCRIPTION:Tolworth Showtrain at Tolworth Recreation Centre.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e708@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Stitch Saturdays
+DTSTART;TZID=Europe/London:20261107T103000
+DTEND;TZID=Europe/London:20261107T123000
+LOCATION:Surbiton Library\, Surbiton
+DESCRIPTION:Informal stitch and chat at Surbiton Library\; first Saturday monthly except August and December.\nCost: Free\nTravel: Walkable / very local\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=252876
+URL:https://kingston.events.mylibrary.digital/event?id=252876
+END:VEVENT
+BEGIN:VEVENT
+UID:e673@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Rock Anthems Show
+DTSTART;TZID=Europe/London:20261107T193000
+DTEND;TZID=Europe/London:20261107T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Live rock anthems show.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e643@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Remembrance Sunday Service
+DTSTART;TZID=Europe/London:20261108T100000
+DTEND;TZID=Europe/London:20261108T110000
+LOCATION:Ewell Road war memorial\, Surbiton
+DESCRIPTION:Open-air service at the Ewell Road war memorial.\nCost: Free\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e644@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Anna Dyson Art Show
+DTSTART;TZID=Europe/London:20261109T190000
+DTEND;TZID=Europe/London:20261109T200000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Meet the Artist event at the cornerHOUSE.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e646@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hannah White live on stage
+DTSTART;TZID=Europe/London:20261110T193000
+DTEND;TZID=Europe/London:20261110T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Americana performance at the cornerHOUSE.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e794@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Christmas Lights
+DTSTART;TZID=Europe/London:20261111T100000
+DTEND;TZID=Europe/London:20261111T110000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Polka Theatre festive show for ages 1-4.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Family-friendly\nConfidence: High\nSource: https://polkatheatre.com/shows/page/2/
+URL:https://polkatheatre.com/shows/page/2/
+END:VEVENT
+BEGIN:VEVENT
+UID:e719@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Lego Robotics Club
+DTSTART;TZID=Europe/London:20261111T160000
+DTEND;TZID=Europe/London:20261111T170000
+LOCATION:Hook and Chessington Library\, Hook / Chessington
+DESCRIPTION:Monthly Lego Robotics Club at Hook and Chessington Library\; booking required.\nCost: Free\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=320679
+URL:https://kingston.events.mylibrary.digital/event?id=320679
+END:VEVENT
+BEGIN:VEVENT
+UID:e674@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Magic of Motown
+DTSTART;TZID=Europe/London:20261111T193000
+DTEND;TZID=Europe/London:20261111T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Motown tribute show.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e675@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Russell Watson - An Intimate Evening with The Voice
+DTSTART;TZID=Europe/London:20261112T193000
+DTEND;TZID=Europe/London:20261112T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Music performance.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e698@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:False Reality
+DTSTART;TZID=Europe/London:20261114T193000
+DTEND;TZID=Europe/London:20261114T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e795@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Peter Pan
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20270101
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Polka winter family musical for ages 5-12\; run continues beyond calendar cutoff to 24 January 2027.\nCost: From £10 + booking fee\; babe in arms £1\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/event/peter-pan/
+URL:https://polkatheatre.com/event/peter-pan/
+END:VEVENT
+BEGIN:VEVENT
+UID:e647@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Yeomanry Lunch Talk
+DTSTART;TZID=Europe/London:20261118T120000
+DTEND;TZID=Europe/London:20261118T130000
+LOCATION:Glenmore House\, Surbiton
+DESCRIPTION:Surbiton Probus lunch talk on the First Aid Nursing Yeomanry.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e648@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Tradescants and Their Gardens
+DTSTART;TZID=Europe/London:20261118T140000
+DTEND;TZID=Europe/London:20261118T150000
+LOCATION:Surbiton / nearby venue\, Surbiton
+DESCRIPTION:Long Ditton Gardening Club talk by Christine Jarvis.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e649@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:War Graves and the Stories They Tell
+DTSTART;TZID=Europe/London:20261118T200000
+DTEND;TZID=Europe/London:20261118T210000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:BookBox talk at St Mary's Long Ditton.\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e754@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hampton Court Palace Ice Rink
+DTSTART;TZID=Europe/London:20261120T100000
+DTEND;TZID=Europe/London:20261120T110000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Seasonal outdoor ice rink at Hampton Court Palace\, running into early 2027\; calendar row covers the 2026 portion only.\nCost: Separate ticket\; palace admission not included\; member discount noted\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-ice-rink/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-ice-rink/
+END:VEVENT
+BEGIN:VEVENT
+UID:e650@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Surbiton Farmers' Market
+DTSTART;TZID=Europe/London:20261121T090000
+DTEND;TZID=Europe/London:20261121T130000
+LOCATION:Maple Road\, Surbiton
+DESCRIPTION:Monthly farmers market in Maple Road.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e699@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Tool Shed - A Tribute To Tool
+DTSTART;TZID=Europe/London:20261121T193000
+DTEND;TZID=Europe/London:20261121T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e817@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hampton Court Palace Garden Open Day
+DTSTART;VALUE=DATE:20261121
+DTEND;VALUE=DATE:20261122
+LOCATION:Hampton Court Palace gardens\, Hampton Court
+DESCRIPTION:Selected free garden open day\; no tickets or pre-booking required for garden entry.\nCost: Free garden entry\; palace\, Maze and Magic Garden still ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e818@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hampton Court Palace Garden Open Day
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+LOCATION:Hampton Court Palace gardens\, Hampton Court
+DESCRIPTION:Selected free garden open day\; no tickets or pre-booking required for garden entry.\nCost: Free garden entry\; palace\, Maze and Magic Garden still ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e732@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Fiddly Diddly @ The Lamb
+DTSTART;VALUE=DATE:20261125
+DTEND;VALUE=DATE:20261126
+LOCATION:The Lamb\, Surbiton
+DESCRIPTION:Informal acoustic jam with local Irish folk musicians on the last Wednesday of the month.\nTravel: Walkable / very local\nConfidence: High / venue listing\nSource: https://www.lambsurbiton.co.uk/live-music-surbiton
+URL:https://www.lambsurbiton.co.uk/live-music-surbiton
+END:VEVENT
+BEGIN:VEVENT
+UID:e676@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Wind in the Willows
+DTSTART;VALUE=DATE:20261125
+DTEND;VALUE=DATE:20270101
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Rose Theatre Christmas family show\; performance times vary by date.\nCost: Ticketed\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e796@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Antarctica
+DTSTART;VALUE=DATE:20261127
+DTEND;VALUE=DATE:20270101
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Little Bulb snowy theatre show for ages 3-7\; run continues beyond calendar cutoff to 17 January 2027.\nCost: From £18 + booking fee\; babe in arms £1\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/event/antarctica/
+URL:https://polkatheatre.com/event/antarctica/
+END:VEVENT
+BEGIN:VEVENT
+UID:e755@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Winter Palace
+DTSTART;VALUE=DATE:20261128
+DTEND;VALUE=DATE:20270101
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Christmas family experience at Hampton Court Palace\; calendar row covers the 2026 portion only.\nCost: Included in palace admission\; members go free with pre-booking required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/winter-palace/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/winter-palace/
+END:VEVENT
+BEGIN:VEVENT
+UID:e700@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Open Mic
+DTSTART;TZID=Europe/London:20261129T193000
+DTEND;TZID=Europe/London:20261129T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e651@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Talk on the History of Toys & Board Games
+DTSTART;TZID=Europe/London:20261201T193000
+DTEND;TZID=Europe/London:20261201T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Surbiton & District Historical Society talk by Sue Rhodes.\nTravel: Walkable / very local\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e745@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hampton Court Palace Festive Fayre
+DTSTART;TZID=Europe/London:20261204T100000
+DTEND;TZID=Europe/London:20261206T170000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Christmas shopping and food event with 100+ artisan producers in the palace grounds.\nCost: Included in palace admission\; members go free with pre-booking required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-festive-fayre/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-festive-fayre/
+END:VEVENT
+BEGIN:VEVENT
+UID:e797@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Big Bash
+DTSTART;TZID=Europe/London:20261206T140000
+DTEND;TZID=Europe/London:20261206T150000
+LOCATION:Polka Theatre\, Wimbledon
+DESCRIPTION:Polka family party plus a ticket to Peter Pan or Antarctica\; all ages.\nCost: From £45 + booking fee\; babe in arms £1\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/event/the-big-bash-2026/
+URL:https://polkatheatre.com/event/the-big-bash-2026/
+END:VEVENT
+BEGIN:VEVENT
+UID:e653@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Jez Lowe live on stage
+DTSTART;TZID=Europe/London:20261208T193000
+DTEND;TZID=Europe/London:20261208T203000
+LOCATION:the cornerHOUSE\, Surbiton
+DESCRIPTION:Jez Lowe and The Bad Pennies at the cornerHOUSE.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e720@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Lego Robotics Club
+DTSTART;TZID=Europe/London:20261209T160000
+DTEND;TZID=Europe/London:20261209T170000
+LOCATION:Hook and Chessington Library\, Hook / Chessington
+DESCRIPTION:Monthly Lego Robotics Club at Hook and Chessington Library\; booking required.\nCost: Free\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / official series page\nSource: https://kingston.events.mylibrary.digital/event?id=320679
+URL:https://kingston.events.mylibrary.digital/event?id=320679
+END:VEVENT
+BEGIN:VEVENT
+UID:e654@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Pilgrimages - a guide
+DTSTART;TZID=Europe/London:20261209T200000
+DTEND;TZID=Europe/London:20261209T210000
+LOCATION:St Mary's Long Ditton\, Long Ditton
+DESCRIPTION:BookBox talk at St Mary's Long Ditton by Eamonn Mullally.\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e746@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hampton Court Palace Festive Fayre
+DTSTART;TZID=Europe/London:20261211T100000
+DTEND;TZID=Europe/London:20261213T170000
+LOCATION:Hampton Court Palace\, Hampton Court
+DESCRIPTION:Second weekend of the Hampton Court Palace Christmas artisan fayre.\nCost: Included in palace admission\; members go free with pre-booking required\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-festive-fayre/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-festive-fayre/
+END:VEVENT
+BEGIN:VEVENT
+UID:e782@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:There's a Bear on My Chair
+DTSTART;TZID=Europe/London:20261211T100000
+DTEND;TZID=Europe/London:20261211T110000
+LOCATION:Queen Elizabeth Hall\, Southbank Centre\, Waterloo / South Bank
+DESCRIPTION:Festive puppet theatre for ages 2-7\; Southbank run continues into January\, listed here through 31 Dec.\nCost: From GBP 16 + booking fee\nTravel: Easy by train\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.southbankcentre.co.uk/whats-on/theres-a-bear-on-my-chair/
+URL:https://www.southbankcentre.co.uk/whats-on/theres-a-bear-on-my-chair/
+END:VEVENT
+BEGIN:VEVENT
+UID:e680@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:The Overtones - Jivin' Home For Christmas
+DTSTART;TZID=Europe/London:20261214T193000
+DTEND;TZID=Europe/London:20261214T203000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Christmas music show.\nCost: Ticketed\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e655@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Harp Playing at Probus Christmas lunch
+DTSTART;TZID=Europe/London:20261216T120000
+DTEND;TZID=Europe/London:20261216T130000
+LOCATION:Glenmore House\, Surbiton
+DESCRIPTION:Festive music at Surbiton Probus Christmas lunch.\nTravel: Walkable / very local\nAge guidance: Family-friendly\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e681@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Euphonix Winter Concert
+DTSTART;TZID=Europe/London:20261217T113000
+DTEND;TZID=Europe/London:20261217T130000
+LOCATION:Rose Theatre\, Kingston
+DESCRIPTION:Free winter concert in aid of local charity RALPHH.\nCost: Free\nTravel: Easy local trip\nConfidence: High / official theatre listing\nSource: https://www.rosetheatre.org/whats-on
+URL:https://www.rosetheatre.org/whats-on
+END:VEVENT
+BEGIN:VEVENT
+UID:e656@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Surbiton Farmers' Market
+DTSTART;TZID=Europe/London:20261219T090000
+DTEND;TZID=Europe/London:20261219T130000
+LOCATION:Maple Road\, Surbiton
+DESCRIPTION:Festive December farmers market in Maple Road.\nTravel: Walkable / very local\nConfidence: High / local listing\nSource: https://surbitonpartnership.co.uk/whats-on/
+URL:https://surbitonpartnership.co.uk/whats-on/
+END:VEVENT
+BEGIN:VEVENT
+UID:e819@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Hampton Court Palace Wilderness Garden Open Day
+DTSTART;VALUE=DATE:20261226
+DTEND;VALUE=DATE:20261227
+LOCATION:Hampton Court Palace - Wilderness Garden\, Hampton Court
+DESCRIPTION:Boxing Day free opening for the Wilderness garden only.\nCost: Free Wilderness garden entry\; other areas may require tickets\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
+END:VEVENT
+BEGIN:VEVENT
+UID:e701@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Open Mic
+DTSTART;TZID=Europe/London:20261227T193000
+DTEND;TZID=Europe/London:20261227T203000
+LOCATION:The Fighting Cocks\, Kingston
+DESCRIPTION:Fighting Cocks Kingston late-2026 listing.\nCost: Ticketed / check venue\nTravel: Easy local trip\nConfidence: High / venue ticket listing\nSource: https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+URL:https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit
+END:VEVENT
+BEGIN:VEVENT
+UID:e733@surbiton-local-events
+DTSTAMP:20260618T152115Z
+SUMMARY:Fiddly Diddly @ The Lamb
+DTSTART;VALUE=DATE:20261230
+DTEND;VALUE=DATE:20261231
+LOCATION:The Lamb\, Surbiton
+DESCRIPTION:Informal acoustic jam with local Irish folk musicians on the last Wednesday of the month.\nTravel: Walkable / very local\nConfidence: High / venue listing\nSource: https://www.lambsurbiton.co.uk/live-music-surbiton
+URL:https://www.lambsurbiton.co.uk/live-music-surbiton
+END:VEVENT
+END:VCALENDAR

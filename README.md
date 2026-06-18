@@ -2,7 +2,21 @@
 
 `index.html` is a standalone calendar. Open it directly in a browser; no local server is needed.
 
-The event data is embedded in the `<script type="application/json" id="calendarData">` block near the bottom of the file, and the UI/rendering code follows it.
+The site is split into:
+
+- `calendar-data.json` - readable source data
+- `calendar-data.js` - browser-loadable data generated from the JSON
+- `assets/app.js` - UI behavior
+- `assets/styles.css` - styling
+- `events.ics` - subscribable calendar feed
+- `manifest.webmanifest`, `sw.js`, `icons/icon.svg` - install/offline support
+
+Useful browser features:
+
+- Best bets, mobile quick chips, favourites and hidden rows.
+- Shareable filter URLs.
+- Richer event facts for travel, age guidance, booking, indoor/outdoor and map lookup.
+- Favourites and hidden rows are private to the current browser via `localStorage`.
 
 ## Internet publishing
 
@@ -27,7 +41,13 @@ Manual publish after editing `index.html`:
 npm run publish
 ```
 
-The weekly updater auto-publishes after a successful `--apply` run once the `origin` remote exists. It only commits `index.html` and `.nojekyll`; local logs, backups, and `updater/.env.local` stay out of git.
+The weekly updater auto-publishes after a successful `--apply` run once the `origin` remote exists. It commits the static site files; local logs, backups, and `updater/.env.local` stay out of git.
+
+The public feed URL is:
+
+```text
+https://amplice.github.io/hardmode/events.ics
+```
 
 ## Adding events to your own calendar
 
@@ -48,6 +68,7 @@ Useful commands:
 
 ```powershell
 npm run validate
+npm run generate
 npm run update
 npm run update:apply
 npm run update:prune

@@ -30,6 +30,11 @@ if (!(Test-Path "index.html")) {
   throw "Could not find index.html in $RepoRoot"
 }
 
+& npm run generate
+if ($LASTEXITCODE -ne 0) {
+  throw "Site generation failed; not publishing."
+}
+
 & npm run validate
 if ($LASTEXITCODE -ne 0) {
   throw "Validation failed; not publishing."
@@ -45,7 +50,7 @@ if ($RemoteUrl.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace(($RemoteUrl.Outpu
   throw "No git remote named '$Remote' is configured. Add one with: git remote add $Remote https://github.com/amplice/hardmode.git"
 }
 
-& git add -- index.html .nojekyll
+& git add -- index.html .nojekyll calendar-data.json calendar-data.js events.ics latest-changes.json manifest.webmanifest sw.js assets icons package.json README.md updater
 if ($LASTEXITCODE -ne 0) {
   throw "Could not stage site files."
 }

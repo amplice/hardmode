@@ -1,10 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
 const htmlPath = path.join(repoRoot, "index.html");
+const dataPath = path.join(repoRoot, "calendar-data.json");
+const latestChangesPath = path.join(repoRoot, "latest-changes.json");
 const logsDir = path.join(__dirname, "logs");
 const backupsDir = path.join(__dirname, "backups");
 const preferencesPath = path.join(__dirname, "preferences.json");
@@ -27,8 +30,8 @@ async function main() {
   fs.mkdirSync(logsDir, { recursive: true });
   fs.mkdirSync(backupsDir, { recursive: true });
 
-  const html = fs.readFileSync(htmlPath, "utf8");
-  const data = extractCalendarData(html);
+  const html = fs.existsSync(htmlPath) ? fs.readFileSync(htmlPath, "utf8") : "";
+  const data = readCalendarData(html);
   const preferences = readJson(preferencesPath);
   const sources = readJson(sourcesPath);
 
@@ -57,10 +60,11 @@ async function main() {
   fs.writeFileSync(mdLog, renderMarkdownLog({ proposal, beforeCounts, afterCounts, apply, pruneOnly, today, model }), "utf8");
 
   if (apply) {
-    const backupPath = path.join(backupsDir, `index-${stamp}.html`);
-    fs.writeFileSync(backupPath, html, "utf8");
-    const updatedHtml = replaceCalendarData(html, proposedData);
-    fs.writeFileSync(htmlPath, updatedHtml, "utf8");
+    const backupPath = path.join(backupsDir, `calendar-data-${stamp}.json`);
+    fs.writeFileSync(backupPath, JSON.stringify(data, null, 2), "utf8");
+    fs.writeFileSync(dataPath, `${JSON.stringify(proposedData, null, 2)}\n`, "utf8");
+    fs.writeFileSync(latestChangesPath, `${JSON.stringify(renderLatestChanges({ proposal, beforeCounts, afterCounts, today }), null, 2)}\n`, "utf8");
+    execFileSync(process.execPath, [path.join(__dirname, "generate-site-files.mjs"), "--date", today], { stdio: "inherit" });
     console.log(`Applied update. Backup: ${path.relative(repoRoot, backupPath)}`);
   } else {
     console.log("Dry run complete. Review the log, then run `npm run update:apply` if it looks right.");
@@ -102,15 +106,15 @@ function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
 }
 
+function readCalendarData(html) {
+  if (fs.existsSync(dataPath)) return readJson(dataPath);
+  return extractCalendarData(html);
+}
+
 function extractCalendarData(html) {
   const match = html.match(/<script type="application\/json" id="calendarData">([\s\S]*?)<\/script>/);
   if (!match) throw new Error("Could not find embedded calendarData JSON block");
   return JSON.parse(match[1]);
-}
-
-function replaceCalendarData(html, data) {
-  const block = `<script type="application/json" id="calendarData">${JSON.stringify(data)}</script>`;
-  return html.replace(/<script type="application\/json" id="calendarData">[\s\S]*?<\/script>/, block);
 }
 
 function countData(data) {
@@ -119,6 +123,30 @@ function countData(data) {
     recurring: data.recurring?.length || 0,
     sources: data.sources?.length || 0,
     watchlist: data.watchlist?.length || 0
+  };
+}
+
+function renderLatestChanges({ proposal, beforeCounts, afterCounts, today }) {
+  return {
+    generatedAt: new Date().toISOString(),
+    dateBasis: today,
+    summary: proposal.summary || "Calendar updated.",
+    added: [
+      ...(proposal.additions?.events || []).map((event) => `${event.date} ${event.title}`),
+      ...(proposal.additions?.recurring || []).map((row) => `Recurring: ${row.name}`)
+    ],
+    updated: [
+      ...(proposal.updates?.events || []).map((event) => `${event.id} ${event.title}`),
+      ...(proposal.updates?.recurring || []).map((row) => `Recurring: ${row.id} ${row.name}`)
+    ],
+    removed: [
+      ...(proposal.removals?.events || []).map((event) => `${event.id}: ${event.reason}`),
+      ...(proposal.removals?.recurring || []).map((row) => `Recurring ${row.id}: ${row.reason}`)
+    ],
+    counts: {
+      before: beforeCounts,
+      after: afterCounts
+    }
   };
 }
 
