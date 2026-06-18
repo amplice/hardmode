@@ -58,7 +58,7 @@
     {
       "name": "The Fighting Cocks / Ents24",
       "url": "https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit",
-      "checkFor": ["gigs", "open mic", "music", "alternative events"]
+      "checkFor": ["only explicit roots/trad exceptions: hot jazz, Cajun, country, old-time, Irish trad, western swing, bluegrass, skiffle, zydeco, rockabilly; otherwise skip this venue"]
     },
     {
       "name": "Banquet Records",

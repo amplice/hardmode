@@ -1,22 +1,44 @@
 {
-  "generatedAt": "2026-06-18T15:13:34.196Z",
+  "generatedAt": "2026-06-18T15:45:39.533Z",
   "dateBasis": "2026-06-18",
-  "summary": "Added the Elm Tree mural unveiling and upgraded the calendar with favourites, hidden rows, shareable filters, best-bets, richer event facts, a live ICS feed and PWA/offline support.",
-  "added": [
-    "2026-06-20 Mural Unveiling at The Elm Tree",
-    "Best bets view",
-    "Favourites and hidden rows",
-    "Shareable filter URLs",
-    "Subscribable events.ics feed",
-    "PWA/offline files"
-  ],
+  "summary": "Tightened Fighting Cocks curation: removed generic rock/open-mic/social rows and kept the venue only for explicit roots/trad genres.",
+  "added": [],
   "updated": [
-    "Split index.html into external data, CSS and JavaScript",
-    "Added derived travel, age, booking, indoor/outdoor and map fields"
+    "Updater preferences now only allow Fighting Cocks rows for explicit roots/trad genres such as hot jazz, Cajun, country, old-time, Irish trad, western swing, bluegrass, skiffle, zydeco or rockabilly."
   ],
-  "removed": [],
+  "removed": [
+    "2026-06-19 Wrestlemosh club night",
+    "2026-06-20 RUENA x HENKA + guests",
+    "2026-06-23 Dungeons & Dragons night",
+    "2026-06-25 New Blood June",
+    "2026-06-26 Simon Love & The Old Romantics / The Metatrons / Subliminal Girls",
+    "2026-06-27 Albion / Tempest Saint",
+    "2026-06-28 Cock Pit / Open Mic",
+    "2026-07-02 Mary in the Junkyard",
+    "2026-07-03 Ghosts of Seattle",
+    "2026-07-14 Dungeons and Dragons",
+    "2026-07-21 Drink & Draw July",
+    "2026-07-26 Open Mic",
+    "2026-07-28 Dungeons and Dragons",
+    "2026-07-31 Asleep at the Helm + Iridium + Kila Kosa",
+    "2026-08-15 Dusk Brothers",
+    "2026-08-18 Drink & Draw August",
+    "2026-08-30 Open Mic",
+    "2026-09-04 Los Fastidios and guests",
+    "2026-09-19 Chocolate Star Fish",
+    "2026-09-26 The Fall Of Atlantis + Sigils + Scars of Protest",
+    "2026-09-27 Open Mic",
+    "2026-10-10 Red Hot Tribute Peppers",
+    "2026-10-25 Open Mic",
+    "2026-11-14 False Reality",
+    "2026-11-21 Tool Shed - A Tribute To Tool",
+    "2026-11-29 Open Mic",
+    "2026-12-27 Open Mic",
+    "Recurring: Fighting Cocks Dungeons & Dragons",
+    "Recurring: Fighting Cocks open mic / Cock Pit"
+  ],
   "counts": {
-    "events": 306,
-    "recurring": 53
+    "events": 279,
+    "recurring": 51
   }
 }

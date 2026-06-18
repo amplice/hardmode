@@ -21,6 +21,7 @@
     "kid-friendly events suitable for a 2 year old",
     "The Lamb Surbiton",
     "Irish/trad/folk sessions",
+    "Fighting Cocks only when the listing explicitly indicates hot jazz, Cajun, country, old-time, Irish trad, western swing, bluegrass, skiffle, zydeco, rockabilly, or clearly adjacent roots/trad dance music",
     "Scottish country dancing and folk dancing",
     "Hampton Court Palace member-relevant events",
     "Thames Ditton Miniature Railway public running days",
@@ -43,6 +44,7 @@
   "removeOrAvoid": [
     "Repair Cafe",
     "pub quizzes",
+    "Fighting Cocks rock, punk, metal, indie, tribute rock, singer-songwriter, generic open mic, Dungeons & Dragons, Drink & Draw, or unclassified gig listings",
     "business networking",
     "business conferences",
     "admin or advice drop-ins",
