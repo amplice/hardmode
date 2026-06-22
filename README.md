@@ -2,6 +2,8 @@
 
 `index.html` is a standalone calendar. Open it directly in a browser; no local server is needed.
 
+For full maintainer context, see `HANDOFF.md`.
+
 The site is split into:
 
 - `calendar-data.json` - readable source data

@@ -94,6 +94,21 @@
       "name": "Abundance Wimbledon",
       "url": "https://www.abundancewimbledon.com/",
       "checkFor": ["Fruit Day", "family food festival", "apple pressing", "children's activities", "Wimbledon"]
+    },
+    {
+      "name": "the cornerHOUSE event-detail pages",
+      "url": "https://www.thecornerhouse.org/whats-on/",
+      "checkFor": ["Folk@thecornerHOUSE series", "family musicals", "comedy nights", "performance/cabaret", "exact 2026 dates/times/prices via /event-details/ pages"]
+    },
+    {
+      "name": "All Saints Kingston lunchtime music",
+      "url": "https://allsaintskingston.co.uk/choir",
+      "checkFor": ["free Monday lunchtime recitals", "Friday organ recitals", "daytime classical music", "autumn series dates"]
+    },
+    {
+      "name": "Eltham Palace and Gardens (English Heritage)",
+      "url": "https://www.english-heritage.org.uk/visit/places/eltham-palace-and-gardens/",
+      "checkFor": ["Sunday music", "family summer programme", "jousting", "outdoor family events (note: far side of London, borderline travel)"]
     }
   ],
   "searchQueries": [
@@ -111,6 +126,11 @@
     "Southbank Centre family young people events 2026",
     "Polka Theatre Wimbledon children's theatre 2026",
     "Wimbledon family events children 2026",
-    "Morden Hall Park family theatre trail 2026"
+    "Morden Hall Park family theatre trail 2026",
+    "the cornerHOUSE Surbiton Folk@thecornerHOUSE 2026",
+    "Berrylands summer festival Surbiton 2026",
+    "All Saints Kingston lunchtime recital 2026",
+    "Surbiton Kingston summer fete church concert 2026",
+    "Eventbrite Skiddle Kingston upon Thames music 2026"
   ]
 }
