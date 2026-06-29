@@ -43,10 +43,11 @@
     "2026-06-28 Canbury Bandstand Concerts: performer TBC (placeholder, superseded by named lineup)",
     "2026-06-28 Shakespeare in the Square (St Andrew's Square)",
     "2026-06-28 Matt Forde + Bella Hull - Crack Comedy previews (Ram Jam Records)",
-    "2026-06-28 Liberace: In His Own Words (the cornerHOUSE)"
+    "2026-06-28 Liberace: In His Own Words (the cornerHOUSE)",
+    "All 6 Fiddly Diddly @ The Lamb rows (29 Jul-30 Dec) + the recurring row - defunct, has not run for years (local knowledge); removed from sources/preferences so it will not be re-added."
   ],
   "counts": {
-    "events": 234,
-    "recurring": 51
+    "events": 228,
+    "recurring": 50
   }
 }
