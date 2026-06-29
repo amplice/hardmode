@@ -36,3 +36,63 @@ Format per run:
   - Pull Thames Concerts (St Andrew's Surbiton) 2026-27 dates (17 Oct, 21 Nov leads).
   - Try DICE/See Tickets via specific venue pages rather than area pages; check FUSE International individual show pages.
   - Retry NT Ham House/Claremont via a different method; check Polka Theatre autumn under-5s shows.
+
+## 2026-06-25
+- New sources/methods tried:
+  - Thames Concerts season page (thamesconcerts.com) — resolved the long-standing watchlist lead; pulled the confirmed autumn 2026 recital dates/performers (17 Oct Kohout/Leung, 21 Nov Walton/Lebhardt) at St Andrew's Surbiton. Added as a new known source.
+  - Polka Theatre /shows + autumn/winter 2026-27 press coverage — followed individual show pages beyond the summer block (a "try next time" item). Surfaced 'Blub' (Theatre Nuu early-years sensory run, 13-23 Aug) which wasn't yet in the dataset.
+  - the cornerHOUSE /whats-on August detail pages — fetched per-event hrefs for Aug 2026 (Fire & Dust Woody Guthrie folk, Once Upon a Time summer show, Bayeux Tapestry talk).
+  - Friends of Canbury Gardens direct site (friendsofcanburygardens.org/bandstand) as a fresh angle on the Canbury lineup gap; added as a known source.
+  - Hampton Court via WebSearch (direct WebFetch 403s again) to cross-check the August programme.
+- What worked:
+  - Thames Concerts page was the standout — clean, explicitly 2026-dated, organiser-confirmed. Two solid Core-Surbiton chamber-music rows added (start times still unconfirmed, so verify:true).
+  - Polka show pages confirmed 'Blub' (13-23 Aug) — added as an early-years theatre run (verify:true on exact times/price).
+  - Cross-checking before adding prevented 4 duplicates: the cornerHOUSE Woody Guthrie folk show (11 Aug), Hampton Court Food Festival (29-31 Aug), Beano Havoc run, and Polka Big Dreams (19-20 Sep) are ALL already in the dataset. The Aug-Dec catalogue is already well populated.
+- What didn't work / cautions:
+  - Canbury Bandstand 2026 lineup STILL unpublished — organiser site (canburybandstand.org) refused connection, Friends-of page shows "no upcoming events / 2025 season". Left on watchlist; did not fabricate Sunday performers.
+  - All Saints Kingston autumn lunchtime recitals still only listed through 29 Jun — autumn series not yet posted. Watchlist.
+  - HRP Hampton Court and Thames Concerts detail/booking pages 403/404 to WebFetch — got dates from the season landing page + WebSearch instead. Exact concert start times for Thames Concerts couldn't be confirmed (left verify:true).
+  - the cornerHOUSE 'Once Upon a Time' (10-14 Aug) is primarily a paid ages-8-14 intensive (£190) with a Fri 14 Aug 6pm sharing performance — kept on watchlist rather than adding, as public-show status is borderline.
+- Try next time:
+  - Re-check Canbury Bandstand + All Saints autumn recitals once 2026 detail is published.
+  - Confirm Thames Concerts start times and ticket prices (clear the verify flags on the 17 Oct / 21 Nov rows).
+  - Confirm Polka 'Blub' performance times/price; check Polka spring 2027 early-years shows.
+  - Retry NT Ham House/Claremont and HRP detail pages via an authenticated/alternate method; chase FUSE International individual show pages.
+
+## 2026-06-28
+- New sources/methods tried:
+  - Canbury Bandstand gap attacked from new angles: CARA Kingston (carakingston.org), kingston.gov.uk event pages, and Kingston Nub News local-news roundups — none yet expose the 2026 Sunday performer schedule.
+  - Hampton Court Palace Festival official/lineup sites (frontstagefestivals, hamptoncourtpalacefestival.com) to check for datable concerts.
+  - Hampton Court Palace Ice Rink dedicated site (hamptoncourtpalaceicerink.co.uk) + London Cheapo to confirm the 2026/27 season window.
+  - Kingston Libraries summer programme: libraries.kingston.gov.uk/events and the kingston.gov.uk summer-events page, plus the hellokingstonkids "Local Summer Guide" roundup blog (a fresh family-focused source).
+  - Rose Theatre autumn 2026 via WebSearch + the specific show URL (the /whats-on listing only renders through mid-July to WebFetch).
+- What worked:
+  - Rose Theatre autumn search was the standout: surfaced Stewart Lee vs The Man-Wulf (rescheduled to 7-8 Sep 2026), confirmed on the official Rose event page. Added as the one new row (comedy, 14+, verify:true on start time since the page still shows the old Nov dates/times).
+  - Cross-checking before adding prevented several duplicates: Hampton Court Ice Rink (already e754, 20 Nov-31 Dec, dates confirmed accurate against the dedicated site: 20 Nov 2026-3 Jan 2027, 10:00-20:00), Tim Peake (4 Oct), Jane Eyre (13 Oct), Surbiton Festival (26 Sep), and TDMR running days (2/30/31 Aug, 6 Sep, 4 Oct) are ALL already present.
+  - Michael Rosen 'NICE!' at the Rose was found but is dated 4 May 2026 (past) - correctly NOT added.
+- What didn't work / cautions:
+  - Canbury Bandstand 2026 lineup STILL unpublished across CARA, Friends-of-Canbury, kingston.gov.uk and Nub News - the only "Soul Rites" reference traces to an old 2021 Nub article and a June (not July) slot, so the stale watchlist "12 July Soul Rites" lead is unreliable. Left on watchlist; did not fabricate performers.
+  - hellokingstonkids summer guide and library events pages only exposed stale 2025 dates or 403'd (libraries.kingston.gov.uk/events = 403; mylibrary.digital still the bookable backend). Summer Reading Challenge starts 4 Jul 2026 but no datable per-branch toddler sessions surfaced yet.
+  - Hampton Court Palace Festival is 10-20 June - already over for this run; nothing to add.
+  - HRP and ice-rink/londoncheapo detail pages 403/500 to WebFetch again; got the ice-rink 2026/27 window from WebSearch summaries (consistent with the existing row).
+- Try next time:
+  - Re-check Canbury Bandstand (CARA + Friends-of-Canbury) and All Saints Kingston autumn lunchtime recitals once 2026 detail is finally published - both are persistent gaps.
+  - Mid/late July: re-fetch Kingston Libraries summer-holiday children's programme (mylibrary.digital backend) for toddler-suitable craft/story sessions.
+  - Clear the verify flag on Stewart Lee once the Rose page shows the Sept start time; confirm Thames Concerts (17 Oct/21 Nov) and Polka 'Blub' times.
+  - Chase FUSE International individual show pages and retry NT Ham House/Claremont via an alternate method.
+
+## 2026-06-29
+- Method: ran a parallel fan-out of 8 scoped research subagents (one per source cluster: The Lamb, Canbury Bandstand, Rose, cornerHOUSE, Hampton Court, Kingston Libraries, Polka/Southbank, and a broad Kingston town/gig sweep), each told to return only explicitly-2026-dated rows with live URLs and to weekday-match dates against the 2026 calendar. Deduped + curated centrally. Net: +27 events, -6 finished.
+- What worked:
+  - CANBURY BANDSTAND GAP FINALLY CLOSED. The standout: carakingston.org/bandstand-concerts embeds the official "Canbury Bandstand Concerts 2026" season poster as a JPG; the agent downloaded the full-res image and OCR'd it directly, yielding the entire Sunday lineup with performer names (5 Jul-6 Sep, season skips 19 Jul & 30 Aug). The recurring '12 July Soul Rites' was confirmed genuine on the 2026 poster - NOT the stale 2021 Nub article (which the agent independently rejected). LESSON: when an organiser page is "image-only", OCR the poster instead of giving up.
+  - Kingston town sweep via Surbiton Partnership/The Good Life detail pages + kingston.gov.uk/events was very productive: confirmed Saxon Fayre (25 Jul, resolves the long-standing Kingston-heritage/Athel's-Town gap for 2026), Memorial Gardens picnic, Tolworth rewilding/swift/bat nature walks, plus folk/blues/country/comedy rows. kingston.gov.uk/events is server-rendered and readable - a reliable fallback when VisitKingston/KingstonFirst refuse connection.
+  - Rose agent weekday-matched undated pages to 2026 to rule out stale 2024/25 listings (As You Like It, Una Coello toddler singalong, Room on the Broom). Tim Peake/Inky Pathways correctly skipped as already-held/recurring.
+  - cornerHOUSE detail pages gave Coda Concert, Attitude summer shows, and the Bayeux Tapestry talk (which let us upgrade the vague placeholder 'Talk on Shakespeare' 4 Aug). Hampton Court agent confirmed 'Havoc' is officially 'Beano Havoc', 25 Jul-23 Aug.
+- What didn't work / cautions:
+  - THE INSTAGRAM/FACEBOOK WALL is now the dominant blocker. The Lamb's own site pushes all dated gigs (Sunday Sessions, 'An Evening With') to Facebook, which redirect-loops to WebFetch; aggregators (Songkick/Ents24/Lemonrock) are empty for it. Returned nothing rather than fabricate. Same wall on Kingston Libraries summer programme (mylibrary.digital = 403; libraries.kingston.gov.uk = JS-only SPA that renders nothing to a fetch). These need a manual screenshot/paste pass - flagged to the user, who confirmed IG is where this lives now.
+  - Stale-year traps avoided: Kingston Carnival (7 Sep) & River Cultures Festival (6 Sep) only had 2025 dates whose weekday matched 2025; Southbank 'Skate Up Space' (9 Aug = Sunday in 2026 but a Saturday listing) excluded; Polka 'Arthur' excluded (ages 6-12, too old for the 2yo profile).
+  - Applied the Fighting Cocks venue rule: dropped Temples/Mary in the Junkyard/The Xcerts/Kris Barras (indie/rock at the Cocks) and two indie Banquet in-stores + a nightclub DJ (profile fit); kept Carolina Cury (free) and The Shires (country).
+- Try next time:
+  - Build an Instagram/Facebook "social-only venues" manual-check list (The Lamb, cornerHOUSE socials, Surbiton pubs, parks/schools). Offer the user a screenshot->OCR loop (the Canbury poster proved OCR works well).
+  - Mid/late July: re-fetch Kingston Libraries summer-holiday children's programme once published; All Saints Kingston autumn lunchtime recitals; Banquet Records Sept listings (only live to mid-Aug now).
+  - Clear verify flags once confirmed: Coda/Attitude times & prices, Southbank fountain exact hours, Jazz Night at Elm Tree (may be recurring), Lindy Hop/Bat Walk/Comedy-at-the-Waggon prices.

@@ -3,112 +3,272 @@
     {
       "name": "Surbiton Partnership / The Good Life",
       "url": "https://surbitonpartnership.co.uk/whats-on/",
-      "checkFor": ["Surbiton events", "The Lamb", "cornerHOUSE", "farmers market", "local talks", "family events"]
+      "checkFor": [
+        "Surbiton events",
+        "The Lamb",
+        "cornerHOUSE",
+        "farmers market",
+        "local talks",
+        "family events"
+      ]
     },
     {
       "name": "Rose Theatre",
       "url": "https://www.rosetheatre.org/whats-on",
-      "checkFor": ["theatre", "family theatre", "free cafe music", "daytime music", "comedy", "talks"]
+      "checkFor": [
+        "theatre",
+        "family theatre",
+        "free cafe music",
+        "daytime music",
+        "comedy",
+        "talks"
+      ]
     },
     {
       "name": "The Lamb Surbiton",
       "url": "https://www.lambsurbiton.co.uk/live-music-surbiton",
-      "checkFor": ["live music", "Fiddly Diddly", "Irish folk sessions", "life drawing"]
+      "checkFor": [
+        "live music",
+        "Fiddly Diddly",
+        "Irish folk sessions",
+        "life drawing"
+      ]
     },
     {
       "name": "Whelan's Kingston",
       "url": "https://whelanspubs.co.uk/whelans-irish-traditional/whelans-kingston/",
-      "checkFor": ["Irish trad night", "traditional Irish music"]
+      "checkFor": [
+        "Irish trad night",
+        "traditional Irish music"
+      ]
     },
     {
       "name": "Hampton Court Palace / Historic Royal Palaces",
       "url": "https://www.hrp.org.uk/hampton-court-palace/whats-on/",
-      "checkFor": ["family events", "member events", "music", "outdoor events", "heritage"]
+      "checkFor": [
+        "family events",
+        "member events",
+        "music",
+        "outdoor events",
+        "heritage"
+      ]
     },
     {
       "name": "Hampton Court Palace Festival",
       "url": "https://hamptoncourtpalacefestival.com/",
-      "checkFor": ["open-air music", "major concerts"]
+      "checkFor": [
+        "open-air music",
+        "major concerts"
+      ]
     },
     {
       "name": "Malden DSME / Thames Ditton Miniature Railway",
       "url": "https://malden-dsme.org/",
-      "checkFor": ["public running days", "gala days", "family railway days"]
+      "checkFor": [
+        "public running days",
+        "gala days",
+        "family railway days"
+      ]
     },
     {
       "name": "Canbury Bandstand Concerts",
       "url": "https://www.facebook.com/CanburyBandstandConcerts/",
-      "checkFor": ["free bandstand concerts", "Sunday music", "outdoor music"]
+      "checkFor": [
+        "free bandstand concerts",
+        "Sunday music",
+        "outdoor music"
+      ]
     },
     {
       "name": "Kingston Libraries",
       "url": "https://kingston.events.mylibrary.digital/",
-      "checkFor": ["kids", "music", "craft", "author talks", "library events"]
+      "checkFor": [
+        "kids",
+        "music",
+        "craft",
+        "author talks",
+        "library events"
+      ]
     },
     {
       "name": "Kingston Heritage",
       "url": "https://www.kingstonheritage.org.uk/",
-      "checkFor": ["Athelstan", "heritage festivals", "museum events", "family heritage"]
+      "checkFor": [
+        "Athelstan",
+        "heritage festivals",
+        "museum events",
+        "family heritage"
+      ]
     },
     {
       "name": "Surbiton Festival",
       "url": "https://www.surbitonfestival.co.uk/events/",
-      "checkFor": ["Surbiton Festival", "market day", "parade", "music"]
+      "checkFor": [
+        "Surbiton Festival",
+        "market day",
+        "parade",
+        "music"
+      ]
     },
     {
       "name": "The Fighting Cocks / Ents24",
       "url": "https://www.ents24.com/kingston-upon-thames-events/the-fighting-cocks-cockpit",
-      "checkFor": ["only explicit roots/trad exceptions: hot jazz, Cajun, country, old-time, Irish trad, western swing, bluegrass, skiffle, zydeco, rockabilly; otherwise skip this venue"]
+      "checkFor": [
+        "only explicit roots/trad exceptions: hot jazz, Cajun, country, old-time, Irish trad, western swing, bluegrass, skiffle, zydeco, rockabilly; otherwise skip this venue"
+      ]
     },
     {
       "name": "Banquet Records",
       "url": "https://www.banquetrecords.com/events",
-      "checkFor": ["Kingston music", "album release shows"]
+      "checkFor": [
+        "Kingston music",
+        "album release shows"
+      ]
     },
     {
       "name": "the cornerHOUSE",
       "url": "https://www.thecornerhouse.org/",
-      "checkFor": ["theatre", "music", "talks", "family events"]
+      "checkFor": [
+        "theatre",
+        "music",
+        "talks",
+        "family events"
+      ]
     },
     {
       "name": "Kingston First / Visit Kingston",
       "url": "https://www.visitkingston.co.uk/",
-      "checkFor": ["festivals", "town centre events", "markets", "family days"]
+      "checkFor": [
+        "festivals",
+        "town centre events",
+        "markets",
+        "family days"
+      ]
     },
     {
       "name": "Southbank Centre family listings",
       "url": "https://www.southbankcentre.co.uk/whats-on/?artform-filter=family-young-people",
-      "checkFor": ["Waterloo", "South Bank", "family events", "under-5s", "free family music", "children's theatre", "interactive installations"]
+      "checkFor": [
+        "Waterloo",
+        "South Bank",
+        "family events",
+        "under-5s",
+        "free family music",
+        "children's theatre",
+        "interactive installations"
+      ]
     },
     {
       "name": "Polka Theatre Wimbledon",
       "url": "https://polkatheatre.com/shows/",
-      "checkFor": ["Wimbledon", "children's theatre", "early years theatre", "family theatre", "toddler-friendly shows"]
+      "checkFor": [
+        "Wimbledon",
+        "children's theatre",
+        "early years theatre",
+        "family theatre",
+        "toddler-friendly shows"
+      ]
     },
     {
       "name": "National Trust - Morden Hall Park",
       "url": "https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events",
-      "checkFor": ["outdoor family theatre", "family trails", "under-5s outdoor events", "Morden", "Wimbledon edge"]
+      "checkFor": [
+        "outdoor family theatre",
+        "family trails",
+        "under-5s outdoor events",
+        "Morden",
+        "Wimbledon edge"
+      ]
     },
     {
       "name": "Abundance Wimbledon",
       "url": "https://www.abundancewimbledon.com/",
-      "checkFor": ["Fruit Day", "family food festival", "apple pressing", "children's activities", "Wimbledon"]
+      "checkFor": [
+        "Fruit Day",
+        "family food festival",
+        "apple pressing",
+        "children's activities",
+        "Wimbledon"
+      ]
     },
     {
       "name": "the cornerHOUSE event-detail pages",
       "url": "https://www.thecornerhouse.org/whats-on/",
-      "checkFor": ["Folk@thecornerHOUSE series", "family musicals", "comedy nights", "performance/cabaret", "exact 2026 dates/times/prices via /event-details/ pages"]
+      "checkFor": [
+        "Folk@thecornerHOUSE series",
+        "family musicals",
+        "comedy nights",
+        "performance/cabaret",
+        "exact 2026 dates/times/prices via /event-details/ pages"
+      ]
     },
     {
       "name": "All Saints Kingston lunchtime music",
       "url": "https://allsaintskingston.co.uk/choir",
-      "checkFor": ["free Monday lunchtime recitals", "Friday organ recitals", "daytime classical music", "autumn series dates"]
+      "checkFor": [
+        "free Monday lunchtime recitals",
+        "Friday organ recitals",
+        "daytime classical music",
+        "autumn series dates"
+      ]
     },
     {
       "name": "Eltham Palace and Gardens (English Heritage)",
       "url": "https://www.english-heritage.org.uk/visit/places/eltham-palace-and-gardens/",
-      "checkFor": ["Sunday music", "family summer programme", "jousting", "outdoor family events (note: far side of London, borderline travel)"]
+      "checkFor": [
+        "Sunday music",
+        "family summer programme",
+        "jousting",
+        "outdoor family events (note: far side of London, borderline travel)"
+      ]
+    },
+    {
+      "name": "Thames Concerts (St Andrew's Church, Surbiton)",
+      "url": "https://www.thamesconcerts.com/",
+      "checkFor": [
+        "Surbiton chamber music recitals",
+        "Saturday evening concerts",
+        "autumn/spring season dates",
+        "violin/cello/piano programmes (start times often need confirming)"
+      ]
+    },
+    {
+      "name": "Friends of Canbury Gardens / Bandstand",
+      "url": "https://friendsofcanburygardens.org/bandstand/",
+      "checkFor": [
+        "free Sunday bandstand concert lineup",
+        "performer names once the 2026 season is published (often late)"
+      ]
+    },
+    {
+      "name": "CARA (Canbury & Riverside Association) Kingston",
+      "url": "https://www.carakingston.org/bandstand-concerts",
+      "checkFor": [
+        "Canbury Bandstand concert organiser",
+        "official 2026 'Summer Sundays' season poster (embedded as an image - OCR it for the full Sunday lineup of dates + performer names)",
+        "Sunday 15:00-17:00 free concerts"
+      ]
+    },
+    {
+      "name": "Kingston Nub News (what's on / local news roundups)",
+      "url": "https://kingston.nub.news/news/local-news",
+      "checkFor": [
+        "seasonal what's-on roundups",
+        "Canbury Bandstand season announcements",
+        "Hampton Court ice rink / festive dates",
+        "new family events"
+      ]
+    },
+    {
+      "name": "Kingston Council events (RBK)",
+      "url": "https://www.kingston.gov.uk/events",
+      "checkFor": [
+        "Saxon Fayre / Kingston heritage family days",
+        "community picnics and park reopenings",
+        "nature/rewilding/swift/bat walks",
+        "free town-centre family events",
+        "server-rendered and readable when VisitKingston/KingstonFirst are blocked"
+      ]
     }
   ],
   "searchQueries": [
@@ -131,6 +291,14 @@
     "Berrylands summer festival Surbiton 2026",
     "All Saints Kingston lunchtime recital 2026",
     "Surbiton Kingston summer fete church concert 2026",
-    "Eventbrite Skiddle Kingston upon Thames music 2026"
+    "Eventbrite Skiddle Kingston upon Thames music 2026",
+    "Thames Concerts St Andrew's Surbiton season dates 2026 2027",
+    "Polka Theatre Wimbledon autumn winter 2026 early years shows",
+    "Rose Theatre Kingston autumn 2026 comedy theatre new season dates",
+    "Canbury Bandstand CARA Kingston 2026 Sunday concert lineup performers",
+    "Kingston Libraries summer reading challenge 2026 children craft storytime dates",
+    "Canbury Bandstand CARA Kingston 2026 season poster lineup",
+    "Kingston Council events Saxon Fayre summer 2026",
+    "Surbiton Partnership Good Life music comedy folk 2026"
   ]
 }

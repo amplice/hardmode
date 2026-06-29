@@ -94,6 +94,8 @@
     "splitMonthlyOrIrregularRepeatsIntoSeparateEvents": true,
     "allowRangesForWeeklyBlocksAndTrueMultiDayRuns": true,
     "markInferredRowsVerify": true,
-    "preferSpecificEventUrls": true
+    "preferSpecificEventUrls": true,
+    "errOnSideOfInclusion": true,
+    "inclusionNote": "Err toward INCLUDING events on relevance/audience-fit/uncertainty calls (the user can hide rows; a miss is worse than a marginal include). Only drop on relevance grounds for the explicit removeOrAvoid list and the Fighting Cocks roots/trad-only rule. Date/year integrity stays strict - never add an unconfirmable or stale-year date. Marginal includes get verify:true."
   }
 }
