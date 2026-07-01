@@ -1,0 +1,391 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//local-events//gig-radar//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Gig Radar
+X-WR-TIMEZONE:Europe/London
+BEGIN:VEVENT
+UID:g20260701-rosespawnshop@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260701
+DTEND;VALUE=DATE:20260702
+SUMMARY:Rose's Pawn Shop — Rose's Pawn Shop
+LOCATION:Green Note\, Camden\, London
+DESCRIPTION:Genres: old-time\nCost: £15\nUS band billed as old-time Appalachian folk/country — leans Americana/newgrass. Tonight.\nhttps://www.greennote.co.uk/events-page/bluegrass/
+URL:https://www.greennote.co.uk/events-page/bluegrass/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260703-nightjar@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260703T210000
+SUMMARY:Tim Penn & The Second Line — Tim Penn & The Second Line
+LOCATION:Nightjar\, Shoreditch\, London
+DESCRIPTION:Genres: New Orleans / trad jazz\nCost: £10 cover\nNew Orleans blues/second-line jazz. Live 21:00–23:00 + late set. Cover on the door\, no tickets.\nhttps://www.barnightjar.com/shoreditch-listings
+URL:https://www.barnightjar.com/shoreditch-listings
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260703-maverick@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260703
+DTEND;VALUE=DATE:20260706
+SUMMARY:Waco Brothers\, Vandoliers\, Carter Sampson & 40+ acts — Maverick Festival 2026
+LOCATION:Easton Farm Park\, Easton\, Suffolk
+DESCRIPTION:Genres: western swing · old-school country · honky tonk\nThe UK's original roots/Americana festival\, skews trad. Overnight/camping trip — nearest station Wickham Market\, ~2h15 from Liverpool St + taxi.\nhttps://maverickfestival.co.uk/
+URL:https://maverickfestival.co.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260704-nightjar@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260704T210000
+SUMMARY:Dom Durner's Black Tie Riot — Dom Durner's Black Tie Riot
+LOCATION:Nightjar\, Shoreditch\, London
+DESCRIPTION:Genres: hot jazz · swing\nCost: £10 cover\nBilled as hot jazz and swing. Live 21:00–23:00 + late set.\nhttps://www.barnightjar.com/shoreditch-listings
+URL:https://www.barnightjar.com/shoreditch-listings
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260705-brennenleigh@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260705T200000
+SUMMARY:Brennen Leigh — Brennen Leigh
+LOCATION:Green Note\, Camden\, London
+DESCRIPTION:Genres: western swing · honky tonk · old-school country\nCost: £20\nNashville-based\; honky-tonk heart with western-swing snap (cut a full western-swing album with Asleep at the Wheel). Matinée + evening shows.\nhttps://www.greennote.co.uk/
+URL:https://www.greennote.co.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260711-barndance@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260711T200000
+SUMMARY:Linda Game Band (caller Geoff Cubitt) — London Barndance — Linda Game Band
+LOCATION:Cecil Sharp House\, Camden\, London
+DESCRIPTION:Genres: old-time\nLinda Game is a US (Portland) old-time fiddler & Sail Away Ladies member\, so likely old-time repertoire — genre fit unconfirmed. 8–11pm.\nhttps://www.barndance.org/programme.html
+URL:https://www.barndance.org/programme.html
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260711-nightjar@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260711T210000
+SUMMARY:The Travelling Janes — The Travelling Janes
+LOCATION:Nightjar\, Shoreditch\, London
+DESCRIPTION:Genres: swing\nCost: £10 cover\nSwing jazz\, blues and early roots.\nhttps://www.barnightjar.com/shoreditch-listings
+URL:https://www.barnightjar.com/shoreditch-listings
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260711-hotseats@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260711
+DTEND;VALUE=DATE:20260712
+SUMMARY:The Hot Seats — The Hot Seats
+LOCATION:Green Note\, Camden\, London
+DESCRIPTION:Genres: old-time · jug band\nCost: £15\nHard-driving old-time\, ragtime and jug blues.\nhttps://www.greennote.co.uk/events-page/bluegrass/
+URL:https://www.greennote.co.uk/events-page/bluegrass/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260712-swingdance@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260712T140000
+SUMMARY:The Big Swing Big Band — Swing Dance Sundays — The Big Swing Big Band
+LOCATION:Regent's Park bandstand (SwingdanceUK)\, Regent's Park\, London
+DESCRIPTION:Genres: swing\nCost: Free\nFree class + live big-band swing dancing\, 14:00–17:00.\nhttps://swingdanceuk.com/socials/special-events/
+URL:https://swingdanceuk.com/socials/special-events/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260712-agsconnolly@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260712T150000
+SUMMARY:Ags Connolly — Dave Sutherland's Sunday Service feat. Ags Connolly
+LOCATION:The Dukes of Highgate\, Highgate\, London
+DESCRIPTION:Genres: honky tonk · old-school country\nCost: Free\nAgs Connolly = leading UK traditional/ameripolitan country singer (Ray Price / Merle Haggard-era honky tonk). Free Sunday session\, 15:00–18:30.\nhttps://www.thedukesofhighgate.co.uk/events/dave-sutherlands-sunday-service/
+URL:https://www.thedukesofhighgate.co.uk/events/dave-sutherlands-sunday-service/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260712-tubaskinny@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260712
+DTEND;VALUE=DATE:20260713
+SUMMARY:Tuba Skinny — Tuba Skinny
+LOCATION:ESEA Community Centre\, De Beauvoir Town\, London
+DESCRIPTION:Genres: New Orleans / trad jazz\nNew Orleans trad-jazz US touring band\; first of three London shows.\nhttps://www.songkick.com/artists/2903866-tuba-skinny/calendar
+URL:https://www.songkick.com/artists/2903866-tuba-skinny/calendar
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260712-slocounty@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260712
+DTEND;VALUE=DATE:20260713
+SUMMARY:Slo County Stumblers — Slo County Stumblers
+LOCATION:Green Note\, Camden\, London
+DESCRIPTION:Genres: old-time\nCost: £13.50\nOld-time string band — clawhammer banjo and bass.\nhttps://www.greennote.co.uk/events-page/bluegrass/
+URL:https://www.greennote.co.uk/events-page/bluegrass/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260713-tubaskinny@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260713
+DTEND;VALUE=DATE:20260714
+SUMMARY:Tuba Skinny — Tuba Skinny
+LOCATION:Ronnie Scott's\, Soho\, London
+DESCRIPTION:Genres: New Orleans / trad jazz\nNew Orleans trad jazz at Ronnie Scott's (first of two nights).\nhttps://www.songkick.com/artists/2903866-tuba-skinny/calendar
+URL:https://www.songkick.com/artists/2903866-tuba-skinny/calendar
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260714-tubaskinny@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260714
+DTEND;VALUE=DATE:20260715
+SUMMARY:Tuba Skinny — Tuba Skinny
+LOCATION:Ronnie Scott's\, Soho\, London
+DESCRIPTION:Genres: New Orleans / trad jazz\nSecond Ronnie Scott's date.\nhttps://www.songkick.com/artists/2903866-tuba-skinny/calendar
+URL:https://www.songkick.com/artists/2903866-tuba-skinny/calendar
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260723-eskimobrothers@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260723T200000
+SUMMARY:David Graham & The Eskimo Brothers (+ Ben Waters\, Ian Jennings) — David Graham & The Eskimo Brothers\, with Ben Waters
+LOCATION:The Half Moon\, Putney\, SW London
+DESCRIPTION:Genres: honky tonk · old-school country\nNashville honky-tonk/rockabilly/roots trio\; Ben Waters on boogie-woogie piano. Cross-confirmed on band + artist sites. Local — Putney.\nhttps://eskimobrothers.net/tour-dates/
+URL:https://eskimobrothers.net/tour-dates/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260726-lachlanbryan@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260726T200000
+SUMMARY:Lachlan Bryan & The Wildes — Lachlan Bryan & The Wildes
+LOCATION:Green Note\, Camden\, London
+DESCRIPTION:Genres: old-school country\nCost: £18\nAustralian traditional-leaning 'country noir' — more alt-country than pure honky tonk\; verify fit.\nhttps://www.greennote.co.uk/
+URL:https://www.greennote.co.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260802-swingdance@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260802T140000
+SUMMARY:KIX Jazz Orchestra — Swing Dance Sundays — KIX Jazz Orchestra
+LOCATION:Regent's Park bandstand (SwingdanceUK)\, Regent's Park\, London
+DESCRIPTION:Genres: swing\nCost: Free\nFree class + big-band swing\, 14:00–17:00.\nhttps://swingdanceuk.com/socials/special-events/
+URL:https://swingdanceuk.com/socials/special-events/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260803-jakeleg@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260803T123000
+SUMMARY:The Jake Leg Jug Band — The Jake Leg Jug Band
+LOCATION:The Spice of Life\, Soho\, London
+DESCRIPTION:Genres: jug band\nLunchtime jug-band set (2×50 min) — jazz/blues/ragtime/vaudeville.\nhttps://www.thejakelegjugband.com/gigs-2
+URL:https://www.thejakelegjugband.com/gigs-2
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260807-hankwangford@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260807T200000
+SUMMARY:Hank Wangford & The Big Bass Combo — Hank Wangford & The Big Bass Combo
+LOCATION:Green Note\, Camden\, London
+DESCRIPTION:Genres: honky tonk · old-school country\nCost: £15\nLong-running British classic-country institution playing Hank Williams-era honky tonk / cosmic country. Squarely on-brief.\nhttps://www.greennote.co.uk/
+URL:https://www.greennote.co.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260814-eastgrinstead@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260814
+DTEND;VALUE=DATE:20260818
+SUMMARY:The Sussex Stompers (New Orleans trad) + others — East Grinstead Jazz Festival 2026
+LOCATION:Multiple venues\, East Grinstead\, West Sussex
+DESCRIPTION:Genres: New Orleans / trad jazz\nIncludes a New Orleans-tradition marching procession along the High St (Sat). Day-trip: direct trains from Victoria/London Bridge ~1h.\nhttps://www.eastgrinsteadjazzfestival.com/
+URL:https://www.eastgrinsteadjazzfestival.com/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260816-swingfest@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260816T150000
+SUMMARY:Elise Roth & her Harvard Squares (eve) / Pete Long & Denny Ilett (aft) — South London SwingFest
+LOCATION:The Bedford\, Balham\, SW London
+DESCRIPTION:Genres: swing\nSwing-dance festival\; evening set (Harvard Squares\, 19:30) is classic swing. Afternoon 'R&Bebop' set leans modern.\nhttps://www.swingfest.org.uk/schedule.php?show=bands
+URL:https://www.swingfest.org.uk/schedule.php?show=bands
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260821-thumpingtommys@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260821
+DTEND;VALUE=DATE:20260822
+SUMMARY:The Thumping Tommys — The Thumping Tommys
+LOCATION:Green Note\, Camden\, London
+DESCRIPTION:Genres: old-time\nCost: £13\nIrish and American folk in old-time style.\nhttps://www.greennote.co.uk/events-page/bluegrass/
+URL:https://www.greennote.co.uk/events-page/bluegrass/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260823-swingdance@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260823T140000
+SUMMARY:South London Jazz Orchestra — Swing Dance Sundays — South London Jazz Orchestra
+LOCATION:Regent's Park bandstand (SwingdanceUK)\, Regent's Park\, London
+DESCRIPTION:Genres: swing\nCost: Free\nFree class + big-band swing.\nhttps://swingdanceuk.com/socials/special-events/
+URL:https://swingdanceuk.com/socials/special-events/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260824-marthaspencer@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260824
+DTEND;VALUE=DATE:20260825
+SUMMARY:Martha Spencer Trio — Martha Spencer Trio
+LOCATION:Green Note\, Camden\, London
+DESCRIPTION:Genres: old-time\nCost: £16\nGenuine Appalachian (Whitetop\, VA) old-time string-band sound.\nhttps://www.greennote.co.uk/events-page/bluegrass/
+URL:https://www.greennote.co.uk/events-page/bluegrass/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260826-dustbowl@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260826
+DTEND;VALUE=DATE:20260827
+SUMMARY:Dustbowl Revival — Dustbowl Revival
+LOCATION:The Lexington\, Islington\, London
+DESCRIPTION:Genres: jug band\nCost: £17\nOld-school bluegrass/gospel/jug-band/swamp-blues revue\; big Americana band\, jug-band tag is loose.\nhttps://www.greennote.co.uk/events-page/bluegrass/
+URL:https://www.greennote.co.uk/events-page/bluegrass/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260830-swingdance@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260830T140000
+SUMMARY:Sid Bolan Big Band — Swing Dance Sundays — Sid Bolan Big Band
+LOCATION:Regent's Park bandstand (SwingdanceUK)\, Regent's Park\, London
+DESCRIPTION:Genres: swing\nCost: Free\nFree class + big-band swing.\nhttps://swingdanceuk.com/socials/special-events/
+URL:https://swingdanceuk.com/socials/special-events/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260910-winningpost@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260910T120000
+SUMMARY:Richard Bennett's New Orleans All Stars — Richard Bennett's New Orleans All Stars
+LOCATION:The Winning Post\, Twickenham\, SW London
+DESCRIPTION:Genres: New Orleans / trad jazz\nLunchtime trad-jazz session (doors 11:30\, 12–3pm)\, Shooting Star Chase fundraiser. Year not printed on listing but Sep 10 is a Thursday in 2026 — confirm with venue.\nhttps://www.thejazzguide.co.uk/venues/listing/winning-post/
+URL:https://www.thejazzguide.co.uk/venues/listing/winning-post/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260910-agsconnolly@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260910T200000
+SUMMARY:Ags Connolly — Ags Connolly (solo)
+LOCATION:The Hyde Tavern\, Winchester\, Hampshire
+DESCRIPTION:Genres: honky tonk · old-school country\nTraditional honky-tonk/Texas country. Winchester is direct from Surbiton on the SW mainline (~1h). Start time assumed ~20:00 — verify.\nhttps://www.songkick.com/artists/4885833-ags-connolly/calendar
+URL:https://www.songkick.com/artists/4885833-ags-connolly/calendar
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260919-labouche@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20260919
+DTEND;VALUE=DATE:20260920
+SUMMARY:La Bouche Manouche — La Bouche Manouche feat. Irene Serra
+LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
+DESCRIPTION:Genres: gypsy jazz\nTop UK vintage gypsy-jazz band (Django/Hot Club style) at London's current premier manouche venue. Listed on JamBase but not yet corroborated elsewhere — confirm with the venue.\nhttps://www.jambase.com/band/la-bouche-manouche
+URL:https://www.jambase.com/band/la-bouche-manouche
+END:VEVENT
+BEGIN:VEVENT
+UID:g20260920-swingdance@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20260920T140000
+SUMMARY:Duke Street Big Band — Swing Dance Sundays — Duke Street Big Band
+LOCATION:Regent's Park bandstand (SwingdanceUK)\, Regent's Park\, London
+DESCRIPTION:Genres: swing\nCost: Free\nFree class + big-band swing.\nhttps://swingdanceuk.com/socials/special-events/
+URL:https://swingdanceuk.com/socials/special-events/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261005-100club@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20261005T193000
+SUMMARY:Denmark Street Big Band — Stompin' at the 100 Club — Denmark Street Big Band
+LOCATION:The 100 Club\, Soho\, London
+DESCRIPTION:Genres: swing\nSwing-dance night\; class 19:45\, live band 20:45 & 21:45.\nhttps://swingdanceuk.com/socials/special-events/
+URL:https://swingdanceuk.com/socials/special-events/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261010-barndance@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20261010T200000
+SUMMARY:Sail Away Ladies (caller Seth Tepfer) — London Barndance — Sail Away Ladies
+LOCATION:Cecil Sharp House\, Camden\, London
+DESCRIPTION:Genres: old-time\nAppalachian all-female old-time band + US caller — genuine old-time square/contra dance. 8–11pm.\nhttps://www.barndance.org/programme.html
+URL:https://www.barndance.org/programme.html
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261031-excellar@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20261031
+DTEND;VALUE=DATE:20261101
+SUMMARY:The Red Hot Rhythm Revival Jazz Band — The Red Hot Rhythm Revival Jazz Band
+LOCATION:Excellar (Ex Cellar Wine Cafe)\, Surbiton
+DESCRIPTION:Genres: hot jazz · New Orleans / trad jazz\n1920s/30s New Orleans/hot-jazz quintet. Excellar has Surbiton (18–20 Brighton Rd) and Kingston branches — confirm branch/time. Right on the doorstep.\nhttps://www.excellar.co.uk/blog/category/live-music
+URL:https://www.excellar.co.uk/blog/category/live-music
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261109-jakeleg@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20261109T133000
+SUMMARY:The Jake Leg Jug Band — The Jake Leg Jug Band
+LOCATION:Epsom Hot Jazz Club\, Epsom\, Surrey
+DESCRIPTION:Genres: jug band\nEpsom is a short direct train from Surbiton.\nhttps://www.thejakelegjugband.com/gigs-2
+URL:https://www.thejakelegjugband.com/gigs-2
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261113-efglondon@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART;VALUE=DATE:20261113
+DTEND;VALUE=DATE:20261123
+SUMMARY:Trio Manouche + 60+ venues citywide — EFG London Jazz Festival 2026 (trad / gypsy strands)
+LOCATION:Barbican\, Southbank & 60+ venues\, Various\, London
+DESCRIPTION:Genres: gypsy jazz · New Orleans / trad jazz · hot jazz\nFestival dates confirmed\; reliably carries trad/hot/gypsy strands. Cherry-pick manouche/trad gigs from the What's On listing.\nhttps://efglondonjazzfestival.org.uk/
+URL:https://efglondonjazzfestival.org.uk/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261124-jakeleg@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20261124T140000
+SUMMARY:The Jake Leg Jug Band — The Jake Leg Jug Band
+LOCATION:Datchet Village Hall\, Datchet\, Berkshire
+DESCRIPTION:Genres: jug band\nDatchet is on the Waterloo line (via Staines).\nhttps://www.thejakelegjugband.com/gigs-2
+URL:https://www.thejakelegjugband.com/gigs-2
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261203-winningpost@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20261203T120000
+SUMMARY:Harlem Orchestra — Harlem Orchestra
+LOCATION:The Winning Post\, Twickenham\, SW London
+DESCRIPTION:Genres: hot jazz · swing\n1920s–40s Harlem hot-jazz/swing. Lunchtime session (doors 11:30\, 12–3pm). Year not printed but Dec 3 is a Thursday in 2026 — confirm with venue.\nhttps://www.thejazzguide.co.uk/venues/listing/winning-post/
+URL:https://www.thejazzguide.co.uk/venues/listing/winning-post/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261206-jinglebell@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20261206T180000
+SUMMARY:South London Jazz Orchestra — Jingle Bell Jive — South London Jazz Orchestra
+LOCATION:National Army Museum\, Chelsea\, SW London
+DESCRIPTION:Genres: swing\nAfter-hours swing dance\; class 18:30\, live sets 19:30 & 21:15.\nhttps://swingdanceuk.com/socials/special-events/
+URL:https://swingdanceuk.com/socials/special-events/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261207-100club@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20261207T193000
+SUMMARY:Malcolm Earle-Smith Swingin' All Stars — Stompin' at the 100 Club — Malcolm Earle-Smith Swingin' All Stars
+LOCATION:The 100 Club\, Soho\, London
+DESCRIPTION:Genres: swing\nSwing-dance night\; class 19:45\, live band 20:45 & 21:45.\nhttps://swingdanceuk.com/socials/special-events/
+URL:https://swingdanceuk.com/socials/special-events/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261224-southbank@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20261224T130000
+SUMMARY:Five Go Jiving — Christmas Eve Dance — Five Go Jiving
+LOCATION:Southbank Centre\, South Bank\, London
+DESCRIPTION:Genres: swing\nSwing dance\; classes 13:00 & 14:45\, live sets 14:00 & 15:05.\nhttps://swingdanceuk.com/socials/special-events/
+URL:https://swingdanceuk.com/socials/special-events/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261229-cadogan@local-events-gig-radar
+DTSTAMP:20260701T000000Z
+DTSTART:20261229T190000
+SUMMARY:Down for the Count Swing Orchestra — Swing Into Christmas — Down for the Count Swing Orchestra
+LOCATION:Cadogan Hall\, Sloane Square\, SW London
+DESCRIPTION:Genres: swing\nCost: £25–£50\nClassic big-band swing. Two shows: 14:00 & 19:00.\nhttps://cadoganhall.com/whats-on/swing-into-christmas-with-the-down-for-the-count-swing-orchestra-2026/
+URL:https://cadoganhall.com/whats-on/swing-into-christmas-with-the-down-for-the-count-swing-orchestra-2026/
+END:VEVENT
+END:VCALENDAR

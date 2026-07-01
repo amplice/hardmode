@@ -1,0 +1,85 @@
+{
+  "profileName": "Traditional jazz + roots-Americana gig radar",
+  "oneLine": "Live gigs in old-school jazz and trad Americana (minus bluegrass) around London and reachable from Surbiton.",
+  "genresWanted": [
+    "hot jazz",
+    "gypsy jazz / Django / manouche",
+    "western swing",
+    "old-time / Appalachian string band",
+    "cajun",
+    "zydeco",
+    "jug band",
+    "skiffle",
+    "old-school / classic country (pre-1970s, Hank/Buck/Merle era)",
+    "honky tonk",
+    "Kansas City swing",
+    "New Orleans / trad / Dixieland jazz",
+    "swing (hot, pre-bebop) incl. live-band swing/Lindy dances",
+    "rockabilly only when clearly roots/trad-adjacent"
+  ],
+  "canonicalGenres": [
+    "hot jazz",
+    "gypsy jazz",
+    "western swing",
+    "old-time",
+    "cajun",
+    "zydeco",
+    "jug band",
+    "skiffle",
+    "old-school country",
+    "honky tonk",
+    "Kansas City swing",
+    "New Orleans / trad jazz",
+    "swing"
+  ],
+  "genreAliases": {
+    "manouche": "gypsy jazz",
+    "django": "gypsy jazz",
+    "dixieland": "New Orleans / trad jazz",
+    "trad jazz": "New Orleans / trad jazz",
+    "new orleans jazz": "New Orleans / trad jazz",
+    "classic country": "old-school country",
+    "americana": "old-school country",
+    "creole": "zydeco",
+    "lindy": "swing",
+    "jump jive": "swing",
+    "jive": "swing"
+  },
+  "avoid": [
+    "bluegrass-only acts and bluegrass festivals (explicitly out of scope)",
+    "modern / contemporary / bebop / hard-bop / post-bop / fusion / nu-jazz / free jazz",
+    "modern pop / chart / Nashville country and country-pop",
+    "indie-folk, singer-songwriter, folk-rock unless clearly old-time/trad",
+    "rock, punk, metal, indie, electronic, DJ nights, tribute acts",
+    "generic open-mic nights",
+    "anything with no confirmed specific date, or evidence of a stale prior-year listing"
+  ],
+  "scope": {
+    "core": "Greater London, prioritising what is easy from Surbiton (SW London: Surbiton, Kingston, Wimbledon, Richmond, Twickenham, Barnes, Putney; and central London via Waterloo).",
+    "dayTrip": "Include events within ~90 min by train (e.g. Brighton, Guildford, Oxford, Cambridge, St Albans, East Grinstead) with a clear travel note.",
+    "overnightOnly": "Note genuinely relevant festivals that are too far for a day-trip in the watchlist, not the main list."
+  },
+  "reviewPolicy": {
+    "errOnSideOfInclusion": true,
+    "inclusionNote": "This radar is a niche genre filter, so relevance is the whole point — but WITHIN the genres, err toward including. If an act plausibly plays in-genre material, include it (verify:true if unsure). The user can hide rows. Only exclude on the hard 'avoid' list (esp. bluegrass, modern jazz, modern country) or unconfirmable dates.",
+    "doNotAddWithoutConfirmedDate": true,
+    "doNotAddPastEvents": true,
+    "markInferredVerify": true,
+    "preferSpecificEventUrls": true,
+    "uncertainLeadsGoToWatchlist": true
+  },
+  "sourceTrust": {
+    "prefer": [
+      "official venue what's-on / listings pages",
+      "artist/band official sites and tour pages",
+      "ticketing pages (DICE, TicketSource, See Tickets, WeGotTickets, Eventbrite) for the specific gig",
+      "EFDSS / Cecil Sharp House listings",
+      "festival home pages"
+    ],
+    "useWithCaution": [
+      "aggregators (Songkick, Bandsintown, Ents24, Skiddle) — good for discovery, confirm the date on a primary source where possible",
+      "social-only listings (Instagram/Facebook) — allowed but mark confidence:verify",
+      "pages with no explicit current-year date"
+    ]
+  }
+}

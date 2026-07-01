@@ -40,6 +40,17 @@ if ($LASTEXITCODE -ne 0) {
   throw "Validation failed; not publishing."
 }
 
+# Gig radar: regenerate + validate its files too, so the same publish covers both.
+& npm run gig:generate
+if ($LASTEXITCODE -ne 0) {
+  throw "Gig-radar generation failed; not publishing."
+}
+
+& npm run gig:validate
+if ($LASTEXITCODE -ne 0) {
+  throw "Gig-radar validation failed; not publishing."
+}
+
 $InsideWorkTree = Invoke-CommandAllowFailure -FilePath "git" -Arguments @("rev-parse", "--is-inside-work-tree")
 if ($InsideWorkTree.ExitCode -ne 0 -or ($InsideWorkTree.Output -join "").Trim() -ne "true") {
   throw "This folder is not a git repository. Run git init -b main before publishing."
@@ -50,7 +61,7 @@ if ($RemoteUrl.ExitCode -ne 0 -or [string]::IsNullOrWhiteSpace(($RemoteUrl.Outpu
   throw "No git remote named '$Remote' is configured. Add one with: git remote add $Remote https://github.com/amplice/hardmode.git"
 }
 
-& git add -- index.html .nojekyll calendar-data.json calendar-data.js events.ics latest-changes.json manifest.webmanifest sw.js assets icons package.json README.md updater
+& git add -- index.html .nojekyll calendar-data.json calendar-data.js events.ics latest-changes.json manifest.webmanifest sw.js assets icons package.json README.md updater gigs.html gig-data.json gig-data.js gigs.ics
 if ($LASTEXITCODE -ne 0) {
   throw "Could not stage site files."
 }

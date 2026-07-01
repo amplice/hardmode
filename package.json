@@ -12,6 +12,10 @@
     "update:claude:nopublish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-claude-update.ps1 -NoPublish",
     "generate": "node updater/generate-site-files.mjs",
     "validate": "node updater/validate-calendar.mjs",
+    "gig:generate": "node updater/generate-gigs.mjs",
+    "gig:validate": "node updater/validate-gigs.mjs",
+    "gig:update": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-gig-update.ps1",
+    "gig:update:nopublish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-gig-update.ps1 -NoPublish",
     "publish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/publish-site.ps1"
   }
 }

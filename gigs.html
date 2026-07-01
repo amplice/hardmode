@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gig Radar — hot jazz, gypsy jazz, western swing, cajun, old-time &amp; more</title>
+  <meta name="theme-color" content="#7a2e12" />
+  <style>
+    :root{
+      --bg:#faf6f0; --ink:#241a15; --muted:#6f5d52; --line:#e6dccf;
+      --accent:#7a2e12; --accent2:#b6612f; --card:#fffdfa; --chip:#f0e7da;
+      --verify:#9a6b00; --local:#0d6a4f; --central:#1f5d8c; --daytrip:#7a4bb0;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);
+      font:16px/1.5 "Iowan Old Style","Palatino Linotype",Georgia,serif;-webkit-text-size-adjust:100%}
+    a{color:var(--accent)}
+    .shell{max-width:1040px;margin:0 auto;padding:0 18px}
+    header.hero{background:linear-gradient(135deg,#7a2e12,#b6612f);color:#fff7ef;padding:26px 0 22px}
+    header .shell{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-end}
+    h1{margin:0 0 6px;font-size:30px;letter-spacing:.2px}
+    .subtitle{max-width:640px;color:#ffeadb;font-size:15px}
+    .updated{font-size:13px;color:#ffd9c2;margin-top:8px}
+    .actions{display:flex;flex-wrap:wrap;gap:8px}
+    .btn{display:inline-block;border:1px solid rgba(255,255,255,.55);color:#fff;background:rgba(255,255,255,.08);
+      padding:8px 12px;border-radius:8px;text-decoration:none;font-size:14px;cursor:pointer}
+    .btn:hover{background:rgba(255,255,255,.2)}
+    .btn.solid{background:#fff;color:var(--accent);border-color:#fff;font-weight:600}
+    .toolbar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 0}
+    .toolbar .shell{display:flex;flex-direction:column;gap:10px}
+    .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    input[type=search],select{font:inherit;font-size:15px;padding:9px 11px;border:1px solid var(--line);
+      border-radius:8px;background:var(--card);color:var(--ink)}
+    input[type=search]{flex:1;min-width:200px}
+    .chips{display:flex;flex-wrap:wrap;gap:6px}
+    .chip{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;
+      padding:5px 11px;font-size:13px;cursor:pointer;user-select:none}
+    .chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .count{font-size:13px;color:var(--muted)}
+    main{padding:18px 0 60px}
+    .monthhead{margin:26px 0 6px;font-size:14px;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--accent2);border-bottom:1px solid var(--line);padding-bottom:6px}
+    .day{margin:16px 0 6px;font-weight:700;font-size:15px;color:var(--muted)}
+    .card{display:flex;gap:14px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent2);
+      border-radius:10px;padding:12px 14px;margin:8px 0}
+    .card .when{min-width:60px;text-align:center}
+    .card .time{font-weight:700;font-size:16px}
+    .card .dow{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .card .body{flex:1;min-width:0}
+    .card .title{font-size:17px;font-weight:700;margin:0 0 2px}
+    .card .title a{text-decoration:none}
+    .card .title a:hover{text-decoration:underline}
+    .card .meta{font-size:14px;color:var(--muted)}
+    .card .note{font-size:14px;margin-top:5px}
+    .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+    .tag{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--chip);color:#5a3a1f;border:1px solid var(--line)}
+    .badge{font-size:11px;padding:2px 7px;border-radius:6px;color:#fff;white-space:nowrap}
+    .b-verify{background:var(--verify)} .b-free{background:var(--local)} .b-fest{background:var(--accent)}
+    .prox{font-size:11px;font-weight:700}
+    .prox.local{color:var(--local)} .prox.central{color:var(--central)} .prox.daytrip{color:var(--daytrip)}
+    .empty{padding:40px 0;text-align:center;color:var(--muted)}
+    .watch{margin-top:40px;border-top:2px dashed var(--line);padding-top:18px}
+    .watch h2{font-size:18px;margin:0 0 4px}
+    .watch p.lead{color:var(--muted);font-size:14px;margin:0 0 12px}
+    .watch li{margin:6px 0}
+    footer{color:var(--muted);font-size:13px;padding:24px 0 40px;border-top:1px solid var(--line);margin-top:30px}
+    @media (max-width:560px){ h1{font-size:24px} .card{flex-direction:row} .card .when{min-width:52px} }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="shell">
+      <div>
+        <h1>Gig Radar</h1>
+        <div class="subtitle">Hot jazz · gypsy jazz · western swing · old-time · cajun &amp; zydeco · jug band &amp; skiffle · old-school country · honky tonk · Kansas City swing · trad/New Orleans jazz — around London and reachable from Surbiton.</div>
+        <div class="updated" id="updated"></div>
+      </div>
+      <div class="actions">
+        <a class="btn solid" id="subscribe" href="gigs.ics">Subscribe (ICS)</a>
+        <a class="btn" href="index.html">Main calendar →</a>
+        <button class="btn" id="printBtn" type="button">Print</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="shell">
+      <div class="row">
+        <input id="search" type="search" placeholder="Search artist, venue, area, genre…" autocomplete="off" />
+        <select id="range">
+          <option value="all">All upcoming</option>
+          <option value="7">Next 7 days</option>
+          <option value="30">Next 30 days</option>
+          <option value="90">Next 3 months</option>
+          <option value="past">Include past</option>
+        </select>
+        <select id="prox">
+          <option value="">Anywhere</option>
+          <option value="Local (SW London)">Local (SW London)</option>
+          <option value="Central London">Central London</option>
+          <option value="Day-trip">Day-trip</option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="chips" id="genreChips"></div>
+      </div>
+      <div class="row">
+        <span class="count" id="count"></span>
+      </div>
+    </div>
+  </div>
+
+  <main class="shell">
+    <div id="list"></div>
+    <section class="watch" id="watchSection" hidden>
+      <h2>On the radar — residencies &amp; venues to watch</h2>
+      <p class="lead">Regular nights in these genres without individually-listed dates. Check the link for what's on.</p>
+      <ul id="watchList"></ul>
+    </section>
+    <footer>
+      <div>Curated gig radar for traditional jazz &amp; roots Americana. Self-updates roughly twice a week. Rows marked <span class="badge b-verify">verify</span> need an organiser check before you rely on them.</div>
+    </footer>
+  </main>
+
+  <script src="gig-data.js"></script>
+  <script>
+  (function(){
+    var DATA = (window.GIG_DATA)||{gigs:[],watchlist:[],meta:{}};
+    var gigs = DATA.gigs||[];
+    var today = (DATA.meta&&DATA.meta.dateBasis)|| new Date().toISOString().slice(0,10);
+
+    var state = { q:"", range:"all", prox:"", genres:new Set() };
+
+    var el = function(id){return document.getElementById(id);};
+    var upd = el('updated');
+    if(DATA.meta&&DATA.meta.dateBasis){
+      var c = DATA.meta.counts||{};
+      upd.textContent = "Updated "+DATA.meta.dateBasis+" · "+(c.upcoming||0)+" upcoming gigs";
+    }
+
+    // genre chips
+    var genres = (DATA.meta&&DATA.meta.genres)|| [];
+    var chipWrap = el('genreChips');
+    genres.forEach(function(g){
+      var c=document.createElement('span'); c.className='chip'; c.textContent=g; c.dataset.g=g;
+      c.onclick=function(){ if(state.genres.has(g)){state.genres.delete(g);c.classList.remove('on');}
+        else{state.genres.add(g);c.classList.add('on');} render(); };
+      chipWrap.appendChild(c);
+    });
+
+    el('search').oninput=function(e){state.q=e.target.value.toLowerCase().trim();render();};
+    el('range').onchange=function(e){state.range=e.target.value;render();};
+    el('prox').onchange=function(e){state.prox=e.target.value;render();};
+    el('printBtn').onclick=function(){window.print();};
+
+    function addDays(d,n){var p=d.split('-').map(Number);var dt=new Date(Date.UTC(p[0],p[1]-1,p[2]));dt.setUTCDate(dt.getUTCDate()+n);return dt.toISOString().slice(0,10);}
+
+    function proxClass(t){return t==='Local (SW London)'?'local':t==='Central London'?'central':'daytrip';}
+    function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+    function matches(g){
+      var end=g.endDate||g.date;
+      if(state.range==='past'){ /* show all */ }
+      else if(end<today) return false;
+      if(state.range==='7'&&g.date>addDays(today,7)) return false;
+      if(state.range==='30'&&g.date>addDays(today,30)) return false;
+      if(state.range==='90'&&g.date>addDays(today,90)) return false;
+      if(state.prox&&g.travel!==state.prox) return false;
+      if(state.genres.size){ if(!(g.genres||[]).some(function(x){return state.genres.has(x);})) return false; }
+      if(state.q){
+        var hay=[g.title,g.artist,g.venue,g.area,g.note,(g.genres||[]).join(' '),g.cost].join(' ').toLowerCase();
+        if(hay.indexOf(state.q)<0) return false;
+      }
+      return true;
+    }
+
+    function render(){
+      var list=el('list'); list.innerHTML='';
+      var rows=gigs.filter(matches);
+      el('count').textContent=rows.length+ (rows.length===1?' gig':' gigs');
+      if(!rows.length){ list.innerHTML='<div class="empty">No gigs match. Try clearing filters or widening the date range.</div>'; }
+      var lastMonth='', lastDay='';
+      rows.forEach(function(g){
+        if(g.monthLabel!==lastMonth){lastMonth=g.monthLabel;lastDay='';
+          var h=document.createElement('div');h.className='monthhead';h.textContent=g.monthLabel;list.appendChild(h);}
+        if(g.dateLabel!==lastDay){lastDay=g.dateLabel;
+          var d=document.createElement('div');d.className='day';d.textContent=g.dateLabel+(g.isMultiDay?' – '+(g.endDate||''):'');list.appendChild(d);}
+        list.appendChild(cardFor(g));
+      });
+      var w=DATA.watchlist||[];
+      if(w.length){ el('watchSection').hidden=false; var ul=el('watchList'); ul.innerHTML='';
+        w.forEach(function(x){var li=document.createElement('li');
+          var link=x.url?'<a href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.name||x.venue||'link')+'</a>':esc(x.name||x.venue||'');
+          li.innerHTML='<strong>'+link+'</strong>'+(x.venue&&x.name?' — '+esc(x.venue):'')+(x.note?' · '+esc(x.note):'');
+          ul.appendChild(li);});
+      }
+    }
+
+    function cardFor(g){
+      var c=document.createElement('div'); c.className='card';
+      var title=esc(g.artist||g.title||'Gig'); var sub=g.artist&&g.title&&g.title!==g.artist?' — '+esc(g.title):'';
+      var titleHtml=g.url?'<a href="'+esc(g.url)+'" target="_blank" rel="noopener">'+title+'</a>'+sub:title+sub;
+      var badges='';
+      if(g.confidence==='verify') badges+=' <span class="badge b-verify">verify</span>';
+      if(/free/i.test(g.cost||'')) badges+=' <span class="badge b-free">free</span>';
+      if(g.isMultiDay) badges+=' <span class="badge b-fest">festival</span>';
+      var tags=(g.genres||[]).map(function(x){return '<span class="tag">'+esc(x)+'</span>';}).join('');
+      var costArea=[g.venue,g.area].filter(Boolean).map(esc).join(', ');
+      var right=[g.cost?esc(g.cost):'', '<span class="prox '+proxClass(g.travel)+'">'+esc(g.travel)+'</span>'].filter(Boolean).join(' · ');
+      c.innerHTML=
+        '<div class="when"><div class="time">'+esc(g.time||'—')+'</div><div class="dow">'+esc(g.weekday||'')+'</div></div>'+
+        '<div class="body">'+
+          '<div class="title">'+titleHtml+badges+'</div>'+
+          '<div class="meta">'+costArea+(right?' · '+right:'')+'</div>'+
+          (g.note?'<div class="note">'+esc(g.note)+'</div>':'')+
+          '<div class="tags">'+tags+'</div>'+
+        '</div>';
+      return c;
+    }
+
+    render();
+  })();
+  </script>
+</body>
+</html>

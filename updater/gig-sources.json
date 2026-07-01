@@ -1,0 +1,51 @@
+{
+  "note": "Sources and search queries for the gig-radar self-update. Rotate through venues and try 2-3 new discovery angles each run; log outcomes in gig-method-log.md.",
+  "keyVenues": [
+    { "name": "Toulouse Lautrec Jazz Club", "area": "Kennington, London", "genres": ["gypsy jazz", "hot jazz"], "url": "https://toulouselautrec.co.uk/", "note": "CURRENT premier London gypsy-jazz venue (La Bouche Manouche, London Django Collective). Regular manouche nights + annual London Gypsy Jazz Festival (Apr, out of the summer window). Ticketing subdomain sometimes 403s — read the main site." },
+    { "name": "Vortex Jazz Club — 'Gypsy Jazz Monthly'", "area": "Dalston, London", "genres": ["gypsy jazz", "New Orleans / trad jazz"], "url": "https://www.vortexjazz.co.uk/", "note": "Monthly manouche residency (Gina Boreham) since 2006, plus trad acts (Tuba Skinny played here). JS calendar — dates appear closer to the time." },
+    { "name": "Cecil Sharp House (EFDSS)", "area": "Camden, London", "genres": ["cajun", "zydeco", "old-time", "western swing"], "url": "https://www.cecilsharphouse.org/whats-on", "note": "Cajun/zydeco dances, old-time jams, string-band nights, square dances." },
+    { "name": "SwingdanceUK special events", "area": "London (Regent's Park, 100 Club, Southbank, museums)", "genres": ["swing"], "url": "https://swingdanceuk.com/socials/special-events/", "note": "RICHEST confirmed source for live-band classic swing: free Regent's Park Sunday big bands (summer), 'Stompin' at the 100 Club', seasonal dances. Well-dated far ahead." },
+    { "name": "Nightjar", "area": "Shoreditch / Carnaby, London", "genres": ["hot jazz", "swing", "New Orleans / trad jazz"], "url": "https://www.barnightjar.com/shoreditch-listings", "note": "Nightly 21:00 hot jazz/swing/NO acts, cover on the door (no tickets). Only publishes ~2 weeks ahead — re-scrape every run for near-term dates." },
+    { "name": "The 100 Club", "area": "Oxford St, London", "genres": ["New Orleans / trad jazz", "swing"], "url": "https://www.the100club.co.uk/listings/", "note": "Trad-jazz strands + hosts SwingdanceUK's 'Stompin' at the 100 Club' nights." },
+    { "name": "Ronnie Scott's", "area": "Soho, London", "genres": ["New Orleans / trad jazz", "swing"], "url": "https://www.ronniescotts.co.uk/", "note": "Mostly modern, but hosts trad tours (Tuba Skinny) + the Shirt Tail Stompers Sunday vintage-swing residency. Site can block fetch — try the show pages directly." },
+    { "name": "Green Note", "area": "Camden, London", "genres": ["old-school country", "old-time", "cajun"], "url": "https://greennote.co.uk/events/", "note": "Roots/americana/folk; cherry-pick trad-leaning acts + London Django Collective dates." },
+    { "name": "The Slaughtered Lamb", "area": "Clerkenwell, London", "genres": ["old-school country", "old-time"], "url": "https://www.theslaughteredlambpub.com/", "note": "Americana/roots basement gigs; Come Down and Meet the Folks nights." },
+    { "name": "What's Cookin'", "area": "Leytonstone, London", "genres": ["western swing", "honky tonk", "old-school country", "cajun"], "url": "https://whatscookin.co.uk/", "note": "Long-running roots/americana club — strong trad-country/western-swing source." },
+    { "name": "The Fighting Cocks", "area": "Kingston", "genres": ["hot jazz", "cajun", "old-school country", "western swing", "skiffle"], "url": "https://www.the-fighting-cocks.co.uk/", "note": "LOCAL. Only roots/trad nights count here (ignore rock/punk/indie/metal), matching the calendar's Fighting Cocks rule." },
+    { "name": "The Bull's Head", "area": "Barnes", "genres": ["New Orleans / trad jazz", "hot jazz"], "url": "https://www.thebullshead.com/", "note": "LOCAL-ish. Historic jazz pub; trad/hot jazz acts." },
+    { "name": "Crazy Coqs (Live at Zedel)", "area": "Piccadilly, London", "genres": ["swing", "hot jazz", "gypsy jazz"], "url": "https://www.brasseriezedel.com/crazy-coqs/", "note": "Cabaret/vintage-jazz room; hot-jazz, Café Django, hot-harmonica swing. Event system occasionally errors — retry." },
+    { "name": "Boisdale (Belgravia & Canary Wharf)", "area": "London", "genres": ["gypsy jazz", "swing", "New Orleans / trad jazz"], "url": "https://boisdaletickets.co.uk/", "note": "Daily live jazz incl. gypsy/Django-style swing; browse the calendar for dated shows." },
+    { "name": "Cadogan Hall", "area": "Sloane Square, SW London", "genres": ["swing"], "url": "https://cadoganhall.com/whats-on/", "note": "Concert hall; seasonal big-band swing (e.g. Down for the Count 'Swing Into Christmas')." },
+    { "name": "Vout-O-Reenees", "area": "Tower Hill, London", "genres": ["hot jazz", "gypsy jazz", "swing"], "url": "https://www.vout-o-reenees.co.uk/", "note": "Members' club with regular hot-jazz/manouche nights." }
+  ],
+  "closedOrDefunct": [
+    { "name": "Le QuecumBar & Brasserie", "note": "PERMANENTLY CLOSED since April 2022 after 19 years. Was 'the' London gypsy-jazz venue — do NOT re-add or chase for listings." },
+    { "name": "Kansas Smitty's (Broadway Market bar)", "note": "Bar closed; the house band now plays mainly private bookings/festivals, not a fixed public London residency. Watch for one-off/festival dates only." }
+  ],
+  "aggregators": [
+    { "name": "Songkick", "url": "https://www.songkick.com/", "note": "Search by genre/artist near London." },
+    { "name": "Bandsintown", "url": "https://www.bandsintown.com/", "note": "Artist-following; good for trad-jazz/americana touring acts." },
+    { "name": "DICE", "url": "https://dice.fm/", "note": "London gig ticketing; filter by genre." },
+    { "name": "Skiddle", "url": "https://www.skiddle.com/", "note": "UK-wide listings; date-filter." },
+    { "name": "Ents24", "url": "https://www.ents24.com/", "note": "UK gig aggregator." },
+    { "name": "Gypsy Jazz Agenda", "url": "https://tbouttaz.github.io/GypsyJazzAgenda/", "note": "Community-maintained gypsy-jazz festival/gig calendar." }
+  ],
+  "searchQueries": [
+    "gypsy jazz London 2026 gigs",
+    "manouche Django night London",
+    "hot jazz London 2026",
+    "New Orleans trad jazz London gig 2026",
+    "Kansas City swing band London",
+    "swing dance live band London 2026",
+    "cajun dance London Cecil Sharp House 2026",
+    "zydeco London 2026",
+    "old-time string band London 2026",
+    "western swing London 2026",
+    "honky tonk night London 2026",
+    "classic country old school London gig 2026",
+    "jug band skiffle London 2026",
+    "trad jazz Kingston Richmond Twickenham 2026",
+    "gypsy jazz festival UK 2026",
+    "cajun zydeco festival UK 2026"
+  ]
+}
