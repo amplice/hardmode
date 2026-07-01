@@ -268,6 +268,43 @@
         "free town-centre family events",
         "server-rendered and readable when VisitKingston/KingstonFirst are blocked"
       ]
+    },
+    {
+      "name": "Ram Jam Records / The Grey Horse (Kingston)",
+      "url": "https://www.ramjamrecords.co.uk/events",
+      "checkFor": [
+        "dated live music gigs - jazz, blues, funk, soul, New Orleans, roots",
+        "Sunday afternoon daytime sessions and the Jazz Jam",
+        "Crack Comedy Kingston (weekly Fri) and Wednesday open mic",
+        "a fetchable, explicitly-dated Kingston music calendar (a reliable fill for the social-only Lamb wall)"
+      ]
+    },
+    {
+      "name": "Kingston Choral Society",
+      "url": "https://kingstonchoralsociety.org.uk/events/",
+      "checkFor": [
+        "public choral concerts at Kingston Parish Church / St Andrew's Surbiton",
+        "seasonal concerts (Creation Nov, Christmas carol concert Dec, Spring, Summer)",
+        "explicitly 2026/2027-dated Saturday 19:30 concerts (prices sometimes need confirming)"
+      ]
+    },
+    {
+      "name": "Kingston Christmas Market (official)",
+      "url": "https://www.kingstonchristmasmarket.co.uk/plan-your-visit/",
+      "checkFor": [
+        "Ancient Market Place festive market dates and opening hours",
+        "Kingston Christmas lights, festive family events",
+        "annual mid-Nov to early-Jan run"
+      ]
+    },
+    {
+      "name": "LibraryOn (Kingston libraries public frontend)",
+      "url": "https://www.libraryon.org/library/surbiton-library",
+      "checkFor": [
+        "fetchable under-5s Rhyme Time / Once Upon a Beat / Dancing Books sessions when mylibrary.digital backend 403s",
+        "Surbiton, Tolworth and Kingston branch weekly patterns",
+        "summer-holiday children's programme (individual August dates often truncated behind '+N more')"
+      ]
     }
   ],
   "searchQueries": [
@@ -298,6 +335,12 @@
     "Kingston Libraries summer reading challenge 2026 children craft storytime dates",
     "Canbury Bandstand CARA Kingston 2026 season poster lineup",
     "Kingston Council events Saxon Fayre summer 2026",
-    "Surbiton Partnership Good Life music comedy folk 2026"
+    "Surbiton Partnership Good Life music comedy folk 2026",
+    "Ram Jam Records Grey Horse Kingston gigs jazz blues 2026",
+    "Kingston Choral Society concert dates 2026 2027",
+    "Kingston Christmas Market 2026 dates Ancient Market Place",
+    "Kingston Surbiton Christmas carol concert December 2026",
+    "Rose Theatre Kingston Christmas show pantomime 2026",
+    "All Saints Kingston autumn lunchtime organ recital 2026 dates"
   ]
 }
