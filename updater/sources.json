@@ -299,11 +299,48 @@
     },
     {
       "name": "LibraryOn (Kingston libraries public frontend)",
-      "url": "https://www.libraryon.org/library/surbiton-library",
+      "url": "https://libraryon.org/libraries/kingston-upon-thames/surbiton-library",
       "checkFor": [
         "fetchable under-5s Rhyme Time / Once Upon a Beat / Dancing Books sessions when mylibrary.digital backend 403s",
+        "NOTE: URL pattern changed Jul 2026 to libraryon.org/libraries/kingston-upon-thames/<branch-slug> (also tolworth-community-library, kingston-library, hook-chessington-library)",
         "Surbiton, Tolworth and Kingston branch weekly patterns",
         "summer-holiday children's programme (individual August dates often truncated behind '+N more')"
+      ]
+    },
+    {
+      "name": "Surbiton Partnership events calendar (Tribe)",
+      "url": "https://surbitonpartnership.co.uk/events/category/music-and-live-performance/list/",
+      "checkFor": [
+        "the fetchable dated calendar behind the whats-on page - filterable by category and ?tribe-bar-date=YYYY-MM-DD",
+        "The Lamb (life drawing), Elm Tree jazz nights, ExCellar gigs, Waggon & Horses comedy",
+        "cornerHOUSE music/comedy, church concerts, free St Andrew's market-morning concerts",
+        "individual /event/ pages carry exact times, prices and venue addresses"
+      ]
+    },
+    {
+      "name": "Skiddle - ExCellar Surbiton venue page",
+      "url": "https://www.skiddle.com/whats-on/Kingston-Upon-Thames/Excellar/",
+      "checkFor": [
+        "dated blues/soul/roots gigs at ExCellar, 18 Brighton Road",
+        "year sometimes missing on list page - open individual event pages to confirm",
+        "The Lamb Skiddle page exists but has been empty (watch it)"
+      ]
+    },
+    {
+      "name": "Bach to Baby - Surbiton",
+      "url": "https://www.bachtobaby.com/surbiton",
+      "checkFor": [
+        "classical concerts for babies/toddlers at St Mark's Church, usually Tuesdays 11:00",
+        "half-term and Christmas specials",
+        "GBP 16 pre-booked / GBP 18 door, adult ticket includes up to 2 children"
+      ]
+    },
+    {
+      "name": "Twickenham Choral",
+      "url": "https://twickenhamchoral.org.uk/events/",
+      "checkFor": [
+        "choral concerts at All Saints Kingston and nearby churches",
+        "explicit 2026/2027 dates and programmes; prices often only on ticket pages"
       ]
     }
   ],
@@ -341,6 +378,12 @@
     "Kingston Christmas Market 2026 dates Ancient Market Place",
     "Kingston Surbiton Christmas carol concert December 2026",
     "Rose Theatre Kingston Christmas show pantomime 2026",
-    "All Saints Kingston autumn lunchtime organ recital 2026 dates"
+    "All Saints Kingston autumn lunchtime organ recital 2026 dates",
+    "Surbiton Partnership events music live performance calendar",
+    "Bach to Baby Surbiton St Mark's concert dates",
+    "ExCellar Surbiton Skiddle live music gigs",
+    "Willoughby Arms Kingston Irish traditional session Monday",
+    "Morden Hall Park National Trust family events under 5s",
+    "St John's Church Kingston Banquet Records shows"
   ]
 }

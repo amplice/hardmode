@@ -115,3 +115,26 @@ Format per run:
   - Autumn recheck: All Saints Kingston autumn recital series; local carol-concert dates (St Andrew's/St Mark's Surbiton, All Saints Kingston); Kingston Christmas lights switch-on date; RBK National Play Day 2026.
   - Confirm/clear verify: Rieko Makita price, Kingston Choral Society ticket prices, Morden Hall Harvest Festival time/price, the two library 'Once Upon a Beat' specials, and the 5 Ram Jam gigs.
   - Keep trying the Lamb wall via new angles (WeGotTickets/DICE direct, a reachable poster image to OCR); it remains the single biggest blind spot.
+
+## 2026-07-04
+- Method: 4 parallel scoped research subagents (Ram Jam refresh + gig confirmations; Lamb wall via NEW aggregators; summer-holiday family/library programme + NT/Royal Parks retry; church-hall concert sweep + verify-flag confirmations) plus a direct main-loop sweep of Surbiton Partnership and Banquet Records. Net: +29 dated, +5 recurring, -8 finished dated, -2 ended recurring, 15 rows confirmed/verify-cleared.
+- New sources/methods tried this run:
+  - Aggregator sweep NOT tried before: WeGotTickets, Bandsintown venue pages, Gigseekr, DICE, Skiddle VENUE pages (vs area pages). Scorecard: Skiddle venue pages WORK for ExCellar (3 dated gigs, 1 added + 1 verify); WeGotTickets ignores keyword param (only Outside the Box comedy); Gigseekr covers only Circuit/Banquet; DICE has nothing local; Bandsintown has Lamb history but 403s and shows zero future dates.
+  - surbitonpartnership.co.uk individual /event/ pages + the underlying Tribe calendar (/events/category/music-and-live-performance/list/) - THE STANDOUT. Fetchable, dated, priced; yielded free St Andrew's market-morning concert series (Oct/Nov/Dec), cornerHOUSE comedy/poetry, ExCellar Stevie Watts, Hymns & Pimms. Added as a known source.
+  - bachtobaby.com/surbiton official organiser page - clean dated series (18 Aug already held; added 27 Oct, 24 Nov, 8 Dec). Added as known source. (kingston.gov.uk claims an extra 19 Aug date the organiser doesn't list - watchlisted, not added.)
+  - Church/hall parish-site sweep (St Andrew's/St Mark's/St Matthew's/Christ Church/St Nicholas/Weston Green/St Raphael's): thin - most sites 401/stale/services-only. Real catches: Twickenham Choral + Onyx Brass at All Saints Kingston 11 Jul (via allsaintskingston.co.uk events list p2), and the Bach to Baby series.
+  - LibraryOn URL pattern changed to libraryon.org/libraries/kingston-upon-thames/<slug> - old /library/ URLs are dead; sources.json corrected. Frontend still the only fetchable library source (mylibrary.digital and libraries.kingston.gov.uk both 403).
+- What worked:
+  - NT Morden Hall Park events page fetched cleanly this run (was Radware-blocked before) - confirmed Harvest Festival time and yielded Park Explorers Under-5s (ages 2-5!), Jungle Book outdoor theatre, National Meadows Day, Osun River Festival.
+  - Ram Jam venue pages confirmed all 5 held gigs with exact times (verify cleared). NOTE: their URL slugs contain date typos (e.g. Tim Penn slug says 11/02/26) - trust the on-page date, never the slug. Crack Comedy confirmed weekly Fridays through Dec (now recurring r85).
+  - Recurring-row honesty: added The Lamb Sunday Session (r84) as a pattern row since the official page confirms the weekly slot even though performers are social-only; Willoughby Arms Monday Irish trad (r88, verify) via thesession.org snippet + CAMRA.
+- What didn't work / cautions:
+  - The Lamb dated gigs STILL uncrackable (5th run). Bandsintown/Skiddle/DICE/Gigseekr all empty or blocked; an undated FB event (Sunday Sessions: Mitchell and Vincent) and a teased Lambstock 2026 are on watchlist.
+  - Stale-year traps rejected: kingston.gov.uk National Play Day page (still 2025), VisitRichmond Ham House Summer of Play (2025 mirror), Essential Surrey Claremont article (2023). Ham House/Claremont stayed Radware-blocked - July dates watchlisted, not added.
+  - Newly fetch-blocked: kingstonchoralsociety.org.uk (401 - KCS prices stay verify), surbitonchurch.org.uk (401), ticketsource (403), thesession.org (403), thecricketerskingston.co.uk is DOMAIN-HIJACKED (casino spam - never use).
+  - All Saints Kingston autumn lunchtime/organ recitals STILL unpublished (music list ends 29 Jun) - persistent gap, recheck Sep/Oct.
+- Try next time:
+  - Mid/late July: Kingston Libraries Summer Reading Challenge dated events (none published yet despite 4 Jul launch); National Play Day 2026 Kingston listing; re-try NT Ham House/Claremont.
+  - Grey Horse "Raise The Bar" (8 Aug) headliner and Speakeasy Brunch (12/26 Sep) act announcements; Ram Jam Sep/Oct gigs.
+  - Stewart Lee start time (Rose page -yxrl slug still shows no time); KCS prices via a non-401 route; Twickenham Choral ticket prices.
+  - Unexplored angles for future rotation: Kingston University/Stanley Picker Gallery autumn events, Vera Fletcher Hall Thames Ditton season, YMCA Hawker Centre, Surbiton Wine Nights/ExCellar own site (excellar.co.uk/surbiton), Hampton Court Palace autumn via WebSearch.
