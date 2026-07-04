@@ -6,7 +6,14 @@
     { "name": "Cecil Sharp House (EFDSS)", "area": "Camden, London", "genres": ["cajun", "zydeco", "old-time", "western swing"], "url": "https://www.cecilsharphouse.org/whats-on", "note": "Cajun/zydeco dances, old-time jams, string-band nights, square dances." },
     { "name": "SwingdanceUK special events", "area": "London (Regent's Park, 100 Club, Southbank, museums)", "genres": ["swing"], "url": "https://swingdanceuk.com/socials/special-events/", "note": "RICHEST confirmed source for live-band classic swing: free Regent's Park Sunday big bands (summer), 'Stompin' at the 100 Club', seasonal dances. Well-dated far ahead." },
     { "name": "Nightjar", "area": "Shoreditch / Carnaby, London", "genres": ["hot jazz", "swing", "New Orleans / trad jazz"], "url": "https://www.barnightjar.com/shoreditch-listings", "note": "Nightly 21:00 hot jazz/swing/NO acts, cover on the door (no tickets). Only publishes ~2 weeks ahead — re-scrape every run for near-term dates." },
-    { "name": "The 100 Club", "area": "Oxford St, London", "genres": ["New Orleans / trad jazz", "swing"], "url": "https://www.the100club.co.uk/listings/", "note": "Trad-jazz strands + hosts SwingdanceUK's 'Stompin' at the 100 Club' nights." },
+    { "name": "The 100 Club", "area": "Oxford St, London", "genres": ["New Orleans / trad jazz", "swing"], "url": "https://www.the100club.co.uk/100club-events/", "note": "Trad-jazz strands + hosts SwingdanceUK's 'Stompin' at the 100 Club' nights. NB: old /listings/ URL now 404s — use /100club-events/." },
+    { "name": "Plaquemine Lock (Louisiana pub)", "area": "Islington (Angel), London", "genres": ["cajun", "zydeco", "jug band", "New Orleans / trad jazz"], "url": "https://plaqlock.com/live-music-islington", "note": "Free dining-pub gigs, rolling ~2-week roster. Residencies: Jack Jules & The Plaquemine Four (trad jazz, 1st & 3rd Sat), Ten Bells Rag Band (last Fri). Re-scrape fortnightly like Nightjar." },
+    { "name": "Fidelio Cafe", "area": "Clerkenwell, London", "genres": ["gypsy jazz"], "url": "https://www.solgrimshaw.com/events-1", "note": "'Fidelio Hot Club' roughly fortnightly Monday residency (feat. Sol Grimshaw). Best tracked via Sol Grimshaw's gig guide, which lists full dates." },
+    { "name": "The Hum", "area": "Stoke Newington, London", "genres": ["gypsy jazz"], "url": "https://www.eventbrite.co.uk/o/the-hum-108764290631", "note": "Emerging gypsy-jazz hub: free weekly Tuesday 'Midnight in Paris' manouche night + 'Gypsy Jazz Icons' concert series (Romane, Robin Nolan). Listings live on their Eventbrite organiser page." },
+    { "name": "Ram Jam Records at The Grey Horse", "area": "Kingston", "genres": ["New Orleans / trad jazz", "swing"], "url": "https://www.ramjamrecords.co.uk/events", "note": "LOCAL — Kingston home turf. Occasional New Orleans/speakeasy bookings (Tim Penn & The Second Line) among mixed jazz/blues. The Grey Horse's own events page renders empty — use the Ram Jam calendar." },
+    { "name": "The Dukes of Highgate", "area": "Highgate, London", "genres": ["honky tonk", "old-school country"], "url": "https://www.thedukesofhighgate.co.uk/events/", "note": "London's dedicated honky-tonk bar: free Sunday sessions, country jam nights, US trad-country bookings. Calendar widget only exposes ~6 weeks to scrapers — supplement via Instagram." },
+    { "name": "Ron's Honky Tonk (promoter)", "area": "Bermondsey, London (Fabal Beerhall; formerly Water Rats)", "genres": ["honky tonk", "old-school country"], "url": "https://www.ronshonkytonk.com/event-list", "note": "Recurring multi-act honky-tonk nights. Watch for day/date mismatches on their listings (one 2026 entry failed weekday check)." },
+    { "name": "Jamboree", "area": "King's Cross, London", "genres": ["swing", "hot jazz"], "url": "https://www.jamboreevenue.co.uk/", "note": "Hot-jazz-friendly cellar venue; free afternoon swing sessions and Hot Club of Jupiter-type bookings. Cross-check via halibuts.com swing listings." },
     { "name": "Ronnie Scott's", "area": "Soho, London", "genres": ["New Orleans / trad jazz", "swing"], "url": "https://www.ronniescotts.co.uk/", "note": "Mostly modern, but hosts trad tours (Tuba Skinny) + the Shirt Tail Stompers Sunday vintage-swing residency. Site can block fetch — try the show pages directly." },
     { "name": "Green Note", "area": "Camden, London", "genres": ["old-school country", "old-time", "cajun"], "url": "https://greennote.co.uk/events/", "note": "Roots/americana/folk; cherry-pick trad-leaning acts + London Django Collective dates." },
     { "name": "The Slaughtered Lamb", "area": "Clerkenwell, London", "genres": ["old-school country", "old-time"], "url": "https://www.theslaughteredlambpub.com/", "note": "Americana/roots basement gigs; Come Down and Meet the Folks nights." },
@@ -28,7 +35,11 @@
     { "name": "DICE", "url": "https://dice.fm/", "note": "London gig ticketing; filter by genre." },
     { "name": "Skiddle", "url": "https://www.skiddle.com/", "note": "UK-wide listings; date-filter." },
     { "name": "Ents24", "url": "https://www.ents24.com/", "note": "UK gig aggregator." },
-    { "name": "Gypsy Jazz Agenda", "url": "https://tbouttaz.github.io/GypsyJazzAgenda/", "note": "Community-maintained gypsy-jazz festival/gig calendar." }
+    { "name": "Gypsy Jazz Agenda", "url": "https://tbouttaz.github.io/GypsyJazzAgenda/", "note": "Community-maintained gypsy-jazz festival/gig calendar. 2026-07 check: festivals listed by month with no years — low value for dated London gigs." },
+    { "name": "Sol Grimshaw gig guide", "url": "https://www.solgrimshaw.com/events-1", "note": "STRONG find (2026-07): London gypsy-jazz guitarist's own guide lists full dates for Fidelio Hot Club, Crazy Coqs and other Hot Club-circuit shows. Artist gig guides beat broken venue calendars." },
+    { "name": "Halibuts swing listings", "url": "https://halibuts.com/genre/swing", "note": "London swing-genre gig aggregator; surfaced Jamboree and Nightjar swing nights. Dates need year-verification against the venue." },
+    { "name": "Down for the Count — live dates", "url": "https://www.downforthecount.co.uk/live-dates/", "note": "UK's busiest vintage-swing orchestra; own tour page is well-dated (Cadogan Hall, Pizza Express Live shows)." },
+    { "name": "EFDSS Spektrix API", "url": "https://sales.efdss.org/efdss/api/v3/events", "note": "Cecil Sharp House HTML 403s scrapers, but this public API returns the full event feed as JSON — the reliable way to check for cajun/old-time/square-dance programming." }
   ],
   "searchQueries": [
     "gypsy jazz London 2026 gigs",
@@ -45,6 +56,10 @@
     "classic country old school London gig 2026",
     "jug band skiffle London 2026",
     "trad jazz Kingston Richmond Twickenham 2026",
+    "Fidelio Hot Club Clerkenwell",
+    "gypsy jazz The Hum Stoke Newington",
+    "Plaquemine Lock live music zydeco",
+    "Ram Jam Records Grey Horse Kingston jazz",
     "gypsy jazz festival UK 2026",
     "cajun zydeco festival UK 2026"
   ]
