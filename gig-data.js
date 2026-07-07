@@ -21,7 +21,7 @@ window.GIG_DATA = {
       "New Orleans / trad jazz",
       "swing"
     ],
-    "generated": "2026-07-07T07:03:59.227Z",
+    "generated": "2026-07-07T07:25:05.505Z",
     "dateBasis": "2026-07-07",
     "counts": {
       "total": 132,

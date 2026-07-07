@@ -342,6 +342,33 @@
         "choral concerts at All Saints Kingston and nearby churches",
         "explicit 2026/2027 dates and programmes; prices often only on ticket pages"
       ]
+    },
+    {
+      "name": "ExCellar Surbiton (official site)",
+      "url": "https://www.excellar.co.uk/surbiton",
+      "checkFor": [
+        "monthly 'Ex Cellar Jazz' Friday series (residents Pete Roth & Stefan Redtenbacher) and touring blues/roots acts",
+        "dated gig announcements on blog pages (www.excellar.co.uk/blog/...)",
+        "MUST use the www subdomain - the apex domain excellar.co.uk refuses connections",
+        "cross-check times/prices on the Skiddle ExCellar venue page"
+      ]
+    },
+    {
+      "name": "Stanley Picker Gallery (Kingston University)",
+      "url": "https://www.stanleypickergallery.org/programme/",
+      "checkFor": [
+        "free contemporary art exhibitions with explicit dated runs",
+        "family/children workshops via /participation/ (Saturday Art Club ages 7-11)",
+        "public closing/opening events"
+      ]
+    },
+    {
+      "name": "Vera Fletcher Hall via Datathistle",
+      "url": "https://www.datathistle.com/place/110344-vera-fletcher-hall-thames-ditton/",
+      "checkFor": [
+        "Thames Ditton community-hall shows: music, comedy, film nights, family",
+        "venue's own site (verafletcherhall.co.uk) is reCAPTCHA-walled and TicketSource is JS-blocked - this aggregator page is the only fetchable proxy (sparse/laggy, verify:true)"
+      ]
     }
   ],
   "searchQueries": [
@@ -384,6 +411,12 @@
     "ExCellar Surbiton Skiddle live music gigs",
     "Willoughby Arms Kingston Irish traditional session Monday",
     "Morden Hall Park National Trust family events under 5s",
-    "St John's Church Kingston Banquet Records shows"
+    "St John's Church Kingston Banquet Records shows",
+    "ExCellar Surbiton Ex Cellar Jazz Pete Roth 2026",
+    "Vera Fletcher Hall Thames Ditton whats on 2026",
+    "Claremont Landscape Garden Claremont Live outdoor theatre music 2026",
+    "Ham House National Trust summer family events 2026",
+    "All Saints Kingston Monday lunchtime recital autumn 2026",
+    "Sofar Sounds Kingston Ram Jam 2026"
   ]
 }
