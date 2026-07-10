@@ -163,3 +163,25 @@ Format per run:
   - September: re-verify Stewart Lee dates; All Saints FRIDAY organ recital series; Canbury Bandstand 2027... no - HCP Halloween half-term dates; Kingston Christmas lights switch-on date.
   - Consider extending meta.range into early 2027 (Rose Jan-May 2027 season + HCP ice rink already runs to 3 Jan) - would unlock 5 watchlisted rows.
   - Unexplored angles for future rotation: Cecil Sharp House-style folk listings for SW London, Twickenham/Richmond venues (Eel Pie Island Museum, OSO Barnes), Dorich House Museum (Kingston Uni), Surbiton churches' Christmas service/concert pages (from Nov), Kingston Carnival 2026 date confirmation.
+
+## 2026-07-10
+- Method: 3 parallel scoped research subagents: (1) gig-source refresh + open verify-flag chase (Ram Jam, Rose/Stewart Lee, Banquet, Stanley Picker, ExCellar); (2) NEVER-TRIED venue sweep from the rotation list (Eel Pie Island Museum, OSO Barnes, Dorich House, Landmark Arts Centre, Hampton Hill Theatre, Normansfield); (3) family/seasonal (library summer one-offs, Playday, Kingston Carnival, NT retries, kingston.gov.uk, nub.news roundups). Net: +39 dated, -8 finished. Central dedupe was essential: 15+ agent finds (most Ram Jam gigs, most library one-offs, Regatta, Connolly Hayes, Stevie Watts) were already in the dataset from the 7 Jul mega-run.
+- New sources/methods tried this run (all first-timers):
+  - OSO Arts Centre Barnes via its **Ticketsolve XML feed** (osoarts.ticketsolve.com/shows.xml) - the technique of the run: the venue's main site 403s, but the ticketing platform's public XML exposes the entire season with ISO datetimes, categories and per-show URLs. 13 rows added with exact times (Irish trad, jazz, classical, comedy, family, Christmas panto). LESSON: when a venue site is walled, try its ticketing platform's machine feed; other Ticketsolve venues likely have the same.
+  - Landmark Arts Centre Teddington - fetchable and productive (9 rows: folk, opera, art fair, Luxmuralis light installation, Mark Thomas). GOTCHA: /whats-on/ is 404; the real path is /shows-and-events/, and times/prices live only on individual show pages (rows added verify:true).
+  - Hampton Hill Theatre (Teddington Theatre Club) - WebFetch 403s but curl with a browser User-Agent returns 200. 7 rows incl. Tim Vine and three family Christmas runs.
+  - Eel Pie Island Museum/Artists - caught the Open Studios weekend happening 11-12 Jul (rare public island access). Dorich House: fetchable but sparse (1 exhibition row); recheck Sept. Normansfield/Langdon Down: dead domain + 'coming soon' only - watchlisted.
+- What worked:
+  - Stewart Lee 7-8 Sep RESOLVED: the Rose page now carries a live booking link labelled '7-8 SEP 2026' - dates stand; only the 19:30 time (Datathistle) still needs organiser confirmation.
+  - Library one-off dedupe: libraryon branch pages now publish the summer holiday programme, but nearly all of it was captured on 7 Jul; only 1 genuinely new row (Kingston LEGO Club 25 Jul). CAVEAT logged: libraryon appears to display times in UTC (9:15/9:30 rhymetimes) - treat displayed times as verify:true.
+  - Claremont events page fetched cleanly (Ham House still Radware-blocked): caught the Surrey Sculpture Society trail ending 13 Jul.
+  - nub.news + organiser page yielded Taste of the Caribbean (22 Aug, Fairfield) - explicit 2026 date on tasteofcaribbeanuk.com.
+- What didn't work / cautions:
+  - Still unpublished (rechecked, NOT guessed): Kingston Carnival 2026 + River Cultures 2026 + Playday 2026 (all organiser pages still show 2025), Raise The Bar headliner, Speakeasy Brunch acts, Banquet Sept+ listings (JS-only 'Load more'), Stanley Picker autumn term, All-year OSO prices (feed has no prices).
+  - ExCellar oddities: Will James 26 Nov post vanished from the blog index (watchlisted for re-verification); blog pages print the Kingston branch address even for Surbiton gigs - confirm branch per event. Ram Jam page had an am/pm glitch (7:15am) on the 30 Jul gig.
+  - banquetrecords.com/live redirects to a dead ustream URL; rosetheatre.org pagination serves stale 2024-25 content on ?page=N.
+- Try next time:
+  - Late July: Playday 2026 listing; Raise The Bar headliner; Kingston Carnival/River Cultures announcements (Aug); confirm Landmark show times + OSO prices on show pages to clear verify flags.
+  - Probe OTHER Ticketsolve/Spektrix/TicketTailor machine feeds for walled venues (e.g. Vera Fletcher Hall via its ticketing backend?) - the XML-feed trick is generalisable.
+  - September: Stanley Picker autumn term, Dorich House autumn events, Landmark pagination re-crawl (Christmas fair), All Saints Friday organ recitals, Normansfield open days.
+  - Unexplored angles for future rotation: Cecil Sharp House SW-London folk listings, Richmond/Twickenham theatres (Orange Tree, Exchange Twickenham), Bushy Park/Royal Parks autumn events, Surbiton churches' Christmas concert pages (from Nov), Kingston University public lecture/concert series.

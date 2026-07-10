@@ -363,6 +363,43 @@
       ]
     },
     {
+      "name": "OSO Arts Centre Barnes (Ticketsolve XML feed)",
+      "url": "https://osoarts.ticketsolve.com/shows.xml",
+      "checkFor": [
+        "full season as machine-readable XML with ISO datetimes, categories and per-show URLs - the best-structured source in the list",
+        "music (jazz/folk/classical), comedy, family shows, Christmas panto",
+        "fetch with a browser User-Agent (plain requests to the HTML /shows get a JS shell; osoarts.org.uk main site 403s)",
+        "prices only on per-show pages; Barnes is ~30 min from Surbiton - include destination-worthy shows"
+      ]
+    },
+    {
+      "name": "Landmark Arts Centre Teddington",
+      "url": "https://www.landmarkartscentre.org/shows-and-events/",
+      "checkFor": [
+        "folk/roots/classical concerts, comedy, opera, art fairs in the Victorian church",
+        "NOTE: /whats-on/ is 404 - the real listing path is /shows-and-events/ (paginated, re-crawl for later months)",
+        "times/prices only on individual /shows/ pages - confirm before clearing verify flags"
+      ]
+    },
+    {
+      "name": "Hampton Hill Theatre (Teddington Theatre Club)",
+      "url": "https://www.hamptonhilltheatre.org.uk/whats-on/upcoming",
+      "checkFor": [
+        "family musicals, panto/Christmas children's shows, big-name comedy nights, community drama",
+        "MUST fetch with a browser User-Agent (plain WebFetch 403s; curl -A works)",
+        "list page has date ranges only - times/prices need show pages"
+      ]
+    },
+    {
+      "name": "Eel Pie Island Museum / Artists",
+      "url": "https://www.eelpiemuseum.co.uk/",
+      "checkFor": [
+        "music-heritage museum open Thu-Sun 12:00-17:30 (GBP 5)",
+        "twice-yearly Artists Open Studios weekends (eelpieislandartists.co.uk) - rare public access to the island",
+        "occasional talks/tours via their Eventbrite organiser page"
+      ]
+    },
+    {
       "name": "Vera Fletcher Hall via Datathistle",
       "url": "https://www.datathistle.com/place/110344-vera-fletcher-hall-thames-ditton/",
       "checkFor": [
@@ -417,6 +454,11 @@
     "Claremont Landscape Garden Claremont Live outdoor theatre music 2026",
     "Ham House National Trust summer family events 2026",
     "All Saints Kingston Monday lunchtime recital autumn 2026",
-    "Sofar Sounds Kingston Ram Jam 2026"
+    "Sofar Sounds Kingston Ram Jam 2026",
+    "Landmark Arts Centre Teddington concerts folk 2026",
+    "OSO Arts Centre Barnes family shows panto 2026",
+    "Hampton Hill Theatre Teddington Theatre Club season 2026",
+    "Kingston Carnival 2026 date Ancient Market Place",
+    "Eel Pie Island open studios museum events 2026"
   ]
 }

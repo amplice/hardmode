@@ -1,51 +1,29 @@
 {
-  "generatedAt": "2026-07-07T08:40:00.000Z",
-  "dateBasis": "2026-07-07",
-  "summary": "Pruned 23 finished rows (the 4-6 Jul weekend crop incl. Hollyfest, Berrylands Summer Festival, Canbury KMS bands, plus ended runs REPLAY, FUSE, Irvine's Funfair, Take Flight). Added 79 dated events from four research sweeps. Standout wins: (1) the National Trust bot-block LIFTED, confirming the full Claremont Live season (Othello 12 Jul, Midsummer Night's Dream 9 Jul, Three Musketeers 23 Jul, Peter Rabbit 25 Jul, four Saturday-afternoon music sessions in Aug, Magic Faraway Tree trail 18 Jul-31 Aug) plus Ham House Summer Games (21 Jul-2 Sep); (2) the All Saints Kingston autumn Monday lunchtime recital series - a gap tracked for four runs - is finally published: all 12 free recitals (14 Sep-30 Nov) added with named performers; (3) NEW SOURCE excellar.co.uk (www!) exposes ExCellar's own dated calendar: monthly Ex Cellar Jazz Fridays (18 Sep Funkestra, 16 Oct, 20 Nov, 11 Dec) and Red Hot Rhythm Revival 1920s-30s hot jazz (31 Oct); (4) Ram Jam's Speakeasy Brunch daytime-music series is now dated through December (9 Saturdays) plus two Sofar Sounds nights. Also new: Rose comedy (Jack Dee's Comedy Crackers 4 Dec, Live at Christmas 7 Dec, Murder She Didn't Write 2 Nov, free Board Game Day 19 Sep), Kingston Regatta (11-12 Jul), Harmony Riot pop-punk choir at All Saints (17 Jul), Banquet in-stores (White Skies 8 Jul, Holy Coves 17 Aug) and Jack White listening party, Vera Fletcher Hall film + Victoria Wood shows (2/16 Oct, via Datathistle - venue site is captcha-walled), Stanley Picker Gallery exhibitions, The Lamb's monthly life-drawing series (6 dates), summer-holiday library specials (Lego, crafts, Explore Learning workshops, Yu-gi-oh), and cornerHOUSE children's drama weeks. 21 rows confirmed/verify-cleared, mostly prices/times off Surbiton Partnership event pages; Willoughby Arms Monday trad session confirmed still running. The Lamb wall is now PROVEN social-only: its Wix Events API returns an empty array, so no fetchable dated source exists. Rose's Jan-May 2027 season (Ronnie Scott's Story, Frankenstein) watchlisted pending 2027 range extension.",
+  "generatedAt": "2026-07-10T09:30:00.000Z",
+  "dateBasis": "2026-07-10",
+  "summary": "Pruned 8 finished rows (7-9 Jul: Rhyme Time, Richard III talk, Lego Robotics, Regency Dancing, The Shires, White Skies in-store, Jack White listening party, Claremont Midsummer Night's Dream). Added 39 dated events, almost all from THREE NEVER-CHECKED VENUES a short hop away, which is this run's story: (1) OSO Arts Centre Barnes - its Ticketsolve XML feed exposes the whole season with exact ISO datetimes; added 13 shows incl. an Irish trad night (Ri Rua, 25 Jul), Cole Porter jazz, Soho Cello Quartet, pre-Fringe comedy (Matt Forde/Novellie 29 Jul, Stirling/Duker 30 Jul), Gyles Brandreth x2, half-term family show On Your Bike Baffo, Bring Your Own Baby comedy and The Little Mermaid panto (5-23 Dec, toddler-friendly 11:00/14:00 weekend slots); (2) Landmark Arts Centre Teddington (real listing path is /shows-and-events/) - 9 rows incl. Mark Thomas warm-up (24 Jul), folk (Rachel Croft 10 Sep, Roving Crows 1 Oct), AIDA, Autumn Art Fair and TIME by Luxmuralis immersive light installation (16-27 Sep); (3) Hampton Hill Theatre (needs a browser User-Agent) - 7 rows incl. Tim Vine (31 Jul), My Fair Lady, and three family Christmas runs (Robin Hood, Frozen JR, Ellie & Starlight's Christmas Adventure 12-24 Dec). Time-critical weekend finds: Eel Pie Island Artists Open Studios (11-12 Jul, rare public access to the island) and the Surrey Sculpture Society trail at Claremont (to 13 Jul). Also: Angus & Julia Stone folk church show (7 Aug, St John's via Banquet), Taste of the Caribbean festival (22 Aug, Fairfield Rec), new Ram Jam dates (3 Times 7 30 Jul, Andy Parsons WIP 10 Sep, John Hatcher 24 Sep, Never The Bride return 5 Nov), ExCellar Sunday Jazz (Alice Milburn 20 Sep) and Dorich House's free Undiminished exhibition (to 25 Jul). Stewart Lee 7-8 Sep RE-CONFIRMED: the Rose booking link is live again ('7-8 SEP 2026'), so the dates stand - only the 19:30 time still needs the Rose's own confirmation. Still-unpublished leads honestly held on watchlist rather than guessed: Kingston Carnival 2026, River Cultures Festival 2026, Playday 2026 (all still showing 2025 pages), Raise The Bar headliner, Speakeasy Brunch acts, Stanley Picker autumn term, Normansfield Theatre open days. Most library/Ram Jam finds this run were already in the dataset - dedupe prevented 15+ duplicates.",
   "added": [
-    "2026-07-08 White Skies free in-store (Banquet Records) + Jack White listening party (Bacchus, verify)",
-    "2026-07-08 to 2026-07-11 Yuri Hwang: Inventory exhibition + Sat closing event (Stanley Picker Gallery); FRAUD exhibition run to 18 Jul",
-    "2026-07-09 + 2026-07-12 + 2026-07-23 + 2026-07-25 Claremont Live outdoor theatre (Midsummer Night's Dream, Othello, Three Musketeers, Peter Rabbit & Benjamin Bunny)",
-    "2026-07-11 + 2026-07-12 Kingston Regatta (free riverside weekend)",
-    "2026-07-17 Harmony Riot: choir sings pop-punk classics (All Saints Kingston)",
-    "2026-07-17 + 2026-09-11 + 2026-10-09 Yu-gi-oh! tournaments (Surbiton Library)",
-    "2026-07-18 to 2026-08-31 The Magic Faraway Tree summer trail (Claremont)",
-    "2026-07-21 to 2026-09-02 Summer Games at Ham House",
-    "2026-07-21 + 2026-07-30 Katy's Drama Club summer days ages 4-11 (the cornerHOUSE)",
-    "2026-07-21 + 2026-08-04 + 2026-09-01 + 2026-10-13 + 2026-11-10 + 2026-12-08 Life Drawing at the Pub (The Lamb, monthly)",
-    "2026-07-18 + 2026-07-24 + 2026-07-29 + 2026-07-31 + 2026-08-07 x2 + 2026-08-11 + 2026-08-21 + 2026-08-29 + 2026-09-03 library summer specials (bookmark making, Free Lego Fun, Summer Rhymetime, friendship bracelets, Explore Learning workshops, LEGO Robotics Tolworth, Rewilding Rangers)",
-    "2026-08-01 + 2026-08-08 + 2026-08-15 + 2026-08-22 Claremont Live! Saturday Sessions (family music on the Peacock Lawn)",
-    "2026-08-05 + 2026-08-12 Have a Go at Indoor Bowling (King George Field, Tolworth)",
-    "2026-08-10 to 2026-08-14 Once Upon a Time musical-theatre week + 14 Aug public show (the cornerHOUSE)",
-    "2026-08-11 The Forest's Secret storytelling (Claremont)",
-    "2026-08-17 Holy Coves free in-store (Banquet Records); 2026-08-17 to 2026-08-22 Attitude Theatre Academy summer workshop week",
-    "2026-09-12 + 2026-09-26 + 2026-10-17 + 2026-10-31 + 2026-11-14 + 2026-11-28 + 2026-12-05 + 2026-12-12 + 2026-12-19 Speakeasy Brunch daytime live music (Ram Jam Records)",
-    "2026-09-14 to 2026-11-30 All Saints Kingston autumn Monday lunchtime recitals - all 12 dates with named performers (free, 13:15)",
-    "2026-09-18 + 2026-10-16 + 2026-11-20 + 2026-12-11 Ex Cellar Jazz monthly Fridays (ExCellar own site, NEW source); 2026-10-31 Red Hot Rhythm Revival 1920s-30s hot jazz",
-    "2026-09-19 Board Game Day with Shakes and Ladders (Rose, free); 2026-11-02 Murder She Didn't Write; 2026-12-04 Comedy Crackers (Jack Dee); 2026-12-07 Live at Christmas",
-    "2026-10-02 Film Night: La Vie En Rose + 2026-10-16 What Wood Victoria Do? (Vera Fletcher Hall, via Datathistle, verify)",
-    "2026-10-04 Kingston Half Marathon; 2026-10-08 + 2026-12-03 Sofar Sounds X Ram Jam"
+    "2026-07-10 to 2026-07-12 Matilda JR final weekend + 2026-07-31 Tim Vine + 2026-08-02 Shout Out to the 60's + 2026-10-21 to 24 My Fair Lady + 2026-11-28 to 12-06 Robin Hood + 2026-12-12 to 18 Frozen JR + 2026-12-12 to 24 Ellie & Starlight's Christmas Adventure (Hampton Hill Theatre - NEW venue)",
+    "2026-07-19 + 2026-08-02 Gyles Brandreth; 2026-07-22 Fire & Rain & American Pie; 2026-07-25 Ri Rua Irish trad; 2026-07-29 + 2026-07-30 Pre-Fringe stand-up; 2026-10-21 Bring Your Own Baby Comedy; 2026-10-22 Sam Jewison Sings Cole Porter; 2026-10-23 On Your Bike Baffo; 2026-11-25 Soho Cello Quartet; 2026-11-26 A Christmas Carol; 2026-12-05 to 23 The Little Mermaid panto (OSO Arts Centre Barnes - NEW venue)",
+    "2026-07-11 Teddington Choral Anything Goes; 2026-07-24 Mark Thomas warm-up; 2026-09-10 Rachel Croft + Alice SK; 2026-09-11 The Milk Men; 2026-09-16 to 27 TIME by Luxmuralis; 2026-10-01 Roving Crows; 2026-10-10 to 11 AIDA; 2026-10-16 to 18 Autumn Art Fair; 2026-10-30 Wolf Hall (Landmark Arts Centre Teddington - NEW venue)",
+    "2026-07-11 to 2026-07-12 Eel Pie Island Artists Open Studios (rare public island access; museum open same weekend)",
+    "2026-07-10 to 2026-07-13 Surrey Sculpture Society Trail (Claremont); 2026-07-10 to 2026-07-25 Undiminished exhibition (Dorich House Museum, free)",
+    "2026-07-25 LEGO Club summer special (Kingston Library); 2026-08-07 Angus & Julia Stone (St John's Church, folk); 2026-08-22 Taste of the Caribbean Food Festival (Fairfield Rec)",
+    "2026-07-30 3 Times 7 & Julia Faulks; 2026-09-10 Andy Parsons WIP; 2026-09-24 John Hatcher & Friends; 2026-11-05 Never The Bride return (Ram Jam Records); 2026-09-20 Alice Milburn Sunday Jazz (ExCellar)"
   ],
   "updated": [
-    "Verify cleared with confirmed times: The Shires (9 Jul 19:00), Luke Haines in-store (10 Jul 18:00 free), Nia Archives (14 Jul 19:30), Will James at ExCellar (26 Nov, doors 19:00), Attitude summer shows (Fri 21 Aug 19:00 / Sat 22 Aug 18:00), Twickenham Choral Rutter Gloria (11 Jul 19:30).",
-    "Concert for Charity 15 Jul: venue resolved from 'Surbiton venue TBC' to All Saints Kingston, 12:30-14:00, free.",
-    "Prices confirmed off Surbiton Partnership event pages: Express Comedy £15.38, Coda Concert £12.50 (17:00), Woody Guthrie Story £20, Gerry Colvin £18, Connolly Hayes £25, Wilderness Yet £18, Thames Concerts 17 Oct £22 / 21 Nov £19.80, Stevie Watts £25, Hannah White £18, Ian Smith £16.26, Jez Lowe £20, cornerHOUSE Comedy Night £16.26.",
-    "KCS Haydn's Creation (21 Nov) and Christmas Concert (19 Dec) times confirmed 19:30; prices still unobtainable (site reCAPTCHA-walled) - verify kept.",
-    "Willoughby Arms Monday Irish trad session (r88): confirmed still running Feb 2026 via thesession.org - verify cleared, confidence High.",
-    "Watchlist: Lamb entry updated with definitive Wix-Events-API-empty finding; new entries for Rose Jan-May 2027 season, HCP Halloween 2026, Vera Fletcher autumn season, Stewart Lee date re-verification, All Saints Friday organ recitals, Stanley Picker Art Club, Raise The Bar TBA.",
-    "sources.json: added ExCellar official site, Stanley Picker Gallery, Vera Fletcher Hall via Datathistle; 6 new search queries."
+    "Stewart Lee vs The Man-Wulf (7-8 Sep, Rose): dates re-confirmed - booking link live again labelled '7-8 SEP 2026'; 19:30/GBP 26-32 still aggregator-only so verify stays true. Watchlist entry updated.",
+    "Watchlist rechecks logged 10 Jul: Raise The Bar (8 Aug) headliner still TBA; Speakeasy Brunch performers still unannounced; Playday 2026 Kingston page still shows 2025; Stanley Picker Saturday Art Club autumn term still unpublished.",
+    "New watchlist entries: Kingston Carnival 2026 (organiser page still 2025), River Cultures Festival 2026, Normansfield Theatre/Langdon Down open days ('coming soon'), Landmark autumn pagination re-crawl, The Forest's Secret extra Claremont dates, Will James at ExCellar 26 Nov (post vanished from blog index - re-verify).",
+    "sources.json: 4 new known sources (OSO Ticketsolve XML feed, Landmark Arts Centre, Hampton Hill Theatre, Eel Pie Island Museum) with fetch-method notes (UA spoofing, correct paths); 5 new search queries."
   ],
   "removed": [
-    "2026-06-04 to 2026-07-05 REPLAY installations x2 (Southbank Centre) - runs ended",
-    "2026-06-25 to 2026-07-05 FUSE International festival + Growl highlight - festival ended",
-    "2026-06-26 to 2026-07-05 Irvine's Family Funfair (Fairfield Rec) - ended",
-    "2026-07-01 to 2026-07-05 Take Flight (Polka Theatre) - run ended",
-    "2026-07-04 one-offs: Hollyfest, Frozen Jr, Bobby Davro, Great American Songbook, Memorial Gardens Picnic, Flaming Alligators, National Meadows Day",
-    "2026-07-05 one-offs: Berrylands Summer Festival, Canbury Bandstand KMS, Surbiton Walking Tour, TDMR running day, Comedy at the Waggon, The Decibelles",
-    "2026-07-06 one-offs: Singalong, West Side Story, Princess Alice Hospice concert, Park Explorers Under 5s"
+    "2026-07-07 Rhyme Time (Surbiton Library); Richard III and Surrey talk (the cornerHOUSE)",
+    "2026-07-08 Lego Robotics Club (Hook); Regency Dancing (St Mark's); White Skies in-store (Banquet); Jack White listening party (Bacchus)",
+    "2026-07-09 The Shires (St John's Church); Claremont Live: A Midsummer Night's Dream"
   ],
   "counts": {
-    "events": 305,
+    "events": 336,
     "recurring": 53
   }
 }
