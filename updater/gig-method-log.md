@@ -5,6 +5,71 @@ what to try differently next time. Newest entries at the top.
 
 ---
 
+## 2026-07-10 — third self-update run
+
+**Housekeeping:** removed 7 finished gigs (7–9 Jul). Added 45 gigs (~20 confirmed, ~25 verify)
+→ 170 total, validate clean every pass. Upgrades: Ten Bells 31 Jul verify→confirmed (firmly back
+on Plaquemine's roster); Swing Den 18 Sep contradiction RESOLVED and upgraded (see below); Dukes
+Sunday Service 12 Jul time corrected 15:00→17:00 per the venue's own events API.
+
+**Methods tried (5 parallel research clusters; new angles in caps):**
+- *Rolling-window re-scrape*: Jamboree's diary now runs ~8 weeks (?pno=2..6) — 8 Aug Cajun
+  Après-Midi confirmed, Cable Street Thursdays confirmed weekly through 3 Sep, Prospective
+  Collective Sundays through 30 Aug, plus a strongly on-brief honky-tonk one-off (DYLAN EARL BAND
+  + Dom Glynn w/ two-step lessons, 19 Aug). NB: TJ Johnson's Wednesday residency shows NO August
+  dates — break or unposted, re-check. Nightjar's "MAZZA" IDENTIFIED via web search: NO R&B
+  repertoire (Fats Domino/Smiley Lewis/Dr John), blues-leaning — added 21 Jul + 18 Aug as verify.
+  Plaquemine's roster stretched to 4 weeks (7 adds; residency patterns confirmed). Zedel's event
+  system still broken (same banner).
+- *Gypsy-jazz cluster*: The Hum's series JSON endDate = 2026-09-08 — NOT renewed yet, re-check
+  late Aug. Toulouse Lautrec pages 2–5: only new in-genre item is Rockin'em Trio 9 Aug (verify —
+  R'n'R-leaning). SWING DEN CONTRADICTION RESOLVED: 18 Sep is "Bishopsgate Swing Live!", Swing
+  Patrol's separate monthly LIVE-BAND series (URL pattern /events/{slug}/DD-MM-YYYY/) — Viellefon
+  18 Sep + PETE HORSFALL 20 NOV both on sale; the DJ-only Swing Den first-Fridays were excluded.
+  Ronnie's Stompers/Holborn/Diplock pages now emit JSON-LD skeletons with null dates — still
+  nothing on sale. Vout-O-Reenees: nothing in-genre dated.
+- *Suburban trad circuit (The Jazz Guide)*: full venue-index sweep (?start=N pagination, 11
+  pages, ~85 venues). Old Barn Hall diary mined through 30 Aug (6 adds), Pump House + Amersham
+  standouts added — CORRECTION: NO Bump (29 Jul), Louisiana Rhythm Kings (12 Aug) and NO
+  Wanderers (19 Aug) are AMERSHAM Wednesdays, not Pump House as last run's peek said. NEW VENUES:
+  46 CLUB UXBRIDGE (weekly Thu NO residency) and RIVERHEAD JC SEVENOAKS (Sun afternoons, Hugh
+  Crozier 19 Jul). Diaries are rolling ~4–7 week windows — Sep+ lands late Aug.
+- *SOCIAL-GAP CRACK (new angle, the run's structural win)*: two techniques work — (1)
+  PLATFORM-NATIVE JSON: Squarespace ?format=json (Ram Jam full 135-event calendar; Betsey
+  Trotwood) and open WordPress tribe/events REST APIs (Dukes of Highgate — proved nothing booked
+  after 11 Sep through Jun 2027); (2) GOOGLEBOT-UA FETCH of Google-indexed instagram.com/p/ URLs
+  returns full captions (date-check them — one caption proved to be Oct 2025). Editorial results:
+  COME DOWN AND MEET THE FOLKS IS DORMANT (moved to the Betsey Trotwood years ago; last edition
+  26 Oct 2025 — our watchlist had the wrong venue and phantom 3rd-Sunday dates, now fixed); FILE
+  GUMBO CONFIRMED DEAD (frozen at a cancelled 13 Mar 2020 event); Ram Jam's "Speakeasy Party"
+  brand has vanished (Sunday jazz jam added instead). Failures: IG mirrors all dead/403,
+  mbasic/m.facebook login-walled, archive.org 429'd all session, Boaters' Greene King events API
+  found in page source (venueId 5755) but every path guess 404s.
+- *Fresh aggregators*: THE JAZZ GUIDE'S NATIONAL /gigs-and-events/ LISTING (server-rendered,
+  ?start=N) is the best new aggregator — most of this run's trad adds. WILTON'S MUSIC HALL
+  per-event pages are server-rendered (Tricity Vogue swing 11 Nov). CADOGAN'S JAZZ REPERTORY
+  COMPANY series page: 1956 Jazz Jubilee 27 Sep, Ella & Louis 22 Nov (+ Goodman Carnegie Jan
+  2027 → watchlist). SWINGLAND live-band socials (A-Train w/ Rhythm Kitchen 20 Jul). Artist
+  pages: DFTC regional day-trips (Brighton 20 Sep, Bedford 16 Oct, Oxford 18 Dec, Cambridge
+  21 Dec), New River Dixielanders free St Albans park gig 26 Jul, Jive Aces Southend 18 Jul.
+  TWINWOOD FESTIVAL 28–31 Aug (UK's flagship vintage-swing fest) added as a day-trippable
+  main-list row. UK Jazz News: use the WP REST API (/wp-json/wp/v2/posts?search=) — index is JS.
+  Dead ends: DICE browse (JS-only), allevents.in (Cloudflare 403), Skiddle eventcodes filter
+  ignored server-side, Half Moon Putney (all tribute/rock beyond the known Eskimo Brothers).
+
+**What stayed dark / next time:**
+- Jamboree TJ Johnson Aug dates; The Hum autumn renewal (check late Aug); Fidelio Hot Club after
+  10 Aug (Grimshaw's guide); Ronnie's null-JSON-LD shows; Nightjar's unpublished 1–16 Aug nights
+  (fill ~2 weeks out); Plaquemine next roster (~24 Jul).
+- Jazz Guide Sep+ diaries land late Aug (Old Barn Hall, Epsom, Spice of Life, Pump House,
+  Amersham); mine Riverhead + 46 Club diaries each run.
+- Dukes Oct–Dec: poll the WP API; Lamb Surbiton + Boaters still the last uncracked locals (try
+  Greene King API path variants; Googlebot-UA IG captions once Google indexes new posts).
+- Zedel event system (broken since early Jul); EFG LJF trad-strand programme; Soho Jazz Festival
+  line-up (late Aug); Twinwood day-splits (which days are swing vs 50s jive/soul).
+
+---
+
 ## 2026-07-07 — second self-update run
 
 **Housekeeping:** removed 8 finished gigs (Maverick to 5 Jul; the 4–5 Jul Nightjar/Green Note/
