@@ -5,6 +5,66 @@ what to try differently next time. Newest entries at the top.
 
 ---
 
+## 2026-07-13 — fourth self-update run
+
+**Housekeeping:** removed 20 finished gigs (10–12 Jul weekend). Added 35 gigs (21 confirmed,
+14 verify) → 185 total; +3 watchlist rows → 52. Note refreshes: Cable Street residency extended
+to 24 Sep; TJ Johnson Jamboree row flagged "no Aug dates re-confirmed 13 Jul".
+
+**Methods tried (4 parallel research clusters; new angles in caps):**
+- *Rolling-window re-scrape*: Nightjar's AUGUST GAP HAS FILLED (4–30 Aug published) — 9 adds
+  (Fallen Heroes Qt 7 Aug, Lapazoos 27 Aug, Pipkin×3 etc.); remaining Aug blanks are unpublished
+  nights. Jamboree now paginates to early Dec (?pno=1..9): Cable Street extended 10/17/24 Sep,
+  Cajun Après-Midi venue-confirmed monthly through 14 NOV (12 Sep/10 Oct/14 Nov added), NEW EWAN
+  BLEACH & THE FLEETING PARADISE ORCHESTRA Sunday-lunch big band 6 + 20 Sep (UKJN says 1st/3rd-
+  Sunday residency, 10-piece late-20s/30s repertoire for dancers). TJ Johnson Wednesdays: STILL
+  no Aug dates (last 29 Jul — pausing). Plaquemine roster unchanged (still ends 2 Aug). Zedel
+  event system still broken; Diplock 14 Jul visible only via IG embed.
+- *Gypsy-jazz + swing circuit*: HALIBUTS PAGINATION CRACKED (?page=N steps week-by-week; crawled
+  pages 1–10 ≈ 2.5 months) — the run's richest vein: SWING COMMANDERS (WESTERN SWING!) Pheasantry
+  4 Sep, Gypsy Dynamite at Oriole Bar 30 Jul + TL 15 Oct, Ray Gelato Soul Mama 28 Aug, Jive Aces
+  Pheasantry 13 Sep, Blue Harlem 18 Sep, Phil Doleman (skiffle/jug) Green Note 4 Sep, TJ Johnson
+  Ronnie's lunch 16 Aug, plus verify-grade big-band items (Syd Lawrence 5 Sep, Hugo Jennings
+  8 Sep, New Foxtrot Serenaders Carshalton 6 Sep). THE PHEASANTRY added as a keyVenue (steady
+  vintage strand; its own site is JWT-walled — read it via Halibuts). Swing Patrol: NEW Bishopsgate
+  Swing Live CHRISTMAS PARTY 19 Dec (band TBA); no October edition exists (probe URLs 404).
+  Fidelio: nothing after 10 Aug yet. The Hum: still ends 8 Sep, not renewed. TL crooner-adjacent
+  Robin Phillips shows: NKC 23 Jul added verify, Tony Bennett 24 Sep skipped (crooner).
+- *EVENTBRITE KEYWORD SEARCH (new angle — productive)*: /d/united-kingdom--london/<keyword>/
+  pages read via plain fetch; best keywords gypsy jazz / trad jazz / honky tonk / swing dance
+  live band / cajun. Finds: Charles Morris Jazzmen free gin-distillery trad 12 Sep, Charlie &
+  Blue Ray vintage swing Camden 26 Sep (verify), cross-confirms of Dylan Earl/Elise Roth/Hum.
+  SEE TICKETS + TICKETSOURCE = CONFIRMED DEAD (bot-block / JS-only, params ignored) — don't retry.
+  Songkick works only with exact artist IDs (search-first, then fetch). Artist sweep: Rob Heron
+  (western swing) has NO London dates (→ watchlist); Hot Sardines album but no UK dates (→
+  watchlist); Sierra Ferrell/C.W. Stoneking London dates already past. UKJN WP API SLUG TRICK:
+  /wp-json/wp/v2/posts?slug=<slug> returns full 403-walled articles (source of the Bleach lead).
+- *SW-locals social-gap attack (0 gigs but 3 structural cracks)*: BOATERS API FOUND — real
+  endpoint is www.boaterskingston.com/api/events/geteventfeed/5755 (recovered from a webpack
+  chunk; direct services.greeneking.co.uk paths 404) — clean JSON but only corporate/garden
+  events; Sunday-jazz line-ups are genuinely unpublished. VOUT-O-REENEES CRACKED — Wix Events
+  warmupData JSON embedded in /events HTML (only upcoming item out-of-genre; Cat's Pajamas-type
+  bookings are ad hoc, re-scrape each run). GOOGLEBOT-UA now reads FACEBOOK PAGES (2–3.7MB
+  GraphQL payloads with post text + timestamps, no login wall) and IG POST URLs (embedded
+  caption JSON + related-posts timeline — got July Lamb captions far beyond Google's index).
+  Lamb verdict: forward line-ups don't exist publicly; acts named same-day (poll a recent IG
+  post URL Fri–Sun to catch 'this Sunday' pre-announcements). Fighting Cocks re-checked through
+  Dec: still zero qualifying. Ram Jam JSON re-pulled: nothing new in-genre. Excellar's new 'Ex
+  Cellar Jazz 2026' residency (18 Sep–11 Dec) is contemporary/funk — out, but guests TBA.
+
+**What stayed dark / next time:**
+- Jamboree TJ Johnson Aug residency (pausing?); Plaquemine roster refresh (~20 Jul); Nightjar's
+  remaining Aug blanks (fill ~2 weeks out); Fidelio dates after 10 Aug; The Hum autumn renewal
+  (late Aug); Zedel event system; Ronnie's null-JSON-LD shows (Stompers/Holborn/Diplock).
+- Ewan Bleach residency: check Jamboree for Oct 1st/3rd-Sunday instances next month; Oriole
+  Bar's own listings page not yet scraped directly — do it next run.
+- Boaters/Lamb: poll the geteventfeed endpoint + weekend IG-post checks; both remain line-up dark.
+- Jazz Guide Sep+ diaries land late Aug (Old Barn Hall, Epsom, Spice of Life, Pump House,
+  Amersham, Riverhead, 46 Club); Soho Jazz Festival line-up late Aug; EFG LJF trad strand;
+  Twinwood day-splits; Dukes of Highgate Oct+ (WP API says nothing booked after 11 Sep).
+
+---
+
 ## 2026-07-10 — third self-update run
 
 **Housekeeping:** removed 7 finished gigs (7–9 Jul). Added 45 gigs (~20 confirmed, ~25 verify)
