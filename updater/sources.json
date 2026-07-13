@@ -406,6 +406,70 @@
         "Thames Ditton community-hall shows: music, comedy, film nights, family",
         "venue's own site (verafletcherhall.co.uk) is reCAPTCHA-walled and TicketSource is JS-blocked - this aggregator page is the only fetchable proxy (sparse/laggy, verify:true)"
       ]
+    },
+    {
+      "name": "Orange Tree Theatre Richmond (+ Spektrix feed)",
+      "url": "https://orangetreetheatre.co.uk/whats-on/",
+      "checkFor": [
+        "theatre runs, outdoor summer Shakespeare (OT on the Hill), Sunday morning coffee concerts, Christmas show (unannounced for 2026 as of Jul)",
+        "MACHINE FEED: https://system.spektrix.com/orangetree/api/v3/events - public JSON of the whole season with first/last instance datetimes"
+      ]
+    },
+    {
+      "name": "Rose Theatre Spektrix feed",
+      "url": "https://system.spektrix.com/rosetheatrekingston/api/v3/events",
+      "checkFor": [
+        "public JSON feed of the full Rose season incl. shows not yet surfaced on paginated /whats-on (Wind in the Willows Christmas run, Jan 2027 season)",
+        "CAUTION: feed contains historic/test events back to 2015 - always filter by date"
+      ]
+    },
+    {
+      "name": "Exchange Twickenham",
+      "url": "https://www.exchangetwickenham.co.uk/whats-on/",
+      "checkFor": [
+        "folk (Fairport Convention, Joni Mitchell tributes), jazz, family shows, panto - full listing with times fetches cleanly",
+        "skip the tribute-rock acts, cinema relays and yoga"
+      ]
+    },
+    {
+      "name": "TwickFolk (The Cabbage Patch, Twickenham)",
+      "url": "https://www.twickfolk.co.uk/events/",
+      "checkFor": [
+        "weekly Sunday folk club with full dated diary + prices (a top-tier folk source)",
+        "closures: summer break ~19 Jul-30 Aug; rugby-day closures (2026: 8 Nov, 29 Nov)"
+      ]
+    },
+    {
+      "name": "EFDSS / Cecil Sharp House, Camden",
+      "url": "https://www.efdss.org/whats-on",
+      "checkFor": [
+        "destination folk gigs, ceilidhs, barn dances, family barn dances",
+        "FETCH: 403 to WebFetch - use curl with a browser User-Agent; the page embeds the entire season as a JS variable eeVents (JSON, ~127 events with exact dates/times/links)"
+      ]
+    },
+    {
+      "name": "thesession.org JSON API",
+      "url": "https://thesession.org/sessions/search?q=kingston&format=json",
+      "checkFor": [
+        "Irish trad sessions near Kingston/Surbiton; session pages give schedule day + dated user comments to confirm a session is alive",
+        "FETCH: 403 to WebFetch, works via curl; append ?format=json to search and detail endpoints"
+      ]
+    },
+    {
+      "name": "Folk London club guide",
+      "url": "https://www.folklondon.co.uk/club-guide/",
+      "checkFor": [
+        "recurring folk clubs/sessions table for SW London (TwickFolk, cornerHOUSE folk, Sultan Wimbledon sessions)",
+        "FETCH: 403 to WebFetch, 200 via curl; dated diary is print-only"
+      ]
+    },
+    {
+      "name": "Landmark Arts Centre Ticketsolve XML feed",
+      "url": "https://landmarkartscentre.ticketsolve.com/shows.xml",
+      "checkFor": [
+        "machine-readable season incl. shows not yet on the listing page; per-event .xml has exact date_time, opening_time and all price tiers",
+        "fetch with a browser User-Agent (same trick as the OSO feed)"
+      ]
     }
   ],
   "searchQueries": [
@@ -459,6 +523,11 @@
     "OSO Arts Centre Barnes family shows panto 2026",
     "Hampton Hill Theatre Teddington Theatre Club season 2026",
     "Kingston Carnival 2026 date Ancient Market Place",
-    "Eel Pie Island open studios museum events 2026"
+    "Eel Pie Island open studios museum events 2026",
+    "TwickFolk Cabbage Patch Twickenham folk club 2026",
+    "Orange Tree Theatre Richmond season 2026 outdoor Shakespeare",
+    "Exchange Twickenham whats on folk jazz family 2026",
+    "Cecil Sharp House gigs ceilidh 2026",
+    "Poyntz Arms East Molesey Irish session"
   ]
 }

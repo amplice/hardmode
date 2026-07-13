@@ -185,3 +185,30 @@ Format per run:
   - Probe OTHER Ticketsolve/Spektrix/TicketTailor machine feeds for walled venues (e.g. Vera Fletcher Hall via its ticketing backend?) - the XML-feed trick is generalisable.
   - September: Stanley Picker autumn term, Dorich House autumn events, Landmark pagination re-crawl (Christmas fair), All Saints Friday organ recitals, Normansfield open days.
   - Unexplored angles for future rotation: Cecil Sharp House SW-London folk listings, Richmond/Twickenham theatres (Orange Tree, Exchange Twickenham), Bushy Park/Royal Parks autumn events, Surbiton churches' Christmas concert pages (from Nov), Kingston University public lecture/concert series.
+
+## 2026-07-13
+- Method: 4 parallel scoped research subagents: (1) NEVER-TRIED Richmond/Twickenham venues + a ticketing machine-feed probe; (2) verify-flag chase (Landmark times, OSO prices, Stewart Lee, Will James) + gig refresh (Ram Jam, Banquet, ExCellar); (3) family/seasonal (Playday/Carnival/River Cultures rechecks, NT/HRP/Royal Parks, library one-offs); (4) folk/trad sweep (Cecil Sharp House, folk listings aggregators, Surbiton Partnership refresh). Net: +67 dated, +3 recurring, -16 finished, ~20 rows confirmed/verify-cleared. Central dedupe was again essential: 30+ agent finds (nearly all Ram Jam/ExCellar/Claremont/Bach-to-Baby/library items and 6 of the Richmond agent's finds) were already held from the 7/10 Jul runs.
+- New sources/methods tried this run (all first-timers):
+  - SPEKTRIX API PROBE - the technique of the run, generalising the Ticketsolve XML trick: `system.spektrix.com/<client>/api/v3/events` is public JSON. Working clients found: `orangetree` (70 events) and `rosetheatrekingston` (139 events; CAUTION - contains historic/test rows back to 2015, filter by date; it exposed Wind in the Willows and Jan 2027 season before the website pagination did). Non-existent client names 404 (tried exchangetwickenham, theexchange, rosetheatre etc.).
+  - Orange Tree Theatre + Exchange Twickenham direct sites both fetch cleanly with full 2026 dates - two solid NEW venues (outdoor Shakespeare on Richmond Hill; Fairport Convention/folk/family/panto at the Exchange, which uses its own WordPress ticketing, no feed needed).
+  - TwickFolk (twickfolk.co.uk/events) - the folk find of the run: complete dated autumn diary with prices, all Sundays. Note closures: summer break 19 Jul-30 Aug, rugby days 8 Nov + 29 Nov.
+  - EFDSS/Cecil Sharp House - efdss.org 403s WebFetch but curl+browser-UA works AND the whats-on page embeds the entire season as a JS var `eeVents` (JSON, 127 events, exact datetimes). One request = whole season.
+  - thesession.org JSON API (`?format=json` on search/detail endpoints, curl only) - confirmed Willoughby Arms Mondays and surfaced a NEW fortnightly Poyntz Arms (East Molesey) Thursday session (added recurring, verify).
+  - folklondon.co.uk/club-guide (curl only) - recurring-listings table; flagged Sultan Wimbledon sessions (watchlisted, unverified).
+  - Landmark's own Ticketsolve XML (landmarkartscentre.ticketsolve.com/shows.xml) - per-event .xml carries date_time/opening_time/all price tiers; confirmed all 8 held Landmark rows AND surfaced shows not yet on the listing page (R.U.M 24 Oct).
+  - Banquet 'Load more' bypass: `banquetrecords.com/events?w=<ISO week>` paginates by week (crawled w=36-52).
+- What worked / notable:
+  - kingston.gov.uk/events pagination quirk: bare URL = page 1, `?page=1` = page 2, `?page=2` = page 3.
+  - Ham House NT page fetched cleanly this run; Claremont/Morden Hall still Radware-blocked (dates recovered via snippets + weekday-uniqueness proof only).
+  - Weekday-uniqueness year-proofing again saved Bach to Baby (all four 'Tuesday' dates only fit 2026) and caught two WebFetch summarizer weekday errors (said Sat for Sun 20 Sep, Fri for Sat 31 Oct) - ALWAYS check claimed weekday against the real calendar.
+  - Claremont 1 Aug Saturday Session performer identified (The Dixieland Stompers, 9-piece trad jazz) via search snippet.
+- What didn't work / cautions:
+  - STEWART LEE ALERT: the Rose 2026 event page now 404s, is gone from the sitemap, and stewartlee.co.uk no longer lists Kingston - likely sold out + delisted, but unproven. Row kept verify:true with caution note; re-verify late Aug.
+  - Still unpublished (rechecked, NOT guessed): Playday 2026 (Kingston page still 2025; national date is Wed 5 Aug), Kingston Carnival 2026, River Cultures 2026, HCP Halloween half-term (two conflicting snippet ranges, one matching 2025 weekdays - both rejected), Raise The Bar headliner, Speakeasy Brunch acts, Landmark Christmas fair, Orange Tree Christmas show, All Saints Friday organ recitals.
+  - Newly/still blocked: ticketsource .com AND .co.uk hard Cloudflare-403 (Vera Fletcher Hall stays Datathistle-only); kingston.ac.uk Cloudflare-challenged; kingstonchoralsociety.org.uk 401 (KCS prices stay verify:true); hrp.org.uk + Southbank 403 even to curl-with-headers; royalparks.org.uk fetches but lists zero Bushy Park events.
+  - The Lamb (6th run): one new angle tried - Folk & Honey venue page fetches via curl but shows zero dated gigs. Wall remains structural (IG/FB only).
+- Try next time:
+  - Late July: Playday 2026; Raise The Bar headliner; Kingston Carnival/River Cultures announcements; Claremont Live remaining August Saturday performers (River City Saxes/The Macaroons - which Saturdays?).
+  - Probe MORE Spektrix client names for walled venues (try polka, southbank-adjacent, richmondtheatre?) and other Ticketsolve tenants - both feed families are now proven.
+  - September: Stewart Lee re-verification; Orange Tree Christmas show (re-poll Spektrix feed); cornerHOUSE beyond 6 Oct; Landmark Christmas fair; Stanley Picker autumn term; All Saints Friday organ recitals; verify Sultan Wimbledon sessions via thesession.org JSON.
+  - Unexplored angles for future rotation: Richmond Theatre (ATG) + Rose Richmond, Kingston University Stanley Picker autumn, Dorich House autumn, National Archives Kew events, Strawberry Hill House, Marble Hill (English Heritage), Twickenham Stadium family events, Wimbledon Bookfest (usually Oct).
