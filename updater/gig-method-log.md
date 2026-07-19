@@ -5,6 +5,79 @@ what to try differently next time. Newest entries at the top.
 
 ---
 
+## 2026-07-19 — fifth self-update run
+
+**Housekeeping:** removed 21 finished gigs (13–18 Jul). Added 77 gigs (37 confirmed, 40 verify)
+→ 241 total; +8 watchlist rows → 60; validate clean first pass. Residency roll-forwards restored
+(Hum Tuesday 21 Jul, Cable Street 23 Jul, Prospective 26 Jul, Plaquemine brunches 25/26 Jul).
+Fixes: Ray Gelato Ronnie's row corrected to a 19–22 Dec residency (23 Dec unconfirmed); Boheme
+Hot Club got its 20:30 time via DICE; La Bouche 19 Sep note now carries both show times.
+
+**Methods tried (4 parallel research clusters; new angles in caps):**
+- *Rolling-window re-scrape*: ORIOLE BAR'S OWN /oriole-music PAGE SCRAPED FOR THE FIRST TIME —
+  the run's richest single source (12 adds: Giacomo Smith's Club Royale 23 Jul, Pipkin/Dunn
+  weekday piano nights, Boneshaker Trio 7 Aug, Fezzes, Aisha Khan 15 Aug; covers ~3 months with
+  fixed weekday cover prices). Nightjar Aug gaps part-filled (6 adds; dark: 2, 12, 15–16, 19, 22,
+  26, 29, 31 Aug; Sep so far 1/2/11). Jamboree: TJ Johnson residency CONFIRMED pausing after
+  29 Jul (he pops up at Nightjar 5 Aug); Prospective has no Sep dates; Cajun Après-Midi DEC
+  instance published (12 Dec); Thumping Tommys 26 Jul one-off; no Ewan Bleach Oct lunches yet.
+  Plaquemine roster refresh NOT yet published (still ends 2 Aug — re-scrape early next week).
+  Zedel event system still broken; TL first-Tuesday NO jams mined through Nov (1 Sep/6 Oct/3 Nov).
+  Dukes API, Ram Jam JSON, Vout-O-Reenees warmupData, Boaters feed: all nothing new in-genre.
+- *Swing/gypsy circuit*: Halibuts pages 8–17 (EXHAUSTED at late Dec; Sinatra-musical/Boisdale
+  crooner noise heavy): Judy Carmichael stride nights at Crazy Coqs 2–3 Oct (Zedel listings flow
+  via Halibuts while their site is broken), Ray Gelato 100 Club 3 Oct + Ronnie's residency nights
+  20–22 Dec, Swingtones + Satin Dollz at the Pheasantry, Ewan Bleach headlining HOXTON HALL
+  24 Oct (£32.50; their ticketsolve 403s — Halibuts detail pages carry date AND price), Fabulous
+  Lounge Swingers 12 Dec, Jazz Noël artsdepot 19 Dec, Jamie Safir Ronnie's lunch residency
+  2–23 Dec. DFTC official page: NEW Cadogan 10 Oct (Get Downs 13 Oct → watchlist, soul-leaning;
+  '18 Dec Bath' in our notes was wrong — it's Oxford, Bath is 8 Dec). Jive Aces: JiveSwing fest
+  Watford 26 Jul, Eastbourne 9 Aug, Scotney Castle 14 Aug, Gilwell Park 27 Aug. EMMA SMITH
+  Ronnie's 30–31 Aug held back under the crooner rule (→ watchlist), matching the Tony Bennett
+  skip (also re-skipped: TL 24 Sep). Artist-site rot logged: raygelato.com/gigs 404,
+  tjjohnsonmusic.com dead redirect, gypsydynamite.com DNS-dead, ewanbleach.com stale.
+- *Suburban circuit (Jazz Guide)*: diaries rolled forward as hoped — Amersham through 30 Sep
+  (5 adds + a previously missed 29 Jul row that was already ours), Epsom 14 Sep + 12 Oct,
+  Riverhead 16 Aug Doolally Tap, Spice of Life 24/31 Aug (10 Aug lunch is modern jazz — out),
+  Pump House 30 Jul + 13 Aug (sax-repertoire nights, verify). NEW VENUES: ONGAR JAZZ CLUB (Essex
+  Fridays booking manouche/swing — Djangoliers 9 Oct) and COLCHESTER JC (Sarah Spencer 26 Jul);
+  Falkland CC Newbury Sunday trad residency added as a borderline day-trip. EAST GRINSTEAD
+  day-split solved: Sat 15 Aug is the trad day (Sussex Stompers/Jive Aces/Django Chutney free
+  street trail) — own row added. PARSING TRAP found: the national listing interleaves Premium
+  cards with rows — naive scraping fabricates phantom venue pairings, and WebFetch summaries
+  invent weekdays; parse raw HTML, h4 rows separately from card__title. Winning Post venue page
+  now 404s (gigs persist in the national listing). EFDSS API: nothing new; Fighting Cocks: zero
+  qualifying again; Bull's Head: nothing (24 Oct 'ELLA' is a tribute-framed night — skipped).
+- *NEW ANGLES*: DICE API CRACKED — api.dice.fm/unified_search takes unauthenticated POSTs;
+  venue-name queries sweep whole programmes (prices in pence). Yielded the MOROCCO BOUND 'Jazz
+  Manouche' series (bookshop bars, Wandsworth + Bermondsey — Wandsworth is Surbiton-side; 4 adds)
+  and Pokey LaFarge at Islington Assembly Hall 12 MAR 2027 (first 2027 row). FOAOTMAD SESSION
+  LIST — first old-time fixtures ever: Cock Tavern slow jam (explicit dates 26 Jul, 9+23 Aug),
+  Lucas Arms + Biddle Brothers recurrences (verify). What's Cookin' myth busted: OWN SITE carries
+  listings (Dom Glynn 22 Jul, Geraint Watkins 29 Jul added; 25 Jul still TBC). UK cajun/zydeco
+  infrastructure confirmed dead (webfeet stub, zydeco.org.uk DNS gone, Cajun Barn dormant,
+  Gloucester fest is a January thing). Songkick artist sweep low-yield (Rob Heron: still no
+  London; search JS-walled — need exact IDs). Bandsintown REST API now auth-denies: DEAD.
+  GOOGLEBOT-UA IG-CAPTION TRICK NO LONGER WORKS (captions gone from served HTML; FB pages empty)
+  — Lamb Surbiton (handle is @lamb_surbiton) and Boaters stay dark, need a new technique.
+  Rhythm Riot 2026 moved to Great Yarmouth 8–12 Oct (→ watchlist, far + partial fit); Hep Cats
+  Holiday domain lapsed.
+
+**What stayed dark / next time:**
+- Plaquemine roster past 2 Aug (refresh imminent — hit it first next run); Nightjar's remaining
+  Aug dark dates + Sep beyond 11th; Jamboree Prospective Sep dates, Cable Street Oct dates and
+  Ewan Bleach Oct lunch instances; Fidelio after 10 Aug; The Hum autumn renewal (late Aug).
+- The Lamb + Boaters: social gap reopened now Googlebot-UA captions are dead — try fresh
+  Google-indexed instagram.com/p/ URLs or another approach.
+- Jazz Guide Oct+ diaries land late Aug/Sep; EFG LJF trad-strand programme; Soho Jazz Festival
+  line-up (late Aug); SwingdanceUK 40th-anniversary tickets on sale 1 Sep; Bishopsgate Swing Live
+  October edition (check bishopsgate.org.uk directly — swingpatrol.co.uk served stale content);
+  A Swingin' Sunday at Jamboree next edition (Eventbrite); Dukes of Highgate after 11 Sep.
+- Ronnie's date-less show pages (Holborn, Diplock; Shirt Tail slug now 404s); 100 Club own page
+  only renders through Aug — use Halibuts for its Oct–Dec strand.
+
+---
+
 ## 2026-07-13 — fourth self-update run
 
 **Housekeeping:** removed 20 finished gigs (10–12 Jul weekend). Added 35 gigs (21 confirmed,
