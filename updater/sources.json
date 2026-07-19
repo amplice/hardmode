@@ -121,7 +121,8 @@
       "url": "https://www.banquetrecords.com/events",
       "checkFor": [
         "Kingston music",
-        "album release shows"
+        "album release shows",
+        "CAUTION 19 Jul 2026: the ?w=<ISO week> pagination no longer works for fetchers (every week param returns the same default listing); autumn announcements may need a JS-capable route"
       ]
     },
     {
@@ -464,6 +465,47 @@
       ]
     },
     {
+      "name": "Polka Theatre Spektrix feed",
+      "url": "https://system.spektrix.com/polka/api/v3/events",
+      "checkFor": [
+        "public JSON of the full Polka season (74+ events) with AgeRange attributes - the best route to early-years shows and runs not yet on the paginated /whats-on",
+        "client name is 'polka' (not polkatheatre)"
+      ]
+    },
+    {
+      "name": "Richmond Theatre (ATG)",
+      "url": "https://www.atgtickets.com/venues/richmond-theatre/",
+      "checkFor": [
+        "big-name comedy, quality theatre runs, Christmas panto, monthly 'Storytime & Twirling Toddlers' sessions (toddler theatre)",
+        "FETCH: curl with a browser User-Agent works cleanly (no bot wall); paginate /whats-on/?page=2,3",
+        "list page has dates only - times/prices on individual show pages"
+      ]
+    },
+    {
+      "name": "Strawberry Hill House, Twickenham",
+      "url": "https://www.strawberryhillhouse.org.uk/whats-on/",
+      "checkFor": [
+        "open-air summer concerts (incl. trad-jazz bookings like Pasadena Roof Orchestra), outdoor theatre, Flower Festival (Sep), heritage/family events",
+        "fetches cleanly via WebFetch"
+      ]
+    },
+    {
+      "name": "The National Archives, Kew",
+      "url": "https://www.nationalarchives.gov.uk/whats-on/",
+      "checkFor": [
+        "free exhibitions, weekly Time Travel Tots under-5s sessions, holiday craft clubs, talks",
+        "use the /whats-on/ redirect target"
+      ]
+    },
+    {
+      "name": "Wimbledon BookFest",
+      "url": "https://www.wimbledonbookfest.org/whats-on/",
+      "checkFor": [
+        "October literary festival (2026: 15-25 Oct) - author talks, comedy, family events across Wimbledon venues",
+        "per-event pages carry times/prices; split highlights into dated rows"
+      ]
+    },
+    {
       "name": "Landmark Arts Centre Ticketsolve XML feed",
       "url": "https://landmarkartscentre.ticketsolve.com/shows.xml",
       "checkFor": [
@@ -528,6 +570,11 @@
     "Orange Tree Theatre Richmond season 2026 outdoor Shakespeare",
     "Exchange Twickenham whats on folk jazz family 2026",
     "Cecil Sharp House gigs ceilidh 2026",
-    "Poyntz Arms East Molesey Irish session"
+    "Poyntz Arms East Molesey Irish session",
+    "Richmond Theatre whats on panto family 2026",
+    "Strawberry Hill House concerts events 2026",
+    "Wimbledon BookFest 2026 programme October",
+    "National Archives Kew family events exhibitions 2026",
+    "Surbiton Flyer Victoria Road live music 2026"
   ]
 }
