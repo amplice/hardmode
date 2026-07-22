@@ -66,7 +66,8 @@
       "checkFor": [
         "public running days",
         "gala days",
-        "family railway days"
+        "family railway days",
+        "MACHINE FEED (22 Jul 2026): full events JSON embedded in www.malden-dsme.org/Events/Calendar inside div#events-data (titles, dates, times, members-only flags); Santa Special usually first Sun of Dec, tickets ~2 weeks ahead"
       ]
     },
     {
@@ -122,7 +123,7 @@
       "checkFor": [
         "Kingston music",
         "album release shows",
-        "CAUTION 19 Jul 2026: the ?w=<ISO week> pagination no longer works for fetchers (every week param returns the same default listing); autumn announcements may need a JS-capable route"
+        "UPDATE 22 Jul 2026: ?w=<ISO week> pagination WORKS again (e.g. ?w=45 returns the full run, then through 23 Nov); if it re-breaks, note that Songkick/dice.fm have no Banquet inventory (self-ticketed)"
       ]
     },
     {
@@ -277,7 +278,8 @@
         "dated live music gigs - jazz, blues, funk, soul, New Orleans, roots",
         "Sunday afternoon daytime sessions and the Jazz Jam",
         "Crack Comedy Kingston (weekly Fri) and Wednesday open mic",
-        "a fetchable, explicitly-dated Kingston music calendar (a reliable fill for the social-only Lamb wall)"
+        "a fetchable, explicitly-dated Kingston music calendar (a reliable fill for the social-only Lamb wall)",
+        "MACHINE FEED (22 Jul 2026): /events?format=json returns the full Squarespace upcoming array with epoch startDate/endDate - use it instead of scraping; URL slugs contain date typos, never trust slugs"
       ]
     },
     {
@@ -506,6 +508,24 @@
       ]
     },
     {
+      "name": "Watermans Arts Centre Brentford (+ Bell Square outdoor)",
+      "url": "https://watermans.ticketsolve.com/shows.xml",
+      "checkFor": [
+        "free Bell Square outdoor arts season (circus, dance, outdoor theatre - very family-friendly daytime shows)",
+        "autumn/Christmas family theatre once on sale (empty as of 22 Jul 2026)",
+        "the Ticketsolve XML feed is the reliable machine source (ISO date_time per performance); HTML listing pages are JS-lite and sparse",
+        "skip cinema and SEN-registration-only Short Breaks events; ~35-45 min from Surbiton so destination-worthy shows only"
+      ]
+    },
+    {
+      "name": "Royal Parks what's on (Bushy Park)",
+      "url": "https://www.royalparks.org.uk/whats-on",
+      "checkFor": [
+        "Bushy Park family/nature events (site redesigned Jul 2026 - old per-park events URLs 404; paginate &page=0..4, parks= filter is ignored server-side)",
+        "deer rut walks, winter/Christmas events once published"
+      ]
+    },
+    {
       "name": "Landmark Arts Centre Ticketsolve XML feed",
       "url": "https://landmarkartscentre.ticketsolve.com/shows.xml",
       "checkFor": [
@@ -575,6 +595,9 @@
     "Strawberry Hill House concerts events 2026",
     "Wimbledon BookFest 2026 programme October",
     "National Archives Kew family events exhibitions 2026",
-    "Surbiton Flyer Victoria Road live music 2026"
+    "Surbiton Flyer Victoria Road live music 2026",
+    "Watermans Bell Square Hounslow free outdoor arts 2026",
+    "Bushy Park Royal Parks whats on family events 2026",
+    "The Sultan Wimbledon folk session thesession"
   ]
 }
