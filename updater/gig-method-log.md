@@ -5,6 +5,73 @@ what to try differently next time. Newest entries at the top.
 
 ---
 
+## 2026-07-22 — sixth self-update run
+
+**Housekeeping:** removed 12 finished gigs (19–21 Jul) plus 1 mis-filed row — the 10 Oct Cadogan
+"DFTC Swing Orchestra" is actually **'Voices of Soul' (excluded)** per Cadogan's own series page;
+last run's note trusted the band's live-dates table. Added 39 gigs (10 confirmed, 29 verify)
+→ 267 total; watchlist 60 → 62 (+4 new, −2 promoted). Validate clean first pass.
+Promotions from watchlist: Chobham Jazz Supper 3 Oct (detail page proves trad/swing/Songbook) and
+Goodman 1938 Carnegie recreation 24 Jan 2027 (now on sale; 2027 rows have the Pokey precedent).
+Deliberately NOT promoted, matching prior curator calls: Jive Aces Petworth 24 Jul (transport),
+Jazz Noël Wilton's 27 Nov (modern-leaning), Emma Smith/Natalie Williams/Shane Hampsheir Ronnie's
+vocal nights (crooner rule).
+
+**Methods tried (4 parallel research clusters; new angles in caps):**
+- *Rolling-window re-scrape*: Plaquemine's expected refresh has NOT landed (page unchanged, ends
+  2 Aug — hit FIRST next run); brunch roll-forwards added (1/2 Aug). Nightjar filled 7 of 9 dark
+  Aug dates — 4 in-genre adds (Pinstripe Suit 15, Bubu Otis 16, Bandini 26, Ben Martyn 31 Aug)
+  + first Oct date (Dom Durner 10 Oct, already ours); 2 + 29 Aug still dark; STRUCTURAL:
+  **Nightjar and Oriole both answer Squarespace ?format=json** (full feeds, no HTML scraping).
+  Oriole new: Ben Martyn 5/26 Aug, Bubu Otis 6 Aug, Alex Bryson 11 Aug (listings stop at 5 Sep —
+  Oct overdue). Jamboree paginates to ?pno=8 (horizon 21 Nov): no Sep Prospective, no Oct Cable
+  Street/Bleach lunches — weekly-residency next-instance rows re-listed (Cable St 30 Jul,
+  Prospective 2 Aug, Hum 28 Jul). TL via DICE: Dom Pipkin & The Ikos 27 Aug added (funk-lean,
+  verify). Hum series still dies 8 Sep (organiser page is JS — only series start/end readable).
+  Vout-O-Reenees warmupData: 1 event, out-of-genre. Ram Jam JSON: zero in-genre through Dec.
+  Dukes WP API: only the 29 Jul jam + Breann Young. Zedel: STILL broken — stop checking weekly.
+- *Suburban circuit (Jazz Guide)*: September diaries landed — Old Barn Hall 4 Sun adds (6/13/20/27),
+  Pump House 4 Thu adds (Rudeforth 3, Owls 10, Raineys 17, Bronxville 24 Sep) + missed Saxorama
+  30 Jul (flagged last run, never listed — now fixed), Spice of Life 3 strong lunches (HOT FINGERS
+  14 Sep, McQuaid/Hemstock 21 Sep, Cable Street Rag Band 28 Sep; 31 Aug + 7 Sep are modern — out).
+  National-listing finds: Chobham supper 3 Oct, Pete Allen Falkland 48th-anniv 24 Oct. Epsom is
+  monthly (10 Aug/14 Sep/12 Oct — no 27 Jul). 46 Club weekly residency re-confirmed (no rows kept,
+  as before). BULL'S HEAD DOMAIN FIX: thebullshead.com dead → thebullsheadbarnes.com (tickets
+  subdomain); diary still zero trad. Fighting Cocks through Dec: zero qualifying, again.
+- *Swing/gypsy sweep*: Ronnie's crawl (pages 1–14, JSON-LD only): NEW Francesca Tandoi stride trio
+  10 Aug (confirmed) + Mackenzie/Stanley 3 Sep, Jamie Safir 14 Sep (verify); Giacomo Smith 10 Sep /
+  Nora Germain 22 Sep / Harry Allen 15 Sep were already ours. DICE venue sweeps: **David Hermlin
+  Trio (Berlin swing revival) Jamboree 15 Nov** — run's best one-off; Morocco Bound already fully
+  tracked. Boisdale diary: Long Lost Frets Dec dates match our row; Big Easy Christmas Lunch
+  12 Dec CW added. Eventbrite keywords: JiveMeToTheMoon live-band dance Walthamstow 4 Sep. 100 CLUB
+  TRAP: slug date-suffixes lie (roots-of-the-king '-09-26' = 16 Aug — page date wins). Halibuts
+  pages 1–6 re-crawl: nothing new beyond the above (jazz tag too noisy to crawl, ~131 events/day).
+- *NEW ANGLES*: **SWINGPLANIT** (swing-festival calendar) — Cambridge Lindy Exchange 30 Oct–1 Nov
+  ('5 parties with live bands') added; Hep to the Hive Manchester → watchlist. **BISHOPSGATE
+  SPEKTRIX API** (system.spektrix.com/bishopsgateinstitute/api/v3/events) — authoritative for
+  Swing Live: 2026 run ends 18 Sep, NO October edition, Horsfall 20 Nov + 19 Dec not on sale yet.
+  **UKJN REST sweep caught EFG LJF WAVE 3** (21 Jul article): Spirit of Django (Martin Taylor/Guy
+  Barker) 19 Nov Smith Square Hall added confirmed; Ella & Louis 22 Nov = our existing Cadogan row;
+  Muireann Bradley 13 Nov → watchlist. Artist pages: Ags Connolly Golden Hinde 10 Jan 2027 added.
+  Songkick exact-ID sweep: Rob Heron (Barry only), Kitty Daisy & Lewis (EU only), C.W. Stoneking
+  (AUS) — nothing. Time Out genre pages: DEAD (404/mainstream — don't re-add). Instagram via
+  r.jina.ai: login-walled — Lamb (lambsurbiton.co.uk confirms Sunday sessions, no names) and
+  Boaters stay dark. EFDSS API: nothing new in-genre (ceilidhs only). FOAOTMAD: Cock Tavern
+  exceptions already ours; Prince of Wales Feathers fortnightly still date-less.
+
+**What stayed dark / next time:**
+- PLAQUEMINE ROSTER (ends 2 Aug, refresh days overdue) — first stop next run. Nightjar 2 + 29 Aug,
+  Sep past 11th; Oriole October; Jamboree Sep Prospective / Oct Cable Street + Bleach lunches.
+- EFG LJF wave 4 lands 19 Aug, full programme 16 Sep — sweep UKJN + efglondonjazzfestival.org.uk.
+- SwingdanceUK 40th tickets on sale 1 Sep; Bishopsgate autumn instances via the Spektrix API;
+  Fidelio after 10 Aug; The Hum renewal (late Aug); Amersham October; Jazz Guide Oct+ diaries.
+- Lamb/Boaters: all Instagram angles now dead (r.jina.ai login-walled too) — next idea: poll
+  Google/Bing index of instagram.com/p/ URLs on Fri–Sat for same-week Sunday announcements.
+- Ron's Honky Tonk '+4 more' dates hidden behind JS on the event-list page; Cambridge Lindy
+  Exchange band names; Chobham Festival may add more jazz suppers (festival.chobham.org).
+
+---
+
 ## 2026-07-19 — fifth self-update run
 
 **Housekeeping:** removed 21 finished gigs (13–18 Jul). Added 77 gigs (37 confirmed, 40 verify)
