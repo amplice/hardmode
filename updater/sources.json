@@ -49,7 +49,8 @@
         "member events",
         "music",
         "outdoor events",
-        "heritage"
+        "heritage",
+        "FETCH (25 Jul 2026): curl with a browser UA returns 200 (WebFetch 403s), but the whats-on grid is JS-paginated - static HTML carries only the first ~9 of ~56 cards; per-card dates/times sit after each js-link anchor; probe the load-more XHR for the rest"
       ]
     },
     {
@@ -268,7 +269,8 @@
         "community picnics and park reopenings",
         "nature/rewilding/swift/bat walks",
         "free town-centre family events",
-        "server-rendered and readable when VisitKingston/KingstonFirst are blocked"
+        "server-rendered and readable when VisitKingston/KingstonFirst are blocked",
+        "UPDATE 25 Jul 2026: the old ?page=N pagination quirk is GONE - bare /events now returns the full listing in one page and ?page=N returns empty"
       ]
     },
     {
@@ -279,7 +281,7 @@
         "Sunday afternoon daytime sessions and the Jazz Jam",
         "Crack Comedy Kingston (weekly Fri) and Wednesday open mic",
         "a fetchable, explicitly-dated Kingston music calendar (a reliable fill for the social-only Lamb wall)",
-        "MACHINE FEED (22 Jul 2026): /events?format=json returns the full Squarespace upcoming array with epoch startDate/endDate - use it instead of scraping; URL slugs contain date typos, never trust slugs"
+        "MACHINE FEED (UPDATE 25 Jul 2026): /events?format=json now returns only the current month - fetch per month via /events?month=August-2026&format=json; epoch timestamps are UTC (add 1h during BST) and contain occasional typos (an 06:15 'evening' gig) - sanity-check absurd times; URL slugs contain date typos, never trust slugs"
       ]
     },
     {
@@ -381,6 +383,7 @@
       "checkFor": [
         "folk/roots/classical concerts, comedy, opera, art fairs in the Victorian church",
         "NOTE: /whats-on/ is 404 - the real listing path is /shows-and-events/ (paginated, re-crawl for later months)",
+        "BETTER (25 Jul 2026): /events-diary/ server-renders the full 12-month diary with dates, times and genres in one page",
         "times/prices only on individual /shows/ pages - confirm before clearing verify flags"
       ]
     },
@@ -526,6 +529,23 @@
       ]
     },
     {
+      "name": "Kew Gardens what's on",
+      "url": "https://www.kew.org/kew-gardens/whats-on",
+      "checkFor": [
+        "destination family programmes (Tom Gates-style summer trails), open-air theatre, Henry Moore-scale exhibitions, Christmas at Kew (mid-Nov to early Jan)",
+        "FETCH: kew.org 403s WebFetch - curl with a browser UA works; listing shows only the first 12 of ~46 events (JS load-more) but detail pages are fully server-rendered with dates/times/prices",
+        "outer edge (~45 min) - only destination-worthy highlights"
+      ]
+    },
+    {
+      "name": "Sofar Sounds (open GraphQL API)",
+      "url": "https://www.sofarsounds.com/api/v2/graphql",
+      "checkFor": [
+        "Kingston upon Thames shows: query events(city:\"kingston-upon-thames\", upcoming:true, published:true, excludeCancelled:true){events{localStartsAt neighborhood{title}}}",
+        "city is active (id 1054) but had ZERO upcoming Kingston shows as of 25 Jul 2026 - cheap monthly recheck"
+      ]
+    },
+    {
       "name": "Landmark Arts Centre Ticketsolve XML feed",
       "url": "https://landmarkartscentre.ticketsolve.com/shows.xml",
       "checkFor": [
@@ -598,6 +618,10 @@
     "Surbiton Flyer Victoria Road live music 2026",
     "Watermans Bell Square Hounslow free outdoor arts 2026",
     "Bushy Park Royal Parks whats on family events 2026",
-    "The Sultan Wimbledon folk session thesession"
+    "The Sultan Wimbledon folk session thesession",
+    "Christmas at Kew 2026 dates tickets",
+    "Landmark Arts Centre Teddington events diary 2026",
+    "Hampton Pool summer picnic concerts 2027 lineup",
+    "Kingston Playday 2026 Dickerage August"
   ]
 }
