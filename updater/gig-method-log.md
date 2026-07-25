@@ -5,6 +5,71 @@ what to try differently next time. Newest entries at the top.
 
 ---
 
+## 2026-07-25 — seventh self-update run
+
+**Housekeeping:** removed 15 finished gigs (22–24 Jul). Added 32 gigs (7 confirmed, 25 verify)
+→ 284 total; watchlist 62 → 64 (+Jazzbourne venue watch, +Remi Harris London-date watch).
+Validate clean first pass. Upgrades/downgrades: Cambridge Lindy Exchange verify→confirmed
+(bands now announced: Swing Shouters FR, Harry Evans & His Flying Squirrels, Django's Tiger;
+tickets on sale 1 Aug); The Hum 28 Jul confirmed→verify — a second Eventbrite listing for the
+series shows the occurrence as CANCELLED (residency may be wobbling before its 8 Sep end).
+
+**Methods tried (4 parallel research clusters; new angles in caps):**
+- *Rolling-window re-scrape (the run's haul — 30 of the 32 adds)*: PLAQUEMINE REFRESH LANDED —
+  12 adds through the new 23 Aug horizon. ROOT CAUSE of the "overdue" refresh found: the page
+  301s to /live-music-islington/ (trailing slash) and un-redirected fetches get an EMPTY BODY —
+  always curl -L. Structural: Sat brunch provisionally hands from Dai Price to "Ewan Bleach?"
+  (venue's own question mark — 3 brunches added verify) from 8 Aug. Oriole extended 5→29 Sep
+  (11 adds incl. Boneshaker 4 Sep, Pipkin 9 Sep, Al Dunn 16 Sep; Oct STILL missing; holes 17,
+  22–25, 30 Sep). Nightjar: 27 Jul + 4/19/22 Aug filled (4 adds); 2 + 29 Aug persistently dark,
+  Sep still only 1/2/11. Jamboree horizon now 22 Dec: Cajun Après-Midi monthly through 12 Dec,
+  Cable St still stops 24 Sep, Prospective still stops 30 Aug, TJ Johnson 29 Jul is a lone
+  one-off; only new add Steven Paris Agreement 8 Aug (mixed bill, verify). What's Cookin':
+  AUGUST IS A FULL BREAK (nothing 29 Jul–2 Sep) but a strong autumn country strand — JOHN
+  MILLER & HIS COUNTRY CASUALS + Grace Under Fire 14 Oct (run's best add, pure honky tonk,
+  confirmed) + Bard Edrington V 21 Oct (old-time-leaning, verify).
+- *Suburban circuit (Jazz Guide)*: ZERO new rows — every diary already fully tracked (good
+  sign the 3-day cadence covers it). Horizons: Epsom → 12 Oct (Paula Jackman named — already
+  ours), Old Barn Hall/Pump House/Amersham/Spice unchanged (27 Sep / 24 Sep / 30 Sep / 28 Sep);
+  Riverhead + Colchester nothing new; 46 Club residency unchanged; Spice 17 Aug is a diary gap.
+  National listing re-crawl: all in-range finds already ours.
+- *Swing/gypsy API sweep*: mostly confirmations — Morocco Bound Sep dates, Beaverwood Jive
+  Aces, Dukes rows all already tracked. Net 3 adds via DICE: Summer Camargo Trio TL 16 Aug
+  (verify), Biscuit Town TL 26 Sep (second date beside our 28 Nov), John "Papa" Gros Piano
+  Smithfield 26 Sep (funk-lean, verify — NB near-dup trap: quoted nickname 'John "Papa" Gros'
+  dodged a plain grep; dedup on date+venue). Bishopsgate Spektrix: Horsfall 20 Nov + 19 Dec
+  STILL not on sale; Swing Den 7 Aug/4 Sep remain excluded (DJ-only per prior call). 100 Club:
+  Sep window rendering but zero in-genre yet. Ronnie's date-less pages (Holborn, Diplock):
+  still empty JSON-LD event arrays. Eventbrite structural: organiser pages now roll recurring
+  series into ONE card — read series end-dates from the event page's embedded dates.
+- *NEW ANGLES*: RON'S HONKY TONK WIX warmupData CRACKED — full event list with ISO dates; the
+  "+4 more" on cards is guest AVATARS, not hidden dates, recurrence arrays empty → 28 Aug
+  really is their only 2026 night. WEGOTTICKETS VENUE/PROMOTER PAGES server-rendered
+  (/JamboreeVenue, /f/NNNNN) — search still broken; WebSearch site:wegottickets.com for entry
+  points; added to sources. CHOBHAM FESTIVAL full programme checked: the 3 Oct supper is its
+  ONLY jazz (rest classical/bells/morris). CLX bands announced (see above). JAZZBOURNE
+  discovered (speakeasy swing bar, New Cross) — swing socials are jukebox-only but venue books
+  live jazz → watchlist. Lamb Surbiton: still DARK (Googlebot-UA IG returns shell; newest
+  indexed post 28 Mar; Lemonrock 0 gigs; side-find: last-Wednesday Irish folk jam, out of
+  genre). Artist sweep all negative: Rob Heron (Barry only), Hot Sardines (no UK tour), George
+  & his New Heartaches (Munich only), Kansas Smitty's (site JS-walled).
+
+**What stayed dark / next time:**
+- Nightjar 2 + 29 Aug and Sep-beyond-11th; Oriole October; Jamboree Sep Prospective + Oct
+  Cable Street/Bleach lunches; Plaquemine past 23 Aug (~10 Aug refresh due; includes 28 Aug
+  Ten Bells last-Friday check).
+- The Hum: verify whether 28 Jul actually ran (cancellation flag) — if the residency is dying
+  early, note it; autumn renewal check late Aug regardless.
+- EFG LJF wave 4 lands 19 Aug (full programme 16 Sep); SwingdanceUK 40th tickets 1 Sep;
+  Bishopsgate autumn instances; Fidelio after 10 Aug (Grimshaw guide still silent); Jazz Guide
+  Oct+ diaries land late Aug (Old Barn Hall, Spice, Pump House, Amersham, Riverhead).
+- Lamb/Boaters: all technical angles now exhausted — remaining idea: poll Lemonrock + a
+  weekend WebSearch for "Lamb Surbiton" IG posts each Fri–Sat run.
+- Jazzbourne live-band nights (new venue watch); CLX ticket on-sale 1 Aug (band details may
+  firm up); What's Cookin' Sep midweek TBC slots.
+
+---
+
 ## 2026-07-22 — sixth self-update run
 
 **Housekeeping:** removed 12 finished gigs (19–21 Jul) plus 1 mis-filed row — the 10 Oct Cadogan
