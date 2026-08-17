@@ -10,6 +10,8 @@
     "update:prune:apply": "node updater/update-calendar.mjs --prune-only --apply",
     "update:claude": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-claude-update.ps1",
     "update:claude:nopublish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-claude-update.ps1 -NoPublish",
+    "update:codex": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-codex-update.ps1",
+    "update:codex:nopublish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-codex-update.ps1 -NoPublish",
     "generate": "node updater/generate-site-files.mjs",
     "validate": "node updater/validate-calendar.mjs",
     "gig:generate": "node updater/generate-gigs.mjs",

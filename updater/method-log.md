@@ -288,3 +288,48 @@ Format per run:
   - Late Aug: TDMR Santa via div#events-data; Kingston Carnival/River Cultures final rechecks; John Hatcher & Friends genre (24 Sep); Banquet December via ?w=.
   - September: Watermans autumn re-poll; Dorich House (reopens 3 Sep); Stanley Picker autumn; Ex Cellar Oct-Dec jazz artists; HCP load-more XHR probe; Forecourt Market remaining Thursday dates (only 3+10 Sep listed).
   - Unexplored angles for future rotation: Christmas church-concert pages (from Nov), Squire's via a JS-capable fetch, Hampton Hill Theatre panto on-sale check, Richmond Park/Isabella Plantation family events, Wisley RHS Glow (outer edge), Kingston Uni public lectures, Morden Hall winter/Christmas programme.
+
+## 2026-08-17
+- Method: full maintenance run after a three-week gap. Refreshed all 59 known-source endpoints, ran all 68 standard search queries, re-polled the Rose/Polka/Orange Tree Spektrix feeds and the OSO/Landmark/Watermans Ticketsolve feeds, then rotated through four not-recently-used discovery angles. Net: -90 finished rows, +12 dated rows, 3 official-data corrections, 4 new known sources and 4 new queries. Recurring rows were left intact.
+- New sources/methods tried this run:
+  - PUPPET THEATRE BARGE RICHMOND: triangulated the official homepage and location page against Ticket Tailor occurrences. This found a useful recurring family venue, but also exposed a live conflict: the homepage says Richmond to 4 Oct while the location page says 27 Sep. Result: source added, run watchlisted, no guessed range row.
+  - RHS WISLEY OFFICIAL TICKET INVENTORY: bypassed generic roundups by checking the RHS booking-session page. It explicitly confirms Glow on selected dates 20 Nov 2026-3 Jan 2027 with 16:00-19:30 entry slots. Result: one high-value seasonal range row, capped at 31 Dec under the dataset convention.
+  - MAIASTRA / RIVERHOUSE BARN ORGANISER-FIRST SEARCH: the promoter's programme page provided exact dates, times, programme and free/donation terms for St Mary's Twickenham (4 Sep) and Riverhouse Barn (5 Sep). Both rows added; Maiastra added as a recurring source.
+  - SURBITON RBL YOUTH MARCHING BAND SCHEDULE: found an official local schedule outside the usual venue feeds. Surbiton Station carols on 26 Nov and 3 Dec were added verify:true because times are unpublished; the 12 Dec Christmas Concert remains watchlisted because even its Surbiton venue is unspecified.
+- What worked / notable:
+  - Watermans Ticketsolve re-poll produced four exact Calling France / Bell Square performances for 24-27 Sep, all free and directly linked: contemporary dance, participatory dance, acrobatics and accordion-led physical theatre.
+  - Morden Hall Park's official National Trust detail page resolved the vague Storytime Stomp lead into two remaining exact dates (20 and 27 Aug, 10:00-15:00, ages 0-7). The family page also yielded Quacky Races on 13 Sep.
+  - Direct official-page rechecks corrected two ongoing Southbank installation start dates and Tolworth Library's Seaside sensory session from an uncertain 09:30 to 10:30.
+  - The Malden DSME page still embeds authoritative JSON in `div#events-data`; its live `MaxDate` is 07/11/2026 and there is no Santa/Christmas string. This is a quick, reliable negative check.
+- What didn't work / cautions:
+  - Still unpublished after the complete query sweep: Kingston Carnival 2026, River Cultures 2026, TDMR Santa dates and All Saints Friday organ recitals. No pattern dates were guessed.
+  - Puppet Theatre Barge's own pages disagree about the Richmond end date. Individual Ticket Tailor dates can be used later, but a continuous run must not be published until the location is unambiguous.
+  - The RBL Christmas Concert has a date but no venue/time; held on watchlist. Station carols are dated rows but retain verify:true until times appear.
+  - Several endpoints remain hostile or thin in non-browser fetches (Kingston Libraries/HRP/Kew 403 variants, Squire's JS-only listing, Sofar Kingston empty). Search-index evidence was used only to locate official pages, never to invent dates.
+- Try next time:
+  - Late Aug/early Sep: recheck TDMR embedded JSON for Santa; make one final organiser-only check for Kingston Carnival; poll All Saints for Friday organ dates; resolve John Hatcher & Friends at Ram Jam before 24 Sep.
+  - Extract Puppet Theatre Barge's Ticket Tailor occurrences and add only individually confirmed Richmond performances if the official location-page conflict persists.
+  - Poll Watermans Ticketsolve for later autumn/Christmas indoor family theatre; crawl Wimbledon BookFest individual listings; check Dorich House and Stanley Picker after their September reopenings.
+  - Rotate to Christmas church/concert pages, Kingston lights-switch-on, HCP load-more, Richmond Park/Isabella Plantation autumn events and Squire's with a JS-capable browser rather than repeating the Wisley/Maiastra angles immediately.
+
+## 2026-08-17 (follow-up run)
+- Method: refreshed every one of the 63 sources and ran all 72 queries inherited from the earlier same-day run, then re-polled the Rose, Polka and Orange Tree Spektrix feeds plus OSO, Landmark and Watermans Ticketsolve feeds. Net calendar change: zero expired dated rows remained; 2 ended recurring series removed; 5 dated rows added; 1 existing event materially enriched; 2 known sources and 2 queries added.
+- New sources/methods tried this run:
+  - THE ELM TREE / LEMONROCK CSV: followed the venue's own live-music link to `lemonrock.com/csv.php?t=elmtreesurbiton&y=5`, a compact machine-readable future diary with exact dates, times, prices and direct gig URLs. Funk Thieves on 29 Aug met the distinctive funk/soul rule and was added; generic rock/pop covers were skipped. Added as a known recurring source.
+  - SOUTH SIDE THEATRE ACADEMY: searched the local youth-theatre organiser directly rather than relying on venue roundups. Its official production page confirmed School of Rock at ACT Theatre on 20-21 Aug, 19:00, approximately one hour, age 3+ and £12-£15. Added the two-night run and the organiser as a source.
+  - WIMBLEDON BOOKFEST FULL DETAIL CRAWL: traversed all eight programme pages and 94 official detail links, then filtered on exact age guidance and family value. Added only Mariesa Dulak (17 Oct) and Ed Vere (18 Oct), both age 3+, instead of flooding the calendar with the adult programme already represented by an umbrella row.
+  - RENAS SURBITON CALENDAR YEAR AUDIT: checked the restaurant's official event calendar and validated displayed weekdays against 2026. The apparent Aug-Dec listings were stale 2025 entries and the May entries were already past, so nothing was published and it was not added as a source.
+  - SQUIRE'S JS-BROWSER RETRY: used the browser-skill route requested by the previous log, but the unattended runtime exposed no usable browser session. Direct fetching remains unable to render the xajax event list. No dates were guessed; leave this angle for a runtime with an available browser.
+- What worked / notable:
+  - OSO's Ticketsolve feed surfaced Beyond the Streets of London on 4 Sep; its performance XML confirmed 19:30, doors 18:30, status available and exact £23/£20.70 prices.
+  - The Surbiton Partnership detail page supplied the real title and ticket range for the held Attitude Theatre placeholder: Trolls The Musical Jr, 21-22 Aug. The body confirms 19:00 Friday and 18:00 Saturday, but page metadata says 07:00; the existing sensible times were retained with `verify:true`.
+  - Fresh Spektrix and Ticketsolve comparisons found no other missing high-value shows: Polka's unmatched items were routine workshops, Rose's were mostly youth showcases, Watermans had no new later-season family programme, and Morganway/fieldlily at the Landmark was already held.
+  - Recurring cleanup caught two finite selected-date rows missed by the earlier dated-event prune: Inky Pathways ended 25 Jul and HCP Shire Horse rides ended 26 Jul.
+- What didn't work / cautions:
+  - Renas mixes years on one live page, so a future-looking month/day pair is unsafe without explicit year or a matching weekday. It should not become a recurring source unless the organiser cleans up the archive.
+  - Squire's remains structurally blocked in this headless environment; do not repeat a plain HTTP/xajax replay next run.
+  - All Saints Friday organ recitals, TDMR Santa, Kingston Carnival and River Cultures still have no safe new exact dates after the full standard sweep.
+- Try next time:
+  - Prioritise genuinely different late-August angles: Dorich House and Stanley Picker autumn pages, Hampton Hill Theatre's panto/on-sale diary, and Kingston lights-switch-on or church Christmas programmes if published.
+  - Re-poll TDMR's embedded JSON for Santa and All Saints for Friday organ dates, but avoid another full BookFest crawl unless the programme announces a change.
+  - Try Squire's only when a browser session is actually available; otherwise spend the discovery slot on a new organiser or council PDF rather than replaying the blocked endpoint.

@@ -507,7 +507,7 @@
       "url": "https://www.wimbledonbookfest.org/whats-on/",
       "checkFor": [
         "October literary festival (2026: 15-25 Oct) - author talks, comedy, family events across Wimbledon venues",
-        "per-event pages carry times/prices; split highlights into dated rows"
+        "crawl all numbered /whats-on/ pages; per-event pages carry times, prices and age guidance, but split only distinctive family/high-value highlights into dated rows"
       ]
     },
     {
@@ -551,6 +551,54 @@
       "checkFor": [
         "machine-readable season incl. shows not yet on the listing page; per-event .xml has exact date_time, opening_time and all price tiers",
         "fetch with a browser User-Agent (same trick as the OSO feed)"
+      ]
+    },
+    {
+      "name": "Puppet Theatre Barge",
+      "url": "https://www.puppetbarge.com/",
+      "checkFor": [
+        "Richmond summer mooring dates and family puppet productions",
+        "cross-check the homepage, location page and Ticket Tailor occurrences because the published Richmond end date conflicted in August 2026"
+      ]
+    },
+    {
+      "name": "RHS Garden Wisley",
+      "url": "https://www.rhs.org.uk/gardens/wisley/whats-on",
+      "checkFor": [
+        "Glow, school-holiday family trails, garden festivals and seasonal outdoor events",
+        "use the official RHS ticket-session page for exact date ranges and entry windows"
+      ]
+    },
+    {
+      "name": "Maiastra chamber concerts",
+      "url": "https://maiastra.org/maiastra-concerts",
+      "checkFor": [
+        "free donation-supported chamber concerts at Riverhouse Barn, Twickenham and other accessible Surrey venues",
+        "split selected-date programmes into individual rows"
+      ]
+    },
+    {
+      "name": "Surbiton RBL Youth Marching Band",
+      "url": "https://www.surbitonrblband.com/events",
+      "checkFor": [
+        "Surbiton Festival appearances, station carols, parades and public Christmas concerts",
+        "dates are useful early leads but keep verify true until times and venues are published"
+      ]
+    },
+    {
+      "name": "The Elm Tree Surbiton / Lemonrock feed",
+      "url": "https://www.elmtreesurbiton.co.uk/livemusic",
+      "checkFor": [
+        "direct venue-linked Lemonrock CSV at https://www.lemonrock.com/csv.php?t=elmtreesurbiton&y=5",
+        "free funk, soul, jazz and other distinctive live gigs; skip generic covers unless especially useful"
+      ]
+    },
+    {
+      "name": "South Side Theatre Academy",
+      "url": "https://www.southsidetheatre.com/",
+      "checkFor": [
+        "public end-of-course family musical performances in Surbiton and Kingston",
+        "summer and school-holiday productions with exact show dates, times and age guidance"
       ]
     }
   ],
@@ -622,6 +670,12 @@
     "Christmas at Kew 2026 dates tickets",
     "Landmark Arts Centre Teddington events diary 2026",
     "Hampton Pool summer picnic concerts 2027 lineup",
-    "Kingston Playday 2026 Dickerage August"
+    "Kingston Playday 2026 Dickerage August",
+    "Puppet Theatre Barge Richmond family shows 2026",
+    "RHS Wisley family events Glow 2026",
+    "Maiastra chamber concerts Riverhouse Barn Twickenham 2026",
+    "Surbiton RBL Band station carols Christmas concert 2026",
+    "Elm Tree Surbiton Lemonrock live music 2026",
+    "South Side Theatre Academy Surbiton public performances 2026"
   ]
 }

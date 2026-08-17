@@ -55,11 +55,28 @@ https://amplice.github.io/hardmode/events.ics
 
 Use `Google` on any dated event to open a prefilled Google Calendar add-event page. Use `+ Cal` to download a one-event `.ics` file, or `Export calendar` to download all currently filtered dated events as one `.ics` file for Outlook, Apple Calendar, Google Calendar import, or another calendar app.
 
-## Weekly AI updater
+## AI updater
 
-The `updater/` folder contains a review-first updater that uses OpenRouter with web search to check known sources, propose additions/removals, and write logs.
+The `updater/` folder contains the automated updater. The active Windows scheduled task uses Codex CLI non-interactive mode (`codex exec`) through `updater/run-codex-update.ps1`; the old Claude task is disabled because its OAuth session expired.
 
-Setup:
+Useful commands:
+
+```powershell
+npm run validate
+npm run generate
+npm run update:codex
+npm run update:codex:nopublish
+```
+
+To register or repair the active Windows scheduled task:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\updater\register-codex-task.ps1
+```
+
+The Codex task runs every 3 days by default, writes logs under `updater/logs/`, and publishes through `npm run publish` after a successful update.
+
+The older OpenRouter updater is still available for manual review-first runs:
 
 1. Copy `updater/.env.example` to `updater/.env.local`.
 2. Put your `OPENROUTER_API_KEY` in `updater/.env.local`.
@@ -76,11 +93,3 @@ npm run update:apply
 npm run update:prune
 npm run update:prune:apply
 ```
-
-To register the weekly Windows scheduled task in auto-apply mode:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\updater\register-weekly-task.ps1
-```
-
-The task writes run logs and proposals under `updater/logs/`, creates backups under `updater/backups/`, and updates `index.html` automatically.
