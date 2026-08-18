@@ -26,6 +26,8 @@
       padding:8px 12px;border-radius:8px;text-decoration:none;font-size:14px;cursor:pointer}
     .btn:hover{background:rgba(255,255,255,.2)}
     .btn.solid{background:#fff;color:var(--accent);border-color:#fff;font-weight:600}
+    .btn.small{padding:5px 9px;font-size:12.5px;border-color:var(--line);background:#fff;color:var(--accent)}
+    .btn.small:hover{background:#f7eadc}
     .toolbar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 0}
     .toolbar .shell{display:flex;flex-direction:column;gap:10px}
     .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
@@ -54,6 +56,7 @@
     .card .note{font-size:14px;margin-top:5px}
     .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
     .tag{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--chip);color:#5a3a1f;border:1px solid var(--line)}
+    .card-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
     .badge{font-size:11px;padding:2px 7px;border-radius:6px;color:#fff;white-space:nowrap}
     .b-verify{background:var(--verify)} .b-free{background:var(--local)} .b-fest{background:var(--accent)}
     .prox{font-size:11px;font-weight:700}
@@ -64,6 +67,10 @@
     .watch p.lead{color:var(--muted);font-size:14px;margin:0 0 12px}
     .watch li{margin:6px 0}
     footer{color:var(--muted);font-size:13px;padding:24px 0 40px;border-top:1px solid var(--line);margin-top:30px}
+    .toast{position:fixed;left:50%;bottom:18px;z-index:20;transform:translate(-50%,16px);
+      background:#241a15;color:#fff7ef;border-radius:999px;padding:8px 13px;font-size:13px;
+      opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
     @media (max-width:560px){ h1{font-size:24px} .card{flex-direction:row} .card .when{min-width:52px} }
   </style>
 </head>
@@ -77,6 +84,7 @@
       </div>
       <div class="actions">
         <a class="btn solid" id="subscribe" href="gigs.ics">Subscribe (ICS)</a>
+        <button class="btn" id="exportBtn" type="button">Export filtered</button>
         <a class="btn" href="index.html">Main calendar →</a>
         <button class="btn" id="printBtn" type="button">Print</button>
       </div>
@@ -122,6 +130,8 @@
     </footer>
   </main>
 
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
   <script src="gig-data.js"></script>
   <script>
   (function(){
@@ -152,11 +162,95 @@
     el('range').onchange=function(e){state.range=e.target.value;render();};
     el('prox').onchange=function(e){state.prox=e.target.value;render();};
     el('printBtn').onclick=function(){window.print();};
+    el('exportBtn').onclick=function(){downloadIcs(gigs.filter(matches), 'gig-radar-filtered-'+today+'.ics');};
 
     function addDays(d,n){var p=d.split('-').map(Number);var dt=new Date(Date.UTC(p[0],p[1]-1,p[2]));dt.setUTCDate(dt.getUTCDate()+n);return dt.toISOString().slice(0,10);}
+    function compactDate(iso){return String(iso||'').replace(/-/g,'');}
+    function pad2(n){return String(n).padStart(2,'0');}
+    function parseClock(value){
+      var match=String(value||'').match(/\b(\d{1,2})[:.](\d{2})\b/);
+      if(!match) return null;
+      var h=Math.min(Number(match[1]),23), m=Math.min(Number(match[2]),59);
+      return pad2(h)+':'+pad2(m);
+    }
+    function clockStamp(iso,clock){return compactDate(iso)+'T'+clock.replace(':','')+'00';}
+    function addMinutes(iso,clock,minutes){
+      var p=iso.split('-').map(Number), t=clock.split(':').map(Number);
+      var dt=new Date(p[0],p[1]-1,p[2],t[0],t[1]+minutes,0,0);
+      return {date:dt.getFullYear()+'-'+pad2(dt.getMonth()+1)+'-'+pad2(dt.getDate()), clock:pad2(dt.getHours())+':'+pad2(dt.getMinutes())};
+    }
+    function timeRange(g){
+      var start=parseClock(g.time);
+      if(!start) return {allDay:true};
+      var fallback=addMinutes(g.date,start,120);
+      return {allDay:false,start:start,end:fallback.clock,endDate:fallback.date};
+    }
 
     function proxClass(t){return t==='Local (SW London)'?'local':t==='Central London'?'central':'daytrip';}
     function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+    function icsEscape(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/\r\n/g,'\n').replace(/\r/g,'\n').replace(/\n/g,'\\n').replace(/;/g,'\\;').replace(/,/g,'\\,');}
+    function safeFilename(value){return String(value||'gig').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70)||'gig';}
+    function eventTitle(g){return (g.artist&&g.title&&g.title!==g.artist)?g.artist+' - '+g.title:(g.artist||g.title||'Gig');}
+    function eventDetails(g){
+      return [
+        (g.genres||[]).length?'Genres: '+(g.genres||[]).join(' / '):'',
+        g.cost?'Cost: '+g.cost:'',
+        g.confidence?'Confidence: '+g.confidence:'',
+        g.note||'',
+        g.url?'Source: '+g.url:''
+      ].filter(Boolean).join('\n');
+    }
+    function gigToIcs(g,stamp){
+      var lines=['BEGIN:VEVENT','UID:'+icsEscape((g.id||g.date+'-'+eventTitle(g)))+'@local-events-gig-radar','DTSTAMP:'+stamp,'SUMMARY:'+icsEscape(eventTitle(g))];
+      var range=timeRange(g);
+      if(range.allDay){
+        lines.push('DTSTART;VALUE=DATE:'+compactDate(g.date));
+        lines.push('DTEND;VALUE=DATE:'+compactDate(addDays(g.endDate||g.date,1)));
+      }else{
+        lines.push('DTSTART;TZID=Europe/London:'+clockStamp(g.date,range.start));
+        lines.push('DTEND;TZID=Europe/London:'+clockStamp(range.endDate,range.end));
+      }
+      if(g.venue||g.area) lines.push('LOCATION:'+icsEscape([g.venue,g.area].filter(Boolean).join(', ')));
+      var desc=eventDetails(g);
+      if(desc) lines.push('DESCRIPTION:'+icsEscape(desc));
+      if(g.url) lines.push('URL:'+icsEscape(g.url));
+      lines.push('END:VEVENT');
+      return lines.join('\r\n');
+    }
+    function downloadIcs(rows,filename){
+      rows=rows.filter(function(g){return g&&g.date;});
+      if(!rows.length){toast('No gigs to export');return;}
+      var stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
+      var body=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//local-events//gig-radar//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Gig Radar'].concat(rows.map(function(g){return gigToIcs(g,stamp);})).concat(['END:VCALENDAR']).join('\r\n');
+      var blob=new Blob([body],{type:'text/calendar;charset=utf-8'});
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement('a');
+      a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      toast(rows.length===1?'Calendar file downloaded':rows.length+' gigs exported');
+    }
+    function googleDateRange(g){
+      var range=timeRange(g);
+      if(range.allDay) return compactDate(g.date)+'/'+compactDate(addDays(g.endDate||g.date,1));
+      return clockStamp(g.date,range.start)+'/'+clockStamp(range.endDate,range.end);
+    }
+    function googleCalendarUrl(g){
+      var params=new URLSearchParams({
+        action:'TEMPLATE',
+        text:eventTitle(g),
+        dates:googleDateRange(g),
+        ctz:'Europe/London',
+        details:eventDetails(g),
+        location:[g.venue,g.area].filter(Boolean).join(', ')
+      });
+      return 'https://calendar.google.com/calendar/render?'+params.toString();
+    }
+    function toast(message){
+      var t=el('toast');
+      t.textContent=message;
+      t.classList.add('show');
+      window.setTimeout(function(){t.classList.remove('show');},1800);
+    }
 
     function matches(g){
       var end=g.endDate||g.date;
@@ -214,9 +308,20 @@
           '<div class="meta">'+costArea+(right?' · '+right:'')+'</div>'+
           (g.note?'<div class="note">'+esc(g.note)+'</div>':'')+
           '<div class="tags">'+tags+'</div>'+
+          '<div class="card-actions">'+
+            '<a class="btn small" href="'+esc(googleCalendarUrl(g))+'" target="_blank" rel="noopener">Google Calendar</a>'+
+            '<button class="btn small" type="button" data-ics="'+esc(g.id)+'">Download .ics</button>'+
+          '</div>'+
         '</div>';
       return c;
     }
+
+    document.addEventListener('click',function(e){
+      var button=e.target.closest('[data-ics]');
+      if(!button) return;
+      var gig=gigs.find(function(g){return g.id===button.getAttribute('data-ics');});
+      if(gig) downloadIcs([gig], (gig.date||'gig')+'-'+safeFilename(eventTitle(gig))+'.ics');
+    });
 
     render();
   })();
