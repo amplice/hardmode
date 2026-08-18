@@ -2,9 +2,9 @@ param(
   [switch]$NoPublish
 )
 
-# Drives an unattended gig-radar update by running Claude Code headless against the
-# instructions in gig-update-prompt.md, then (unless -NoPublish) publishes the result.
-# Mirrors run-claude-update.ps1 but for the gig radar. Registered as its own scheduled task.
+# Drives an unattended gig-radar update by running Codex CLI non-interactively against
+# the instructions in gig-update-prompt.md, then (unless -NoPublish) publishes the result.
+# Registered as the gig radar scheduled task.
 
 $ErrorActionPreference = "Stop"
 $RepoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
@@ -21,16 +21,16 @@ if (!(Test-Path $PromptFile)) {
   throw "Could not find prompt file: $PromptFile"
 }
 
-$ClaudeCmd = Get-Command claude -ErrorAction SilentlyContinue
-if ($null -eq $ClaudeCmd) {
-  throw "The 'claude' CLI was not found on PATH. Install Claude Code or fix PATH for the scheduled task."
+$CodexCmd = Get-Command codex -ErrorAction SilentlyContinue
+if ($null -eq $CodexCmd) {
+  throw "The 'codex' CLI was not found on PATH. Install Codex CLI or fix PATH for the scheduled task."
 }
-$ClaudeExe = $ClaudeCmd.Source
+$CodexExe = $CodexCmd.Source
 
 "=== Gig-radar update $Stamp ===" | Out-File -FilePath $RunLog -Encoding utf8
 "Repo: $RepoRoot" | Out-File -FilePath $RunLog -Append -Encoding utf8
-"Claude: $ClaudeExe" | Out-File -FilePath $RunLog -Append -Encoding utf8
-"--- claude ---" | Out-File -FilePath $RunLog -Append -Encoding utf8
+"Codex: $CodexExe" | Out-File -FilePath $RunLog -Append -Encoding utf8
+"--- codex ---" | Out-File -FilePath $RunLog -Append -Encoding utf8
 
 $PromptText = Get-Content -Raw -Path $PromptFile
 
@@ -40,18 +40,20 @@ $PromptText = Get-Content -Raw -Path $PromptFile
 $BasePreference = $ErrorActionPreference
 $ErrorActionPreference = "Continue"
 try {
-  $PromptText | & $ClaudeExe -p `
-    --dangerously-skip-permissions `
-    --add-dir $RepoRoot `
-    --output-format text 2>&1 | Tee-Object -FilePath $RunLog -Append
-  $ClaudeExit = $LASTEXITCODE
+  $PromptText | & $CodexExe exec `
+    --cd $RepoRoot `
+    --skip-git-repo-check `
+    --dangerously-bypass-approvals-and-sandbox `
+    --color never `
+    - 2>&1 | Tee-Object -FilePath $RunLog -Append
+  $CodexExit = $LASTEXITCODE
 } finally {
   $ErrorActionPreference = $BasePreference
 }
 
-if ($ClaudeExit -ne 0) {
-  "Claude exited with code $ClaudeExit; not publishing." | Tee-Object -FilePath $RunLog -Append
-  exit $ClaudeExit
+if ($CodexExit -ne 0) {
+  "Codex exited with code $CodexExit; not publishing." | Tee-Object -FilePath $RunLog -Append
+  exit $CodexExit
 }
 
 if ($NoPublish) {

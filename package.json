@@ -18,6 +18,8 @@
     "gig:validate": "node updater/validate-gigs.mjs",
     "gig:update": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-gig-update.ps1",
     "gig:update:nopublish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-gig-update.ps1 -NoPublish",
+    "gig:update:codex": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-gig-update.ps1",
+    "gig:update:codex:nopublish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-gig-update.ps1 -NoPublish",
     "publish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/publish-site.ps1"
   }
 }

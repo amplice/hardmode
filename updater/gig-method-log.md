@@ -5,6 +5,65 @@ what to try differently next time. Newest entries at the top.
 
 ---
 
+## 2026-08-18 — eighth self-update run
+
+**Housekeeping:** removed 106 finished gigs (through 17 Aug). Added 46 gigs (31 confirmed,
+15 verify) → 224 total; watchlist 64 → 62 after promoting/removing the resolved TJ Johnson and
+Gabriel's Wharf leads. Corrected the area on all 14 retained Oriole rows from its old Smithfield
+location to the current Covent Garden site. Metadata moved to 2026-08-18.
+
+**Methods tried (standard refresh plus three rotated discovery angles):**
+- *Rolling primary venue feeds (24 adds)*: Nightjar's Squarespace JSON now runs densely through
+  27 Sep, yielding 15 genuinely vintage/NO/swing dates; borderline boogie, jump-R&B and NOLA-
+  funk rows remain `verify`. Oriole yielded Dom Pipkin 1 Sep and Alex Bryson 2 Sep, then stays
+  mostly Latin/global through its current horizon. Jamboree pagination now reaches 11 pages:
+  added the 19 Aug TJ Johnson return, next Cable Street instance, Harry Evans lunch, Prospective
+  Collective, Windy City Weatherbirds, Harvard Squares Halloween dance and Natty Congeroo.
+  Cable Street is posted weekly through 7 Jan 2027, but only its next instance was added to avoid
+  flooding the radar.
+- *NEW REGIONAL TRAD-CLUB ANGLE (7 adds)*: Runnymede Jazz Club's own Addlestone programme is a
+  strong recurring source and publishes named monthly traditional-jazz bands through Mar 2027.
+  All seven future dates are reachable from Surbiton in roughly 45–55 minutes and carry explicit
+  travel/booking notes. Added the club to `keyVenues` and a dedicated search query.
+- *NEW PRIMARY ARTIST-DIARY ANGLE (9 adds)*: Doolally Tap's official diary exposed seven exact
+  dates (Sidcup, Gabriel's Wharf and monthly Ivy House Sundays) that aggregators missed. Green
+  Note's primary page supplied Joe Mansfield & the Temperance Two (old-time, 18 Sep, £14), and
+  Dom Glynn's EPK plus the Hootananny/Songkick listing confirmed the 10 Sep classic-country/
+  honky-tonk album show. Added Doolally's diary as a recurring source.
+- *NEW LOCAL DANCE-CALENDAR CROSS-CHECK (2 resolved leads, 1 add)*: SwingdanceUK named Doolally
+  Tap and exact set times for the free Gabriel's Wharf festival, resolving its watchlist entry.
+  Swing Patrol's current calendar confirms the 17 Oct Performance Ball has live music from
+  21:30 (band still TBA), so it joins the already-held TBA Christmas live-band dance with an
+  explicit artist label rather than an invented name.
+- *Ticketing/standard-query sweep (5 adds)*: a fresh Toulouse Lautrec DICE venue query found two
+  separate John 'Papa' Gros shows (verify: NOLA lineage but funk/soul-leaning), two Robin Nolan
+  Trio manouche shows and the 14 Nov Fidelio Hot Club matinee. The standard genre/search-query
+  sweep otherwise mostly returned stale pages, modern jazz, chart/cosmic country, crooner shows
+  or bluegrass-mixed festivals; those were excluded.
+
+**Refreshed but dark / deliberately excluded:**
+- Fighting Cocks through Oct remains rock/punk/indie/metal/open-mic only: zero roots/trad rows.
+  Jazz Guide's Epsom, Old Barn, Pump House, Amersham and Spice diaries have not extended beyond
+  the dates already held; Riverhead still publishes no new date. Plaquemine is unchanged and
+  still ends 23 Aug even when fetched through the required trailing-slash redirect.
+- EFG London Jazz Festival has not yet released the next wave (due 19 Aug); no new trad/manouche
+  strand beyond held rows. Fidelio's own diary still has no post-10-Aug residency date. The 100
+  Club, Bull's Head, Cecil Sharp House/EFDSS, What's Cookin', Vortex and Ronnie Scott's checks
+  produced no clean new target-genre booking this run.
+- Excluded on genre: King Harvest (bluegrass/newgrass-led), Garrett T. Capps (cosmic/modern
+  country-rock), Shane Hampsheir/crooner nights, modern EFG bookings, Latin/global Oriole nights,
+  and every current Fighting Cocks booking.
+
+**Next time:**
+- Hit EFG wave 4 after 19 Aug and Soho Jazz Festival after its late-Aug line-up reveal; cherry-
+  pick only trad/hot/manouche strands.
+- Re-scrape Nightjar beyond 27 Sep, Oriole after 7 Oct, Plaquemine beyond 23 Aug, and the Jazz
+  Guide clubs for Oct/Nov roll-forwards. Recheck What's Cookin' autumn TBC slots.
+- Resolve the band names for Swing Patrol's 17 Oct Performance Ball and 19 Dec Christmas Party;
+  check Runnymede's booking line for public admission prices without guessing them.
+
+---
+
 ## 2026-07-25 — seventh self-update run
 
 **Housekeeping:** removed 15 finished gigs (22–24 Jul). Added 32 gigs (7 confirmed, 25 verify)
