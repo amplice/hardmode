@@ -333,3 +333,16 @@ Format per run:
   - Prioritise genuinely different late-August angles: Dorich House and Stanley Picker autumn pages, Hampton Hill Theatre's panto/on-sale diary, and Kingston lights-switch-on or church Christmas programmes if published.
   - Re-poll TDMR's embedded JSON for Santa and All Saints for Friday organ dates, but avoid another full BookFest crawl unless the programme announces a change.
   - Try Squire's only when a browser session is actually available; otherwise spend the discovery slot on a new organiser or council PDF rather than replaying the blocked endpoint.
+
+## 2026-08-20
+- New sources/methods tried:
+  - Ram Jam Records month feed (`events?month=September-2026&format=json`) and per-event feed endpoints (`?format=json`) for exact datetimes.
+  - Hampton Hill Theatre listing + event pages (for standard weekend family run checks).
+  - Surbiton Partnership `/events/category/music-and-live-performance/list/` detail sweep (cross-checking against dated rows).
+- What worked:
+  - Ram Jam feed is still the most productive new source this cycle: 4 deduplicated, high-value September rows added with explicit datetimes and URLs (Bad Girls Groove, The Flaming Alligators, The Whole Family, Groove Rats).
+  - Two existing Ram Jam rows were corrected from stale details (`Music For Minds: Fundraiser` and `John Hatcher & Friends`) using canonical detail pages.
+  - Ongoing cleanup kept to six hard-expired rows only, with no active multi-day carryovers removed.
+- What to try next:
+  - In the next run, try extending the same Ram Jam month-at-a-time pattern to October/November and then compare with existing rows to catch silent schedule churn.
+  - Re-check Hampton Hill + Surbiton Partnership for any late-Sept/early-Oct family events and school-holiday announcements.

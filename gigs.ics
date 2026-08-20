@@ -6,71 +6,8 @@ METHOD:PUBLISH
 X-WR-CALNAME:Gig Radar
 X-WR-TIMEZONE:Europe/London
 BEGIN:VEVENT
-UID:g20260818-dompipkin@local-events-gig-radar
-DTSTAMP:20260818T000000Z
-DTSTART:20260818T200000
-SUMMARY:Dom Pipkin — Dom Pipkin — Live Piano
-LOCATION:Oriole Bar\, Covent Garden\, London
-DESCRIPTION:Genres: New Orleans / trad jazz\nCost: £4 cover\nTuesday cover night.\nhttps://www.oriolebar.com/oriole-music
-URL:https://www.oriolebar.com/oriole-music
-END:VEVENT
-BEGIN:VEVENT
-UID:g20260818-mazza@local-events-gig-radar
-DTSTAMP:20260818T000000Z
-DTSTART:20260818T210000
-SUMMARY:MAZZA — MAZZA (solo)
-LOCATION:Nightjar\, Shoreditch\, London
-DESCRIPTION:Genres: New Orleans / trad jazz\nSecond date (see 21 Jul) — New Orleans R&B repertoire (Fats Domino / Smiley Lewis / Dr John)\, blues-leaning delivery.\nhttps://www.barnightjar.com/shoreditch-listings
-URL:https://www.barnightjar.com/shoreditch-listings
-END:VEVENT
-BEGIN:VEVENT
-UID:g20260819-tjjohnson@local-events-gig-radar
-DTSTAMP:20260818T000000Z
-DTSTART:20260819T150000
-SUMMARY:TJ Johnson — TJ Johnson's Peak of the Week
-LOCATION:Jamboree\, King's Cross\, London
-DESCRIPTION:Genres: swing\nCost: Free/donations\nFree 15:00-17:00 classic-jazz\, blues\, gospel and country afternoon\; the first August date now posted.\nhttps://www.jamboreevenue.co.uk/events/afternoon-show-tj-johnsons-peak-of-the-week-126/
-URL:https://www.jamboreevenue.co.uk/events/afternoon-show-tj-johnsons-peak-of-the-week-126/
-END:VEVENT
-BEGIN:VEVENT
-UID:g20260819-dylanearl@local-events-gig-radar
-DTSTAMP:20260818T000000Z
-DTSTART:20260819T200000
-SUMMARY:Dylan Earl Band + Dom Glynn & His Sunday Best — The Dylan Earl Band + Dom Glynn & His Sunday Best (honky-tonk dance night)
-LOCATION:Jamboree\, King's Cross\, London
-DESCRIPTION:Genres: old-school country · honky tonk\nCost: £17–£18 adv\nCountry-and-western night with honky-tonk dance lessons from Gimme Two Steps\; Dylan Earl is a throwback Arkansas honky-tonk artist — strongly on-brief.\nhttps://www.jamboreevenue.co.uk/upcoming-events/
-URL:https://www.jamboreevenue.co.uk/upcoming-events/
-END:VEVENT
-BEGIN:VEVENT
-UID:g20260819-amersham@local-events-gig-radar
-DTSTAMP:20260818T000000Z
-DTSTART:20260819T200000
-SUMMARY:New Orleans Wanderers — New Orleans Wanderers
-LOCATION:Amersham Jazz Club (Wycombe Marsh RBL)\, High Wycombe\, Bucks
-DESCRIPTION:Genres: New Orleans / trad jazz\nCost: £14\nWednesday trad club — day-trip.\nhttps://www.thejazzguide.co.uk/venues/listing/amersham-jazz-club-wycombe-marsh-rbl
-URL:https://www.thejazzguide.co.uk/venues/listing/amersham-jazz-club-wycombe-marsh-rbl
-END:VEVENT
-BEGIN:VEVENT
-UID:g20260819-mojo@local-events-gig-radar
-DTSTAMP:20260818T000000Z
-DTSTART:20260819T200000
-SUMMARY:Mojo Wellington — Mojo Wellington
-LOCATION:Oriole Bar\, Covent Garden\, London
-DESCRIPTION:Genres: New Orleans / trad jazz\nCost: £6 cover\nBlues/jazz pianist — borderline (also Nightjar 4 Aug).\nhttps://www.oriolebar.com/oriole-music
-URL:https://www.oriolebar.com/oriole-music
-END:VEVENT
-BEGIN:VEVENT
-UID:g20260819-robpicazo@local-events-gig-radar
-DTSTAMP:20260818T000000Z
-DTSTART:20260819T210000
-SUMMARY:Rob Picazo — Rob Picazo
-LOCATION:Nightjar\, Shoreditch\, London
-DESCRIPTION:Genres: swing\nCost: £6 cover\nR&B guitar night — vintage-R&B-leaning at a hot-jazz bar\; previously-dark date now filled.\nhttps://www.barnightjar.com/shoreditch-listings
-URL:https://www.barnightjar.com/shoreditch-listings
-END:VEVENT
-BEGIN:VEVENT
 UID:g20260820-doolally@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260820T193000
 SUMMARY:Doolally Tap — Doolally Tap at Sidcup Jazz Club
 LOCATION:Footscray Social Club\, Sidcup\, Kent
@@ -79,7 +16,7 @@ URL:https://doolallytap.net/upcoming-gigs
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260820-pumphouse@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260820T200000
 SUMMARY:Alan Gresty's Ragtimers — Alan Gresty's Ragtimers
 LOCATION:Pump House Jazz Club\, Watford\, Herts
@@ -88,7 +25,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/the-pump-house
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260820-cablestreet@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260820T203000
 SUMMARY:Ewan Bleach's Cable Street Rag Band — Limehouse de Reverie with the Cable Street Rag Band
 LOCATION:Jamboree\, King's Cross\, London
@@ -97,7 +34,7 @@ URL:https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-4
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260820-crandon@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260820T210000
 SUMMARY:Georgia Crandon — Georgia Crandon Trio (+ free MAZZA late set)
 LOCATION:Nightjar\, Shoreditch\, London
@@ -106,7 +43,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260821-plaqduo@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260821T203000
 SUMMARY:Dai Price & Al 'Dente' Dunn — Dai Price & Al 'Dente' Dunn — New Orleans Piano
 LOCATION:Plaquemine Lock\, Islington (Angel)\, London
@@ -115,7 +52,7 @@ URL:https://plaqlock.com/live-music-islington
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260821-missjones@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260821T210000
 SUMMARY:Miss Jones Band — Miss Jones Band - High-Energy Vintage Swing
 LOCATION:Nightjar\, Shoreditch\, London
@@ -124,7 +61,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/miss-jones-quartet
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260821-thumpingtommys@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260821
 DTEND;VALUE=DATE:20260822
 SUMMARY:The Thumping Tommys — The Thumping Tommys
@@ -134,7 +71,7 @@ URL:https://www.greennote.co.uk/events-page/bluegrass/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260822-bleachbrunch@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260822T123000
 SUMMARY:Ewan Bleach — Saturday Brunch — Ewan Bleach (provisional)
 LOCATION:Plaquemine Lock\, Islington (Angel)\, London
@@ -143,7 +80,7 @@ URL:https://plaqlock.com/live-music-islington
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260822-lovedaywatkins@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260822T203000
 SUMMARY:Bob Loveday & Geraint Watkins — Bob Loveday & Geraint Watkins
 LOCATION:Plaquemine Lock\, Islington (Angel)\, London
@@ -152,7 +89,7 @@ URL:https://plaqlock.com/live-music-islington
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260822-chadstrenz@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260822T210000
 SUMMARY:Chad Strenz & His Band — Chad Strenz & His Band
 LOCATION:Nightjar\, Shoreditch\, London
@@ -161,7 +98,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260822-timpenn@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260822
 DTEND;VALUE=DATE:20260823
 SUMMARY:Tim Penn & The Second Line — Tim Penn & The Second Line
@@ -171,7 +108,7 @@ URL:https://greennote.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260823-aldunn@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260823T123000
 SUMMARY:Al Dunn — Sunday Brunch — Al 'Dente' Dunn
 LOCATION:Plaquemine Lock\, Islington (Angel)\, London
@@ -180,7 +117,7 @@ URL:https://plaqlock.com/live-music-islington
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260823-harryevans@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260823T123000
 SUMMARY:Harry Evans and His Flying Squirrels — A Lunch Gig with Harry Evans and His Flying Squirrels
 LOCATION:Jamboree\, King's Cross\, London
@@ -189,7 +126,7 @@ URL:https://www.jamboreevenue.co.uk/events/live-daytime-jazz-in-london-2/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260823-oldbarnhall@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260823T130000
 SUMMARY:Kevin Scott's O.B.H. Ragtime Jazz Band — Kevin Scott's O.B.H. Ragtime Jazz Band
 LOCATION:Old Barn Hall\, Great Bookham\, Surrey
@@ -198,7 +135,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/old-barn-hall
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260823-swingdance@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260823T140000
 SUMMARY:South London Jazz Orchestra — Swing Dance Sundays — South London Jazz Orchestra
 LOCATION:Regent's Park bandstand (SwingdanceUK)\, Regent's Park\, London
@@ -207,7 +144,7 @@ URL:https://swingdanceuk.com/socials/special-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260823-prospective@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260823T150000
 SUMMARY:The Prospective Collective — Swing with The Prospective Collective
 LOCATION:Jamboree\, King's Cross\, London
@@ -216,7 +153,7 @@ URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-74/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260823-oldtimejam@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260823T183000
 SUMMARY:Open old-time session — Old Time Slow Jam
 LOCATION:The Cock Tavern\, Somers Town (Euston)\, London
@@ -225,7 +162,7 @@ URL:https://foaotmad.weebly.com/session-list.html
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260823-pfeffer@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260823T210000
 SUMMARY:Roy Pfeffer Duo — Roy Pfeffer Duo — Jazz and Blues
 LOCATION:Nightjar\, Shoreditch\, London
@@ -234,7 +171,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260824-nickdawson@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260824T123000
 SUMMARY:Nick Dawson Quartet — The Nick Dawson Quartet (lunchtime session)
 LOCATION:The Spice of Life\, Soho\, London
@@ -243,7 +180,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/spice-of-life-jazz-club-soho-l
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260824-petercole@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260824T210000
 SUMMARY:Peter Cole — Peter Cole
 LOCATION:Nightjar\, Shoreditch\, London
@@ -252,7 +189,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260824-marthaspencer@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260824
 DTEND;VALUE=DATE:20260825
 SUMMARY:Martha Spencer Trio — Martha Spencer Trio
@@ -262,7 +199,7 @@ URL:https://www.greennote.co.uk/events-page/bluegrass/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260825-aldunn@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260825T200000
 SUMMARY:Al Dunn — Al 'Dente' Dunn — New Orleans Piano
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -271,7 +208,7 @@ URL:https://www.oriolebar.com/oriole-music
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260825-dompipkin@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260825T210000
 SUMMARY:Dom Pipkin — Dom Pipkin — Outstanding Live New Orleans Piano
 LOCATION:Nightjar\, Shoreditch\, London
@@ -280,7 +217,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260826-goldeneagle@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260826T200000
 SUMMARY:Golden Eagle Jazz Band — Golden Eagle Jazz Band
 LOCATION:Amersham Jazz Club (Wycombe Marsh RBL)\, High Wycombe\, Bucks
@@ -289,7 +226,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/amersham-jazz-club-wycombe-mar
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260826-benmartyn@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260826T200000
 SUMMARY:Ben 'Blue' Martyn — Ben Martyn — Live Blues Piano
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -298,7 +235,7 @@ URL:https://www.oriolebar.com/oriole-music/ben-martyn
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260826-bandini@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260826T210000
 SUMMARY:Bandini — Bandini — Dynamic Blues and Jazz Piano
 LOCATION:Nightjar\, Shoreditch\, London
@@ -307,7 +244,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/bandini-blues-piano-7t8h3
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260826-dustbowl@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260826
 DTEND;VALUE=DATE:20260827
 SUMMARY:Dustbowl Revival — Dustbowl Revival
@@ -317,7 +254,7 @@ URL:https://www.greennote.co.uk/events-page/bluegrass/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260827-ikos@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260827T193000
 SUMMARY:Dom Pipkin and The Ikos — Dom Pipkin and The Ikos
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -326,7 +263,7 @@ URL:https://dice.fm/event/q2qn2o-dom-pipkin-and-the-ikos-27th-aug-toulouse-lautr
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260827-pumphouse@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260827T200000
 SUMMARY:Al Nicholls & Mike Henry Band — Al Nicholls & Mike Henry Band
 LOCATION:Pump House Jazz Club\, Watford\, Herts
@@ -335,7 +272,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/the-pump-house
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260827-jiveaces@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260827T200000
 SUMMARY:The Jive Aces — The Jive Aces at The Great Vegan Gathering
 LOCATION:Gilwell Park\, Chingford\, NE London
@@ -344,7 +281,7 @@ URL:https://jiveaces.org/tour
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260827-lapazoos@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260827T210000
 SUMMARY:The Lapazoos — The Lapazoos (+ Al Bandini late set)
 LOCATION:Nightjar\, Shoreditch\, London
@@ -353,7 +290,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260827-bobbydove@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260827
 DTEND;VALUE=DATE:20260828
 SUMMARY:Bobby Dove — Bobby Dove
@@ -363,7 +300,7 @@ URL:https://www.greennote.co.uk/production/bobby-dove/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260828-raygelato@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260828T200000
 SUMMARY:Ray Gelato & The Giants — Ray Gelato and the Giants
 LOCATION:Soul Mama Islington\, Islington\, London
@@ -372,7 +309,7 @@ URL:https://halibuts.com/events/eventdetail/150691-336668-ray_gelato_and_the_gia
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260828-cosimo@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260828T210000
 SUMMARY:The Cosimo Matassa Project — The Cosimo Matassa Project — Rhythm\, Blues and New Orleans
 LOCATION:Nightjar\, Shoreditch\, London
@@ -381,7 +318,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260828-ronshonkytonk@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260828
 DTEND;VALUE=DATE:20260829
 SUMMARY:3 live country acts (TBA) — Ron's Honky Tonk x Fabal Beerhall
@@ -391,7 +328,7 @@ URL:https://www.ronshonkytonk.com/event-list
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260828-twinwood@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260828
 DTEND;VALUE=DATE:20260901
 SUMMARY:Jive Aces\, Si Cranstoun\, Down for the Count Soul Collective + many more — Twinwood Festival 2026
@@ -401,7 +338,7 @@ URL:https://twinwoodevents.com/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260829-messenger@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260829T200000
 SUMMARY:Louise Messenger Trio — Louise Messenger Trio
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -410,7 +347,7 @@ URL:https://www.oriolebar.com/oriole-music
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260830-oldbarnhall@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260830T130000
 SUMMARY:Tony Scriven Sunshine Band — Tony Scriven Sunshine Band
 LOCATION:Old Barn Hall\, Great Bookham\, Surrey
@@ -419,7 +356,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/old-barn-hall
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260830-swingdance@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260830T140000
 SUMMARY:Sid Bolan Big Band — Swing Dance Sundays — Sid Bolan Big Band
 LOCATION:Regent's Park bandstand (SwingdanceUK)\, Regent's Park\, London
@@ -428,7 +365,7 @@ URL:https://swingdanceuk.com/socials/special-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260830-dompipkin@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260830T210000
 SUMMARY:Dom Pipkin & Bubu — Dom Pipkin & Bubu
 LOCATION:Nightjar\, Shoreditch\, London
@@ -437,7 +374,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260831-geoffmason@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260831T123000
 SUMMARY:Geoff Mason Quintet — Geoff Mason Quintet (lunchtime session)
 LOCATION:The Spice of Life\, Soho\, London
@@ -446,7 +383,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/spice-of-life-jazz-club-soho-l
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260831-benmartyn@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260831T210000
 SUMMARY:Ben 'Blue' Martyn — Ben Martyn — Soul of the Southern States
 LOCATION:Nightjar\, Shoreditch\, London
@@ -455,7 +392,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/ben-martyn-solo-piano-7syst
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260901-nojam@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260901T193000
 SUMMARY:House band + jammers — New Orleans Jam Session
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -464,7 +401,7 @@ URL:https://toulouselautrec.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260901-dompipkin-oriole@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260901T200000
 SUMMARY:Dom Pipkin — Dom Pipkin - New Orleans-style piano
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -473,7 +410,7 @@ URL:https://www.oriolebar.com/oriole-music/dom-pipkin-solo-piano
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260901-degraaf@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260901T210000
 SUMMARY:Charlotte de Graaf & The Artie Zaitz Trio — Charlotte de Graaf & The Artie Zaitz Trio — Legendary Voices of Jazz
 LOCATION:Boisdale of Belgravia\, Belgravia\, London
@@ -482,7 +419,7 @@ URL:https://boisdaletickets.co.uk/p/12864
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260901-petercole@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260901T210000
 SUMMARY:Peter Cole — Peter Cole
 LOCATION:Nightjar\, Shoreditch\, London
@@ -491,7 +428,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260902-moroccobound@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260902T190000
 SUMMARY:House manouche group — Jazz Manouche at Morocco Bound
 LOCATION:Morocco Bound\, Wandsworth\, SW London
@@ -500,7 +437,7 @@ URL:https://dice.fm/event/2w6v9o-jazz-manouche-at-morocco-bound-2nd-sep-morocco-
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260902-colossal@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260902T200000
 SUMMARY:Colossal Jazz Band — Colossal Jazz Band
 LOCATION:Amersham Jazz Club (Wycombe Marsh RBL)\, High Wycombe\, Bucks
@@ -509,7 +446,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/amersham-jazz-club-wycombe-mar
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260902-alexbryson@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260902T200000
 SUMMARY:Alex Bryson — Alex Bryson Solo - Live Jazz Piano
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -518,7 +455,7 @@ URL:https://www.oriolebar.com/oriole-music/alex-bryson-solo
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260902-ranzoni@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260902T210000
 SUMMARY:Eric Ranzoni — Eric Ranzoni
 LOCATION:Nightjar\, Shoreditch\, London
@@ -527,7 +464,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260903-mackenzie@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260903T182000
 SUMMARY:Iain Mackenzie & Ross Stanley — Iain Mackenzie & Ross Stanley — Two For The Road
 LOCATION:Ronnie Scott's\, Soho\, London
@@ -536,7 +473,7 @@ URL:https://www.ronniescotts.co.uk/find-a-show/iain-mackenzie
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260903-rudeforth@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260903T200000
 SUMMARY:Pete Rudeforth's Jazz Band — Pete Rudeforth's Jazz Band
 LOCATION:Pump House Jazz Club\, Watford\, Herts
@@ -545,7 +482,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/the-pump-house
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260903-georgiacrandon@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260903T210000
 SUMMARY:Georgia Crandon Trio — Georgia Crandon Trio + Saunders-Ellison Duo late set
 LOCATION:Nightjar\, Shoreditch\, London
@@ -554,7 +491,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/georgia-crandon-trio
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260904-jivemoon@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260904T190000
 SUMMARY:Live band TBA + DJs — JiveMeToTheMoon @ The Crate — live band swing dance
 LOCATION:CRATE St James Street\, Walthamstow\, London
@@ -563,7 +500,7 @@ URL:https://www.eventbrite.co.uk/e/jivemetothemoon-thecrate-st-james-street-live
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260904-swingcommanders@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260904T200000
 SUMMARY:The Swing Commanders — The Swing Commanders
 LOCATION:The Pheasantry (PizzaExpress Live)\, Chelsea\, SW London
@@ -572,7 +509,7 @@ URL:https://halibuts.com/events/eventdetail/147105-328425-the_swing_commanders-t
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260904-phildoleman@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260904T200000
 SUMMARY:Phil Doleman — Phil Doleman
 LOCATION:Green Note\, Camden\, London
@@ -581,7 +518,7 @@ URL:https://greennote.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260904-boneshaker@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260904T200000
 SUMMARY:The Boneshaker Trio — The Boneshaker Trio — 1920s to Swinging Sixties
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -590,7 +527,7 @@ URL:https://www.oriolebar.com/oriole-music
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260904-timpenn-nightjar@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260904T210000
 SUMMARY:Tim Penn & The Second Line — Tim Penn & The Second Line - New Orleans Blues
 LOCATION:Nightjar\, Shoreditch\, London
@@ -599,7 +536,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/tim-penn-the-second-line-bp9
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260905-brassworks@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260905T123000
 SUMMARY:Brassworks — Brassworks
 LOCATION:Woolwich Works\, Woolwich\, SE London
@@ -608,7 +545,7 @@ URL:https://halibuts.com/events/eventdetail/151624-338437-brassworks-woolwich_wo
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260905-doolally@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260905T130000
 SUMMARY:Doolally Tap — Gabriel's Wharf Arts Festival - Doolally Tap
 LOCATION:Gabriel's Wharf\, South Bank\, London
@@ -617,7 +554,7 @@ URL:https://swingdanceuk.com/socials/special-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260905-sydlawrence@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260905T183000
 SUMMARY:Syd Lawrence Orchestra — Syd Lawrence Orchestra — Quincy and the Count
 LOCATION:Soul Mama Stratford\, Stratford\, E London
@@ -626,7 +563,7 @@ URL:https://halibuts.com/events/eventdetail/147631-329638-syd_lawrence_orchestra
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260905-fezzes@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260905T200000
 SUMMARY:The Fezzes — The Fezzes — Vintage Swing and Blues
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -635,7 +572,7 @@ URL:https://www.oriolebar.com/oriole-music
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260905-boheme@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260905T203000
 SUMMARY:The Boheme Hot Club — Introducing... The Boheme Hot Club
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -644,7 +581,7 @@ URL:https://toulouselautrec.co.uk/event_calendar/introducing-the-boheme-hot-club
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260905-fourflames@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260905T210000
 SUMMARY:The Four Flames — The Four Flames
 LOCATION:Nightjar\, Shoreditch\, London
@@ -653,7 +590,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/the-untouchables-nightjar-gx
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260905-whippoorwills@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260905
 DTEND;VALUE=DATE:20260906
 SUMMARY:The Whippoorwills — The Whippoorwills
@@ -663,7 +600,7 @@ URL:https://greennote.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260906-ewanbleach@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260906T121500
 SUMMARY:Ewan Bleach & The Fleeting Paradise Orchestra — A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra
 LOCATION:Jamboree\, King's Cross\, London
@@ -672,7 +609,7 @@ URL:https://www.jamboreevenue.co.uk/upcoming-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260906-nowanderers@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260906T130000
 SUMMARY:New Orleans Wanderers — New Orleans Wanderers
 LOCATION:Old Barn Hall\, Great Bookham\, Surrey
@@ -681,7 +618,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/old-barn-hall
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260906-foxtrot@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260906T150000
 SUMMARY:The New Foxtrot Serenaders — The New Foxtrot Serenaders — Ready Steady Go
 LOCATION:The Cryer Arts Centre\, Carshalton\, SW London
@@ -690,7 +627,7 @@ URL:https://halibuts.com/events/eventdetail/145476-325967-the_new_foxtrot_serena
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260906-windycity@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260906T203000
 SUMMARY:The Windy City Weatherbirds — The Windy City Weatherbirds
 LOCATION:Jamboree\, King's Cross\, London
@@ -699,7 +636,7 @@ URL:https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-1
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260906-laurencecorns@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260906T210000
 SUMMARY:Laurence Corns Duo — Laurence Corns Duo - Swing Guitar and Soulful Blues
 LOCATION:Nightjar\, Shoreditch\, London
@@ -708,7 +645,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/laurence-corns
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260907-daiprice@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260907T210000
 SUMMARY:Dai Price with Al Dunn — Dai Price - Bass\, Vocals and Blues Roots
 LOCATION:Nightjar\, Shoreditch\, London
@@ -717,7 +654,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/dai-price
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260908-hugojennings@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260908T200000
 SUMMARY:Hugo Jennings Big Band — Hugo Jennings Big Band
 LOCATION:PizzaExpress Live Holborn\, Holborn\, London
@@ -726,7 +663,7 @@ URL:https://halibuts.com/events/eventdetail/152859-340745-hugo_jennings_big_band
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260908-mojo@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260908T200000
 SUMMARY:Mojo Wellington — Mojo Wellington
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -735,7 +672,7 @@ URL:https://www.oriolebar.com/oriole-music
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260908-dompipkin-nightjar@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260908T210000
 SUMMARY:Dom Pipkin — Dom Pipkin - Outstanding Live New Orleans Piano
 LOCATION:Nightjar\, Shoreditch\, London
@@ -744,7 +681,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/dom-pipkin-duo
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260909-maddocks@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260909T200000
 SUMMARY:John Maddocks Down Home Jazzers — John Maddocks Down Home Jazzers
 LOCATION:Amersham Jazz Club (Wycombe Marsh RBL)\, High Wycombe\, Bucks
@@ -753,7 +690,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/amersham-jazz-club-wycombe-mar
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260909-dompipkin@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260909T200000
 SUMMARY:Dom Pipkin — Dom Pipkin — New Orleans Inspired Piano
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -762,7 +699,7 @@ URL:https://www.oriolebar.com/oriole-music
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260909-benmartyn-nightjar@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260909T210000
 SUMMARY:Ben 'Blue' Martyn — Ben Martyn - New Orleans Jazz
 LOCATION:Nightjar\, Shoreditch\, London
@@ -771,7 +708,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/ben-martyn-new-orleans-jazz
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260910-winningpost@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260910T120000
 SUMMARY:Richard Bennett's New Orleans All Stars — Richard Bennett's New Orleans All Stars
 LOCATION:The Winning Post\, Twickenham\, SW London
@@ -780,7 +717,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/winning-post/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260910-domglynn@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260910T190000
 SUMMARY:Dom Glynn & His Sunday Best — Dom Glynn & His Sunday Best - album release show
 LOCATION:Hootananny Brixton\, Brixton\, London
@@ -789,7 +726,7 @@ URL:https://www.songkick.com/venues/497481-hootananny/calendar
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260910-agsconnolly@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260910T200000
 SUMMARY:Ags Connolly — Ags Connolly (solo)
 LOCATION:The Hyde Tavern\, Winchester\, Hampshire
@@ -798,7 +735,7 @@ URL:https://agsconnolly.com/shows/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260910-owls@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260910T200000
 SUMMARY:Forest Hill Owls — Forest Hill Owls
 LOCATION:Pump House Jazz Club\, Watford\, Herts
@@ -807,7 +744,7 @@ URL:https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/forest-
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260910-pfeffer@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260910T200000
 SUMMARY:Roy Pfeffer Duo — Roy Pfeffer Duo
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -816,7 +753,7 @@ URL:https://www.oriolebar.com/oriole-music
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260910-giacomosmith@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260910
 DTEND;VALUE=DATE:20260911
 SUMMARY:Giacomo Smith — The Giacomo Smith Quartet
@@ -826,7 +763,7 @@ URL:https://www.ronniescotts.co.uk/find-a-show
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260911-slowmotion@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260911T200000
 SUMMARY:The Slow Motion Cowboys — The Slow Motion Cowboys
 LOCATION:The Dukes of Highgate\, Highgate\, London
@@ -835,7 +772,7 @@ URL:https://www.thedukesofhighgate.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260911-boneshaker@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260911T210000
 SUMMARY:The Boneshaker Band — The Boneshaker Band
 LOCATION:Nightjar\, Shoreditch\, London
@@ -844,7 +781,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260912-charlesmorris@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260912T130000
 SUMMARY:Charles Morris and his Jazzmen — Gin and Live Jazz — Charles Morris and his Jazzmen
 LOCATION:Old Bakery Gin\, Palmers Green\, N London
@@ -853,7 +790,7 @@ URL:https://www.eventbrite.co.uk/e/gin-and-live-jazz-charles-morris-and-his-jazz
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260912-cajunapresmidi@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260912T133000
 SUMMARY:Cajun Après-Midi session band — Cajun Après-Midi — dance lesson + live band
 LOCATION:Jamboree\, King's Cross\, London
@@ -862,7 +799,7 @@ URL:https://www.jamboreevenue.co.uk/upcoming-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260912-barndance@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260912T200000
 SUMMARY:Stomping Ground (caller Nicola Scott) — London Barndance — Stomping Ground
 LOCATION:Cecil Sharp House\, Camden\, London
@@ -871,7 +808,7 @@ URL:https://www.barndance.org/programme.html
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260912-squarepeg@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260912
 DTEND;VALUE=DATE:20260913
 SUMMARY:Square Peg — Square Peg
@@ -881,7 +818,7 @@ URL:https://greennote.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260913-dftc@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260913T130000
 SUMMARY:Down for the Count — Down for the Count — Sunday Jazz Lunch & Dinner
 LOCATION:Pizza Express Live\, Soho\, London
@@ -890,7 +827,7 @@ URL:https://www.downforthecount.co.uk/live-dates/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260913-crozier@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260913T130000
 SUMMARY:Hugh Crozier's New Orleans Jazz Band — Hugh Crozier's New Orleans Jazz Band
 LOCATION:Old Barn Hall\, Great Bookham\, Surrey
@@ -899,7 +836,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/old-barn-hall
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260913-jiveaces@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260913T200000
 SUMMARY:The Jive Aces — The Jive Aces
 LOCATION:The Pheasantry (PizzaExpress Live)\, Chelsea\, SW London
@@ -908,7 +845,7 @@ URL:https://halibuts.com/events/eventdetail/152890-340796-the_jive_aces-the_phea
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260913-diplocksessions@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260913T203000
 SUMMARY:Harry Diplock + guests — Django Reinhardt Sessions with Harry Diplock
 LOCATION:The Basement Bar at Green Note\, Camden\, London
@@ -917,7 +854,7 @@ URL:https://www.greennote.co.uk/production/django-reinhardt-sessions-with-harry-
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260913-timpenn-nightjar@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260913T210000
 SUMMARY:Tim Penn with Chris Proctor — Tim Penn - New Orleans R&B and Blues Piano Roots
 LOCATION:Nightjar\, Shoreditch\, London
@@ -926,7 +863,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/tim-penn-duo-nightjar-rcjxn
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260914-hotfingers@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260914T123000
 SUMMARY:Hot Fingers — Hot Fingers (lunchtime session)
 LOCATION:The Spice of Life\, Soho\, London
@@ -935,7 +872,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/spice-of-life-jazz-club-soho-l
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260914-sanjacinto@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260914T133000
 SUMMARY:San Jacinto Stompers — San Jacinto Stompers
 LOCATION:Epsom Hot Jazz Club (St Joseph's Church Hall)\, Epsom\, Surrey
@@ -944,7 +881,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/epsom-hot-jazz-club-new-venue
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260914-jamiesafir@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260914
 DTEND;VALUE=DATE:20260915
 SUMMARY:Jamie Safir — Jamie Safir
@@ -954,7 +891,7 @@ URL:https://www.ronniescotts.co.uk/find-a-show/jamie-safir
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260915-petesaunders@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260915T200000
 SUMMARY:Pete Saunders Duo — Pete Saunders Duo
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -963,7 +900,7 @@ URL:https://www.oriolebar.com/oriole-music
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260915-harryallen@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260915
 DTEND;VALUE=DATE:20260916
 SUMMARY:Harry Allen & Martin Sasse Quartet — Harry Allen & Martin Sasse Quartet
@@ -973,7 +910,7 @@ URL:https://www.ronniescotts.co.uk/find-a-show/harry-allen-martin-sasse-quartet
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260916-moroccobound@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260916T190000
 SUMMARY:House manouche group — Jazz Manouche at Morocco Bound
 LOCATION:Morocco Bound\, Bermondsey\, London
@@ -982,7 +919,7 @@ URL:https://dice.fm/event/nvdg25-jazz-manouche-at-morocco-bound-16th-sep-morocco
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260916-savoysix@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260916T200000
 SUMMARY:The Savoy Super Six — The Savoy Super Six
 LOCATION:Amersham Jazz Club (Wycombe Marsh RBL)\, High Wycombe\, Bucks
@@ -991,7 +928,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/amersham-jazz-club-wycombe-mar
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260916-aldunn@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260916T200000
 SUMMARY:Al Dunn — Al 'Dente' Dunn — New Orleans Piano
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -1000,7 +937,7 @@ URL:https://www.oriolebar.com/oriole-music
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260916-ericranzoni@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260916T210000
 SUMMARY:Eric Ranzoni — Eric Ranzoni Solo - Blues Piano and Boogie Woogie
 LOCATION:Nightjar\, Shoreditch\, London
@@ -1009,7 +946,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/eric-ranzoni-live
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260916-longshoredrifters@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260916
 DTEND;VALUE=DATE:20260917
 SUMMARY:The Longshore Drifters — The Longshore Drifters — debut album launch
@@ -1019,7 +956,7 @@ URL:https://whatscookin.co.uk/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260917-raineys@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260917T200000
 SUMMARY:Raineys' Revue — Raineys' Revue
 LOCATION:Pump House Jazz Club\, Watford\, Herts
@@ -1028,7 +965,7 @@ URL:https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/raineys
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260918-swingden@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260918T190000
 SUMMARY:Benoit Viellefon & His Hot Club — Bishopsgate Swing Live! — Benoit Viellefon & His Hot Club
 LOCATION:Bishopsgate Institute (Great Hall)\, Liverpool St\, London
@@ -1037,7 +974,7 @@ URL:https://www.swingpatrol.co.uk/events/bishopsgate-swing-live/18-09-2026/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260918-joemansfield@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260918T190000
 SUMMARY:Joe Mansfield & the Temperance Two — Joe Mansfield & the Temperance Two
 LOCATION:Green Note\, Camden\, London
@@ -1046,7 +983,7 @@ URL:https://www.greennote.co.uk/production/joe-mansfield-the-temperance-two/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260918-blueharlem@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260918T200000
 SUMMARY:Blue Harlem — Blue Harlem
 LOCATION:The Pheasantry (PizzaExpress Live)\, Chelsea\, SW London
@@ -1055,7 +992,7 @@ URL:https://halibuts.com/events/eventdetail/152892-340798-blue_harlem-the_pheasa
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260918-swingshift@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260918T200000
 SUMMARY:Chris Dean's Swing Shift — Chris Dean's Swing Shift
 LOCATION:Ongar Jazz Club\, Ongar\, Essex
@@ -1064,7 +1001,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/ongar-jazz-club
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260919-aishakhan@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260919T200000
 SUMMARY:Aisha Khan & Her Rajahs — Aisha Khan & Her Rajahs
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -1073,7 +1010,7 @@ URL:https://www.oriolebar.com/oriole-music
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260919-labouche@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260919
 DTEND;VALUE=DATE:20260920
 SUMMARY:La Bouche Manouche (Irene Serra\, vocals) — La Bouche Manouche feat. Irene Serra: Got A Little Rhythm!
@@ -1083,7 +1020,7 @@ URL:https://toulouselautrec.co.uk/whats-on/la-bouche-manouche/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260920-ewanbleach@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260920T121500
 SUMMARY:Ewan Bleach & The Fleeting Paradise Orchestra — A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra
 LOCATION:Jamboree\, King's Cross\, London
@@ -1092,7 +1029,7 @@ URL:https://www.jamboreevenue.co.uk/upcoming-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260920-sanjacinto@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260920T130000
 SUMMARY:San Jacinto Stompers — San Jacinto Stompers
 LOCATION:Old Barn Hall\, Great Bookham\, Surrey
@@ -1101,7 +1038,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/old-barn-hall
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260920-dftcbrighton@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260920T140000
 SUMMARY:Down for the Count All-Stars — Swing That Music — Down for the Count All-Stars
 LOCATION:Brighton Open Air Theatre\, Brighton\, East Sussex
@@ -1110,7 +1047,7 @@ URL:https://www.downforthecount.co.uk/live-dates/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260920-swingdance@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260920T140000
 SUMMARY:Duke Street Big Band — Swing Dance Sundays — Duke Street Big Band
 LOCATION:Regent's Park bandstand (SwingdanceUK)\, Regent's Park\, London
@@ -1119,7 +1056,7 @@ URL:https://swingdanceuk.com/socials/special-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260920-doolally@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260920T160000
 SUMMARY:Doolally Tap — Doolally Tap at The Ivy House
 LOCATION:The Ivy House\, Nunhead\, London
@@ -1128,7 +1065,7 @@ URL:https://doolallytap.net/upcoming-gigs
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260920-daiprice@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260920T210000
 SUMMARY:Dai Price with Al Dunn — Dai Price - Soulful New Orleans R&B and Vocals
 LOCATION:Nightjar\, Shoreditch\, London
@@ -1137,7 +1074,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/dai-price-live
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260920-georginajackson@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260920
 DTEND;VALUE=DATE:20260921
 SUMMARY:Georgina Jackson — Georgina Jackson's Sass and Brass
@@ -1147,7 +1084,7 @@ URL:https://www.ronniescotts.co.uk/find-a-show
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260921-mcquaid@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260921T123000
 SUMMARY:Michael McQuaid & Duncan Hemstock Sextet — Michael McQuaid & Duncan Hemstock Sextet (lunchtime session)
 LOCATION:The Spice of Life\, Soho\, London
@@ -1156,7 +1093,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/spice-of-life-jazz-club-soho-l
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260921-bandini@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260921T210000
 SUMMARY:Bandini — Bandini - Dynamic Blues and Jazz Piano
 LOCATION:Nightjar\, Shoreditch\, London
@@ -1165,7 +1102,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/bandini-blues-piano-gcx2y
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260922-ericranzoni@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260922T210000
 SUMMARY:Eric Ranzoni — Eric Ranzoni - Boogie Blues and Rhythm Piano
 LOCATION:Nightjar\, Shoreditch\, London
@@ -1174,7 +1111,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/eric-ranzoni-solo
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260922-noragermain@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260922
 DTEND;VALUE=DATE:20260923
 SUMMARY:Nora Germain — Nora Germain and Friends
@@ -1184,7 +1121,7 @@ URL:https://www.ronniescotts.co.uk/find-a-show
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260923-dixielandkings@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260923T200000
 SUMMARY:Dixieland Swing Kings — Dixieland Swing Kings
 LOCATION:Amersham Jazz Club (Wycombe Marsh RBL)\, High Wycombe\, Bucks
@@ -1193,7 +1130,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/amersham-jazz-club-wycombe-mar
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260924-bronxville@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260924T200000
 SUMMARY:Bronxville Babies — Bronxville Babies
 LOCATION:Pump House Jazz Club\, Watford\, Herts
@@ -1202,7 +1139,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/the-pump-house
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260925-papagros@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260925T190000
 SUMMARY:John 'Papa' Gros — John 'Papa' Gros - New Orleans' Own
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -1211,7 +1148,7 @@ URL:https://dice.fm/event/8e96er-john-papa-gros-new-orleans-own-25th-sep-toulous
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260925-runnymede@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260925T193000
 SUMMARY:Graham Hughes & The Sunshine Kings — Graham Hughes & The Sunshine Kings
 LOCATION:Runnymede Jazz Club at The Addlestone Centre\, Addlestone\, Surrey
@@ -1220,7 +1157,7 @@ URL:https://runnymedejazzclub.chessck.co.uk/ForthcomingBands
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260925-cosimo@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260925T210000
 SUMMARY:The Cosimo Matassa Project — The Cosimo Matassa Project - 1950s New Orleans R&B
 LOCATION:Nightjar\, Shoreditch\, London
@@ -1229,7 +1166,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/cosimo-matassa-project-live
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260925-papagros-b@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260925T213000
 SUMMARY:John 'Papa' Gros — John 'Papa' Gros - New Orleans' Own
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -1238,7 +1175,7 @@ URL:https://dice.fm/event/ww9ewr-john-papa-gros-new-orleans-own-25th-sep-toulous
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260926-viellefon@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260926T190000
 SUMMARY:Benoit Viellefon Hot Club — Benoit Viellefon Hot Club
 LOCATION:Royal Hippodrome Theatre\, Eastbourne\, East Sussex
@@ -1247,7 +1184,7 @@ URL:https://benoitviellefon.com/concerts
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260926-blueray@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260926T190000
 SUMMARY:Charlie and Blue Ray Band — Vintage Jazz/Swing Night — Charlie and Blue Ray Band
 LOCATION:The Camden Club\, Camden\, London
@@ -1256,7 +1193,7 @@ URL:https://www.eventbrite.co.uk/e/vintage-jazzswing-night-featuring-charlie-and
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260926-papagros@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260926T190000
 SUMMARY:John "Papa" Gros — John "Papa" Gros — The New Orleans Piano Powerhouse
 LOCATION:Piano Smithfield\, Smithfield\, London
@@ -1265,7 +1202,7 @@ URL:https://dice.fm/event/dkoo6v-john-papa-gros-the-new-orleans-piano-powerhouse
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260926-biscuittown@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260926T190000
 SUMMARY:Biscuit Town with Issey Chivers — Biscuit Town ft. Issey Chivers
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -1274,7 +1211,7 @@ URL:https://toulouselautrec.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260926-robinnolan@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260926T190000
 SUMMARY:Robin Nolan Trio — Robin Nolan Trio
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -1283,7 +1220,7 @@ URL:https://dice.fm/event/3or7kx-robin-nolan-trio-26th-sep-toulouse-lautrec-lond
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260926-swingtones@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260926T200000
 SUMMARY:The Swingtones — The Swingtones
 LOCATION:The Pheasantry (PizzaExpress Live)\, Chelsea\, SW London
@@ -1292,7 +1229,7 @@ URL:https://halibuts.com/events/eventdetail/152893-340799-the_swingtones-the_phe
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260926-robinnolan-b@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260926T213000
 SUMMARY:Robin Nolan Trio — Robin Nolan Trio
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -1301,7 +1238,7 @@ URL:https://dice.fm/event/dkdolo-robin-nolan-trio-26th-sep-toulouse-lautrec-lond
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260926-dalestorr@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260926
 DTEND;VALUE=DATE:20260927
 SUMMARY:Dale Storr — Dale Storr — New Orleans Piano
@@ -1311,7 +1248,7 @@ URL:https://greennote.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260926-rigmarollers@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20260926
 DTEND;VALUE=DATE:20260927
 SUMMARY:The Rigmarollers — The Rigmarollers
@@ -1321,7 +1258,7 @@ URL:https://www.greennote.co.uk/production/the-rigmarollers/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260927-spencer@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260927T130000
 SUMMARY:Sarah Spencer's Transatlantic Band — Sarah Spencer's Transatlantic Band
 LOCATION:Old Barn Hall\, Great Bookham\, Surrey
@@ -1330,7 +1267,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/old-barn-hall
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260927-jazzjubilee@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260927T183000
 SUMMARY:Jazz Repertory Company (17-piece orchestra) — 1956: A Jazz Jubilee — Jazz Repertory Company
 LOCATION:Cadogan Hall\, Sloane Square\, SW London
@@ -1339,7 +1276,7 @@ URL:https://cadoganhall.com/series/the-jazz-repertory-company-presents/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260927-roypfeffer@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260927T210000
 SUMMARY:Roy Pfeffer Duo — Roy Pfeffer Duo - Jazz and Blues from a Leading UK Drummer
 LOCATION:Nightjar\, Shoreditch\, London
@@ -1348,7 +1285,7 @@ URL:https://www.barnightjar.com/shoreditch-listings/roy-pfeffer-duo-nightjar-
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260928-cablestreet@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260928T123000
 SUMMARY:Ewan Bleach's Cable Street Rag Band — Ewan Bleach's Cable Street Rag Band (lunchtime session)
 LOCATION:The Spice of Life\, Soho\, London
@@ -1357,7 +1294,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/spice-of-life-jazz-club-soho-l
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260929-benmartyn@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260929T200000
 SUMMARY:Ben 'Blue' Martyn — Ben 'Blue' Martyn — Acoustic Blues
 LOCATION:Oriole Bar\, Covent Garden\, London
@@ -1366,7 +1303,7 @@ URL:https://www.oriolebar.com/oriole-music
 END:VEVENT
 BEGIN:VEVENT
 UID:g20260930-clancy@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20260930T200000
 SUMMARY:Andrew Clancy Jazz Band — Andrew Clancy Jazz Band & Friends
 LOCATION:Amersham Jazz Club (Wycombe Marsh RBL)\, High Wycombe\, Bucks
@@ -1375,7 +1312,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/amersham-jazz-club-wycombe-mar
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261002-carmichael@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261002T190000
 SUMMARY:Judy Carmichael — Judy Carmichael: Big Time Swing!
 LOCATION:Crazy Coqs (Brasserie Zedel)\, Piccadilly\, London
@@ -1384,7 +1321,7 @@ URL:https://halibuts.com/events/eventdetail/151615-338308-judy_carmichael:_big_t
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261003-carmichael@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261003T190000
 SUMMARY:Judy Carmichael — Judy Carmichael: Big Time Swing!
 LOCATION:Crazy Coqs (Brasserie Zedel)\, Piccadilly\, London
@@ -1393,7 +1330,7 @@ URL:https://halibuts.com/events/eventdetail/151615-338309-judy_carmichael:_big_t
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261003-raygelato@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261003T193000
 SUMMARY:Ray Gelato & The Giants — Ray Gelato & The Giants
 LOCATION:The 100 Club\, Oxford St\, London
@@ -1402,7 +1339,7 @@ URL:https://halibuts.com/events/eventdetail/147733-329766-ray_gelato__the_giants
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261003-chobham@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261003T193000
 SUMMARY:Sarah Jane Eveleigh Sextet — Sarah Jane Eveleigh Sextet — Jazz Supper (Chobham Festival)
 LOCATION:Chobham Village Hall\, Chobham (nr Woking)\, Surrey
@@ -1411,7 +1348,7 @@ URL:https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/sarah-j
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261005-100club@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261005T193000
 SUMMARY:Denmark Street Big Band — Stompin' at the 100 Club — Denmark Street Big Band
 LOCATION:The 100 Club\, Soho\, London
@@ -1420,7 +1357,7 @@ URL:https://swingdanceuk.com/socials/special-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261006-nojam@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261006T193000
 SUMMARY:House band + jammers — New Orleans Jam Session
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -1429,7 +1366,7 @@ URL:https://toulouselautrec.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261007-mortonvalence@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261007T203000
 SUMMARY:Morton Valence ft. BJ Cole — What's Cookin' presents Morton Valence (full band ft. BJ Cole) + Johny Brown
 LOCATION:What's Cookin' (Leytonstone Social Club)\, Leytonstone\, London
@@ -1438,7 +1375,7 @@ URL:https://whatscookin.co.uk/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261008-joelle@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261008T193000
 SUMMARY:Florence Joelle Quartet — Florence Joelle Quartet
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -1447,7 +1384,7 @@ URL:https://toulouselautrec.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261009-djangoliers@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261009T200000
 SUMMARY:The Djangoliers — The Djangoliers
 LOCATION:Ongar Jazz Club\, Ongar\, Essex
@@ -1456,7 +1393,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/ongar-jazz-club
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261010-cajunapresmidi@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261010T133000
 SUMMARY:Cajun Après-Midi session band — Cajun Après-Midi — dance lesson + live band
 LOCATION:Jamboree\, King's Cross\, London
@@ -1465,7 +1402,7 @@ URL:https://www.jamboreevenue.co.uk/upcoming-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261010-barndance@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261010T200000
 SUMMARY:Sail Away Ladies (caller Seth Tepfer) — London Barndance — Sail Away Ladies
 LOCATION:Cecil Sharp House\, Camden\, London
@@ -1474,7 +1411,7 @@ URL:https://www.barndance.org/programme.html
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261010-blacktieriot@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261010T210000
 SUMMARY:Dom Durner's Black Tie Riot — Dom Durner's Black Tie Riot
 LOCATION:Nightjar\, Shoreditch\, London
@@ -1483,7 +1420,7 @@ URL:https://www.barnightjar.com/shoreditch-listings
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261012-jackman@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261012T133000
 SUMMARY:Paula Jackman's Jazz Masters — Paula Jackman's Jazz Masters
 LOCATION:Epsom Hot Jazz Club (St Joseph's Church Hall)\, Epsom\, Surrey
@@ -1492,7 +1429,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/epsom-hot-jazz-club-new-venue
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261014-johnmiller@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261014T193000
 SUMMARY:John Miller and his Country Casuals + Grace Under Fire — What's Cookin' presents John Miller and his Country Casuals + Grace Under Fire
 LOCATION:What's Cookin' (Leytonstone Social Club)\, Leytonstone\, London
@@ -1501,7 +1438,7 @@ URL:https://whatscookin.co.uk/shows/john-miller-and-his-country-casuals
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261015-gypsydynamite@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261015T193000
 SUMMARY:Gypsy Dynamite — Gypsy Dynamite: 15th Anniversary
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -1510,7 +1447,7 @@ URL:https://toulouselautrec.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261016-dftcbedford@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261016T193000
 SUMMARY:Down for the Count All-Stars — Swing That Music — Down for the Count All-Stars
 LOCATION:The Quarry Theatre at St Luke's\, Bedford
@@ -1519,7 +1456,7 @@ URL:https://www.downforthecount.co.uk/live-dates/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261017-performanceball@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261017T190000
 SUMMARY:Live swing band TBA — Swing Patrol Performance Ball 2026
 LOCATION:Bishopsgate Institute (Great Hall)\, Liverpool St\, London
@@ -1528,7 +1465,7 @@ URL:https://www.swingpatrol.co.uk/events/performance-ball/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261017-sutherland@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20261017
 DTEND;VALUE=DATE:20261018
 SUMMARY:Dave Sutherland + Ags Connolly — Dave Sutherland album launch with Ags Connolly
@@ -1538,7 +1475,7 @@ URL:https://agsconnolly.com/shows/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261018-satindollz@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261018T130000
 SUMMARY:The Satin Dollz — The Satin Dollz
 LOCATION:The Pheasantry (PizzaExpress Live)\, Chelsea\, SW London
@@ -1547,7 +1484,7 @@ URL:https://halibuts.com/events/eventdetail/151605-338255-the_satin_dollz-the_ph
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261018-doolally@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261018T160000
 SUMMARY:Doolally Tap — Doolally Tap at The Ivy House
 LOCATION:The Ivy House\, Nunhead\, London
@@ -1556,7 +1493,7 @@ URL:https://doolallytap.net/upcoming-gigs
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261021-bardedrington@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261021T193000
 SUMMARY:Bard Edrington V & The Blackbirds — What's Cookin' presents Bard Edrington V & The Blackbirds
 LOCATION:What's Cookin' (Leytonstone Social Club)\, Leytonstone\, London
@@ -1565,7 +1502,7 @@ URL:https://whatscookin.co.uk/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261024-ewanbleach@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261024T190000
 SUMMARY:Ewan Bleach — An Evening with Ewan Bleach
 LOCATION:Hoxton Hall\, Hoxton\, London
@@ -1574,7 +1511,7 @@ URL:https://halibuts.com/events/eventdetail/153149-341343-an_evening_with_ewan_b
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261024-peteallen@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261024T193000
 SUMMARY:Pete Allen Jazz Band — Pete Allen's 48th Anniversary Cabaret Show
 LOCATION:Falkland Cricket Club\, Newbury\, Berkshire
@@ -1583,7 +1520,7 @@ URL:https://www.thejazzguide.co.uk/gigs-and-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261025-harvardsquares@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261025T203000
 SUMMARY:Elise Roth & Her Harvard Squares — Elise Roth & Her Harvard Squares - Halloween Swing
 LOCATION:Jamboree\, King's Cross\, London
@@ -1592,7 +1529,7 @@ URL:https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-5
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261030-runnymede@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261030T193000
 SUMMARY:Tim Eyles Jazz — Tim Eyles Jazz
 LOCATION:Runnymede Jazz Club at The Addlestone Centre\, Addlestone\, Surrey
@@ -1601,7 +1538,7 @@ URL:https://runnymedejazzclub.chessck.co.uk/ForthcomingBands
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261030-cambridgelindy@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20261030
 DTEND;VALUE=DATE:20261102
 SUMMARY:The Swing Shouters\, Harry Evans and His Flying Squirrels\, Django's Tiger — Cambridge Lindy Exchange — five parties with live bands
@@ -1611,7 +1548,7 @@ URL:https://www.cambridgeswingdance.com/events/cambridge-lindy-exchange
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261031-excellar@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20261031
 DTEND;VALUE=DATE:20261101
 SUMMARY:The Red Hot Rhythm Revival Jazz Band — The Red Hot Rhythm Revival Jazz Band
@@ -1621,7 +1558,7 @@ URL:https://www.excellar.co.uk/blog/red-hot-rhythm-jazz-revival
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261103-nojam@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261103T193000
 SUMMARY:House band + jammers — New Orleans Jam Session
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -1630,7 +1567,7 @@ URL:https://toulouselautrec.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261108-doolally@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261108T160000
 SUMMARY:Doolally Tap — Doolally Tap at The Ivy House
 LOCATION:The Ivy House\, Nunhead\, London
@@ -1639,7 +1576,7 @@ URL:https://doolallytap.net/upcoming-gigs
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261109-jakeleg@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261109T133000
 SUMMARY:The Jake Leg Jug Band — The Jake Leg Jug Band
 LOCATION:Epsom Hot Jazz Club\, Epsom\, Surrey
@@ -1648,7 +1585,7 @@ URL:https://www.thejakelegjugband.com/gigs-2
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261111-tricityvogue@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261111T190000
 SUMMARY:Tricity Vogue's All Girl Swing Band — Tricity Vogue's All Girl Swing Band
 LOCATION:Wilton's Music Hall\, Whitechapel\, London
@@ -1657,7 +1594,7 @@ URL:https://wiltons.org.uk/whats-on/tricity-vogues-all-girl-swing-band-3/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261111-degraaf@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20261111
 DTEND;VALUE=DATE:20261112
 SUMMARY:Charlotte de Graaf & The Artie Zaitz Trio — Charlotte de Graaf & The Artie Zaitz Trio — Legendary Voices of Jazz
@@ -1667,7 +1604,7 @@ URL:https://boisdaletickets.co.uk/p/12865
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261113-bronxville@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261113T200000
 SUMMARY:The Bronxville Babies — The Bronxville Babies
 LOCATION:Ongar Jazz Club\, Ongar\, Essex
@@ -1676,7 +1613,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/ongar-jazz-club
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261113-nattycongeroo@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261113T210000
 SUMMARY:Natty Congeroo & The Flames of Rhythm — Natty Congeroo & The Flames of Rhythm
 LOCATION:Jamboree\, King's Cross\, London
@@ -1685,7 +1622,7 @@ URL:https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-4
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261113-efglondon@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20261113
 DTEND;VALUE=DATE:20261123
 SUMMARY:Trio Manouche + 60+ venues citywide — EFG London Jazz Festival 2026 (trad / gypsy strands)
@@ -1695,7 +1632,7 @@ URL:https://efglondonjazzfestival.org.uk/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261114-cajunapresmidi@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261114T133000
 SUMMARY:Cajun Après-Midi session band — Cajun Après-Midi — dance lesson + live band
 LOCATION:Jamboree\, King's Cross\, London
@@ -1704,7 +1641,7 @@ URL:https://www.jamboreevenue.co.uk/upcoming-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261114-fideliohotclub@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261114T140000
 SUMMARY:Fidelio Hot Club — Fidelio Hot Club
 LOCATION:Toulouse Lautrec Jazz Club\, Kennington\, London
@@ -1713,7 +1650,7 @@ URL:https://dice.fm/event/8e9ger-fidelio-hot-club-14th-nov-toulouse-lautrec-lond
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261114-barndance@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261114T200000
 SUMMARY:London Barndance Company — London Barndance (band & caller TBA)
 LOCATION:Cecil Sharp House\, Camden\, London
@@ -1722,7 +1659,7 @@ URL:https://www.cecilsharphouse.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261114-tjjohnson@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20261114
 DTEND;VALUE=DATE:20261115
 SUMMARY:TJ Johnson Trio — The TJ Johnson Trio
@@ -1732,7 +1669,7 @@ URL:https://greennote.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261115-hermlin@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261115T190000
 SUMMARY:David Hermlin Trio — David Hermlin Trio
 LOCATION:Jamboree\, King's Cross\, London
@@ -1741,7 +1678,7 @@ URL:https://dice.fm/event/q2pd9x-david-hermlin-trio-15th-nov-jamboree-london-tic
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261119-spiritofdjango@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20261119
 DTEND;VALUE=DATE:20261120
 SUMMARY:Martin Taylor & Guy Barker — Martin Taylor & Guy Barker: The Spirit of Django (EFG London Jazz Festival)
@@ -1751,7 +1688,7 @@ URL:https://ukjazznews.com/efg-london-jazz-festival-2026-third-wave-of-names-ann
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261120-horsfall@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261120T190000
 SUMMARY:Pete Horsfall band — Bishopsgate Swing Live! — Pete Horsfall
 LOCATION:Bishopsgate Institute (Great Hall)\, Liverpool St\, London
@@ -1760,7 +1697,7 @@ URL:https://www.swingpatrol.co.uk/events/bishopsgate-swing-live/20-11-2026/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261122-ellalouis@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261122T180000
 SUMMARY:Jazz Repertory Company feat. Enrico Tomasso & Nicola Emmanuelle — Swingin' with Strings: Ella and Louis sing Gershwin
 LOCATION:Cadogan Hall\, Sloane Square\, SW London
@@ -1769,7 +1706,7 @@ URL:https://cadoganhall.com/series/the-jazz-repertory-company-presents/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261124-jakeleg@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261124T140000
 SUMMARY:The Jake Leg Jug Band — The Jake Leg Jug Band
 LOCATION:Datchet Village Hall\, Datchet\, Berkshire
@@ -1778,7 +1715,7 @@ URL:https://www.thejakelegjugband.com/gigs-2
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261125-viellefon@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261125T193000
 SUMMARY:Benoit Viellefon Hot Club — Benoit Viellefon Hot Club
 LOCATION:The Brunswick\, Hove\, East Sussex
@@ -1787,7 +1724,7 @@ URL:https://benoitviellefon.com/concerts
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261127-runnymede@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261127T193000
 SUMMARY:Golden Eagle Jazz Band — Golden Eagle Jazz Band
 LOCATION:Runnymede Jazz Club at The Addlestone Centre\, Addlestone\, Surrey
@@ -1796,7 +1733,7 @@ URL:https://runnymedejazzclub.chessck.co.uk/ForthcomingBands
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261128-biscuittown@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20261128
 DTEND;VALUE=DATE:20261129
 SUMMARY:Biscuit Town with Issey Chivers — Biscuit Town ft. Issey Chivers
@@ -1806,7 +1743,7 @@ URL:https://toulouselautrec.co.uk/event_calendar/biscuit-town-ft-issey-chivers/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261201-longlostfrets@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261201T120000
 SUMMARY:Long Lost Frets (feat. rotating vocalists) — Christmas Jazz Lunch with Long Lost Frets
 LOCATION:Boisdale of Belgravia\, Belgravia\, London
@@ -1815,7 +1752,7 @@ URL:https://boisdaletickets.co.uk/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261202-safir@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261202T133000
 SUMMARY:Jamie Safir band — Christmas in New York with Jamie Safir (lunchtime residency)
 LOCATION:Ronnie Scott's\, Soho\, London
@@ -1824,7 +1761,7 @@ URL:https://www.ronniescotts.co.uk/find-a-show
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261203-winningpost@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261203T120000
 SUMMARY:Harlem Orchestra — Harlem Orchestra
 LOCATION:The Winning Post\, Twickenham\, SW London
@@ -1833,7 +1770,7 @@ URL:https://www.thejazzguide.co.uk/venues/listing/winning-post/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261205-swingdance40@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261205T193000
 SUMMARY:King Groovy & The Horn Stars — SwingdanceUK 40th Anniversary Party — King Groovy & The Horn Stars
 LOCATION:Chiswick Town Hall\, Chiswick\, West London
@@ -1842,7 +1779,7 @@ URL:https://swingdanceuk.com/socials/special-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261205-viellefon@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20261205
 DTEND;VALUE=DATE:20261206
 SUMMARY:Benoit Viellefon & The Hot Club — Benoit Viellefon & The Hot Club
@@ -1852,7 +1789,7 @@ URL:https://www.greennote.co.uk/production/benoit-viellefon-the-hot-club/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261206-jinglebell@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261206T180000
 SUMMARY:South London Jazz Orchestra — Jingle Bell Jive — South London Jazz Orchestra
 LOCATION:National Army Museum\, Chelsea\, SW London
@@ -1861,7 +1798,7 @@ URL:https://swingdanceuk.com/socials/special-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261207-100club@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261207T193000
 SUMMARY:Malcolm Earle-Smith Swingin' All Stars — Stompin' at the 100 Club — Malcolm Earle-Smith Swingin' All Stars
 LOCATION:The 100 Club\, Soho\, London
@@ -1870,7 +1807,7 @@ URL:https://swingdanceuk.com/socials/special-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261210-doolally@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261210T193000
 SUMMARY:Doolally Tap — Doolally Tap at Sidcup Jazz Club
 LOCATION:Footscray Social Club\, Sidcup\, Kent
@@ -1879,7 +1816,7 @@ URL:https://doolallytap.net/upcoming-gigs
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261212-bigeasyxmas@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261212T120000
 SUMMARY:Line-up TBA — Big Easy Christmas Lunch
 LOCATION:Boisdale of Canary Wharf\, Canary Wharf\, London
@@ -1888,7 +1825,7 @@ URL:https://boisdaletickets.co.uk/p/12943
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261212-cajun@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261212T133000
 SUMMARY:Cajun Après-Midi session band — Afternoon Show: Cajun Après-Midi
 LOCATION:Jamboree\, King's Cross\, London
@@ -1897,7 +1834,7 @@ URL:https://www.jamboreevenue.co.uk/upcoming-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261212-loungeswingers@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261212T193000
 SUMMARY:The Fabulous Lounge Swingers — The Fabulous Lounge Swingers
 LOCATION:The 100 Club\, Oxford St\, London
@@ -1906,7 +1843,7 @@ URL:https://halibuts.com/events/eventdetail/135316-305992-the_fabulous_lounge_sw
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261212-barndance@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261212T200000
 SUMMARY:London Barndance Company — London Barndance (band & caller TBA)
 LOCATION:Cecil Sharp House\, Camden\, London
@@ -1915,7 +1852,7 @@ URL:https://www.cecilsharphouse.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261218-dftcoxford@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261218T193000
 SUMMARY:Down for the Count Swing Orchestra — Swing Into Christmas — Down for the Count Swing Orchestra
 LOCATION:Olivier Hall\, Oxford
@@ -1924,7 +1861,7 @@ URL:https://www.downforthecount.co.uk/live-dates/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261218-runnymede@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261218T193000
 SUMMARY:Peter Rudforth Jazz Band — Peter Rudforth Jazz Band
 LOCATION:Runnymede Jazz Club at The Addlestone Centre\, Addlestone\, Surrey
@@ -1933,7 +1870,7 @@ URL:https://runnymedejazzclub.chessck.co.uk/ForthcomingBands
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261219-bishopsgate@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261219T190000
 SUMMARY:Live swing band TBA — Bishopsgate Swing Live! Christmas Party
 LOCATION:Bishopsgate Institute (Great Hall)\, Liverpool St\, London
@@ -1942,7 +1879,7 @@ URL:https://www.swingpatrol.co.uk/events/bishopsgate-swing-live-christmas-party-
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261219-jazznoel@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261219T194500
 SUMMARY:TBC ensemble — Jazz Noël — A Swinging Christmas Show
 LOCATION:artsdepot Studio Theatre\, North Finchley\, London
@@ -1951,7 +1888,7 @@ URL:https://halibuts.com/events/eventdetail/152506-340017-jazz_nol__a_swinging_c
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261219-raygelato@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20261219
 DTEND;VALUE=DATE:20261224
 SUMMARY:Ray Gelato & The Giants — Ray Gelato & The Giants — Christmas run
@@ -1961,7 +1898,7 @@ URL:https://www.ronniescotts.co.uk/find-a-show
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261220-doolally@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261220T160000
 SUMMARY:Doolally Tap — Doolally Tap at The Ivy House
 LOCATION:The Ivy House\, Nunhead\, London
@@ -1970,7 +1907,7 @@ URL:https://doolallytap.net/upcoming-gigs
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261221-dftccambridge@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261221T193000
 SUMMARY:Down for the Count Swing Orchestra — Swing Into Christmas — Down for the Count Swing Orchestra
 LOCATION:Cambridge Corn Exchange\, Cambridge
@@ -1979,7 +1916,7 @@ URL:https://www.downforthecount.co.uk/live-dates/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261224-southbank@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261224T130000
 SUMMARY:Five Go Jiving — Christmas Eve Dance — Five Go Jiving
 LOCATION:Southbank Centre\, South Bank\, London
@@ -1988,7 +1925,7 @@ URL:https://swingdanceuk.com/socials/special-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261229-cadogan@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20261229T190000
 SUMMARY:Down for the Count Swing Orchestra — Swing Into Christmas — Down for the Count Swing Orchestra
 LOCATION:Cadogan Hall\, Sloane Square\, SW London
@@ -1997,7 +1934,7 @@ URL:https://cadoganhall.com/whats-on/swing-into-christmas-with-the-down-for-the-
 END:VEVENT
 BEGIN:VEVENT
 UID:g20270110-agsconnolly@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART;VALUE=DATE:20270110
 DTEND;VALUE=DATE:20270111
 SUMMARY:Ags Connolly — Ags Connolly
@@ -2007,7 +1944,7 @@ URL:https://www.agsconnolly.com/shows
 END:VEVENT
 BEGIN:VEVENT
 UID:g20270124-goodman@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20270124T150000
 SUMMARY:Jazz Repertory Company (Pete Long and His Goodmen) — The Benny Goodman Orchestra's famous 1938 Carnegie Hall Concert
 LOCATION:Cadogan Hall\, Sloane Square\, SW London
@@ -2016,7 +1953,7 @@ URL:https://cadoganhall.com/whats-on/the-benny-goodman-orchestras-famous-1938-ca
 END:VEVENT
 BEGIN:VEVENT
 UID:g20270129-runnymede@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20270129T193000
 SUMMARY:Graham Smith's Shades of Jazz — Graham Smith's Shades of Jazz
 LOCATION:Runnymede Jazz Club at The Addlestone Centre\, Addlestone\, Surrey
@@ -2025,7 +1962,7 @@ URL:https://runnymedejazzclub.chessck.co.uk/ForthcomingBands
 END:VEVENT
 BEGIN:VEVENT
 UID:g20270226-runnymede@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20270226T193000
 SUMMARY:Dave Browning's Jazz Cats — Dave Browning's Jazz Cats
 LOCATION:Runnymede Jazz Club at The Addlestone Centre\, Addlestone\, Surrey
@@ -2034,7 +1971,7 @@ URL:https://runnymedejazzclub.chessck.co.uk/ForthcomingBands
 END:VEVENT
 BEGIN:VEVENT
 UID:g20270312-pokeylafarge@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20270312T190000
 SUMMARY:Pokey LaFarge — Pokey LaFarge
 LOCATION:Islington Assembly Hall\, Islington\, London
@@ -2043,7 +1980,7 @@ URL:https://dice.fm/event/3o7mgx-pokey-lafarge-12th-mar-islington-assembly-hall-
 END:VEVENT
 BEGIN:VEVENT
 UID:g20270319-runnymede@local-events-gig-radar
-DTSTAMP:20260818T000000Z
+DTSTAMP:20260820T000000Z
 DTSTART:20270319T193000
 SUMMARY:McQuaid's Melodians — McQuaid's Melodians
 LOCATION:Runnymede Jazz Club at The Addlestone Centre\, Addlestone\, Surrey

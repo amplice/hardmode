@@ -1,25 +1,27 @@
 {
-  "generatedAt": "2026-08-17T15:35:34.406Z",
-  "dateBasis": "2026-08-17",
-  "summary": "Follow-up maintenance on Monday 17 August 2026 found no remaining expired dated rows after the earlier same-day prune, but removed two clearly ended recurring series. Refreshed all 63 pre-existing known sources and ran all 72 pre-existing standard queries, including fresh Rose/Polka/Orange Tree Spektrix and OSO/Landmark/Watermans Ticketsolve polls. Added five directly confirmed, curated events: South Side Theatre Academy's School of Rock run, Funk Thieves at The Elm Tree, OSO's Beyond the Streets of London, and two age-3+ Wimbledon BookFest sessions. Replaced the generic Attitude Theatre placeholder with the published Trolls The Musical Jr title and ticket details, retaining verify because one listing's metadata conflicts with its body time. New discovery rotations covered The Elm Tree's venue-linked Lemonrock CSV, South Side Theatre Academy, a complete 94-link Wimbledon BookFest detail crawl, Renas Surbiton's mixed-year calendar and a JS-browser attempt for Squire's; the last two yielded no publishable future dates. Two productive recurring sources and two targeted queries were added.",
+  "generatedAt": "2026-08-20T07:04:01.017Z",
+  "dateBasis": "2026-08-20",
+  "summary": "Added four new Ram Jam September 2026 music nights (Bad Girls Groove, The Flaming Alligators, The Whole Family, Groove Rats) from the official live feed after the canonical source remained trustworthy and deduplicated. Corrected two existing Ram Jam rows with direct event-page timing updates: Music For Minds (19:30-23:00) and John Hatcher & Friends (20:00-23:00). Removed six rows whose date ended before 20 Aug 2026.",
   "added": [
-    "SOUTH SIDE THEATRE ACADEMY: School of Rock: Young Actors Edition at ACT Theatre (20-21 Aug, 19:00, age 3+, £12-£15)",
-    "THE ELM TREE: Funk Thieves (29 Aug, 20:30, free funk/soul/Motown/acid-jazz)",
-    "OSO ARTS CENTRE: Beyond the Streets of London (4 Sep, 19:30, £20.70-£23)",
-    "WIMBLEDON BOOKFEST: Mariesa Dulak - Tigers, Trains and Crocodiles (17 Oct, 10:00, age 3+)",
-    "WIMBLEDON BOOKFEST: Ed Vere - Waffles & Julius (18 Oct, 10:00, age 3+)"
+    "RAM JAM RECORDS: Bad Girls Groove (2026-09-05 21:00)",
+    "RAM JAM RECORDS: The Flaming Alligators (2026-09-12 21:00)",
+    "RAM JAM RECORDS: The Whole Family (2026-09-19 21:00)",
+    "RAM JAM RECORDS: Groove Rats (2026-09-26 21:00)"
   ],
   "updated": [
-    "Attitude Theatre Academy's 21-22 Aug generic placeholder updated to Trolls The Musical Jr with the published ticket range and Surbiton Partnership event URL; verify retained because page metadata says 07:00 while organiser copy says 19:00",
-    "Wimbledon BookFest watchlist item resolved after crawling all eight programme pages and 94 official event links; two preschool-family highlights added while the broad adult programme remains represented by the umbrella row",
-    "sources.json: The Elm Tree/Lemonrock and South Side Theatre Academy added as recurring sources, Wimbledon BookFest crawl guidance improved, and two targeted queries added"
+    "RAM JAM RECORDS: Music For Minds: Fundraiser -> 2026-09-03 19:30-23:00 and updated source URL",
+    "RAM JAM RECORDS: John Hatcher & Friends -> 2026-09-24 20:00-23:00 title/description/source refresh"
   ],
   "removed": [
-    "2 clearly ended recurring listings: Inky Pathways Saturday Art Workshops (last date 25 Jul) and Hampton Court Palace Shire Horse carriage rides (last date 26 Jul)",
-    "No dated events removed: zero rows had a date/endDate before 17 Aug after the earlier same-day prune"
+    "KAE Celebration of Learning (e759, 2026-07-01 to 2026-08-17)",
+    "Holy Coves (e20260817, 2026-08-17)",
+    "Jellyfish Adventure (story, rhyme & craft) (e20260818, 2026-08-18)",
+    "Bach to Baby concert at St Mark's (e615, 2026-08-18)",
+    "Relaxed Morning in the Magic Garden (e809, 2026-08-19)",
+    "Spy School talk (e616, 2026-08-19)"
   ],
   "counts": {
-    "events": 358,
+    "events": 356,
     "recurring": 57
   }
 }
