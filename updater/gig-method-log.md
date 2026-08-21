@@ -1,3 +1,28 @@
+## 2026-08-21 -- autonomous self-update run
+
+**Housekeeping:** removed 11 finished gigs (through 21 Aug); added 4 confirmed gigs (g20260902-tj-johnson-jamboree, g20260903-ewan-bleach-the-cable-street-rag-band-ja, g20260905-doolally-tap-gabriels-wharf, g20260912-l-bas-cajun-band-jamboree). Main list now starts on 21 Aug; totals match post-cleanup.
+
+**Methods tried (standard refresh + 2+ focused discovery angles):**
+- *Key source refresh:* re-checked Oriole's venue page, Jamboree's paginated upcoming-events pages (pno=2..5), and Doolally Tap's official upcoming-gigs calendar.
+- *SearchQuery re-check:* re-ran focused venue/page queries for Nightjar, Jamboree, Oriole, and Doolally to catch late-August/early-September fill-ins.
+- *New discovery angle:* Jamboree pagination (pno=n) produced fresh date-confirmed in-scope rows.
+
+**New additions (all date-confirmed on official pages):**
+- Jamboree: TJ Johnson's Peak of the Week, 2 Sep 2026 15:00.
+- Jamboree: Limehouse de Reverie with The Cable Street Rag Band, 3 Sep 2026 20:30.
+- Jamboree at Gabriel's Wharf: Doolally Tap, 5 Sep 2026 12:00.
+- Jamboree: Cajun Après-Midi, 12 Sep 2026 13:30.
+
+**What stayed dark / on hold:**
+- Nightjar remains sparse with inconsistent near-term fill; no additional confirmed in-genre dates surfaced.
+- EFG London Jazz Festival channels remain mostly modern-leaning in the current crawl; no extra trad/roots-specific rows were added.
+
+**Next time:**
+- Continue Jamboree pagination through future pno= pages.
+- Keep weekly Doolally diary checks and a second pass on Nightjar feed state.
+- Re-check EFG wave announcements for trad/roots-specific entries.
+
+---
 # Gig-radar method log
 
 A running record of which discovery methods/sources each run tried, what produced gigs, and
