@@ -21,11 +21,11 @@ window.GIG_DATA = {
       "New Orleans / trad jazz",
       "swing"
     ],
-    "generated": "2026-08-21T06:32:14.585Z",
-    "dateBasis": "2026-08-21",
+    "generated": "2026-08-23T07:03:35.479Z",
+    "dateBasis": "2026-08-23",
     "counts": {
       "total": 217,
-      "upcoming": 217,
+      "upcoming": 210,
       "watchlist": 62
     },
     "genres": [
@@ -74,7 +74,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-21 20:30",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -102,7 +102,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-21 21:00",
       "travel": "Central London",
       "genresLabel": "swing · old-school country",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -129,7 +129,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-21 99:99",
       "travel": "Central London",
       "genresLabel": "old-time",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -156,7 +156,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-22 12:30",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -184,7 +184,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-22 20:30",
       "travel": "Central London",
       "genresLabel": "cajun · zydeco",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -211,7 +211,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-22 21:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -238,7 +238,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-22 99:99",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

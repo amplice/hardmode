@@ -346,3 +346,16 @@ Format per run:
 - What to try next:
   - In the next run, try extending the same Ram Jam month-at-a-time pattern to October/November and then compare with existing rows to catch silent schedule churn.
   - Re-check Hampton Hill + Surbiton Partnership for any late-Sept/early-Oct family events and school-holiday announcements.
+
+## 2026-08-23
+- New sources/methods tried:
+  - Ram Jam month feed rotation expanded to `October-2026` (`events?month=October-2026&format=json`) with per-event slug checks.
+  - Eventbrite-era fallback rotated to direct official venue pages first: Hampton Hill Theatre and Surbiton Partnership detail-checks (instead of broad category scans).
+  - All Saints / choir angle rechecked through direct source pages (even though no Friday recital dates were publishable).
+- What worked:
+  - The October Ram Jam JSON feed remained stable and machine-readable; five high-value dated music rows were added with explicit datetimes and canonical event URLs.
+  - The same old-finished-row pattern used in prior runs still held: the same 14 date-expired rows are now safe to remove and no active multi-day runs were dropped.
+- What to try next:
+  - Re-check All Saints Friday recital pages on their own day they become publishable.
+  - Add a dedicated scan of Sunday daytime/family family-school-holiday pages for October-December to diversify away from monthly gig feeds.
+  - Rotate to one non-Ram-Jam social or council angle (for example school-holiday PDFs/council PDFs) in the next cycle.
