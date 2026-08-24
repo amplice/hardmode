@@ -7,7 +7,7 @@ X-WR-CALNAME:Surbiton + Nearby Events
 X-WR-TIMEZONE:Europe/London
 BEGIN:VEVENT
 UID:e763@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Capture Kingston 2026: Kingston By Night
 DTSTART;TZID=Europe/London:20260415T123000
 DTEND;TZID=Europe/London:20261031T170000
@@ -17,7 +17,7 @@ URL:https://www.kingstonheritage.org.uk/events/capture-kingston-2026-kingston-ni
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260509@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Henry Moore: Monumental Nature
 DTSTART;TZID=Europe/London:20260509T000000
 DTEND;TZID=Europe/London:20260509T010000
@@ -27,7 +27,7 @@ URL:https://www.kew.org/kew-gardens/whats-on/henry-moore
 END:VEVENT
 BEGIN:VEVENT
 UID:e798@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Henry the Heron's Riverbank Self-Led Trail
 DTSTART;TZID=Europe/London:20260608T100000
 DTEND;TZID=Europe/London:20260831T160000
@@ -37,7 +37,7 @@ URL:https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/4d8fd3
 END:VEVENT
 BEGIN:VEVENT
 UID:e773@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Luke Jerram: Stepping Out
 DTSTART;VALUE=DATE:20260610
 DTEND;VALUE=DATE:20261001
@@ -47,7 +47,7 @@ URL:https://www.southbankcentre.co.uk/whats-on/family-young-people/gruffalo
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260617@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Jeppe Hein: Appearing Rooms (water fountain)
 DTSTART;TZID=Europe/London:20260617T100000
 DTEND;TZID=Europe/London:20260831T210000
@@ -57,7 +57,7 @@ URL:https://www.southbankcentre.co.uk/whats-on/jeppe-hein-appearing-rooms/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260718c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Magic Faraway Tree summer trail
 DTSTART;TZID=Europe/London:20260718T100000
 DTEND;TZID=Europe/London:20260831T170000
@@ -67,7 +67,7 @@ URL:https://www.nationaltrust.org.uk/visit/surrey/claremont-landscape-garden/eve
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260718@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Tom Gates EPIC Adventure at Kew
 DTSTART;TZID=Europe/London:20260718T100000
 DTEND;TZID=Europe/London:20260831T163000
@@ -77,7 +77,7 @@ URL:https://www.kew.org/kew-gardens/whats-on/tom-gates
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260719c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Revolution 250: America's Independence Story 1763-1783
 DTSTART;TZID=Europe/London:20260719T000000
 DTEND;TZID=Europe/London:20260719T010000
@@ -87,7 +87,7 @@ URL:https://www.nationalarchives.gov.uk/whats-on/exhibitions/revolution-250-amer
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260721f@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Time Travel Tots & Summer Craft Club
 DTSTART;TZID=Europe/London:20260721T000000
 DTEND;TZID=Europe/London:20260721T010000
@@ -97,7 +97,7 @@ URL:https://www.nationalarchives.gov.uk/whats-on/events/time-travel-tots-sensory
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260721d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Summer Games at Ham House
 DTSTART;TZID=Europe/London:20260721T100000
 DTEND;TZID=Europe/London:20260902T170000
@@ -107,7 +107,7 @@ URL:https://www.nationaltrust.org.uk/visit/london/ham-house-and-garden/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260725j@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Shire Horse Carriage Rides
 DTSTART;TZID=Europe/London:20260725T000000
 DTEND;TZID=Europe/London:20260725T010000
@@ -117,7 +117,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/shire-horse-rides/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260725i@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Historic Cookery in Henry VIII's Kitchens
 DTSTART;TZID=Europe/London:20260725T100000
 DTEND;TZID=Europe/London:20260830T160000
@@ -127,7 +127,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/historic-cookery/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260725k@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Theatre on Kew: Twelfth Night (Australian Shakespeare Company)
 DTSTART;TZID=Europe/London:20260725T193000
 DTEND;TZID=Europe/London:20260725T203000
@@ -136,18 +136,8 @@ DESCRIPTION:Open-air Shakespeare under the stars at Kew\, Tuesday to Sunday even
 URL:https://www.kew.org/kew-gardens/whats-on/twelfth-night
 END:VEVENT
 BEGIN:VEVENT
-UID:e741@surbiton-local-events
-DTSTAMP:20260823T070334Z
-SUMMARY:Beano Havoc at Hampton Court Palace
-DTSTART;VALUE=DATE:20260725
-DTEND;VALUE=DATE:20260824
-LOCATION:Hampton Court Palace\, Hampton Court
-DESCRIPTION:Beano-themed summer adventure with Dennis and friends around Hampton Court Palace.\nCost: Included in palace admission\; members go free\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://www.hrp.org.uk/hampton-court-palace/whats-on/beano-havoc-at-hampton-court-palace/
-URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/beano-havoc-at-hampton-court-palace/
-END:VEVENT
-BEGIN:VEVENT
 UID:e661@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Rose Youth Theatre Summer Schools 2026
 DTSTART;TZID=Europe/London:20260727T093000
 DTEND;TZID=Europe/London:20260727T103000
@@ -157,7 +147,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e825@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TONIC FLOW: A Communal Chorus in Colour and Sound
 DTSTART;TZID=Europe/London:20260730T100000
 DTEND;TZID=Europe/London:20260920T220000
@@ -167,7 +157,7 @@ URL:https://www.southbankcentre.co.uk/whats-on/tonic-flow-a-communal-chorus-in-c
 END:VEVENT
 BEGIN:VEVENT
 UID:e824@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Quentin Blake: The Southbank Parade
 DTSTART;TZID=Europe/London:20260731T100000
 DTEND;TZID=Europe/London:20261108T230000
@@ -177,7 +167,7 @@ URL:https://www.southbankcentre.co.uk/whats-on/quentin-blake-the-southbank-parad
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260805b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Still Dream of Playing Space Invaders? (retro gaming exhibition)
 DTSTART;TZID=Europe/London:20260805T100000
 DTEND;TZID=Europe/London:20260911T180000
@@ -186,28 +176,8 @@ DESCRIPTION:Free retro computing and gaming exhibition at Town House ahead of a 
 URL:https://surbitonpartnership.co.uk/event/still-dream-of-playing-space-invaders/
 END:VEVENT
 BEGIN:VEVENT
-UID:e20260813@surbiton-local-events
-DTSTAMP:20260823T070334Z
-SUMMARY:Blub
-DTSTART;TZID=Europe/London:20260813T100000
-DTEND;TZID=Europe/London:20260813T110000
-LOCATION:Polka Theatre\, Wimbledon
-DESCRIPTION:Immersive underwater sensory show by Theatre Nuu for babies aged 6-18 months\, staged in the Adventure Theatre. Performance times to confirm.\nCost: Ticketed\nTravel: Easy local trip\nAge guidance: Useful for younger children / families\nConfidence: High\nSource: https://polkatheatre.com/shows/blub/
-URL:https://polkatheatre.com/shows/blub/
-END:VEVENT
-BEGIN:VEVENT
-UID:e20260823@surbiton-local-events
-DTSTAMP:20260823T070334Z
-SUMMARY:Canbury Bandstand: London Saxophone Choir
-DTSTART;TZID=Europe/London:20260823T150000
-DTEND;TZID=Europe/London:20260823T170000
-LOCATION:Canbury Gardens Bandstand\, Kingston
-DESCRIPTION:Free Sunday afternoon concert at the Canbury Gardens bandstand by the Thames\, performed by London Saxophone Choir\, part of the 2026 'Summer Sundays by the Thames' season.\nCost: Free\nTravel: Walkable / very local\nConfidence: High\nSource: https://www.carakingston.org/bandstand-concerts
-URL:https://www.carakingston.org/bandstand-concerts
-END:VEVENT
-BEGIN:VEVENT
 UID:e20260825b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Choir of Man
 DTSTART;TZID=Europe/London:20260825T000000
 DTEND;TZID=Europe/London:20260825T010000
@@ -217,7 +187,7 @@ URL:https://www.atgtickets.com/shows/the-choir-of-man/richmond-theatre/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260825@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Once Upon a Beat (Tolworth Community Library)
 DTSTART;TZID=Europe/London:20260825T093000
 DTEND;TZID=Europe/London:20260825T103000
@@ -227,7 +197,7 @@ URL:https://libraryon.org/libraries/kingston-upon-thames/tolworth-community-libr
 END:VEVENT
 BEGIN:VEVENT
 UID:e703@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Adult Book Group
 DTSTART;TZID=Europe/London:20260825T140000
 DTEND;TZID=Europe/London:20260825T150000
@@ -237,7 +207,7 @@ URL:https://kingston.events.mylibrary.digital/event?id=253071
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260825c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Read to the Beat Crafting
 DTSTART;TZID=Europe/London:20260825T140000
 DTEND;TZID=Europe/London:20260825T150000
@@ -247,7 +217,7 @@ URL:https://libraryon.org/libraries/kingston-upon-thames/surbiton-library
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260825e@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Sienna Spiro: album shows (jazz-infused soul)
 DTSTART;TZID=Europe/London:20260825T170000
 DTEND;TZID=Europe/London:20260825T180000
@@ -257,7 +227,7 @@ URL:https://www.banquetrecords.com/events?w=35
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260825d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Paint Your Friends... With a Drink in Your Spare Hand
 DTSTART;TZID=Europe/London:20260825T190000
 DTEND;TZID=Europe/London:20260825T210000
@@ -267,7 +237,7 @@ URL:https://surbitonpartnership.co.uk/event/paint-your-friends-with-a-drink-in-y
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260827b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:LEGO DUPLO Play! session
 DTSTART;TZID=Europe/London:20260827T093000
 DTEND;TZID=Europe/London:20260827T103000
@@ -277,7 +247,7 @@ URL:https://libraryon.org/libraries/kingston-upon-thames/kingston-library
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260827d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Children's Centre Storytime Stomp
 DTSTART;TZID=Europe/London:20260827T100000
 DTEND;TZID=Europe/London:20260827T150000
@@ -287,7 +257,7 @@ URL:https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events/c113ec
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260827c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Harry Potter: Back to Hogwarts
 DTSTART;TZID=Europe/London:20260827T140000
 DTEND;TZID=Europe/London:20260827T150000
@@ -297,7 +267,7 @@ URL:https://libraryon.org/libraries/kingston-upon-thames/surbiton-library
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260827@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Space at The Table (Brazilian samba)
 DTSTART;TZID=Europe/London:20260827T200000
 DTEND;TZID=Europe/London:20260827T230000
@@ -307,7 +277,7 @@ URL:https://www.ramjamrecords.co.uk/events/27-08-26-space-at-the-table
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260828b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Family Ballet session
 DTSTART;TZID=Europe/London:20260828T100000
 DTEND;TZID=Europe/London:20260828T110000
@@ -317,7 +287,7 @@ URL:https://libraryon.org/libraries/kingston-upon-thames/kingston-library
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260828@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:A Day at the Seaside - Sensory Story & Craft
 DTSTART;TZID=Europe/London:20260828T093000
 DTEND;TZID=Europe/London:20260828T103000
@@ -327,7 +297,7 @@ URL:https://libraryon.org/libraries/kingston-upon-thames/tolworth-community-libr
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260829@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Explore Learning: Grand Maths Wizard Workshop
 DTSTART;TZID=Europe/London:20260829T090000
 DTEND;TZID=Europe/London:20260829T100000
@@ -337,7 +307,7 @@ URL:https://libraryon.org/libraries/kingston-upon-thames/kingston-library
 END:VEVENT
 BEGIN:VEVENT
 UID:e744@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hampton Court Palace Food Festival
 DTSTART;TZID=Europe/London:20260829T100000
 DTEND;TZID=Europe/London:20260831T180000
@@ -347,7 +317,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-fo
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260829b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Open Day at the Legion
 DTSTART;TZID=Europe/London:20260829T120000
 DTEND;TZID=Europe/London:20260829T170000
@@ -357,7 +327,7 @@ URL:https://surbitonpartnership.co.uk/event/open-day-at-the-legion/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260829c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Funk Thieves
 DTSTART;TZID=Europe/London:20260829T203000
 DTEND;TZID=Europe/London:20260829T230000
@@ -367,7 +337,7 @@ URL:https://www.lemonrock.com/gig.php?id=962887
 END:VEVENT
 BEGIN:VEVENT
 UID:e812@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Thames Ditton Miniature Railway: Public Running Day
 DTSTART;TZID=Europe/London:20260830T130000
 DTEND;TZID=Europe/London:20260830T160000
@@ -377,7 +347,7 @@ URL:https://www.malden-dsme.org/Events/Calendar/View?id=1437
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260830@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Pasadena Roof Orchestra - open-air concert
 DTSTART;TZID=Europe/London:20260830T190000
 DTEND;TZID=Europe/London:20260830T200000
@@ -387,7 +357,7 @@ URL:https://www.strawberryhillhouse.org.uk/pasadena/
 END:VEVENT
 BEGIN:VEVENT
 UID:e749@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Thames Ditton Miniature Railway: Bank Holiday Public Running Day
 DTSTART;TZID=Europe/London:20260831T130000
 DTEND;TZID=Europe/London:20260831T160000
@@ -397,7 +367,7 @@ URL:https://www.malden-dsme.org/Events/Calendar/View?id=1438
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260831@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Maria + Guests (folk)
 DTSTART;TZID=Europe/London:20260831T193000
 DTEND;TZID=Europe/London:20260831T223000
@@ -407,7 +377,7 @@ URL:https://www.ramjamrecords.co.uk/events/31-08-26-maria
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260901b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Melanie C: short set + Q&A
 DTSTART;TZID=Europe/London:20260901T190000
 DTEND;TZID=Europe/London:20260901T200000
@@ -417,7 +387,7 @@ URL:https://www.banquetrecords.com/melanie-c-short-set-%2B-q%26a/all-saints-chur
 END:VEVENT
 BEGIN:VEVENT
 UID:e617@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The History of Seething Wells
 DTSTART;TZID=Europe/London:20260901T193000
 DTEND;TZID=Europe/London:20260901T203000
@@ -427,7 +397,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260901@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Life Drawing at the Pub
 DTSTART;TZID=Europe/London:20260901T193000
 DTEND;TZID=Europe/London:20260901T213000
@@ -437,7 +407,7 @@ URL:https://surbitonpartnership.co.uk/event/have-a-go-at-life-drawing/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260903@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Rewilding Rangers
 DTSTART;TZID=Europe/London:20260903T153000
 DTEND;TZID=Europe/London:20260903T163000
@@ -447,7 +417,7 @@ URL:https://libraryon.org/libraries/kingston-upon-thames/tolworth-community-libr
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260903d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Celebrate Surbiton Forecourt Market (September Thursdays)
 DTSTART;TZID=Europe/London:20260903T163000
 DTEND;TZID=Europe/London:20260924T200000
@@ -457,7 +427,7 @@ URL:https://surbitonpartnership.co.uk/events/list/?tribe-bar-date=2026-08-30
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260903c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Music For Minds: Fundraiser (Big Egg + soul/funk bill)
 DTSTART;TZID=Europe/London:20260903T193000
 DTEND;TZID=Europe/London:20260903T230000
@@ -467,7 +437,7 @@ URL:https://www.ramjamrecords.co.uk/events/03-09-26-music-for-minds
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260903b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Jim Cregan and the New Acoustic Band
 DTSTART;TZID=Europe/London:20260903T200000
 DTEND;TZID=Europe/London:20260903T210000
@@ -477,7 +447,7 @@ URL:https://landmarkartscentre.org/shows/jim-cregan-and-the-new-acoustic-band/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260904b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Concours of Elegance
 DTSTART;TZID=Europe/London:20260904T100000
 DTEND;TZID=Europe/London:20260906T180000
@@ -487,7 +457,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/concours-of-elegance/
 END:VEVENT
 BEGIN:VEVENT
 UID:e768@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Jazz Fridays - Featuring the Cafe Jazz Band
 DTSTART;TZID=Europe/London:20260904T103000
 DTEND;TZID=Europe/London:20260904T123000
@@ -497,7 +467,7 @@ URL:https://www.rosetheatre.org/whats-on/jazz-fridays-hdbz
 END:VEVENT
 BEGIN:VEVENT
 UID:e820@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Rug Rhymes: Autumn
 DTSTART;TZID=Europe/London:20260904T110000
 DTEND;TZID=Europe/London:20260904T113000
@@ -507,7 +477,7 @@ URL:https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260904@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Comedy Night at Alcheme
 DTSTART;TZID=Europe/London:20260904T190000
 DTEND;TZID=Europe/London:20260904T220000
@@ -517,7 +487,7 @@ URL:https://surbitonpartnership.co.uk/event/comedy-night-at-alcheme/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260904c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Maiastra: String Quartets
 DTSTART;TZID=Europe/London:20260904T193000
 DTEND;TZID=Europe/London:20260904T203000
@@ -527,7 +497,7 @@ URL:https://maiastra.org/maiastra-concerts/maiastra-september-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260904d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Beyond the Streets of London
 DTSTART;TZID=Europe/London:20260904T193000
 DTEND;TZID=Europe/London:20260904T203000
@@ -537,7 +507,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674577/events/428785579
 END:VEVENT
 BEGIN:VEVENT
 UID:e706@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Stitch Saturdays
 DTSTART;TZID=Europe/London:20260905T103000
 DTEND;TZID=Europe/London:20260905T123000
@@ -547,7 +517,7 @@ URL:https://kingston.events.mylibrary.digital/event?id=252876
 END:VEVENT
 BEGIN:VEVENT
 UID:e665@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Live at the Rose with Lou Sanders
 DTSTART;TZID=Europe/London:20260905T193000
 DTEND;TZID=Europe/London:20260905T203000
@@ -557,7 +527,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260905@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hammersmith Bridge is Falling Down
 DTSTART;TZID=Europe/London:20260905T193000
 DTEND;TZID=Europe/London:20260905T203000
@@ -567,7 +537,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674580/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260905c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Maiastra: String Quartets
 DTSTART;TZID=Europe/London:20260905T193000
 DTEND;TZID=Europe/London:20260905T203000
@@ -577,7 +547,7 @@ URL:https://maiastra.org/maiastra-concerts/maiastra-september-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260905b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Bell Square: Teatr Biuro Podrozy - Eurydyka
 DTSTART;TZID=Europe/London:20260905T200000
 DTEND;TZID=Europe/London:20260905T210000
@@ -587,7 +557,7 @@ URL:https://www.watermans.org.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e618@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Walking Tour of Surbiton
 DTSTART;TZID=Europe/London:20260906T110000
 DTEND;TZID=Europe/London:20260906T120000
@@ -597,7 +567,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e750@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Thames Ditton Miniature Railway: Public Running Day
 DTSTART;TZID=Europe/London:20260906T130000
 DTEND;TZID=Europe/London:20260906T160000
@@ -607,7 +577,7 @@ URL:https://www.malden-dsme.org/Events/Calendar/View?id=1439
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260906@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Canbury Bandstand: Mole Valley Silver Band
 DTSTART;TZID=Europe/London:20260906T150000
 DTEND;TZID=Europe/London:20260906T170000
@@ -617,7 +587,7 @@ URL:https://www.carakingston.org/bandstand-concerts
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260906c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Arab Strap: in-store
 DTSTART;TZID=Europe/London:20260906T190000
 DTEND;TZID=Europe/London:20260906T200000
@@ -627,7 +597,7 @@ URL:https://www.banquetrecords.com/events?w=36
 END:VEVENT
 BEGIN:VEVENT
 UID:e666@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:House of Fun
 DTSTART;TZID=Europe/London:20260906T193000
 DTEND;TZID=Europe/London:20260906T203000
@@ -637,7 +607,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260906b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk Singaround
 DTSTART;TZID=Europe/London:20260906T194500
 DTEND;TZID=Europe/London:20260906T204500
@@ -647,7 +617,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260907@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Jack Whitehall: Work in Progress
 DTSTART;TZID=Europe/London:20260907T193000
 DTEND;TZID=Europe/London:20260907T203000
@@ -657,7 +627,7 @@ URL:https://www.rosetheatre.org/whats-on/jack-whitehall-work-in-progress-1dmr
 END:VEVENT
 BEGIN:VEVENT
 UID:e620@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Gerry Colvin live on stage
 DTSTART;TZID=Europe/London:20260908T193000
 DTEND;TZID=Europe/London:20260908T203000
@@ -667,7 +637,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e621@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Surbiton Neighbourhood Committee meeting
 DTSTART;TZID=Europe/London:20260908T193000
 DTEND;TZID=Europe/London:20260908T203000
@@ -677,7 +647,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e667@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Makings of a Murderer
 DTSTART;TZID=Europe/London:20260908T193000
 DTEND;TZID=Europe/London:20260908T203000
@@ -687,7 +657,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e717@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Lego Robotics Club
 DTSTART;TZID=Europe/London:20260909T160000
 DTEND;TZID=Europe/London:20260909T170000
@@ -697,7 +667,7 @@ URL:https://kingston.events.mylibrary.digital/event?id=320679
 END:VEVENT
 BEGIN:VEVENT
 UID:e622@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:David Le Vay art show
 DTSTART;TZID=Europe/London:20260909T190000
 DTEND;TZID=Europe/London:20260909T200000
@@ -707,7 +677,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e623@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Meet the Artist Night - Emma Burton
 DTSTART;TZID=Europe/London:20260909T190000
 DTEND;TZID=Europe/London:20260909T200000
@@ -717,7 +687,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260910c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Strawberry Hill House Flower Festival
 DTSTART;TZID=Europe/London:20260910T090000
 DTEND;TZID=Europe/London:20260913T170000
@@ -727,7 +697,7 @@ URL:https://www.strawberryhillhouse.org.uk/flower-festival/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260910@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Rachel Croft + Alice SK (folk)
 DTSTART;TZID=Europe/London:20260910T200000
 DTEND;TZID=Europe/London:20260910T210000
@@ -737,7 +707,7 @@ URL:https://www.landmarkartscentre.org/shows-and-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260910b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Andy Parsons: Work in Progress
 DTSTART;TZID=Europe/London:20260910T200000
 DTEND;TZID=Europe/London:20260910T210000
@@ -747,7 +717,7 @@ URL:https://www.ramjamrecords.co.uk/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260911d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Storytime & Twirling Toddlers: Journey into Space
 DTSTART;TZID=Europe/London:20260911T000000
 DTEND;TZID=Europe/London:20260911T010000
@@ -757,7 +727,7 @@ URL:https://www.atgtickets.com/shows/storytime-and-twirling-toddlers-with-little
 END:VEVENT
 BEGIN:VEVENT
 UID:e821@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Rug Rhymes: Autumn
 DTSTART;TZID=Europe/London:20260911T110000
 DTEND;TZID=Europe/London:20260911T113000
@@ -767,7 +737,7 @@ URL:https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260911@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Yu-gi-oh! Tournament
 DTSTART;TZID=Europe/London:20260911T160000
 DTEND;TZID=Europe/London:20260911T190000
@@ -777,7 +747,7 @@ URL:https://surbitonpartnership.co.uk/event/yu-gu-oh-japanese-manga-tournament/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260911c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Roger Taylor in conversation with Paul Whitehouse
 DTSTART;TZID=Europe/London:20260911T190000
 DTEND;TZID=Europe/London:20260911T200000
@@ -787,7 +757,7 @@ URL:https://www.banquetrecords.com/roger-taylor-in-conversation-with-paul-whiteh
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260911e@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Soul Sensation Disco Night
 DTSTART;TZID=Europe/London:20260911T193000
 DTEND;TZID=Europe/London:20260911T230000
@@ -797,7 +767,7 @@ URL:https://surbitonpartnership.co.uk/events/list/?tribe-bar-date=2026-09-10
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260911b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Milk Men (blues rock)
 DTSTART;TZID=Europe/London:20260911T200000
 DTEND;TZID=Europe/London:20260911T210000
@@ -807,7 +777,7 @@ URL:https://www.landmarkartscentre.org/shows-and-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e804@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Abundance Wimbledon Fruit Day
 DTSTART;TZID=Europe/London:20260912T110000
 DTEND;TZID=Europe/London:20260912T143000
@@ -817,7 +787,7 @@ URL:https://www.abundancewimbledon.com/
 END:VEVENT
 BEGIN:VEVENT
 UID:e624@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Meet the Neighbours
 DTSTART;TZID=Europe/London:20260912T120000
 DTEND;TZID=Europe/London:20260912T130000
@@ -827,7 +797,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260912b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Speakeasy Brunch (live music + Smok'd food)
 DTSTART;TZID=Europe/London:20260912T140000
 DTEND;TZID=Europe/London:20260912T163000
@@ -837,7 +807,7 @@ URL:https://www.ramjamrecords.co.uk/events/12/09/26-brunch
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260912c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Summer Sounds Party
 DTSTART;TZID=Europe/London:20260912T190000
 DTEND;TZID=Europe/London:20260912T200000
@@ -847,7 +817,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674355/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260912@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Thames Concerts: The Halcyon String Quartet
 DTSTART;TZID=Europe/London:20260912T193000
 DTEND;TZID=Europe/London:20260912T203000
@@ -857,7 +827,7 @@ URL:https://www.thamesconcerts.com/saturday-12-september-2026-the-halcyon-string
 END:VEVENT
 BEGIN:VEVENT
 UID:e813@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hampton Court Palace Garden Open Day
 DTSTART;VALUE=DATE:20260912
 DTEND;VALUE=DATE:20260913
@@ -867,7 +837,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
 END:VEVENT
 BEGIN:VEVENT
 UID:e810@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Relaxed Morning in the Magic Garden
 DTSTART;TZID=Europe/London:20260913T093000
 DTEND;TZID=Europe/London:20260913T110000
@@ -877,7 +847,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260913c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Quacky Races
 DTSTART;TZID=Europe/London:20260913T110000
 DTEND;TZID=Europe/London:20260913T150000
@@ -887,7 +857,7 @@ URL:https://www.nationaltrust.org.uk/visit/london/morden-hall-park/visiting-mord
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260913b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Pet Service (annual pet blessing)
 DTSTART;TZID=Europe/London:20260913T160000
 DTEND;TZID=Europe/London:20260913T170000
@@ -897,7 +867,7 @@ URL:https://surbitonpartnership.co.uk/events/list/?tribe-bar-date=2026-09-10
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260913@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk: Nancy Kerr & James Fagan
 DTSTART;TZID=Europe/London:20260913T194500
 DTEND;TZID=Europe/London:20260913T204500
@@ -907,7 +877,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e814@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hampton Court Palace Garden Open Day
 DTSTART;VALUE=DATE:20260913
 DTEND;VALUE=DATE:20260914
@@ -917,7 +887,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260914@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: Ludivine Hobson (soprano)
 DTSTART;TZID=Europe/London:20260914T131500
 DTEND;TZID=Europe/London:20260914T141500
@@ -927,7 +897,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e625@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Birds of the Horn of Africa - illustrated talk
 DTSTART;TZID=Europe/London:20260915T193000
 DTEND;TZID=Europe/London:20260915T203000
@@ -937,7 +907,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260916b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TIME by Luxmuralis (immersive light & sound)
 DTSTART;TZID=Europe/London:20260916T000000
 DTEND;TZID=Europe/London:20260927T214500
@@ -947,7 +917,7 @@ URL:https://www.landmarkartscentre.org/shows-and-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260916d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Jack Whitehall: Work in Progress (Richmond)
 DTSTART;TZID=Europe/London:20260916T000000
 DTEND;TZID=Europe/London:20260916T010000
@@ -957,7 +927,7 @@ URL:https://www.atgtickets.com/shows/jack-whitehall-work-in-progress/richmond-th
 END:VEVENT
 BEGIN:VEVENT
 UID:e626@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Parkinson's talk
 DTSTART;TZID=Europe/London:20260916T120000
 DTEND;TZID=Europe/London:20260916T130000
@@ -967,7 +937,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e762@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:History of Cheese in Henry VIIIÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s Kitchens
 DTSTART;TZID=Europe/London:20260916T183000
 DTEND;TZID=Europe/London:20260916T193000
@@ -977,7 +947,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/members-only-evening-hi
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260916@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Bat Walk in Surbiton
 DTSTART;TZID=Europe/London:20260916T190000
 DTEND;TZID=Europe/London:20260916T200000
@@ -987,7 +957,7 @@ URL:https://surbitonpartnership.co.uk/event/bat-walk-in-surbiton/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260916c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Sam Carter sings Nic Jones
 DTSTART;TZID=Europe/London:20260916T193000
 DTEND;TZID=Europe/London:20260916T203000
@@ -997,7 +967,7 @@ URL:https://www.efdss.org/whats-on/26-gigs/15985-sam-carter-nic-jones-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e627@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Andrew's Biographer Tells All
 DTSTART;TZID=Europe/London:20260916T200000
 DTEND;TZID=Europe/London:20260916T210000
@@ -1007,7 +977,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260917@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Una Coello: Guitar Girl Singalong
 DTSTART;TZID=Europe/London:20260917T100000
 DTEND;TZID=Europe/London:20260917T110000
@@ -1017,7 +987,7 @@ URL:https://www.rosetheatre.org/whats-on/una-coello-guitar-girl-9js5
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260917b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Wedding Present: acoustic set + Q&A (David Gedge)
 DTSTART;TZID=Europe/London:20260917T193000
 DTEND;TZID=Europe/London:20260917T203000
@@ -1027,7 +997,7 @@ URL:https://www.banquetrecords.com/events?w=38
 END:VEVENT
 BEGIN:VEVENT
 UID:e769@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Jazz Fridays - Featuring the Cafe Jazz Band
 DTSTART;TZID=Europe/London:20260918T103000
 DTEND;TZID=Europe/London:20260918T123000
@@ -1037,7 +1007,7 @@ URL:https://www.rosetheatre.org/whats-on/jazz-fridays-hdbz
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260918@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Ex Cellar Jazz: Funkestra
 DTSTART;TZID=Europe/London:20260918T190000
 DTEND;TZID=Europe/London:20260918T200000
@@ -1047,7 +1017,7 @@ URL:https://www.excellar.co.uk/blog/stefan-redtenbachers-funkestra-18th-sept-202
 END:VEVENT
 BEGIN:VEVENT
 UID:e668@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Three Men in a Boat
 DTSTART;VALUE=DATE:20260918
 DTEND;VALUE=DATE:20261011
@@ -1057,7 +1027,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260919b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:John Cleese and the Holy Grail
 DTSTART;TZID=Europe/London:20260919T000000
 DTEND;TZID=Europe/London:20260919T010000
@@ -1067,7 +1037,7 @@ URL:https://www.atgtickets.com/shows/john-cleese-and-the-holy-grail/richmond-the
 END:VEVENT
 BEGIN:VEVENT
 UID:e628@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Surbiton Farmers' Market
 DTSTART;TZID=Europe/London:20260919T090000
 DTEND;TZID=Europe/London:20260919T130000
@@ -1077,7 +1047,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e788@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Big Dreams: MC Grammar
 DTSTART;TZID=Europe/London:20260919T100000
 DTEND;TZID=Europe/London:20260919T110000
@@ -1087,7 +1057,7 @@ URL:https://polkatheatre.com/shows/
 END:VEVENT
 BEGIN:VEVENT
 UID:e787@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Big Dreams: Multicolore
 DTSTART;TZID=Europe/London:20260919T100000
 DTEND;TZID=Europe/London:20260919T110000
@@ -1097,7 +1067,7 @@ URL:https://polkatheatre.com/shows/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260919@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Board Game Day with Shakes and Ladders
 DTSTART;TZID=Europe/London:20260919T110000
 DTEND;TZID=Europe/London:20260919T160000
@@ -1107,7 +1077,7 @@ URL:https://www.rosetheatre.org/whats-on/board-game-day-bshd
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260919c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Bell Square: ACE Dance and Music - Echoes of Dust
 DTSTART;TZID=Europe/London:20260919T153000
 DTEND;TZID=Europe/London:20260919T163000
@@ -1117,7 +1087,7 @@ URL:https://www.watermans.org.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260920b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Alice Milburn - Sunday Jazz
 DTSTART;TZID=Europe/London:20260920T000000
 DTEND;TZID=Europe/London:20260920T010000
@@ -1127,7 +1097,7 @@ URL:https://www.excellar.co.uk/blog/alice-milburn-live
 END:VEVENT
 BEGIN:VEVENT
 UID:e789@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Big Dreams: Family Rave
 DTSTART;TZID=Europe/London:20260920T100000
 DTEND;TZID=Europe/London:20260920T110000
@@ -1137,7 +1107,7 @@ URL:https://polkatheatre.com/shows/
 END:VEVENT
 BEGIN:VEVENT
 UID:e790@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Big Dreams: Nick Sharratt - Once Upon a Drawalong
 DTSTART;TZID=Europe/London:20260920T100000
 DTEND;TZID=Europe/London:20260920T110000
@@ -1147,7 +1117,7 @@ URL:https://polkatheatre.com/shows/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260920@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Big Dreams: After Party
 DTSTART;TZID=Europe/London:20260920T104500
 DTEND;TZID=Europe/London:20260920T114500
@@ -1157,7 +1127,7 @@ URL:https://polkatheatre.com/event/big-dreams-after-party/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260920c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk: Luke Daniels
 DTSTART;TZID=Europe/London:20260920T194500
 DTEND;TZID=Europe/London:20260920T204500
@@ -1167,7 +1137,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260921@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: Katarina Strom (piano)
 DTSTART;TZID=Europe/London:20260921T131500
 DTEND;TZID=Europe/London:20260921T141500
@@ -1177,7 +1147,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260921b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:a small and quiet light
 DTSTART;TZID=Europe/London:20260921T193000
 DTEND;TZID=Europe/London:20260921T203000
@@ -1187,7 +1157,7 @@ URL:https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260922@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Present Laughter
 DTSTART;TZID=Europe/London:20260922T000000
 DTEND;TZID=Europe/London:20260922T010000
@@ -1197,7 +1167,7 @@ URL:https://www.atgtickets.com/shows/present-laughter/richmond-theatre/
 END:VEVENT
 BEGIN:VEVENT
 UID:e629@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Meet the Fellers
 DTSTART;TZID=Europe/London:20260923T200000
 DTEND;TZID=Europe/London:20260923T210000
@@ -1207,7 +1177,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260924@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Connolly Hayes play live blues
 DTSTART;TZID=Europe/London:20260924T190000
 DTEND;TZID=Europe/London:20260924T200000
@@ -1217,7 +1187,7 @@ URL:https://surbitonpartnership.co.uk/event/connolly-hayes-play-live-blues/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260924d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Calling France: Cie Point Bart - FiÃƒÆ’Ã‚Â¨vre
 DTSTART;TZID=Europe/London:20260924T190000
 DTEND;TZID=Europe/London:20260924T200000
@@ -1227,7 +1197,7 @@ URL:https://watermans.ticketsolve.com/shows/873666460/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260924c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Le Vent du Nord
 DTSTART;TZID=Europe/London:20260924T193000
 DTEND;TZID=Europe/London:20260924T203000
@@ -1237,7 +1207,7 @@ URL:https://www.efdss.org/whats-on/26-gigs/15997-le-vent-du-nord-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260924b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:John Hatcher & Friends
 DTSTART;TZID=Europe/London:20260924T200000
 DTEND;TZID=Europe/London:20260924T230000
@@ -1247,7 +1217,7 @@ URL:https://www.ramjamrecords.co.uk/events/24-09-26-john-hatcher-and-friends
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260925c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Calling France: Sauf le Dimanche - AssemblÃƒÆ’Ã‚Â©e
 DTSTART;TZID=Europe/London:20260925T190000
 DTEND;TZID=Europe/London:20260925T200000
@@ -1257,7 +1227,7 @@ URL:https://watermans.ticketsolve.com/shows/873666481/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260925b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Comedy Store (touring show)
 DTSTART;TZID=Europe/London:20260925T193000
 DTEND;TZID=Europe/London:20260925T203000
@@ -1267,7 +1237,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674831/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260925@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Ria Lina Live on Stage
 DTSTART;TZID=Europe/London:20260925T200000
 DTEND;TZID=Europe/London:20260925T210000
@@ -1277,7 +1247,7 @@ URL:https://surbitonpartnership.co.uk/event/comedian-ria-lina-live-on-stage/
 END:VEVENT
 BEGIN:VEVENT
 UID:e725@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Surbiton Festival 2026 official market day
 DTSTART;TZID=Europe/London:20260926T100000
 DTEND;TZID=Europe/London:20260926T160000
@@ -1287,7 +1257,7 @@ URL:https://www.surbitonfestival.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260926b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Calling France: La Triochka - Top Down
 DTSTART;TZID=Europe/London:20260926T130000
 DTEND;TZID=Europe/London:20260926T140000
@@ -1297,7 +1267,7 @@ URL:https://watermans.ticketsolve.com/shows/873666486/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260926@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Speakeasy Brunch (live music + Smok'd food) (Surbiton Festival day)
 DTSTART;TZID=Europe/London:20260926T140000
 DTEND;TZID=Europe/London:20260926T163000
@@ -1307,7 +1277,7 @@ URL:https://www.ramjamrecords.co.uk/events/26/09/26-brunch
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260927b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Calling France: Les Rustines de l'Ange - CoraSon
 DTSTART;TZID=Europe/London:20260927T140000
 DTEND;TZID=Europe/London:20260927T150000
@@ -1317,7 +1287,7 @@ URL:https://watermans.ticketsolve.com/shows/873666501/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e669@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:An Evening with Nigel Owens MBE
 DTSTART;TZID=Europe/London:20260927T193000
 DTEND;TZID=Europe/London:20260927T203000
@@ -1327,7 +1297,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260927@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk: Women of Folk
 DTSTART;TZID=Europe/London:20260927T194500
 DTEND;TZID=Europe/London:20260927T204500
@@ -1337,7 +1307,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260928@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: Slava Antipov (piano)
 DTSTART;TZID=Europe/London:20260928T131500
 DTEND;TZID=Europe/London:20260928T141500
@@ -1347,7 +1317,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e704@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Adult Book Group
 DTSTART;TZID=Europe/London:20260929T140000
 DTEND;TZID=Europe/London:20260929T150000
@@ -1357,7 +1327,7 @@ URL:https://kingston.events.mylibrary.digital/event?id=253071
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260930@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Conversations in Tusculum
 DTSTART;TZID=Europe/London:20260930T193000
 DTEND;TZID=Europe/London:20260930T203000
@@ -1367,7 +1337,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674832/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e791@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Three Little Pigs
 DTSTART;TZID=Europe/London:20261001T100000
 DTEND;TZID=Europe/London:20261001T110000
@@ -1377,7 +1347,7 @@ URL:https://polkatheatre.com/shows/page/2/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261001c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Myles Smith: short set + Q&A (two shows)
 DTSTART;TZID=Europe/London:20261001T180000
 DTEND;TZID=Europe/London:20261001T190000
@@ -1387,7 +1357,7 @@ URL:https://www.banquetrecords.com/events?w=40
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261001b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Leveret
 DTSTART;TZID=Europe/London:20261001T193000
 DTEND;TZID=Europe/London:20261001T203000
@@ -1397,7 +1367,7 @@ URL:https://www.efdss.org/whats-on/26-gigs/15999-leveret-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261001@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Roving Crows (Celtic folk)
 DTSTART;TZID=Europe/London:20261001T200000
 DTEND;TZID=Europe/London:20261001T210000
@@ -1407,7 +1377,7 @@ URL:https://www.landmarkartscentre.org/shows-and-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261002@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Film Night: La Vie En Rose
 DTSTART;TZID=Europe/London:20261002T193000
 DTEND;TZID=Europe/London:20261002T203000
@@ -1417,7 +1387,7 @@ URL:https://www.datathistle.com/place/110344-vera-fletcher-hall-thames-ditton/
 END:VEVENT
 BEGIN:VEVENT
 UID:e707@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Stitch Saturdays
 DTSTART;TZID=Europe/London:20261003T103000
 DTEND;TZID=Europe/London:20261003T123000
@@ -1427,7 +1397,7 @@ URL:https://kingston.events.mylibrary.digital/event?id=252876
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261003@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Harvest Festival at Morden Hall Park
 DTSTART;TZID=Europe/London:20261003T110000
 DTEND;TZID=Europe/London:20261003T153000
@@ -1437,7 +1407,7 @@ URL:https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261003c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:A Class of Your Own (ages 8-12)
 DTSTART;TZID=Europe/London:20261003T113000
 DTEND;TZID=Europe/London:20261003T123000
@@ -1447,7 +1417,7 @@ URL:https://polkatheatre.com/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261003b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Bubble Show
 DTSTART;TZID=Europe/London:20261003T140000
 DTEND;TZID=Europe/London:20261003T150000
@@ -1457,7 +1427,7 @@ URL:https://www.exchangetwickenham.co.uk/show/the-bubble-show-3/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261003a@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Astrojets
 DTSTART;TZID=Europe/London:20261003T210000
 DTEND;TZID=Europe/London:20261003T230000
@@ -1467,7 +1437,7 @@ URL:https://www.ramjamrecords.co.uk/events/03-10-26-the-astrojets
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261004@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Kingston Half Marathon
 DTSTART;TZID=Europe/London:20261004T083000
 DTEND;TZID=Europe/London:20261004T093000
@@ -1477,7 +1447,7 @@ URL:https://www.kingston.gov.uk/events/kingston-half-marathon
 END:VEVENT
 BEGIN:VEVENT
 UID:e811@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Relaxed Morning in the Magic Garden
 DTSTART;TZID=Europe/London:20261004T093000
 DTEND;TZID=Europe/London:20261004T110000
@@ -1487,7 +1457,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
 END:VEVENT
 BEGIN:VEVENT
 UID:e631@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Walking Through Surbiton's History
 DTSTART;TZID=Europe/London:20261004T110000
 DTEND;TZID=Europe/London:20261004T120000
@@ -1497,7 +1467,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261004b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Sunday Morning Coffee Concert
 DTSTART;TZID=Europe/London:20261004T110000
 DTEND;TZID=Europe/London:20261004T120000
@@ -1507,7 +1477,7 @@ URL:https://orangetreetheatre.co.uk/whats-on/sunday-morning-coffee-concert/
 END:VEVENT
 BEGIN:VEVENT
 UID:e751@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Thames Ditton Miniature Railway: Public Running Day
 DTSTART;TZID=Europe/London:20261004T130000
 DTEND;TZID=Europe/London:20261004T160000
@@ -1517,7 +1487,7 @@ URL:https://www.malden-dsme.org/Events/Calendar/View?id=1440
 END:VEVENT
 BEGIN:VEVENT
 UID:e670@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Tim Peake: Astronauts
 DTSTART;TZID=Europe/London:20261004T140000
 DTEND;TZID=Europe/London:20261004T150000
@@ -1527,7 +1497,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261004c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk: Kathryn Roberts & Sean Lakeman
 DTSTART;TZID=Europe/London:20261004T194500
 DTEND;TZID=Europe/London:20261004T204500
@@ -1537,7 +1507,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261005@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: Aleandro Giuseppe Libano (piano)
 DTSTART;TZID=Europe/London:20261005T131500
 DTEND;TZID=Europe/London:20261005T141500
@@ -1547,7 +1517,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e724@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Alien Chicks album-release show
 DTSTART;TZID=Europe/London:20261005T190000
 DTEND;TZID=Europe/London:20261005T200000
@@ -1557,7 +1527,7 @@ URL:https://www.ents24.com/kingston-upon-thames-events/banquet-records
 END:VEVENT
 BEGIN:VEVENT
 UID:e632@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Agatha Christie and True Crime
 DTSTART;TZID=Europe/London:20261006T193000
 DTEND;TZID=Europe/London:20261006T203000
@@ -1567,7 +1537,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e633@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Meet author Tim Flower
 DTSTART;TZID=Europe/London:20261007T193000
 DTEND;TZID=Europe/London:20261007T203000
@@ -1577,7 +1547,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261008@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Sofar Sounds X Ram Jam
 DTSTART;TZID=Europe/London:20261008T200000
 DTEND;TZID=Europe/London:20261008T223000
@@ -1587,7 +1557,7 @@ URL:https://www.ramjamrecords.co.uk/events/08-10-26-sofar-sounds
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261009c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Storytime & Twirling Toddlers: The Hairy Toe
 DTSTART;TZID=Europe/London:20261009T000000
 DTEND;TZID=Europe/London:20261009T010000
@@ -1597,7 +1567,7 @@ URL:https://www.atgtickets.com/shows/storytime-and-twirling-toddlers-with-little
 END:VEVENT
 BEGIN:VEVENT
 UID:e822@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Rug Rhymes: Autumn
 DTSTART;TZID=Europe/London:20261009T110000
 DTEND;TZID=Europe/London:20261009T113000
@@ -1607,7 +1577,7 @@ URL:https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261009@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Yu-gi-oh! Tournament
 DTSTART;TZID=Europe/London:20261009T160000
 DTEND;TZID=Europe/London:20261009T190000
@@ -1617,7 +1587,7 @@ URL:https://surbitonpartnership.co.uk/event/yu-gu-oh-tournament-4/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261009b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hejira - Celebrating Joni Mitchell
 DTSTART;TZID=Europe/London:20261009T193000
 DTEND;TZID=Europe/London:20261009T203000
@@ -1627,7 +1597,7 @@ URL:https://www.exchangetwickenham.co.uk/show/hejira-celebrating-joni-mitchell-2
 END:VEVENT
 BEGIN:VEVENT
 UID:e792@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Toto
 DTSTART;TZID=Europe/London:20261010T100000
 DTEND;TZID=Europe/London:20261010T110000
@@ -1637,7 +1607,7 @@ URL:https://polkatheatre.com/shows/page/2/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261010@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:AIDA (opera)
 DTSTART;TZID=Europe/London:20261010T130000
 DTEND;TZID=Europe/London:20261010T140000
@@ -1647,7 +1617,7 @@ URL:https://www.landmarkartscentre.org/shows-and-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261010b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Bell Square: Sadiq Ali Company - Tell Me (aerial circus)
 DTSTART;TZID=Europe/London:20261010T150000
 DTEND;TZID=Europe/London:20261010T160000
@@ -1657,7 +1627,7 @@ URL:https://www.watermans.org.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261010a@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Big City Hoot n' Howl
 DTSTART;TZID=Europe/London:20261010T210000
 DTEND;TZID=Europe/London:20261010T230000
@@ -1667,7 +1637,7 @@ URL:https://www.ramjamrecords.co.uk/events/10-10-26-big-city-hoot-n-howl
 END:VEVENT
 BEGIN:VEVENT
 UID:e815@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hampton Court Palace Garden Open Day
 DTSTART;VALUE=DATE:20261010
 DTEND;VALUE=DATE:20261011
@@ -1677,7 +1647,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261011@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Comedy Club 4 Kids
 DTSTART;TZID=Europe/London:20261011T143000
 DTEND;TZID=Europe/London:20261011T153000
@@ -1687,7 +1657,7 @@ URL:https://www.exchangetwickenham.co.uk/show/comedy-club-4-kids-2/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261011c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Family Barn Dance
 DTSTART;TZID=Europe/London:20261011T150000
 DTEND;TZID=Europe/London:20261011T163000
@@ -1697,7 +1667,7 @@ URL:https://www.efdss.org/whats-on/27-dances/16011-11-10-26-familybarndance
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261011b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk Singaround
 DTSTART;TZID=Europe/London:20261011T194500
 DTEND;TZID=Europe/London:20261011T204500
@@ -1707,7 +1677,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e816@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hampton Court Palace Garden Open Day
 DTSTART;VALUE=DATE:20261011
 DTEND;VALUE=DATE:20261012
@@ -1717,7 +1687,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261012@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: Freddie Ingles (bass)
 DTSTART;TZID=Europe/London:20261012T131500
 DTEND;TZID=Europe/London:20261012T141500
@@ -1727,7 +1697,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261012b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:T.S. Eliot's Murder in the Cathedral: OT in the Church
 DTSTART;TZID=Europe/London:20261012T193000
 DTEND;TZID=Europe/London:20261012T203000
@@ -1737,7 +1707,7 @@ URL:https://orangetreetheatre.co.uk/whats-on/murder-cathedral/
 END:VEVENT
 BEGIN:VEVENT
 UID:e671@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Jane Eyre
 DTSTART;VALUE=DATE:20261013
 DTEND;VALUE=DATE:20261025
@@ -1747,7 +1717,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261013b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Dan Croll (in-store)
 DTSTART;TZID=Europe/London:20261013T180000
 DTEND;TZID=Europe/London:20261013T190000
@@ -1757,7 +1727,7 @@ URL:https://www.banquetrecords.com/dan-croll/banquet-records%2C-6%3A00pm/SC13102
 END:VEVENT
 BEGIN:VEVENT
 UID:e635@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Wilderness Yet live on stage
 DTSTART;TZID=Europe/London:20261013T193000
 DTEND;TZID=Europe/London:20261013T203000
@@ -1767,7 +1737,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261013@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Life Drawing at the Pub
 DTSTART;TZID=Europe/London:20261013T193000
 DTEND;TZID=Europe/London:20261013T213000
@@ -1777,7 +1747,7 @@ URL:https://surbitonpartnership.co.uk/event/have-a-go-at-life-drawing/
 END:VEVENT
 BEGIN:VEVENT
 UID:e718@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Lego Robotics Club
 DTSTART;TZID=Europe/London:20261014T160000
 DTEND;TZID=Europe/London:20261014T170000
@@ -1787,7 +1757,7 @@ URL:https://kingston.events.mylibrary.digital/event?id=320679
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261014@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Bloody Mary(s)
 DTSTART;TZID=Europe/London:20261014T193000
 DTEND;TZID=Europe/London:20261014T203000
@@ -1797,7 +1767,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674841/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e636@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Why Poetry Matters
 DTSTART;TZID=Europe/London:20261014T200000
 DTEND;TZID=Europe/London:20261014T210000
@@ -1807,7 +1777,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261015@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Wimbledon BookFest 2026
 DTSTART;TZID=Europe/London:20261015T000000
 DTEND;TZID=Europe/London:20261015T010000
@@ -1817,7 +1787,7 @@ URL:https://www.wimbledonbookfest.org/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261016e@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Zip Wire Across the Bowl
 DTSTART;TZID=Europe/London:20261016T000000
 DTEND;TZID=Europe/London:20261016T010000
@@ -1827,7 +1797,7 @@ URL:https://allianzstadiumtwickenham.com/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e823@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Rug Rhymes: Autumn
 DTSTART;TZID=Europe/London:20261016T110000
 DTEND;TZID=Europe/London:20261016T113000
@@ -1837,7 +1807,7 @@ URL:https://www.southbankcentre.co.uk/whats-on/rug-rhymes-autumn/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261016d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Autumn Art Fair
 DTSTART;TZID=Europe/London:20261016T160000
 DTEND;TZID=Europe/London:20261018T203000
@@ -1847,7 +1817,7 @@ URL:https://www.landmarkartscentre.org/shows-and-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261016b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Ex Cellar Jazz (October session)
 DTSTART;TZID=Europe/London:20261016T190000
 DTEND;TZID=Europe/London:20261016T200000
@@ -1857,7 +1827,7 @@ URL:https://www.excellar.co.uk/blog/ex-cellar-jazz-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261016@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Poetry Evening at the cornerHOUSE
 DTSTART;TZID=Europe/London:20261016T193000
 DTEND;TZID=Europe/London:20261016T203000
@@ -1867,7 +1837,7 @@ URL:https://surbitonpartnership.co.uk/event/poetry-evening-at-the-cornerhouse/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261016c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:What Wood Victoria Do? (Victoria Wood celebration)
 DTSTART;TZID=Europe/London:20261016T193000
 DTEND;TZID=Europe/London:20261016T203000
@@ -1877,7 +1847,7 @@ URL:https://www.datathistle.com/place/110344-vera-fletcher-hall-thames-ditton/
 END:VEVENT
 BEGIN:VEVENT
 UID:e637@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Surbiton Farmers' Market
 DTSTART;TZID=Europe/London:20261017T090000
 DTEND;TZID=Europe/London:20261017T130000
@@ -1887,7 +1857,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261017d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Mariesa Dulak: Tigers\, Trains and Crocodiles
 DTSTART;TZID=Europe/London:20261017T100000
 DTEND;TZID=Europe/London:20261017T104500
@@ -1897,7 +1867,7 @@ URL:https://www.wimbledonbookfest.org/events/mariesa-dulak/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261017b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:KGS Musicians Perform Live (free market-morning concert)
 DTSTART;TZID=Europe/London:20261017T103000
 DTEND;TZID=Europe/London:20261017T113000
@@ -1907,7 +1877,7 @@ URL:https://surbitonpartnership.co.uk/event/kgs-musicians-perform-live/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261017c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Speakeasy Brunch (live music + Smok'd food)
 DTSTART;TZID=Europe/London:20261017T140000
 DTEND;TZID=Europe/London:20261017T163000
@@ -1917,7 +1887,7 @@ URL:https://www.ramjamrecords.co.uk/events/17/10/26-brunch
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261017@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Thames Concerts: KryÃƒâ€¦Ã‚Â¡tof Kohout (violin) & Edward Leung (piano)
 DTSTART;TZID=Europe/London:20261017T193000
 DTEND;TZID=Europe/London:20261017T220000
@@ -1927,7 +1897,7 @@ URL:https://www.thamesconcerts.com/saturday-17-october-2026-krystof-kohout-violi
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261017a@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Two Gun Mathilda
 DTSTART;TZID=Europe/London:20261017T210000
 DTEND;TZID=Europe/London:20261017T230000
@@ -1937,7 +1907,7 @@ URL:https://www.ramjamrecords.co.uk/events/17/10/26-two-gun-mathilda
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261018b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Ed Vere: Waffles & Julius
 DTSTART;TZID=Europe/London:20261018T100000
 DTEND;TZID=Europe/London:20261018T104500
@@ -1947,7 +1917,7 @@ URL:https://www.wimbledonbookfest.org/events/ed-vere/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261018@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk: Jack Rutter
 DTSTART;TZID=Europe/London:20261018T194500
 DTEND;TZID=Europe/London:20261018T204500
@@ -1957,7 +1927,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261019@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: Ioana Voicu (viola)
 DTSTART;TZID=Europe/London:20261019T131500
 DTEND;TZID=Europe/London:20261019T141500
@@ -1967,7 +1937,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261020@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Judi Dench: Is It Too Late to Make a Run for It?
 DTSTART;TZID=Europe/London:20261020T000000
 DTEND;TZID=Europe/London:20261020T010000
@@ -1977,7 +1947,7 @@ URL:https://www.atgtickets.com/shows/judi-dench-is-it-too-late-to-make-a-run-for
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261021b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:My Fair Lady
 DTSTART;TZID=Europe/London:20261021T000000
 DTEND;TZID=Europe/London:20261021T010000
@@ -1987,7 +1957,7 @@ URL:https://www.hamptonhilltheatre.org.uk/whats-on/upcoming
 END:VEVENT
 BEGIN:VEVENT
 UID:e638@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Aeronautical talk
 DTSTART;TZID=Europe/London:20261021T120000
 DTEND;TZID=Europe/London:20261021T130000
@@ -1997,7 +1967,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261021@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Bring Your Own Baby Comedy
 DTSTART;TZID=Europe/London:20261021T120000
 DTEND;TZID=Europe/London:20261021T130000
@@ -2007,7 +1977,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674845/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261022@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Night and Day: Sam Jewison Sings Cole Porter
 DTSTART;TZID=Europe/London:20261022T193000
 DTEND;TZID=Europe/London:20261022T203000
@@ -2017,7 +1987,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674849/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261022b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Belinda O'Hooley and Jackie Oates
 DTSTART;TZID=Europe/London:20261022T193000
 DTEND;TZID=Europe/London:20261022T203000
@@ -2027,7 +1997,7 @@ URL:https://www.efdss.org/whats-on/26-gigs/16002-belinda-ohooley-jackie-oates-20
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261022c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Frontier Sapiens Adventure Film Festival
 DTSTART;TZID=Europe/London:20261022T193000
 DTEND;TZID=Europe/London:20261022T203000
@@ -2037,7 +2007,7 @@ URL:https://landmarkartscentre.org/shows/frontier-sapiens-film-festival/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261023d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:You'll See (ages 8-12)
 DTSTART;TZID=Europe/London:20261023T000000
 DTEND;TZID=Europe/London:20261023T010000
@@ -2047,7 +2017,7 @@ URL:https://polkatheatre.com/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261023b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:On Your Bike Baffo (family show)
 DTSTART;TZID=Europe/London:20261023T103000
 DTEND;TZID=Europe/London:20261023T113000
@@ -2057,7 +2027,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674850/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261023c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Comedy Store (touring show)
 DTSTART;TZID=Europe/London:20261023T193000
 DTEND;TZID=Europe/London:20261023T203000
@@ -2067,7 +2037,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674831/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261023@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Comedy Night at the cornerHOUSE (Jimmy McGhie\, Ada Campe)
 DTSTART;TZID=Europe/London:20261023T200000
 DTEND;TZID=Europe/London:20261023T210000
@@ -2077,7 +2047,7 @@ URL:https://surbitonpartnership.co.uk/event/comedy-night-at-the-cornerhouse-2/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261023e@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Tom Thorp & ILUMETRIS: Here\, There be Monsters (jazz)
 DTSTART;TZID=Europe/London:20261023T200000
 DTEND;TZID=Europe/London:20261023T210000
@@ -2087,7 +2057,7 @@ URL:https://www.landmarkartscentre.org/shows/tom-thorp-ilumetris-here-there-be-m
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261022d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Halloween at Hampton Court Palace
 DTSTART;TZID=Europe/London:20261024T000000
 DTEND;TZID=Europe/London:20261024T010000
@@ -2097,7 +2067,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/halloween-at-hampton-co
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261024@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:R.U.M - Rhythmic. Underground. Movement.
 DTSTART;TZID=Europe/London:20261024T200000
 DTEND;TZID=Europe/London:20261024T210000
@@ -2107,7 +2077,7 @@ URL:https://landmarkartscentre.ticketsolve.com/shows/1173674790/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261024a@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Tim Penn and the Second Line
 DTSTART;TZID=Europe/London:20261024T200000
 DTEND;TZID=Europe/London:20261024T215000
@@ -2117,7 +2087,7 @@ URL:https://www.ramjamrecords.co.uk/events/24/10/26-tim-penn-and-the-second-line
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261025@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Fairport Convention - Autumn Tour 2026
 DTSTART;TZID=Europe/London:20261025T170000
 DTEND;TZID=Europe/London:20261025T180000
@@ -2127,7 +2097,7 @@ URL:https://www.exchangetwickenham.co.uk/show/fairport-convention-autumn-tour-20
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261025b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk: Luke Jackson
 DTSTART;TZID=Europe/London:20261025T194500
 DTEND;TZID=Europe/London:20261025T204500
@@ -2137,7 +2107,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261026@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: The Bergmann Duo (recorder and piano)
 DTSTART;TZID=Europe/London:20261026T131500
 DTEND;TZID=Europe/London:20261026T141500
@@ -2147,7 +2117,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261027c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Sensory Space Adventure (ages 0-4)
 DTSTART;TZID=Europe/London:20261027T100000
 DTEND;TZID=Europe/London:20261027T140000
@@ -2157,7 +2127,7 @@ URL:https://polkatheatre.com/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261027@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Room on the Broom
 DTSTART;TZID=Europe/London:20261027T103000
 DTEND;TZID=Europe/London:20261027T113000
@@ -2167,7 +2137,7 @@ URL:https://www.rosetheatre.org/whats-on/room-on-the-broom-qvpt
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261027b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Bach to Baby Half Term Concert
 DTSTART;TZID=Europe/London:20261027T110000
 DTEND;TZID=Europe/London:20261027T120000
@@ -2177,7 +2147,7 @@ URL:https://www.bachtobaby.com/surbiton
 END:VEVENT
 BEGIN:VEVENT
 UID:e705@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Adult Book Group
 DTSTART;TZID=Europe/London:20261027T140000
 DTEND;TZID=Europe/London:20261027T150000
@@ -2187,7 +2157,7 @@ URL:https://kingston.events.mylibrary.digital/event?id=253071
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261028c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:At Sea (ages 6-12)
 DTSTART;TZID=Europe/London:20261028T000000
 DTEND;TZID=Europe/London:20261028T010000
@@ -2197,7 +2167,7 @@ URL:https://polkatheatre.com/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261028b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Half-term pumpkin picking and carving
 DTSTART;TZID=Europe/London:20261028T100000
 DTEND;TZID=Europe/London:20261030T150000
@@ -2207,7 +2177,7 @@ URL:https://www.nationaltrust.org.uk/visit/london/morden-hall-park/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261028@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Furrow Collective
 DTSTART;TZID=Europe/London:20261028T193000
 DTEND;TZID=Europe/London:20261028T203000
@@ -2217,7 +2187,7 @@ URL:https://www.efdss.org/whats-on/26-gigs/16003-the-furrow-collective-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e639@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Fellers Men's Group
 DTSTART;TZID=Europe/London:20261028T200000
 DTEND;TZID=Europe/London:20261028T210000
@@ -2227,7 +2197,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261029b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Mr Sleepybum's Dream Machine
 DTSTART;TZID=Europe/London:20261029T110000
 DTEND;TZID=Europe/London:20261029T120000
@@ -2237,7 +2207,7 @@ URL:https://www.exchangetwickenham.co.uk/show/mr-sleepybums-dream-machine/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261029@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Stevie Watts & The Whirlybirds
 DTSTART;TZID=Europe/London:20261029T190000
 DTEND;TZID=Europe/London:20261029T200000
@@ -2247,7 +2217,7 @@ URL:https://surbitonpartnership.co.uk/event/stevie-watts-the-whirlybirds-play-li
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261029c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Almost\, Maine
 DTSTART;TZID=Europe/London:20261029T193000
 DTEND;TZID=Europe/London:20261029T203000
@@ -2257,7 +2227,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674854/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261030b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Family Autumn Wreath Workshop (ages 4+)
 DTSTART;TZID=Europe/London:20261030T100000
 DTEND;TZID=Europe/London:20261030T113000
@@ -2267,7 +2237,7 @@ URL:https://polkatheatre.com/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261030@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Wolf Hall - Words\, Music\, Power
 DTSTART;TZID=Europe/London:20261030T193000
 DTEND;TZID=Europe/London:20261030T203000
@@ -2277,7 +2247,7 @@ URL:https://www.landmarkartscentre.org/shows-and-events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261031b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Speakeasy Brunch (live music + Smok'd food) - Halloween edition
 DTSTART;TZID=Europe/London:20261031T140000
 DTEND;TZID=Europe/London:20261031T163000
@@ -2287,7 +2257,7 @@ URL:https://www.ramjamrecords.co.uk/events/31/10/26-brunch
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261031@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Red Hot Rhythm Revival (1920s-30s hot jazz)
 DTSTART;TZID=Europe/London:20261031T190000
 DTEND;TZID=Europe/London:20261031T200000
@@ -2297,7 +2267,7 @@ URL:https://www.excellar.co.uk/blog/red-hot-rhythm-revival-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261031c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Goblin Band (Halloween show)
 DTSTART;TZID=Europe/London:20261031T193000
 DTEND;TZID=Europe/London:20261031T203000
@@ -2307,7 +2277,7 @@ URL:https://www.efdss.org/whats-on/26-gigs/16004-goblin-band-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261031a@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Dusty Funk's Floorshakers
 DTSTART;TZID=Europe/London:20261031T220000
 DTEND;TZID=Europe/London:20261031T000000
@@ -2317,7 +2287,7 @@ URL:https://www.ramjamrecords.co.uk/events/31/10/26-dusty-funks-floorshakers
 END:VEVENT
 BEGIN:VEVENT
 UID:e640@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Walking Through Surbiton History
 DTSTART;TZID=Europe/London:20261101T110000
 DTEND;TZID=Europe/London:20261101T120000
@@ -2327,7 +2297,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261101b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Susan Santos
 DTSTART;TZID=Europe/London:20261101T193000
 DTEND;TZID=Europe/London:20261101T203000
@@ -2337,7 +2307,7 @@ URL:https://landmarkartscentre.org/shows/susan-santos/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261101@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk: Johnny Campbell + Charlie Hues
 DTSTART;TZID=Europe/London:20261101T200000
 DTEND;TZID=Europe/London:20261101T210000
@@ -2347,7 +2317,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261102b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: Nicole Mok (piano)
 DTSTART;TZID=Europe/London:20261102T131500
 DTEND;TZID=Europe/London:20261102T141500
@@ -2357,7 +2327,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261102@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Murder She Didn't Write - The Improvised Murder Mystery
 DTSTART;TZID=Europe/London:20261102T193000
 DTEND;TZID=Europe/London:20261102T203000
@@ -2367,7 +2337,7 @@ URL:https://www.rosetheatre.org/whats-on/murder-she-didn-t-write-6z3b
 END:VEVENT
 BEGIN:VEVENT
 UID:e641@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Kingston Power Station talk
 DTSTART;TZID=Europe/London:20261103T193000
 DTEND;TZID=Europe/London:20261103T203000
@@ -2377,7 +2347,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e793@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Sleep Show
 DTSTART;TZID=Europe/London:20261104T100000
 DTEND;TZID=Europe/London:20261104T110000
@@ -2387,7 +2357,7 @@ URL:https://polkatheatre.com/shows/page/2/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261104@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Trad Night: Macdara Yeates
 DTSTART;TZID=Europe/London:20261104T193000
 DTEND;TZID=Europe/London:20261104T203000
@@ -2397,7 +2367,7 @@ URL:https://www.efdss.org/whats-on/26-gigs/16008-trad-night-macdara-yeates-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261105b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Teddington Beer Festival
 DTSTART;TZID=Europe/London:20261105T180000
 DTEND;TZID=Europe/London:20261108T223000
@@ -2407,7 +2377,7 @@ URL:https://landmarkartscentre.org/shows/teddington-beer-festival/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261105@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Never The Bride (blues rock)
 DTSTART;TZID=Europe/London:20261105T203000
 DTEND;TZID=Europe/London:20261105T213000
@@ -2417,7 +2387,7 @@ URL:https://www.ramjamrecords.co.uk/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e672@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Miss Americana - A Tribute to Taylor Swift
 DTSTART;TZID=Europe/London:20261106T193000
 DTEND;TZID=Europe/London:20261106T203000
@@ -2427,7 +2397,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261107@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Tolworth Showtrain Model Railway Show
 DTSTART;TZID=Europe/London:20261107T090000
 DTEND;TZID=Europe/London:20261108T160000
@@ -2437,7 +2407,7 @@ URL:https://www.malden-dsme.org/Events/Calendar
 END:VEVENT
 BEGIN:VEVENT
 UID:e642@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Model Railway Show
 DTSTART;TZID=Europe/London:20261107T100000
 DTEND;TZID=Europe/London:20261107T110000
@@ -2447,7 +2417,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e708@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Stitch Saturdays
 DTSTART;TZID=Europe/London:20261107T103000
 DTEND;TZID=Europe/London:20261107T123000
@@ -2457,7 +2427,7 @@ URL:https://kingston.events.mylibrary.digital/event?id=252876
 END:VEVENT
 BEGIN:VEVENT
 UID:e673@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Rock Anthems Show
 DTSTART;TZID=Europe/London:20261107T193000
 DTEND;TZID=Europe/London:20261107T203000
@@ -2467,7 +2437,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e643@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Remembrance Sunday Service
 DTSTART;TZID=Europe/London:20261108T100000
 DTEND;TZID=Europe/London:20261108T110000
@@ -2477,7 +2447,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261109@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: Thady Cooney (piano)
 DTSTART;TZID=Europe/London:20261109T131500
 DTEND;TZID=Europe/London:20261109T141500
@@ -2487,7 +2457,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e644@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Anna Dyson Art Show
 DTSTART;TZID=Europe/London:20261109T190000
 DTEND;TZID=Europe/London:20261109T200000
@@ -2497,7 +2467,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e646@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hannah White live on stage
 DTSTART;TZID=Europe/London:20261110T193000
 DTEND;TZID=Europe/London:20261110T203000
@@ -2507,7 +2477,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261110@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Life Drawing at the Pub
 DTSTART;TZID=Europe/London:20261110T193000
 DTEND;TZID=Europe/London:20261110T213000
@@ -2517,7 +2487,7 @@ URL:https://surbitonpartnership.co.uk/event/have-a-go-at-life-drawing/
 END:VEVENT
 BEGIN:VEVENT
 UID:e794@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Christmas Lights
 DTSTART;TZID=Europe/London:20261111T100000
 DTEND;TZID=Europe/London:20261111T110000
@@ -2527,7 +2497,7 @@ URL:https://polkatheatre.com/shows/page/2/
 END:VEVENT
 BEGIN:VEVENT
 UID:e719@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Lego Robotics Club
 DTSTART;TZID=Europe/London:20261111T160000
 DTEND;TZID=Europe/London:20261111T170000
@@ -2537,7 +2507,7 @@ URL:https://kingston.events.mylibrary.digital/event?id=320679
 END:VEVENT
 BEGIN:VEVENT
 UID:e674@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Magic of Motown
 DTSTART;TZID=Europe/London:20261111T193000
 DTEND;TZID=Europe/London:20261111T203000
@@ -2547,7 +2517,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261111@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Mr Bennet's Bride
 DTSTART;TZID=Europe/London:20261111T193000
 DTEND;TZID=Europe/London:20261111T203000
@@ -2557,7 +2527,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674855/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261112@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Kingston Christmas Market 2026
 DTSTART;TZID=Europe/London:20261112T100000
 DTEND;TZID=Europe/London:20261231T180000
@@ -2567,7 +2537,7 @@ URL:https://www.kingstonchristmasmarket.co.uk/plan-your-visit/
 END:VEVENT
 BEGIN:VEVENT
 UID:e675@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Russell Watson - An Intimate Evening with The Voice
 DTSTART;TZID=Europe/London:20261112T193000
 DTEND;TZID=Europe/London:20261112T203000
@@ -2577,7 +2547,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261112b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Ryan Young with Louis Campbell
 DTSTART;TZID=Europe/London:20261112T193000
 DTEND;TZID=Europe/London:20261112T203000
@@ -2587,7 +2557,7 @@ URL:https://www.efdss.org/whats-on/26-gigs/16022-ryan-young-louis-campbell-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261112c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Landmark Live Comedy
 DTSTART;TZID=Europe/London:20261112T200000
 DTEND;TZID=Europe/London:20261112T210000
@@ -2597,7 +2567,7 @@ URL:https://www.landmarkartscentre.org/shows/landmark-live-comedy/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261113@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Storytime & Twirling Toddlers: The Mitten
 DTSTART;TZID=Europe/London:20261113T000000
 DTEND;TZID=Europe/London:20261113T010000
@@ -2607,7 +2577,7 @@ URL:https://www.atgtickets.com/shows/storytime-and-twirling-toddlers-with-little
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261113b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Christmas at Kew
 DTSTART;TZID=Europe/London:20261113T162000
 DTEND;TZID=Europe/London:20261231T220000
@@ -2617,7 +2587,7 @@ URL:https://www.kew.org/kew-gardens/whats-on/christmas
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261114@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Speakeasy Brunch (live music + Smok'd food)
 DTSTART;TZID=Europe/London:20261114T140000
 DTEND;TZID=Europe/London:20261114T163000
@@ -2627,7 +2597,7 @@ URL:https://www.ramjamrecords.co.uk/events/14/11/26-brunch
 END:VEVENT
 BEGIN:VEVENT
 UID:e795@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Peter Pan
 DTSTART;VALUE=DATE:20261114
 DTEND;VALUE=DATE:20270101
@@ -2637,7 +2607,7 @@ URL:https://polkatheatre.com/event/peter-pan/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261115@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Jazz At The Movies
 DTSTART;TZID=Europe/London:20261115T193000
 DTEND;TZID=Europe/London:20261115T203000
@@ -2647,7 +2617,7 @@ URL:https://www.exchangetwickenham.co.uk/show/jazz-at-the-movies/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261115b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk: Hunter Muskett
 DTSTART;TZID=Europe/London:20261115T200000
 DTEND;TZID=Europe/London:20261115T210000
@@ -2657,7 +2627,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261116b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Pride and Prejudice* (*sort of)
 DTSTART;TZID=Europe/London:20261116T000000
 DTEND;TZID=Europe/London:20261116T010000
@@ -2667,7 +2637,7 @@ URL:https://www.atgtickets.com/shows/pride-and-prejudice-sort-of/richmond-theatr
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261116@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: Soraya Vergee (piano)
 DTSTART;TZID=Europe/London:20261116T131500
 DTEND;TZID=Europe/London:20261116T141500
@@ -2677,7 +2647,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e647@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Yeomanry Lunch Talk
 DTSTART;TZID=Europe/London:20261118T120000
 DTEND;TZID=Europe/London:20261118T130000
@@ -2687,7 +2657,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e648@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Tradescants and Their Gardens
 DTSTART;TZID=Europe/London:20261118T140000
 DTEND;TZID=Europe/London:20261118T150000
@@ -2697,7 +2667,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261118@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Blade's Edge
 DTSTART;TZID=Europe/London:20261118T193000
 DTEND;TZID=Europe/London:20261118T203000
@@ -2707,7 +2677,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674858/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e649@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:War Graves and the Stories They Tell
 DTSTART;TZID=Europe/London:20261118T200000
 DTEND;TZID=Europe/London:20261118T210000
@@ -2717,7 +2687,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e754@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hampton Court Palace Ice Rink
 DTSTART;TZID=Europe/London:20261120T100000
 DTEND;TZID=Europe/London:20261120T110000
@@ -2727,7 +2697,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-ic
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261120b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Glow at RHS Garden Wisley
 DTSTART;TZID=Europe/London:20261120T160000
 DTEND;TZID=Europe/London:20261231T193000
@@ -2737,7 +2707,7 @@ URL:https://gardentickets.rhs.org.uk/rhswi/sessions.aspx?tid=42
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261120@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Ex Cellar Jazz (November session)
 DTSTART;TZID=Europe/London:20261120T190000
 DTEND;TZID=Europe/London:20261120T200000
@@ -2747,7 +2717,7 @@ URL:https://www.excellar.co.uk/blog/ex-cellar-jazz-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e650@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Surbiton Farmers' Market
 DTSTART;TZID=Europe/London:20261121T090000
 DTEND;TZID=Europe/London:20261121T130000
@@ -2757,7 +2727,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261121c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hinchley Wood School Students Play Concert (free market-morning concert)
 DTSTART;TZID=Europe/London:20261121T103000
 DTEND;TZID=Europe/London:20261121T113000
@@ -2767,7 +2737,7 @@ URL:https://surbitonpartnership.co.uk/event/hinchley-wood-school-students-play-c
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261121@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Thames Concerts: Jamie Walton (cello) & Daniel Lebhardt (piano)
 DTSTART;TZID=Europe/London:20261121T193000
 DTEND;TZID=Europe/London:20261121T203000
@@ -2777,7 +2747,7 @@ URL:https://www.thamesconcerts.com/saturday-21-november-2026-jamie-walton-cello-
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261121b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Kingston Choral Society: Haydn's The Creation
 DTSTART;TZID=Europe/London:20261121T193000
 DTEND;TZID=Europe/London:20261121T220000
@@ -2787,7 +2757,7 @@ URL:https://kingstonchoralsociety.org.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e817@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hampton Court Palace Garden Open Day
 DTSTART;VALUE=DATE:20261121
 DTEND;VALUE=DATE:20261122
@@ -2797,7 +2767,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261122b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Family Barn Dance
 DTSTART;TZID=Europe/London:20261122T150000
 DTEND;TZID=Europe/London:20261122T163000
@@ -2807,7 +2777,7 @@ URL:https://www.efdss.org/whats-on/27-dances/16011-11-10-26-familybarndance
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261122@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk Singaround
 DTSTART;TZID=Europe/London:20261122T194500
 DTEND;TZID=Europe/London:20261122T204500
@@ -2817,7 +2787,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e818@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hampton Court Palace Garden Open Day
 DTSTART;VALUE=DATE:20261122
 DTEND;VALUE=DATE:20261123
@@ -2827,7 +2797,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261123@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: Aeneas Ensemble (piano trio)
 DTSTART;TZID=Europe/London:20261123T131500
 DTEND;TZID=Europe/London:20261123T141500
@@ -2837,7 +2807,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261124@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Bach to Baby Christmas Family Concert
 DTSTART;TZID=Europe/London:20261124T110000
 DTEND;TZID=Europe/London:20261124T120000
@@ -2847,7 +2817,7 @@ URL:https://www.bachtobaby.com/surbiton
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261125@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Soho Cello Quartet
 DTSTART;TZID=Europe/London:20261125T193000
 DTEND;TZID=Europe/London:20261125T203000
@@ -2857,7 +2827,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674860/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e676@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Wind in the Willows
 DTSTART;VALUE=DATE:20261125
 DTEND;VALUE=DATE:20270101
@@ -2867,7 +2837,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261126c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Surbiton Station Carols with Surbiton RBL Band
 DTSTART;TZID=Europe/London:20261126T000000
 DTEND;TZID=Europe/London:20261126T010000
@@ -2877,7 +2847,7 @@ URL:https://www.surbitonrblband.com/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261126@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Will James Live
 DTSTART;TZID=Europe/London:20261126T190000
 DTEND;TZID=Europe/London:20261126T223000
@@ -2887,7 +2857,7 @@ URL:https://www.skiddle.com/whats-on/Kingston-Upon-Thames/Excellar/Will-James-Li
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261126b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:A Christmas Carol (drama with music)
 DTSTART;TZID=Europe/London:20261126T193000
 DTEND;TZID=Europe/London:20261126T203000
@@ -2897,7 +2867,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674861/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261127@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Ian Smith Live on Stage (comedy)
 DTSTART;TZID=Europe/London:20261127T200000
 DTEND;TZID=Europe/London:20261127T210000
@@ -2907,7 +2877,7 @@ URL:https://surbitonpartnership.co.uk/event/ian-smith-live-on-stage/
 END:VEVENT
 BEGIN:VEVENT
 UID:e796@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Antarctica
 DTSTART;VALUE=DATE:20261127
 DTEND;VALUE=DATE:20270101
@@ -2917,7 +2887,7 @@ URL:https://polkatheatre.com/event/antarctica/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261128b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Robin Hood (family Christmas show)
 DTSTART;TZID=Europe/London:20261128T000000
 DTEND;TZID=Europe/London:20261128T010000
@@ -2927,7 +2897,7 @@ URL:https://www.hamptonhilltheatre.org.uk/whats-on/upcoming
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261128@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Speakeasy Brunch (live music + Smok'd food)
 DTSTART;TZID=Europe/London:20261128T140000
 DTEND;TZID=Europe/London:20261128T163000
@@ -2937,7 +2907,7 @@ URL:https://www.ramjamrecords.co.uk/events/28/11/26-brunch
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261128c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:A Festive Evening with Patrick Dow & Friends
 DTSTART;TZID=Europe/London:20261128T193000
 DTEND;TZID=Europe/London:20261128T203000
@@ -2947,7 +2917,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173674863/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e755@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Winter Palace
 DTSTART;VALUE=DATE:20261128
 DTEND;VALUE=DATE:20270101
@@ -2957,7 +2927,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/winter-palace/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261130@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Monday Lunchtime Recital: King's Clarinets
 DTSTART;TZID=Europe/London:20261130T131500
 DTEND;TZID=Europe/London:20261130T141500
@@ -2967,7 +2937,7 @@ URL:https://allsaintskingston.co.uk/choir
 END:VEVENT
 BEGIN:VEVENT
 UID:e651@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Talk on the History of Toys & Board Games
 DTSTART;TZID=Europe/London:20261201T193000
 DTEND;TZID=Europe/London:20261201T203000
@@ -2977,7 +2947,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261203c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Surbiton Station Carols with Surbiton RBL Band
 DTSTART;TZID=Europe/London:20261203T000000
 DTEND;TZID=Europe/London:20261203T010000
@@ -2987,7 +2957,7 @@ URL:https://www.surbitonrblband.com/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261203b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Dom Martin & Band
 DTSTART;TZID=Europe/London:20261203T193000
 DTEND;TZID=Europe/London:20261203T203000
@@ -2997,7 +2967,7 @@ URL:https://landmarkartscentre.org/shows/dom-martin-band/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261203@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Sofar Sounds X Ram Jam
 DTSTART;TZID=Europe/London:20261203T200000
 DTEND;TZID=Europe/London:20261203T223000
@@ -3007,7 +2977,7 @@ URL:https://www.ramjamrecords.co.uk/events/03-12-26-sofar-sounds
 END:VEVENT
 BEGIN:VEVENT
 UID:e745@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hampton Court Palace Festive Fayre
 DTSTART;TZID=Europe/London:20261204T100000
 DTEND;TZID=Europe/London:20261206T170000
@@ -3017,7 +2987,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-fe
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261204@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Comedy Crackers (Jack Dee\, Angela Barnes + more)
 DTSTART;TZID=Europe/London:20261204T193000
 DTEND;TZID=Europe/London:20261204T203000
@@ -3027,7 +2997,7 @@ URL:https://www.rosetheatre.org/whats-on/comedy-crackers-fmlq
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261204b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Good Stuff (14-piece soul\, pop and gospel band)
 DTSTART;TZID=Europe/London:20261204T193000
 DTEND;TZID=Europe/London:20261204T203000
@@ -3037,7 +3007,7 @@ URL:https://www.landmarkartscentre.org/shows/the-good-stuff/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261205b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:OSO Panto: The Little Mermaid
 DTSTART;TZID=Europe/London:20261205T000000
 DTEND;TZID=Europe/London:20261205T010000
@@ -3047,7 +3017,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173672362/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261205c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Jack and the Beanstalk - panto with Will Young & Charlie Brooks
 DTSTART;TZID=Europe/London:20261205T000000
 DTEND;TZID=Europe/London:20261205T010000
@@ -3057,7 +3027,7 @@ URL:https://www.atgtickets.com/shows/jack-and-the-beanstalk-pantomime/richmond-t
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261205@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Speakeasy Brunch (live music + Smok'd food) - festive season
 DTSTART;TZID=Europe/London:20261205T140000
 DTEND;TZID=Europe/London:20261205T163000
@@ -3067,7 +3037,7 @@ URL:https://www.ramjamrecords.co.uk/events/05/12/26-brunch
 END:VEVENT
 BEGIN:VEVENT
 UID:e797@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Big Bash
 DTSTART;TZID=Europe/London:20261206T140000
 DTEND;TZID=Europe/London:20261206T150000
@@ -3077,7 +3047,7 @@ URL:https://polkatheatre.com/event/the-big-bash-2026/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261206@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:TwickFolk Christmas Special: Jackie Oates & John Spiers
 DTSTART;TZID=Europe/London:20261206T194500
 DTEND;TZID=Europe/London:20261206T204500
@@ -3087,7 +3057,7 @@ URL:https://www.twickfolk.co.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261207b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Cinderella (pantomime)
 DTSTART;TZID=Europe/London:20261207T150000
 DTEND;TZID=Europe/London:20261207T160000
@@ -3097,7 +3067,7 @@ URL:https://www.exchangetwickenham.co.uk/show/cinderella/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261207@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Live at Christmas (Fern Brady\, Fin Taylor\, Tom Rosenthal\, host John Robins)
 DTSTART;TZID=Europe/London:20261207T193000
 DTEND;TZID=Europe/London:20261207T203000
@@ -3107,7 +3077,7 @@ URL:https://www.rosetheatre.org/whats-on/live-at-christmas-fvmq
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261208@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Bach to Baby Christmas Family Concert
 DTSTART;TZID=Europe/London:20261208T110000
 DTEND;TZID=Europe/London:20261208T120000
@@ -3117,7 +3087,7 @@ URL:https://www.bachtobaby.com/surbiton
 END:VEVENT
 BEGIN:VEVENT
 UID:e653@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Jez Lowe live on stage
 DTSTART;TZID=Europe/London:20261208T193000
 DTEND;TZID=Europe/London:20261208T203000
@@ -3127,7 +3097,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261208b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Life Drawing at the Pub
 DTSTART;TZID=Europe/London:20261208T193000
 DTEND;TZID=Europe/London:20261208T213000
@@ -3137,7 +3107,7 @@ URL:https://surbitonpartnership.co.uk/event/have-a-go-at-life-drawing/
 END:VEVENT
 BEGIN:VEVENT
 UID:e720@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Lego Robotics Club
 DTSTART;TZID=Europe/London:20261209T160000
 DTEND;TZID=Europe/London:20261209T170000
@@ -3147,7 +3117,7 @@ URL:https://kingston.events.mylibrary.digital/event?id=320679
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261209@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Salt House
 DTSTART;TZID=Europe/London:20261209T193000
 DTEND;TZID=Europe/London:20261209T203000
@@ -3157,7 +3127,7 @@ URL:https://www.efdss.org/whats-on/26-gigs/16016-salt-house-dec-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e654@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Pilgrimages - a guide
 DTSTART;TZID=Europe/London:20261209T200000
 DTEND;TZID=Europe/London:20261209T210000
@@ -3167,7 +3137,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261210c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Morganway + fieldlily (Americana / roots)
 DTSTART;TZID=Europe/London:20261210T193000
 DTEND;TZID=Europe/London:20261210T203000
@@ -3177,7 +3147,7 @@ URL:https://www.landmarkartscentre.org/shows/morganway-supported-by-fieldlily/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261210@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Little Mermaid After Dark (18+ panto)
 DTSTART;TZID=Europe/London:20261210T200000
 DTEND;TZID=Europe/London:20261210T210000
@@ -3187,7 +3157,7 @@ URL:https://osoarts.ticketsolve.com/shows/1173672371/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261210b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Squabble + Rob Cope's Phoenix (jazz double bill)
 DTSTART;TZID=Europe/London:20261210T200000
 DTEND;TZID=Europe/London:20261210T223000
@@ -3197,7 +3167,7 @@ URL:https://www.ramjamrecords.co.uk/events
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261211b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Storytime & Twirling Toddlers: Santa's Crash
 DTSTART;TZID=Europe/London:20261211T000000
 DTEND;TZID=Europe/London:20261211T010000
@@ -3207,7 +3177,7 @@ URL:https://www.atgtickets.com/shows/storytime-and-twirling-toddlers-with-little
 END:VEVENT
 BEGIN:VEVENT
 UID:e746@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hampton Court Palace Festive Fayre
 DTSTART;TZID=Europe/London:20261211T100000
 DTEND;TZID=Europe/London:20261213T170000
@@ -3217,7 +3187,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-palace-fe
 END:VEVENT
 BEGIN:VEVENT
 UID:e782@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:There's a Bear on My Chair
 DTSTART;TZID=Europe/London:20261211T100000
 DTEND;TZID=Europe/London:20261211T110000
@@ -3227,7 +3197,7 @@ URL:https://www.southbankcentre.co.uk/whats-on/theres-a-bear-on-my-chair/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261211@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Ex Cellar Jazz (December session)
 DTSTART;TZID=Europe/London:20261211T190000
 DTEND;TZID=Europe/London:20261211T200000
@@ -3237,7 +3207,7 @@ URL:https://www.excellar.co.uk/blog/ex-cellar-jazz-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261212c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Frozen JR (Dramacube)
 DTSTART;TZID=Europe/London:20261212T000000
 DTEND;TZID=Europe/London:20261212T010000
@@ -3247,7 +3217,7 @@ URL:https://www.hamptonhilltheatre.org.uk/whats-on/upcoming
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261212d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Ellie & Starlight's Christmas Adventure
 DTSTART;TZID=Europe/London:20261212T000000
 DTEND;TZID=Europe/London:20261212T010000
@@ -3257,7 +3227,7 @@ URL:https://www.hamptonhilltheatre.org.uk/whats-on/upcoming
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261212e@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Carols by Candlelight with Surrey Brass
 DTSTART;TZID=Europe/London:20261212T000000
 DTEND;TZID=Europe/London:20261212T010000
@@ -3267,7 +3237,7 @@ URL:https://www.landmarkartscentre.org/shows/carols-by-candlelight/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261212b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Speakeasy Brunch (live music + Smok'd food)
 DTSTART;TZID=Europe/London:20261212T140000
 DTEND;TZID=Europe/London:20261212T163000
@@ -3277,7 +3247,7 @@ URL:https://www.ramjamrecords.co.uk/events/12/12/26-brunch
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261212@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Thames Concerts: Rieko Makita (piano)
 DTSTART;TZID=Europe/London:20261212T193000
 DTEND;TZID=Europe/London:20261212T203000
@@ -3287,7 +3257,7 @@ URL:https://www.thamesconcerts.com/saturday-12-december-2026-rieko-makita-piano/
 END:VEVENT
 BEGIN:VEVENT
 UID:e680@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Overtones - Jivin' Home For Christmas
 DTSTART;TZID=Europe/London:20261214T193000
 DTEND;TZID=Europe/London:20261214T203000
@@ -3297,7 +3267,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261215@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Winter Wonderland Adventure (ages 0-4)
 DTSTART;TZID=Europe/London:20261215T100000
 DTEND;TZID=Europe/London:20261215T140000
@@ -3307,7 +3277,7 @@ URL:https://polkatheatre.com/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e655@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Harp Playing at Probus Christmas lunch
 DTSTART;TZID=Europe/London:20261216T120000
 DTEND;TZID=Europe/London:20261216T130000
@@ -3317,7 +3287,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261216@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:A Winter Union (festive folk)
 DTSTART;TZID=Europe/London:20261216T193000
 DTEND;TZID=Europe/London:20261216T203000
@@ -3327,7 +3297,7 @@ URL:https://www.efdss.org/whats-on/26-gigs/16009-a-winter-union-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261217@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:MiniJam House Party (ages 0-4)
 DTSTART;TZID=Europe/London:20261217T100000
 DTEND;TZID=Europe/London:20261217T140000
@@ -3337,7 +3307,7 @@ URL:https://polkatheatre.com/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e681@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Euphonix Winter Concert
 DTSTART;TZID=Europe/London:20261217T113000
 DTEND;TZID=Europe/London:20261217T130000
@@ -3347,7 +3317,7 @@ URL:https://www.rosetheatre.org/whats-on
 END:VEVENT
 BEGIN:VEVENT
 UID:e656@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Surbiton Farmers' Market
 DTSTART;TZID=Europe/London:20261219T090000
 DTEND;TZID=Europe/London:20261219T130000
@@ -3357,7 +3327,7 @@ URL:https://surbitonpartnership.co.uk/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261219d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Festive Family Sing-along! (ages 4+)
 DTSTART;TZID=Europe/London:20261219T100000
 DTEND;TZID=Europe/London:20261219T113000
@@ -3367,7 +3337,7 @@ URL:https://polkatheatre.com/whats-on/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261219b@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Kingston Music Service Free Concert (market morning)
 DTSTART;TZID=Europe/London:20261219T103000
 DTEND;TZID=Europe/London:20261219T113000
@@ -3377,7 +3347,7 @@ URL:https://surbitonpartnership.co.uk/event/kingston-music-service-give-free-con
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261219c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Speakeasy Brunch (live music + Smok'd food) - pre-Christmas
 DTSTART;TZID=Europe/London:20261219T140000
 DTEND;TZID=Europe/London:20261219T163000
@@ -3387,7 +3357,7 @@ URL:https://www.ramjamrecords.co.uk/events/19/12/26-brunch
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261219@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Kingston Choral Society: Christmas Concert
 DTSTART;TZID=Europe/London:20261219T193000
 DTEND;TZID=Europe/London:20261219T203000
@@ -3397,7 +3367,7 @@ URL:https://kingstonchoralsociety.org.uk/events/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261220@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Young'uns (Christmas show)
 DTSTART;TZID=Europe/London:20261220T193000
 DTEND;TZID=Europe/London:20261220T203000
@@ -3407,7 +3377,7 @@ URL:https://www.efdss.org/whats-on/26-gigs/16005-the-younguns-2026
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261222@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:A Christmas Carol (staged at the Landmark)
 DTSTART;TZID=Europe/London:20261222T193000
 DTEND;TZID=Europe/London:20261222T203000
@@ -3417,7 +3387,7 @@ URL:https://www.landmarkartscentre.org/shows/a-christmas-carol/
 END:VEVENT
 BEGIN:VEVENT
 UID:e819@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Hampton Court Palace Wilderness Garden Open Day
 DTSTART;VALUE=DATE:20261226
 DTEND;VALUE=DATE:20261227
@@ -3427,7 +3397,7 @@ URL:https://www.hrp.org.uk/hampton-court-palace/whats-on/hampton-court-gardens/
 END:VEVENT
 BEGIN:VEVENT
 UID:e20261231@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:New Year's Eve Ceilidh
 DTSTART;TZID=Europe/London:20261231T203000
 DTEND;TZID=Europe/London:20261231T003000
@@ -3437,7 +3407,7 @@ URL:https://www.efdss.org/whats-on/27-dances/16010-31-12-26-nyeceilidh
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260905d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Bad Girls Groove
 DTSTART;TZID=Europe/London:20260905T210000
 DTEND;TZID=Europe/London:20260905T233000
@@ -3447,7 +3417,7 @@ URL:https://www.ramjamrecords.co.uk/events/05/09/26-bad-girls-groove
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260912d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Flaming Alligators
 DTSTART;TZID=Europe/London:20260912T210000
 DTEND;TZID=Europe/London:20260912T233000
@@ -3457,7 +3427,7 @@ URL:https://www.ramjamrecords.co.uk/events/12/09/26-the-flaming-alligators
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260919d@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:The Whole Family
 DTSTART;TZID=Europe/London:20260919T210000
 DTEND;TZID=Europe/London:20260919T233000
@@ -3467,7 +3437,7 @@ URL:https://www.ramjamrecords.co.uk/events/19/09/26-the-whole-family
 END:VEVENT
 BEGIN:VEVENT
 UID:e20260926c@surbiton-local-events
-DTSTAMP:20260823T070334Z
+DTSTAMP:20260824T063447Z
 SUMMARY:Groove Rats
 DTSTART;TZID=Europe/London:20260926T210000
 DTEND;TZID=Europe/London:20260926T230000

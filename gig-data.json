@@ -3,7 +3,7 @@
     "title": "Gig Radar",
     "description": "Curated radar of live gigs in traditional jazz and roots-Americana genres around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-08-21",
+    "updated": "2026-08-24",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -22,262 +22,6 @@
     ]
   },
   "gigs": [
-    {
-      "id": "g20260821-thumpingtommys",
-      "date": "2026-08-21",
-      "endDate": null,
-      "time": "",
-      "title": "The Thumping Tommys",
-      "artist": "The Thumping Tommys",
-      "venue": "Green Note",
-      "area": "Camden, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "£13",
-      "url": "https://www.greennote.co.uk/events-page/bluegrass/",
-      "source": "Green Note listings",
-      "confidence": "confirmed",
-      "note": "Irish and American folk in old-time style."
-    },
-    {
-      "id": "g20260821-plaqduo",
-      "date": "2026-08-21",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Dai Price & Al 'Dente' Dunn — New Orleans Piano",
-      "artist": "Dai Price & Al 'Dente' Dunn",
-      "venue": "Plaquemine Lock",
-      "area": "Islington (Angel), London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "Free",
-      "url": "https://plaqlock.com/live-music-islington",
-      "source": "Plaquemine Lock",
-      "confidence": "confirmed",
-      "note": "Friday dinner set from the twin New Orleans pianists."
-    },
-    {
-      "id": "g20260821-missjones",
-      "date": "2026-08-21",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Miss Jones Band - High-Energy Vintage Swing",
-      "artist": "Miss Jones Band",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "swing",
-        "old-school country"
-      ],
-      "cost": "£10 cover (+ late set)",
-      "url": "https://www.barnightjar.com/shoreditch-listings/miss-jones-quartet",
-      "source": "Nightjar Squarespace feed",
-      "confidence": "confirmed",
-      "note": "Blues-infused vintage swing drawing on Johnny Cash, Patsy Cline, Sister Rosetta Tharpe and Peggy Lee; separate late set from midnight."
-    },
-    {
-      "id": "g20260822-timpenn",
-      "date": "2026-08-22",
-      "endDate": null,
-      "time": "",
-      "title": "Tim Penn & The Second Line",
-      "artist": "Tim Penn & The Second Line",
-      "venue": "Green Note",
-      "area": "Camden, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£16",
-      "url": "https://greennote.co.uk/events/",
-      "source": "Green Note listings",
-      "confidence": "verify",
-      "note": "Louisiana/New Orleans repertoire (Fats Domino, Dr John, Professor Longhair) — NO R&B/second-line rather than trad jazz proper. Same band as the Kingston 11 Jul show."
-    },
-    {
-      "id": "g20260822-bleachbrunch",
-      "date": "2026-08-22",
-      "endDate": null,
-      "time": "12:30",
-      "title": "Saturday Brunch — Ewan Bleach (provisional)",
-      "artist": "Ewan Bleach",
-      "venue": "Plaquemine Lock",
-      "area": "Islington (Angel), London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "Free",
-      "url": "https://plaqlock.com/live-music-islington",
-      "source": "Plaquemine Lock",
-      "confidence": "verify",
-      "note": "See 8 Aug — provisional 'Ewan Bleach?' brunch listing on the venue roster."
-    },
-    {
-      "id": "g20260822-lovedaywatkins",
-      "date": "2026-08-22",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Bob Loveday & Geraint Watkins",
-      "artist": "Bob Loveday & Geraint Watkins",
-      "venue": "Plaquemine Lock",
-      "area": "Islington (Angel), London",
-      "genres": [
-        "cajun",
-        "zydeco"
-      ],
-      "cost": "Free",
-      "url": "https://plaqlock.com/live-music-islington",
-      "source": "Plaquemine Lock",
-      "confidence": "verify",
-      "note": "Fourth Loveday/Watkins date on the roster — cajun/zydeco-flavoured accordion R&B."
-    },
-    {
-      "id": "g20260822-chadstrenz",
-      "date": "2026-08-22",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Chad Strenz & His Band",
-      "artist": "Chad Strenz & His Band",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "£10 cover",
-      "url": "https://www.barnightjar.com/shoreditch-listings",
-      "source": "barnightjar.com",
-      "confidence": "verify",
-      "note": "Jump-blues/swing shouter — 40s/50s territory; previously-dark Saturday now filled."
-    },
-    {
-      "id": "g20260823-aldunn",
-      "date": "2026-08-23",
-      "endDate": null,
-      "time": "12:30",
-      "title": "Sunday Brunch — Al 'Dente' Dunn",
-      "artist": "Al Dunn",
-      "venue": "Plaquemine Lock",
-      "area": "Islington (Angel), London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "Free",
-      "url": "https://plaqlock.com/live-music-islington",
-      "source": "Plaquemine Lock",
-      "confidence": "verify",
-      "note": "Weekly Sunday brunch slot — last currently-published roster date (horizon 23 Aug as of 25 Jul)."
-    },
-    {
-      "id": "g20260823-harryevans",
-      "date": "2026-08-23",
-      "endDate": null,
-      "time": "12:30",
-      "title": "A Lunch Gig with Harry Evans and His Flying Squirrels",
-      "artist": "Harry Evans and His Flying Squirrels",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "£12 advance / £15",
-      "url": "https://www.jamboreevenue.co.uk/events/live-daytime-jazz-in-london-2/",
-      "source": "Jamboree events",
-      "confidence": "confirmed",
-      "note": "Two sets of 1930s-40s Revival Swing in the Bechet, Armstrong All-Stars, Muggsy Spanier and Eddie Condon vein; Lindy/Balboa-friendly."
-    },
-    {
-      "id": "g20260823-oldbarnhall",
-      "date": "2026-08-23",
-      "endDate": null,
-      "time": "13:00",
-      "title": "Kevin Scott's O.B.H. Ragtime Jazz Band",
-      "artist": "Kevin Scott's O.B.H. Ragtime Jazz Band",
-      "venue": "Old Barn Hall",
-      "area": "Great Bookham, Surrey",
-      "genres": [
-        "New Orleans / trad jazz",
-        "hot jazz"
-      ],
-      "cost": "£15 cash",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/old-barn-hall",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Weekly Sunday-lunch trad club — the club's own ragtime band."
-    },
-    {
-      "id": "g20260823-swingdance",
-      "date": "2026-08-23",
-      "endDate": null,
-      "time": "14:00",
-      "title": "Swing Dance Sundays — South London Jazz Orchestra",
-      "artist": "South London Jazz Orchestra",
-      "venue": "Regent's Park bandstand (SwingdanceUK)",
-      "area": "Regent's Park, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "Free",
-      "url": "https://swingdanceuk.com/socials/special-events/",
-      "source": "swingdanceuk.com",
-      "confidence": "confirmed",
-      "note": "Free class + big-band swing."
-    },
-    {
-      "id": "g20260823-prospective",
-      "date": "2026-08-23",
-      "endDate": null,
-      "time": "15:00",
-      "title": "Swing with The Prospective Collective",
-      "artist": "The Prospective Collective",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "Free/donations",
-      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-74/",
-      "source": "Jamboree events",
-      "confidence": "confirmed",
-      "note": "Free 15:00-17:00 Sunday set of old swing and jazz classics; the venue currently posts this run through 30 Aug."
-    },
-    {
-      "id": "g20260823-oldtimejam",
-      "date": "2026-08-23",
-      "endDate": null,
-      "time": "18:30",
-      "title": "Old Time Slow Jam",
-      "artist": "Open old-time session",
-      "venue": "The Cock Tavern",
-      "area": "Somers Town (Euston), London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "Free",
-      "url": "https://foaotmad.weebly.com/session-list.html",
-      "source": "FOAOTMAD session list",
-      "confidence": "confirmed",
-      "note": "Explicitly dated summer session; normal 1st/3rd-Sunday pattern resumes after August."
-    },
-    {
-      "id": "g20260823-pfeffer",
-      "date": "2026-08-23",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Roy Pfeffer Duo — Jazz and Blues",
-      "artist": "Roy Pfeffer Duo",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£6 cover",
-      "url": "https://www.barnightjar.com/shoreditch-listings",
-      "source": "barnightjar.com",
-      "confidence": "verify",
-      "note": "Billed New Orleans funk/jazz/R&B — funk-leaning borderline; included per inclusive policy."
-    },
     {
       "id": "g20260824-marthaspencer",
       "date": "2026-08-24",
@@ -1518,6 +1262,25 @@
       "note": "New Orleans-leaning jazz/R&B duo."
     },
     {
+      "id": "g20260910-cable-street-rag-band",
+      "date": "2026-09-10",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing"
+      ],
+      "cost": "",
+      "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-43/",
+      "source": "Jamboree events (WeGotTickets confirmation)",
+      "confidence": "confirmed",
+      "note": "Weekly Thursday residency date on the official Jamboree page."
+    },
+    {
       "id": "g20260911-slowmotion",
       "date": "2026-09-11",
       "endDate": null,
@@ -1935,6 +1698,25 @@
       "note": "Name suggests a classic-blues/Ma Rainey-style revue in the trad Thursday slot — genre unconfirmed."
     },
     {
+      "id": "g20260917-cable-street-rag-band",
+      "date": "2026-09-17",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing"
+      ],
+      "cost": "",
+      "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-44/",
+      "source": "Jamboree events (WeGotTickets confirmation)",
+      "confidence": "confirmed",
+      "note": "Weekly Thursday residency date on the official Jamboree page."
+    },
+    {
       "id": "g20260918-swingden",
       "date": "2026-09-18",
       "endDate": null,
@@ -2265,6 +2047,25 @@
       "source": "The Jazz Guide",
       "confidence": "verify",
       "note": ""
+    },
+    {
+      "id": "g20260924-cable-street-rag-band",
+      "date": "2026-09-24",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing"
+      ],
+      "cost": "",
+      "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-45/",
+      "source": "Jamboree events (WeGotTickets confirmation)",
+      "confidence": "confirmed",
+      "note": "Weekly Thursday residency date on the official Jamboree page."
     },
     {
       "id": "g20260924-bronxville",

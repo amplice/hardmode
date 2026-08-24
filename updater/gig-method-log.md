@@ -1,3 +1,37 @@
+## 2026-08-24 -- autonomous self-update run
+
+**Housekeeping:** removed 14 finished gigs (21-23 Aug); added 3 confirmed gigs
+(`g20260910-cable-street-rag-band`, `g20260917-cable-street-rag-band`,
+`g20260924-cable-street-rag-band`). Main list now starts on 24 Aug and `meta.updated`
+is 2026-08-24.
+
+**Methods tried (standard refresh + 3 focused discovery angles):**
+- *Primary venue sweep:* re-run key venues (`Jamboree`, `Oriole`, `Nightjar`, `Toulouse
+  Lautrec`, `Doolally Tap`) and revalidated current horizons.
+- *SearchQuery sweep:* reran and reviewed the standard query set in `updater/gig-sources.json`
+  for fresh London trad/swing entries.
+- *Discovery angle not used in the previous run:* direct `WeGotTickets` venue-page confirmation
+  for Jamboree recurring Cable Street residency dates, then cross-checked IDs 43/44/45 on
+  Jamboree.
+
+**What produced:**
+- Jamboree produced three additional in-date, in-genre Cable Street dates: 10 Sep, 17 Sep,
+  and 24 Sep 2026 (all confirmed).
+
+**What stayed dark / on hold:**
+- No further confirmed Jamboree trad slots beyond the Cable Street line during this pass
+  (no new Fighting Cocks roots nights, no extra standard-channel night entries found this cycle).
+- Nightjar and Oriole remained sparse beyond already-held dates.
+
+**Next time:**
+- Continue Jamboree pagination (`/upcoming-events/?pno=N`) and `JamboreeVenue` checks
+  for further late-September/autumn recurrence.
+- Keep a second pass for late-September Oriole/Nightjar and add only clear in-genre
+  matches.
+- Maintain strict Fighting Cocks filter and avoid modern jazz/chart-country fills.
+
+---
+
 ## 2026-08-21 -- autonomous self-update run
 
 **Housekeeping:** removed 11 finished gigs (through 21 Aug); added 4 confirmed gigs (g20260902-tj-johnson-jamboree, g20260903-ewan-bleach-the-cable-street-rag-band-ja, g20260905-doolally-tap-gabriels-wharf, g20260912-l-bas-cajun-band-jamboree). Main list now starts on 21 Aug; totals match post-cleanup.
