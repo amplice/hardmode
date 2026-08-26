@@ -1,33 +1,25 @@
 {
-  "generatedAt": "2026-08-23T07:03:01.104Z",
-  "dateBasis": "2026-08-23",
-  "summary": "Removed 14 rows that finished before 23 Aug 2026, preserving no active multi-day carryovers. Added five confirmed high-value Ram Jam October Kingston gigs from the official month JSON endpoint after direct URL verification.",
+  "generatedAt": "2026-08-26T07:04:46.104Z",
+  "dateBasis": "2026-08-26",
+  "summary": "Removed 9 finished rows before 2026-08-26. Added 2 confirmed Kingston-area church music events from All Saints events feed (one dated 2026-09-10, one 2026-09-11).",
   "added": [
-    "RAM JAM RECORDS: The Astrojets (2026-10-03 21:00)",
-    "RAM JAM RECORDS: Big City Hoot n' Howl (2026-10-10 21:00)",
-    "RAM JAM RECORDS: Two Gun Mathilda (2026-10-17 21:00)",
-    "RAM JAM RECORDS: Tim Penn and the Second Line (2026-10-24 20:00)",
-    "RAM JAM RECORDS: Dusty Funk's Floorshakers (2026-10-31 22:00)"
+    "ALL SAINTS KINGSTON: Kingston Chamber Concert (2026-09-10 19:30 / e20260910a)",
+    "ALL SAINTS KINGSTON: Free Organ Recital (2026-09-11 13:15 / e20260911a)"
   ],
   "updated": [],
   "removed": [
-    "Trolls The Musical Jr (e20260821, 2026-08-21)",
-    "Ray's Tribute to the Legends of Swing (e20260822, 2026-08-22)",
-    "Love's Labour's Lost: OT on the Hill (outdoor Shakespeare) (e20260731c, 2026-07-31 to 2026-08-22)",
-    "Much Ado About Nothing: OT on the Hill (outdoor Shakespeare) (e20260801c, 2026-08-01 to 2026-08-22)",
-    "Summer Theatre Workshop - Attitude Theatre Academy (ages 5-18) (e20260817b, 2026-08-17 to 2026-08-22)",
-    "Author-Led Summer Storytime & Craft Session (e20260820, 2026-08-20)",
-    "Children's Centre Storytime Stomp (e20260820b, 2026-08-20)",
-    "School of Rock: Young Actors Edition (e20260820c, 2026-08-20 to 2026-08-21)",
-    "LEGO Robotics Club (Tolworth summer date) (e20260821b, 2026-08-21)",
-    "Claremont Live! Saturday Session (Claremont Landscape Garden) (e20260822b, 2026-08-22)",
-    "Taste of the Caribbean Food Festival (e20260822c, 2026-08-22)",
-    "Claremont Live! Saturday Session: Bilongo (e20260822d, 2026-08-22)",
-    "Bell Square: Ertza - Otempodiz (e20260822e, 2026-08-22)",
-    "Film Friday: Hamnet on the Big Screen (e20260821c, 2026-08-21)"
+    "Shire Horse Carriage Rides (e20260725j, 2026-07-25)",
+    "Beano Havoc at Hampton Court Palace (e741, 2026-07-25 to 2026-08-23)",
+    "Blub (e20260813, 2026-08-13 to 2026-08-23)",
+    "Canbury Bandstand: London Saxophone Choir (e20260823, 2026-08-23)",
+    "Sienna Spiro: album shows (jazz-infused soul) (e20260825e, 2026-08-25)",
+    "Once Upon a Beat (Tolworth Community Library) (e20260825, 2026-08-25)",
+    "Paint Your Friends... With a Drink in Your Spare Hand (e20260825d, 2026-08-25)",
+    "Adult Book Group (e703, 2026-08-25)",
+    "Read to the Beat Crafting (e20260825c, 2026-08-25)"
   ],
   "counts": {
-    "events": 347,
+    "events": 340,
     "recurring": 57
   }
 }

@@ -21,11 +21,11 @@ window.GIG_DATA = {
       "New Orleans / trad jazz",
       "swing"
     ],
-    "generated": "2026-08-24T06:34:47.830Z",
-    "dateBasis": "2026-08-24",
+    "generated": "2026-08-26T07:04:55.835Z",
+    "dateBasis": "2026-08-26",
     "counts": {
       "total": 206,
-      "upcoming": 206,
+      "upcoming": 201,
       "watchlist": 62
     },
     "genres": [
@@ -73,7 +73,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-24 12:30",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -100,7 +100,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-24 21:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -127,7 +127,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-24 99:99",
       "travel": "Central London",
       "genresLabel": "old-time",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -154,7 +154,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-25 20:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -181,7 +181,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-25 21:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

@@ -359,3 +359,10 @@ Format per run:
   - Re-check All Saints Friday recital pages on their own day they become publishable.
   - Add a dedicated scan of Sunday daytime/family family-school-holiday pages for October-December to diversify away from monthly gig feeds.
   - Rotate to one non-Ram-Jam social or council angle (for example school-holiday PDFs/council PDFs) in the next cycle.
+
+## 2026-08-26
+- Tried 5 discovery channels: Surbiton Partnership music listing (week filter), Kingston Council events server list, All Saints live ical feed (/events/?ical=1), Sofar Sounds GraphQL probe, and Facebook page checks via existing event source links.
+- Working results: 2 confirmed high-value additions from the All Saints feed.
+- What worked: direct All Saints ical feed gave exact dated music events including 2026-09-10 and 2026-09-11 and surfaced usable per-event links.
+- What failed/partial: Sofar Sounds query returned schema but not event hits for Kingston (or no active shows) with current query shape.
+- Next time: keep using the All Saints iCal endpoint first, then re-check Ram Jam /events?month=<month> and ticketing sources with fresh month windows in one pass.
