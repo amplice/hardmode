@@ -1,3 +1,27 @@
+## 2026-08-27 -- autonomous self-update run
+
+**Housekeeping:** removed 9 finished gigs (through 26 Aug); added 0 confirmed gigs. Main list now starts on 27 Aug and `meta.updated` is 2026-08-27.
+
+**Methods tried (standard refresh + 3 focused discovery angles):**
+- *Primary venue refresh (rotated angle):* re-opened Nightjar Shoreditch, Oriole, Jamboree (multi-page), and Toulouse Lautrec listing sources to look for fresh London trad/hot-swing dates.
+- *SearchQuery sweep (standard):* reran the configured standard query set from `updater/gig-sources.json`.
+- *Discovery angle not used in the latest cycles:* ticketing/social/artist checks via Eventbrite London jazz + live-band style filters, Swingdance UK socials, and artist pages for known recurring trad acts.
+
+**What produced:**
+- No new confirmed, in-date, in-genre main-list gigs were found with sufficient confidence to add in this cycle.
+
+**What stayed dark / on hold:**
+- Nightjar and Oriole pages remain sparse or unchanged for the needed near-term windows.
+- A few artist pages are Cloudflare-blocked or redirect without stable upcoming date fields.
+- Ticketing/social pages often list mixed genres or unpublishable future placeholders.
+
+**Next time:**
+- Keep Jamboree pagination and Nightjar/Oriole checks, but add only hard date-confirmed trad/roots rows.
+- Re-run ticketing/social checks for confirmed roots-only entries and continue strict Fighting Cocks filtering.
+- Add no new sources unless a recurring, reliable recurrence is confirmed.
+
+---
+
 ## 2026-08-24 -- autonomous self-update run
 
 **Housekeeping:** removed 14 finished gigs (21-23 Aug); added 3 confirmed gigs
