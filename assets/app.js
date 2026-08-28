@@ -262,6 +262,25 @@
       return score;
     }
 
+    function daySpan(e) {
+      if (!e.date || !e.endDate || e.endDate === e.date) return 1;
+      const start = parseIso(e.date);
+      const end = parseIso(e.endDate);
+      if (!start || !end) return 1;
+      return Math.max(1, Math.round((end - start) / 86400000) + 1);
+    }
+
+    function isLongRun(e) {
+      return daySpan(e) > 7;
+    }
+
+    function comparePlannerItems(a, b) {
+      const aLong = isLongRun(a) ? 1 : 0;
+      const bLong = isLongRun(b) ? 1 : 0;
+      if (aLong !== bLong) return aLong - bLong;
+      return (a.sortKey || '').localeCompare(b.sortKey || '') || eventScore(b) - eventScore(a);
+    }
+
     function isBestBet(e) {
       return eventScore(e) >= 5 || Boolean(e.toddlerFriendly) || (isCoreEvent(e) && (isFreeEvent(e) || isMusicEvent(e) || isFamilyEvent(e)));
     }
@@ -464,7 +483,7 @@
       if (state.quick === 'best') return isBestBet(e);
       if (state.quick === 'favorites') return isFavorite(e.id);
       if (state.quick === 'hidden') return isHidden(e.id) || isRejected(e.id);
-      if (state.quick === 'nannyWeekday') return isWeekdayDaytimeEvent(e) && (isFamilyEvent(e) || isOutdoorEvent(e) || isFreeEvent(e)) && isEasyLocalEvent(e);
+      if (state.quick === 'nannyWeekday') return isWeekdayDaytimeEvent(e) && isEasyLocalEvent(e) && /(kid|kids|child|children|family|toddler|baby|under-5|under 5|rhyme|story|craft|play|sensory|duplo|lego|junior|youth|puppet|polka|library|trail|nature|rewilding|miniature railway|soft play)/.test(h);
       if (state.quick === 'familyWeekend') return isWeekendOrBankHoliday(e) && (isFamilyEvent(e) || isOutdoorEvent(e) || isMusicEvent(e) || /festival|fair|market|railway|hampton court/.test(cat));
       if (state.quick === 'dateNight') return !isFamilyEvent(e) && !isWeekdayDaytimeEvent(e) && (isMusicEvent(e) || isTheatreEvent(e) || isFolkTradEvent(e));
       if (state.quick === 'easyLocal') return isEasyLocalEvent(e);
@@ -520,7 +539,7 @@
       return true;
     }
 
-    function filteredEvents() {
+    function filteredEvents(options = {}) {
       const range = getRange();
       const q = normalize(state.q.trim());
       let rows = EVENTS.filter(e => {
@@ -536,7 +555,7 @@
         if (state.status && e.status !== state.status) return false;
         if (state.source && e.source !== state.source) return false;
         if (!matchesQuality(e)) return false;
-        if (!matchesThemeEvent(e)) return false;
+        if (!options.ignoreQuick && !matchesThemeEvent(e)) return false;
         return true;
       });
       return sortEvents(rows);
@@ -732,7 +751,7 @@
     function renderBest(rows) {
       const weekend = nextWeekendRange();
       const soon = uniqueRows(rows.filter(e => e.date >= TODAY && e.date <= addDays(TODAY, 7)))
-        .sort((a, b) => (a.sortKey || '').localeCompare(b.sortKey || ''))
+        .sort(comparePlannerItems)
         .slice(0, 7);
       const lanes = [
         {
@@ -795,7 +814,7 @@
 
     function renderPlannerLane(lane) {
       const items = uniqueRows(lane.rows)
-        .sort((a, b) => eventScore(b) - eventScore(a) || (a.sortKey || '').localeCompare(b.sortKey || ''))
+        .sort(comparePlannerItems)
         .slice(0, lane.limit);
       return `
         <section class="planner-lane">
@@ -1168,9 +1187,10 @@
 
     function render() {
       const rows = filteredEvents();
+      const boardRows = state.view === 'best' ? filteredEvents({ ignoreQuick: true }) : rows;
       const recRows = filteredRecurring();
       renderStats(rows, recRows);
-      renderBest(rows);
+      renderBest(boardRows);
       renderAgenda(rows);
       renderCalendar(rows);
       renderTable(rows);
