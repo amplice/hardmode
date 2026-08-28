@@ -14,6 +14,56 @@
       "priority": "high",
       "enabled": true,
       "note": "Website is often incomplete; Instagram posts are treated as the primary near-term lead source for gigs and pub events."
+    },
+    {
+      "handle": "greennotemusic",
+      "name": "Green Note",
+      "venue": "Green Note",
+      "area": "Camden",
+      "calendarTargets": ["gig-radar"],
+      "priority": "high",
+      "enabled": true,
+      "note": "Priority roots/folk/americana venue; use posts as leads for new or late-announced trad, old-time, cajun, country and gypsy-jazz bookings."
+    },
+    {
+      "handle": "harrisonpub",
+      "name": "The Harrison",
+      "venue": "The Harrison",
+      "area": "King's Cross",
+      "calendarTargets": ["gig-radar"],
+      "priority": "high",
+      "enabled": true,
+      "note": "Priority folk/roots venue; check for full venue programme updates, not only the historically tracked cajun-jam lead."
+    },
+    {
+      "handle": "ram_jam_records",
+      "name": "Ram Jam Records",
+      "venue": "Ram Jam Records at The Grey Horse",
+      "area": "Kingston",
+      "calendarTargets": ["gig-radar", "local-events"],
+      "priority": "high",
+      "enabled": true,
+      "note": "Local Kingston source; posts can reveal replacements, lineup changes and late genre-fit gigs that the month feed may not surface cleanly."
+    },
+    {
+      "handle": "twickfolk",
+      "name": "TwickFolk",
+      "venue": "The Cabbage Patch",
+      "area": "Twickenham",
+      "calendarTargets": ["gig-radar"],
+      "priority": "high",
+      "enabled": true,
+      "note": "Priority nearby folk source; include singarounds, participatory folk, trad and strong roots artists when future-dated."
+    },
+    {
+      "handle": "magic_pub",
+      "name": "The Magic Garden",
+      "venue": "The Magic Garden",
+      "area": "Battersea",
+      "calendarTargets": ["gig-radar"],
+      "priority": "medium-high",
+      "enabled": true,
+      "note": "Battersea source for cajun, zydeco, Balkan/klezmer brass, swing, New Orleans, old-time and strong world-roots nights."
     }
   ]
 }

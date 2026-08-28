@@ -1,3 +1,27 @@
+## 2026-08-28 -- source-policy update
+
+**Housekeeping:** no gig rows changed. Added an explicit `priorityVenues` block to
+`updater/gig-sources.json` for the venues the user wants watched closely and expanded
+`updater/instagram-sources.json` from The Lamb only to six configured profiles.
+
+**Priority venues now mandatory every run:**
+- Jamboree, The Lamb Surbiton, Green Note, The Harrison, Nightjar, Spice of Life, Ram Jam
+  Records, TwickFolk at The Cabbage Patch, The Magic Garden Battersea, Epsom Hot Jazz Club
+  and Old Barn Bookham Jazz Club.
+
+**Instagram handling:**
+- Configured profile checks: `@lamb_surbiton`, `@greennotemusic`, `@harrisonpub`,
+  `@ram_jam_records`, `@twickfolk`, `@magic_pub`.
+- Jamboree, Nightjar, Spice of Life, Epsom and Old Barn remain search-query based until a
+  specific official Instagram handle is verified.
+
+**Next time:**
+- Run the logged-in Instagram collector before the next gig update and treat social-only
+  rows as leads requiring confirmation, or as `confidence: "verify"` when no official
+  listing exists.
+
+---
+
 ## 2026-08-27 -- autonomous self-update run
 
 **Housekeeping:** removed 9 finished gigs (through 26 Aug); added 0 confirmed gigs. Main list now starts on 27 Aug and `meta.updated` is 2026-08-27.

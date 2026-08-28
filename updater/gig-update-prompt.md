@@ -17,6 +17,7 @@ Read before editing:
 - `updater/gig-preferences.json` - genres wanted, avoid list, scope, source trust and `genreAliases`.
 - `updater/user-feedback.json` - private exported feedback, if it exists. Treat `exclude` rows as strong negative signal for exact gigs and similar future gigs; treat `include` rows as strong positive examples.
 - `updater/gig-sources.json` - key venues, aggregators and standard search queries.
+- `updater/instagram-sources.json` - configured Instagram profiles to inspect with the logged-in local browser collector when available.
 - `updater/social-leads.json` - recent Instagram/social leads, if the file exists. Treat these as discovery leads, not authoritative structured data.
 - `updater/gig-method-log.md` - previous discovery methods and dead ends.
 - The `meta` block and a few sample rows of `gig-data.json` so you match the exact field shape and id style.
@@ -31,10 +32,12 @@ Delete rows from `gig-data.json` `gigs` whose `date` or `endDate` is before toda
 
 Refresh key venues and run standard search queries. Then try at least 2-3 discovery angles you have not used recently; check `updater/gig-method-log.md` first.
 
+Treat `priorityVenues` in `updater/gig-sources.json` as mandatory every run. For each one, crawl the primary URL, useful secondary URLs, pagination/API/feed variants noted in `crawlRule`, and configured Instagram profiles or Instagram search queries when possible. These are the venue/source names the user specifically wants watched closely: Jamboree, The Lamb Surbiton, Green Note, The Harrison, Nightjar, Spice of Life, Ram Jam Records, TwickFolk at The Cabbage Patch, The Magic Garden Battersea, Epsom Hot Jazz Club and Old Barn Bookham Jazz Club.
+
 Good discovery angles:
 
 - The Lamb, Ram Jam, Fighting Cocks, Rose, cornerHOUSE and other easy local venues.
-- Le QuecumBar, Toulouse Lautrec, Cecil Sharp House, What's Cookin', Nightjar, Green Note, 100 Club, Bull's Head Barnes and similar known genre venues.
+- Jamboree, The Harrison, The Magic Garden, TwickFolk/Cabbage Patch, Toulouse Lautrec, Cecil Sharp House, What's Cookin', Nightjar, Green Note, 100 Club, Bull's Head Barnes and similar known genre venues.
 - Specialist listings: The Jazz Guide, SwingdanceUK, Swing Out London, Halibuts swing, Irish Cultural Centre, Irish Music in London, The Session.
 - Ticketing platforms: DICE, TicketSource, See Tickets, WeGotTickets, Eventbrite.
 - Artist tour pages for known trad/jazz/roots acts.
@@ -85,7 +88,7 @@ Append a dated entry to `updater/gig-method-log.md`: venues/methods tried, what 
 
 ## Hard constraints
 
-- Edit only gig-maintenance files: `gig-data.json`, `updater/gig-sources.json`, `updater/gig-method-log.md`, and private `updater/user-feedback.json` only if normalizing exported feedback is necessary.
+- Edit only gig-maintenance files: `gig-data.json`, `updater/gig-sources.json`, `updater/instagram-sources.json`, `updater/social-leads.json`, `updater/gig-method-log.md`, and private `updater/user-feedback.json` only if normalizing exported feedback is necessary.
 - Do not touch `calendar-data.json`, `index.html`, `gigs.html`, `assets/`, game files or service worker during unattended update runs.
 - Do not run `git commit` or `git push`; the publish step handles that.
 - Never wipe or wholesale-rewrite the dataset.
