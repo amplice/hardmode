@@ -76,6 +76,33 @@ powershell -ExecutionPolicy Bypass -File .\updater\register-codex-task.ps1
 
 The Codex task runs every 3 days by default, writes logs under `updater/logs/`, and publishes through `npm run publish` after a successful update.
 
+### Instagram leads
+
+Some venues, especially The Lamb, publish useful near-term events on Instagram before
+their website. The updater can collect those posts through a local logged-in browser
+session, with no Meta developer app or approval process.
+
+First-time setup:
+
+```powershell
+npm run instagram:login
+```
+
+Log into Instagram in the browser that opens, handle any two-factor prompt, then press
+Enter in the terminal. The browser session is stored locally in
+`updater/instagram-profile/`, which is ignored by git.
+
+Manual collection:
+
+```powershell
+npm run instagram:collect
+```
+
+The collector writes `updater/social-leads.json`, also ignored by git. The Codex calendar
+and gig-radar update runners attempt this collection before each update and then read the
+lead file. Instagram-only details are treated as social leads and should stay marked
+`verify` unless an organiser/source page confirms them independently.
+
 The older OpenRouter updater is still available for manual review-first runs:
 
 1. Copy `updater/.env.example` to `updater/.env.local`.

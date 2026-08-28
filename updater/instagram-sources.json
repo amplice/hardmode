@@ -1,0 +1,18 @@
+{
+  "note": "Instagram handles to check with the local logged-in browser collector. This avoids Meta app approval and treats Instagram as a social lead source, not as authoritative structured data.",
+  "profileDir": "updater/instagram-profile",
+  "output": "updater/social-leads.json",
+  "maxPostsPerProfile": 12,
+  "profiles": [
+    {
+      "handle": "lamb_surbiton",
+      "name": "The Lamb Surbiton",
+      "venue": "The Lamb",
+      "area": "Surbiton",
+      "calendarTargets": ["local-events", "gig-radar"],
+      "priority": "high",
+      "enabled": true,
+      "note": "Website is often incomplete; Instagram posts are treated as the primary near-term lead source for gigs and pub events."
+    }
+  ]
+}

@@ -12,6 +12,9 @@ Read these before doing anything else, because they are the source of truth:
 - `HANDOFF.md` — full project description, data model, field schemas, workflows.
 - `updater/preferences.json` — the curation profile (what to keep / avoid, source trust).
 - `updater/sources.json` — known sources and standard search queries.
+- `updater/social-leads.json` — recent Instagram/social leads collected from configured
+  venue accounts, if the file exists. Treat these as discovery leads, not as fully
+  authoritative structured data.
 - `latest-changes.json` — what the previous run changed.
 - `updater/method-log.md` — a running log of which discovery methods/sources were tried on
   previous runs (it may not exist yet on the first run).
@@ -29,7 +32,10 @@ genuine `recurring` patterns alone unless they have clearly ended.
 ## 2. Research — and try something new every run
 
 Refresh the known sources in `updater/sources.json` and run the standard
-`searchQueries`. Then, **this is important**: on every run try at least **2–3 discovery
+`searchQueries`. If `updater/social-leads.json` exists, inspect it early and follow up any
+dated, relevant leads from Instagram-heavy venues such as The Lamb. Social-only details can
+be added when they are specific and future-dated, but they must be marked `verify: true`
+unless independently confirmed. Then, **this is important**: on every run try at least **2–3 discovery
 methods or sources you have not used recently**. Check `updater/method-log.md` and avoid
 repeating the same angles each time. Ideas to rotate through (not exhaustive — invent your
 own):

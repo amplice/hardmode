@@ -21,6 +21,9 @@ Read before doing anything:
 - `updater/gig-preferences.json` — genres wanted, the avoid list, scope, source trust, and the
   `genreAliases` map (normalise every genre you write to a value in `canonicalGenres`).
 - `updater/gig-sources.json` — key venues, aggregators, and standard search queries.
+- `updater/social-leads.json` — recent Instagram/social leads collected from configured
+  venue accounts, if the file exists. Treat these as discovery leads, not as fully
+  authoritative structured data.
 - `updater/gig-method-log.md` — what previous runs tried; do NOT repeat the same angles.
 - The `meta` block and a couple of rows of `gig-data.json` to match the exact field shape and id style.
 
@@ -33,7 +36,10 @@ today**. Do not delete `watchlist` entries just because they lack a date.
 
 ## 2. Research — and rotate methods every run
 
-Refresh the key venues and run the standard `searchQueries`. Then try at least **2–3 discovery
+Refresh the key venues and run the standard `searchQueries`. If `updater/social-leads.json`
+exists, inspect it early and follow up any dated, in-genre leads from Instagram-heavy venues
+such as The Lamb. Social-only gigs can be added when specific and future-dated, but use
+`confidence:"verify"` unless independently confirmed. Then try at least **2–3 discovery
 angles you haven't used recently** (check the method log). Ideas: individual venue what's-on
 pages (Le QuecumBar, Toulouse Lautrec, Cecil Sharp House, What's Cookin', Nightjar, Green Note,
 The 100 Club, Bull's Head Barnes, Fighting Cocks Kingston); artist tour pages for known trad

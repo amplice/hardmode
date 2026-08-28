@@ -20,6 +20,12 @@
     "gig:update:nopublish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-gig-update.ps1 -NoPublish",
     "gig:update:codex": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-gig-update.ps1",
     "gig:update:codex:nopublish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/run-gig-update.ps1 -NoPublish",
+    "instagram:login": "node updater/instagram-login.mjs",
+    "instagram:collect": "node updater/collect-instagram.mjs",
+    "instagram:collect:headless": "node updater/collect-instagram.mjs --headless",
     "publish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/publish-site.ps1"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
   }
 }

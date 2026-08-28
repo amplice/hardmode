@@ -32,6 +32,22 @@ $CodexExe = $CodexCmd.Source
 "Codex: $CodexExe" | Out-File -FilePath $RunLog -Append -Encoding utf8
 "--- codex ---" | Out-File -FilePath $RunLog -Append -Encoding utf8
 
+$InstagramCollector = Join-Path $PSScriptRoot "collect-instagram.mjs"
+if (Test-Path $InstagramCollector) {
+  "--- instagram collect ---" | Out-File -FilePath $RunLog -Append -Encoding utf8
+  $BasePreference = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    & node $InstagramCollector --quiet *>> $RunLog
+    $InstagramExit = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $BasePreference
+  }
+  if ($InstagramExit -ne 0) {
+    "Instagram collection exited with code $InstagramExit; continuing with Codex gig update." | Out-File -FilePath $RunLog -Append -Encoding utf8
+  }
+}
+
 $PromptText = Get-Content -Raw -Path $PromptFile
 
 # Native commands write progress/warnings to stderr; under ErrorActionPreference=Stop a redirect
