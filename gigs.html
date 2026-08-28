@@ -44,6 +44,9 @@
     .mode-card.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(122,46,18,.12)}
     .mode-card strong{display:block;font-size:14px}
     .mode-card span{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+    .mode-card .mode-count{display:inline-flex;margin-top:8px;min-width:28px;height:24px;border-radius:999px;align-items:center;justify-content:center;background:var(--ink);color:#fff;font-weight:800;font-size:12px}
+    .mode-mini{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);color:var(--ink);font-size:12px;line-height:1.25}
+    .mode-mini em{display:block;color:var(--muted);font-style:normal;margin-top:2px}
     .monthhead{margin:24px 0 7px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:6px}
     .day{margin:15px 0 6px;font-weight:800;font-size:14px;color:var(--muted)}
     .card{display:grid;grid-template-columns:74px 1fr;gap:14px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:12px 14px;margin:8px 0;box-shadow:var(--shadow)}
@@ -208,14 +211,15 @@
     function strictGenre(g){return /(hot jazz|gypsy jazz|django|manouche|western swing|old-time|old time|cajun|zydeco|jug band|skiffle|honky tonk|old-school country|new orleans|trad jazz|trad irish|irish|swing)/.test(hay(g));}
     function dateNight(g){return !!parseClock(g.time)&&parseClock(g.time)>='18:00'&&(strictGenre(g)||isNearby(g));}
     function worthTrip(g){return !isNearby(g)&&(strictGenre(g)||/festival|special|rare|all-dayer|weekender|dance/.test(hay(g)));}
-    function modeMatch(g){
-      if(state.mode==='nearbyEasy')return isNearby(g);
-      if(state.mode==='strictGenre')return strictGenre(g);
-      if(state.mode==='dateNight')return dateNight(g);
-      if(state.mode==='worthTrip')return worthTrip(g);
-      if(state.mode==='rejected')return isRejected(g.id);
+    function modePredicate(g,mode){
+      if(mode==='nearbyEasy')return isNearby(g);
+      if(mode==='strictGenre')return strictGenre(g);
+      if(mode==='dateNight')return dateNight(g);
+      if(mode==='worthTrip')return worthTrip(g);
+      if(mode==='rejected')return isRejected(g.id);
       return true;
     }
+    function modeMatch(g){return modePredicate(g,state.mode);}
     function icsEscape(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/\r\n/g,'\n').replace(/\r/g,'\n').replace(/\n/g,'\\n').replace(/;/g,'\\;').replace(/,/g,'\\,');}
     function eventDetails(g){return[(g.genres||[]).length?'Genres: '+(g.genres||[]).join(' / '):'',g.cost?'Cost: '+g.cost:'',g.confidence?'Confidence: '+g.confidence:'',g.note||'',g.url?'Source: '+g.url:''].filter(Boolean).join('\n');}
     function googleDateRange(g){var r=timeRange(g);return r.allDay?compactDate(g.date)+'/'+compactDate(addDays(g.endDate||g.date,1)):clockStamp(g.date,r.start)+'/'+clockStamp(r.endDate,r.end);}
@@ -243,7 +247,13 @@
     function openFeedback(id){var g=gigs.find(function(x){return x.id===id;});if(!g)return;pendingFeedbackId=id;var existing=feedbackFor(id);el('feedbackSubtitle').textContent=eventTitle(g)+(g.venue?' - '+g.venue:'');el('feedbackNote').value=existing&&existing.note||'';el('feedbackDialog').showModal();el('feedbackNote').focus();}
     function saveFeedbackNote(){var g=gigs.find(function(x){return x.id===pendingFeedbackId;});if(!g)return;feedback=feedback.filter(function(x){return x.id!==g.id;});feedback.unshift({action:'exclude',id:g.id,title:g.title||'',artist:g.artist||'',venue:g.venue||'',area:g.area||'',genres:g.genres||[],date:g.date||'',source:g.source||'',url:g.url||'',note:el('feedbackNote').value.trim(),createdAt:new Date().toISOString()});pendingFeedbackId=null;saveFeedback();render();toast('Saved as not for us');}
     function removeFeedback(id){feedback=feedback.filter(function(x){return x.id!==id;});saveFeedback();render();toast('Feedback removed');}
-    function renderModes(){el('modeCards').innerHTML=modes.map(function(m){return'<button class="mode-card '+(state.mode===m.id?'active':'')+'" type="button" data-mode-card="'+m.id+'"><strong>'+esc(m.title)+'</strong><span>'+esc(m.detail)+'</span></button>';}).join('');}
+    function renderModes(){
+      el('modeCards').innerHTML=modes.map(function(m){
+        var modeRows=gigs.filter(function(g){return (g.endDate||g.date)>=today&&!isRejected(g.id)&&modePredicate(g,m.id);});
+        var picks=modeRows.slice(0,3).map(function(g){return'<span class="mode-mini">'+esc(eventTitle(g))+'<em>'+esc([g.dateLabel,g.venue,g.travel].filter(Boolean).join(' - '))+'</em></span>';}).join('');
+        return'<button class="mode-card '+(state.mode===m.id?'active':'')+'" type="button" data-mode-card="'+m.id+'"><strong>'+esc(m.title)+'</strong><span>'+esc(m.detail)+'</span><span class="mode-count">'+modeRows.length+'</span>'+picks+'</button>';
+      }).join('');
+    }
     function render(){
       renderModes();
       var rows=gigs.filter(matches);

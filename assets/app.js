@@ -8,7 +8,7 @@
     const DATA_START = '2026-06-08';
     const TODAY = clampIso(londonToday(), DATA_START, RANGE_END);
     const RANGE_START = TODAY;
-    const STORAGE_KEY = 'surbiton-calendar-state-v3';
+    const STORAGE_KEY = 'surbiton-calendar-state-v4';
     const FAVORITES_KEY = 'surbiton-calendar-favorites-v1';
     const HIDDEN_KEY = 'surbiton-calendar-hidden-v1';
     const FEEDBACK_KEY = 'surbiton-calendar-feedback-v1';
@@ -16,7 +16,7 @@
     const BANK_HOLIDAYS = new Set(['2026-08-31', '2026-12-25', '2026-12-28']);
 
     const defaultState = {
-      view: 'agenda',
+      view: 'best',
       q: '',
       datePreset: 'upcoming',
       quick: '',
@@ -646,6 +646,38 @@
       `;
     }
 
+    function reasonLabel(e) {
+      if (isFamilyEvent(e) && isDaytimeEvent(e)) return 'kid-friendly daytime';
+      if (isWeekendOrBankHoliday(e) && isOutdoorEvent(e)) return 'weekend outdoor option';
+      if (isMusicEvent(e) && isDaytimeEvent(e)) return 'daytime music';
+      if (isTheatreEvent(e)) return 'theatre / performance';
+      if (isFolkTradEvent(e)) return 'folk / trad fit';
+      if (isFreeEvent(e)) return 'free / low friction';
+      if (isDestinationEvent(e)) return 'destination pick';
+      return 'local lead';
+    }
+
+    function compactEventCard(e) {
+      const facts = eventFacts(e);
+      return `
+        <article class="mini-event ${e.verify ? 'verify-border' : ''}">
+          <button class="mini-title" type="button" data-open-event="${esc(e.id)}">${esc(e.title)}</button>
+          <div class="mini-line">${esc(dateSpan(e))}${e.time ? ` - ${esc(e.time)}` : ''}</div>
+          <div class="mini-line">${esc(e.venue || e.area || '')}</div>
+          <div class="mini-tags">
+            <span>${esc(reasonLabel(e))}</span>
+            <span>${esc(facts.travelBucket || e.tier || 'check route')}</span>
+            ${e.cost ? `<span>${esc(e.cost)}</span>` : ''}
+          </div>
+          <div class="mini-actions">
+            ${googleCalendarButton(e, 'Google')}
+            ${addCalendarButton(e, 'ICS')}
+            <button class="btn small danger" type="button" data-reject-event="${esc(e.id)}">Not for us</button>
+          </div>
+        </article>
+      `;
+    }
+
     function recCard(r) {
       return `
         <article class="rec-card ${r.verify ? 'verify-border' : ''}">
@@ -699,17 +731,85 @@
 
     function renderBest(rows) {
       const weekend = nextWeekendRange();
-      const bestRows = rows.filter(isBestBet);
-      const sections = [
-        renderBestSection('This weekend / bank holiday', weekend.label, bestRows.filter(e => activeInRange(e, weekend.from, weekend.to))),
-        renderBestSection('Nanny / weekday kid', 'Weekday daytime rows that look useful for a two-year-old or easy childcare outing.', rows.filter(e => matchesMode(e, 'nannyWeekday'))),
-        renderBestSection('Family weekend', 'Weekend, bank-holiday, railway, park, Hampton Court and family-day-out rows.', rows.filter(e => matchesMode(e, 'familyWeekend'))),
-        renderBestSection('Daytime music', 'Free or daytime live music, especially Rose Cafe, bandstands and family-friendly sessions.', rows.filter(e => matchesMode(e, 'daytimeMusic'))),
-        renderBestSection('Date night', 'Music, theatre and performance that might justify childcare.', rows.filter(e => matchesMode(e, 'dateNight'))),
-        renderBestSection('Worth the trip', 'Further-out rows kept because they look better than ordinary local filler.', rows.filter(e => matchesMode(e, 'destination')))
-      ].filter(Boolean).join('');
+      const soon = uniqueRows(rows.filter(e => e.date >= TODAY && e.date <= addDays(TODAY, 7)))
+        .sort((a, b) => (a.sortKey || '').localeCompare(b.sortKey || ''))
+        .slice(0, 7);
+      const lanes = [
+        {
+          mode: 'nannyWeekday',
+          title: 'Weekday toddler / nanny',
+          detail: 'Daytime, low-friction things that could work with childcare.',
+          rows: rows.filter(e => matchesMode(e, 'nannyWeekday')),
+          limit: 5
+        },
+        {
+          mode: 'familyWeekend',
+          title: 'Family weekend',
+          detail: `Weekends, bank holidays and easy family days out. Next weekend: ${weekend.label}.`,
+          rows: rows.filter(e => matchesMode(e, 'familyWeekend')),
+          limit: 6
+        },
+        {
+          mode: 'daytimeMusic',
+          title: 'Daytime music',
+          detail: 'Rose Cafe, bandstands, lunchtime concerts and family-plausible live music.',
+          rows: rows.filter(e => matchesMode(e, 'daytimeMusic')),
+          limit: 5
+        },
+        {
+          mode: 'dateNight',
+          title: 'Worth childcare',
+          detail: 'Evening music, theatre and performance with enough pull for a night out.',
+          rows: rows.filter(e => matchesMode(e, 'dateNight')),
+          limit: 5
+        },
+        {
+          mode: 'destination',
+          title: 'Bigger days out',
+          detail: 'Waterloo, Wimbledon, Hampton Court, Kew and further rows only when they look worth it.',
+          rows: rows.filter(e => matchesMode(e, 'destination')),
+          limit: 5
+        }
+      ];
+      el('bestView').innerHTML = `
+        <section class="planner-board">
+          <div class="planner-intro">
+            <div>
+              <h2>What is actually worth thinking about?</h2>
+              <div class="muted">The raw calendar is still here, but this is the working view: nearby gets a lower threshold; further out has to justify the trip.</div>
+            </div>
+            <button class="btn primary" type="button" data-quick="familyWeekend" data-view="agenda">Open weekend agenda</button>
+          </div>
+          <div class="planner-layout">
+            <aside class="next-rail">
+              <div class="rail-title">Next 7 days</div>
+              ${soon.length ? soon.map(compactEventCard).join('') : '<div class="empty">Nothing in the next 7 days matches this view.</div>'}
+            </aside>
+            <div class="lane-grid">
+              ${lanes.map(lane => renderPlannerLane(lane)).join('')}
+            </div>
+          </div>
+        </section>
+      `;
+    }
 
-      el('bestView').innerHTML = sections || `<div class="empty">No best-bet rows match the current filters.</div>`;
+    function renderPlannerLane(lane) {
+      const items = uniqueRows(lane.rows)
+        .sort((a, b) => eventScore(b) - eventScore(a) || (a.sortKey || '').localeCompare(b.sortKey || ''))
+        .slice(0, lane.limit);
+      return `
+        <section class="planner-lane">
+          <div class="lane-head">
+            <div>
+              <h3>${esc(lane.title)}</h3>
+              <p>${esc(lane.detail)}</p>
+            </div>
+            <span class="lane-count">${lane.rows.length}</span>
+          </div>
+          <div class="lane-events">${items.length ? items.map(compactEventCard).join('') : '<div class="empty">No matches right now.</div>'}</div>
+          <button class="lane-open" type="button" data-lane-open="${esc(lane.mode)}">Open all ${esc(lane.title.toLowerCase())}</button>
+        </section>
+      `;
     }
 
     function renderAgenda(rows) {
@@ -1505,6 +1605,16 @@
         if (removeFeedbackButton) {
           e.preventDefault();
           removeFeedback(removeFeedbackButton.dataset.removeFeedback);
+          return;
+        }
+        const laneButton = e.target.closest('[data-lane-open]');
+        if (laneButton) {
+          e.preventDefault();
+          state.quick = laneButton.dataset.laneOpen;
+          state.view = 'agenda';
+          syncControls();
+          render();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
           return;
         }
         const clearHiddenButton = e.target.closest('[data-clear-hidden]');
