@@ -73,12 +73,12 @@
             <option value="favorites">Favourites</option>
             <option value="free">Explicitly free</option>
             <option value="verify">Needs verification / TBC</option>
-            <option value="hidden">Hidden rows</option>
+            <option value="hidden">Archived rows</option>
           </select>
         </div>
         <div class="top-actions">
           <button class="btn" id="resetBtn" type="button">Reset</button>
-          <button class="btn ghost" id="hiddenBtn" type="button">Hidden</button>
+          <button class="btn ghost" id="hiddenBtn" type="button">Archived</button>
           <button class="btn ghost" id="compactBtn" type="button">Compact</button>
         </div>
       </div>
@@ -104,6 +104,7 @@
         <button class="tab" data-view="table" type="button">Table</button>
         <button class="tab" data-view="venues" type="button">Venues</button>
         <button class="tab" data-view="recurring" type="button">Regulars</button>
+        <button class="tab" data-view="archived" type="button">Archived</button>
         <button class="tab" data-view="sources" type="button">Sources & gaps</button>
       </div>
 
@@ -188,6 +189,7 @@
     <section id="tableView" class="view" aria-live="polite"></section>
     <section id="venuesView" class="view" aria-live="polite"></section>
     <section id="recurringView" class="view" aria-live="polite"></section>
+    <section id="archivedView" class="view" aria-live="polite"></section>
     <section id="sourcesView" class="view" aria-live="polite"></section>
   </main>
 

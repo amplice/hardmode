@@ -356,7 +356,7 @@
       else personal.hidden.add(id);
       persistPersonal();
       render();
-      toast(personal.hidden.has(id) ? 'Hidden from normal views' : 'Restored');
+      toast(personal.hidden.has(id) ? 'Archived from normal views' : 'Unarchived');
     }
 
     function openFeedback(id) {
@@ -376,7 +376,6 @@
       const note = el('feedbackNote').value.trim();
       personal.feedback = personal.feedback.filter(item => item.id !== event.id);
       personal.feedback.unshift(rowFeedbackObject(event, 'exclude', note));
-      personal.hidden.add(event.id);
       pendingFeedbackId = null;
       persistPersonal();
       render();
@@ -395,7 +394,6 @@
 
     function removeFeedback(id) {
       personal.feedback = personal.feedback.filter(item => item.id !== id);
-      personal.hidden.delete(id);
       persistPersonal();
       render();
       toast('Feedback removed');
@@ -430,9 +428,10 @@
       personal.hidden.clear();
       persistPersonal();
       if (state.quick === 'hidden') state.quick = '';
+      if (state.view === 'archived') state.view = 'agenda';
       syncControls();
       render();
-      toast('Hidden rows restored');
+      toast('Archived rows restored');
     }
 
     function mapLink(e, label = 'Map') {
@@ -512,7 +511,7 @@
       const isFree = /(^|[^a-z])free([^a-z]|$)/.test(h) || normalize(e.cost) === 'free';
       if (state.quick === 'best') return isBestBet(e);
       if (state.quick === 'favorites') return isFavorite(e.id);
-      if (state.quick === 'hidden') return isHidden(e.id) || isRejected(e.id);
+      if (state.quick === 'hidden') return isHidden(e.id) && !isRejected(e.id);
       if (state.quick === 'nannyWeekday') return isToddlerAgeFit(e) && isWeekdayDaytimeEvent(e) && isEasyLocalEvent(e) && /(kid|kids|child|children|family|toddler|baby|under-5|under 5|rhyme|story|craft|play|sensory|duplo|puppet|polka|library|trail|nature|rewilding|miniature railway|soft play)/.test(h);
       if (state.quick === 'familyWeekend') return isToddlerAgeFit(e) && isWeekendOrBankHoliday(e) && (isFamilyEvent(e) || isOutdoorEvent(e) || (isMusicEvent(e) && isDaytime) || /festival|fair|market|railway|hampton court/.test(cat));
       if (state.quick === 'dateNight') return !isFamilyEvent(e) && !isWeekdayDaytimeEvent(e) && (isMusicEvent(e) || isTheatreEvent(e) || isFolkTradEvent(e));
@@ -575,7 +574,7 @@
       let rows = EVENTS.filter(e => {
         if (!activeInRange(e, range.from, range.to)) return false;
         if (state.quick !== 'hidden' && (isHidden(e.id) || isRejected(e.id))) return false;
-        if (state.quick === 'hidden' && !isHidden(e.id) && !isRejected(e.id)) return false;
+        if (state.quick === 'hidden' && (!isHidden(e.id) || isRejected(e.id))) return false;
         if (q && !eventHaystack(e).includes(q)) return false;
         if (state.area && e.area !== state.area) return false;
         if (state.category && e.category !== state.category) return false;
@@ -663,7 +662,7 @@
 
     function personalButtons(e) {
       const favLabel = isFavorite(e.id) ? 'Unstar' : 'Star';
-      const hideLabel = isHidden(e.id) ? 'Restore' : 'Hide';
+      const hideLabel = isHidden(e.id) ? 'Unarchive' : 'Archive';
       const rejected = isRejected(e.id);
       const liked = positiveFeedbackFor(e.id);
       return `
@@ -724,6 +723,7 @@
             ${googleCalendarButton(e, 'Google')}
             ${addCalendarButton(e, 'ICS')}
             <button class="btn small good ${positiveFeedbackFor(e.id) ? 'active' : ''}" type="button" data-like-event="${esc(e.id)}">More like this</button>
+            <button class="btn small icon-btn" type="button" data-hide-event="${esc(e.id)}">${isHidden(e.id) ? 'Unarchive' : 'Archive'}</button>
             <button class="btn small danger" type="button" data-reject-event="${esc(e.id)}">Not for us</button>
           </div>
         </article>
@@ -870,7 +870,7 @@
         return;
       }
       const hiddenTools = state.quick === 'hidden'
-        ? `<div class="section-title"><div><h2>Hidden / not for us</h2><div class="muted mini">Rows hidden on this browser, plus rows with skip feedback for future updates.</div></div><div class="event-actions"><button class="btn" type="button" data-export-feedback>Export feedback</button><button class="btn" type="button" data-clear-hidden>Restore all hidden</button></div></div>`
+        ? `<div class="section-title"><div><h2>Archived rows</h2><div class="muted mini">Rows archived on this browser only. These do not train the updater.</div></div><div class="event-actions"><button class="btn" type="button" data-clear-hidden>Unarchive all</button></div></div>`
         : '';
       const groups = new Map();
       rows.forEach(e => {
@@ -888,6 +888,25 @@
         </section>
       `).join('');
       el('agendaView').innerHTML = hiddenTools + html;
+    }
+
+    function renderArchived() {
+      const rows = EVENTS
+        .filter(e => endDate(e) >= TODAY && isHidden(e.id) && !isRejected(e.id))
+        .sort((a,b) => (a.sortKey || '').localeCompare(b.sortKey || ''));
+      const body = rows.length
+        ? rows.map(eventCard).join('')
+        : '<div class="empty">No archived rows in this browser.</div>';
+      el('archivedView').innerHTML = `
+        <div class="section-title">
+          <div>
+            <h2>Archived</h2>
+            <div class="muted mini">Archived rows are hidden from normal calendar views but do not count as feedback for future updates.</div>
+          </div>
+          ${rows.length ? '<button class="btn" type="button" data-clear-hidden>Unarchive all</button>' : ''}
+        </div>
+        <div class="cards">${body}</div>
+      `;
     }
 
     function renderCalendar(rows) {
@@ -1116,7 +1135,7 @@
           <div class="section-title">
             <div>
               <h2>Feedback for updater</h2>
-              <div class="muted mini">Use Not for us on an event, then export this file as updater/user-feedback.json before a manual or scheduled update.</div>
+              <div class="muted mini">Use More like this and Not for us to train the updater. Archive is local-only and is not included in this export.</div>
             </div>
             <button class="btn" type="button" data-export-feedback>Export feedback JSON</button>
           </div>
@@ -1229,6 +1248,7 @@
       renderTable(rows);
       renderVenues(rows);
       renderRecurring(recRows);
+      renderArchived();
       renderSources();
 
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -1236,16 +1256,17 @@
       document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === state.view));
       document.body.classList.toggle('compact', state.compact);
       el('compactBtn').textContent = state.compact ? 'Comfortable' : 'Compact';
-      const hiddenCount = new Set([...personal.hidden, ...personal.feedback.filter(item => item.action === 'exclude').map(item => item.id)]).size;
-      el('hiddenBtn').textContent = hiddenCount ? `Hidden (${hiddenCount})` : 'Hidden';
+      const hiddenCount = [...personal.hidden].filter(id => !isRejected(id)).length;
+      el('hiddenBtn').textContent = hiddenCount ? `Archived (${hiddenCount})` : 'Archived';
       const personalSummary = [];
       if (personal.favorites.size) personalSummary.push(`${personal.favorites.size} favourite${personal.favorites.size === 1 ? '' : 's'}`);
-      if (personal.hidden.size) personalSummary.push(`${personal.hidden.size} hidden`);
+      const archiveCount = [...personal.hidden].filter(id => !isRejected(id)).length;
+      if (archiveCount) personalSummary.push(`${archiveCount} archived`);
       const likeCount = personal.feedback.filter(item => item.action === 'include').length;
       const skipCount = personal.feedback.filter(item => item.action === 'exclude').length;
       if (likeCount) personalSummary.push(`${likeCount} more-like-this signal${likeCount === 1 ? '' : 's'}`);
       if (skipCount) personalSummary.push(`${skipCount} not-for-us note${skipCount === 1 ? '' : 's'}`);
-      el('personalSummary').innerHTML = personalSummary.length ? personalSummary.map(esc).join(' - ') : 'Tip: star likely plans, mark noise as not for us, then export feedback before the next update.';
+      el('personalSummary').innerHTML = personalSummary.length ? personalSummary.map(esc).join(' - ') : 'Tip: star likely plans, archive one-off maybes, mark noise as not for us, then export feedback before the next update.';
       saveState();
       updateUrlFromState();
     }
@@ -1349,6 +1370,7 @@
 
     function currentRowsForExport() {
       if (state.view === 'recurring') return { kind: 'recurring', rows: filteredRecurring() };
+      if (state.view === 'archived') return { kind: 'events', rows: EVENTS.filter(e => endDate(e) >= TODAY && isHidden(e.id) && !isRejected(e.id)) };
       if (state.view === 'best') return { kind: 'events', rows: filteredEvents().filter(isBestBet) };
       return { kind: 'events', rows: filteredEvents() };
     }
@@ -1584,13 +1606,13 @@
       el('ongoingDaily').addEventListener('change', e => { state.ongoingDaily = e.target.checked; render(); });
       el('resetBtn').addEventListener('click', resetFilters);
       el('hiddenBtn').addEventListener('click', () => {
-        const hiddenCount = new Set([...personal.hidden, ...personal.feedback.filter(item => item.action === 'exclude').map(item => item.id)]).size;
+        const hiddenCount = [...personal.hidden].filter(id => !isRejected(id)).length;
         if (!hiddenCount) {
-          toast('No hidden rows');
+          toast('No archived rows');
           return;
         }
-        state.quick = state.quick === 'hidden' ? '' : 'hidden';
-        state.view = 'agenda';
+        state.quick = '';
+        state.view = state.view === 'archived' ? 'agenda' : 'archived';
         syncControls();
         render();
       });
