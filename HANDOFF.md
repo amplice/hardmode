@@ -16,7 +16,7 @@ Both pages must work as plain static files and on GitHub Pages. There is no serv
 - `gig-data.js` is generated from `gig-data.json`.
 - `gigs.ics` is generated from `gig-data.json`.
 - `updater/source-strategy.json` describes the two-product curation model, source priorities, travel tiers and inclusion thresholds.
-- `updater/user-feedback.json` is optional, private and ignored by git. If present, update runs must treat it as strong negative feedback.
+- `updater/user-feedback.json` is optional, private and ignored by git. If present, update runs must treat `exclude` rows as strong negative feedback and `include` rows as strong positive examples.
 
 ## Family Calendar Row Shape
 
@@ -33,6 +33,7 @@ Rules:
 - Split monthly, fortnightly or irregular selected-date events into separate dated rows.
 - Prefer specific source URLs.
 - Never guess a current-year date from a stale or ambiguous page.
+- The child was born in January 2024. For child-specific rows, avoid listings aimed clearly above toddler/preschool age, such as Lego Robotics, coding/robotics clubs, trading-card tournaments, 6+, 8-12, teen or school-age workshops, unless the event is worthwhile for adults independently.
 
 ## Gig Radar Row Shape
 
@@ -69,15 +70,15 @@ Gig Radar modes:
 
 ## Feedback Loop
 
-The static pages store skip feedback in browser `localStorage` and can export `user-feedback.json`.
+The static pages store positive and negative feedback in browser `localStorage` and can export `user-feedback.json`.
 
 For the updater to use it:
 
-1. Export feedback from the page.
+1. Use `More like this` for good matches and `Not for us` for misses.
 2. Put/overwrite the file at `updater/user-feedback.json`.
 3. Run the normal update task.
 
-Update runs must avoid exact rejected rows and close matches by title, venue, category, genre and note unless the new event is clearly different or substantially higher value.
+Update runs must avoid exact rejected rows and close matches by title, venue, category, genre and note unless the new event is clearly different or substantially higher value. They should use `include` rows to raise similar future events in scoring and sourcing.
 
 ## Validation
 
