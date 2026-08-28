@@ -3,331 +3,483 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gig Radar | Surbiton + Reachable Roots Music</title>
+  <title>Gig Radar | Surbiton</title>
   <meta name="theme-color" content="#7a2e12" />
-  <style>
-    :root{
-      --bg:#f7f4ef; --ink:#221b17; --muted:#695d55; --line:#ddd2c5;
-      --accent:#7a2e12; --accent2:#2f6d57; --accent3:#245f8f; --danger:#9f3428;
-      --card:#fffdfa; --chip:#eee4d8; --verify:#946700; --shadow:0 8px 22px rgba(35,25,16,.08);
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-    a{color:var(--accent3);text-underline-offset:2px}
-    .shell{width:min(1180px,calc(100% - 28px));margin:0 auto}
-    header.hero{padding:28px 0 18px;background:#fffaf4;border-bottom:1px solid var(--line)}
-    header .shell{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end}
-    h1{margin:0 0 8px;font-size:clamp(30px,4vw,48px);line-height:1;letter-spacing:0}
-    h2{margin:0;font-size:22px;line-height:1.15}
-    .subtitle{max-width:780px;color:var(--muted);font-size:15px}
-    .updated{font-size:13px;color:var(--muted);margin-top:9px}
-    .actions,.row,.chips,.card-actions,.section-title{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-    .actions{justify-content:flex-end}
-    .btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);color:var(--ink);background:#fff;
-      padding:8px 12px;border-radius:999px;text-decoration:none;font-size:13px;cursor:pointer;min-height:36px}
-    .btn:hover{border-color:var(--accent)}
-    .btn.solid{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
-    .btn.small{padding:5px 9px;font-size:12px;min-height:28px;font-weight:700}
-    .btn.danger{color:var(--danger);background:#fff8f6;border-color:#e1bdb6}
-    .btn.danger.active{color:#fff;background:var(--danger);border-color:var(--danger)}
-    .btn.good{color:#166534;background:#f3fbf2;border-color:#bddbbf}
-    .btn.good.active{color:#fff;background:#166534;border-color:#166534}
-    .btn.archive{color:#6b5b2a;background:#fffaf0;border-color:#dfcf9b}
-    .toolbar{position:sticky;top:0;z-index:5;background:rgba(247,244,239,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 0}
-    .toolbar .shell{display:flex;flex-direction:column;gap:10px}
-    input[type=search],select,textarea{font:inherit;font-size:15px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
-    input[type=search]{flex:1;min-width:220px}
-    textarea{width:100%;resize:vertical;min-height:110px}
-    .chip{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:5px 10px;font-size:12px;cursor:pointer;user-select:none}
-    .chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-    .count{font-size:13px;color:var(--muted)}
-    main{padding:18px 0 60px}
-    .mode-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}
-    .mode-card{border:1px solid var(--line);background:#fff;border-radius:8px;padding:11px;text-align:left;cursor:pointer;box-shadow:var(--shadow)}
-    .mode-card.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(122,46,18,.12)}
-    .mode-card strong{display:block;font-size:14px}
-    .mode-card span{display:block;margin-top:4px;color:var(--muted);font-size:12px}
-    .mode-card .mode-count{display:inline-flex;margin-top:8px;min-width:28px;height:24px;border-radius:999px;align-items:center;justify-content:center;background:var(--ink);color:#fff;font-weight:800;font-size:12px}
-    .mode-mini{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);color:var(--ink);font-size:12px;line-height:1.25}
-    .mode-mini em{display:block;color:var(--muted);font-style:normal;margin-top:2px}
-    .monthhead{margin:24px 0 7px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:6px}
-    .day{margin:15px 0 6px;font-weight:800;font-size:14px;color:var(--muted)}
-    .card{display:grid;grid-template-columns:74px 1fr;gap:14px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:12px 14px;margin:8px 0;box-shadow:var(--shadow)}
-    .card.rejected{opacity:.68;background:#f7f4f1}
-    .card.archived{opacity:.72;background:#f6f6f3}
-    .when{text-align:center}
-    .time{font-weight:800;font-size:16px}
-    .dow{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-    .title{font-size:17px;font-weight:800;margin:0 0 2px}
-    .title a{text-decoration:none}.title a:hover{text-decoration:underline}
-    .meta,.note,.feedback-note{font-size:13px;color:var(--muted)}
-    .note{margin-top:5px;color:#3d352f}
-    .feedback-note{margin-top:7px;padding:8px;border-left:3px solid var(--danger);background:#fff7f5;color:#603028;border-radius:6px}
-    .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
-    .tag{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--chip);color:#573a21;border:1px solid var(--line)}
-    .badge{font-size:11px;padding:2px 7px;border-radius:6px;color:#fff;white-space:nowrap}
-    .b-verify{background:var(--verify)} .b-free{background:var(--accent2)} .b-fest{background:var(--accent)}
-    .prox{font-size:11px;font-weight:800}.prox.local{color:var(--accent2)}.prox.central{color:var(--accent3)}.prox.daytrip{color:#7a4bb0}
-    .empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:8px;background:#fff}
-    .watch{margin-top:34px;border-top:2px dashed var(--line);padding-top:18px}
-    .watch h2{font-size:18px;margin:0 0 4px}
-    .watch p.lead{color:var(--muted);font-size:13px;margin:0 0 12px}
-    .watch li{margin:6px 0}
-    dialog{width:min(640px,calc(100% - 28px));border:0;border-radius:16px;padding:0;box-shadow:0 24px 70px rgba(0,0,0,.28);background:#fff;color:var(--ink)}
-    dialog::backdrop{background:rgba(28,24,20,.45)}
-    .modal-head{padding:17px 18px 12px;border-bottom:1px solid var(--line);background:#fff8ed}
-    .modal-body{padding:16px 18px 18px}
-    .modal-title{margin:0;font-size:23px}
-    .modal-close{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);background:#fff}
-    .micro{display:block;margin:0 0 4px 2px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-    footer{color:var(--muted);font-size:13px;padding:24px 0 40px;border-top:1px solid var(--line);margin-top:30px}
-    .toast{position:fixed;left:50%;bottom:18px;z-index:20;transform:translate(-50%,16px);background:#241a15;color:#fff7ef;border-radius:999px;padding:8px 13px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease}
-    .toast.show{opacity:1;transform:translate(-50%,0)}
-    @media (max-width:820px){header .shell{grid-template-columns:1fr}.actions{justify-content:flex-start}.mode-strip{grid-template-columns:1fr 1fr}.card{grid-template-columns:58px 1fr}}
-    @media (max-width:560px){.mode-strip{grid-template-columns:1fr}h1{font-size:28px}.card{padding:11px}.row select{width:100%}}
-  </style>
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <header class="hero">
-    <div class="shell">
+  <header class="app-header">
+    <div class="shell header-grid">
       <div>
+        <p class="eyebrow">Surbiton + reachable roots music</p>
         <h1>Gig Radar</h1>
-        <div class="subtitle">Old-school jazz, swing, trad Irish and roots-adjacent gigs, ranked by how realistic they are from Surbiton. Nearby gets a lower bar; further out has to earn the trip.</div>
-        <div class="updated" id="updated"></div>
+        <p class="lede">Jazz, swing, trad Irish, folk, old-time, cajun, zydeco, honky tonk and roots-adjacent shows, with a lower bar nearby and a higher bar for longer trips.</p>
       </div>
-      <div class="actions">
-        <a class="btn solid" id="subscribe" href="gigs.ics">Subscribe ICS</a>
-        <button class="btn" id="exportBtn" type="button">Export filtered</button>
-        <button class="btn" id="feedbackBtn" type="button">Feedback</button>
-        <button class="btn" id="archiveBtn" type="button">Archived</button>
-        <a class="btn" href="index.html">Family Calendar</a>
-        <button class="btn" id="printBtn" type="button">Print</button>
-      </div>
+      <nav class="top-nav" aria-label="Other views">
+        <a class="btn primary" href="index.html">Family Calendar</a>
+        <a class="btn" href="gigs.ics">Subscribe</a>
+      </nav>
     </div>
   </header>
 
-  <div class="toolbar">
-    <div class="shell">
-      <div class="row">
-        <input id="search" type="search" placeholder="Search artist, venue, area, genre..." autocomplete="off" />
-        <select id="mode">
-          <option value="">All useful gigs</option>
-          <option value="nearbyEasy">Nearby / easy</option>
-          <option value="strictGenre">Strict genre match</option>
-          <option value="dateNight">Date night</option>
-          <option value="worthTrip">Worth the trip</option>
-          <option value="archived">Archived</option>
-          <option value="rejected">Not for us</option>
-        </select>
-        <select id="range">
-          <option value="all">All upcoming</option>
-          <option value="7">Next 7 days</option>
-          <option value="30">Next 30 days</option>
-          <option value="90">Next 3 months</option>
-          <option value="past">Include past</option>
-        </select>
-        <select id="prox">
-          <option value="">Anywhere</option>
-          <option value="Local (SW London)">Local / SW London</option>
-          <option value="Central London">Central London</option>
-          <option value="Day-trip">Day-trip</option>
-        </select>
+  <main class="shell app-main">
+    <section class="control-panel" aria-label="Gig controls">
+      <div class="lens-tabs" id="lensTabs" role="tablist" aria-label="Gig sections"></div>
+      <div class="filter-row">
+        <label class="field">
+          <span>Search</span>
+          <input id="searchBox" type="search" placeholder="Artist, venue, genre, trad, swing, cajun..." autocomplete="off" />
+        </label>
+        <label class="field small-field">
+          <span>Range</span>
+          <select id="dateRange">
+            <option value="next30">Next 30 days</option>
+            <option value="next7">Next 7 days</option>
+            <option value="next90">Next 3 months</option>
+            <option value="all">All upcoming</option>
+          </select>
+        </label>
       </div>
-      <div class="chips" id="genreChips"></div>
-      <div class="row">
-        <span class="count" id="count"></span>
-      </div>
-    </div>
-  </div>
+    </section>
 
-  <main class="shell">
-    <section class="mode-strip" id="modeCards" aria-label="Gig modes"></section>
-    <div id="list"></div>
-    <section class="watch" id="feedbackSection" hidden>
-      <div class="section-title">
-        <div>
-          <h2>Feedback for updater</h2>
-          <p class="lead">Use More like this and Not for us to train the updater. Archive is local-only and is not included in this export.</p>
-        </div>
-        <button class="btn" type="button" id="exportFeedbackBtn">Export feedback JSON</button>
-      </div>
-      <div id="feedbackList"></div>
-    </section>
-    <section class="watch" id="watchSection" hidden>
-      <h2>On the radar</h2>
-      <p class="lead">Residencies and venues to watch when they do not publish individual dates cleanly.</p>
-      <ul id="watchList"></ul>
-    </section>
-    <footer>
-      <div>Curated gig radar for traditional jazz, trad Irish and roots music. Rows marked <span class="badge b-verify">verify</span> need an organiser check before relying on them.</div>
-    </footer>
+    <section class="status-strip" id="statusStrip" aria-live="polite"></section>
+    <section id="content" aria-live="polite"></section>
   </main>
 
   <dialog id="feedbackDialog" aria-labelledby="feedbackTitle">
-    <button class="modal-close" id="feedbackClose" aria-label="Close feedback dialog" type="button">x</button>
-    <form method="dialog" id="feedbackForm">
+    <button class="modal-close" id="feedbackClose" aria-label="Close feedback" type="button">x</button>
+    <form id="feedbackForm" method="dialog">
       <div class="modal-head">
-        <h2 class="modal-title" id="feedbackTitle">Not for us</h2>
-        <div class="note" id="feedbackSubtitle"></div>
+        <h2 id="feedbackTitle">Not for us</h2>
+        <p id="feedbackSubtitle" class="muted"></p>
       </div>
-      <div class="modal-body">
-        <label class="micro" for="feedbackNote">Why skip this?</label>
-        <textarea id="feedbackNote" rows="5" placeholder="Wrong genre, too far, too late, too much like modern jazz, not worth childcare..."></textarea>
-        <div class="card-actions" style="margin-top:12px">
-          <button class="btn solid" value="default" type="submit">Save feedback</button>
-          <button class="btn" id="cancelFeedbackBtn" value="cancel" type="button">Cancel</button>
-        </div>
+      <label class="field full">
+        <span>Why skip this kind of thing?</span>
+        <textarea id="feedbackNote" rows="5" placeholder="Wrong genre, too far, too late, not worth childcare..."></textarea>
+      </label>
+      <div class="modal-actions">
+        <button class="btn primary" type="submit">Save feedback</button>
+        <button class="btn" id="cancelFeedbackBtn" type="button">Cancel</button>
       </div>
     </form>
   </dialog>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="gig-data.js"></script>
   <script>
-  (function(){
-    var DATA=(window.GIG_DATA)||{gigs:[],watchlist:[],meta:{}};
-    var gigs=DATA.gigs||[];
-    var today=(DATA.meta&&DATA.meta.dateBasis)||new Date().toISOString().slice(0,10);
-    var FEEDBACK_KEY='gig-radar-feedback-v1';
-    var ARCHIVE_KEY='gig-radar-archive-v1';
-    var feedback=[];
-    var archived=new Set();
-    var pendingFeedbackId=null;
-    var state={q:'',range:'all',prox:'',mode:'',genres:new Set()};
-    var modes=[
-      {id:'nearbyEasy',title:'Nearby / easy',detail:'Lower bar for Surbiton, Kingston, SW London and Waterloo-friendly gigs.'},
-      {id:'strictGenre',title:'Strict genre',detail:'Hot jazz, trad Irish, swing, old-time, cajun, zydeco, skiffle and honky tonk.'},
-      {id:'dateNight',title:'Date night',detail:'Evening shows good enough to arrange childcare for.'},
-      {id:'worthTrip',title:'Worth the trip',detail:'Further-out gigs only when the artist, venue or rarity justifies it.'}
+  (() => {
+    const DATA = window.GIG_DATA || {};
+    const GIGS = DATA.gigs || [];
+    const WATCHLIST = DATA.watchlist || [];
+    const FEEDBACK_KEY = 'gig-radar-feedback-v1';
+    const ARCHIVE_KEY = 'gig-radar-archive-v1';
+    const SAVED_KEY = 'gig-radar-saved-v1';
+    const STATE_KEY = 'gig-radar-state-v2';
+
+    const state = { lens: 'home', q: '', range: 'next30' };
+    const personal = { saved: new Set(), archived: new Set(), feedback: [] };
+    let pendingFeedbackId = null;
+    const today = DATA.meta?.dateBasis || new Date().toISOString().slice(0, 10);
+
+    const lenses = [
+      { id: 'home', label: 'Best next', help: 'Soon and high-signal.' },
+      { id: 'nearby', label: 'Nearby', help: 'Lower bar, easier trip.' },
+      { id: 'genre', label: 'In genre', help: 'Trad, swing, folk, roots.' },
+      { id: 'date', label: 'Date night', help: 'Worth childcare.' },
+      { id: 'trip', label: 'Worth trip', help: 'Further, but special.' },
+      { id: 'saved', label: 'Saved', help: 'Things you starred.' },
+      { id: 'archive', label: 'Archive', help: 'Hidden this time only.' }
     ];
-    var el=function(id){return document.getElementById(id);};
-    function esc(s){return (s==null?'':String(s)).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];});}
-    function lower(s){return String(s||'').toLowerCase();}
-    function hay(g){return lower([g.title,g.artist,g.venue,g.area,g.note,(g.genres||[]).join(' '),g.cost,g.travel].join(' '));}
-    function addDays(d,n){var p=d.split('-').map(Number);var dt=new Date(Date.UTC(p[0],p[1]-1,p[2]));dt.setUTCDate(dt.getUTCDate()+n);return dt.toISOString().slice(0,10);}
-    function compactDate(iso){return String(iso||'').replace(/-/g,'');}
-    function pad2(n){return String(n).padStart(2,'0');}
-    function parseClock(value){var m=String(value||'').match(/\b(\d{1,2})[:.](\d{2})\b/);return m?pad2(Math.min(Number(m[1]),23))+':'+pad2(Math.min(Number(m[2]),59)):null;}
-    function clockStamp(iso,clock){return compactDate(iso)+'T'+clock.replace(':','')+'00';}
-    function addMinutes(iso,clock,minutes){var p=iso.split('-').map(Number),t=clock.split(':').map(Number),dt=new Date(p[0],p[1]-1,p[2],t[0],t[1]+minutes,0,0);return{date:dt.getFullYear()+'-'+pad2(dt.getMonth()+1)+'-'+pad2(dt.getDate()),clock:pad2(dt.getHours())+':'+pad2(dt.getMinutes())};}
-    function timeRange(g){var start=parseClock(g.time);if(!start)return{allDay:true};var end=addMinutes(g.date,start,120);return{allDay:false,start:start,end:end.clock,endDate:end.date};}
-    function proxClass(t){return t==='Local (SW London)'?'local':t==='Central London'?'central':'daytrip';}
-    function eventTitle(g){return (g.artist&&g.title&&g.title!==g.artist)?g.artist+' - '+g.title:(g.artist||g.title||'Gig');}
-    function feedbackFor(id){return feedback.find(function(x){return x.id===id&&x.action==='exclude';})||null;}
-    function positiveFeedbackFor(id){return feedback.find(function(x){return x.id===id&&x.action==='include';})||null;}
-    function isRejected(id){return !!feedbackFor(id);}
-    function isArchived(id){return archived.has(id);}
-    function isNearby(g){return g.travel==='Local (SW London)'||/surbiton|kingston|wimbledon|richmond|twickenham|barnes|putney|waterloo|south bank/.test(hay(g));}
-    function strictGenre(g){return /(hot jazz|gypsy jazz|django|manouche|western swing|old-time|old time|cajun|zydeco|jug band|skiffle|honky tonk|old-school country|new orleans|trad jazz|trad irish|irish|swing)/.test(hay(g));}
-    function dateNight(g){return !!parseClock(g.time)&&parseClock(g.time)>='18:00'&&(strictGenre(g)||isNearby(g));}
-    function worthTrip(g){return !isNearby(g)&&(strictGenre(g)||/festival|special|rare|all-dayer|weekender|dance/.test(hay(g)));}
-    function modePredicate(g,mode){
-      if(mode==='nearbyEasy')return isNearby(g);
-      if(mode==='strictGenre')return strictGenre(g);
-      if(mode==='dateNight')return dateNight(g);
-      if(mode==='worthTrip')return worthTrip(g);
-      if(mode==='archived')return isArchived(g.id)&&!isRejected(g.id);
-      if(mode==='rejected')return isRejected(g.id);
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' }[c]));
+    const lower = (value) => String(value || '').toLowerCase();
+    const pad = (n) => String(n).padStart(2, '0');
+
+    function parseIso(iso) {
+      const [y, m, d] = String(iso || '').split('-').map(Number);
+      return y && m && d ? new Date(y, m - 1, d) : null;
+    }
+
+    function addDays(iso, days) {
+      const date = parseIso(iso);
+      date.setDate(date.getDate() + days);
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    }
+
+    function compactDate(iso) {
+      return String(iso || '').replace(/-/g, '');
+    }
+
+    function parseClock(value) {
+      const match = String(value || '').match(/\b(\d{1,2})[:.](\d{2})\b/);
+      return match ? `${pad(Math.min(Number(match[1]), 23))}:${pad(Math.min(Number(match[2]), 59))}` : null;
+    }
+
+    function fmtDate(iso) {
+      const date = parseIso(iso);
+      return date ? new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).format(date) : iso || '';
+    }
+
+    function title(gig) {
+      return gig.artist && gig.title && gig.title !== gig.artist ? `${gig.artist} - ${gig.title}` : gig.artist || gig.title || 'Gig';
+    }
+
+    function hay(gig) {
+      return lower([gig.title, gig.artist, gig.venue, gig.area, gig.note, gig.cost, gig.travel, (gig.genres || []).join(' ')].join(' '));
+    }
+
+    function isArchived(id) { return personal.archived.has(id); }
+    function isSaved(id) { return personal.saved.has(id); }
+    function feedbackFor(id, action = 'exclude') { return personal.feedback.find(item => item.id === id && item.action === action) || null; }
+    function isSkipped(id) { return Boolean(feedbackFor(id)); }
+
+    function isNearby(gig) {
+      return gig.travel === 'Local (SW London)' || /surbiton|kingston|wimbledon|richmond|twickenham|barnes|putney|waterloo|south bank/.test(hay(gig));
+    }
+
+    function isInGenre(gig) {
+      return /(hot jazz|trad jazz|new orleans|gypsy jazz|django|manouche|swing|trad irish|irish|folk|old-time|old time|cajun|zydeco|honky tonk|skiffle|western swing|old-school country|jug band)/.test(hay(gig));
+    }
+
+    function isDateNight(gig) {
+      const start = parseClock(gig.time);
+      return Boolean(start && start >= '18:00' && (isInGenre(gig) || isNearby(gig)));
+    }
+
+    function isWorthTrip(gig) {
+      return !isNearby(gig) && (isInGenre(gig) || /festival|special|rare|all-dayer|weekender|dance/.test(hay(gig)));
+    }
+
+    function daysUntil(iso) {
+      const a = parseIso(today);
+      const b = parseIso(iso);
+      return a && b ? Math.round((b - a) / 86400000) : 999;
+    }
+
+    function score(gig) {
+      let value = 0;
+      const soon = daysUntil(gig.date);
+      if (soon >= 0 && soon <= 14) value += 3;
+      if (isNearby(gig)) value += 2;
+      if (isInGenre(gig)) value += 3;
+      if (/free/i.test(gig.cost || '')) value += 1;
+      if (/verify/i.test(gig.confidence || '')) value -= 2;
+      return value;
+    }
+
+    function rangeOk(gig) {
+      const end = gig.endDate || gig.date;
+      if (end < today) return false;
+      if (state.range === 'next7') return gig.date <= addDays(today, 7);
+      if (state.range === 'next90') return gig.date <= addDays(today, 90);
+      if (state.range === 'all') return true;
+      return gig.date <= addDays(today, 30);
+    }
+
+    function lensOk(gig) {
+      if (state.lens === 'sources') return false;
+      if (state.lens === 'archive') return isArchived(gig.id) && !isSkipped(gig.id);
+      if (state.lens === 'skips') return isSkipped(gig.id);
+      if (state.lens !== 'archive' && state.lens !== 'skips' && (isArchived(gig.id) || isSkipped(gig.id))) return false;
+      if (state.lens === 'saved') return isSaved(gig.id);
+      if (state.lens === 'nearby') return isNearby(gig);
+      if (state.lens === 'genre') return isInGenre(gig);
+      if (state.lens === 'date') return isDateNight(gig);
+      if (state.lens === 'trip') return isWorthTrip(gig);
+      if (state.lens === 'home') return score(gig) >= 4;
       return true;
     }
-    function modeMatch(g){return modePredicate(g,state.mode);}
-    function icsEscape(s){return String(s==null?'':s).replace(/\\/g,'\\\\').replace(/\r\n/g,'\n').replace(/\r/g,'\n').replace(/\n/g,'\\n').replace(/;/g,'\\;').replace(/,/g,'\\,');}
-    function eventDetails(g){return[(g.genres||[]).length?'Genres: '+(g.genres||[]).join(' / '):'',g.cost?'Cost: '+g.cost:'',g.confidence?'Confidence: '+g.confidence:'',g.note||'',g.url?'Source: '+g.url:''].filter(Boolean).join('\n');}
-    function googleDateRange(g){var r=timeRange(g);return r.allDay?compactDate(g.date)+'/'+compactDate(addDays(g.endDate||g.date,1)):clockStamp(g.date,r.start)+'/'+clockStamp(r.endDate,r.end);}
-    function googleCalendarUrl(g){var p=new URLSearchParams({action:'TEMPLATE',text:eventTitle(g),dates:googleDateRange(g),ctz:'Europe/London',details:eventDetails(g),location:[g.venue,g.area].filter(Boolean).join(', ')});return 'https://calendar.google.com/calendar/render?'+p.toString();}
-    function gigToIcs(g,stamp){var lines=['BEGIN:VEVENT','UID:'+icsEscape((g.id||g.date+'-'+eventTitle(g)))+'@local-events-gig-radar','DTSTAMP:'+stamp,'SUMMARY:'+icsEscape(eventTitle(g))];var r=timeRange(g);if(r.allDay){lines.push('DTSTART;VALUE=DATE:'+compactDate(g.date));lines.push('DTEND;VALUE=DATE:'+compactDate(addDays(g.endDate||g.date,1)));}else{lines.push('DTSTART;TZID=Europe/London:'+clockStamp(g.date,r.start));lines.push('DTEND;TZID=Europe/London:'+clockStamp(r.endDate,r.end));}if(g.venue||g.area)lines.push('LOCATION:'+icsEscape([g.venue,g.area].filter(Boolean).join(', ')));var desc=eventDetails(g);if(desc)lines.push('DESCRIPTION:'+icsEscape(desc));if(g.url)lines.push('URL:'+icsEscape(g.url));lines.push('END:VEVENT');return lines.join('\r\n');}
-    function downloadIcs(rows,filename){rows=rows.filter(function(g){return g&&g.date;});if(!rows.length){toast('No gigs to export');return;}var stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');var body=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//local-events//gig-radar//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Gig Radar'].concat(rows.map(function(g){return gigToIcs(g,stamp);})).concat(['END:VCALENDAR']).join('\r\n');downloadBlob(body,'text/calendar;charset=utf-8',filename);toast(rows.length===1?'Calendar file downloaded':rows.length+' gigs exported');}
-    function downloadBlob(body,type,filename){var blob=new Blob([body],{type:type});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}
-    function safeFilename(value){return String(value||'gig').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70)||'gig';}
-    function toast(message){var t=el('toast');t.textContent=message;t.classList.add('show');window.setTimeout(function(){t.classList.remove('show');},1800);}
-    function matches(g){
-      var end=g.endDate||g.date;
-      if(state.range!=='past'&&end<today)return false;
-      if(state.mode!=='archived'&&state.mode!=='rejected'&&isArchived(g.id))return false;
-      if(state.mode==='archived'&&(!isArchived(g.id)||isRejected(g.id)))return false;
-      if(state.mode!=='rejected'&&isRejected(g.id))return false;
-      if(state.range==='7'&&g.date>addDays(today,7))return false;
-      if(state.range==='30'&&g.date>addDays(today,30))return false;
-      if(state.range==='90'&&g.date>addDays(today,90))return false;
-      if(state.prox&&g.travel!==state.prox)return false;
-      if(state.genres.size&&!(g.genres||[]).some(function(x){return state.genres.has(x);}))return false;
-      if(state.q&&hay(g).indexOf(state.q)<0)return false;
-      return modeMatch(g);
+
+    function rows() {
+      const q = lower(state.q);
+      return GIGS
+        .filter(rangeOk)
+        .filter(lensOk)
+        .filter(gig => !q || hay(gig).includes(q))
+        .sort((a, b) => (a.sortKey || a.date).localeCompare(b.sortKey || b.date) || score(b) - score(a));
     }
-    function saveFeedback(){try{localStorage.setItem(FEEDBACK_KEY,JSON.stringify(feedback));}catch(e){}}
-    function loadFeedback(){try{var stored=JSON.parse(localStorage.getItem(FEEDBACK_KEY)||'[]');feedback=Array.isArray(stored)?stored.filter(function(x){return x&&x.id;}):[];}catch(e){feedback=[];}try{var storedArchive=JSON.parse(localStorage.getItem(ARCHIVE_KEY)||'[]');archived=new Set(Array.isArray(storedArchive)?storedArchive.filter(Boolean).map(String):[]);}catch(e){archived=new Set();}}
-    function saveArchive(){try{localStorage.setItem(ARCHIVE_KEY,JSON.stringify(Array.from(archived)));}catch(e){}}
-    function exportFeedback(){var payload={updated:new Date().toISOString(),calendarFeedback:[],gigFeedback:feedback};downloadBlob(JSON.stringify(payload,null,2)+'\n','application/json;charset=utf-8','user-feedback.json');toast('Feedback file exported');}
-    function feedbackObject(g,action,note){return{action:action,id:g.id,title:g.title||'',artist:g.artist||'',venue:g.venue||'',area:g.area||'',genres:g.genres||[],date:g.date||'',source:g.source||'',url:g.url||'',note:note||'',createdAt:new Date().toISOString()};}
-    function openFeedback(id){var g=gigs.find(function(x){return x.id===id;});if(!g)return;pendingFeedbackId=id;var existing=feedbackFor(id);el('feedbackSubtitle').textContent=eventTitle(g)+(g.venue?' - '+g.venue:'');el('feedbackNote').value=existing&&existing.note||'';el('feedbackDialog').showModal();el('feedbackNote').focus();}
-    function saveFeedbackNote(){var g=gigs.find(function(x){return x.id===pendingFeedbackId;});if(!g)return;feedback=feedback.filter(function(x){return x.id!==g.id;});feedback.unshift(feedbackObject(g,'exclude',el('feedbackNote').value.trim()));pendingFeedbackId=null;saveFeedback();render();toast('Saved as not for us');}
-    function savePositiveFeedback(id){var g=gigs.find(function(x){return x.id===id;});if(!g)return;feedback=feedback.filter(function(x){return !(x.id===g.id&&x.action==='include');});feedback.unshift(feedbackObject(g,'include','More like this'));saveFeedback();render();toast('Saved: more like this');}
-    function removeFeedback(id){feedback=feedback.filter(function(x){return x.id!==id;});saveFeedback();render();toast('Feedback removed');}
-    function toggleArchive(id){if(archived.has(id))archived.delete(id);else archived.add(id);saveArchive();render();toast(archived.has(id)?'Archived from normal views':'Unarchived');}
-    function renderModes(){
-      el('modeCards').innerHTML=modes.map(function(m){
-        var modeRows=gigs.filter(function(g){return (g.endDate||g.date)>=today&&!isRejected(g.id)&&!isArchived(g.id)&&modePredicate(g,m.id);});
-        var picks=modeRows.slice(0,3).map(function(g){return'<span class="mode-mini">'+esc(eventTitle(g))+'<em>'+esc([g.dateLabel,g.venue,g.travel].filter(Boolean).join(' - '))+'</em></span>';}).join('');
-        return'<button class="mode-card '+(state.mode===m.id?'active':'')+'" type="button" data-mode-card="'+m.id+'"><strong>'+esc(m.title)+'</strong><span>'+esc(m.detail)+'</span><span class="mode-count">'+modeRows.length+'</span>'+picks+'</button>';
-      }).join('');
+
+    function groupName(gig) {
+      const diff = daysUntil(gig.date);
+      if (diff === 0) return 'Today';
+      if (diff === 1) return 'Tomorrow';
+      if (diff <= 7) return 'Next 7 days';
+      const date = parseIso(gig.date);
+      return date ? new Intl.DateTimeFormat('en-GB', { month: 'long' }).format(date) : 'Later';
     }
-    function render(){
-      renderModes();
-      var rows=gigs.filter(matches);
-      el('list').innerHTML='';
-      var skipCount=feedback.filter(function(x){return x.action==='exclude';}).length, likeCount=feedback.filter(function(x){return x.action==='include';}).length, archiveCount=Array.from(archived).filter(function(id){return !isRejected(id);}).length;
-      el('count').textContent=rows.length+(rows.length===1?' gig':' gigs')+(archiveCount?' - '+archiveCount+' archived':'')+(skipCount?' - '+skipCount+' not-for-us notes':'')+(likeCount?' - '+likeCount+' more-like-this signals':'');
-      if(!rows.length)el('list').innerHTML='<div class="empty">No gigs match. Try clearing filters or widening the date range.</div>';
-      var lastMonth='',lastDay='';
-      rows.forEach(function(g){if(g.monthLabel!==lastMonth){lastMonth=g.monthLabel;lastDay='';var h=document.createElement('div');h.className='monthhead';h.textContent=g.monthLabel;el('list').appendChild(h);}if(g.dateLabel!==lastDay){lastDay=g.dateLabel;var d=document.createElement('div');d.className='day';d.textContent=g.dateLabel+(g.isMultiDay?' - '+(g.endDate||''):'');el('list').appendChild(d);}el('list').appendChild(cardFor(g));});
-      renderFeedback();
-      renderWatchlist();
+
+    function groups(items) {
+      const map = new Map();
+      for (const gig of items) {
+        const key = groupName(gig);
+        if (!map.has(key)) map.set(key, []);
+        map.get(key).push(gig);
+      }
+      return map;
     }
-    function cardFor(g){
-      var c=document.createElement('div');var fb=feedbackFor(g.id),liked=positiveFeedbackFor(g.id),arch=isArchived(g.id);c.className='card'+(fb?' rejected':'')+(arch?' archived':'');
-      var title=esc(g.artist||g.title||'Gig');var sub=g.artist&&g.title&&g.title!==g.artist?' - '+esc(g.title):'';
-      var titleHtml=g.url?'<a href="'+esc(g.url)+'" target="_blank" rel="noopener">'+title+'</a>'+sub:title+sub;
-      var badges='';if(g.confidence==='verify')badges+=' <span class="badge b-verify">verify</span>';if(/free/i.test(g.cost||''))badges+=' <span class="badge b-free">free</span>';if(g.isMultiDay)badges+=' <span class="badge b-fest">festival</span>';
-      var tags=(g.genres||[]).map(function(x){return'<span class="tag">'+esc(x)+'</span>';}).join('');
-      var costArea=[g.venue,g.area].filter(Boolean).map(esc).join(', ');
-      var right=[g.cost?esc(g.cost):'',g.travel?'<span class="prox '+proxClass(g.travel)+'">'+esc(g.travel)+'</span>':''].filter(Boolean).join(' - ');
-      c.innerHTML='<div class="when"><div class="time">'+esc(g.time||'-')+'</div><div class="dow">'+esc(g.weekday||'')+'</div></div>'+
-        '<div class="body"><div class="title">'+titleHtml+badges+'</div><div class="meta">'+costArea+(right?' - '+right:'')+'</div>'+
-        (g.note?'<div class="note">'+esc(g.note)+'</div>':'')+(fb&&fb.note?'<div class="feedback-note"><strong>Skip reason:</strong> '+esc(fb.note)+'</div>':'')+
-        '<div class="tags">'+tags+'</div><div class="card-actions"><a class="btn small" href="'+esc(googleCalendarUrl(g))+'" target="_blank" rel="noopener">Google Calendar</a><button class="btn small" type="button" data-ics="'+esc(g.id)+'">Download .ics</button><button class="btn small good '+(liked?'active':'')+'" type="button" data-like-gig="'+esc(g.id)+'">'+(liked?'More like this saved':'More like this')+'</button><button class="btn small archive" type="button" data-archive-gig="'+esc(g.id)+'">'+(arch?'Unarchive':'Archive')+'</button><button class="btn small danger '+(fb?'active':'')+'" type="button" data-reject-gig="'+esc(g.id)+'">'+(fb?'Edit skip':'Not for us')+'</button></div></div>';
-      return c;
+
+    function googleDateRange(gig) {
+      const start = parseClock(gig.time);
+      if (!start) return `${compactDate(gig.date)}/${compactDate(addDays(gig.endDate || gig.date, 1))}`;
+      const [h, m] = start.split(':').map(Number);
+      const d = parseIso(gig.date);
+      d.setHours(h, m + 120, 0, 0);
+      const endDate = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      const endClock = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      return `${compactDate(gig.date)}T${start.replace(':', '')}00/${compactDate(endDate)}T${endClock.replace(':', '')}00`;
     }
-    function renderFeedback(){
-      el('feedbackSection').hidden=!(feedback.length||state.mode==='rejected');
-      el('feedbackList').innerHTML=feedback.length?feedback.map(function(x){return'<div class="feedback-note"><strong>'+esc(x.action==='include'?'More like this':'Not for us')+': '+esc(x.artist||x.title||x.id)+'</strong><div>'+esc([x.date,x.venue,x.area,(x.genres||[]).join(' / ')].filter(Boolean).join(' - '))+'</div>'+(x.note?'<div>'+esc(x.note)+'</div>':'')+'<button class="btn small" type="button" data-remove-feedback="'+esc(x.id)+'">Remove feedback</button></div>';}).join(''):'<div class="empty">No gig feedback saved yet.</div>';
+
+    function googleUrl(gig) {
+      const params = new URLSearchParams({
+        action: 'TEMPLATE',
+        text: title(gig),
+        dates: googleDateRange(gig),
+        ctz: 'Europe/London',
+        details: [(gig.genres || []).join(' / '), gig.note, gig.url ? `Source: ${gig.url}` : ''].filter(Boolean).join('\n\n'),
+        location: [gig.venue, gig.area].filter(Boolean).join(', ')
+      });
+      return `https://calendar.google.com/calendar/render?${params}`;
     }
-    function renderWatchlist(){
-      var w=DATA.watchlist||[];
-      if(!w.length)return;
-      el('watchSection').hidden=false;
-      var ul=el('watchList');ul.innerHTML='';
-      w.forEach(function(x){var li=document.createElement('li');var link=x.url?'<a href="'+esc(x.url)+'" target="_blank" rel="noopener">'+esc(x.name||x.venue||'link')+'</a>':esc(x.name||x.venue||'');li.innerHTML='<strong>'+link+'</strong>'+(x.venue&&x.name?' - '+esc(x.venue):'')+(x.note?' - '+esc(x.note):'');ul.appendChild(li);});
+
+    function card(gig) {
+      const liked = feedbackFor(gig.id, 'include');
+      const skipped = feedbackFor(gig.id, 'exclude');
+      return `
+        <article class="event-card ${isArchived(gig.id) ? 'is-archived' : ''} ${skipped ? 'is-muted' : ''}">
+          <div class="date-block">
+            <strong>${esc(fmtDate(gig.date))}</strong>
+            <span>${esc(gig.time || 'Time not listed')}</span>
+          </div>
+          <div class="event-main">
+            <a class="title-button" href="${esc(gig.url || '#')}" target="_blank" rel="noopener">${esc(title(gig))}</a>
+            <div class="event-meta">${esc([gig.venue, gig.area].filter(Boolean).join(', '))}</div>
+            ${gig.note ? `<p>${esc(gig.note)}</p>` : ''}
+            ${skipped?.note ? `<p class="feedback-note"><strong>Skip reason:</strong> ${esc(skipped.note)}</p>` : ''}
+            <div class="tag-row">
+              ${(gig.genres || []).slice(0, 4).map(x => `<span>${esc(x)}</span>`).join('')}
+              ${gig.travel ? `<span>${esc(gig.travel)}</span>` : ''}
+              ${gig.cost ? `<span>${esc(gig.cost)}</span>` : ''}
+              ${gig.confidence === 'verify' ? '<span>verify</span>' : ''}
+            </div>
+            <div class="action-row">
+              <a class="btn small primary" href="${esc(googleUrl(gig))}" target="_blank" rel="noopener">Google</a>
+              <button class="btn small ${isSaved(gig.id) ? 'active' : ''}" type="button" data-save="${esc(gig.id)}">${isSaved(gig.id) ? 'Saved' : 'Save'}</button>
+              <button class="btn small" type="button" data-archive="${esc(gig.id)}">${isArchived(gig.id) ? 'Unarchive' : 'Archive'}</button>
+              <details class="tune-menu">
+                <summary>Tune</summary>
+                <button class="btn small good ${liked ? 'active' : ''}" type="button" data-like="${esc(gig.id)}">${liked ? 'More like this saved' : 'More like this'}</button>
+                <button class="btn small danger ${skipped ? 'active' : ''}" type="button" data-skip="${esc(gig.id)}">${skipped ? 'Edit not for us' : 'Not for us'}</button>
+              </details>
+            </div>
+          </div>
+        </article>
+      `;
     }
-    function init(){
-      var upd=el('updated');if(DATA.meta&&DATA.meta.dateBasis){var c=DATA.meta.counts||{};upd.textContent='Updated '+DATA.meta.dateBasis+' - '+(c.upcoming||0)+' upcoming gigs';}
-      var genres=(DATA.meta&&DATA.meta.genres)||[];genres.forEach(function(g){var c=document.createElement('span');c.className='chip';c.textContent=g;c.dataset.g=g;c.onclick=function(){if(state.genres.has(g)){state.genres.delete(g);c.classList.remove('on');}else{state.genres.add(g);c.classList.add('on');}render();};el('genreChips').appendChild(c);});
-      el('search').oninput=function(e){state.q=e.target.value.toLowerCase().trim();render();};
-      el('range').onchange=function(e){state.range=e.target.value;render();};
-      el('prox').onchange=function(e){state.prox=e.target.value;render();};
-      el('mode').onchange=function(e){state.mode=e.target.value;render();};
-      el('printBtn').onclick=function(){window.print();};
-      el('exportBtn').onclick=function(){downloadIcs(gigs.filter(matches),'gig-radar-filtered-'+today+'.ics');};
-      el('feedbackBtn').onclick=function(){state.mode='rejected';el('mode').value='rejected';render();el('feedbackSection').scrollIntoView({behavior:'smooth',block:'start'});};
-      el('archiveBtn').onclick=function(){state.mode=state.mode==='archived'?'':'archived';el('mode').value=state.mode;render();window.scrollTo({top:0,behavior:'smooth'});};
-      el('exportFeedbackBtn').onclick=exportFeedback;
-      el('feedbackClose').onclick=function(){el('feedbackDialog').close();};
-      el('cancelFeedbackBtn').onclick=function(){el('feedbackDialog').close();};
-      el('feedbackForm').onsubmit=function(e){e.preventDefault();saveFeedbackNote();el('feedbackDialog').close();};
-      document.addEventListener('click',function(e){var b=e.target.closest('[data-ics]');if(b){var g=gigs.find(function(x){return x.id===b.getAttribute('data-ics');});if(g)downloadIcs([g],(g.date||'gig')+'-'+safeFilename(eventTitle(g))+'.ics');return;}var like=e.target.closest('[data-like-gig]');if(like){savePositiveFeedback(like.getAttribute('data-like-gig'));return;}var ar=e.target.closest('[data-archive-gig]');if(ar){toggleArchive(ar.getAttribute('data-archive-gig'));return;}var r=e.target.closest('[data-reject-gig]');if(r){openFeedback(r.getAttribute('data-reject-gig'));return;}var rm=e.target.closest('[data-remove-feedback]');if(rm){removeFeedback(rm.getAttribute('data-remove-feedback'));return;}var mc=e.target.closest('[data-mode-card]');if(mc){state.mode=state.mode===mc.dataset.modeCard?'':mc.dataset.modeCard;el('mode').value=state.mode;render();}});
-      loadFeedback();
+
+    function renderTabs() {
+      $('lensTabs').innerHTML = lenses.map(lens => `
+        <button class="lens ${state.lens === lens.id ? 'active' : ''}" type="button" data-lens="${esc(lens.id)}">
+          <strong>${esc(lens.label)}</strong>
+          <span>${esc(lens.help)}</span>
+        </button>
+      `).join('');
+    }
+
+    function renderStatus(items) {
+      const archived = [...personal.archived].filter(id => !isSkipped(id)).length;
+      const likes = personal.feedback.filter(item => item.action === 'include').length;
+      const skips = personal.feedback.filter(item => item.action === 'exclude').length;
+      $('statusStrip').innerHTML = `
+        <div>Updated ${esc(today)} / ${items.length} matches / ${GIGS.length} upcoming</div>
+        <div class="status-actions">
+          <span>${[personal.saved.size ? `${personal.saved.size} saved` : '', archived ? `${archived} archived` : '', likes ? `${likes} liked` : '', skips ? `${skips} skipped` : ''].filter(Boolean).map(esc).join(' / ') || 'Archive hides this gig. Not for us trains future updates.'}</span>
+          <button class="btn small" type="button" data-lens="${state.lens === 'sources' ? 'home' : 'sources'}">${state.lens === 'sources' ? 'Back to gigs' : 'Sources + feedback'}</button>
+        </div>
+      `;
+    }
+
+    function renderSources() {
+      $('content').innerHTML = `
+        <section class="section-head">
+          <div>
+            <h2>Sources and watchlist</h2>
+            <p>Archive is local-only. More like this and Not for us are exported for future updates.</p>
+          </div>
+          <button class="btn primary" type="button" data-export-feedback>Export feedback</button>
+        </section>
+        <section class="plain-section">
+          <h3>Feedback saved in this browser</h3>
+          ${personal.feedback.length ? personal.feedback.map(item => `
+            <div class="source-row">
+              <strong>${esc(item.action === 'include' ? 'More like this' : 'Not for us')}: ${esc(item.artist || item.title || item.id)}</strong>
+              <span>${esc([item.date, item.venue, item.note].filter(Boolean).join(' - '))}</span>
+              <button class="btn small" type="button" data-remove-feedback="${esc(item.id)}">Remove</button>
+            </div>
+          `).join('') : '<p class="muted">No feedback saved.</p>'}
+        </section>
+        <section class="plain-section">
+          <h3>Watchlist</h3>
+          ${WATCHLIST.map(item => `<div class="source-row"><strong>${esc(item.name || item.venue || 'Watch item')}</strong><span>${esc([item.venue, item.note, item.url].filter(Boolean).join(' - '))}</span></div>`).join('') || '<p class="muted">No watchlist rows.</p>'}
+        </section>
+      `;
+    }
+
+    function render() {
+      renderTabs();
+      $('searchBox').value = state.q;
+      $('dateRange').value = state.range;
+      if (state.lens === 'sources') {
+        renderStatus([]);
+        renderSources();
+        persist();
+        return;
+      }
+      const items = rows();
+      renderStatus(items);
+      if (!items.length) {
+        $('content').innerHTML = '<section class="empty-state"><h2>No matching gigs</h2><p>Try another lens or a wider range.</p></section>';
+      } else {
+        const limit = state.lens === 'home' ? 24 : items.length;
+        const visible = items.slice(0, limit);
+        $('content').innerHTML = `
+          <section class="section-head"><div><h2>${esc(lenses.find(x => x.id === state.lens)?.label || 'Gigs')}</h2><p>${esc(lenses.find(x => x.id === state.lens)?.help || '')}</p></div>${state.lens === 'archive' && items.length ? '<button class="btn" type="button" data-unarchive-all>Unarchive all</button>' : ''}${state.lens === 'skips' ? '<button class="btn" type="button" data-export-feedback>Export feedback</button>' : ''}</section>
+          ${[...groups(visible).entries()].map(([name, gigs]) => `<section class="event-group"><h3>${esc(name)}</h3><div class="event-list">${gigs.map(card).join('')}</div></section>`).join('')}
+          ${items.length > visible.length ? `<button class="btn load-more" type="button" data-range-all>Show all ${items.length}</button>` : ''}
+        `;
+      }
+      persist();
+    }
+
+    function feedbackObject(gig, action, note = '') {
+      return { action, id: gig.id, title: gig.title || '', artist: gig.artist || '', venue: gig.venue || '', area: gig.area || '', genres: gig.genres || [], date: gig.date || '', source: gig.source || '', url: gig.url || '', note, createdAt: new Date().toISOString() };
+    }
+
+    function persist() {
+      try {
+        localStorage.setItem(STATE_KEY, JSON.stringify(state));
+        localStorage.setItem(SAVED_KEY, JSON.stringify([...personal.saved]));
+        localStorage.setItem(ARCHIVE_KEY, JSON.stringify([...personal.archived]));
+        localStorage.setItem(FEEDBACK_KEY, JSON.stringify(personal.feedback));
+      } catch {}
+    }
+
+    function load() {
+      try { Object.assign(state, JSON.parse(localStorage.getItem(STATE_KEY) || '{}')); } catch {}
+      try { personal.saved = new Set(JSON.parse(localStorage.getItem(SAVED_KEY) || '[]').map(String)); } catch {}
+      try { personal.archived = new Set(JSON.parse(localStorage.getItem(ARCHIVE_KEY) || '[]').map(String)); } catch {}
+      try {
+        const feedback = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '[]');
+        personal.feedback = Array.isArray(feedback) ? feedback.filter(item => item && item.id) : [];
+      } catch {}
+    }
+
+    function toggleSave(id) {
+      if (personal.saved.has(id)) personal.saved.delete(id);
+      else personal.saved.add(id);
       render();
+      toast(personal.saved.has(id) ? 'Saved' : 'Removed from saved');
     }
-    init();
+
+    function toggleArchive(id) {
+      if (personal.archived.has(id)) personal.archived.delete(id);
+      else personal.archived.add(id);
+      render();
+      toast(personal.archived.has(id) ? 'Archived' : 'Unarchived');
+    }
+
+    function saveLike(id) {
+      const gig = GIGS.find(item => item.id === id);
+      if (!gig) return;
+      personal.feedback = personal.feedback.filter(item => !(item.id === id && item.action === 'include'));
+      personal.feedback.unshift(feedbackObject(gig, 'include', 'More like this'));
+      render();
+      toast('Saved: more like this');
+    }
+
+    function openFeedback(id) {
+      const gig = GIGS.find(item => item.id === id);
+      if (!gig) return;
+      pendingFeedbackId = id;
+      $('feedbackSubtitle').textContent = [title(gig), gig.venue].filter(Boolean).join(' - ');
+      $('feedbackNote').value = feedbackFor(id)?.note || '';
+      $('feedbackDialog').showModal();
+      $('feedbackNote').focus();
+    }
+
+    function saveSkip() {
+      const gig = GIGS.find(item => item.id === pendingFeedbackId);
+      if (!gig) return;
+      personal.feedback = personal.feedback.filter(item => item.id !== gig.id);
+      personal.feedback.unshift(feedbackObject(gig, 'exclude', $('feedbackNote').value.trim()));
+      pendingFeedbackId = null;
+      render();
+      toast('Saved as not for us');
+    }
+
+    function removeFeedback(id) {
+      personal.feedback = personal.feedback.filter(item => item.id !== id);
+      render();
+      toast('Feedback removed');
+    }
+
+    function unarchiveAll() {
+      personal.archived.clear();
+      render();
+      toast('Archive cleared');
+    }
+
+    function exportFeedback() {
+      const blob = new Blob([`${JSON.stringify({ updated: new Date().toISOString(), calendarFeedback: [], gigFeedback: personal.feedback }, null, 2)}\n`], { type: 'application/json;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'user-feedback.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast('Feedback exported');
+    }
+
+    function toast(message) {
+      $('toast').textContent = message;
+      $('toast').classList.add('show');
+      window.setTimeout(() => $('toast').classList.remove('show'), 1700);
+    }
+
+    function wire() {
+      $('searchBox').addEventListener('input', event => { state.q = event.target.value; render(); });
+      $('dateRange').addEventListener('change', event => { state.range = event.target.value; render(); });
+      $('feedbackClose').addEventListener('click', () => $('feedbackDialog').close());
+      $('cancelFeedbackBtn').addEventListener('click', () => $('feedbackDialog').close());
+      $('feedbackForm').addEventListener('submit', event => { event.preventDefault(); saveSkip(); $('feedbackDialog').close(); });
+      document.addEventListener('click', event => {
+        const lens = event.target.closest('[data-lens]');
+        if (lens) { state.lens = lens.dataset.lens; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+        const save = event.target.closest('[data-save]');
+        if (save) return toggleSave(save.dataset.save);
+        const archive = event.target.closest('[data-archive]');
+        if (archive) return toggleArchive(archive.dataset.archive);
+        const like = event.target.closest('[data-like]');
+        if (like) return saveLike(like.dataset.like);
+        const skip = event.target.closest('[data-skip]');
+        if (skip) return openFeedback(skip.dataset.skip);
+        const remove = event.target.closest('[data-remove-feedback]');
+        if (remove) return removeFeedback(remove.dataset.removeFeedback);
+        const exportButton = event.target.closest('[data-export-feedback]');
+        if (exportButton) return exportFeedback();
+        const unarchive = event.target.closest('[data-unarchive-all]');
+        if (unarchive) return unarchiveAll();
+        const all = event.target.closest('[data-range-all]');
+        if (all) { state.range = 'all'; render(); }
+      });
+    }
+
+    load();
+    wire();
+    render();
   })();
   </script>
 </body>
