@@ -9,7 +9,17 @@
                                               "cornerHOUSE",
                                               "farmers market",
                                               "local talks",
-                                              "family events"
+                                              "family events",
+                                              "cross-check recent News/blog posts because festival roundups can contain events not exposed in the normal What's On calendar"
+                                          ]
+                         },
+                         {
+                             "name":  "Surbiton Partnership news posts",
+                             "url":  "https://surbitonpartnership.co.uk/news/",
+                             "checkFor":  [
+                                              "recent Celebrate Surbiton posts",
+                                              "Seething / Sardine / village fete / festival roundups",
+                                              "local family-friendly public events missing from Tribe What's On"
                                           ]
                          },
                          {

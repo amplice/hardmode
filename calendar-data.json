@@ -7,7 +7,7 @@
     "notes": "Past rows purged before 2026-08-28; toddler age-fit and explicit user feedback applied. Second feedback purge removed low-fit Bell Square/Hounslow, OSO/Barnes, car-show, Monty Python and non-fit acoustic/blues-rock rows.",
     "dateBasis": "2026-08-28",
     "counts": {
-      "upcoming": 290
+      "upcoming": 291
     }
   },
   "events": [
@@ -2098,6 +2098,42 @@
       "travelBucket": "Walkable / very local",
       "sourceLastChecked": "2026-06-18",
       "mapQuery": "St George's Church, Tolworth, UK"
+    },
+    {
+      "id": "e20260912f",
+      "row": 1061,
+      "date": "2026-09-12",
+      "endDate": "",
+      "time": "13:00-17:00",
+      "startTime": "13:00",
+      "title": "Seething Village Fete",
+      "venue": "St Andrew's Square and Maple Road",
+      "area": "Surbiton",
+      "category": "Family / festival / community",
+      "type": "One-off",
+      "cost": "Free",
+      "tier": "Core Surbiton",
+      "description": "Seething Village Fete in St Andrew's Square and Maple Road, part of Celebrate Surbiton month.",
+      "source": "Surbiton Partnership / The Good Life",
+      "url": "https://surbitonpartnership.co.uk/celebrate-surbiton-this-september/",
+      "confidence": "High",
+      "status": "Current/future",
+      "day": "Sat",
+      "month": "Sep 2026",
+      "sortKey": "2026-09-12T13:00",
+      "verify": false,
+      "pastArchive": false,
+      "searchText": "seething village fete st andrew's square and maple road surbiton family / festival / community one-off free core surbiton seething village fete in st andrew's square and maple road, part of celebrate surbiton month. surbiton partnership / the good life high 13:00-17:00 2026-09-12 current/future",
+      "ageRange": "Useful for younger children / families",
+      "bookingRequired": "No ticket flagged",
+      "priceMin": null,
+      "indoorOutdoor": "Outdoor / open-air",
+      "rainSafe": "",
+      "toddlerFriendly": true,
+      "accessibility": "",
+      "travelBucket": "Walkable / very local",
+      "sourceLastChecked": "2026-08-28",
+      "mapQuery": "St Andrew's Square, Maple Road, Surbiton, UK"
     },
     {
       "id": "e20260912b",
@@ -11314,7 +11350,12 @@
     {
       "name": "Surbiton Partnership / The Good Life",
       "url": "https://surbitonpartnership.co.uk/whats-on/",
-      "notes": "Checked for current local Surbiton listings. Most high-signal events found there were already present in the embedded calendar; no duplicate additions proposed from this pass."
+      "notes": "Checked for current local Surbiton listings. Also check News/blog posts: the 24 Aug 2026 Celebrate Surbiton this September article surfaced Seething Village Fete, which was not exposed as a normal What's On row."
+    },
+    {
+      "name": "Surbiton Partnership news posts",
+      "url": "https://surbitonpartnership.co.uk/celebrate-surbiton-this-september/",
+      "notes": "News/blog route can contain festival roundups and one-off community events missing from the normal What's On/Tribe calendar. Added Seething Village Fete from this route on 2026-08-28."
     },
     {
       "name": "The Community Brain",

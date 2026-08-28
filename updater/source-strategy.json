@@ -160,6 +160,11 @@
         "why": "Best broad Surbiton feed; low inclusion threshold for local family/music/theatre but needs strict filtering for fitness, quizzes and generic wellbeing."
       },
       {
+        "name": "Surbiton Partnership News",
+        "url": "https://surbitonpartnership.co.uk/news/",
+        "why": "Check recent posts as well as What's On. Festival/monthly roundup articles can include high-signal local events, such as Seething Village Fete, that are not obvious in the Tribe event calendar."
+      },
+      {
         "name": "Rose Theatre Kingston",
         "url": "https://www.rosetheatre.org/whats-on",
         "why": "High-value nearby theatre plus free cafe music; selected-date music rows should be split into individual dates rather than date ranges."
