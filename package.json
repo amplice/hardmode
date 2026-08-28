@@ -23,9 +23,11 @@
     "instagram:login": "node updater/instagram-login.mjs",
     "instagram:collect": "node updater/collect-instagram.mjs",
     "instagram:collect:headless": "node updater/collect-instagram.mjs --headless",
+    "instagram:collect:no-ocr": "node updater/collect-instagram.mjs --no-ocr",
     "publish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/publish-site.ps1"
   },
   "devDependencies": {
-    "playwright": "^1.62.1"
+    "playwright": "^1.62.1",
+    "tesseract.js": "^7.0.0"
   }
 }

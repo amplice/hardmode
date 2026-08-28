@@ -22,8 +22,8 @@ Read before doing anything:
   `genreAliases` map (normalise every genre you write to a value in `canonicalGenres`).
 - `updater/gig-sources.json` — key venues, aggregators, and standard search queries.
 - `updater/social-leads.json` — recent Instagram/social leads collected from configured
-  venue accounts, if the file exists. Treat these as discovery leads, not as fully
-  authoritative structured data.
+  venue accounts, if the file exists. This can include OCR text from post/reel screenshots.
+  Treat these as discovery leads, not as fully authoritative structured data.
 - `updater/gig-method-log.md` — what previous runs tried; do NOT repeat the same angles.
 - The `meta` block and a couple of rows of `gig-data.json` to match the exact field shape and id style.
 

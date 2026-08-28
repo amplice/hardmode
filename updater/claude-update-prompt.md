@@ -13,8 +13,8 @@ Read these before doing anything else, because they are the source of truth:
 - `updater/preferences.json` — the curation profile (what to keep / avoid, source trust).
 - `updater/sources.json` — known sources and standard search queries.
 - `updater/social-leads.json` — recent Instagram/social leads collected from configured
-  venue accounts, if the file exists. Treat these as discovery leads, not as fully
-  authoritative structured data.
+  venue accounts, if the file exists. This can include OCR text from post/reel screenshots.
+  Treat these as discovery leads, not as fully authoritative structured data.
 - `latest-changes.json` — what the previous run changed.
 - `updater/method-log.md` — a running log of which discovery methods/sources were tried on
   previous runs (it may not exist yet on the first run).

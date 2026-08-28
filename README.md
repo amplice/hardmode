@@ -100,8 +100,17 @@ npm run instagram:collect
 
 The collector writes `updater/social-leads.json`, also ignored by git. The Codex calendar
 and gig-radar update runners attempt this collection before each update and then read the
-lead file. Instagram-only details are treated as social leads and should stay marked
-`verify` unless an organiser/source page confirms them independently.
+lead file. It also screenshots posts/reels into `updater/social-screenshots/` and runs
+local OCR so flyer text can be extracted when the caption is thin. Instagram-only details
+are treated as social leads and should stay marked `verify` unless an organiser/source page
+confirms them independently.
+
+Useful variants:
+
+```powershell
+npm run instagram:collect:headless
+npm run instagram:collect:no-ocr
+```
 
 The older OpenRouter updater is still available for manual review-first runs:
 
