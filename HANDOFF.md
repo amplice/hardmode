@@ -80,6 +80,8 @@ For the updater to use it:
 
 Update runs must avoid exact rejected rows and close matches by title, venue, category, genre and note unless the new event is clearly different or substantially higher value. They should use `include` rows to raise similar future events in scoring and sourcing.
 
+`Archive` is different: it is a per-browser "not this time" state for hiding a current row without discouraging similar future rows. Archived rows must not be exported in `user-feedback.json` and must be restorable from the Archived tab/mode.
+
 ## Validation
 
 Family Calendar:
