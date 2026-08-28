@@ -2,3 +2,9 @@ node_modules/
 updater/.env.local
 updater/backups/
 updater/logs/
+updater/instagram-profile/
+updater/social-leads.json
+updater/social-screenshots/
+updater/ocr-cache/
+*.traineddata
+.tmp_*
