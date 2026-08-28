@@ -12066,36 +12066,27 @@
     }
   ],
   "latestChanges": {
-    "generatedAt": "2026-08-28T15:45:00.000Z",
+    "generatedAt": "2026-08-28T16:28:00.000Z",
     "dateBasis": "2026-08-28",
-    "summary": "Manual feedback purge after new More like this / Not for us signals.",
-    "added": [],
+    "summary": "Manual correction after Surbiton Partnership news post review.",
+    "added": [
+      "e20260912f: Seething Village Fete, Saturday 12 September 2026, 13:00-17:00, St Andrew's Square and Maple Road."
+    ],
     "updated": [
-      "Merged 19 recovered browser feedback signals into private updater/user-feedback.json: 15 exclude, 4 include.",
-      "Strengthened curation rules for Hounslow/Bell Square, Barnes/OSO, car shows, Monty Python nostalgia, and generic acoustic/blues-rock.",
-      "Strengthened positive rules for TwickFolk, chamber music, open-air trad jazz/swing and Hampton Court family festival days."
+      "Added Surbiton Partnership news posts to the recurring source strategy, because the Celebrate Surbiton roundup included events not obvious in the normal What's On/Tribe calendar."
     ],
-    "removed": [
-      "e20260903b: Jim Cregan and the New Acoustic Band - not a strong musical fit.",
-      "e20260904b: Concours of Elegance - car/concours listing.",
-      "e20260904d: Beyond the Streets of London - Barnes/OSO too much travel for value.",
-      "e20260905: Hammersmith Bridge is Falling Down - Barnes community theatre too far for value.",
-      "e20260905b/e20260919c/e20260924d/e20260925c/e20260926b/e20260927b/e20261010b: Bell Square / Hounslow outdoor arts batch - too far unless exceptional or in-genre.",
-      "e20260911b: The Milk Men - generic blues-rock, not enough fit.",
-      "e20260912c/e20260925b/e20260930/e20261014/e20261021/e20261022/e20261023b/e20261023c/e20261029c/e20261111/e20261118/e20261125/e20261126b/e20261128c/e20261205b/e20261210: OSO/Barnes batch - archive/prune by default unless unusually strong.",
-      "e20260919b: John Cleese and the Holy Grail - not Monty Python fans."
-    ],
+    "removed": [],
     "counts": {
       "before": {
-        "events": 319,
+        "events": 290,
         "recurring": 57,
         "sources": 52,
         "watchlist": 75
       },
       "after": {
-        "events": 290,
+        "events": 291,
         "recurring": 57,
-        "sources": 52,
+        "sources": 53,
         "watchlist": 75
       }
     }
