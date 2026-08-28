@@ -31,6 +31,9 @@
     "Hampton Court Palace member-relevant events",
     "Thames Ditton Miniature Railway public running days",
     "Canbury Bandstand concerts",
+    "TwickFolk singarounds and trad/folk participatory sessions",
+    "nearby chamber music and lunchtime/free classical music",
+    "open-air trad jazz, swing and vintage dance-band concerts",
     "outdoor arts, Shakespeare, park performances",
     "distinctive local festivals and fairs",
     "Surbiton Festival",
@@ -71,6 +74,12 @@
     "older-child technology/coding/robotics/Lego clubs while the child is toddler age",
     "trading-card tournaments such as Yu-Gi-Oh while the child is toddler age",
     "child events with a minimum age of 6+ or 8-12 while the child is toddler age",
+    "car shows, concours and vehicle-display events",
+    "John Cleese or Monty Python nostalgia/talk listings",
+    "Bell Square / Hounslow outdoor arts unless it is exceptionally strong for toddler family use or exactly in a wanted genre",
+    "OSO Arts Centre / Barnes listings unless they are genuinely high-value, strongly in-genre or unusually family-relevant; Barnes is a higher-friction trip from Surbiton than it looks",
+    "generic community theatre in Barnes or similarly awkward outer-edge areas",
+    "generic acoustic rock, blues-rock, singer-songwriter or rock-veteran shows that are not folk/trad/jazz-adjacent",
     "school-only or member-only events unless public access is explicit and the event is otherwise highly relevant",
     "The Lamb \"Fiddly Diddly\" night (defunct - has not run for years per local knowledge; do not re-add even if it appears on a stale listing)"
   ],
@@ -105,6 +114,6 @@
     "markInferredRowsVerify": true,
     "preferSpecificEventUrls": true,
     "errOnSideOfInclusion": false,
-    "inclusionNote": "Use a lower threshold for doorstep/easy-local family, music, theatre, Hampton Court, railway and distinctive community rows. Use a higher threshold for Waterloo, Wimbledon and further destinations: include only if family-relevant, free/daytime music, theatre, folk/trad, or clearly worth planning around. Never add disliked categories, stale dates, or rows similar to exported user feedback."
+    "inclusionNote": "Use a lower threshold for doorstep/easy-local family, music, theatre, Hampton Court, railway and distinctive community rows. Use a higher threshold for Waterloo, Wimbledon and further destinations: include only if family-relevant, free/daytime music, theatre, folk/trad, chamber/classical or clearly worth planning around. Treat Barnes/OSO and Hounslow/Bell Square as higher-friction than the map suggests; include only standout rows. Never add disliked categories, stale dates, car shows, Monty Python nostalgia rows, generic acoustic/blues-rock rows, or rows similar to exported user feedback."
   }
 }

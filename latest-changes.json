@@ -1,37 +1,32 @@
 {
-  "generatedAt": "2026-08-28T13:35:00.000Z",
+  "generatedAt": "2026-08-28T15:45:00.000Z",
   "dateBasis": "2026-08-28",
-  "summary": "Manual cleanup for toddler age fit, explicit user feedback and mojibake repair.",
+  "summary": "Manual feedback purge after new More like this / Not for us signals.",
   "added": [],
   "updated": [
-    "Repaired mojibake in calendar data, generated data and ICS output.",
-    "Added child age context: born January 2024; toddler/preschool suggestions only for child-specific listings.",
-    "Added separate positive feedback support: More like this."
+    "Merged 19 recovered browser feedback signals into private updater/user-feedback.json: 15 exclude, 4 include.",
+    "Strengthened curation rules for Hounslow/Bell Square, Barnes/OSO, car shows, Monty Python nostalgia, and generic acoustic/blues-rock.",
+    "Strengthened positive rules for TwickFolk, chamber music, open-air trad jazz/swing and Hampton Court family festival days."
   ],
   "removed": [
-    "e626: Parkinson's talk - generic adult talk, not useful for family/nanny context.",
-    "e666: House of Fun - Saturday evening ska, not family-friendly and not strong enough as date night.",
-    "e717/e718/e719/e720: Lego Robotics Club - too old for toddler age.",
-    "e20260718: Tom Gates EPIC Adventure at Kew - past and too old for toddler age.",
-    "e20260725k: Theatre on Kew: Twelfth Night - past; far-ish late start not workable as family outing.",
-    "e20260828: A Day at the Seaside - Sensory Story & Craft - too far for ordinary toddler story/craft.",
-    "e20260829: Explore Learning Grand Maths Wizard Workshop - school-age maths workshop.",
-    "e20260911/e20261009: Yu-gi-oh! Tournament - trading-card tournament too old for toddler age.",
-    "e20260920: Big Dreams: After Party - aimed at babies 6-18 months, too young now.",
-    "e20261003c: A Class of Your Own - ages 8-12.",
-    "e20261011: Comedy Club 4 Kids - usually 6+, too old for toddler age.",
-    "e20261023d: You'll See - ages 8-12.",
-    "e20261028c: At Sea - ages 6-12."
+    "e20260903b: Jim Cregan and the New Acoustic Band - not a strong musical fit.",
+    "e20260904b: Concours of Elegance - car/concours listing.",
+    "e20260904d: Beyond the Streets of London - Barnes/OSO too much travel for value.",
+    "e20260905: Hammersmith Bridge is Falling Down - Barnes community theatre too far for value.",
+    "e20260905b/e20260919c/e20260924d/e20260925c/e20260926b/e20260927b/e20261010b: Bell Square / Hounslow outdoor arts batch - too far unless exceptional or in-genre.",
+    "e20260911b: The Milk Men - generic blues-rock, not enough fit.",
+    "e20260912c/e20260925b/e20260930/e20261014/e20261021/e20261022/e20261023b/e20261023c/e20261029c/e20261111/e20261118/e20261125/e20261126b/e20261128c/e20261205b/e20261210: OSO/Barnes batch - archive/prune by default unless unusually strong.",
+    "e20260919b: John Cleese and the Holy Grail - not Monty Python fans."
   ],
   "counts": {
     "before": {
-      "events": 336,
+      "events": 319,
       "recurring": 57,
       "sources": 52,
       "watchlist": 75
     },
     "after": {
-      "events": 319,
+      "events": 290,
       "recurring": 57,
       "sources": 52,
       "watchlist": 75

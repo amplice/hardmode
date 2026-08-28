@@ -366,3 +366,10 @@ Format per run:
 - What worked: direct All Saints ical feed gave exact dated music events including 2026-09-10 and 2026-09-11 and surfaced usable per-event links.
 - What failed/partial: Sofar Sounds query returned schema but not event hits for Kingston (or no active shows) with current query shape.
 - Next time: keep using the All Saints iCal endpoint first, then re-check Ram Jam /events?month=<month> and ticketing sources with fresh month windows in one pass.
+
+## 2026-08-28 feedback purge
+- Method: recovered the latest local browser feedback for `surbiton-calendar-feedback-v1` and merged it into private `updater/user-feedback.json` (19 family signals: 15 exclude, 4 include). No gig feedback was present.
+- Removed 29 dated family rows: exact rejects still present plus close variants in the same low-fit patterns.
+- Negative rules strengthened: avoid Bell Square/Hounslow outdoor arts by default, OSO/Barnes community theatre/comedy/music by default, car/concours listings, Monty Python/John Cleese nostalgia, and generic acoustic/blues-rock/rock-veteran rows.
+- Positive rules strengthened: prefer TwickFolk singarounds/participatory folk, nearby chamber music such as Maiastra, open-air trad jazz/swing such as Pasadena Roof Orchestra, and Hampton Court Food Festival-style family days.
+- Caution: do not treat `Archive` clicks as updater feedback; only `More like this` and `Not for us` should influence future sourcing.

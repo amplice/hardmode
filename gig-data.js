@@ -27,7 +27,7 @@ window.GIG_DATA = {
       "upcoming": 192,
       "watchlist": 62
     },
-    "generated": "2026-08-28T14:33:06.042Z",
+    "generated": "2026-08-28T14:54:14.377Z",
     "genres": [
       "Kansas City swing",
       "New Orleans / trad jazz",
