@@ -36,6 +36,7 @@
   };
 
   let pendingFeedbackId = null;
+  let expandedList = false;
 
   const $ = (id) => document.getElementById(id);
   const esc = (value) => String(value ?? '')
@@ -398,7 +399,7 @@
       `;
       return;
     }
-    const limit = state.lens === 'home' ? 24 : rows.length;
+    const limit = state.lens === 'home' && !expandedList ? 24 : rows.length;
     const shown = rows.slice(0, limit);
     const extra = rows.length - shown.length;
     const groups = groupedRows(shown);
@@ -417,7 +418,7 @@
           <div class="event-list">${items.map(eventCard).join('')}</div>
         </section>
       `).join('')}
-      ${extra > 0 ? `<button class="btn load-more" type="button" data-range-all>Show all ${rows.length}</button>` : ''}
+      ${extra > 0 ? `<button class="btn load-more" type="button" data-show-all>Show all ${rows.length}</button>` : ''}
     `;
   }
 
@@ -705,10 +706,12 @@
   function wire() {
     $('searchBox').addEventListener('input', (event) => {
       state.q = event.target.value;
+      expandedList = false;
       render();
     });
     $('dateRange').addEventListener('change', (event) => {
       state.range = event.target.value;
+      expandedList = false;
       render();
     });
     $('modalClose').addEventListener('click', () => $('detailDialog').close());
@@ -723,6 +726,7 @@
       const lens = event.target.closest('[data-lens]');
       if (lens) {
         state.lens = lens.dataset.lens;
+        expandedList = false;
         render();
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
@@ -743,9 +747,9 @@
       if (exportButton) return exportFeedback();
       const unarchive = event.target.closest('[data-unarchive-all]');
       if (unarchive) return unarchiveAll();
-      const all = event.target.closest('[data-range-all]');
+      const all = event.target.closest('[data-show-all]');
       if (all) {
-        state.range = 'all';
+        expandedList = true;
         render();
       }
       const ics = event.target.closest('[data-download-ics]');

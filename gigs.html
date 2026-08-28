@@ -80,6 +80,7 @@
     const state = { lens: 'home', q: '', range: 'next30' };
     const personal = { saved: new Set(), archived: new Set(), feedback: [] };
     let pendingFeedbackId = null;
+    let expandedList = false;
     const today = DATA.meta?.dateBasis || new Date().toISOString().slice(0, 10);
 
     const lenses = [
@@ -343,12 +344,12 @@
       if (!items.length) {
         $('content').innerHTML = '<section class="empty-state"><h2>No matching gigs</h2><p>Try another lens or a wider range.</p></section>';
       } else {
-        const limit = state.lens === 'home' ? 24 : items.length;
+        const limit = state.lens === 'home' && !expandedList ? 24 : items.length;
         const visible = items.slice(0, limit);
         $('content').innerHTML = `
           <section class="section-head"><div><h2>${esc(lenses.find(x => x.id === state.lens)?.label || 'Gigs')}</h2><p>${esc(lenses.find(x => x.id === state.lens)?.help || '')}</p></div>${state.lens === 'archive' && items.length ? '<button class="btn" type="button" data-unarchive-all>Unarchive all</button>' : ''}${state.lens === 'skips' ? '<button class="btn" type="button" data-export-feedback>Export feedback</button>' : ''}</section>
           ${[...groups(visible).entries()].map(([name, gigs]) => `<section class="event-group"><h3>${esc(name)}</h3><div class="event-list">${gigs.map(card).join('')}</div></section>`).join('')}
-          ${items.length > visible.length ? `<button class="btn load-more" type="button" data-range-all>Show all ${items.length}</button>` : ''}
+          ${items.length > visible.length ? `<button class="btn load-more" type="button" data-show-all>Show all ${items.length}</button>` : ''}
         `;
       }
       persist();
@@ -452,14 +453,14 @@
     }
 
     function wire() {
-      $('searchBox').addEventListener('input', event => { state.q = event.target.value; render(); });
-      $('dateRange').addEventListener('change', event => { state.range = event.target.value; render(); });
+      $('searchBox').addEventListener('input', event => { state.q = event.target.value; expandedList = false; render(); });
+      $('dateRange').addEventListener('change', event => { state.range = event.target.value; expandedList = false; render(); });
       $('feedbackClose').addEventListener('click', () => $('feedbackDialog').close());
       $('cancelFeedbackBtn').addEventListener('click', () => $('feedbackDialog').close());
       $('feedbackForm').addEventListener('submit', event => { event.preventDefault(); saveSkip(); $('feedbackDialog').close(); });
       document.addEventListener('click', event => {
         const lens = event.target.closest('[data-lens]');
-        if (lens) { state.lens = lens.dataset.lens; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+        if (lens) { state.lens = lens.dataset.lens; expandedList = false; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
         const save = event.target.closest('[data-save]');
         if (save) return toggleSave(save.dataset.save);
         const archive = event.target.closest('[data-archive]');
@@ -474,8 +475,8 @@
         if (exportButton) return exportFeedback();
         const unarchive = event.target.closest('[data-unarchive-all]');
         if (unarchive) return unarchiveAll();
-        const all = event.target.closest('[data-range-all]');
-        if (all) { state.range = 'all'; render(); }
+        const all = event.target.closest('[data-show-all]');
+        if (all) { expandedList = true; render(); }
       });
     }
 
