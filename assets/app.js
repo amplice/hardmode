@@ -14,6 +14,7 @@
 
   const LENSES = [
     { id: 'home', label: 'Best next', help: 'A short, opinionated list.' },
+    { id: 'all', label: 'All', help: 'Everything upcoming in range.' },
     { id: 'weekday', label: 'Weekday kid', help: 'Daytime things for nanny/toddler.' },
     { id: 'weekend', label: 'Weekend family', help: 'Weekends and bank holidays.' },
     { id: 'music', label: 'Daytime music', help: 'Free and easy music.' },
@@ -288,6 +289,7 @@
     if (state.lens === 'archive') return isArchived(event.id) && !isSkipped(event.id);
     if (state.lens === 'skips') return isSkipped(event.id);
     if (state.lens !== 'archive' && state.lens !== 'skips' && (isArchived(event.id) || isSkipped(event.id))) return false;
+    if (state.lens === 'all') return true;
     if (state.lens === 'saved') return isSaved(event.id);
     if (state.lens === 'weekday') return isToddlerFit(event) && !isWeekend(event) && isDaytime(event) && isEasy(event) && isFamily(event);
     if (state.lens === 'weekend') return isToddlerFit(event) && isWeekend(event) && (isFamily(event) || isOutdoor(event) || (isMusic(event) && isDaytime(event)));

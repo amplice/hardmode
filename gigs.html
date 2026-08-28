@@ -84,6 +84,7 @@
 
     const lenses = [
       { id: 'home', label: 'Best next', help: 'Soon and high-signal.' },
+      { id: 'all', label: 'All', help: 'Everything upcoming in range.' },
       { id: 'nearby', label: 'Nearby', help: 'Lower bar, easier trip.' },
       { id: 'genre', label: 'In genre', help: 'Trad, swing, folk, roots.' },
       { id: 'date', label: 'Date night', help: 'Worth childcare.' },
@@ -183,6 +184,7 @@
       if (state.lens === 'archive') return isArchived(gig.id) && !isSkipped(gig.id);
       if (state.lens === 'skips') return isSkipped(gig.id);
       if (state.lens !== 'archive' && state.lens !== 'skips' && (isArchived(gig.id) || isSkipped(gig.id))) return false;
+      if (state.lens === 'all') return true;
       if (state.lens === 'saved') return isSaved(gig.id);
       if (state.lens === 'nearby') return isNearby(gig);
       if (state.lens === 'genre') return isInGenre(gig);
