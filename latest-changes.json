@@ -3,10 +3,10 @@
   "dateBasis": "2026-08-28",
   "summary": "Manual correction after Surbiton Partnership news post review.",
   "added": [
-    "e20260912f: Seething Village Fete, Saturday 12 September 2026, 13:00-17:00, St Andrew's Square and Maple Road."
+    "e20260912f: Seething Village Summer Fete, Saturday 12 September 2026, 13:00-17:00, St Andrew's Square."
   ],
   "updated": [
-    "Added Surbiton Partnership news posts to the recurring source strategy, because the Celebrate Surbiton roundup included events not obvious in the normal What's On/Tribe calendar."
+    "Corrected the Surbiton Partnership source note: the fete is on the main What's On page and has its own event detail page; the miss was an updater coverage/QA failure."
   ],
   "removed": [],
   "counts": {

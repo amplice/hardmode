@@ -157,12 +157,12 @@
       {
         "name": "Surbiton Partnership What's On",
         "url": "https://surbitonpartnership.co.uk/whats-on/",
-        "why": "Best broad Surbiton feed; low inclusion threshold for local family/music/theatre but needs strict filtering for fitness, quizzes and generic wellbeing."
+        "why": "Best broad Surbiton feed; low inclusion threshold for local family/music/theatre but needs strict filtering for fitness, quizzes and generic wellbeing. Around festival periods, crawl the full all-categories page and open candidate event pages, not only selected category/date routes."
       },
       {
         "name": "Surbiton Partnership News",
         "url": "https://surbitonpartnership.co.uk/news/",
-        "why": "Check recent posts as well as What's On. Festival/monthly roundup articles can include high-signal local events, such as Seething Village Fete, that are not obvious in the Tribe event calendar."
+        "why": "Check recent posts as a second pass after What's On. Festival/monthly roundup articles can highlight high-signal local events and are useful QA against the main event feed."
       },
       {
         "name": "Rose Theatre Kingston",

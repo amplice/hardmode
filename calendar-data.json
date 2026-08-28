@@ -2106,16 +2106,16 @@
       "endDate": "",
       "time": "13:00-17:00",
       "startTime": "13:00",
-      "title": "Seething Village Fete",
-      "venue": "St Andrew's Square and Maple Road",
+      "title": "Seething Village Summer Fete",
+      "venue": "St Andrew's Square",
       "area": "Surbiton",
       "category": "Family / festival / community",
       "type": "One-off",
       "cost": "Free",
       "tier": "Core Surbiton",
-      "description": "Seething Village Fete in St Andrew's Square and Maple Road, part of Celebrate Surbiton month.",
+      "description": "Community Brain's Seething Village Summer Fete: stalls, charity bar, musical entertainment, crafters, artists, live demos, talks, face-painting and family fun in St Andrew's Square.",
       "source": "Surbiton Partnership / The Good Life",
-      "url": "https://surbitonpartnership.co.uk/celebrate-surbiton-this-september/",
+      "url": "https://surbitonpartnership.co.uk/event/seething-village-summer-fete/",
       "confidence": "High",
       "status": "Current/future",
       "day": "Sat",
@@ -2123,7 +2123,7 @@
       "sortKey": "2026-09-12T13:00",
       "verify": false,
       "pastArchive": false,
-      "searchText": "seething village fete st andrew's square and maple road surbiton family / festival / community one-off free core surbiton seething village fete in st andrew's square and maple road, part of celebrate surbiton month. surbiton partnership / the good life high 13:00-17:00 2026-09-12 current/future",
+      "searchText": "seething village summer fete st andrew's square surbiton family / festival / community one-off free core surbiton community brain's seething village summer fete: stalls, charity bar, musical entertainment, crafters, artists, live demos, talks, face-painting and family fun in st andrew's square. surbiton partnership / the good life high 13:00-17:00 2026-09-12 current/future",
       "ageRange": "Useful for younger children / families",
       "bookingRequired": "No ticket flagged",
       "priceMin": null,
@@ -2133,7 +2133,7 @@
       "accessibility": "",
       "travelBucket": "Walkable / very local",
       "sourceLastChecked": "2026-08-28",
-      "mapQuery": "St Andrew's Square, Maple Road, Surbiton, UK"
+      "mapQuery": "St Andrew's Square, Surbiton, UK"
     },
     {
       "id": "e20260912b",
@@ -11350,12 +11350,12 @@
     {
       "name": "Surbiton Partnership / The Good Life",
       "url": "https://surbitonpartnership.co.uk/whats-on/",
-      "notes": "Checked for current local Surbiton listings. Also check News/blog posts: the 24 Aug 2026 Celebrate Surbiton this September article surfaced Seething Village Fete, which was not exposed as a normal What's On row."
+      "notes": "Checked for current local Surbiton listings. Critical QA rule: open/crawl the main all-categories What's On page around local festival periods, not only category/date routes. Seething Village Summer Fete was visible on the main page and should have been caught."
     },
     {
       "name": "Surbiton Partnership news posts",
       "url": "https://surbitonpartnership.co.uk/celebrate-surbiton-this-september/",
-      "notes": "News/blog route can contain festival roundups and one-off community events missing from the normal What's On/Tribe calendar. Added Seething Village Fete from this route on 2026-08-28."
+      "notes": "News/blog route can contain festival roundups and one-off community events; use as a second pass alongside the main What's On page. The Celebrate Surbiton roundup also mentioned Seething Village Summer Fete."
     },
     {
       "name": "The Community Brain",
@@ -12070,10 +12070,10 @@
     "dateBasis": "2026-08-28",
     "summary": "Manual correction after Surbiton Partnership news post review.",
     "added": [
-      "e20260912f: Seething Village Fete, Saturday 12 September 2026, 13:00-17:00, St Andrew's Square and Maple Road."
+      "e20260912f: Seething Village Summer Fete, Saturday 12 September 2026, 13:00-17:00, St Andrew's Square."
     ],
     "updated": [
-      "Added Surbiton Partnership news posts to the recurring source strategy, because the Celebrate Surbiton roundup included events not obvious in the normal What's On/Tribe calendar."
+      "Corrected the Surbiton Partnership source note: the fete is on the main What's On page and has its own event detail page; the miss was an updater coverage/QA failure."
     ],
     "removed": [],
     "counts": {
