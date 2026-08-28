@@ -15,7 +15,7 @@ Read before editing:
 - `HANDOFF.md` - project contract, data model, field schemas and validation workflow.
 - `updater/source-strategy.json` - source priorities, travel tiers and lower/higher inclusion thresholds.
 - `updater/gig-preferences.json` - genres wanted, avoid list, scope, source trust and `genreAliases`.
-- `updater/user-feedback.json` - private exported "not for us" feedback, if it exists. Treat it as strong negative signal for exact gigs and similar future gigs.
+- `updater/user-feedback.json` - private exported feedback, if it exists. Treat `exclude` rows as strong negative signal for exact gigs and similar future gigs; treat `include` rows as strong positive examples.
 - `updater/gig-sources.json` - key venues, aggregators and standard search queries.
 - `updater/social-leads.json` - recent Instagram/social leads, if the file exists. Treat these as discovery leads, not authoritative structured data.
 - `updater/gig-method-log.md` - previous discovery methods and dead ends.
@@ -54,6 +54,7 @@ Rules:
 - Never guess dates from stale pages.
 - Do not duplicate an existing gig with the same `date`, `time`, `artist/title` and `venue`.
 - Do not re-add gigs or close variants rejected in `updater/user-feedback.json` unless the new gig is clearly different or much higher value; explain exceptions in the method log.
+- Use positive `include` feedback in `updater/user-feedback.json` to raise similar future gigs in sourcing and scoring.
 - Exclude bluegrass-only, modern jazz, fusion, chart country, indie-folk, rock, punk, metal, DJ nights, tribute acts and generic open mics.
 - Fighting Cocks Kingston is included only for explicit roots/trad-compatible listings.
 - Day-trip gigs need a real `area` and travel note.

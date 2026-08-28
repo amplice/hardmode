@@ -1,5 +1,10 @@
 {
   "profileName": "Surbiton family music/theatre/folk profile",
+  "familyContext": {
+    "childBorn": "2024-01",
+    "childAgeNote": "Daughter was born in January 2024. As of 2026-08-28 she is about 2 years 7 months old.",
+    "ageFitRule": "For child-specific programming, prefer baby/toddler/preschool/under-5/0-4/18-months-plus/family-all-ages events. Do not add or foreground events with a minimum age above 4 before 2029 unless the event is also a genuinely good adult/family day out independent of the child activity. Exclude obvious older-child listings such as Lego Robotics, trading-card tournaments, coding/robotics clubs, 6+, 8-12, teen, 14+, or school-age workshops until she is old enough."
+  },
   "areaFocus": [
     "Surbiton",
     "Berrylands",
@@ -63,6 +68,9 @@
     "routine fitness classes",
     "seniors-only or 60+ events",
     "U3A",
+    "older-child technology/coding/robotics/Lego clubs while the child is toddler age",
+    "trading-card tournaments such as Yu-Gi-Oh while the child is toddler age",
+    "child events with a minimum age of 6+ or 8-12 while the child is toddler age",
     "school-only or member-only events unless public access is explicit and the event is otherwise highly relevant",
     "The Lamb \"Fiddly Diddly\" night (defunct - has not run for years per local knowledge; do not re-add even if it appears on a stale listing)"
   ],

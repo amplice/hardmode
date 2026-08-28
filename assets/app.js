@@ -165,6 +165,15 @@
       return /(kid|kids|child|children|family|toddler|baby|under-5|under 5|rhyme|story|play|school|pta|lego|junior|youth|relaxed|sensory)/.test(eventHaystack(e));
     }
 
+    function isToddlerAgeFit(e) {
+      const text = eventHaystack(e);
+      if (/(lego robotics|yu-?gi-?oh|trading-card|trading card|coding club|robotics club)/.test(text)) return false;
+      if (/(ages?\s*(6\+|7\+|8\+|10\+|8\s*-\s*12|6\s*-\s*12)|\b8\s*-\s*12\b|\b6\s*-\s*12\b)/.test(text)) return false;
+      if (/(teen|14\+)/.test(text) && isFamilyEvent(e)) return false;
+      if (/(6-18 months|6 to 18 months|under 18 months)/.test(text)) return false;
+      return true;
+    }
+
     function isOutdoorEvent(e) {
       return /(park|garden|outdoor|open air|bandstand|trail|river|thames|market|fair|festival|carnival|mural|street art|miniature railway)/.test(eventHaystack(e));
     }
@@ -174,7 +183,9 @@
     }
 
     function isDaytimeEvent(e) {
-      const start = parseClock(e.startTime) || parseClock(e.time);
+      const timeText = String(e.time || '');
+      if (/check|var(y|ies)|tbc|not stated|multiple performances/i.test(timeText)) return false;
+      const start = parseClock(timeText) || parseClock(e.startTime);
       if (!start) return /all day|daytime|morning|afternoon/i.test(e.time || e.description || '');
       return start < '18:00';
     }
@@ -229,7 +240,7 @@
 
     function eventFacts(e) {
       const text = eventHaystack(e);
-      const toddlerFriendly = Boolean(e.toddlerFriendly) || /(toddler|baby|under-5|under 5|rhyme|story|sensory|soft play|0-5|0 to 5|ages? 0|ages? 2|ages? 3|family)/.test(text);
+      const toddlerFriendly = isToddlerAgeFit(e) && (Boolean(e.toddlerFriendly) || /(toddler|baby|under-5|under 5|rhyme|story|sensory|soft play|0-5|0 to 5|ages? 0|ages? 2|ages? 3|family)/.test(text));
       const indoorOutdoor = e.indoorOutdoor || (isOutdoorEvent(e) ? 'Outdoor / open-air' : /theatre|library|museum|gallery|church|hall|pub|cafe|centre|indoor/.test(text) ? 'Indoor / venue-based' : '');
       return {
         ageRange: e.ageRange || (toddlerFriendly ? 'Useful for younger children / families' : isFamilyEvent(e) ? 'Family-friendly' : ''),
@@ -282,6 +293,7 @@
     }
 
     function isBestBet(e) {
+      if (!isToddlerAgeFit(e) && isFamilyEvent(e)) return false;
       return eventScore(e) >= 5 || Boolean(e.toddlerFriendly) || (isCoreEvent(e) && (isFreeEvent(e) || isMusicEvent(e) || isFamilyEvent(e)));
     }
 
@@ -299,6 +311,28 @@
 
     function isRejected(id) {
       return Boolean(feedbackFor(id));
+    }
+
+    function positiveFeedbackFor(id) {
+      return personal.feedback.find(item => item.id === id && item.action === 'include') || null;
+    }
+
+    function rowFeedbackObject(event, action, note = '') {
+      return {
+        action,
+        id: event.id,
+        title: event.title || '',
+        venue: event.venue || '',
+        area: event.area || '',
+        category: event.category || '',
+        type: event.type || '',
+        tier: event.tier || '',
+        date: event.date || '',
+        source: event.source || '',
+        url: event.url || '',
+        note,
+        createdAt: new Date().toISOString()
+      };
     }
 
     function persistPersonal() {
@@ -341,26 +375,22 @@
       if (!event) return;
       const note = el('feedbackNote').value.trim();
       personal.feedback = personal.feedback.filter(item => item.id !== event.id);
-      personal.feedback.unshift({
-        action: 'exclude',
-        id: event.id,
-        title: event.title || '',
-        venue: event.venue || '',
-        area: event.area || '',
-        category: event.category || '',
-        type: event.type || '',
-        tier: event.tier || '',
-        date: event.date || '',
-        source: event.source || '',
-        url: event.url || '',
-        note,
-        createdAt: new Date().toISOString()
-      });
+      personal.feedback.unshift(rowFeedbackObject(event, 'exclude', note));
       personal.hidden.add(event.id);
       pendingFeedbackId = null;
       persistPersonal();
       render();
       toast('Saved as not for us');
+    }
+
+    function savePositiveFeedback(id) {
+      const event = EVENTS.find(item => item.id === id);
+      if (!event) return;
+      personal.feedback = personal.feedback.filter(item => !(item.id === event.id && item.action === 'include'));
+      personal.feedback.unshift(rowFeedbackObject(event, 'include', 'More like this'));
+      persistPersonal();
+      render();
+      toast('Saved: more like this');
     }
 
     function removeFeedback(id) {
@@ -478,22 +508,22 @@
       const cat = normalize(e.category + ' ' + e.type + ' ' + e.title + ' ' + e.venue + ' ' + e.description);
       const musicFields = normalize(e.category + ' ' + e.type + ' ' + e.title + ' ' + e.venue);
       const isMusic = /(music|concert|choir|choral|jazz|band|gig|open mic|singalong|singers|folk|trad|irish|bandstand|recital)/.test(musicFields);
-      const isDaytime = (e.startTime || e.time || '') < '18:00';
+      const isDaytime = isDaytimeEvent(e);
       const isFree = /(^|[^a-z])free([^a-z]|$)/.test(h) || normalize(e.cost) === 'free';
       if (state.quick === 'best') return isBestBet(e);
       if (state.quick === 'favorites') return isFavorite(e.id);
       if (state.quick === 'hidden') return isHidden(e.id) || isRejected(e.id);
-      if (state.quick === 'nannyWeekday') return isWeekdayDaytimeEvent(e) && isEasyLocalEvent(e) && /(kid|kids|child|children|family|toddler|baby|under-5|under 5|rhyme|story|craft|play|sensory|duplo|lego|junior|youth|puppet|polka|library|trail|nature|rewilding|miniature railway|soft play)/.test(h);
-      if (state.quick === 'familyWeekend') return isWeekendOrBankHoliday(e) && (isFamilyEvent(e) || isOutdoorEvent(e) || isMusicEvent(e) || /festival|fair|market|railway|hampton court/.test(cat));
+      if (state.quick === 'nannyWeekday') return isToddlerAgeFit(e) && isWeekdayDaytimeEvent(e) && isEasyLocalEvent(e) && /(kid|kids|child|children|family|toddler|baby|under-5|under 5|rhyme|story|craft|play|sensory|duplo|puppet|polka|library|trail|nature|rewilding|miniature railway|soft play)/.test(h);
+      if (state.quick === 'familyWeekend') return isToddlerAgeFit(e) && isWeekendOrBankHoliday(e) && (isFamilyEvent(e) || isOutdoorEvent(e) || (isMusicEvent(e) && isDaytime) || /festival|fair|market|railway|hampton court/.test(cat));
       if (state.quick === 'dateNight') return !isFamilyEvent(e) && !isWeekdayDaytimeEvent(e) && (isMusicEvent(e) || isTheatreEvent(e) || isFolkTradEvent(e));
       if (state.quick === 'easyLocal') return isEasyLocalEvent(e);
-      if (state.quick === 'destination') return isDestinationEvent(e) && (isFamilyEvent(e) || isMusicEvent(e) || isTheatreEvent(e) || isOutdoorEvent(e) || isBestBet(e));
+      if (state.quick === 'destination') return isDestinationEvent(e) && isToddlerAgeFit(e) && (isFamilyEvent(e) || isMusicEvent(e) || isTheatreEvent(e) || isOutdoorEvent(e) || isBestBet(e));
       if (state.quick === 'daytimeMusic') return isMusic && (isDaytime || isFree);
       if (state.quick === 'music') return /(music|concert|choir|choral|jazz|band|gig|open mic|sing|singers|theatre|comedy|performance|dance|shakespeare|opera|acoustic|dj|club night|ram jam|bandstand)/.test(cat);
       if (state.quick === 'parks') return /(park|parks|garden|gardens|bandstand|recreation ground|open air|outdoor|green|common|meadow|river|thames|canbury|claremont|fairfield|richmond|hampton court|chestnut|miniature railway|carnival|walk)/.test(cat);
       if (state.quick === 'churches') return /(church|saint|st\.|st |all saints|st mark|st andrew|chapel|hall|community space|community centre|centre|village hall|queen mary hall|vera fletcher|vital village|mercer close|hook centre|library)/.test(cat);
       if (state.quick === 'markets') return /(market|farmers|fair|fete|festival|carnival|open studios|craft|bazaar|food festival|summer fair|open day)/.test(cat);
-      if (state.quick === 'kids') return /(kid|kids|child|children|family|toddler|baby|stay ?& ?play|sensory|school|pta|summer fair|story|lego|junior|youth)/.test(cat);
+      if (state.quick === 'kids') return isToddlerAgeFit(e) && /(kid|kids|child|children|family|toddler|baby|stay ?& ?play|sensory|school|pta|summer fair|story)/.test(cat);
       if (state.quick === 'clubs') return /(club|class|weekly|monthly|quiz|bridge|dance|yoga|karate|running|ramblers|stitch|society|meet|open mic|dungeons|board game|workshop)/.test(cat);
       if (state.quick === 'free') return /(^|[^a-z])free([^a-z]|$)/.test(h) || normalize(e.cost) === 'free';
       if (state.quick === 'verify') return e.verify;
@@ -635,8 +665,10 @@
       const favLabel = isFavorite(e.id) ? 'Unstar' : 'Star';
       const hideLabel = isHidden(e.id) ? 'Restore' : 'Hide';
       const rejected = isRejected(e.id);
+      const liked = positiveFeedbackFor(e.id);
       return `
         <button class="btn small icon-btn ${isFavorite(e.id) ? 'active' : ''}" type="button" data-favorite-event="${esc(e.id)}" aria-pressed="${isFavorite(e.id)}">${favLabel}</button>
+        <button class="btn small good ${liked ? 'active' : ''}" type="button" data-like-event="${esc(e.id)}">${liked ? 'More like this saved' : 'More like this'}</button>
         <button class="btn small icon-btn" type="button" data-hide-event="${esc(e.id)}">${hideLabel}</button>
         <button class="btn small ${rejected ? 'danger active' : 'danger'}" type="button" data-reject-event="${esc(e.id)}">${rejected ? 'Edit skip' : 'Not for us'}</button>
       `;
@@ -691,6 +723,7 @@
           <div class="mini-actions">
             ${googleCalendarButton(e, 'Google')}
             ${addCalendarButton(e, 'ICS')}
+            <button class="btn small good ${positiveFeedbackFor(e.id) ? 'active' : ''}" type="button" data-like-event="${esc(e.id)}">More like this</button>
             <button class="btn small danger" type="button" data-reject-event="${esc(e.id)}">Not for us</button>
           </div>
         </article>
@@ -1064,7 +1097,7 @@
 
       const feedbackHtml = personal.feedback.length ? personal.feedback.map(item => `
         <div class="watch-item">
-          <strong>${esc(item.title || item.id)}</strong>
+          <strong>${esc(item.action === 'include' ? 'More like this' : 'Not for us')}: ${esc(item.title || item.id)}</strong>
           <div class="mini muted">${esc([item.date, item.venue, item.area, item.category].filter(Boolean).join(' - '))}</div>
           ${item.note ? `<div class="mini">${esc(item.note)}</div>` : ''}
           <button class="btn small" type="button" data-remove-feedback="${esc(item.id)}">Remove feedback</button>
@@ -1203,12 +1236,15 @@
       document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === state.view));
       document.body.classList.toggle('compact', state.compact);
       el('compactBtn').textContent = state.compact ? 'Comfortable' : 'Compact';
-      const hiddenCount = new Set([...personal.hidden, ...personal.feedback.map(item => item.id)]).size;
+      const hiddenCount = new Set([...personal.hidden, ...personal.feedback.filter(item => item.action === 'exclude').map(item => item.id)]).size;
       el('hiddenBtn').textContent = hiddenCount ? `Hidden (${hiddenCount})` : 'Hidden';
       const personalSummary = [];
       if (personal.favorites.size) personalSummary.push(`${personal.favorites.size} favourite${personal.favorites.size === 1 ? '' : 's'}`);
       if (personal.hidden.size) personalSummary.push(`${personal.hidden.size} hidden`);
-      if (personal.feedback.length) personalSummary.push(`${personal.feedback.length} not-for-us note${personal.feedback.length === 1 ? '' : 's'}`);
+      const likeCount = personal.feedback.filter(item => item.action === 'include').length;
+      const skipCount = personal.feedback.filter(item => item.action === 'exclude').length;
+      if (likeCount) personalSummary.push(`${likeCount} more-like-this signal${likeCount === 1 ? '' : 's'}`);
+      if (skipCount) personalSummary.push(`${skipCount} not-for-us note${skipCount === 1 ? '' : 's'}`);
       el('personalSummary').innerHTML = personalSummary.length ? personalSummary.map(esc).join(' - ') : 'Tip: star likely plans, mark noise as not for us, then export feedback before the next update.';
       saveState();
       updateUrlFromState();
@@ -1548,7 +1584,7 @@
       el('ongoingDaily').addEventListener('change', e => { state.ongoingDaily = e.target.checked; render(); });
       el('resetBtn').addEventListener('click', resetFilters);
       el('hiddenBtn').addEventListener('click', () => {
-        const hiddenCount = new Set([...personal.hidden, ...personal.feedback.map(item => item.id)]).size;
+        const hiddenCount = new Set([...personal.hidden, ...personal.feedback.filter(item => item.action === 'exclude').map(item => item.id)]).size;
         if (!hiddenCount) {
           toast('No hidden rows');
           return;
@@ -1613,6 +1649,13 @@
           e.preventDefault();
           e.stopPropagation();
           openFeedback(rejectButton.dataset.rejectEvent);
+          return;
+        }
+        const likeButton = e.target.closest('[data-like-event]');
+        if (likeButton) {
+          e.preventDefault();
+          e.stopPropagation();
+          savePositiveFeedback(likeButton.dataset.likeEvent);
           return;
         }
         const exportFeedbackButton = e.target.closest('[data-export-feedback]');

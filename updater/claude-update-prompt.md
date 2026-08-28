@@ -9,7 +9,7 @@ Read these before editing:
 - `HANDOFF.md` - project contract, data model, field schemas and validation workflow.
 - `updater/source-strategy.json` - source priorities, travel tiers and lower/higher inclusion thresholds.
 - `updater/preferences.json` - family curation profile, high-value interests, avoid list and source trust.
-- `updater/user-feedback.json` - private exported "not for us" feedback, if it exists. Treat it as strong negative signal for exact rows and similar future rows.
+- `updater/user-feedback.json` - private exported feedback, if it exists. Treat `exclude` rows as strong negative signal for exact rows and similar future rows; treat `include` rows as strong positive examples.
 - `updater/sources.json` - known sources and standard search queries.
 - `updater/social-leads.json` - recent Instagram/social leads, if the file exists. Treat these as discovery leads, not authoritative structured data.
 - `latest-changes.json` - what the previous run changed.
@@ -45,6 +45,8 @@ Rules:
 - Never invent or guess a date from a stale page.
 - Do not duplicate an existing row with the same `date`, `time`, `title` and `venue`.
 - Do not re-add rows or close variants rejected in `updater/user-feedback.json` unless the new event is clearly different or much higher value; explain exceptions in the method log.
+- Use positive `include` feedback in `updater/user-feedback.json` to raise similar future rows in sourcing and scoring.
+- The child was born in January 2024. For child-specific programming, prefer toddler/preschool/under-5/all-ages rows and reject obvious older-child rows such as Lego Robotics, coding or robotics clubs, trading-card tournaments, 6+, 8-12, teen or school-age workshops unless the event is independently worthwhile for adults.
 - Use specific event URLs, not generic index URLs, when available.
 - Mark inferred, social-only or uncertain rows `verify: true`.
 - Put uncertain leads in `watchlist` instead of additions.

@@ -127,6 +127,16 @@
       border-color: var(--danger);
       background: var(--danger);
     }
+    .btn.good {
+      color: var(--ok);
+      border-color: #bddbbf;
+      background: #f3fbf2;
+    }
+    .btn.good.active {
+      color: #fff;
+      border-color: var(--ok);
+      background: var(--ok);
+    }
     .btn.ghost {
       background: transparent;
     }

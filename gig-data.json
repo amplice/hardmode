@@ -19,7 +19,11 @@
       "Kansas City swing",
       "New Orleans / trad jazz",
       "swing"
-    ]
+    ],
+    "dateBasis": "2026-08-28",
+    "counts": {
+      "upcoming": 192
+    }
   },
   "gigs": [
     {

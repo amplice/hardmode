@@ -30,6 +30,8 @@
     .btn.small{padding:5px 9px;font-size:12px;min-height:28px;font-weight:700}
     .btn.danger{color:var(--danger);background:#fff8f6;border-color:#e1bdb6}
     .btn.danger.active{color:#fff;background:var(--danger);border-color:var(--danger)}
+    .btn.good{color:#166534;background:#f3fbf2;border-color:#bddbbf}
+    .btn.good.active{color:#fff;background:#166534;border-color:#166534}
     .toolbar{position:sticky;top:0;z-index:5;background:rgba(247,244,239,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 0}
     .toolbar .shell{display:flex;flex-direction:column;gap:10px}
     input[type=search],select,textarea{font:inherit;font-size:15px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
@@ -206,6 +208,7 @@
     function proxClass(t){return t==='Local (SW London)'?'local':t==='Central London'?'central':'daytrip';}
     function eventTitle(g){return (g.artist&&g.title&&g.title!==g.artist)?g.artist+' - '+g.title:(g.artist||g.title||'Gig');}
     function feedbackFor(id){return feedback.find(function(x){return x.id===id&&x.action==='exclude';})||null;}
+    function positiveFeedbackFor(id){return feedback.find(function(x){return x.id===id&&x.action==='include';})||null;}
     function isRejected(id){return !!feedbackFor(id);}
     function isNearby(g){return g.travel==='Local (SW London)'||/surbiton|kingston|wimbledon|richmond|twickenham|barnes|putney|waterloo|south bank/.test(hay(g));}
     function strictGenre(g){return /(hot jazz|gypsy jazz|django|manouche|western swing|old-time|old time|cajun|zydeco|jug band|skiffle|honky tonk|old-school country|new orleans|trad jazz|trad irish|irish|swing)/.test(hay(g));}
@@ -244,8 +247,10 @@
     function saveFeedback(){try{localStorage.setItem(FEEDBACK_KEY,JSON.stringify(feedback));}catch(e){}}
     function loadFeedback(){try{var stored=JSON.parse(localStorage.getItem(FEEDBACK_KEY)||'[]');feedback=Array.isArray(stored)?stored.filter(function(x){return x&&x.id;}):[];}catch(e){feedback=[];}}
     function exportFeedback(){var payload={updated:new Date().toISOString(),calendarFeedback:[],gigFeedback:feedback};downloadBlob(JSON.stringify(payload,null,2)+'\n','application/json;charset=utf-8','user-feedback.json');toast('Feedback file exported');}
+    function feedbackObject(g,action,note){return{action:action,id:g.id,title:g.title||'',artist:g.artist||'',venue:g.venue||'',area:g.area||'',genres:g.genres||[],date:g.date||'',source:g.source||'',url:g.url||'',note:note||'',createdAt:new Date().toISOString()};}
     function openFeedback(id){var g=gigs.find(function(x){return x.id===id;});if(!g)return;pendingFeedbackId=id;var existing=feedbackFor(id);el('feedbackSubtitle').textContent=eventTitle(g)+(g.venue?' - '+g.venue:'');el('feedbackNote').value=existing&&existing.note||'';el('feedbackDialog').showModal();el('feedbackNote').focus();}
-    function saveFeedbackNote(){var g=gigs.find(function(x){return x.id===pendingFeedbackId;});if(!g)return;feedback=feedback.filter(function(x){return x.id!==g.id;});feedback.unshift({action:'exclude',id:g.id,title:g.title||'',artist:g.artist||'',venue:g.venue||'',area:g.area||'',genres:g.genres||[],date:g.date||'',source:g.source||'',url:g.url||'',note:el('feedbackNote').value.trim(),createdAt:new Date().toISOString()});pendingFeedbackId=null;saveFeedback();render();toast('Saved as not for us');}
+    function saveFeedbackNote(){var g=gigs.find(function(x){return x.id===pendingFeedbackId;});if(!g)return;feedback=feedback.filter(function(x){return x.id!==g.id;});feedback.unshift(feedbackObject(g,'exclude',el('feedbackNote').value.trim()));pendingFeedbackId=null;saveFeedback();render();toast('Saved as not for us');}
+    function savePositiveFeedback(id){var g=gigs.find(function(x){return x.id===id;});if(!g)return;feedback=feedback.filter(function(x){return !(x.id===g.id&&x.action==='include');});feedback.unshift(feedbackObject(g,'include','More like this'));saveFeedback();render();toast('Saved: more like this');}
     function removeFeedback(id){feedback=feedback.filter(function(x){return x.id!==id;});saveFeedback();render();toast('Feedback removed');}
     function renderModes(){
       el('modeCards').innerHTML=modes.map(function(m){
@@ -258,7 +263,8 @@
       renderModes();
       var rows=gigs.filter(matches);
       el('list').innerHTML='';
-      el('count').textContent=rows.length+(rows.length===1?' gig':' gigs')+(feedback.length?' - '+feedback.length+' not-for-us notes':'');
+      var skipCount=feedback.filter(function(x){return x.action==='exclude';}).length, likeCount=feedback.filter(function(x){return x.action==='include';}).length;
+      el('count').textContent=rows.length+(rows.length===1?' gig':' gigs')+(skipCount?' - '+skipCount+' not-for-us notes':'')+(likeCount?' - '+likeCount+' more-like-this signals':'');
       if(!rows.length)el('list').innerHTML='<div class="empty">No gigs match. Try clearing filters or widening the date range.</div>';
       var lastMonth='',lastDay='';
       rows.forEach(function(g){if(g.monthLabel!==lastMonth){lastMonth=g.monthLabel;lastDay='';var h=document.createElement('div');h.className='monthhead';h.textContent=g.monthLabel;el('list').appendChild(h);}if(g.dateLabel!==lastDay){lastDay=g.dateLabel;var d=document.createElement('div');d.className='day';d.textContent=g.dateLabel+(g.isMultiDay?' - '+(g.endDate||''):'');el('list').appendChild(d);}el('list').appendChild(cardFor(g));});
@@ -266,7 +272,7 @@
       renderWatchlist();
     }
     function cardFor(g){
-      var c=document.createElement('div');var fb=feedbackFor(g.id);c.className='card'+(fb?' rejected':'');
+      var c=document.createElement('div');var fb=feedbackFor(g.id),liked=positiveFeedbackFor(g.id);c.className='card'+(fb?' rejected':'');
       var title=esc(g.artist||g.title||'Gig');var sub=g.artist&&g.title&&g.title!==g.artist?' - '+esc(g.title):'';
       var titleHtml=g.url?'<a href="'+esc(g.url)+'" target="_blank" rel="noopener">'+title+'</a>'+sub:title+sub;
       var badges='';if(g.confidence==='verify')badges+=' <span class="badge b-verify">verify</span>';if(/free/i.test(g.cost||''))badges+=' <span class="badge b-free">free</span>';if(g.isMultiDay)badges+=' <span class="badge b-fest">festival</span>';
@@ -276,12 +282,12 @@
       c.innerHTML='<div class="when"><div class="time">'+esc(g.time||'-')+'</div><div class="dow">'+esc(g.weekday||'')+'</div></div>'+
         '<div class="body"><div class="title">'+titleHtml+badges+'</div><div class="meta">'+costArea+(right?' - '+right:'')+'</div>'+
         (g.note?'<div class="note">'+esc(g.note)+'</div>':'')+(fb&&fb.note?'<div class="feedback-note"><strong>Skip reason:</strong> '+esc(fb.note)+'</div>':'')+
-        '<div class="tags">'+tags+'</div><div class="card-actions"><a class="btn small" href="'+esc(googleCalendarUrl(g))+'" target="_blank" rel="noopener">Google Calendar</a><button class="btn small" type="button" data-ics="'+esc(g.id)+'">Download .ics</button><button class="btn small danger '+(fb?'active':'')+'" type="button" data-reject-gig="'+esc(g.id)+'">'+(fb?'Edit skip':'Not for us')+'</button></div></div>';
+        '<div class="tags">'+tags+'</div><div class="card-actions"><a class="btn small" href="'+esc(googleCalendarUrl(g))+'" target="_blank" rel="noopener">Google Calendar</a><button class="btn small" type="button" data-ics="'+esc(g.id)+'">Download .ics</button><button class="btn small good '+(liked?'active':'')+'" type="button" data-like-gig="'+esc(g.id)+'">'+(liked?'More like this saved':'More like this')+'</button><button class="btn small danger '+(fb?'active':'')+'" type="button" data-reject-gig="'+esc(g.id)+'">'+(fb?'Edit skip':'Not for us')+'</button></div></div>';
       return c;
     }
     function renderFeedback(){
       el('feedbackSection').hidden=!(feedback.length||state.mode==='rejected');
-      el('feedbackList').innerHTML=feedback.length?feedback.map(function(x){return'<div class="feedback-note"><strong>'+esc(x.artist||x.title||x.id)+'</strong><div>'+esc([x.date,x.venue,x.area,(x.genres||[]).join(' / ')].filter(Boolean).join(' - '))+'</div>'+(x.note?'<div>'+esc(x.note)+'</div>':'')+'<button class="btn small" type="button" data-remove-feedback="'+esc(x.id)+'">Remove feedback</button></div>';}).join(''):'<div class="empty">No gig feedback saved yet.</div>';
+      el('feedbackList').innerHTML=feedback.length?feedback.map(function(x){return'<div class="feedback-note"><strong>'+esc(x.action==='include'?'More like this':'Not for us')+': '+esc(x.artist||x.title||x.id)+'</strong><div>'+esc([x.date,x.venue,x.area,(x.genres||[]).join(' / ')].filter(Boolean).join(' - '))+'</div>'+(x.note?'<div>'+esc(x.note)+'</div>':'')+'<button class="btn small" type="button" data-remove-feedback="'+esc(x.id)+'">Remove feedback</button></div>';}).join(''):'<div class="empty">No gig feedback saved yet.</div>';
     }
     function renderWatchlist(){
       var w=DATA.watchlist||[];
@@ -304,7 +310,7 @@
       el('feedbackClose').onclick=function(){el('feedbackDialog').close();};
       el('cancelFeedbackBtn').onclick=function(){el('feedbackDialog').close();};
       el('feedbackForm').onsubmit=function(e){e.preventDefault();saveFeedbackNote();el('feedbackDialog').close();};
-      document.addEventListener('click',function(e){var b=e.target.closest('[data-ics]');if(b){var g=gigs.find(function(x){return x.id===b.getAttribute('data-ics');});if(g)downloadIcs([g],(g.date||'gig')+'-'+safeFilename(eventTitle(g))+'.ics');return;}var r=e.target.closest('[data-reject-gig]');if(r){openFeedback(r.getAttribute('data-reject-gig'));return;}var rm=e.target.closest('[data-remove-feedback]');if(rm){removeFeedback(rm.getAttribute('data-remove-feedback'));return;}var mc=e.target.closest('[data-mode-card]');if(mc){state.mode=state.mode===mc.dataset.modeCard?'':mc.dataset.modeCard;el('mode').value=state.mode;render();}});
+      document.addEventListener('click',function(e){var b=e.target.closest('[data-ics]');if(b){var g=gigs.find(function(x){return x.id===b.getAttribute('data-ics');});if(g)downloadIcs([g],(g.date||'gig')+'-'+safeFilename(eventTitle(g))+'.ics');return;}var like=e.target.closest('[data-like-gig]');if(like){savePositiveFeedback(like.getAttribute('data-like-gig'));return;}var r=e.target.closest('[data-reject-gig]');if(r){openFeedback(r.getAttribute('data-reject-gig'));return;}var rm=e.target.closest('[data-remove-feedback]');if(rm){removeFeedback(rm.getAttribute('data-remove-feedback'));return;}var mc=e.target.closest('[data-mode-card]');if(mc){state.mode=state.mode===mc.dataset.modeCard?'':mc.dataset.modeCard;el('mode').value=state.mode;render();}});
       loadFeedback();
       render();
     }

@@ -1,24 +1,37 @@
 {
-  "generatedAt": "2026-08-28T11:39:57.084Z",
+  "generatedAt": "2026-08-28T13:35:00.000Z",
   "dateBasis": "2026-08-28",
-  "summary": "Deterministic calendar maintenance for 2026-08-28.",
+  "summary": "Manual cleanup for toddler age fit, explicit user feedback and mojibake repair.",
   "added": [],
-  "updated": [],
+  "updated": [
+    "Repaired mojibake in calendar data, generated data and ICS output.",
+    "Added child age context: born January 2024; toddler/preschool suggestions only for child-specific listings.",
+    "Added separate positive feedback support: More like this."
+  ],
   "removed": [
-    "e20260827: Finished before 2026-08-28",
-    "e20260827b: Finished before 2026-08-28",
-    "e20260827c: Finished before 2026-08-28",
-    "e20260827d: Finished before 2026-08-28"
+    "e626: Parkinson's talk - generic adult talk, not useful for family/nanny context.",
+    "e666: House of Fun - Saturday evening ska, not family-friendly and not strong enough as date night.",
+    "e717/e718/e719/e720: Lego Robotics Club - too old for toddler age.",
+    "e20260718: Tom Gates EPIC Adventure at Kew - past and too old for toddler age.",
+    "e20260725k: Theatre on Kew: Twelfth Night - past; far-ish late start not workable as family outing.",
+    "e20260828: A Day at the Seaside - Sensory Story & Craft - too far for ordinary toddler story/craft.",
+    "e20260829: Explore Learning Grand Maths Wizard Workshop - school-age maths workshop.",
+    "e20260911/e20261009: Yu-gi-oh! Tournament - trading-card tournament too old for toddler age.",
+    "e20260920: Big Dreams: After Party - aimed at babies 6-18 months, too young now.",
+    "e20261003c: A Class of Your Own - ages 8-12.",
+    "e20261011: Comedy Club 4 Kids - usually 6+, too old for toddler age.",
+    "e20261023d: You'll See - ages 8-12.",
+    "e20261028c: At Sea - ages 6-12."
   ],
   "counts": {
     "before": {
-      "events": 340,
+      "events": 336,
       "recurring": 57,
       "sources": 52,
       "watchlist": 75
     },
     "after": {
-      "events": 336,
+      "events": 319,
       "recurring": 57,
       "sources": 52,
       "watchlist": 75

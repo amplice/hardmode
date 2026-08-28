@@ -28,6 +28,11 @@
     }
   ],
   "familyCalendar": {
+    "familyContext": {
+      "childBorn": "2024-01",
+      "currentRule": "Treat the child as toddler/preschool age. Family rows must be age-plausible for a child born in January 2024 unless they are clearly worthwhile for adults anyway.",
+      "excludeForNow": ["Lego Robotics", "Yu-Gi-Oh", "Pokemon/trading-card tournaments", "coding clubs", "robotics clubs", "6+ workshops", "8-12 theatre", "teen/14+ shows"]
+    },
     "primaryModes": [
       {
         "id": "nannyWeekday",
@@ -179,7 +184,7 @@
   },
   "feedbackPolicy": {
     "file": "updater/user-feedback.json",
-    "rule": "Treat rejected rows and notes as strong negative examples. Avoid exact repeats and close matches by title, venue, category, genre and reason unless a future event is clearly different or much higher value.",
+    "rule": "Treat action=exclude rows and notes as strong negative examples. Avoid exact repeats and close matches by title, venue, category, genre and reason unless a future event is clearly different or much higher value. Treat action=include rows as strong positive examples and prefer similar future rows by venue, source, category, genre, timing and note.",
     "staticSiteLimit": "The web page can store feedback in browser localStorage and export JSON. A scheduled local updater can only read the exported file if it exists in updater/user-feedback.json."
   }
 }
