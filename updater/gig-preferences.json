@@ -61,7 +61,7 @@
   },
   "reviewPolicy": {
     "errOnSideOfInclusion": true,
-    "inclusionNote": "This radar is a niche genre filter, so relevance is the whole point — but WITHIN the genres, err toward including. If an act plausibly plays in-genre material, include it (verify:true if unsure). The user can hide rows. Only exclude on the hard 'avoid' list (esp. bluegrass, modern jazz, modern country) or unconfirmable dates.",
+    "inclusionNote": "Within the wanted genres, nearby/easy gigs can be included with a lower threshold. Central London should have a clear genre, venue, artist or date-night reason. Day-trip gigs need a stronger match or rare/high-quality pull. Always avoid bluegrass-only, modern jazz/fusion, modern country, generic open mics, and anything similar to exported user feedback unless clearly different.",
     "doNotAddWithoutConfirmedDate": true,
     "doNotAddPastEvents": true,
     "markInferredVerify": true,

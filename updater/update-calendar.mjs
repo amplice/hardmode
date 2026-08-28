@@ -12,6 +12,8 @@ const logsDir = path.join(__dirname, "logs");
 const backupsDir = path.join(__dirname, "backups");
 const preferencesPath = path.join(__dirname, "preferences.json");
 const sourcesPath = path.join(__dirname, "sources.json");
+const sourceStrategyPath = path.join(__dirname, "source-strategy.json");
+const userFeedbackPath = path.join(__dirname, "user-feedback.json");
 
 const args = new Set(process.argv.slice(2));
 const apply = args.has("--apply");
@@ -34,6 +36,8 @@ async function main() {
   const data = readCalendarData(html);
   const preferences = readJson(preferencesPath);
   const sources = readJson(sourcesPath);
+  const sourceStrategy = fs.existsSync(sourceStrategyPath) ? readJson(sourceStrategyPath) : {};
+  const userFeedback = fs.existsSync(userFeedbackPath) ? readJson(userFeedbackPath) : {};
 
   const deterministicRemovals = getPastFinishedRemovals(data, today);
   let proposal = emptyProposal(today);
@@ -43,7 +47,7 @@ async function main() {
     if (!apiKey) {
       throw new Error("OPENROUTER_API_KEY is not set. Set it in updater/.env.local, then run `npm run update` again.");
     }
-    const aiProposal = await requestAiProposal({ data, preferences, sources, today, model, apiKey });
+    const aiProposal = await requestAiProposal({ data, preferences, sources, sourceStrategy, userFeedback, today, model, apiKey });
     proposal = mergeProposals(proposal, aiProposal);
   }
 
@@ -191,9 +195,9 @@ function getPastFinishedRemovals(data, date) {
     }));
 }
 
-async function requestAiProposal({ data, preferences, sources, today, model, apiKey }) {
+async function requestAiProposal({ data, preferences, sources, sourceStrategy, userFeedback, today, model, apiKey }) {
   const compactData = compactCalendarData(data, today);
-  const prompt = buildPrompt({ compactData, preferences, sources, today });
+  const prompt = buildPrompt({ compactData, preferences, sources, sourceStrategy, userFeedback, today });
   const schema = proposalSchema();
 
   const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -287,7 +291,7 @@ function compactCalendarData(data, today) {
   };
 }
 
-function buildPrompt({ compactData, preferences, sources, today }) {
+function buildPrompt({ compactData, preferences, sources, sourceStrategy, userFeedback, today }) {
   return [
     "You are maintaining a standalone local events calendar for a family in Surbiton, UK.",
     `Today is ${today}. Only propose current/future events from today through 2026-12-31.`,
@@ -296,6 +300,12 @@ function buildPrompt({ compactData, preferences, sources, today }) {
     "",
     "Curation profile:",
     JSON.stringify(preferences, null, 2),
+    "",
+    "Source and curation strategy:",
+    JSON.stringify(sourceStrategy, null, 2),
+    "",
+    "Exported user feedback / negative examples:",
+    JSON.stringify(userFeedback, null, 2),
     "",
     "Known sources and searches to check:",
     JSON.stringify(sources, null, 2),
@@ -306,6 +316,7 @@ function buildPrompt({ compactData, preferences, sources, today }) {
     "Update rules:",
     "- Prefer adding high-signal events: music, theatre, kid-friendly, daytime/free music, folk/trad/Irish, Hampton Court, miniature railway, Canbury Bandstand, distinctive festivals and markets.",
     "- Avoid the configured remove/avoid categories.",
+    "- Treat exported user feedback as strong negative examples. Avoid exact rejected rows and similar future rows unless clearly different or much higher value.",
     "- If an event already exists, return an update rather than a duplicate.",
     "- UX rule: if a source page represents selected monthly, fortnightly, or irregular dates as a date range, split those into separate one-day event rows. Only use date ranges for true multi-day runs, exhibitions, festivals, theatre runs, seasonal attractions, or weekly class/workshop blocks where the range is clearer than many rows.",
     "- Use specific event URLs, not generic index URLs, when available.",

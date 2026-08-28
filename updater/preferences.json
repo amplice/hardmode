@@ -96,7 +96,7 @@
     "allowRangesForWeeklyBlocksAndTrueMultiDayRuns": true,
     "markInferredRowsVerify": true,
     "preferSpecificEventUrls": true,
-    "errOnSideOfInclusion": true,
-    "inclusionNote": "Err toward INCLUDING events on relevance/audience-fit/uncertainty calls (the user can hide rows; a miss is worse than a marginal include). Only drop on relevance grounds for the explicit removeOrAvoid list and the Fighting Cocks roots/trad-only rule. Date/year integrity stays strict - never add an unconfirmable or stale-year date. Marginal includes get verify:true."
+    "errOnSideOfInclusion": false,
+    "inclusionNote": "Use a lower threshold for doorstep/easy-local family, music, theatre, Hampton Court, railway and distinctive community rows. Use a higher threshold for Waterloo, Wimbledon and further destinations: include only if family-relevant, free/daytime music, theatre, folk/trad, or clearly worth planning around. Never add disliked categories, stale dates, or rows similar to exported user feedback."
   }
 }

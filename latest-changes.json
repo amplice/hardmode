@@ -1,25 +1,27 @@
 {
-  "generatedAt": "2026-08-26T07:04:46.104Z",
-  "dateBasis": "2026-08-26",
-  "summary": "Removed 9 finished rows before 2026-08-26. Added 2 confirmed Kingston-area church music events from All Saints events feed (one dated 2026-09-10, one 2026-09-11).",
-  "added": [
-    "ALL SAINTS KINGSTON: Kingston Chamber Concert (2026-09-10 19:30 / e20260910a)",
-    "ALL SAINTS KINGSTON: Free Organ Recital (2026-09-11 13:15 / e20260911a)"
-  ],
+  "generatedAt": "2026-08-28T11:39:57.084Z",
+  "dateBasis": "2026-08-28",
+  "summary": "Deterministic calendar maintenance for 2026-08-28.",
+  "added": [],
   "updated": [],
   "removed": [
-    "Shire Horse Carriage Rides (e20260725j, 2026-07-25)",
-    "Beano Havoc at Hampton Court Palace (e741, 2026-07-25 to 2026-08-23)",
-    "Blub (e20260813, 2026-08-13 to 2026-08-23)",
-    "Canbury Bandstand: London Saxophone Choir (e20260823, 2026-08-23)",
-    "Sienna Spiro: album shows (jazz-infused soul) (e20260825e, 2026-08-25)",
-    "Once Upon a Beat (Tolworth Community Library) (e20260825, 2026-08-25)",
-    "Paint Your Friends... With a Drink in Your Spare Hand (e20260825d, 2026-08-25)",
-    "Adult Book Group (e703, 2026-08-25)",
-    "Read to the Beat Crafting (e20260825c, 2026-08-25)"
+    "e20260827: Finished before 2026-08-28",
+    "e20260827b: Finished before 2026-08-28",
+    "e20260827c: Finished before 2026-08-28",
+    "e20260827d: Finished before 2026-08-28"
   ],
   "counts": {
-    "events": 340,
-    "recurring": 57
+    "before": {
+      "events": 340,
+      "recurring": 57,
+      "sources": 52,
+      "watchlist": 75
+    },
+    "after": {
+      "events": 336,
+      "recurring": 57,
+      "sources": 52,
+      "watchlist": 75
+    }
   }
 }

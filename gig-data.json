@@ -3,7 +3,7 @@
     "title": "Gig Radar",
     "description": "Curated radar of live gigs in traditional jazz and roots-Americana genres around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-08-27",
+    "updated": "2026-08-28",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -22,98 +22,6 @@
     ]
   },
   "gigs": [
-    {
-      "id": "g20260827-bobbydove",
-      "date": "2026-08-27",
-      "endDate": null,
-      "time": "",
-      "title": "Bobby Dove",
-      "artist": "Bobby Dove",
-      "venue": "Green Note",
-      "area": "Camden, London",
-      "genres": [
-        "old-school country",
-        "honky tonk"
-      ],
-      "cost": "£18",
-      "url": "https://www.greennote.co.uk/production/bobby-dove/",
-      "source": "Green Note",
-      "confidence": "confirmed",
-      "note": "Canadian troubadour explicitly billed as paying tribute to classic country traditions."
-    },
-    {
-      "id": "g20260827-ikos",
-      "date": "2026-08-27",
-      "endDate": null,
-      "time": "19:30",
-      "title": "Dom Pipkin and The Ikos",
-      "artist": "Dom Pipkin and The Ikos",
-      "venue": "Toulouse Lautrec Jazz Club",
-      "area": "Kennington, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£21",
-      "url": "https://dice.fm/event/q2qn2o-dom-pipkin-and-the-ikos-27th-aug-toulouse-lautrec-london-tickets",
-      "source": "DICE API",
-      "confidence": "verify",
-      "note": "London's leading New Orleans pianist with his full band — Ikos sets lean NO-funk; included per inclusive policy."
-    },
-    {
-      "id": "g20260827-pumphouse",
-      "date": "2026-08-27",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Al Nicholls & Mike Henry Band",
-      "artist": "Al Nicholls & Mike Henry Band",
-      "venue": "Pump House Jazz Club",
-      "area": "Watford, Herts",
-      "genres": [
-        "swing"
-      ],
-      "cost": "£13",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/the-pump-house",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Al Nicholls is a swing/jump-blues tenor player (Blue Harlem) — pre-bebop-leaning. Thursday club, ~25 min from Euston."
-    },
-    {
-      "id": "g20260827-jiveaces",
-      "date": "2026-08-27",
-      "endDate": null,
-      "time": "20:00",
-      "title": "The Jive Aces at The Great Vegan Gathering",
-      "artist": "The Jive Aces",
-      "venue": "Gilwell Park",
-      "area": "Chingford, NE London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://jiveaces.org/tour",
-      "source": "jiveaces.org tour page",
-      "confidence": "verify",
-      "note": "Band slot inside a ticketed festival — check festival entry requirements."
-    },
-    {
-      "id": "g20260827-lapazoos",
-      "date": "2026-08-27",
-      "endDate": null,
-      "time": "21:00",
-      "title": "The Lapazoos (+ Al Bandini late set)",
-      "artist": "The Lapazoos",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "hot jazz",
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£6 cover (late set free)",
-      "url": "https://www.barnightjar.com/shoreditch-listings",
-      "source": "barnightjar.com",
-      "confidence": "confirmed",
-      "note": "Billed '1920s–30s New Orleans Blues'."
-    },
     {
       "id": "g20260828-ronshonkytonk",
       "date": "2026-08-28",

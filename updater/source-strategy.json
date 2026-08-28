@@ -1,0 +1,185 @@
+{
+  "updated": "2026-08-28",
+  "purpose": "Curation strategy for the two static calendars: Family Calendar and Gig Radar.",
+  "travelTiers": [
+    {
+      "id": "doorstep",
+      "label": "Doorstep",
+      "areas": ["Surbiton", "Berrylands", "Tolworth"],
+      "threshold": "Low. Include most public, dated family/music/theatre/community events unless explicitly disliked."
+    },
+    {
+      "id": "easyLocal",
+      "label": "Easy local",
+      "areas": ["Kingston", "Long Ditton", "Thames Ditton", "Hampton Court", "East Molesey", "New Malden"],
+      "threshold": "Low-to-medium. Include family-friendly, music, theatre, heritage, outdoor, market/festival, railway, and culturally distinctive rows."
+    },
+    {
+      "id": "easyTrain",
+      "label": "Easy train",
+      "areas": ["Waterloo", "South Bank", "Wimbledon", "Morden", "Richmond", "Twickenham", "Putney", "Barnes"],
+      "threshold": "Medium. Include if it clearly fits: toddler/family day out, free daytime culture/music, theatre, folk/trad, or high-quality destination programming."
+    },
+    {
+      "id": "destination",
+      "label": "Destination",
+      "areas": ["Kew", "central London beyond Waterloo", "outer London", "near-Surrey day trips"],
+      "threshold": "High. Include only if it is unusually good, date-specific, family-relevant, strongly in-genre, or worth planning around."
+    }
+  ],
+  "familyCalendar": {
+    "primaryModes": [
+      {
+        "id": "nannyWeekday",
+        "label": "Nanny / weekday kid",
+        "include": ["weekday daytime", "toddler-friendly", "library story/craft", "free or cheap", "walkable or easy local"],
+        "exclude": ["adult talks", "appointment-style wellbeing", "business", "late evening", "routine fitness"]
+      },
+      {
+        "id": "familyWeekend",
+        "label": "Family weekend",
+        "include": ["weekend", "bank holiday", "family festivals", "outdoor arts", "railway open days", "Hampton Court member value", "markets with music/food/family pull"],
+        "exclude": ["generic adult classes", "routine club nights", "weak far-afield listings"]
+      },
+      {
+        "id": "daytimeMusic",
+        "label": "Daytime music",
+        "include": ["free lunchtime music", "bandstand concerts", "Rose Cafe music", "public choir/concert performances", "family-friendly music"],
+        "exclude": ["generic open mic unless very local", "late pub gigs unless The Lamb or strongly relevant"]
+      },
+      {
+        "id": "dateNight",
+        "label": "Date night",
+        "include": ["theatre", "comedy worth booking", "music at The Lamb", "jazz/folk/trad", "interesting evening culture"],
+        "exclude": ["business", "admin", "wellbeing appointments", "pub quizzes", "routine classes"]
+      }
+    ],
+    "alwaysCheckSources": [
+      {
+        "name": "Royal Borough of Kingston events",
+        "url": "https://www.kingston.gov.uk/events",
+        "why": "Broad borough feed; useful for family festivals, markets, heritage, council-run outdoor events; must filter out wellbeing/business/repair/admin noise."
+      },
+      {
+        "name": "Surbiton Partnership What's On",
+        "url": "https://surbitonpartnership.co.uk/whats-on/",
+        "why": "Best broad Surbiton feed; low inclusion threshold for local family/music/theatre but needs strict filtering for fitness, quizzes and generic wellbeing."
+      },
+      {
+        "name": "Rose Theatre Kingston",
+        "url": "https://www.rosetheatre.org/whats-on",
+        "why": "High-value nearby theatre plus free cafe music; selected-date music rows should be split into individual dates rather than date ranges."
+      },
+      {
+        "name": "Hampton Court Palace",
+        "url": "https://www.hrp.org.uk/hampton-court-palace/whats-on/",
+        "why": "Member-relevant family destination. Include palace/garden/festival/seasonal family events with a lower threshold than other outer-edge destinations."
+      },
+      {
+        "name": "Thames Ditton Miniature Railway",
+        "url": "https://www.malden-dsme.org/",
+        "why": "One-of-a-kind nearby family attraction; include public running days/open days even when recurring."
+      },
+      {
+        "name": "Canbury Bandstand",
+        "url": "https://friendsofcanburygardens.org/bandstand",
+        "why": "Ideal Sunday daytime music. Include dated concerts and keep an eye on social updates when the site lags."
+      },
+      {
+        "name": "Polka Theatre",
+        "url": "https://polkatheatre.com/shows/",
+        "why": "Wimbledon is easy enough and Polka is high-quality toddler/children's theatre; include age-appropriate shows and workshops."
+      },
+      {
+        "name": "Southbank Centre family/free events",
+        "url": "https://www.southbankcentre.co.uk/whats-on/?artform-filter=family-young-people",
+        "why": "Waterloo is easy by train; include free/daytime/family music, workshops and genuinely good family culture, not the whole programme."
+      },
+      {
+        "name": "National Theatre",
+        "url": "https://www.nationaltheatre.org.uk/whats-on/",
+        "why": "Easy from Waterloo; include family-relevant theatre or especially strong date-night theatre only."
+      },
+      {
+        "name": "National Trust - Morden Hall Park",
+        "url": "https://www.nationaltrust.org.uk/visit/london/morden-hall-park",
+        "why": "Wimbledon/Morden edge family day-out source; include child-friendly trails, seasonal family days and outdoor events."
+      }
+    ]
+  },
+  "gigRadar": {
+    "primaryModes": [
+      {
+        "id": "nearbyEasy",
+        "label": "Nearby / easy",
+        "include": ["Surbiton", "Kingston", "Wimbledon", "Richmond", "Twickenham", "Barnes", "Putney", "Waterloo/South Bank"],
+        "threshold": "Lower bar if live music is close and plausibly in the user's taste."
+      },
+      {
+        "id": "strictGenre",
+        "label": "Strict genre",
+        "include": ["hot jazz", "gypsy jazz", "western swing", "old-time", "cajun", "zydeco", "skiffle", "honky tonk", "old-school country", "trad Irish", "live-band swing"],
+        "threshold": "Genre match matters more than location."
+      },
+      {
+        "id": "dateNight",
+        "label": "Date night",
+        "include": ["quality evening gigs", "The Lamb", "Rose/Ram Jam/landmark local venues", "bookable music worth arranging childcare for"],
+        "threshold": "Closer venues can be casual; central/further venues need stronger genre or quality."
+      },
+      {
+        "id": "worthTrip",
+        "label": "Worth the trip",
+        "include": ["festival", "rare artist", "excellent venue", "unusual roots/trad event"],
+        "threshold": "High. Use for far or more awkward travel only."
+      }
+    ],
+    "alwaysCheckSources": [
+      {
+        "name": "The Lamb Surbiton Instagram/social",
+        "url": "https://www.instagram.com/thelambsurbiton/",
+        "why": "The site often lags social posts; screenshots/OCR should be checked for dated music."
+      },
+      {
+        "name": "Ram Jam Records",
+        "url": "https://www.ramjamrecords.co.uk/events",
+        "why": "Local Kingston live music with a readable events feed; include only in-genre or strong date-night rows."
+      },
+      {
+        "name": "The Jazz Guide",
+        "url": "https://www.thejazzguide.co.uk/gigs-and-events/",
+        "why": "Useful for trad/hot/swing-adjacent jazz listings, but must filter out modern jazz and check venue detail where possible."
+      },
+      {
+        "name": "SwingdanceUK special events",
+        "url": "https://swingdanceuk.com/socials/special-events/",
+        "why": "Live-band swing and social dance events in London; good genre fit."
+      },
+      {
+        "name": "Swing Out London",
+        "url": "https://www.swingoutlondon.co.uk/",
+        "why": "London swing dance socials/classes and live vintage jazz opportunities."
+      },
+      {
+        "name": "Irish Cultural Centre Hammersmith",
+        "url": "https://irishculturalcentre.co.uk/event/friday-night-sessions/",
+        "why": "Public traditional Irish sessions; family-friendly wording makes some sessions relevant even if not local."
+      },
+      {
+        "name": "Irish Music in London session listing",
+        "url": "https://www.karenryan.net/index.php/irish-music-in-london/where-to-hear-irish-traditional-music-in-london",
+        "why": "Maintained trad session list; use for discovery and then verify venue/date details."
+      },
+      {
+        "name": "Halibuts swing listings",
+        "url": "https://halibuts.com/genre/swing",
+        "why": "Broad London swing feed; useful but noisy, especially musicals and crooner residencies."
+      }
+    ]
+  },
+  "feedbackPolicy": {
+    "file": "updater/user-feedback.json",
+    "rule": "Treat rejected rows and notes as strong negative examples. Avoid exact repeats and close matches by title, venue, category, genre and reason unless a future event is clearly different or much higher value.",
+    "staticSiteLimit": "The web page can store feedback in browser localStorage and export JSON. A scheduled local updater can only read the exported file if it exists in updater/user-feedback.json."
+  }
+}

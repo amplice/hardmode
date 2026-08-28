@@ -1,109 +1,86 @@
-# Autonomous calendar update run
+# Autonomous family-calendar update run
 
-You are running **headless and unattended** as the maintainer of the Surbiton local
-events calendar in this repository. There is no human to ask questions — make sensible,
-conservative decisions on your own and finish the job. Your working directory is the
-repo root.
+You are running headless and unattended as the maintainer of the Family Calendar in this repository. There is no human to ask questions, so make conservative decisions and finish the job. Your working directory is the repo root.
 
 ## 0. Orient yourself first
 
-Read these before doing anything else, because they are the source of truth:
+Read these before editing:
 
-- `HANDOFF.md` — full project description, data model, field schemas, workflows.
-- `updater/preferences.json` — the curation profile (what to keep / avoid, source trust).
-- `updater/sources.json` — known sources and standard search queries.
-- `updater/social-leads.json` — recent Instagram/social leads collected from configured
-  venue accounts, if the file exists. This can include OCR text from post/reel screenshots.
-  Treat these as discovery leads, not as fully authoritative structured data.
-- `latest-changes.json` — what the previous run changed.
-- `updater/method-log.md` — a running log of which discovery methods/sources were tried on
-  previous runs (it may not exist yet on the first run).
-- The `meta` block and a few sample rows of `calendar-data.json` so you match the exact
-  field shape and id style.
+- `HANDOFF.md` - project contract, data model, field schemas and validation workflow.
+- `updater/source-strategy.json` - source priorities, travel tiers and lower/higher inclusion thresholds.
+- `updater/preferences.json` - family curation profile, high-value interests, avoid list and source trust.
+- `updater/user-feedback.json` - private exported "not for us" feedback, if it exists. Treat it as strong negative signal for exact rows and similar future rows.
+- `updater/sources.json` - known sources and standard search queries.
+- `updater/social-leads.json` - recent Instagram/social leads, if the file exists. Treat these as discovery leads, not authoritative structured data.
+- `latest-changes.json` - what the previous run changed.
+- `updater/method-log.md` - previous discovery methods and dead ends.
+- The `meta` block and a few sample rows of `calendar-data.json` so you match the exact field shape and id style.
 
-"Today" means the current date in **Europe/London**. Use it consistently.
+"Today" means the current date in Europe/London. Use it consistently.
 
 ## 1. Remove finished events
 
-Delete rows from `calendar-data.json` `events` whose `date` (or `endDate` when present) is
-**before today**, unless the row is an ongoing multi-day run that is still active. Leave
-genuine `recurring` patterns alone unless they have clearly ended.
+Delete rows from `calendar-data.json` `events` whose `date` or `endDate` is before today, unless the row is an ongoing multi-day run that is still active. Leave genuine `recurring` patterns alone unless they have clearly ended.
 
-## 2. Research — and try something new every run
+## 2. Research and rotate methods
 
-Refresh the known sources in `updater/sources.json` and run the standard
-`searchQueries`. If `updater/social-leads.json` exists, inspect it early and follow up any
-dated, relevant leads from Instagram-heavy venues such as The Lamb. Social-only details can
-be added when they are specific and future-dated, but they must be marked `verify: true`
-unless independently confirmed. Then, **this is important**: on every run try at least **2–3 discovery
-methods or sources you have not used recently**. Check `updater/method-log.md` and avoid
-repeating the same angles each time. Ideas to rotate through (not exhaustive — invent your
-own):
+Refresh the known sources in `updater/sources.json` and run the standard `searchQueries`. Then try at least 2-3 discovery methods or sources you have not used recently; check `updater/method-log.md` first.
 
-- Venue social/event tabs (Instagram, Facebook events) for The Lamb, cornerHOUSE, Rose, etc.
-- Ticketing platforms scoped to the area: Eventbrite, DICE, Skiddle, TicketSource, See Tickets.
-- Council / library "what's on" PDFs and the school-holiday activity programmes.
-- "This weekend in Kingston / Surbiton" blog and newsletter roundups.
-- Churches and halls with concert or family series; National Trust / English Heritage nearby.
-- Seasonal angles relevant to the current date (summer fetes, Christmas markets, half-term).
-- New venues or organisers you discover while researching.
+Prioritise:
 
-## 3. Add only genuinely relevant, dated events
+- Surbiton, Berrylands, Tolworth, Kingston, Thames Ditton, Long Ditton, Hampton Court.
+- Waterloo/South Bank and Wimbledon when the event is family-relevant, free/daytime music, theatre or clearly high quality.
+- Instagram-heavy venues such as The Lamb; social-only details can be added when specific and future-dated, but mark `verify: true` unless independently confirmed.
 
-Follow `updater/preferences.json` **strictly** — high-value categories, the remove/avoid
-list, the Fighting Cocks roots/trad-only rule, and source trust. Then:
+## 3. Add only relevant dated events
 
-- Add new objects to `events` using the exact field schema documented in `HANDOFF.md`.
-- IDs in this dataset are **date-based** (e.g. `e20260620`). Match the existing pattern and
-  guarantee uniqueness (add a short suffix if a date already has an id). Use a `row` value
-  greater than the current maximum row in the file.
-- Never add past-dated or undated events. Never invent or guess a date from a stale page.
-- Do not duplicate an existing row (same `date` + `time` + `title` + `venue`).
-- Set `verify: true` for anything inferred, social-only, or not directly confirmed by an
-  organiser. Put uncertain leads into `watchlist` rather than adding a guessed event.
-- Keep it **proportional**: a handful of high-quality additions beats a flood of dubious ones.
+Follow `updater/source-strategy.json`, `updater/preferences.json` and exported user feedback strictly.
 
-## 4. Improve the source list
+Rules:
 
-If you found a productive new recurring source, append it to `knownSources` in
-`updater/sources.json`, and add any genuinely useful new entries to `searchQueries`.
+- Add new objects to `events` using the exact schema documented in `HANDOFF.md`.
+- IDs are date-based: `e` + `YYYYMMDD` + optional short suffix. Guarantee uniqueness.
+- Use a `row` value greater than the current maximum row.
+- Never add past-dated or undated events.
+- Never invent or guess a date from a stale page.
+- Do not duplicate an existing row with the same `date`, `time`, `title` and `venue`.
+- Do not re-add rows or close variants rejected in `updater/user-feedback.json` unless the new event is clearly different or much higher value; explain exceptions in the method log.
+- Use specific event URLs, not generic index URLs, when available.
+- Mark inferred, social-only or uncertain rows `verify: true`.
+- Put uncertain leads in `watchlist` instead of additions.
+- Keep descriptions short and factual.
 
-## 5. Update the change record and metadata
+UX rule: split monthly, fortnightly or irregular selected-date series into separate one-day event rows. Use date ranges only for true multi-day runs, exhibitions, festivals, theatre runs, seasonal attractions or weekly blocks.
 
-- Update `latest-changes.json`: `generatedAt` (now, ISO), `dateBasis` (today),
-  `summary`, and the `added` / `updated` / `removed` arrays, plus `counts`.
-- In `calendar-data.json` `meta`: set `updated` to today; extend `range` only if you added
-  events beyond the current end of the range.
+## 4. Improve sources
 
-## 6. Validate (must pass)
+If you found a productive recurring source, append it to `knownSources` in `updater/sources.json` and add useful new searches to `searchQueries`.
 
-Run, in order:
+## 5. Update metadata and change record
 
-```
+- Update `latest-changes.json`: `generatedAt`, `dateBasis`, `summary`, `added`, `updated`, `removed` and `counts`.
+- In `calendar-data.json` `meta`, set `updated` to today; extend `range` only if you added events beyond the current end of the range.
+
+## 6. Validate
+
+Run:
+
+```powershell
 npm run generate
 npm run validate
 ```
 
-`generate` adds derived fields (including `travelBucket`); `validate` requires every event
-to have a `url` and a `travelBucket`. Fix any error it reports and re-run until validate
-passes cleanly. Do not finish with a failing validation.
+Fix any validation errors and re-run until clean.
 
-## 7. Log what you tried
+## 7. Log the run
 
-Append a dated entry to `updater/method-log.md` (create it if missing) recording: the new
-sources/methods you tried this run, what worked, and what to try differently next time.
-This is what lets future runs diversify instead of repeating themselves.
+Append a dated entry to `updater/method-log.md` recording sources/methods tried, what worked, what did not, and what to try differently next time.
 
 ## Hard constraints
 
-- Edit **only** calendar files: `calendar-data.json`, `latest-changes.json`,
-  `updater/sources.json`, and `updater/method-log.md`. Do **not** touch game files, other
-  branches, `index.html`, `assets/`, or the service worker.
-- Do **not** run `git commit` or `git push`. A separate publish step handles that after you
-  finish. Just leave the working tree edited and validation passing.
-- Never wipe or wholesale-rewrite the dataset. Changes should be incremental.
-- When in doubt, prefer `watchlist` over inventing an event, and prefer doing less over
-  publishing something wrong.
+- Edit only calendar-maintenance files: `calendar-data.json`, `latest-changes.json`, `updater/sources.json`, `updater/method-log.md`, and private `updater/user-feedback.json` only if normalizing exported feedback is necessary.
+- Do not touch `index.html`, `assets/`, `gigs.html`, game files or service worker during unattended update runs.
+- Do not run `git commit` or `git push`; the publish step handles that.
+- Never wipe or wholesale-rewrite the dataset.
 
-When finished, print a short summary of: events removed, events added, new sources/methods
-tried, and the final validate counts.
+When finished, print a short summary of events removed, events added, new sources/methods tried and final validation counts.

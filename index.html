@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Surbiton + Nearby Events Calendar | May-Dec 2026</title>
+  <title>Family Calendar | Surbiton + Easy Trips</title>
   <meta name="theme-color" content="#096c63" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
@@ -13,20 +13,20 @@
   <header class="hero">
     <div class="shell hero-inner">
       <div>
-        <h1>Surbiton + Nearby Community Calendar</h1>
+        <h1>Family Calendar</h1>
         <div class="subtitle">
-          A researched current-to-31 December 2026 calendar for Surbiton, Berrylands, Tolworth, Kingston, Long Ditton, Thames Ditton and other nearby places that are realistically reachable. It is intentionally broad; rows marked "verify" need a final organiser check before public publishing.
+          Two-year-old-friendly local planning for Surbiton and easy trips: weekday things for childcare, family weekends and bank holidays, daytime music, theatre, Hampton Court, railway days, and only the better destination events further out.
         </div>
         <div class="badge-row">
-          <span class="badge core">Core Surbiton/Berrylands/Tolworth</span>
-          <span class="badge nearby">Nearby Kingston/Long Ditton/Thames Ditton</span>
-          <span class="badge wider">Wider but plausible</span>
-          <span class="badge verify">Verify/TBC rows flagged</span>
-          <span class="badge source">Updated weekly through Dec 2026</span>
+          <span class="badge core">Doorstep: low bar</span>
+          <span class="badge nearby">Easy local: Kingston / Hampton Court / Thames Ditton</span>
+          <span class="badge wider">Further out: worth-it only</span>
+          <span class="badge source">Feedback-aware updates</span>
         </div>
       </div>
       <div class="top-actions">
-        <a class="btn" id="gigRadarBtn" href="gigs.html">🎷 Gig Radar</a>
+        <a class="btn" id="gigRadarBtn" href="gigs.html">Gig Radar</a>
+        <button class="btn" id="feedbackBtn" type="button">Feedback</button>
         <button class="btn" id="copyBtn" type="button">Copy filtered list</button>
         <button class="btn" id="shareBtn" type="button">Share view</button>
         <a class="btn" id="subscribeBtn" href="events.ics">Subscribe feed</a>
@@ -42,7 +42,7 @@
       <div class="controls-main">
         <div class="control">
           <label class="micro" for="searchBox">Search everything</label>
-          <input id="searchBox" type="search" placeholder="Try: Surbiton Festival, Rose Theatre, Fiddly Diddly, Hampton Court, farmers market, Christmas..." autocomplete="off" />
+          <input id="searchBox" type="search" placeholder="Try: Rose Cafe, Hampton Court, railway, toddler, Irish, bandstand, Wimbledon..." autocomplete="off" />
         </div>
         <div class="control">
           <label class="micro" for="datePreset">Date range</label>
@@ -52,7 +52,6 @@
             <option value="today">Today</option>
             <option value="tomorrow">Tomorrow</option>
             <option value="next7">Next 7 days</option>
-            <option value="june">June only</option>
             <option value="summer">July-August</option>
             <option value="autumn">September-November</option>
             <option value="december">December only</option>
@@ -61,18 +60,17 @@
           </select>
         </div>
         <div class="control">
-          <label class="micro" for="quickFilter">Theme shortcut</label>
+          <label class="micro" for="quickFilter">Planning mode</label>
           <select id="quickFilter">
-            <option value="">All themes</option>
+            <option value="">Everything relevant</option>
             <option value="best">Best bets</option>
-            <option value="favorites">Favourites</option>
+            <option value="nannyWeekday">Nanny / weekday kid</option>
+            <option value="familyWeekend">Family weekend / bank holiday</option>
             <option value="daytimeMusic">Daytime/free music</option>
-            <option value="music">Music, theatre, comedy, performance</option>
-            <option value="parks">Parks, gardens, outdoor spaces</option>
-            <option value="churches">Churches, halls, community spaces</option>
-            <option value="markets">Markets, fairs, festivals</option>
-            <option value="kids">Kids, family, school events</option>
-            <option value="clubs">Clubs, classes, weekly/monthly meets</option>
+            <option value="dateNight">Date night</option>
+            <option value="easyLocal">Doorstep / easy local</option>
+            <option value="destination">Destination-worthy</option>
+            <option value="favorites">Favourites</option>
             <option value="free">Explicitly free</option>
             <option value="verify">Needs verification / TBC</option>
             <option value="hidden">Hidden rows</option>
@@ -90,9 +88,12 @@
         <button class="quick-chip" type="button" data-preset="tomorrow">Tomorrow</button>
         <button class="quick-chip" type="button" data-preset="next7">Next 7 days</button>
         <button class="quick-chip" type="button" data-preset="weekend">Weekend</button>
-        <button class="quick-chip" type="button" data-quick="best" data-view="best">Best bets</button>
-        <button class="quick-chip" type="button" data-quick="kids">Family</button>
-        <button class="quick-chip" type="button" data-quick="free">Free</button>
+        <button class="quick-chip" type="button" data-quick="nannyWeekday">Nanny / weekday</button>
+        <button class="quick-chip" type="button" data-quick="familyWeekend">Family weekend</button>
+        <button class="quick-chip" type="button" data-quick="daytimeMusic">Daytime music</button>
+        <button class="quick-chip" type="button" data-quick="dateNight">Date night</button>
+        <button class="quick-chip" type="button" data-quick="easyLocal">Easy local</button>
+        <button class="quick-chip" type="button" data-quick="destination">Worth the trip</button>
         <button class="quick-chip" type="button" data-quick="favorites">Favourites</button>
       </div>
 
@@ -102,7 +103,7 @@
         <button class="tab" data-view="calendar" type="button">Calendar</button>
         <button class="tab" data-view="table" type="button">Table</button>
         <button class="tab" data-view="venues" type="button">Venues</button>
-        <button class="tab" data-view="recurring" type="button">Recurring & clubs</button>
+        <button class="tab" data-view="recurring" type="button">Regulars</button>
         <button class="tab" data-view="sources" type="button">Sources & gaps</button>
       </div>
 
@@ -151,10 +152,10 @@
             <select id="sortSelect">
               <option value="dateAsc">Date/time ascending</option>
               <option value="dateDesc">Date/time descending</option>
-              <option value="title">Title A–Z</option>
-              <option value="venue">Venue A–Z</option>
-              <option value="area">Area A–Z</option>
-              <option value="category">Category A–Z</option>
+              <option value="title">Title A-Z</option>
+              <option value="venue">Venue A-Z</option>
+              <option value="area">Area A-Z</option>
+              <option value="category">Category A-Z</option>
             </select>
           </div>
           <div class="control custom-range">
@@ -191,9 +192,28 @@
   </main>
 
   <dialog id="detailDialog" aria-labelledby="detailTitle">
-    <button class="modal-close" id="modalClose" aria-label="Close dialog" type="button">×</button>
+    <button class="modal-close" id="modalClose" aria-label="Close dialog" type="button">x</button>
     <div id="detailContent"></div>
   </dialog>
+
+  <dialog id="feedbackDialog" aria-labelledby="feedbackTitle">
+    <button class="modal-close" id="feedbackClose" aria-label="Close feedback dialog" type="button">x</button>
+    <form method="dialog" id="feedbackForm">
+      <div class="modal-head">
+        <h2 class="modal-title" id="feedbackTitle">Not for us</h2>
+        <div class="muted mini" id="feedbackSubtitle"></div>
+      </div>
+      <div class="modal-body">
+        <label class="micro" for="feedbackNote">Why skip this?</label>
+        <textarea id="feedbackNote" rows="5" placeholder="Too routine, wrong genre, too far, awkward timing, not toddler-friendly, already know we do not care about this..."></textarea>
+        <div class="modal-actions">
+          <button class="btn primary" id="saveFeedbackBtn" value="default" type="submit">Save feedback</button>
+          <button class="btn" id="cancelFeedbackBtn" value="cancel" type="button">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="calendar-data.js"></script>
   <script src="assets/app.js"></script>

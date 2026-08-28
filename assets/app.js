@@ -11,7 +11,9 @@
     const STORAGE_KEY = 'surbiton-calendar-state-v3';
     const FAVORITES_KEY = 'surbiton-calendar-favorites-v1';
     const HIDDEN_KEY = 'surbiton-calendar-hidden-v1';
+    const FEEDBACK_KEY = 'surbiton-calendar-feedback-v1';
     const URL_STATE_KEYS = ['view', 'q', 'datePreset', 'quick', 'area', 'category', 'tier', 'type', 'cost', 'status', 'source', 'quality', 'sort', 'from', 'to', 'compact', 'ongoingDaily'];
+    const BANK_HOLIDAYS = new Set(['2026-08-31', '2026-12-25', '2026-12-28']);
 
     const defaultState = {
       view: 'agenda',
@@ -36,8 +38,10 @@
     const state = { ...defaultState };
     const personal = {
       favorites: new Set(),
-      hidden: new Set()
+      hidden: new Set(),
+      feedback: []
     };
+    let pendingFeedbackId = null;
 
     const el = (id) => document.getElementById(id);
     const esc = (value) => String(value ?? '')
@@ -175,6 +179,37 @@
       return start < '18:00';
     }
 
+    function isWeekendOrBankHoliday(e) {
+      if (!e.date) return false;
+      if (BANK_HOLIDAYS.has(e.date)) return true;
+      const d = parseIso(e.date);
+      return d ? d.getDay() === 0 || d.getDay() === 6 : false;
+    }
+
+    function isWeekdayDaytimeEvent(e) {
+      if (!e.date || !isDaytimeEvent(e)) return false;
+      const d = parseIso(e.date);
+      return d ? d.getDay() >= 1 && d.getDay() <= 5 && !BANK_HOLIDAYS.has(e.date) : false;
+    }
+
+    function isTheatreEvent(e) {
+      return /(theatre|play|shakespeare|comedy|performance|dance|opera|musical|rose theatre|polka|national theatre|cornerhouse|landmark)/.test(eventHaystack(e));
+    }
+
+    function isFolkTradEvent(e) {
+      return /(folk|trad|irish|scottish|ceilidh|ceili|cajun|zydeco|old-time|old time|honky|swing|jazz|bluegrass|skiffle|fiddle|session)/.test(eventHaystack(e));
+    }
+
+    function isEasyLocalEvent(e) {
+      const text = eventHaystack(e);
+      return isCoreEvent(e) || /(kingston|hampton court|molesey|thames ditton|long ditton|new malden|wimbledon|morden|waterloo|south bank|southbank)/.test(text);
+    }
+
+    function isDestinationEvent(e) {
+      const text = eventHaystack(e);
+      return /(outer|destination|high-value|high value|easy train|waterloo|south bank|southbank|wimbledon|morden|richmond|kew|national theatre|southbank centre|polka|hampton court)/.test(text) && !isCoreEvent(e);
+    }
+
     function needsBooking(e) {
       return /(book|booking|ticket|tickets|pre-book|prebook|register|reservation|spaces limited|paid)/.test(eventHaystack(e));
     }
@@ -239,10 +274,19 @@
       return personal.hidden.has(id);
     }
 
+    function feedbackFor(id) {
+      return personal.feedback.find(item => item.id === id && item.action === 'exclude') || null;
+    }
+
+    function isRejected(id) {
+      return Boolean(feedbackFor(id));
+    }
+
     function persistPersonal() {
       try {
         localStorage.setItem(FAVORITES_KEY, JSON.stringify([...personal.favorites]));
         localStorage.setItem(HIDDEN_KEY, JSON.stringify([...personal.hidden]));
+        localStorage.setItem(FEEDBACK_KEY, JSON.stringify(personal.feedback));
       } catch (e) {}
     }
 
@@ -260,6 +304,77 @@
       persistPersonal();
       render();
       toast(personal.hidden.has(id) ? 'Hidden from normal views' : 'Restored');
+    }
+
+    function openFeedback(id) {
+      const event = EVENTS.find(item => item.id === id);
+      if (!event) return;
+      pendingFeedbackId = id;
+      const existing = feedbackFor(id);
+      el('feedbackSubtitle').textContent = `${event.title}${event.venue ? ' - ' + event.venue : ''}`;
+      el('feedbackNote').value = existing?.note || '';
+      el('feedbackDialog').showModal();
+      el('feedbackNote').focus();
+    }
+
+    function saveFeedbackNote() {
+      const event = EVENTS.find(item => item.id === pendingFeedbackId);
+      if (!event) return;
+      const note = el('feedbackNote').value.trim();
+      personal.feedback = personal.feedback.filter(item => item.id !== event.id);
+      personal.feedback.unshift({
+        action: 'exclude',
+        id: event.id,
+        title: event.title || '',
+        venue: event.venue || '',
+        area: event.area || '',
+        category: event.category || '',
+        type: event.type || '',
+        tier: event.tier || '',
+        date: event.date || '',
+        source: event.source || '',
+        url: event.url || '',
+        note,
+        createdAt: new Date().toISOString()
+      });
+      personal.hidden.add(event.id);
+      pendingFeedbackId = null;
+      persistPersonal();
+      render();
+      toast('Saved as not for us');
+    }
+
+    function removeFeedback(id) {
+      personal.feedback = personal.feedback.filter(item => item.id !== id);
+      personal.hidden.delete(id);
+      persistPersonal();
+      render();
+      toast('Feedback removed');
+    }
+
+    function feedbackPayload() {
+      return {
+        updated: new Date().toISOString(),
+        calendarFeedback: personal.feedback,
+        gigFeedback: []
+      };
+    }
+
+    function downloadJson(value, filename) {
+      const blob = new Blob([`${JSON.stringify(value, null, 2)}\n`], { type: 'application/json;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportFeedback() {
+      downloadJson(feedbackPayload(), 'user-feedback.json');
+      toast('Feedback file exported');
     }
 
     function clearHiddenRows() {
@@ -330,6 +445,14 @@
       fillSelect('sourceFilter', uniqueValues('source', true), 'All sources');
     }
 
+    function matchesMode(e, mode) {
+      const previous = state.quick;
+      state.quick = mode;
+      const result = matchesThemeEvent(e);
+      state.quick = previous;
+      return result;
+    }
+
     function matchesThemeEvent(e) {
       if (!state.quick) return true;
       const h = eventHaystack(e);
@@ -340,7 +463,12 @@
       const isFree = /(^|[^a-z])free([^a-z]|$)/.test(h) || normalize(e.cost) === 'free';
       if (state.quick === 'best') return isBestBet(e);
       if (state.quick === 'favorites') return isFavorite(e.id);
-      if (state.quick === 'hidden') return isHidden(e.id);
+      if (state.quick === 'hidden') return isHidden(e.id) || isRejected(e.id);
+      if (state.quick === 'nannyWeekday') return isWeekdayDaytimeEvent(e) && (isFamilyEvent(e) || isOutdoorEvent(e) || isFreeEvent(e)) && isEasyLocalEvent(e);
+      if (state.quick === 'familyWeekend') return isWeekendOrBankHoliday(e) && (isFamilyEvent(e) || isOutdoorEvent(e) || isMusicEvent(e) || /festival|fair|market|railway|hampton court/.test(cat));
+      if (state.quick === 'dateNight') return !isFamilyEvent(e) && !isWeekdayDaytimeEvent(e) && (isMusicEvent(e) || isTheatreEvent(e) || isFolkTradEvent(e));
+      if (state.quick === 'easyLocal') return isEasyLocalEvent(e);
+      if (state.quick === 'destination') return isDestinationEvent(e) && (isFamilyEvent(e) || isMusicEvent(e) || isTheatreEvent(e) || isOutdoorEvent(e) || isBestBet(e));
       if (state.quick === 'daytimeMusic') return isMusic && (isDaytime || isFree);
       if (state.quick === 'music') return /(music|concert|choir|choral|jazz|band|gig|open mic|sing|singers|theatre|comedy|performance|dance|shakespeare|opera|acoustic|dj|club night|ram jam|bandstand)/.test(cat);
       if (state.quick === 'parks') return /(park|parks|garden|gardens|bandstand|recreation ground|open air|outdoor|green|common|meadow|river|thames|canbury|claremont|fairfield|richmond|hampton court|chestnut|miniature railway|carnival|walk)/.test(cat);
@@ -356,7 +484,7 @@
     function matchesThemeRecurring(r) {
       if (!state.quick) return true;
       const h = normalize(r.searchText);
-      if (['best', 'favorites', 'hidden'].includes(state.quick)) return false;
+      if (['best', 'favorites', 'hidden', 'nannyWeekday', 'familyWeekend', 'dateNight', 'easyLocal', 'destination'].includes(state.quick)) return false;
       if (state.quick === 'daytimeMusic') {
         const isMusic = /(music|concert|choir|choral|jazz|band|open mic|singalong|singers|folk|trad|irish|bandstand|recital)/.test(h);
         const isDaytime = /\b(0?[8-9]|1[0-7])[:.][0-5][0-9]\b/.test(h);
@@ -397,8 +525,8 @@
       const q = normalize(state.q.trim());
       let rows = EVENTS.filter(e => {
         if (!activeInRange(e, range.from, range.to)) return false;
-        if (state.quick !== 'hidden' && isHidden(e.id)) return false;
-        if (state.quick === 'hidden' && !isHidden(e.id)) return false;
+        if (state.quick !== 'hidden' && (isHidden(e.id) || isRejected(e.id))) return false;
+        if (state.quick === 'hidden' && !isHidden(e.id) && !isRejected(e.id)) return false;
         if (q && !eventHaystack(e).includes(q)) return false;
         if (state.area && e.area !== state.area) return false;
         if (state.category && e.category !== state.category) return false;
@@ -487,19 +615,23 @@
     function personalButtons(e) {
       const favLabel = isFavorite(e.id) ? 'Unstar' : 'Star';
       const hideLabel = isHidden(e.id) ? 'Restore' : 'Hide';
+      const rejected = isRejected(e.id);
       return `
         <button class="btn small icon-btn ${isFavorite(e.id) ? 'active' : ''}" type="button" data-favorite-event="${esc(e.id)}" aria-pressed="${isFavorite(e.id)}">${favLabel}</button>
         <button class="btn small icon-btn" type="button" data-hide-event="${esc(e.id)}">${hideLabel}</button>
+        <button class="btn small ${rejected ? 'danger active' : 'danger'}" type="button" data-reject-event="${esc(e.id)}">${rejected ? 'Edit skip' : 'Not for us'}</button>
       `;
     }
 
     function eventCard(e) {
+      const feedback = feedbackFor(e.id);
       return `
-        <article class="event-card ${e.verify ? 'verify-border' : ''} ${e.pastArchive ? 'archive-border' : ''} ${isFavorite(e.id) ? 'favorite-border' : ''} ${isHidden(e.id) ? 'hidden-border' : ''}">
+        <article class="event-card ${e.verify ? 'verify-border' : ''} ${e.pastArchive ? 'archive-border' : ''} ${isFavorite(e.id) ? 'favorite-border' : ''} ${(isHidden(e.id) || feedback) ? 'hidden-border' : ''}">
           <button class="event-title" type="button" data-open-event="${esc(e.id)}">${esc(e.title)}</button>
           <div class="meta">${esc(dateSpan(e))}${e.venue ? ` · ${esc(e.venue)}` : ''}</div>
           <div class="badges">${eventBadges(e)}</div>
           ${e.description ? `<div class="desc">${esc(e.description)}</div>` : ''}
+          ${feedback?.note ? `<div class="feedback-note"><strong>Skip reason:</strong> ${esc(feedback.note)}</div>` : ''}
           <div class="card-foot">
             <div class="mini muted">${esc(e.confidence || '')}</div>
             <div class="event-actions">
@@ -569,11 +701,12 @@
       const weekend = nextWeekendRange();
       const bestRows = rows.filter(isBestBet);
       const sections = [
-        renderBestSection('This weekend', weekend.label, bestRows.filter(e => activeInRange(e, weekend.from, weekend.to))),
-        renderBestSection('Family / young-kid useful', 'Rows likely to work for families or younger children.', bestRows.filter(isFamilyEvent)),
-        renderBestSection('Free and daytime', 'Low-friction options that do not look like late-night listings.', bestRows.filter(e => isFreeEvent(e) && isDaytimeEvent(e))),
-        renderBestSection('Music, theatre and performance', 'Higher-signal live culture rows.', bestRows.filter(isMusicEvent)),
-        renderBestSection('Worth the short trip', 'Good rows outside core Surbiton that are still realistic from here.', bestRows.filter(e => !isCoreEvent(e)))
+        renderBestSection('This weekend / bank holiday', weekend.label, bestRows.filter(e => activeInRange(e, weekend.from, weekend.to))),
+        renderBestSection('Nanny / weekday kid', 'Weekday daytime rows that look useful for a two-year-old or easy childcare outing.', rows.filter(e => matchesMode(e, 'nannyWeekday'))),
+        renderBestSection('Family weekend', 'Weekend, bank-holiday, railway, park, Hampton Court and family-day-out rows.', rows.filter(e => matchesMode(e, 'familyWeekend'))),
+        renderBestSection('Daytime music', 'Free or daytime live music, especially Rose Cafe, bandstands and family-friendly sessions.', rows.filter(e => matchesMode(e, 'daytimeMusic'))),
+        renderBestSection('Date night', 'Music, theatre and performance that might justify childcare.', rows.filter(e => matchesMode(e, 'dateNight'))),
+        renderBestSection('Worth the trip', 'Further-out rows kept because they look better than ordinary local filler.', rows.filter(e => matchesMode(e, 'destination')))
       ].filter(Boolean).join('');
 
       el('bestView').innerHTML = sections || `<div class="empty">No best-bet rows match the current filters.</div>`;
@@ -585,7 +718,7 @@
         return;
       }
       const hiddenTools = state.quick === 'hidden'
-        ? `<div class="section-title"><div><h2>Hidden rows</h2><div class="muted mini">Rows you hid from normal views on this browser.</div></div><button class="btn" type="button" data-clear-hidden>Restore all</button></div>`
+        ? `<div class="section-title"><div><h2>Hidden / not for us</h2><div class="muted mini">Rows hidden on this browser, plus rows with skip feedback for future updates.</div></div><div class="event-actions"><button class="btn" type="button" data-export-feedback>Export feedback</button><button class="btn" type="button" data-clear-hidden>Restore all hidden</button></div></div>`
         : '';
       const groups = new Map();
       rows.forEach(e => {
@@ -810,6 +943,15 @@
         </section>
       ` : '';
 
+      const feedbackHtml = personal.feedback.length ? personal.feedback.map(item => `
+        <div class="watch-item">
+          <strong>${esc(item.title || item.id)}</strong>
+          <div class="mini muted">${esc([item.date, item.venue, item.area, item.category].filter(Boolean).join(' - '))}</div>
+          ${item.note ? `<div class="mini">${esc(item.note)}</div>` : ''}
+          <button class="btn small" type="button" data-remove-feedback="${esc(item.id)}">Remove feedback</button>
+        </div>
+      `).join('') : '<div class="empty">No skip feedback saved in this browser yet.</div>';
+
       el('sourcesView').innerHTML = `
         <div class="section-title">
           <div>
@@ -818,6 +960,16 @@
           </div>
         </div>
         ${latestHtml}
+        <section class="feedback-panel">
+          <div class="section-title">
+            <div>
+              <h2>Feedback for updater</h2>
+              <div class="muted mini">Use Not for us on an event, then export this file as updater/user-feedback.json before a manual or scheduled update.</div>
+            </div>
+            <button class="btn" type="button" data-export-feedback>Export feedback JSON</button>
+          </div>
+          <div class="watchlist">${feedbackHtml}</div>
+        </section>
         <h3>Source list</h3>
         <div class="sources-grid">${sourceHtml}</div>
         <h3 style="margin-top:22px;">Watchlist / known gaps</h3>
@@ -931,11 +1083,13 @@
       document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === state.view));
       document.body.classList.toggle('compact', state.compact);
       el('compactBtn').textContent = state.compact ? 'Comfortable' : 'Compact';
-      el('hiddenBtn').textContent = personal.hidden.size ? `Hidden (${personal.hidden.size})` : 'Hidden';
+      const hiddenCount = new Set([...personal.hidden, ...personal.feedback.map(item => item.id)]).size;
+      el('hiddenBtn').textContent = hiddenCount ? `Hidden (${hiddenCount})` : 'Hidden';
       const personalSummary = [];
       if (personal.favorites.size) personalSummary.push(`${personal.favorites.size} favourite${personal.favorites.size === 1 ? '' : 's'}`);
       if (personal.hidden.size) personalSummary.push(`${personal.hidden.size} hidden`);
-      el('personalSummary').innerHTML = personalSummary.length ? personalSummary.map(esc).join(' - ') : 'Tip: star likely plans, hide noise, then share the filtered URL.';
+      if (personal.feedback.length) personalSummary.push(`${personal.feedback.length} not-for-us note${personal.feedback.length === 1 ? '' : 's'}`);
+      el('personalSummary').innerHTML = personalSummary.length ? personalSummary.map(esc).join(' - ') : 'Tip: star likely plans, mark noise as not for us, then export feedback before the next update.';
       saveState();
       updateUrlFromState();
     }
@@ -976,6 +1130,8 @@
       try {
         setFromStoredList(personal.favorites, JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]'));
         setFromStoredList(personal.hidden, JSON.parse(localStorage.getItem(HIDDEN_KEY) || '[]'));
+        const feedback = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '[]');
+        personal.feedback = Array.isArray(feedback) ? feedback.filter(item => item && item.id) : [];
       } catch (e) {}
     }
 
@@ -1272,7 +1428,8 @@
       el('ongoingDaily').addEventListener('change', e => { state.ongoingDaily = e.target.checked; render(); });
       el('resetBtn').addEventListener('click', resetFilters);
       el('hiddenBtn').addEventListener('click', () => {
-        if (!personal.hidden.size) {
+        const hiddenCount = new Set([...personal.hidden, ...personal.feedback.map(item => item.id)]).size;
+        if (!hiddenCount) {
           toast('No hidden rows');
           return;
         }
@@ -1286,6 +1443,12 @@
       el('csvBtn').addEventListener('click', exportCsv);
       el('copyBtn').addEventListener('click', copyFilteredList);
       el('shareBtn').addEventListener('click', shareCurrentView);
+      el('feedbackBtn').addEventListener('click', () => {
+        state.view = 'sources';
+        syncControls();
+        render();
+        document.getElementById('sourcesView').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
       el('printBtn').addEventListener('click', () => window.print());
 
       document.querySelectorAll('.quick-chip').forEach(button => {
@@ -1325,6 +1488,25 @@
           toggleHidden(hideButton.dataset.hideEvent);
           return;
         }
+        const rejectButton = e.target.closest('[data-reject-event]');
+        if (rejectButton) {
+          e.preventDefault();
+          e.stopPropagation();
+          openFeedback(rejectButton.dataset.rejectEvent);
+          return;
+        }
+        const exportFeedbackButton = e.target.closest('[data-export-feedback]');
+        if (exportFeedbackButton) {
+          e.preventDefault();
+          exportFeedback();
+          return;
+        }
+        const removeFeedbackButton = e.target.closest('[data-remove-feedback]');
+        if (removeFeedbackButton) {
+          e.preventDefault();
+          removeFeedback(removeFeedbackButton.dataset.removeFeedback);
+          return;
+        }
         const clearHiddenButton = e.target.closest('[data-clear-hidden]');
         if (clearHiddenButton) {
           e.preventDefault();
@@ -1352,6 +1534,13 @@
       });
 
       el('modalClose').addEventListener('click', () => el('detailDialog').close());
+      el('feedbackClose').addEventListener('click', () => el('feedbackDialog').close());
+      el('cancelFeedbackBtn').addEventListener('click', () => el('feedbackDialog').close());
+      el('feedbackForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveFeedbackNote();
+        el('feedbackDialog').close();
+      });
       el('detailDialog').addEventListener('click', (e) => {
         const rect = el('detailDialog').getBoundingClientRect();
         if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {

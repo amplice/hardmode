@@ -105,6 +105,16 @@
       border-color: var(--accent);
       color: white;
     }
+    .btn.danger {
+      color: var(--danger);
+      border-color: #e4c2bb;
+      background: #fff8f6;
+    }
+    .btn.danger.active {
+      color: #fff;
+      border-color: var(--danger);
+      background: var(--danger);
+    }
     .btn.ghost {
       background: transparent;
     }
@@ -163,6 +173,21 @@
       padding: 10px 11px;
       outline: none;
       min-height: 42px;
+    }
+    textarea {
+      width: 100%;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fffefb;
+      color: var(--ink);
+      padding: 11px;
+      min-height: 120px;
+      outline: none;
+    }
+    textarea:focus {
+      box-shadow: var(--focus);
+      border-color: rgba(30,104,87,.55);
     }
     input:focus, select:focus, button:focus-visible {
       outline: none;
@@ -378,6 +403,15 @@
       color: #39443f;
       margin-top: 9px;
       font-size: 13px;
+    }
+    .feedback-note {
+      margin-top: 10px;
+      padding: 9px 10px;
+      border-left: 3px solid var(--danger);
+      background: #fff7f5;
+      color: #633127;
+      font-size: 13px;
+      border-radius: var(--radius2);
     }
     .card-foot {
       display: flex;
