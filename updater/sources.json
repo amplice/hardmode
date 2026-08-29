@@ -15,8 +15,8 @@
                                           ]
                          },
                          {
-                             "name":  "Surbiton Partnership news posts",
-                             "url":  "https://surbitonpartnership.co.uk/news/",
+                             "name":  "Surbiton Partnership homepage / project posts",
+                             "url":  "https://surbitonpartnership.co.uk/",
                              "checkFor":  [
                                               "recent Celebrate Surbiton posts",
                                               "Seething / Sardine / village fete / festival roundups",
@@ -574,7 +574,7 @@
                          },
                          {
                              "name":  "RHS Garden Wisley",
-                             "url":  "https://www.rhs.org.uk/gardens/wisley/whats-on",
+                             "url":  "https://www.rhs.org.uk/shows-events/",
                              "checkFor":  [
                                               "Glow, school-holiday family trails, garden festivals and seasonal outdoor events",
                                               "use the official RHS ticket-session page for exact date ranges and entry windows"
@@ -582,7 +582,7 @@
                          },
                          {
                              "name":  "Maiastra chamber concerts",
-                             "url":  "https://maiastra.org/maiastra-concerts",
+                             "url":  "https://maiastra.org/",
                              "checkFor":  [
                                               "free donation-supported chamber concerts at Riverhouse Barn, Twickenham and other accessible Surrey venues",
                                               "split selected-date programmes into individual rows"
@@ -620,6 +620,15 @@
                                               "lively daytime organ recitals",
                                               "kingston parish church listed dates",
                                               "ical feed with DTSTART/DTEND"
+                                          ]
+                         },
+                         {
+                             "name":  "Kingston Philharmonia",
+                             "url":  "https://www.kingstonphilharmonia.org.uk/",
+                             "checkFor":  [
+                                              "local orchestral concerts at St Andrew's Church, Surbiton and nearby venues",
+                                              "use the official event detail page for exact times and the booking page for current prices",
+                                              "public concert listings are also exposed through the upcoming-events RSS feed"
                                           ]
                          }
                      ],
@@ -699,6 +708,8 @@
                           "Elm Tree Surbiton Lemonrock live music 2026",
                           "South Side Theatre Academy Surbiton public performances 2026",
                           "All Saints Kingston events calendar iCal",
-                          "site:allsaintskingston.co.uk/events/?ical=1"
+                          "site:allsaintskingston.co.uk/events/?ical=1",
+                          "Kingston Philharmonia concert St Andrew's Surbiton 2026 2027",
+                          "Southbank Centre WordPlay ages 3-5 autumn 2026 dates"
                       ]
 }

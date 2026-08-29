@@ -373,3 +373,25 @@ Format per run:
 - Negative rules strengthened: avoid Bell Square/Hounslow outdoor arts by default, OSO/Barnes community theatre/comedy/music by default, car/concours listings, Monty Python/John Cleese nostalgia, and generic acoustic/blues-rock/rock-veteran rows.
 - Positive rules strengthened: prefer TwickFolk singarounds/participatory folk, nearby chamber music such as Maiastra, open-air trad jazz/swing such as Pasadena Roof Orchestra, and Hampton Court Food Festival-style family days.
 - Caution: do not treat `Archive` clicks as updater feedback; only `More like this` and `Not for us` should influence future sourcing.
+
+## 2026-08-29
+- Method: refreshed all 67 configured `knownSources` endpoints, ran all 76 standard `searchQueries`, re-polled the All Saints iCal, Rose and Polka Spektrix feeds, Ram Jam September-December JSON, the complete Surbiton Partnership event pagination, Kingston Council, Southbank family/free pages, Hampton Court official pages and the TDMR embedded event JSON. Removed the one genuinely finished row and retained active multi-day runs and recurring patterns.
+- New sources/methods tried:
+  - KINGSTON PHILHARMONIA organiser page, ticket page and RSS feed: a productive new local classical source with exact event pages, end times and current ticket prices. Added as a known source.
+  - DORICH HOUSE + STANLEY PICKER AUTUMN ROTATION: Dorich remained 403-blocked and Stanley Picker's programme still exposed only past 2025 material; no safe future row was published.
+  - HAMPTON HILL PANTO + ROYAL PARKS/RICHMOND ROTATION: Hampton Hill's remaining family Christmas runs were already held; the Royal Parks listing had no new high-fit Richmond/Bushy family event.
+  - FRESH INSTAGRAM LEADS: reviewed the 29 August social export. TwickFolk dates were already held; the specific 8 November Tractor Watson solo show at The Lamb was added with `verify:true` because the artist post gives the date but not the time.
+- What worked:
+  - The full Kingston Council page surfaced the free East & Southeast Asian Culture Festival (5 Sep) and the exact Historical Riverside Ramble (8 Sep). The festival retains `verify:true` because the same official page says both 15:00 and 16:00 for the finish.
+  - Southbank's official family pages supplied seven exact, free WordPlay ages 3-5 sessions from 18 Sep to 18 Dec. They were split into one-day rows as required. Virtual Orchestra was rejected despite being free family music because its official minimum age is 7+.
+  - Kingston Philharmonia confirmed its 28 Nov Surbiton concert (19:30-21:15, £16/£14/£5), featuring Rachmaninov Piano Concerto No. 2 and Glazunov. Ram Jam November JSON added TJ Johnson's strong jazz/blues/honky-tonk fit on 7 Nov.
+  - Source maintenance repaired three dead broad URLs: Surbiton Partnership's removed `/news/` path now points to the live homepage/project posts, RHS Wisley now uses the live RHS shows/events hub, and Maiastra now uses its live root page. Two focused searches were added for Kingston Philharmonia and Southbank WordPlay.
+  - Pre-validation also found a pre-existing duplicate row value on the previous run's Seething Village Summer Fete; its row was moved from 1061 to unique row 1106.
+- What did not work / cautions:
+  - TDMR's live `div#events-data` still contains no Santa or Christmas entry and ends in November; no date was guessed.
+  - Stanley Picker had no 2026 autumn programme, Dorich House remained blocked, and the newly checked Richmond Park material was generic/volunteer-only rather than toddler-family programming.
+  - The Lamb social post is specific and future-dated but still lacks a start time; keep `verify:true` until The Lamb publishes its November running order.
+- Try next time:
+  - Recheck TDMR Santa only through the embedded JSON, and poll Kingston Philharmonia's RSS/booking page for spring 2027 without importing private rehearsals.
+  - Revisit Dorich House after its September reopening and Stanley Picker only after a 2026 programme appears; do not repeat a plain fetch if Dorich remains 403.
+  - Check Southbank's December/January early-years pages and the Lamb November social grid for exact times; keep rejecting 6+/7+ technology and performance rows while the child is under 3.

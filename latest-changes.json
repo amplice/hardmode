@@ -1,23 +1,32 @@
 {
-  "generatedAt": "2026-08-28T16:28:00.000Z",
-  "dateBasis": "2026-08-28",
-  "summary": "Manual correction after Surbiton Partnership news post review.",
+  "generatedAt": "2026-08-29T07:16:50.698Z",
+  "dateBasis": "2026-08-29",
+  "summary": "Removed one finished event and added twelve high-fit local, under-5, folk, jazz and classical rows after a full source refresh.",
   "added": [
-    "e20260912f: Seething Village Summer Fete, Saturday 12 September 2026, 13:00-17:00, St Andrew's Square."
+    "e20260905e: East & Southeast Asian Culture Festival 2026, Kingston Market Place, 5 September.",
+    "e20260908b: Historical Riverside Ramble, Surbiton to Kingston, 8 September.",
+    "e20260918b, e20261002b, e20261023f, e20261113c, e20261120c, e20261204c, e20261218: seven separate WordPlay ages 3-5 live-music sessions at Southbank Centre.",
+    "e20261107b: TJ Johnson & His Band at Ram Jam Records, 7 November.",
+    "e20261108b: Tractor Watson at The Lamb, 8 November; social-only and marked verify.",
+    "e20261128c: Kingston Philharmonia Rachmaninov concert at St Andrew's Church, 28 November."
   ],
   "updated": [
-    "Corrected the Surbiton Partnership source note: the fete is on the main What's On page and has its own event detail page; the miss was an updater coverage/QA failure."
+    "Refreshed all 67 configured source endpoints and ran all 76 standard search queries.",
+    "Repaired the Surbiton Partnership post, RHS events and Maiastra source URLs; added Kingston Philharmonia and two focused searches.",
+    "Changed e20260912f from duplicate row 1061 to unique row 1106."
   ],
-  "removed": [],
+  "removed": [
+    "e20260828b: Family Ballet session at Kingston Library, finished 28 August 2026."
+  ],
   "counts": {
     "before": {
-      "events": 290,
+      "events": 291,
       "recurring": 57,
-      "sources": 52,
+      "sources": 53,
       "watchlist": 75
     },
     "after": {
-      "events": 291,
+      "events": 302,
       "recurring": 57,
       "sources": 53,
       "watchlist": 75

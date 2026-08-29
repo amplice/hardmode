@@ -21,13 +21,13 @@ window.GIG_DATA = {
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-08-28",
+    "dateBasis": "2026-08-29",
     "counts": {
       "total": 192,
-      "upcoming": 192,
+      "upcoming": 189,
       "watchlist": 62
     },
-    "generated": "2026-08-28T15:42:06.291Z",
+    "generated": "2026-08-29T07:21:36.639Z",
     "genres": [
       "Kansas City swing",
       "New Orleans / trad jazz",
@@ -73,7 +73,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-28 20:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -100,7 +100,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-28 21:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -128,7 +128,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-28 99:99",
       "travel": "Central London",
       "genresLabel": "honky tonk · old-school country",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
