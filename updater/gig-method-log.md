@@ -1,3 +1,60 @@
+## 2026-08-30 -- autonomous gig-radar update run
+
+**Housekeeping:** removed 4 finished gigs (28–29 Aug) and merged away the generic duplicate of
+the 12 Sep Jamboree Cajun Après-Midi now that the Là-bas Cajun Band row is authoritative. Added
+78 dated gigs, corrected the David Hermlin Jamboree start to 20:00, and held one ambiguous Lamb
+social lead in the watchlist. Final validation: 265 gigs, 265 upcoming, 63 watchlist, 0 finished,
+0 duplicate keys, 12 canonical genres.
+
+**Mandatory venue refresh:** crawled every configured priority source, including pagination,
+machine-readable feeds and the same-day social-leads export where available.
+
+- Jamboree's complete pagination produced 15 additions: a rolling six-week window of the Celtic
+  Session and TJ Johnson afternoons, the next two Cable Street Rag Band nights, today's
+  Prospective Collective and Django Chutney on 28 Oct. Further weekly instances are published
+  beyond the rolling window and can be promoted on later runs without flooding the radar.
+- Nightjar's Shoreditch `?format=json` feed now runs through 14 Nov and produced 22 clearly
+  vintage/New Orleans/swing additions. The official site confirms Carnaby has closed; its former
+  listing was removed from the crawl path and recorded under `closedOrDefunct`.
+- Green Note produced 11 strong rows, led by Ed Hicks' western swing, Ewan Bleach, FoBo Jug Band,
+  New Orleans piano/band dates and two gypsy-jazz bookings. Harrison produced 3 free traditional
+  participatory sessions; TwickFolk produced 8 traditional/singaround rows, deliberately raised
+  by the user's positive singaround feedback.
+- Ram Jam's Squarespace event JSON produced 3 local New Orleans/swing bookings. Old Barn's rolling
+  Jazz Guide diary produced 3 Sunday-lunch trad dates, kept `verify` because the source omits the
+  year. Spice of Life and Epsom had no new rows beyond the already-held diary.
+- The Lamb site still exposes only recurring Sunday music and an undated last-Wednesday Irish jam.
+  A same-day Instagram lead gives Tractor Watson solo on 8 Nov, but the act's usual blues/bluegrass
+  billing is too ambiguous under the exclusion rules, so it went to the watchlist. Magic Garden's
+  full 35-event Tribe feed was readable but its future programme was DJ, funk or broader world
+  roots rather than a clean canonical match.
+
+**Rotated/new discovery angles:**
+
+- *NEW SPECIALIST TRAD-IRISH VENUE ANGLE (11 adds):* the Irish Cultural Centre's authoritative,
+  fully dated programme yielded a free family session plus Sinéad Willox, Sharon Shannon, Andy
+  Irvine with Quilty, Four Men and a Dog, Lúnasa and other strong traditional bookings. Added the
+  venue to `keyVenues`; trad Irish is transparently mapped to the required canonical `old-time`
+  tag in notes.
+- *NEW DIRECT FIDELIO DIARY ANGLE (2 adds):* Fidelio's rebuilt primary calendar now lists exact
+  times, prices and line-ups for `Django at the Cafe` on 14 Sep and 12 Oct, superseding the stale
+  artist-guide-only method.
+- *MACHINE-READABLE VENUE FEEDS:* refreshed Nightjar and Ram Jam Squarespace JSON directly and
+  discovered Magic Garden's WordPress Tribe REST endpoint. The latter was dark for this genre but
+  has been saved in source strategy for cheap, complete future sweeps.
+- Reran the complete configured standard-query set and swept local Fighting Cocks, cornerHOUSE,
+  Rose/local searches plus Irish-session specialists. Fighting Cocks remains rock/punk/metal/open
+  mic; cornerHOUSE had no relevant music. The in-app browser was unavailable headlessly, but the
+  logged-in collector had already refreshed all six configured Instagram profiles successfully at
+  06:30 today (72 discovery leads), so those leads were still reviewed conservatively.
+
+**What stayed dark / next time:** recheck Nightjar after 14 Nov, roll the next published Jamboree
+weekly instances forward, revisit Spice/Epsom/Old Barn as Jazz Guide windows advance, and verify
+the Lamb Tractor Watson genre/time before promotion. Retry The Rose and other hyper-local sites
+when they expose dated programmes; continue the strict Fighting Cocks filter.
+
+---
+
 ## 2026-08-28 -- source-policy update
 
 **Housekeeping:** no gig rows changed. Added an explicit `priorityVenues` block to
