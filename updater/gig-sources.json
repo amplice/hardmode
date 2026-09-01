@@ -121,6 +121,72 @@
       "instagramSearchQueries": ["Old Barn Bookham Jazz Club Instagram", "Old Barn Hall Bookham trad jazz 2026"],
       "crawlRule": "Check Jazz Guide and general web search every run; verify unprinted years by weekday.",
       "includeRule": "Low threshold because Sunday-lunch trad jazz with dancing is exactly in scope and reachable from Surbiton."
+    },
+    {
+      "name": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "priority": "highest-irish",
+      "url": "https://irishculturalcentre.co.uk/whats-on/",
+      "secondaryUrls": [],
+      "instagramHandles": [],
+      "instagramSearchQueries": ["Irish Cultural Centre Hammersmith traditional music Instagram", "Irish Cultural Centre Hammersmith trad Irish gig 2026"],
+      "crawlRule": "Crawl the official what's-on page every run; it is authoritative and date-rich for Irish music. Use social/search for late additions.",
+      "includeRule": "Low threshold for traditional Irish music, ceili/band nights and strong touring Irish acts. Map trad Irish to canonical old-time until the schema grows an Irish-trad genre, and say so in the note."
+    },
+    {
+      "name": "Cecil Sharp House",
+      "area": "Camden, London",
+      "priority": "highest-folk-dance",
+      "url": "https://www.cecilsharphouse.org/whats-on",
+      "secondaryUrls": ["https://sales.efdss.org/efdss/api/v3/events"],
+      "instagramHandles": [],
+      "instagramSearchQueries": ["Cecil Sharp House cajun old-time dance Instagram", "EFDSS cajun old-time square dance 2026"],
+      "crawlRule": "Use the public EFDSS Spektrix API first, then the visible whats-on page for descriptions and late context.",
+      "includeRule": "Low threshold for cajun, zydeco, old-time, square dances, barndances and live-band folk dancing. Skip classes, talks and generic folk-adjacent theatre."
+    },
+    {
+      "name": "South London Irish Centre",
+      "area": "Wimbledon",
+      "priority": "highest-local-irish",
+      "url": "https://www.irishinbritain.org/who-we-are/our-members/south-london-irish-association",
+      "secondaryUrls": ["https://thesession.org/sessions/1618"],
+      "instagramHandles": [],
+      "instagramSearchQueries": ["South London Irish Centre Wimbledon live bands", "South London Irish Association Wimbledon Irish music", "South London Irish Centre Instagram music"],
+      "crawlRule": "Official web listings are weak, so combine directory/session pages, web search and Instagram/Facebook search every run. Treat finds as leads unless date/time is explicit.",
+      "includeRule": "Low threshold because it is near Surbiton and Irish/trad-relevant. Include explicit live-band Irish dances, traditional sessions and named Irish music nights; skip bingo, pool, darts, keep-fit, generic social club admin and weak recurring filler."
+    },
+    {
+      "name": "Half Moon Putney",
+      "area": "Putney",
+      "priority": "watch-strict",
+      "url": "https://www.halfmoon.co.uk/",
+      "secondaryUrls": ["https://www.songkick.com/venues/8751-half-moon"],
+      "instagramHandles": [],
+      "instagramSearchQueries": ["Half Moon Putney folk roots swing jazz Instagram", "Half Moon Putney old time cajun country gig"],
+      "crawlRule": "Check lightly but regularly; use official tickets/listings first, then Songkick/social search for leads.",
+      "includeRule": "Strict filter. Most listings are too hokey or outside taste. Include only clear folk/trad, old-school country, cajun/zydeco, swing/hot jazz, genuinely strong blues-roots, or a rare/special artist."
+    },
+    {
+      "name": "Riverhouse Barn",
+      "area": "Walton-on-Thames",
+      "priority": "watch-maybe",
+      "url": "https://www.riverhousebarn.co.uk/",
+      "secondaryUrls": [],
+      "instagramHandles": [],
+      "instagramSearchQueries": ["Riverhouse Barn Walton folk roots jazz gig 2026", "Riverhouse Barn Instagram music jazz folk"],
+      "crawlRule": "Check official what's-on/music listings and search/social for notable roots or jazz nights.",
+      "includeRule": "Medium filter. Include nearby folk/roots, trad jazz, swing, old-school country or unusually good chamber-adjacent music; skip theatre, comedy, generic classical filler and weak singer-songwriter rows."
+    },
+    {
+      "name": "Eel Pie Club at The Cabbage Patch",
+      "area": "Twickenham",
+      "priority": "watch-strict-local",
+      "url": "https://www.eelpieclub.com/club-dates",
+      "secondaryUrls": ["https://www.cabbagepatch.co.uk/whats-on/"],
+      "instagramHandles": [],
+      "instagramSearchQueries": ["Eel Pie Club Cabbage Patch Instagram roots blues", "Eel Pie Club Twickenham swing jazz country"],
+      "crawlRule": "Check the Eel Pie Club dates and Cabbage Patch whats-on alongside TwickFolk.",
+      "includeRule": "Strict but local. Most blues/rock/R&B rows should be skipped. Include rootsy blues only when unusually strong, plus swing, trad jazz, old-school country, skiffle or folk-adjacent acts."
     }
   ],
   "keyVenues": [
@@ -145,9 +211,13 @@
     { "name": "Ronnie Scott's", "area": "Soho, London", "genres": ["New Orleans / trad jazz", "swing"], "url": "https://www.ronniescotts.co.uk/find-a-show", "note": "Mostly modern, but carries trad/swing strands (Tuba Skinny, TJ Johnson, Giacomo Smith, Nora Germain, Ray Gelato Christmas run). Plain fetch 403s — curl with a Chrome UA works; the full find-a-show listing (~20 pages) is crawlable and per-show JSON-LD carries dates (empty array = not on sale yet). TRAP (2026-07-19): show pages can exist before tickets go on sale, and the 'you may also like' sidebar dates look like the show's own date in scraped text — trust only the page's own JSON-LD startDate." },
     { "name": "Green Note", "area": "Camden, London", "genres": ["old-school country", "old-time", "cajun"], "url": "https://greennote.co.uk/events/", "note": "Roots/americana/folk; cherry-pick trad-leaning acts + London Django Collective dates. PRIORITY 2026-08-28: also check @greennotemusic for announcements." },
     { "name": "The Harrison", "area": "King's Cross, London", "genres": ["old-time", "cajun", "old-school country", "skiffle"], "url": "https://harrisonvenuelondon.com/harrison-venue-events-gigs-kings-cross/", "note": "User-requested priority venue. Check full venue programme and Instagram @harrisonpub every run, not just the dormant cajun-jam lead. Include folk/trad/roots, cajun/old-time/singarounds and unusually good date-night folk bookings; skip comedy-only and weak singer-songwriter nights." },
-    { "name": "Irish Cultural Centre", "area": "Hammersmith, London", "genres": ["old-time"], "url": "https://irishculturalcentre.co.uk/whats-on/", "note": "NEW 2026-08-30: exceptionally productive authoritative source for dated traditional Irish sessions and touring acts. Hammersmith is easy enough from Surbiton for a low threshold on clearly traditional bookings. Map trad Irish to the canonical old-time tag and say so in the gig note." },
+    { "name": "Irish Cultural Centre", "area": "Hammersmith, London", "genres": ["old-time"], "url": "https://irishculturalcentre.co.uk/whats-on/", "note": "HIGHEST IRISH PRIORITY. Exceptionally productive authoritative source for dated traditional Irish sessions and touring acts. Hammersmith is easy enough from Surbiton for a low threshold on clearly traditional bookings. Map trad Irish to the canonical old-time tag and say so in the gig note." },
+    { "name": "South London Irish Centre", "area": "Wimbledon", "genres": ["old-time"], "url": "https://www.irishinbritain.org/who-we-are/our-members/south-london-irish-association", "note": "HIGHEST LOCAL IRISH PRIORITY. Official web listings are weak; combine directory/session pages, The Session entry, web search and Instagram/Facebook search. Include explicit live-band Irish dances, traditional sessions and named Irish music nights; skip bingo, pool, darts, keep-fit, admin and weak recurring filler. Whelan's Kingston session is specifically not a positive comparator." },
     { "name": "TwickFolk at The Cabbage Patch", "area": "Twickenham", "genres": ["old-time", "old-school country", "skiffle"], "url": "https://www.twickfolk.co.uk/events/", "note": "User-requested priority local-ish folk source. Cross-check WeGotTickets /twickfolk/, The Cabbage Patch whats-on and Instagram @twickfolk. Low threshold for participatory folk, singarounds, trad and strong roots artists." },
+    { "name": "Eel Pie Club at The Cabbage Patch", "area": "Twickenham", "genres": ["old-time", "old-school country", "skiffle", "swing", "New Orleans / trad jazz"], "url": "https://www.eelpieclub.com/club-dates", "note": "Watch as part of The Cabbage Patch cluster. Strict filter because much of it is blues/rock/R&B. Include only unusually strong rootsy blues, swing, trad jazz, old-school country, skiffle or folk-adjacent acts." },
     { "name": "The Magic Garden", "area": "Battersea", "genres": ["cajun", "zydeco", "swing", "New Orleans / trad jazz", "old-time"], "url": "https://magicgardenpub.com/", "note": "User-requested priority. KEY TRICK 2026-08-30: use /wp-json/tribe/events/v1/events?start_date=YYYY-MM-DD&per_page=50 for the full dated programme, then check Instagram @magic_pub. Include cajun, rootsy Balkan brass, swing, folk, New Orleans and old-time; skip DJ/club nights and ordinary reggae/funk." },
+    { "name": "Half Moon Putney", "area": "Putney", "genres": ["old-time", "old-school country", "cajun", "zydeco", "swing", "New Orleans / trad jazz"], "url": "https://www.halfmoon.co.uk/", "note": "Watch but apply strict taste filter: user found most visible autumn listings hokey/weak. Include only clear folk/trad, old-school country, cajun/zydeco, swing/hot jazz, genuinely strong blues-roots, or a rare/special artist." },
+    { "name": "Riverhouse Barn", "area": "Walton-on-Thames", "genres": ["old-time", "old-school country", "swing", "New Orleans / trad jazz"], "url": "https://www.riverhousebarn.co.uk/", "note": "Maybe source worth checking because it is reachable and carries folk/roots/jazz. Medium filter: include nearby folk/roots, trad jazz, swing, old-school country or unusually good chamber-adjacent music; skip theatre, comedy, generic classical filler and weak singer-songwriter rows." },
     { "name": "The Slaughtered Lamb", "area": "Clerkenwell, London", "genres": ["old-school country", "old-time"], "url": "https://www.theslaughteredlambpub.com/", "note": "Americana/roots basement gigs; Come Down and Meet the Folks nights." },
     { "name": "What's Cookin'", "area": "Leytonstone, London", "genres": ["western swing", "honky tonk", "old-school country", "cajun"], "url": "https://whatscookin.co.uk/", "note": "Long-running roots/americana club — strong trad-country/western-swing source. Own website carries listings through 2 Dec (2026-07-25): August is a FULL summer break (nothing 29 Jul–2 Sep) and most Saturdays simply unprogrammed. Strong autumn country strand (John Miller 14 Oct, Bard Edrington 21 Oct)." },
     { "name": "The Fighting Cocks", "area": "Kingston", "genres": ["hot jazz", "cajun", "old-school country", "western swing", "skiffle"], "url": "https://the-fighting-cocks.co.uk/gigs-events/", "note": "LOCAL. Only roots/trad nights count here (ignore rock/punk/indie/metal), matching the calendar's Fighting Cocks rule. Re-checked through Oct 2026 on 18 Aug: zero qualifying again; the published run remains rock/punk/indie/metal/open-mic." },
@@ -239,6 +309,12 @@
     "Runnymede Jazz Club Addlestone traditional jazz programme",
     "Doolally Tap upcoming gigs London",
     "Dom Glynn His Sunday Best London honky tonk",
-    "Irish Cultural Centre Hammersmith traditional music 2026"
+    "Irish Cultural Centre Hammersmith traditional music 2026",
+    "South London Irish Centre Wimbledon live bands",
+    "South London Irish Association Irish music Wimbledon",
+    "Cecil Sharp House cajun old-time square dance 2026",
+    "Half Moon Putney folk roots swing jazz 2026",
+    "Riverhouse Barn Walton folk jazz roots 2026",
+    "Eel Pie Club Cabbage Patch roots blues swing 2026"
   ]
 }

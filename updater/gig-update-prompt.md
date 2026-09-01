@@ -32,12 +32,12 @@ Delete rows from `gig-data.json` `gigs` whose `date` or `endDate` is before toda
 
 Refresh key venues and run standard search queries. Then try at least 2-3 discovery angles you have not used recently; check `updater/gig-method-log.md` first.
 
-Treat `priorityVenues` in `updater/gig-sources.json` as mandatory every run. For each one, crawl the primary URL, useful secondary URLs, pagination/API/feed variants noted in `crawlRule`, and configured Instagram profiles or Instagram search queries when possible. These are the venue/source names the user specifically wants watched closely: Jamboree, The Lamb Surbiton, Green Note, The Harrison, Nightjar, Spice of Life, Ram Jam Records, TwickFolk at The Cabbage Patch, The Magic Garden Battersea, Epsom Hot Jazz Club and Old Barn Bookham Jazz Club.
+Treat `priorityVenues` in `updater/gig-sources.json` as mandatory every run. For each one, crawl the primary URL, useful secondary URLs, pagination/API/feed variants noted in `crawlRule`, and configured Instagram profiles or Instagram search queries when possible. These are the venue/source names the user specifically wants watched closely: Jamboree, The Lamb Surbiton, Green Note, The Harrison, Nightjar, Spice of Life, Ram Jam Records, TwickFolk/Eel Pie at The Cabbage Patch, The Magic Garden Battersea, Epsom Hot Jazz Club, Old Barn Bookham Jazz Club, Irish Cultural Centre Hammersmith, Cecil Sharp House and South London Irish Centre. Half Moon Putney and Riverhouse Barn should be watched but filtered more strictly.
 
 Good discovery angles:
 
 - The Lamb, Ram Jam, Fighting Cocks, Rose, cornerHOUSE and other easy local venues.
-- Jamboree, The Harrison, The Magic Garden, TwickFolk/Cabbage Patch, Toulouse Lautrec, Cecil Sharp House, What's Cookin', Nightjar, Green Note, 100 Club, Bull's Head Barnes and similar known genre venues.
+- Jamboree, The Harrison, The Magic Garden, TwickFolk/Eel Pie/Cabbage Patch, Irish Cultural Centre, South London Irish Centre, Half Moon Putney, Riverhouse Barn, Toulouse Lautrec, Cecil Sharp House, What's Cookin', Nightjar, Green Note, 100 Club, Bull's Head Barnes and similar known genre venues.
 - Specialist listings: The Jazz Guide, SwingdanceUK, Swing Out London, Halibuts swing, Irish Cultural Centre, Irish Music in London, The Session.
 - Ticketing platforms: DICE, TicketSource, See Tickets, WeGotTickets, Eventbrite.
 - Artist tour pages for known trad/jazz/roots acts.

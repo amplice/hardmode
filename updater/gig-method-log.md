@@ -55,6 +55,19 @@ when they expose dated programmes; continue the strict Fighting Cocks filter.
 
 ---
 
+## 2026-09-01 -- gig source preference correction
+
+**Housekeeping:** no gig rows changed. Updated source policy from user feedback:
+Whelan's Kingston session is now a negative example; Irish Cultural Centre, Cecil Sharp
+House and South London Irish Centre are high-priority; Half Moon Putney, Riverhouse Barn
+and Eel Pie Club/Cabbage Patch are watched with stricter inclusion filters.
+
+**Next time:**
+- Search South London Irish Centre manually/socially because its official event surface is weak.
+- Treat Half Moon and Eel Pie Club as nearby but noisy; add only unusually strong genre matches.
+
+---
+
 ## 2026-08-28 -- source-policy update
 
 **Housekeeping:** no gig rows changed. Added an explicit `priorityVenues` block to
