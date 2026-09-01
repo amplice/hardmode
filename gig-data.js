@@ -21,13 +21,13 @@ window.GIG_DATA = {
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-08-30",
+    "dateBasis": "2026-09-01",
     "counts": {
       "total": 265,
-      "upcoming": 265,
+      "upcoming": 258,
       "watchlist": 63
     },
-    "generated": "2026-08-30T06:57:08.595Z",
+    "generated": "2026-09-01T07:23:11.407Z",
     "genres": [
       "Kansas City swing",
       "New Orleans / trad jazz",
@@ -73,7 +73,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-28 99:99",
       "travel": "Day-trip",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": true
     },
     {
@@ -100,7 +100,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-30 13:00",
       "travel": "Local (SW London)",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -127,7 +127,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-30 14:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -154,7 +154,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-30 15:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -181,7 +181,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-30 21:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -209,7 +209,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-31 12:30",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -236,7 +236,7 @@ window.GIG_DATA = {
       "sortKey": "2026-08-31 21:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

@@ -630,6 +630,42 @@
                                               "use the official event detail page for exact times and the booking page for current prices",
                                               "public concert listings are also exposed through the upcoming-events RSS feed"
                                           ]
+                         },
+                         {
+                             "name":  "All Saints Kingston under-5 venue listings",
+                             "url":  "https://allsaintskingston.co.uk/venue/choir-vestry/",
+                             "checkFor":  [
+                                              "Little Singing Saints music and sensory sessions for ages 0-4",
+                                              "Once Upon a Play term-time stay-and-play sessions for ages 5 and under",
+                                              "crawl venue pagination because the short iCal window does not expose the full term"
+                                          ]
+                         },
+                         {
+                             "name":  "Wimbledon and Putney Commons events",
+                             "url":  "https://www.wpcc.org.uk/things-to-do/events",
+                             "checkFor":  [
+                                              "Commons Open Day family programme",
+                                              "dated pumpkin hunts and Christmas carols at the Windmill",
+                                              "use individual event pages when times and practical details are complete"
+                                          ]
+                         },
+                         {
+                             "name":  "Wimbledon International Music Festival",
+                             "url":  "https://wimbledonmusicfestival.co.uk/",
+                             "checkFor":  [
+                                              "family concerts with explicit age guidance",
+                                              "daytime classical music suitable for younger children",
+                                              "individual programme pages with performance times and prices"
+                                          ]
+                         },
+                         {
+                             "name":  "Momentum Children's Charity events",
+                             "url":  "https://www.tickettailor.com/events/momentumchildrenscharity",
+                             "checkFor":  [
+                                              "public charity concerts at Surbiton and Kingston venues",
+                                              "exact event times, accessibility and current ticket prices",
+                                              "exclude generic quizzes and unrelated outer-area fundraising events"
+                                          ]
                          }
                      ],
     "searchQueries":  [
@@ -710,6 +746,10 @@
                           "All Saints Kingston events calendar iCal",
                           "site:allsaintskingston.co.uk/events/?ical=1",
                           "Kingston Philharmonia concert St Andrew's Surbiton 2026 2027",
-                          "Southbank Centre WordPlay ages 3-5 autumn 2026 dates"
+                          "Southbank Centre WordPlay ages 3-5 autumn 2026 dates",
+                          "All Saints Kingston Little Singing Saints Once Upon a Play 2026",
+                          "Wimbledon Common family open day pumpkin hunt carols 2026",
+                          "Wimbledon International Music Festival family concert 2026",
+                          "Momentum Children's Charity Surbiton concert 2026"
                       ]
 }

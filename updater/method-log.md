@@ -395,3 +395,26 @@ Format per run:
   - Recheck TDMR Santa only through the embedded JSON, and poll Kingston Philharmonia's RSS/booking page for spring 2027 without importing private rehearsals.
   - Revisit Dorich House after its September reopening and Stanley Picker only after a 2026 programme appears; do not repeat a plain fetch if Dorich remains 403.
   - Check Southbank's December/January early-years pages and the Lamb November social grid for exact times; keep rejecting 6+/7+ technology and performance rows while the child is under 3.
+
+## 2026-09-01
+- Method: polled all 68 configured `knownSources` endpoints, ran all 78 standard `searchQueries`, reviewed the fresh social-leads export, checked official detail pages against existing date/title/venue keys, and removed all 13 rows whose effective end date was before 1 September. Active multi-day runs and genuine recurring patterns were retained.
+- New sources/methods tried:
+  - ALL SAINTS VENUE PAGINATION: crawled the Choir Vestry venue pages rather than relying on the short iCal window. This exposed the complete autumn term of under-5 programming, including Little Singing Saints and Once Upon a Play.
+  - WIMBLEDON AND PUTNEY COMMONS OFFICIAL CALENDAR: opened individual organiser profiles for Commons Open Day, the Hallowe'en Pumpkin Hunt and Christmas Carols at the Windmill.
+  - WIMBLEDON INTERNATIONAL MUSIC FESTIVAL FAMILY PROGRAMME: used the official programme detail page to confirm a London Mozart Players concert for ages 3+, with both performance times and prices.
+  - MOMENTUM CHILDREN'S CHARITY TICKETTAILOR ORGANISER FEED: found a fully dated local St Mark's charity concert with running time, prices and accessibility details.
+- What worked:
+  - All Saints venue pagination was the strongest source: two true weekly Once Upon a Play blocks and one Little Singing Saints ages 0-4 block were added, using separate blocks around the half-term gap.
+  - The Commons calendar yielded the 13 September family Open Day and the 12 December Windmill carol singalong. The 31 October pumpkin hunt stayed on watchlist because its time and practical details remain TBC.
+  - Wimbledon International Music Festival supplied `The Duck with No Luck`, an interactive ages-3+ family concert on 8 November. Momentum supplied the 18 October Musical Potpourri charity concert at St Mark's, and All Saints supplied Professor Rory Naismith's free Anglo-Saxon London talk on 5 November.
+  - Kingston Council finally resolved the Carnival gap: the 2026 event is officially paused until 2027, so the watch item was closed without adding a date.
+- What did not work / cautions:
+  - TDMR now links a 2026 Christmas page, but it says `SATURDAY 2nd DECEMBER`; 2 December 2026 is a Wednesday. Timings, price and activities are also TBC and Santa will not attend. The lead remains watchlisted until the organiser corrects the contradiction.
+  - AELTC's booking page exposed eight attractive under-5 dates, but the official introduction targets Merton or Wandsworth residents. They were not added because public access for a Surbiton family is not established.
+  - The Lamb social export contained no new future-dated family-calendar lead beyond the already-held Tractor Watson show. The official page still gives only recurring Sunday/Irish-session copy.
+  - The Hallowe'en pumpkin hunt, Kingston Christmas Market dates and other incomplete seasonal leads were not guessed. Bell Square/OSO, car, older-child and generic acoustic/blues-rock results remained excluded under feedback.
+- Source maintenance: added All Saints under-5 venue listings, Wimbledon and Putney Commons, Wimbledon International Music Festival and Momentum Children's Charity as known sources, plus one focused search for each.
+- Try next time:
+  - Recheck the TDMR Christmas page for a corrected day/date and ticket release; do not infer whether the organiser meant Wednesday 2 December or Saturday 5 December.
+  - Recheck the Commons pumpkin-hunt profile for time/cost, and ask only through published pages whether AELTC has widened Early Years eligibility beyond Merton/Wandsworth.
+  - Poll the All Saints Choir Vestry pages beyond 10 December, Dorich House after reopening, Kingston Christmas Market official pages, and The Lamb's November grid for exact artist times.
