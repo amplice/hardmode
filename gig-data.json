@@ -3,7 +3,7 @@
     "title": "Gig Radar",
     "description": "Curated radar of live gigs in traditional jazz and roots-Americana genres around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-08-30",
+    "updated": "2026-09-02",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -20,193 +20,12 @@
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-08-30",
+    "dateBasis": "2026-09-02",
     "counts": {
-      "upcoming": 265
+      "upcoming": 274
     }
   },
   "gigs": [
-    {
-      "id": "g20260828-twinwood",
-      "date": "2026-08-28",
-      "endDate": "2026-08-31",
-      "time": "",
-      "title": "Twinwood Festival 2026",
-      "artist": "Jive Aces, Si Cranstoun, Down for the Count Soul Collective + many more",
-      "venue": "Twinwood Arena & Glenn Miller Museum",
-      "area": "Clapham, nr Bedford",
-      "genres": [
-        "swing"
-      ],
-      "cost": "Day/weekend tickets",
-      "url": "https://twinwoodevents.com/",
-      "source": "twinwoodevents.com",
-      "confidence": "confirmed",
-      "note": "The UK's flagship vintage swing/jive festival (Aug bank holiday) at the Glenn Miller Museum airfield. Day-trippable: ~40 min St Pancras–Bedford plus shuttle/taxi; some acts lean 50s jive/soul — check the day splits."
-    },
-    {
-      "id": "g20260830-oldbarnhall",
-      "date": "2026-08-30",
-      "endDate": null,
-      "time": "13:00",
-      "title": "Tony Scriven Sunshine Band",
-      "artist": "Tony Scriven Sunshine Band",
-      "venue": "Old Barn Hall",
-      "area": "Great Bookham, Surrey",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£15 cash",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/old-barn-hall",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Weekly Sunday-lunch trad club."
-    },
-    {
-      "id": "g20260830-swingdance",
-      "date": "2026-08-30",
-      "endDate": null,
-      "time": "14:00",
-      "title": "Swing Dance Sundays — Sid Bolan Big Band",
-      "artist": "Sid Bolan Big Band",
-      "venue": "Regent's Park bandstand (SwingdanceUK)",
-      "area": "Regent's Park, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "Free",
-      "url": "https://swingdanceuk.com/socials/special-events/",
-      "source": "swingdanceuk.com",
-      "confidence": "confirmed",
-      "note": "Free class + big-band swing."
-    },
-    {
-      "id": "g20260830-dompipkin",
-      "date": "2026-08-30",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Dom Pipkin & Bubu",
-      "artist": "Dom Pipkin & Bubu",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£6 cover",
-      "url": "https://www.barnightjar.com/shoreditch-listings",
-      "source": "barnightjar.com",
-      "confidence": "confirmed",
-      "note": "New Orleans jazz/blues piano."
-    },
-    {
-      "id": "g20260831-geoffmason",
-      "date": "2026-08-31",
-      "endDate": null,
-      "time": "12:30",
-      "title": "Geoff Mason Quintet (lunchtime session)",
-      "artist": "Geoff Mason Quintet",
-      "venue": "The Spice of Life",
-      "area": "Soho, London",
-      "genres": [
-        "New Orleans / trad jazz",
-        "swing"
-      ],
-      "cost": "£10 cash on door",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/spice-of-life-jazz-club-soho-london",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Bank-holiday Monday lunch; trombonist on the trad/mainstream circuit — verify style."
-    },
-    {
-      "id": "g20260831-benmartyn",
-      "date": "2026-08-31",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Ben Martyn — Soul of the Southern States",
-      "artist": "Ben 'Blue' Martyn",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£6 cover",
-      "url": "https://www.barnightjar.com/shoreditch-listings/ben-martyn-solo-piano-7syst",
-      "source": "barnightjar.com",
-      "confidence": "confirmed",
-      "note": "Louisiana-focused solo piano — fills the previously dark bank-holiday Monday."
-    },
-    {
-      "id": "g20260901-nojam",
-      "date": "2026-09-01",
-      "endDate": null,
-      "time": "19:30",
-      "title": "New Orleans Jam Session",
-      "artist": "House band + jammers",
-      "venue": "Toulouse Lautrec Jazz Club",
-      "area": "Kennington, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "",
-      "url": "https://toulouselautrec.co.uk/whats-on/",
-      "source": "Toulouse Lautrec what's-on",
-      "confidence": "confirmed",
-      "note": "Monthly first-Tuesday New Orleans jam (next after the 4 Aug instance; also 6 Oct, 3 Nov)."
-    },
-    {
-      "id": "g20260901-dompipkin-oriole",
-      "date": "2026-09-01",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Dom Pipkin - New Orleans-style piano",
-      "artist": "Dom Pipkin",
-      "venue": "Oriole Bar",
-      "area": "Covent Garden, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£4 cover",
-      "url": "https://www.oriolebar.com/oriole-music/dom-pipkin-solo-piano",
-      "source": "Oriole Squarespace feed",
-      "confidence": "confirmed",
-      "note": "New Orleans jazz, blues and funk piano inspired by Professor Longhair, Huey Smith, Lee Dorsey and James Booker; two sets from 20:00."
-    },
-    {
-      "id": "g20260901-degraaf",
-      "date": "2026-09-01",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Charlotte de Graaf & The Artie Zaitz Trio — Legendary Voices of Jazz",
-      "artist": "Charlotte de Graaf & The Artie Zaitz Trio",
-      "venue": "Boisdale of Belgravia",
-      "area": "Belgravia, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://boisdaletickets.co.uk/p/12864",
-      "source": "Boisdale",
-      "confidence": "verify",
-      "note": "Artie Zaitz is a fixture of London's swing-dance band circuit; likely Ella/Billie-era swing repertoire — verify."
-    },
-    {
-      "id": "g20260901-petercole",
-      "date": "2026-09-01",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Peter Cole",
-      "artist": "Peter Cole",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://www.barnightjar.com/shoreditch-listings",
-      "source": "barnightjar.com",
-      "confidence": "confirmed",
-      "note": "First September date on Nightjar's diary."
-    },
     {
       "id": "g20260902-tj-johnson-jamboree",
       "date": "2026-09-02",
@@ -479,24 +298,6 @@
       "source": "Green Note listings",
       "confidence": "verify",
       "note": "Billed as 'New Orleans jazz and blues with unexpected turns' — verify how trad."
-    },
-    {
-      "id": "g20260905-doolally-tap-gabriels-wharf",
-      "date": "2026-09-05",
-      "endDate": null,
-      "time": "12:00",
-      "title": "Doolally Tap",
-      "artist": "Doolally Tap",
-      "venue": "Gabriel's Wharf",
-      "area": "SE1 9PP, London",
-      "genres": [
-        "hot jazz"
-      ],
-      "cost": "",
-      "url": "https://doolallytap.net/upcoming-gigs?calendar_page=1",
-      "source": "Doolally Tap official gig diary",
-      "confidence": "confirmed",
-      "note": "Official band diary date in London."
     },
     {
       "id": "g20260905-brassworks",
@@ -3461,42 +3262,6 @@
       "note": "Roaring-20s hot jazz including music of the New Orleans Owls and Halfway House Orchestra; booking essential. Day-trip: roughly 45-55 minutes from Surbiton."
     },
     {
-      "id": "g20260830-prospective",
-      "date": "2026-08-30",
-      "endDate": null,
-      "time": "15:00",
-      "title": "Afternoon Show: Prospective Collective",
-      "artist": "Prospective Collective",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "Free / donations",
-      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-77/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Sunday-afternoon small-band swing and jazz; primary venue page gives the exact date and 3pm start."
-    },
-    {
-      "id": "g20260901-celticsession",
-      "date": "2026-09-01",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Jamboree Celtic Session",
-      "artist": "London trad-session musicians",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "Free",
-      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-23/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Weekly traditional session, mainly Irish tunes with some Scottish repertoire. Tagged old-time as the closest permitted canonical roots category."
-    },
-    {
       "id": "g20260908-celticsession",
       "date": "2026-09-08",
       "endDate": null,
@@ -4883,6 +4648,410 @@
       "source": "Fidelio Cafe",
       "confidence": "confirmed",
       "note": "Two intimate sets (19:30 and 20:30) celebrating Django Reinhardt, traditional manouche and hot swing."
+    },
+    {
+      "id": "g20260906-bixpiecesriverhouse",
+      "date": "2026-09-06",
+      "endDate": null,
+      "time": "12:15",
+      "title": "Bob Dwyer's Bix & Pieces",
+      "artist": "Bob Dwyer's Bix & Pieces",
+      "venue": "Riverhouse Barn Arts Centre",
+      "area": "Walton-on-Thames, Surrey",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz"
+      ],
+      "cost": "£15",
+      "url": "https://www.riverhousebarn.co.uk/events/171043",
+      "source": "Riverhouse Barn",
+      "confidence": "confirmed",
+      "note": "Six-piece traditional-jazz band inspired by Bix Beiderbecke; a high-value Sunday lunchtime booking at an easy-to-reach Surrey venue."
+    },
+    {
+      "id": "g20260908-midnightinparis",
+      "date": "2026-09-08",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Gypsy Jazz Night: Midnight in Paris",
+      "artist": "Erhan Ozturk's house trio + guest jammers",
+      "venue": "The Hum",
+      "area": "Stoke Newington, London",
+      "genres": [
+        "gypsy jazz"
+      ],
+      "cost": "Free",
+      "url": "https://www.eventbrite.co.uk/e/gypsy-jazz-night-midnight-in-paris-tickets-1438456424889",
+      "source": "The Hum / Eventbrite",
+      "confidence": "confirmed",
+      "note": "Pure Django-style trio followed by an informal jam. This is the final exact future date in the organiser's currently published weekly run; no later autumn renewal is visible yet."
+    },
+    {
+      "id": "g20260912-caradillon",
+      "date": "2026-09-12",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Cara Dillon",
+      "artist": "Cara Dillon",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£30",
+      "url": "https://irishculturalcentre.co.uk/event/cara-dillon-2026/",
+      "source": "Irish Cultural Centre",
+      "confidence": "confirmed",
+      "note": "Flagship Irish traditional singer in an intimate seated concert; doors 19:30. Traditional Irish music is mapped to the closest permitted canonical roots category."
+    },
+    {
+      "id": "g20260913-prospective",
+      "date": "2026-09-13",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/afternoon-show-swing-with-the-prospective-collective-132/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Sunday-afternoon small-band swing, 15:00–17:00, from Jamboree's fully paginated primary diary."
+    },
+    {
+      "id": "g20260917-eliseroth",
+      "date": "2026-09-17",
+      "endDate": null,
+      "time": "21:00",
+      "title": "Elise Roth + Thursday Throwdown with Louise Balkwill",
+      "artist": "Elise Roth & Louise Balkwill",
+      "venue": "Nightjar",
+      "area": "Shoreditch, London",
+      "genres": [
+        "hot jazz",
+        "swing"
+      ],
+      "cost": "£6 cover",
+      "url": "https://www.barnightjar.com/shoreditch-listings/elise-roth-throwdown-b9p66",
+      "source": "Nightjar Squarespace feed",
+      "confidence": "confirmed",
+      "note": "A vintage vocal-jazz double bill centred on Tin Pan Alley and Great American Songbook repertoire from the 1920s–40s."
+    },
+    {
+      "id": "g20260919-harrisonfolkfestival",
+      "date": "2026-09-19",
+      "endDate": null,
+      "time": "13:00",
+      "title": "The Harrison All Day Folk Festival",
+      "artist": "Whiskey Moon Face, Homeward Bound Sea Shanty Singalong + guests",
+      "venue": "The Harrison",
+      "area": "King's Cross, London",
+      "genres": [
+        "old-time",
+        "New Orleans / trad jazz"
+      ],
+      "cost": "Free",
+      "url": "https://harrisonvenuelondon.com/events/the-harrison-all-day-folk-festival/",
+      "source": "The Harrison",
+      "confidence": "confirmed",
+      "note": "Broad free folk bill, promoted for the strong traditional strands: participatory sea shanties and Whiskey Moon Face's old-time/New Orleans jazz and klezmer mix."
+    },
+    {
+      "id": "g20260920-prospective",
+      "date": "2026-09-20",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/afternoon-show-swing-with-the-prospective-collective-133/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Sunday-afternoon small-band swing, 15:00–17:00, from Jamboree's fully paginated primary diary."
+    },
+    {
+      "id": "g20260927-prospective",
+      "date": "2026-09-27",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/afternoon-show-swing-with-the-prospective-collective-134/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Sunday-afternoon small-band swing, 15:00–17:00, from Jamboree's fully paginated primary diary."
+    },
+    {
+      "id": "g20260930-harrydiplocktwickenham",
+      "date": "2026-09-30",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Harry Diplock Presents: The Music of Django Reinhardt",
+      "artist": "Harry Diplock, Sol Grimshaw, Matt Holborn & Lorenzo Morabito",
+      "venue": "Twickenham Jazz Club at The Cabbage Patch",
+      "area": "Twickenham",
+      "genres": [
+        "gypsy jazz"
+      ],
+      "cost": "From £11.55",
+      "url": "https://www.eventbrite.co.uk/e/harry-diplock-presents-the-music-of-django-reinhardt-tickets-1997969439377",
+      "source": "Twickenham Jazz Club / Eventbrite",
+      "confidence": "confirmed",
+      "note": "Exceptional easy-local find: a top London Django quartet in Patchworks, close to Twickenham station; music 20:00–22:30."
+    },
+    {
+      "id": "g20261001-whitneyrose",
+      "date": "2026-10-01",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Whitney Rose",
+      "artist": "Whitney Rose",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "old-school country"
+      ],
+      "cost": "£20",
+      "url": "https://www.greennote.co.uk/production/whitney-rose/",
+      "source": "Green Note",
+      "confidence": "confirmed",
+      "note": "Texas-style country classicist rather than chart country; the venue specifically bills her as pure country gold. Doors 19:00."
+    },
+    {
+      "id": "g20261004-kathrynroberts",
+      "date": "2026-10-04",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Kathryn Roberts & Sean Lakeman",
+      "artist": "Kathryn Roberts & Sean Lakeman",
+      "venue": "TwickFolk at The Cabbage Patch",
+      "area": "Twickenham",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£19 + fee / £22 door",
+      "url": "https://www.twickfolk.co.uk/events/kathryn-roberts-sean-lakeman/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "Multiple-award-winning traditional/acoustic duo at an easy local venue. British folk is mapped to the closest permitted canonical roots category."
+    },
+    {
+      "id": "g20261004-louisianariverhouse",
+      "date": "2026-10-04",
+      "endDate": null,
+      "time": "12:15",
+      "title": "Louisiana Rhythm Kings",
+      "artist": "Louisiana Rhythm Kings",
+      "venue": "Riverhouse Barn Arts Centre",
+      "area": "Walton-on-Thames, Surrey",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz"
+      ],
+      "cost": "Up to £15",
+      "url": "https://www.riverhousebarn.co.uk/events/174969",
+      "source": "Riverhouse Barn",
+      "confidence": "confirmed",
+      "note": "Excellent 1920s–30s programme spanning New Orleans, Chicago and New York, including Morton, Oliver, Armstrong and Bix; a Sunday lunchtime local-ish trip."
+    },
+    {
+      "id": "g20261013-celticsession",
+      "date": "2026-10-13",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Jamboree Celtic Session",
+      "artist": "London trad-session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-29/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Weekly traditional session led by established musicians and focused mainly on Irish tunes. Tagged old-time as the closest permitted canonical roots category."
+    },
+    {
+      "id": "g20261014-tjjohnsonjamboree",
+      "date": "2026-10-14",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-87/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Weekly Wednesday afternoon roots-jazz session, 15:00–17:00, on Jamboree's primary diary."
+    },
+    {
+      "id": "g20261018-papermoon",
+      "date": "2026-10-18",
+      "endDate": null,
+      "time": "",
+      "title": "Paper Moon presents Benoit Viellefon & His Band",
+      "artist": "Benoit Viellefon & His Band",
+      "venue": "Paper Moon at Hargrave Hall",
+      "area": "Archway, North London",
+      "genres": [
+        "gypsy jazz",
+        "hot jazz",
+        "swing"
+      ],
+      "cost": "",
+      "url": "https://papermoonclub.wordpress.com/",
+      "source": "Paper Moon",
+      "confidence": "confirmed",
+      "note": "Rare live hot-club band specifically presented for social dancing. The organiser publishes the exact date, named band and ticket link, but not the time or price on the public diary."
+    },
+    {
+      "id": "g20261023-shrewsburydjango",
+      "date": "2026-10-23",
+      "endDate": "2026-10-25",
+      "time": "",
+      "title": "Shrewsbury Django Fest 2026",
+      "artist": "Mozes Rosenberg Trio, Paulus Schäfer & Olli Soikkeli, Marion & Sobo Band + guests",
+      "venue": "Shrewsbury Django Fest",
+      "area": "Shrewsbury, Shropshire",
+      "genres": [
+        "gypsy jazz",
+        "swing"
+      ],
+      "cost": "£89 early-bird weekend",
+      "url": "https://www.shrewsburydjangofest.co.uk/",
+      "source": "Shrewsbury Django Fest",
+      "confidence": "confirmed",
+      "note": "Exceptional three-day specialist festival with major European gypsy-jazz players. Far/overnight value pick: roughly 2½–3 hours from Surbiton via Euston; the 2026 daily schedule is not yet published, so no start time is inferred."
+    },
+    {
+      "id": "g20261024-oneillseis",
+      "date": "2026-10-24",
+      "endDate": null,
+      "time": "19:30",
+      "title": "The O'Neill's October Seis",
+      "artist": "The O'Neill Family & guests",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£15",
+      "url": "https://irishculturalcentre.co.uk/event/the-oneills-october-seis-main-london-concert/",
+      "source": "Irish Cultural Centre",
+      "confidence": "confirmed",
+      "note": "Intergenerational family concert with traditional Irish music at its heart, alongside folk song and ballads. Tagged old-time as the closest permitted canonical roots category."
+    },
+    {
+      "id": "g20261101-johnnycampbell",
+      "date": "2026-11-01",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Johnny Campbell + Charlie Hues",
+      "artist": "Johnny Campbell + Charlie Hues",
+      "venue": "TwickFolk at The Cabbage Patch",
+      "area": "Twickenham",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£12 + fee / £15 door",
+      "url": "https://www.twickfolk.co.uk/events/johnny-campbell/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "Campbell's deeply researched traditional songs of northern England make this an unusually strong local roots booking; British folk is mapped to the closest canonical tag."
+    },
+    {
+      "id": "g20261114-peterstreet",
+      "date": "2026-11-14",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Peter Street & Toby Shaer + Archie Moss & Jack Warnock",
+      "artist": "Peter Street & Toby Shaer; Archie Moss & Jack Warnock",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£20",
+      "url": "https://irishculturalcentre.co.uk/event/peter-street-toby-shaer-archie-moss-jack-warnock/",
+      "source": "Irish Cultural Centre",
+      "confidence": "confirmed",
+      "note": "Double bill of leading traditional musicians from the Irish and wider UK folk circuits. Tagged old-time as the closest permitted canonical roots category."
+    },
+    {
+      "id": "g20261129-harrydiplock",
+      "date": "2026-11-29",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Harry Diplock Sessions",
+      "artist": "Harry Diplock + guest gypsy-jazz musicians",
+      "venue": "Green Note (Basement Bar)",
+      "area": "Camden, London",
+      "genres": [
+        "gypsy jazz"
+      ],
+      "cost": "£13.50",
+      "url": "https://www.greennote.co.uk/production/django-reinhardt-sessions-with-harry-diplock/",
+      "source": "Green Note",
+      "confidence": "confirmed",
+      "note": "Monthly Django Reinhardt and Stéphane Grappelli session with leading European guests; doors 19:30."
+    },
+    {
+      "id": "g20261212-dompipkingreen",
+      "date": "2026-12-12",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Dom Pipkin",
+      "artist": "Dom Pipkin",
+      "venue": "Green Note (Basement Bar)",
+      "area": "Camden, London",
+      "genres": [
+        "New Orleans / trad jazz"
+      ],
+      "cost": "£15",
+      "url": "https://www.greennote.co.uk/production/dom-pipkin/",
+      "source": "Green Note",
+      "confidence": "confirmed",
+      "note": "Classic New Orleans piano in the intimate Basement Bar; music 20:00, doors 19:30."
+    },
+    {
+      "id": "g20261213-harrydiplock",
+      "date": "2026-12-13",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Harry Diplock Sessions",
+      "artist": "Harry Diplock + guest gypsy-jazz musicians",
+      "venue": "Green Note (Basement Bar)",
+      "area": "Camden, London",
+      "genres": [
+        "gypsy jazz"
+      ],
+      "cost": "£13.50",
+      "url": "https://www.greennote.co.uk/production/django-reinhardt-sessions-with-harry-diplock/",
+      "source": "Green Note",
+      "confidence": "confirmed",
+      "note": "Monthly Django Reinhardt and Stéphane Grappelli session with leading European guests; doors 19:30."
     }
   ],
   "watchlist": [
@@ -4950,7 +5119,7 @@
       "name": "The Hum — gypsy-jazz hub",
       "venue": "Stoke Newington, London",
       "url": "https://www.eventbrite.co.uk/o/the-hum-108764290631",
-      "note": "Weekly 'Midnight in Paris' Tuesday night runs through 8 Sep 2026 — re-checked 25 Jul, still NOT renewed; no Gypsy Jazz Icons on sale. CAUTION: a second Eventbrite listing shows the 28 Jul occurrence as cancelled — the residency may be wobbling; re-check late August for an autumn series."
+      "note": "Weekly 'Midnight in Paris' is still live through its final published occurrence on 8 Sep 2026 (now on the main list), but no later autumn renewal or Gypsy Jazz Icons date is visible. Recheck the organiser profile next run."
     },
     {
       "name": "Boisdale (Belgravia & Canary Wharf)",
@@ -5263,6 +5432,18 @@
       "venue": "The Lamb, Surbiton",
       "url": "https://www.instagram.com/tractorwatson/reel/DcduBR2MtLr/",
       "note": "Hyper-local social-only date. Tractor Watson is often billed as stomping blues/bluegrass, so hold pending confirmation that this solo show is not bluegrass-only; time has not been announced."
+    },
+    {
+      "name": "South London Irish Association traditional session",
+      "venue": "South London Irish Centre, Wimbledon",
+      "url": "https://www.karenryan.net/index.php/irish-music-in-london/where-to-hear-irish-traditional-music-in-london",
+      "note": "A current specialist listing says Tuesdays at 21:00, but no specific future date or line-up is published. Verify directly before promotion; do not confuse this with the rejected Whelan's Kingston session."
+    },
+    {
+      "name": "Paper Moon Christmas — 13 Dec 2026",
+      "venue": "Paper Moon at Hargrave Hall, Archway",
+      "url": "https://papermoonclub.wordpress.com/",
+      "note": "The organiser publishes the exact date for its live-jazz social dance but has not yet named the band or exposed a time/price, so keep it as a lead until the Christmas programme firms up."
     }
   ]
 }

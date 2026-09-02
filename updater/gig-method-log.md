@@ -1,3 +1,69 @@
+## 2026-09-02 -- autonomous gig-radar update run
+
+**Housekeeping:** removed 12 finished rows through 1 Sep (using `endDate` for Twinwood) and
+removed one weaker duplicate of the 5 Sep Doolally Tap / Gabriel's Wharf event. Added 22 exact,
+future, canonical-genre gigs and two undated/TBA watchlist leads. Dataset target before generation:
+274 gigs and 65 watchlist entries.
+
+**Mandatory venue refresh:** crawled every configured priority venue, including the primary page,
+useful secondary surfaces and documented pagination/feed/API variants.
+
+- Jamboree's full ten-page diary added three Prospective Collective Sunday afternoons, the next
+  Celtic Session and the next TJ Johnson afternoon (five rows). Nightjar's Shoreditch Squarespace
+  feed added the Elise Roth / Louise Balkwill vintage-vocal double bill; its future diary still
+  ends on 14 Nov.
+- Green Note's complete diary added Whitney Rose's Texas-style country-classicist show, two more
+  Harry Diplock Django sessions and Dom Pipkin's December New Orleans-piano date. The fresh social
+  export surfaced Whitney Rose, then the primary venue page supplied the date, price and billing.
+- Harrison added its free all-day folk festival because the bill contains both old-time/New Orleans
+  group Whiskey Moon Face and a participatory sea-shanty strand. TwickFolk added Kathryn Roberts &
+  Sean Lakeman and Johnny Campbell, both unusually strong traditional bookings at an easy local
+  venue; this remains consistent with the user's positive singaround/traditional-folk examples.
+- Irish Cultural Centre added Cara Dillon, the O'Neill family October concert and the Peter Street /
+  Toby Shaer + Archie Moss / Jack Warnock double bill. Riverhouse Barn added Bob Dwyer's Bix &
+  Pieces and Louisiana Rhythm Kings from exact official listings.
+- Ram Jam had no new qualifying rows beyond its already-held TJ Johnson/Tim Penn/Flaming Alligators
+  dates. Magic Garden's full Tribe feed remained DJ/funk/world-rooted; Spice, Epsom and Old Barn
+  published no qualifying dates not already held. Cecil Sharp House's API exposed autumn ceilidhs
+  but not enough named live-band detail to promote them. The Lamb still has only undated recurring
+  copy, so Tractor Watson remains watchlisted pending a non-bluegrass billing.
+- South London Irish Centre remains structurally weak: a current specialist directory confirms a
+  Tuesday 21:00 traditional session but no exact future date or line-up, so it went to the watchlist.
+  Half Moon Putney and Eel Pie were filtered strictly (blues/rock/tribute-heavy); Fighting Cocks was
+  again rock/punk/metal/open-mic only.
+
+**Rotated/new discovery angles:** reran all 51 configured standard queries, then followed the best
+leads back to primary or organiser-owned pages.
+
+- *NEW RIVERHOUSE STRUCTURED-EVENT ANGLE (2 adds):* the venue pages' embedded event data exposed
+  exact Sunday-lunch times, prices and descriptions for Bix & Pieces and Louisiana Rhythm Kings.
+- *NEW VINTAGE-DANCE ORGANISER ANGLE (1 add + 1 lead):* Paper Moon's organiser diary surfaced Benoit
+  Viellefon's live hot-club dance on 18 Oct and a 13 Dec Christmas date with artist/time still TBA.
+  Paper Moon is now a key source and has a dedicated search query.
+- *NEW EASY-LOCAL JAZZ-CLUB ANGLE (1 add):* Twickenham Jazz Club's new autumn programme plus its
+  Eventbrite listing produced Harry Diplock's Django quartet on 30 Sep. The club is now a key source;
+  mainstream/modern weeks remain excluded.
+- *NEW SPECIALIST-FESTIVAL FOLLOW-UP (1 add):* the configured UK gypsy-jazz-festival query found
+  Shrewsbury Django Fest (23-25 Oct), with a current-year homepage and ticket price. Its schedule
+  page still shows 2025, so the row deliberately has no inferred daily time and carries a clear
+  far/overnight travel note.
+- Eventbrite's embedded end date confirmed 8 Sep as the final currently published `Midnight in
+  Paris` weekly gypsy-jazz occurrence at The Hum. No later autumn renewal was inferred.
+
+**Social/browser status:** the in-app browser was unavailable in this headless environment even
+after the documented browser bootstrap check. The logged-in collector had already completed a
+fresh 06:30 export today: all six configured profiles succeeded (72 leads, no login wall), and the
+leads were reviewed as discovery-only evidence. Social finds were promoted only after primary-page
+confirmation.
+
+**What stayed dark / next time:** roll Jamboree's next weekly dates after 14 Oct; recheck Nightjar
+after 14 Nov and the Jazz Guide's Spice/Epsom/Old Barn windows; watch for The Hum's autumn renewal,
+the Paper Moon Christmas band, and a corrected 2026 Shrewsbury daily schedule. Continue searching
+South London Irish Centre socially/directly for exact dates and keep the Half Moon/Eel Pie/Fighting
+Cocks exclusions strict.
+
+---
+
 ## 2026-08-30 -- autonomous gig-radar update run
 
 **Housekeeping:** removed 4 finished gigs (28–29 Aug) and merged away the generic duplicate of

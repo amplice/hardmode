@@ -232,7 +232,9 @@
     { "name": "Oriole Bar", "area": "Covent Garden, London", "genres": ["gypsy jazz", "hot jazz", "swing", "New Orleans / trad jazz"], "url": "https://www.oriolebar.com/oriole-music", "note": "TOP rolling-window source at 7 Slingsby Place, Covent Garden: dedicated /oriole-music page carries cover prices and two sets from 20:00. Append ?format=json for the full Squarespace feed. REFRESHED 2026-08-18: dense programme through 29 Sep, but only global-jazz pianist Roland Perrin on 7 Oct after that; filter Latin/global/soul nights. Re-scrape every run." },
     { "name": "Morocco Bound (Wandsworth & Bermondsey)", "area": "Wandsworth + Bermondsey, London", "genres": ["gypsy jazz"], "url": "https://dice.fm/event/q2veox-jazz-manouche-at-morocco-bound-4th-aug-morocco-bound-wandsworth-london-tickets", "note": "NEW 2026-07-19: bookshop-bar 'Jazz Manouche' series roughly fortnightly, alternating branches (£12, 19:00); Wandsworth branch is on the Surbiton side. Found via the DICE API — query the venue name on api.dice.fm unified_search each run." },
     { "name": "Ongar Jazz Club", "area": "Ongar, Essex", "genres": ["gypsy jazz", "swing", "hot jazz"], "url": "https://www.thejazzguide.co.uk/venues/listing/ongar-jazz-club", "note": "NEW 2026-07-19: Friday-night club booking manouche/swing (Djangoliers 9 Oct, Chris Dean's Swing Shift 18 Sep, Bronxville Babies 13 Nov). Far side — Central line to Epping + ~20 min bus/taxi. Dated diary via The Jazz Guide." },
-    { "name": "Colchester Jazz Club", "area": "Colchester, Essex", "genres": ["New Orleans / trad jazz"], "url": "https://www.thejazzguide.co.uk/venues/listing/colchester-jazz-club", "note": "NEW 2026-07-19: occasionally books touring trad bands (Sarah Spencer 26 Jul) — cheap Jazz Guide re-check; ~55 min from Liverpool Street." }
+    { "name": "Colchester Jazz Club", "area": "Colchester, Essex", "genres": ["New Orleans / trad jazz"], "url": "https://www.thejazzguide.co.uk/venues/listing/colchester-jazz-club", "note": "NEW 2026-07-19: occasionally books touring trad bands (Sarah Spencer 26 Jul) — cheap Jazz Guide re-check; ~55 min from Liverpool Street." },
+    { "name": "Twickenham Jazz Club", "area": "The Cabbage Patch, Twickenham", "genres": ["gypsy jazz", "hot jazz", "swing"], "url": "https://twickenhamjazzclub.com/", "note": "NEW 2026-09-02: easy-local Wednesday club with a server-rendered season programme and exact Eventbrite listings. Filter its predominantly mainstream/modern calendar, but prioritise Django, early-jazz and classic-swing programmes; surfaced Harry Diplock on 30 Sep." },
+    { "name": "Paper Moon at Hargrave Hall", "area": "Archway, North London", "genres": ["gypsy jazz", "hot jazz", "swing"], "url": "https://papermoonclub.wordpress.com/", "note": "NEW 2026-09-02: recurring vintage-jazz social-dance club. The organiser diary gives exact dates and named live bands, but ticket pages may be Cloudflare-walled; never infer times or prices from older posts. Surfaced Benoit Viellefon on 18 Oct and a 13 Dec Christmas lead." }
   ],
   "closedOrDefunct": [
     { "name": "Le QuecumBar & Brasserie", "note": "PERMANENTLY CLOSED since April 2022 after 19 years. Was 'the' London gypsy-jazz venue — do NOT re-add or chase for listings." },
@@ -262,7 +264,8 @@
     { "name": "Jive Aces tour page", "url": "https://jiveaces.org/tour", "note": "UK's hardest-gigging jump-jive/swing band; own gig guide is fully dated (100 Club, Gatehouse, Beaverwood + South-East one-offs)." },
     { "name": "Ags Connolly shows page", "url": "https://agsconnolly.com/shows/", "note": "Primary source for UK trad-country dates (403s WebFetch — use Chrome-UA curl); also surfaces Dave Sutherland bookings." },
     { "name": "Benoit Viellefon concerts page", "url": "https://benoitviellefon.com/concerts", "note": "Artist gig guide (Bandsintown widget) for hot-club swing dates: Bishopsgate Swing Den, Green Note, South-coast day-trips." },
-    { "name": "Eventbrite keyword-search pages", "url": "https://www.eventbrite.co.uk/d/united-kingdom--london/gypsy-jazz/", "note": "PRODUCTIVE angle (2026-07-13): the /d/united-kingdom--london/<keyword>/ search pages read fine via plain fetch and event pages embed JSON-LD dates. Best keywords: gypsy jazz, trad jazz, honky tonk, swing dance live band, cajun ('zydeco'/'skiffle' return noise). Surfaced Charles Morris Jazzmen + cross-confirmed Jamboree one-offs. NB See Tickets and TicketSource are bot-blocked/JS-only — dead ends, don't retry." }
+    { "name": "Eventbrite keyword-search pages", "url": "https://www.eventbrite.co.uk/d/united-kingdom--london/gypsy-jazz/", "note": "PRODUCTIVE angle (2026-07-13): the /d/united-kingdom--london/<keyword>/ search pages read fine via plain fetch and event pages embed JSON-LD dates. Best keywords: gypsy jazz, trad jazz, honky tonk, swing dance live band, cajun ('zydeco'/'skiffle' return noise). Surfaced Charles Morris Jazzmen + cross-confirmed Jamboree one-offs. NB See Tickets and TicketSource are bot-blocked/JS-only — dead ends, don't retry." },
+    { "name": "Shrewsbury Django Fest", "url": "https://www.shrewsburydjangofest.co.uk/", "note": "NEW 2026-09-02: annual specialist gypsy-jazz weekend whose homepage and ticket page expose current-year dates, artists and weekend price. The schedule page can lag a year, so do not borrow daily times until it is refreshed; far/overnight threshold applies." }
   ],
   "searchQueries": [
     "gypsy jazz London 2026 gigs",
@@ -315,6 +318,8 @@
     "Cecil Sharp House cajun old-time square dance 2026",
     "Half Moon Putney folk roots swing jazz 2026",
     "Riverhouse Barn Walton folk jazz roots 2026",
-    "Eel Pie Club Cabbage Patch roots blues swing 2026"
+    "Eel Pie Club Cabbage Patch roots blues swing 2026",
+    "Twickenham Jazz Club Django swing programme 2026",
+    "Paper Moon Hargrave Hall live gypsy jazz dance 2026"
   ]
 }
