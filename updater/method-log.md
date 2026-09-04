@@ -418,3 +418,25 @@ Format per run:
   - Recheck the TDMR Christmas page for a corrected day/date and ticket release; do not infer whether the organiser meant Wednesday 2 December or Saturday 5 December.
   - Recheck the Commons pumpkin-hunt profile for time/cost, and ask only through published pages whether AELTC has widened Early Years eligibility beyond Merton/Wandsworth.
   - Poll the All Saints Choir Vestry pages beyond 10 December, Dorich House after reopening, Kingston Christmas Market official pages, and The Lamb's November grid for exact artist times.
+
+## 2026-09-04
+- Method: probed all 72 configured `knownSources` endpoints, ran all 82 standard `searchQueries`, reviewed 72 fresh Instagram/social leads across six venues, checked candidates against existing date/title/venue keys, and removed the six rows whose effective end date was before 4 September. The active September forecourt-market run and all genuine recurring patterns were retained.
+- New sources/methods tried:
+  - WIMBLEDON VILLAGE OFFICIAL CALENDAR: used the business association's current individual event pages and schedules rather than broad Wimbledon roundups. This produced Dress Up Day on 12 September and Christmas in the Village on 6 December, both strong younger-family matches.
+  - WALTON-ON-THAMES COMMUNITY EVENTS GUIDE: crawled current structured listings for Riverhouse Barn after the venue's broad what's-on URL returned 404. Added the one-hour Nikita Burzanitsa piano recital and Sunday-lunchtime Louisiana Rhythm Kings set with `verify:true` pending direct venue price/ticket confirmation.
+  - GREEN ELMRIDGE EVENTS: checked the current Thames Ditton Nature and Climate Festival listing. Its mixed programme centred on a climate film, exhibition and repair cafe, so it did not clear the preference threshold and was not added as a recurring source.
+  - FAMILIES ONLINE CURRENT ROUNDUP: used it as a discovery index for September/October family theatre, then checked official production and ticket pages. It mainly returned already-held Polka rows and helped resolve the Puppet Theatre Barge lead without adding an age-mismatched show.
+- What worked:
+  - National Trust's live Claremont event pages supplied two particularly well-specified family outings: the free 19-20 September Heritage Open Days with rare Belvedere Tower access, and the pram-accessible `Squirrels Who Squabbled` trail from 26 September to 1 November.
+  - Wimbledon Village's official pages included exact hours and detailed activity schedules. Costs for individual activities were not stated, so both rows retain `verify:true` without weakening the confirmed dates and times.
+  - The Walton guide exposed specific event JSON-LD and exact Riverhouse dates/times that broad web search did not surface. The traditional-jazz lunchtime slot and local chamber-music signal match prior positive feedback, but source confidence remains Medium until ticket details are independently available.
+  - Source maintenance added Wimbledon Village, Claremont Landscape Garden and Walton-on-Thames.org, added three focused searches, and repaired the newly dead RHS broad URL to the live Wisley what's-on page.
+- What did not work / cautions:
+  - Several direct probes remain blocked or unstable: Hampton Court, Kingston Libraries, Kew and parts of Kingston/Surbiton returned 403 or fetch failures; Sofar's stored API URL and the old RHS broad hub returned 404. Searches were used to locate live official pages, never as sole evidence for inferred dates.
+  - Wimbledon Village's specific `Carols in the Stables` page still carries stale 2025-style day/date text while the 2026 month calendar says Saturday 5 December. It was not added.
+  - Puppet Theatre Barge's official pages now agree on the Richmond run through 4 October, but Ticket Tailor recommends Three Little Wolves for ages 4-10 and says it is not designed for under-4s. The watch item was resolved as an age-fit rejection.
+  - The 72 current social leads added no new row: all specific future Lamb and TwickFolk dates were already held, while undated venue posts remained discovery-only.
+- Try next time:
+  - Seek direct Riverhouse ticket pages for the 2 and 4 October listings and clear `verify` only when price and booking details agree; recheck the Walton guide for explicitly under-5 daytime shows.
+  - Recheck Wimbledon Village's December calendar for a corrected 2026 Carols in the Stables detail page, and keep its retail/tasting-heavy listings filtered out.
+  - Rotate away from Green Elmbridge and Families Online toward Kingston church Christmas programmes, Thames Ditton village organisers and Hampton Court's live event-detail pages; retry blocked broad endpoints only if their delivery changes.

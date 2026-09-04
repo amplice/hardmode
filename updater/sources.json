@@ -574,7 +574,7 @@
                          },
                          {
                              "name":  "RHS Garden Wisley",
-                             "url":  "https://www.rhs.org.uk/shows-events/",
+                             "url":  "https://www.rhs.org.uk/gardens/wisley/whats-on",
                              "checkFor":  [
                                               "Glow, school-holiday family trails, garden festivals and seasonal outdoor events",
                                               "use the official RHS ticket-session page for exact date ranges and entry windows"
@@ -666,6 +666,30 @@
                                               "exact event times, accessibility and current ticket prices",
                                               "exclude generic quizzes and unrelated outer-area fundraising events"
                                           ]
+                         },
+                         {
+                             "name":  "Wimbledon Village events",
+                             "url":  "https://wimbledonvillage.com/whats-on/",
+                             "checkFor":  [
+                                              "specific family days, parades, stable open days and seasonal community events",
+                                              "use individual event pages for exact dates and schedules; verify activity costs when not stated"
+                                          ]
+                         },
+                         {
+                             "name":  "Claremont Landscape Garden events",
+                             "url":  "https://www.nationaltrust.org.uk/visit/surrey/claremont-landscape-garden/events",
+                             "checkFor":  [
+                                              "younger-child trails, free heritage weekends and distinctive outdoor family events",
+                                              "apply the outer-area threshold and prefer official detail pages with booking and accessibility guidance"
+                                          ]
+                         },
+                         {
+                             "name":  "Walton-on-Thames community events guide",
+                             "url":  "https://www.walton-on-thames.org/whats-on/",
+                             "checkFor":  [
+                                              "Riverhouse Barn daytime traditional jazz, chamber music and clearly age-suitable family shows",
+                                              "treat the guide as a discovery source and keep verify true until venue pricing or tickets are confirmed"
+                                          ]
                          }
                      ],
     "searchQueries":  [
@@ -750,6 +774,9 @@
                           "All Saints Kingston Little Singing Saints Once Upon a Play 2026",
                           "Wimbledon Common family open day pumpkin hunt carols 2026",
                           "Wimbledon International Music Festival family concert 2026",
-                          "Momentum Children's Charity Surbiton concert 2026"
+                          "Momentum Children's Charity Surbiton concert 2026",
+                          "Wimbledon Village family events dress up Christmas 2026",
+                          "Claremont Landscape Garden family trails Heritage Open Days 2026",
+                          "Walton-on-Thames Riverhouse Barn daytime jazz chamber music family 2026"
                       ]
 }

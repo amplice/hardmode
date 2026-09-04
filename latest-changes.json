@@ -1,43 +1,35 @@
 {
-  "generatedAt": "2026-09-01T07:20:21.755Z",
-  "dateBasis": "2026-09-01",
-  "summary": "Removed thirteen finished rows and added eight high-fit under-5, local heritage, family music and community rows after a full source refresh.",
+  "generatedAt": "2026-09-04T07:23:09.483Z",
+  "dateBasis": "2026-09-04",
+  "summary": "Removed six finished rows and added six high-fit family, heritage, traditional-jazz and chamber-music rows after a full source refresh.",
   "added": [
-    "e20260913d: Commons Open Day on Wimbledon Common, 13 September.",
-    "e20260917c and e20261105c: two weekly Once Upon a Play under-5 blocks at All Saints Kingston, 17 September-22 October and 5 November-10 December.",
-    "e20260921c: Little Singing Saints ages 0-4 weekly block at All Saints Kingston, 21 September-30 November.",
-    "e20261018c: A Musical Potpourri for All Tastes at St Mark's Church, Surbiton, 18 October.",
-    "e20261105d: London in the Age of Ethelred the Unready at All Saints Kingston, 5 November.",
-    "e20261108c: The Duck with No Luck family concert with London Mozart Players in Wimbledon, 8 November.",
-    "e20261212f: Christmas Carols at the Windmill on Wimbledon Common, 12 December."
+    "e20260912g: Wimbledon Village Dress Up Day, 12 September.",
+    "e20260919e: free Heritage Open Days at Claremont Landscape Garden, 19-20 September.",
+    "e20260926d: The Squirrels Who Squabbled younger-family trail at Claremont, 26 September-1 November.",
+    "e20261002c: Nikita Burzanitsa piano recital at Riverhouse Barn, 2 October (verify details).",
+    "e20261004d: The Louisiana Rhythm Kings Sunday lunchtime traditional-jazz set at Riverhouse Barn, 4 October (verify details).",
+    "e20261206b: Christmas in the Village family day in Wimbledon, 6 December."
   ],
   "updated": [
-    "Refreshed all 68 configured source endpoints and ran all 78 standard search queries.",
-    "Added four productive recurring sources and four focused searches: All Saints under-5 venue pagination, Wimbledon and Putney Commons, Wimbledon International Music Festival and Momentum Children's Charity.",
-    "Updated the TDMR Christmas watch item for its date/weekday conflict, recorded the official Kingston Carnival cancellation and added the time-TBC Wimbledon pumpkin hunt to watchlist.",
-    "Rejected AELTC Early Years at Wimbledon rows because the official page targets Merton or Wandsworth residents, so Surbiton-family access is not established."
+    "Refreshed all 72 configured source endpoints, ran all 82 standard search queries and reviewed 72 fresh social leads.",
+    "Added Wimbledon Village, Claremont Landscape Garden and Walton-on-Thames.org as recurring sources, plus three focused searches.",
+    "Repaired the dead RHS shows/events URL to the live RHS Wisley what's-on page.",
+    "Resolved the Puppet Theatre Barge watch item: the Richmond location conflict is gone, but the current show is rejected because its recommended age is 4-10 and it is not designed for under-4s."
   ],
   "removed": [
-    "e798: Henry the Heron's Riverbank Self-Led Trail, ended 31 August.",
-    "e20260617: Jeppe Hein: Appearing Rooms, ended 31 August.",
-    "e20260718c: The Magic Faraway Tree summer trail, ended 31 August.",
-    "e20260725i: Historic Cookery in Henry VIII's Kitchens, ended 30 August.",
-    "e661: Rose Youth Theatre Summer Schools 2026, ended 29 August.",
-    "e20260825b: The Choir of Man, ended 29 August.",
-    "e744: Hampton Court Palace Food Festival, ended 31 August.",
-    "e20260829b: Open Day at the Legion, finished 29 August.",
-    "e20260829c: Funk Thieves at The Elm Tree, finished 29 August.",
-    "e812: Thames Ditton Miniature Railway Public Running Day, finished 30 August.",
-    "e20260830: Pasadena Roof Orchestra open-air concert, finished 30 August.",
-    "e749: Thames Ditton Miniature Railway Bank Holiday Running Day, finished 31 August.",
-    "e20260831: Maria + Guests at Ram Jam Records, finished 31 August."
+    "e20260721d: Summer Games at Ham House, ended 2 September.",
+    "e20260901b: Melanie C short set and Q&A, finished 1 September.",
+    "e617: The History of Seething Wells, finished 1 September.",
+    "e20260901: Life Drawing at the Pub, finished 1 September.",
+    "e20260903: Rewilding Rangers, finished 3 September.",
+    "e20260903c: Music For Minds fundraiser at Ram Jam, finished 3 September."
   ],
   "counts": {
     "before": {
-      "events": 302,
+      "events": 297,
       "recurring": 57,
       "sources": 53,
-      "watchlist": 75
+      "watchlist": 76
     },
     "after": {
       "events": 297,
