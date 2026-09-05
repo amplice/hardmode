@@ -1,3 +1,69 @@
+## 2026-09-05 -- autonomous gig-radar update run
+
+**Housekeeping:** removed 15 finished rows dated 2-4 Sep and retained all of today's events. Added
+21 exact future gigs, promoted Rob Heron's newly announced London date out of the watchlist, added
+two conservative watchlist leads and refreshed the existing Ron's Honky Tonk lead. Dataset target
+before generation: 280 gigs and 66 watchlist entries.
+
+**Mandatory venue refresh:** crawled every configured priority venue, including the documented
+secondary pages, pagination, feeds/APIs and the same-day social export where available.
+
+- Jamboree's full `/events/page/N/` and `?pno=N` catalogues produced a rolling four-week extension:
+  four Cable Street Rag Band dance nights, four Celtic Sessions and five TJ Johnson afternoons
+  through 12 Nov (13 rows). The conflicting 20 Sep Dime Notes page was held in the watchlist because
+  it claims the same 12:15 stage slot as the already-listed Fleeting Paradise Orchestra.
+- Green Note's full Sep-Dec catalogue produced Webb City's classic piano trio, Erin Harpe's
+  early-American Piedmont/ragtime duo, Ags Connolly's traditional-country album launch and Rob
+  Heron & Conrad Bird's cowboy-country/western-swing date (four rows). Modern jazz, bluegrass-only,
+  indie-folk and blues-only listings remained excluded.
+- Harrison, TwickFolk/Eel Pie, Irish Cultural Centre and Cecil Sharp House were current but their
+  qualifying published dates were already held. South London Irish Centre still supplies only
+  recurring session descriptions without a dated named bill. Nightjar's JSON feed still ends on
+  14 Nov and produced no new clean matches.
+- Spice of Life, Epsom Hot Jazz Club and Old Barn Bookham were unchanged beyond held Jazz Guide
+  dates. Ram Jam's full page/feed had no new qualifying act. Magic Garden's Tribe API remained
+  dominated by DJ/funk/world bookings. The Lamb's site remains undated and its social leads supplied
+  no new confirmable future show.
+- Half Moon Putney and Eel Pie remained blues/rock/tribute-heavy and were filtered strictly.
+  Riverhouse Barn still has the held Bix/Louisiana dates but no further qualifying event. Local
+  Fighting Cocks, Rose, cornerHOUSE and Boaters checks produced rock, generic jazz or insufficiently
+  described listings only.
+
+**Configured and specialist discovery:** reran all 52 pre-run standard queries and refreshed The
+Jazz Guide, SwingdanceUK, Swing Out London, Halibuts, Irish-session directories and the main artist
+tour-page leads. This produced The Dodge Brothers' exact PizzaExpress Holborn skiffle/jug-band date
+and Bishopsgate's two newly published 2027 live-band Swing Live dates; the bands remain TBA, so the
+latter are marked `verify`.
+
+**Rotated/new discovery angles:**
+
+- *NEW SPECIALIST FOLK-CLUB CATALOGUE ANGLE (1 add):* Hackney Folk Club's primary pages exposed
+  exact set-level timings for rare US old-time masters Bruce Molsky & Darol Anger at Chats Palace.
+  The recurring club was added to `keyVenues`, with a strict distance filter and dedicated query.
+- *NEW OLD-TIME SESSION PRIMARY-SITE ANGLE (1 lead):* Hitchin Old Time Jam's own site confirmed a
+  10 Sep Appalachian session. It is a strong match but too awkward from Surbiton for a routine jam,
+  so it stays watchlisted rather than being inflated into the main radar.
+- *NEW MUNICIPAL/VENUE RECURRENCE CROSS-CHECK (lead repaired):* Hiver's current Ron's Honky Tonk
+  page and Southwark's recently updated listing confirm 25 Sep, 30 Oct and 27 Nov at Fabal Beerhall.
+  Unnamed rotating country artists prevent main-list promotion; the automated recurrence stretching
+  to 2034 is explicitly ignored. The dead promoter URL was replaced in sources and watchlist.
+
+**Social/browser status:** the in-app browser bootstrap reported that no browser was available in
+this headless environment. A fresh collector export from 06:30 UTC was present and reviewed: all six
+configured profiles succeeded, collecting 60 leads with no login wall. Those posts were treated as
+discovery-only evidence; nothing social-only met the dated-confidence threshold for promotion.
+
+**What stayed dark / next time:** extend Jamboree's rolling series after 12 Nov; recheck Nightjar
+beyond 14 Nov, The Hum's autumn renewal, Paper Moon's Christmas band and South London Irish Centre
+for named dated bills. Revisit Ron's Honky Tonk when artist names appear, and verify the Dime Notes /
+Fleeting Paradise timetable conflict directly with Jamboree. Continue the strict Half Moon, Eel Pie
+and Fighting Cocks filter.
+
+**Validation:** generation and validation passed cleanly with 280 gigs, 280 upcoming, 66 watchlist,
+0 finished rows, 0 duplicate keys and 12 represented canonical genres.
+
+---
+
 ## 2026-09-02 -- autonomous gig-radar update run
 
 **Housekeeping:** removed 12 finished rows through 1 Sep (using `endDate` for Twinwood) and
