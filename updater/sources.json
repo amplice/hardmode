@@ -428,7 +428,7 @@
                              "name":  "Orange Tree Theatre Richmond (+ Spektrix feed)",
                              "url":  "https://orangetreetheatre.co.uk/whats-on/",
                              "checkFor":  [
-                                              "theatre runs, outdoor summer Shakespeare (OT on the Hill), Sunday morning coffee concerts, Christmas show (unannounced for 2026 as of Jul)",
+                                              "theatre runs, outdoor summer Shakespeare (OT on the Hill), Sunday morning coffee concerts and the Richmond Concert Series chamber programme at St Mary Magdalene Church",
                                               "MACHINE FEED: https://system.spektrix.com/orangetree/api/v3/events - public JSON of the whole season with first/last instance datetimes"
                                           ]
                          },
@@ -574,7 +574,7 @@
                          },
                          {
                              "name":  "RHS Garden Wisley",
-                             "url":  "https://www.rhs.org.uk/gardens/wisley/whats-on",
+                             "url":  "https://www.rhs.org.uk/gardens/wisley/whats-on?et=3",
                              "checkFor":  [
                                               "Glow, school-holiday family trails, garden festivals and seasonal outdoor events",
                                               "use the official RHS ticket-session page for exact date ranges and entry windows"
@@ -690,6 +690,14 @@
                                               "Riverhouse Barn daytime traditional jazz, chamber music and clearly age-suitable family shows",
                                               "treat the guide as a discovery source and keep verify true until venue pricing or tickets are confirmed"
                                           ]
+                         },
+                         {
+                             "name":  "Kingston Orpheus Choir",
+                             "url":  "https://www.kingstonorpheuschoir.com/concert-diary",
+                             "checkFor":  [
+                                              "local choral concerts with orchestra at St Andrew's Church, Surbiton",
+                                              "future dates are published well ahead; recheck for public ticket links and prices"
+                                          ]
                          }
                      ],
     "searchQueries":  [
@@ -777,6 +785,8 @@
                           "Momentum Children's Charity Surbiton concert 2026",
                           "Wimbledon Village family events dress up Christmas 2026",
                           "Claremont Landscape Garden family trails Heritage Open Days 2026",
-                          "Walton-on-Thames Riverhouse Barn daytime jazz chamber music family 2026"
+                          "Walton-on-Thames Riverhouse Barn daytime jazz chamber music family 2026",
+                          "Kingston Orpheus Choir St Andrew's Surbiton concerts 2026 2027",
+                          "Richmond Concert Series St Mary Magdalene Orange Tree chamber music 2026"
                       ]
 }

@@ -440,3 +440,24 @@ Format per run:
   - Seek direct Riverhouse ticket pages for the 2 and 4 October listings and clear `verify` only when price and booking details agree; recheck the Walton guide for explicitly under-5 daytime shows.
   - Recheck Wimbledon Village's December calendar for a corrected 2026 Carols in the Stables detail page, and keep its retail/tasting-heavy listings filtered out.
   - Rotate away from Green Elmbridge and Families Online toward Kingston church Christmas programmes, Thames Ditton village organisers and Hampton Court's live event-detail pages; retry blocked broad endpoints only if their delivery changes.
+
+## 2026-09-07
+- Method: probed all 75 configured `knownSources` endpoints, ran all 85 saved `searchQueries`, reviewed the 72 fresh social leads, re-polled the Rose, Polka and Orange Tree Spektrix feeds and checked every candidate against exact date/time/title/venue duplicates and exported feedback. Removed 14 event rows whose effective end date was before 7 September plus the clearly ended Canbury Bandstand recurring pattern. Active exhibitions, weekly blocks and other genuine ongoing rows were retained.
+- New sources/methods tried:
+  - KINGSTON/SURBITON CHURCH-CONCERT ORGANISER SWEEP: followed the previous log's suggestion and searched choir and church organisers directly. Kingston Orpheus Choir's official diary supplied Handel's Messiah at St Andrew's on 5 December and was added as a recurring source. Current Kingston Choral Society detail pages also corrected The Creation's performers and resolved the Christmas placeholder to The Night Before Christmas with published prices.
+  - THAMES DITTON VILLAGE-ORGANISER SWEEP: checked village, church and choir organisers rather than council roundups. Vital Village's toddler music was already represented as a recurring row. Ember Choral exposes a dated 6 December Claygate programme, but it appears under Past Concerts with no time or tickets, so it was put on the watchlist rather than promoted.
+  - HAMPTON COURT LIVE DETAIL-PAGE CRAWL: bypassed the intermittently blocked broad listing and opened current HRP event pages individually. This found weekend Shire Horse Carriage Rides on 12-27 September with exact price and age terms; the missing daily times and weather dependency are reflected in `verify:true`.
+- What worked:
+  - The fresh Lamb social poster contained three specific future local gigs: Rob Quo Duo (10 Sep), Joao de Mello (13 Sep) and Paul Armer (17 Sep). All were added as social-only leads with `verify:true`; Paul Armer remains time-TBC because the captured poster confirms the date but crops the time.
+  - Polka's Spektrix/detail-page comparison surfaced Big Dreams: After Party on 20 September, an unusually strong exact fit for ages 0-2 with two performance times and full prices.
+  - Orange Tree's newly announced Richmond Concert Series produced three high-value all-ages rows in 2026: The Fidelio Trio, the daytime Debussy-to-Coltrane programme, and Constanze. Prices and running times are not yet published and general sale opens 16 September, so all retain `verify:true`.
+  - Endpoint probing returned 57 direct HTTP 200 responses. The RHS Wisley broad URL now returns 404; it was repaired to the live filtered what's-on URL. Two focused organiser/concert searches were added.
+- What did not work / cautions:
+  - Six sources returned 403 and ten timed out in the direct probe; search and official detail pages were used to refresh those sources without inferring missing dates. The stored Sofar GraphQL route and one other endpoint returned 404 and produced no usable local event.
+  - Thames Ditton Christmas pages still surface stale 2025 material, and the TDMR Christmas page still has the incompatible `Saturday 2 December 2026` wording with times and prices TBC. Neither was guessed into the calendar.
+  - Ember Choral's future-dated item is filed as past and lacks operational details. It stays watchlisted. Routine toddler sessions already represented by recurring patterns were not duplicated.
+  - The social rows are specific enough to keep under the doorstep threshold, but social evidence alone is not treated as authoritative; all retain verification flags.
+- Try next time:
+  - On or after 16 September, recheck Orange Tree's Richmond Concert Series for prices and running times, and clear verification only where the ticket pages agree.
+  - Recheck The Lamb's next poster for Paul Armer's start time and independently confirm the other September running order.
+  - Check Ember Choral's upcoming page and Kingston Orpheus ticket links, and continue monitoring TDMR only for a corrected day/date rather than interpreting the contradiction.
