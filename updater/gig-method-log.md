@@ -1,3 +1,24 @@
+## 2026-09-07 -- always-include act policy
+
+**Housekeeping:** no gig rows changed. Added `priorityActs` to `updater/gig-sources.json`
+so Ewan Bleach and Doolally Tap are mandatory checks every gig-radar run, independent
+of venue. Added Doolally Tap's Instagram profile to the local collector.
+
+**Preference update:**
+- Always include public future Ewan Bleach gigs: solo, Cable Street Rag Band, Fleeting
+  Paradise Orchestra, Ewan-led lunches/residencies and strong collaborations.
+- Always include public future Doolally Tap gigs. User saw them over the weekend and
+  says they were great; use them as a strong positive comparator for 1920s New Orleans,
+  hot-jazz and jug-band style listings.
+
+**Next time:**
+- Check Ewan's official gigs page, Jamboree, Green Note, Songkick/Ents24/DICE and
+  social search.
+- Check Doolally Tap's official upcoming-gigs page, `@doolallytapjazz`, SwingdanceUK,
+  venue pages and ticket pages.
+
+---
+
 ## 2026-09-05 -- autonomous gig-radar update run
 
 **Housekeeping:** removed 15 finished rows dated 2-4 Sep and retained all of today's events. Added

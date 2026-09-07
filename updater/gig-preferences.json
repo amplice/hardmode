@@ -62,7 +62,7 @@
   },
   "reviewPolicy": {
     "errOnSideOfInclusion": true,
-    "inclusionNote": "Within the wanted genres, nearby/easy gigs can be included with a lower threshold. Central London should have a clear genre, venue, artist or date-night reason. Day-trip gigs need a stronger match or rare/high-quality pull. Always avoid bluegrass-only, modern jazz/fusion, modern country, generic open mics, and anything similar to exported user feedback unless clearly different.",
+    "inclusionNote": "Within the wanted genres, nearby/easy gigs can be included with a lower threshold. Central London should have a clear genre, venue, artist or date-night reason. Day-trip gigs need a stronger match or rare/high-quality pull. Always include public future Ewan Bleach and Doolally Tap gigs; user saw Doolally Tap in Sep 2026 and says they were great. Always avoid bluegrass-only, modern jazz/fusion, modern country, generic open mics, and anything similar to exported user feedback unless clearly different.",
     "doNotAddWithoutConfirmedDate": true,
     "doNotAddPastEvents": true,
     "markInferredVerify": true,

@@ -1,5 +1,29 @@
 {
   "note": "Sources and search queries for the gig-radar self-update. Rotate through venues and try 2-3 new discovery angles each run; log outcomes in gig-method-log.md.",
+  "priorityActs": [
+    {
+      "name": "Ewan Bleach",
+      "priority": "always-include",
+      "genres": ["hot jazz", "New Orleans / trad jazz", "swing"],
+      "url": "https://www.ewanbleach.com/gigs",
+      "secondaryUrls": ["https://www.ewanbleach.com/", "https://www.songkick.com/artists/10293984-ewan-bleach", "https://www.ents24.com/uk/tour-dates/ewan-bleach"],
+      "instagramHandles": [],
+      "instagramSearchQueries": ["Ewan Bleach Instagram gigs", "Ewan Bleach Cable Street Rag Band Instagram", "Ewan Bleach Fleeting Paradise Orchestra gigs"],
+      "crawlRule": "Crawl Ewan's official gigs page every run, then cross-check Jamboree, Green Note, Songkick, Ents24, DICE and venue/ticket pages for any missing dates. Search social/Instagram for late additions, but do not configure an Instagram handle until it is verified.",
+      "includeRule": "Always include public future Ewan Bleach gigs, including solo dates, Cable Street Rag Band, Fleeting Paradise Orchestra, Ewan-led lunches/residencies and strong collaborations. If the style is outside the radar (e.g. Turkish classical), include only when Ewan is a named performer and label it clearly."
+    },
+    {
+      "name": "Doolally Tap",
+      "priority": "always-include",
+      "genres": ["New Orleans / trad jazz", "hot jazz", "swing"],
+      "url": "https://www.doolallytap.net/upcoming-gigs",
+      "secondaryUrls": ["https://www.doolallytap.net/"],
+      "instagramHandles": ["doolallytapjazz"],
+      "instagramSearchQueries": ["Doolally Tap Instagram gigs", "Doolally Tap upcoming gigs London"],
+      "crawlRule": "Crawl the official upcoming-gigs page every run and also check @doolallytapjazz, SwingdanceUK, venue pages and ticket pages for new or changed dates.",
+      "includeRule": "Always include public future Doolally Tap gigs. User saw them and says they were great; treat them as a strong positive quality comparator for 1920s New Orleans/hot-jazz/jug-band style listings."
+    }
+  ],
   "priorityVenues": [
     {
       "name": "Jamboree",
@@ -254,7 +278,7 @@
     { "name": "Ents24", "url": "https://www.ents24.com/", "note": "UK gig aggregator." },
     { "name": "Gypsy Jazz Agenda", "url": "https://tbouttaz.github.io/GypsyJazzAgenda/", "note": "Community-maintained gypsy-jazz festival/gig calendar. 2026-07 check: festivals listed by month with no years — low value for dated London gigs." },
     { "name": "Sol Grimshaw gig guide", "url": "https://www.solgrimshaw.com/events-1", "note": "STRONG find (2026-07): London gypsy-jazz guitarist's own guide lists full dates for Fidelio Hot Club, Crazy Coqs and other Hot Club-circuit shows. Artist gig guides beat broken venue calendars." },
-    { "name": "Doolally Tap gig diary", "url": "https://doolallytap.net/upcoming-gigs", "note": "NEW 2026-08-18: official hot-jazz/jug-band diary with exact times and venues; surfaced Sidcup Jazz Club, Gabriel's Wharf and a monthly Ivy House Sunday run through Dec. Prefer this over generic artist aggregators." },
+    { "name": "Doolally Tap gig diary", "url": "https://doolallytap.net/upcoming-gigs", "note": "ALWAYS-INCLUDE artist source. Official hot-jazz/jug-band diary with exact times and venues; surfaced Sidcup Jazz Club, Gabriel's Wharf and a monthly Ivy House Sunday run through Dec. User saw them in Sep 2026 and says they were great. Prefer this over generic artist aggregators and check @doolallytapjazz for late additions." },
     { "name": "Halibuts swing listings", "url": "https://halibuts.com/genre/swing", "note": "London swing-genre gig aggregator; surfaced Jamboree/Nightjar/Pheasantry swing nights. KEY TRICK (2026-07-13): pagination ?page=N steps week-by-week (date-filter GET params are ignored); event-detail pages carry full date/time. 2026-07-19: swing genre exhausted at ~page 17 (late Dec 2026); heavy noise from Sinatra The Musical and Boisdale crooner residencies tagged 'swing' — filter by venue/title. Dates still worth year-verification against the venue." },
     { "name": "Down for the Count — live dates", "url": "https://www.downforthecount.co.uk/live-dates/", "note": "UK's busiest vintage-swing orchestra; own tour page is well-dated (Cadogan Hall, Pizza Express Live shows)." },
     { "name": "EFDSS Spektrix API", "url": "https://sales.efdss.org/efdss/api/v3/events", "note": "Cecil Sharp House HTML 403s scrapers, but this public API returns the full event feed as JSON — the reliable way to check for cajun/old-time/square-dance programming. The /instances endpoint gives per-date times (used for Barndance Nov/Dec 2026)." },
@@ -312,6 +336,11 @@
     "Jazzbourne New Cross live swing band",
     "Runnymede Jazz Club Addlestone traditional jazz programme",
     "Doolally Tap upcoming gigs London",
+    "site:doolallytap.net/upcoming-gigs Doolally Tap",
+    "site:instagram.com/p doolallytapjazz Doolally Tap",
+    "Ewan Bleach official gigs",
+    "site:ewanbleach.com/gigs Ewan Bleach",
+    "Ewan Bleach Cable Street Rag Band Fleeting Paradise Orchestra upcoming",
     "Dom Glynn His Sunday Best London honky tonk",
     "Irish Cultural Centre Hammersmith traditional music 2026",
     "South London Irish Centre Wimbledon live bands",

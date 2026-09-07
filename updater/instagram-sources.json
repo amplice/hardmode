@@ -64,6 +64,16 @@
       "priority": "medium-high",
       "enabled": true,
       "note": "Battersea source for cajun, zydeco, Balkan/klezmer brass, swing, New Orleans, old-time and strong world-roots nights."
+    },
+    {
+      "handle": "doolallytapjazz",
+      "name": "Doolally Tap",
+      "venue": "various",
+      "area": "London",
+      "calendarTargets": ["gig-radar"],
+      "priority": "highest",
+      "enabled": true,
+      "note": "Always-include artist source. User saw them in Sep 2026 and says they were great; posts are leads for public future Doolally Tap gigs and schedule changes."
     }
   ]
 }
