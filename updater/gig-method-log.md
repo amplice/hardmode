@@ -1,3 +1,23 @@
+## 2026-09-07 -- added more always-watch acts
+
+**Housekeeping:** no gig rows changed. Added Clay Bottom Jug Busters and Tuba Skinny
+to `priorityActs` so London/South-East/UK dates are mandatory gig-radar checks.
+Added `@jugbusters` to the Instagram collector.
+
+**Preference update:**
+- Always include public future London/South-East Clay Bottom Jug Busters gigs.
+- Always include public future London/South-East/UK Tuba Skinny gigs.
+- Treat both as strong positive comparators for jug band, hokum, pre-war blues,
+  New Orleans trad jazz, ragtime and early swing.
+
+**Next time:**
+- Check Clay Bottom Jug Busters through `@jugbusters`, Facebook, Joe Strouzer,
+  Eventbrite, WeGotTickets and broad London/South-East search.
+- Check Tuba Skinny through the official schedule, Ronnie Scott's, Songkick/Ents24
+  and venue/ticket pages; do not configure an Instagram handle until verified.
+
+---
+
 ## 2026-09-07 -- always-include act policy
 
 **Housekeeping:** no gig rows changed. Added `priorityActs` to `updater/gig-sources.json`

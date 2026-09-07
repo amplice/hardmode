@@ -22,6 +22,28 @@
       "instagramSearchQueries": ["Doolally Tap Instagram gigs", "Doolally Tap upcoming gigs London"],
       "crawlRule": "Crawl the official upcoming-gigs page every run and also check @doolallytapjazz, SwingdanceUK, venue pages and ticket pages for new or changed dates.",
       "includeRule": "Always include public future Doolally Tap gigs. User saw them and says they were great; treat them as a strong positive quality comparator for 1920s New Orleans/hot-jazz/jug-band style listings."
+    },
+    {
+      "name": "Clay Bottom Jug Busters",
+      "priority": "always-include-london",
+      "genres": ["jug band", "old-time", "skiffle", "hot jazz"],
+      "url": "https://www.joestrouzer.com/clay-bottom-jug-busters",
+      "secondaryUrls": ["https://www.facebook.com/jugbusters/", "https://www.instagram.com/jugbusters/", "https://www.eventbrite.co.uk/d/united-kingdom--london/clay-bottom-jug-busters/", "https://wegottickets.com/"],
+      "instagramHandles": ["jugbusters"],
+      "instagramSearchQueries": ["Clay Bottom Jug Busters London Instagram", "site:instagram.com/p jugbusters Clay Bottom Jug Busters London", "Clay Bottom Jug Busters London gig"],
+      "crawlRule": "Search their Instagram @jugbusters, Facebook page, Joe Strouzer page, Eventbrite, WeGotTickets and broad web for London/South-East dates every run. Bristol/Somerset dates are useful context but should not flood the main radar unless travel is explicitly worthwhile.",
+      "includeRule": "Always include public future London/South-East Clay Bottom Jug Busters gigs. Treat them as a strong positive comparator for Memphis jug band, hokum, old blues, skiffle and danceable pre-war roots listings."
+    },
+    {
+      "name": "Tuba Skinny",
+      "priority": "always-include-uk",
+      "genres": ["New Orleans / trad jazz", "hot jazz", "swing"],
+      "url": "https://tubaskinny.com/new-events",
+      "secondaryUrls": ["https://tubaskinny.com/", "https://www.ronniescotts.co.uk/find-a-show/tuba-skinny", "https://www.songkick.com/artists/2903866-tuba-skinny", "https://www.ents24.com/uk/tour-dates/tuba-skinny"],
+      "instagramHandles": [],
+      "instagramSearchQueries": ["Tuba Skinny Instagram UK tour", "Tuba Skinny London Ronnie Scott's 2026", "Tuba Skinny UK tour dates"],
+      "crawlRule": "Crawl Tuba Skinny's official schedule every run and cross-check Ronnie Scott's, Songkick, Ents24, Bandsintown-powered pages and venue/ticket pages for UK/London dates. Search social/Instagram but do not configure a handle until verified.",
+      "includeRule": "Always include public future London/South-East/UK Tuba Skinny gigs. They are a top positive comparator for New Orleans traditional jazz, early jazz, ragtime, blues and swing."
     }
   ],
   "priorityVenues": [
@@ -341,6 +363,12 @@
     "Ewan Bleach official gigs",
     "site:ewanbleach.com/gigs Ewan Bleach",
     "Ewan Bleach Cable Street Rag Band Fleeting Paradise Orchestra upcoming",
+    "Clay Bottom Jug Busters London gig",
+    "site:instagram.com/p jugbusters Clay Bottom Jug Busters London",
+    "Clay Bottom Jug Busters Eventbrite WeGotTickets",
+    "Tuba Skinny London UK tour dates",
+    "site:tubaskinny.com/new-events Tuba Skinny London",
+    "Tuba Skinny Ronnie Scott's London",
     "Dom Glynn His Sunday Best London honky tonk",
     "Irish Cultural Centre Hammersmith traditional music 2026",
     "South London Irish Centre Wimbledon live bands",

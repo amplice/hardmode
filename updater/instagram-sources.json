@@ -84,6 +84,16 @@
       "priority": "highest",
       "enabled": true,
       "note": "Always-include artist source. Posts are leads for public future Ewan solo, Cable Street Rag Band, Fleeting Paradise Orchestra, residency and collaboration gigs."
+    },
+    {
+      "handle": "jugbusters",
+      "name": "Clay Bottom Jug Busters",
+      "venue": "various",
+      "area": "Bristol / London",
+      "calendarTargets": ["gig-radar"],
+      "priority": "highest",
+      "enabled": true,
+      "note": "Always-include London/South-East artist source. Posts are leads for public future Clay Bottom Jug Busters gigs and strong jug-band/hokum comparators."
     }
   ]
 }

@@ -32,7 +32,7 @@ Delete rows from `gig-data.json` `gigs` whose `date` or `endDate` is before toda
 
 Refresh key venues and run standard search queries. Then try at least 2-3 discovery angles you have not used recently; check `updater/gig-method-log.md` first.
 
-Treat `priorityActs` and `priorityVenues` in `updater/gig-sources.json` as mandatory every run. For each one, crawl the primary URL, useful secondary URLs, pagination/API/feed variants noted in `crawlRule`, and configured Instagram profiles or Instagram search queries when possible. Always include public future gigs for priority acts unless the date is unconfirmed or the event is private. The current always-include acts are Ewan Bleach and Doolally Tap. The venue/source names the user specifically wants watched closely are: Jamboree, The Lamb Surbiton, Green Note, The Harrison, Nightjar, Spice of Life, Ram Jam Records, TwickFolk/Eel Pie at The Cabbage Patch, The Magic Garden Battersea, Epsom Hot Jazz Club, Old Barn Bookham Jazz Club, Irish Cultural Centre Hammersmith, Cecil Sharp House and South London Irish Centre. Half Moon Putney and Riverhouse Barn should be watched but filtered more strictly.
+Treat `priorityActs` and `priorityVenues` in `updater/gig-sources.json` as mandatory every run. For each one, crawl the primary URL, useful secondary URLs, pagination/API/feed variants noted in `crawlRule`, and configured Instagram profiles or Instagram search queries when possible. Always include public future gigs for priority acts unless the date is unconfirmed or the event is private. The current always-include acts are Ewan Bleach, Doolally Tap, Clay Bottom Jug Busters and Tuba Skinny. The venue/source names the user specifically wants watched closely are: Jamboree, The Lamb Surbiton, Green Note, The Harrison, Nightjar, Spice of Life, Ram Jam Records, TwickFolk/Eel Pie at The Cabbage Patch, The Magic Garden Battersea, Epsom Hot Jazz Club, Old Barn Bookham Jazz Club, Irish Cultural Centre Hammersmith, Cecil Sharp House and South London Irish Centre. Half Moon Putney and Riverhouse Barn should be watched but filtered more strictly.
 
 Good discovery angles:
 
@@ -42,7 +42,7 @@ Good discovery angles:
 - Ticketing platforms: DICE, TicketSource, See Tickets, WeGotTickets, Eventbrite.
 - Artist tour pages for known trad/jazz/roots acts.
 - Venue social posts where sites lag; mark social-only rows `confidence: "verify"`.
-- Artist-owned pages can beat venue calendars. Always check Ewan Bleach's official gigs page and Doolally Tap's official upcoming-gigs page, plus Doolally's Instagram profile.
+- Artist-owned pages can beat venue calendars. Always check Ewan Bleach's official gigs page, Doolally Tap's official upcoming-gigs page, Clay Bottom Jug Busters social/ticketing leads and Tuba Skinny's official schedule, plus configured artist Instagram profiles.
 
 ## 3. Add only genuinely in-genre dated gigs
 
