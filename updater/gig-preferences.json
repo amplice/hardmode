@@ -62,12 +62,52 @@
   },
   "reviewPolicy": {
     "errOnSideOfInclusion": true,
-    "inclusionNote": "Within the wanted genres, nearby/easy gigs can be included with a lower threshold. Central London should have a clear genre, venue, artist or date-night reason. Day-trip gigs need a stronger match or rare/high-quality pull. Always include public future Ewan Bleach and Doolally Tap gigs; user saw Doolally Tap in Sep 2026 and says they were great. Also always include London/South-East Clay Bottom Jug Busters gigs and UK/London Tuba Skinny gigs. Treat Doolally Tap, Clay Bottom Jug Busters and Tuba Skinny as strong positive comparators for 1920s New Orleans, hot-jazz, jug-band, hokum and pre-war roots listings. Always avoid bluegrass-only, modern jazz/fusion, modern country, generic open mics, and anything similar to exported user feedback unless clearly different.",
+    "inclusionNote": "Within the wanted genres, nearby/easy gigs can be included with a lower threshold. Central London should have a clear genre, venue, artist or date-night reason. Day-trip gigs need a stronger match or rare/high-quality pull. Always include public future Ewan Bleach and Doolally Tap gigs; user saw Doolally Tap in Sep 2026 and says they were great. Also always include London/South-East Clay Bottom Jug Busters gigs and UK/London Tuba Skinny gigs. Prioritize FoBo Jug Band, Shirt Tail Stompers, Dom Glynn & His Sunday Best, Basin Street Brawlers, Dunajska Kapelye and Tropanka when they have public London/South-East dates. Treat Doolally Tap, Clay Bottom Jug Busters, Tuba Skinny, Hokum High Rollers, Sluetown Strutters, Forty Drop Few and Pendulum Hearts as strong positive comparators for 1920s New Orleans, hot-jazz, jug-band, hokum and pre-war roots listings. Always avoid bluegrass-only, modern jazz/fusion, modern country, generic open mics, and anything similar to exported user feedback unless clearly different.",
     "doNotAddWithoutConfirmedDate": true,
     "doNotAddPastEvents": true,
     "markInferredVerify": true,
     "preferSpecificEventUrls": true,
     "uncertainLeadsGoToWatchlist": true
+  },
+  "tasteSignals": {
+    "priorityActs": [
+      "Ewan Bleach",
+      "Doolally Tap",
+      "Clay Bottom Jug Busters",
+      "Tuba Skinny",
+      "The FoBo Jug Band",
+      "The Shirt Tail Stompers",
+      "Dom Glynn & His Sunday Best",
+      "The Basin Street Brawlers",
+      "Dunajska Kapelye",
+      "Tropanka"
+    ],
+    "strongPositiveComparators": [
+      "Hokum High Rollers",
+      "Sluetown Strutters",
+      "Forty Drop Few",
+      "Pendulum Hearts",
+      "Doolally Tap",
+      "Clay Bottom Jug Busters",
+      "Tuba Skinny"
+    ],
+    "acceptableButNotPriority": [
+      "The Jake Leg Jug Band",
+      "Biscuit Town",
+      "TJ Johnson",
+      "The Cosimo Matassa Project",
+      "Ed Hicks and His Hot Cow Licks",
+      "The Longshore Drifters"
+    ],
+    "negativeComparators": [
+      "The Rigmarollers",
+      "Hot Club of Jupiter",
+      "Benoit Viellefon Hot Club",
+      "Harry Diplock",
+      "La Bouche Manouche",
+      "The Jive Aces"
+    ],
+    "notes": "Jake Leg are ok but a bit hokey; FoBo are pretty good; Rigmarollers no; Biscuit Town ok but not exciting enough to prioritize; Shirt Tail Stompers pretty good; TJ Johnson ok but not priority; Cosimo Matassa Project good but too R&B; Ed Hicks ok but not priority; Dom Glynn great; Longshore Drifters ok but no; Basin Street Brawlers yes, partly because Ewan Bleach is/was involved; no to generic hot-club/manouche acts listed here; yes to Dunajska Kapelye/Tropanka as outer-edge Balkan/klezmer/gypsy-jazz energy."
   },
   "sourceTrust": {
     "prefer": [

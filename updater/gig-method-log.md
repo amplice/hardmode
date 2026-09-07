@@ -1,3 +1,25 @@
+## 2026-09-07 -- artist taste calibration
+
+**Housekeeping:** no gig rows changed. Promoted FoBo Jug Band, Shirt Tail Stompers,
+Dom Glynn & His Sunday Best, Basin Street Brawlers, Dunajska Kapelye and Tropanka
+to `priorityActs` after user listening feedback. Added explicit preference signals
+for okay-but-not-priority and negative comparator acts.
+
+**Positive artist signals:**
+- FoBo Jug Band: pretty good; priority-watch for ragtime country-blues / jug band.
+- Shirt Tail Stompers: pretty good; priority-watch for hot jazz / Harlem swing.
+- Dom Glynn & His Sunday Best: great; priority-watch for honky tonk / old-school country.
+- Basin Street Brawlers: yes; Ewan Bleach is/was involved; priority hot-jazz comparator.
+- Dunajska Kapelye / Tropanka: yes; priority outer-edge Balkan/klezmer/gypsy-jazz energy.
+
+**Negative / non-priority calibration:**
+- Jake Leg Jug Band, Biscuit Town, TJ Johnson, Cosimo Matassa Project, Ed Hicks and
+  Longshore Drifters are acceptable or good but not priority.
+- Rigmarollers, Hot Club of Jupiter, Benoit Viellefon Hot Club, Harry Diplock,
+  La Bouche Manouche and The Jive Aces should not drive recommendations.
+
+---
+
 ## 2026-09-07 -- added more always-watch acts
 
 **Housekeeping:** no gig rows changed. Added Clay Bottom Jug Busters and Tuba Skinny
