@@ -74,6 +74,16 @@
       "priority": "highest",
       "enabled": true,
       "note": "Always-include artist source. User saw them in Sep 2026 and says they were great; posts are leads for public future Doolally Tap gigs and schedule changes."
+    },
+    {
+      "handle": "ewanbleach",
+      "name": "Ewan Bleach",
+      "venue": "various",
+      "area": "London",
+      "calendarTargets": ["gig-radar"],
+      "priority": "highest",
+      "enabled": true,
+      "note": "Always-include artist source. Posts are leads for public future Ewan solo, Cable Street Rag Band, Fleeting Paradise Orchestra, residency and collaboration gigs."
     }
   ]
 }

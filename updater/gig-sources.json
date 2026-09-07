@@ -7,9 +7,9 @@
       "genres": ["hot jazz", "New Orleans / trad jazz", "swing"],
       "url": "https://www.ewanbleach.com/gigs",
       "secondaryUrls": ["https://www.ewanbleach.com/", "https://www.songkick.com/artists/10293984-ewan-bleach", "https://www.ents24.com/uk/tour-dates/ewan-bleach"],
-      "instagramHandles": [],
-      "instagramSearchQueries": ["Ewan Bleach Instagram gigs", "Ewan Bleach Cable Street Rag Band Instagram", "Ewan Bleach Fleeting Paradise Orchestra gigs"],
-      "crawlRule": "Crawl Ewan's official gigs page every run, then cross-check Jamboree, Green Note, Songkick, Ents24, DICE and venue/ticket pages for any missing dates. Search social/Instagram for late additions, but do not configure an Instagram handle until it is verified.",
+      "instagramHandles": ["ewanbleach"],
+      "instagramSearchQueries": ["Ewan Bleach Instagram gigs", "site:instagram.com/p ewanbleach Ewan Bleach gig", "Ewan Bleach Cable Street Rag Band Instagram", "Ewan Bleach Fleeting Paradise Orchestra gigs"],
+      "crawlRule": "Crawl Ewan's official gigs page every run, then cross-check @ewanbleach, Jamboree, Green Note, Songkick, Ents24, DICE and venue/ticket pages for any missing dates. Use Instagram/social for late additions.",
       "includeRule": "Always include public future Ewan Bleach gigs, including solo dates, Cable Street Rag Band, Fleeting Paradise Orchestra, Ewan-led lunches/residencies and strong collaborations. If the style is outside the radar (e.g. Turkish classical), include only when Ewan is a named performer and label it clearly."
     },
     {
