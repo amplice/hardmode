@@ -1,3 +1,66 @@
+## 2026-09-08 -- autonomous gig-radar update run
+
+**Housekeeping:** removed 17 finished rows dated 5-7 Sep and retained all events dated today.
+Added 21 future rows, leaving 284 gigs and 66 watchlist entries before generation. Updated both
+`meta.updated` and `meta.dateBasis` to 2026-09-08. No watchlist entries were removed merely for
+lacking a date.
+
+**Mandatory act sweep:** checked the primary, secondary, feed/pagination and searchable social
+routes configured for all ten priority acts.
+
+- Ewan Bleach's authoritative Squarespace event JSON exposed two missing named dates: Makram at
+  Sands Films on 25 Sep and Fleeting Paradise Orchestra at St Giles, Oxford on 10 Oct. Makram is
+  outside the core styles but is included under the explicit always-include rule and clearly labelled.
+- Shirt Tail Stompers' hidden/weak own diary was recovered through The Jazz Centre UK's primary
+  booking page (24 Oct). Green Note/Folk and Roots confirmed Dunajska Kapelye (16 Oct) and Tropanka
+  (26 Oct), both strong positive outer-edge examples from the user's listening feedback.
+- Doolally Tap, FoBo Jug Band and Dom Glynn had no future dates beyond rows already held. Clay
+  Bottom Jug Busters surfaced only Bristol/Somerset context, with no new London/South-East date.
+  Tuba Skinny's official diary had US dates but no future UK show. Basin Street Brawlers' nominal
+  official site remains stale/unreliable and no authoritative new London booking was found.
+
+**Mandatory venue/source refresh:** fetched every configured priority venue and its useful secondary
+or structured route, and reran all 76 standard search queries (76 successful Bing result pages).
+
+- Jamboree pagination now reaches `?pno=9`; it added four Tuesday Celtic Sessions through 8 Dec
+  and three Cable Street Rag Band live-swing nights through 3 Dec. Individual event slugs were used.
+- Green Note added Elsie Franklin and the Rockettes' country-blues/ragtime/early-jazz show, plus the
+  two priority Balkan acts above. The Harrison added The Magic Violin Trio and English-trad veteran
+  John Kirkpatrick. The Irish Cultural Centre added its exact 11 Sep free Friday trad session.
+- The Magic Garden's Tribe API plus fresh social post confirmed Trans-Siberian March Band on 12 Sep;
+  the live Balkan/Klezmer brass is included, while the later DJ portion is disclosed. The Lamb's fresh
+  5 Sep post supplied a specific 10 Sep Rob Quo booking; it remains `verify` because no time was posted.
+- Spice of Life, Epsom Hot Jazz Club, Old Barn Bookham, TwickFolk/Eel Pie, Cecil Sharp House, South
+  London Irish Centre, Half Moon Putney, Riverhouse Barn, Ram Jam and the other easy-local venues had
+  no new qualifying exact row. Rock/tribute, modern/free jazz, bluegrass-only and ordinary songwriter
+  listings were filtered out. Nightjar's direct feed refresh was blocked by a bad hostname certificate;
+  the previously harvested programme still runs through 14 Nov and no defensible new date was inferred.
+
+**Rotated discovery angles:**
+
+- *PRIORITY-ACT STRUCTURED-DIARY GAP AUDIT (2 adds):* queried artist-owned Squarespace JSON rather
+  than relying on rendered calendars; this recovered the two missing Ewan Bleach dates.
+- *JAZZ HERITAGE / MUSEUM CALENDAR (4 adds):* The Jazz Centre UK proved an unusually clean source
+  for old-style programming, adding Great British Jazz Band, Shirt Tail Stompers, Duncan Hemstock
+  Quartet and Rico Tomasso's Hot Five. It was added to `keyVenues` with a strict Southend travel rule
+  and a dedicated search query.
+- *FRESH SOCIAL-TO-PRIMARY RECONCILIATION (3 adds plus 1 verify):* reviewed the same-day nine-profile
+  Instagram export (108 leads), then reconciled posts against Green Note and Magic Garden primary
+  listings. This confirmed Elsie Franklin, Dunajska/Tropanka context and Trans-Siberian March Band;
+  only the hyper-local Rob Quo post stayed social-only/`verify`.
+
+**Browser/social status:** the computer-use surface reported no browser or app in this headless run,
+so no live logged-in Instagram session was available. The local collector export was fresh today and
+all nine configured profiles were reviewed; it was used only as discovery evidence.
+
+**What stayed dark / next time:** retry Nightjar after its TLS certificate is corrected and check for
+dates beyond 14 Nov; extend Jamboree after 8 Dec; recheck The Lamb for Rob Quo's start time; inspect
+South London Irish Centre for a dated named bill; and revisit Clay Bottom Jug Busters/Tuba Skinny for
+new South-East/UK announcements. Keep The Jazz Centre UK in rotation but retain the high Southend
+threshold so its modern-jazz programme does not flood the radar.
+
+---
+
 ## 2026-09-07 -- artist taste calibration
 
 **Housekeeping:** no gig rows changed. Promoted FoBo Jug Band, Shirt Tail Stompers,
