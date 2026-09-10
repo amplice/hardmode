@@ -312,6 +312,10 @@
       .filter(matchesSearch)
       .filter(lensMatch)
       .sort((a, b) => {
+        if (state.lens === 'home') {
+          const featuredDelta = Number(Boolean(b.featured)) - Number(Boolean(a.featured));
+          if (featuredDelta) return featuredDelta;
+        }
         const longDelta = Number(isLongRun(a)) - Number(isLongRun(b));
         if (state.lens === 'home' && longDelta) return longDelta;
         return (a.sortKey || `${a.date} ${a.time || ''}`).localeCompare(b.sortKey || `${b.date} ${b.time || ''}`) || score(b) - score(a);

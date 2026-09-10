@@ -43,6 +43,7 @@ Good discovery angles:
 - Artist tour pages for known trad/jazz/roots acts.
 - Venue social posts where sites lag; mark social-only rows `confidence: "verify"`.
 - Artist-owned pages can beat venue calendars. Always check Ewan Bleach's official gigs page, Doolally Tap's official upcoming-gigs page, Clay Bottom Jug Busters social/ticketing leads and Tuba Skinny's official schedule, plus configured artist Instagram profiles.
+- Cross-check Coin Street/Gabriel's Wharf and other free all-ages festival pages for priority acts. Inspect each date in multi-date festival pages separately, because each date may have a different line-up. Flag daytime/all-ages priority-act gigs as family-calendar candidates in `updater/gig-method-log.md`.
 
 ## 3. Add only genuinely in-genre dated gigs
 

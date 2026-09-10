@@ -201,7 +201,13 @@
         .filter(rangeOk)
         .filter(lensOk)
         .filter(gig => !q || hay(gig).includes(q))
-        .sort((a, b) => (a.sortKey || a.date).localeCompare(b.sortKey || b.date) || score(b) - score(a));
+        .sort((a, b) => {
+          if (state.lens === 'home') {
+            const featuredDelta = Number(Boolean(b.featured)) - Number(Boolean(a.featured));
+            if (featuredDelta) return featuredDelta;
+          }
+          return (a.sortKey || a.date).localeCompare(b.sortKey || b.date) || score(b) - score(a);
+        });
     }
 
     function groupName(gig) {

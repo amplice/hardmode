@@ -302,6 +302,7 @@
     }
   ],
   "keyVenues": [
+    { "name": "Coin Street / Gabriel's Wharf", "area": "Waterloo / South Bank, London", "genres": ["hot jazz", "New Orleans / trad jazz", "swing"], "url": "https://www.coinstreet.org/whats-on", "note": "Family-crossover source rather than a regular music venue. Check for free all-ages festivals and inspect every date in multi-date event pages. The 2026 Arts Festival had different priority acts on 5 Sep (Doolally Tap) and 19 Sep (Ewan Bleach/Cable Street Rag Band)." },
     { "name": "Toulouse Lautrec Jazz Club", "area": "Kennington, London", "genres": ["gypsy jazz", "hot jazz"], "url": "https://toulouselautrec.co.uk/", "note": "CURRENT premier London gypsy-jazz venue (La Bouche Manouche, London Django Collective). Regular manouche nights + annual London Gypsy Jazz Festival (Apr, out of the summer window). Ticketing subdomain sometimes 403s — read the main site." },
     { "name": "Vortex Jazz Club — 'Gypsy Jazz Monthly'", "area": "Dalston, London", "genres": ["gypsy jazz", "New Orleans / trad jazz"], "url": "https://www.vortexjazz.co.uk/", "note": "Monthly manouche residency (Gina Boreham) since 2006, plus trad acts (Tuba Skinny played here). JS calendar — dates appear closer to the time." },
     { "name": "Cecil Sharp House (EFDSS)", "area": "Camden, London", "genres": ["cajun", "zydeco", "old-time", "western swing"], "url": "https://www.cecilsharphouse.org/whats-on", "note": "Cajun/zydeco dances, old-time jams, string-band nights, square dances." },
@@ -431,6 +432,7 @@
     "Ewan Bleach official gigs",
     "site:ewanbleach.com/gigs Ewan Bleach",
     "Ewan Bleach Cable Street Rag Band Fleeting Paradise Orchestra upcoming",
+    "Ewan Bleach Cable Street Rag Band Gabriel's Wharf Coin Street",
     "Clay Bottom Jug Busters London gig",
     "site:instagram.com/p jugbusters Clay Bottom Jug Busters London",
     "Clay Bottom Jug Busters Eventbrite WeGotTickets",

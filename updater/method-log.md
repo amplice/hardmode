@@ -461,3 +461,31 @@ Format per run:
   - On or after 16 September, recheck Orange Tree's Richmond Concert Series for prices and running times, and clear verification only where the ticket pages agree.
   - Recheck The Lamb's next poster for Paul Armer's start time and independently confirm the other September running order.
   - Check Ember Choral's upcoming page and Kingston Orpheus ticket links, and continue monitoring TDMR only for a corrected day/date rather than interpreting the contradiction.
+
+## 2026-09-09 - Gabriel's Wharf miss correction
+- Added the official Coin Street listing for Gabriel's Wharf Arts Festival on 19 September: free, all ages, 12:00-17:00, with Ewan Bleach's Cable Street Rag Band at 14:00 and 16:00, swing performances/workshops and family art.
+- Root cause: the family pass watched Southbank Centre but not Coin Street, and it did not cross-check family-suitable discoveries from `gig-data.json`. The gig pass had captured Doolally Tap's 5 September appearance but failed to inspect the separate line-up for the festival's 19 September date.
+- Prevention: Coin Street/Gabriel's Wharf is now a recurring family source; the family updater must cross-check daytime/all-ages priority-act gigs; multi-date festival pages must be reviewed date by date.
+
+## 2026-09-10
+- Method: refreshed all 77 configured `knownSources` endpoints and ran all 88 saved `searchQueries` before expanding the source list. Direct probes returned 67 HTTP 200 responses, five 403s, one 400, two 404s and two connection errors. Reviewed the fresh 108-lead social export across all nine profiles, checked official detail and ticket pages, removed rows finished before 10 September, and tested candidates against exact date/time/title/venue duplicates and exported feedback.
+- New sources/methods tried:
+  - HERITAGE OPEN DAYS LOCAL DIRECTORY SWEEP: searched the national 2026 directory by priority place and opened individual submission pages. This produced the free St Matthew's Surbiton Open Day with exact hours and an explicit 12+ limit only for the tower.
+  - KINGSTON CYCLING CAMPAIGN / LONDON CYCLING FESTIVAL ORGANISER ROUTE: checked the organiser's family-rides material and the council's specific event page. This produced the free, all-ages 20 September autumn ride from Beverley Park.
+  - COLETS COMMUNITY-ORGANISER EVENTBRITE SCAN: inspected structured ticket data rather than generic fireworks roundups. The 1 November event has an unusually useful 18:30 light show for younger children, followed by the main fireworks.
+  - RHS TICKET-SESSION INVENTORY: bypassed the dead filtered Wisley URL and opened the official dated booking session. This confirmed the 5 October under-5 Welly Walk, its 30-minute slot and child supplement without inferring dates from a stale listing.
+  - DITTONS LIBRARY DIRECT SCAN: checked Surrey's live library page for special local programming. It exposed only routine under-5 rhymetimes already covered by recurring provision, so no duplicate row was added.
+- What worked:
+  - The official Irish Cultural Centre and Jamboree detail pages supplied three free daytime or explicitly family-friendly traditional-music dates on 11-13 September. SwingdanceUK supplied free Regent's Park big-band dancing on 20 September and the Southbank Christmas Eve Five Go Jiving session.
+  - The mandatory `gig-data.json` QA pass covered every future gig. It promoted the 20 September Ewan Bleach lunch show, Ewan's 10 and 24 October priority dates, all four current Doolally Tap Ivy House dates, and the free/daytime Regent's Park and Southbank rows. Ambiguous-year Winning Post/Spice listings and adult U3A lunchtime-club rows were conservatively excluded.
+  - The current Doolally Tap page lists separate Sunday dates for 20 September, 18 October, 8 November and 20 December. Because the page omits the year and full ticket terms, each row remains `verify:true` despite the weekday/date alignment and current context.
+  - Social review yielded one specific new priority-act lead: Ewan Bleach at The Shaftesbury Tavern on 27 September. It is future-dated and detailed enough to retain, but remains `verify:true` because the evidence is social-only.
+  - Source maintenance repaired RHS Wisley to its live garden page, added Heritage Open Days, Kingston Cycling Campaign and Colets family events as recurring sources, and added four focused searches. Configured coverage is now 80 sources and 92 queries.
+- What did not work / cautions:
+  - Broad search results were noisy and often stale. Facebook returned 400, five venue sites blocked direct probes, the stored Sofar GraphQL route still returned 404, and the old RHS filtered what's-on URL returned 404. Missing dates were never inferred from those failures.
+  - Dittons Library had no distinctive one-off family event. Routine local rhymetimes were not duplicated. The current Southbank Virtual Orchestra result is age 7+ and was rejected for this family's child-age profile.
+  - Several jazz results lacked a trustworthy year or were clearly adult membership events; they were left out even when their daytime format initially looked promising.
+- Try next time:
+  - Recheck the Ivy House ticket/detail pages for Doolally Tap years, prices and child-access terms, and clear `verify` only when those pages agree with Doolally's current schedule.
+  - Recheck The Lamb's next poster and the Shaftesbury Tavern event page for independent times; continue treating precise social-only leads as verification-required.
+  - On or after 16 September, revisit Orange Tree's Richmond Concert Series ticket pages for prices and running times. Keep monitoring TDMR only for a corrected day/date, not by interpreting its contradictory Christmas copy.

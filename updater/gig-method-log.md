@@ -957,3 +957,7 @@ prompt/prefs/sources, twice-weekly scheduled task) and seeded it with an initial
 - Social-only venue nights (Instagram/Facebook) not yet cracked programmatically — same gap as
   the main calendar (see main method-log). Try public page endpoints / ticketing back-doors.
 - Cecil Sharp House cajun/old-time dance dates worth a direct what's-on scrape each run.
+## 2026-09-09 - Gabriel's Wharf priority-act correction
+- Added Ewan Bleach & The Cable Street Rag Band at the free Gabriel's Wharf Arts Festival on 19 September, with sets at 14:00 and 16:00.
+- Root cause: the earlier pass found Doolally Tap on the festival's 5 September programme but did not inspect the distinct 19 September line-up, so it missed a mandatory Ewan Bleach date.
+- Prevention: added Coin Street/Gabriel's Wharf as a crossover source, a focused Ewan/Coin Street query and a rule to inspect every date on multi-date festival pages and flag family-suitable gig rows for the family calendar.

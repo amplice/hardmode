@@ -26,6 +26,8 @@ Delete rows from `calendar-data.json` `events` whose `date` or `endDate` is befo
 
 Refresh the known sources in `updater/sources.json` and run the standard `searchQueries`. Then try at least 2-3 discovery methods or sources you have not used recently; check `updater/method-log.md` first.
 
+Before finishing discovery, cross-check future rows in `gig-data.json`. Promote any daytime, weekend or all-ages gig into the family calendar when it is free, toddler-plausible, easy from Surbiton/Waterloo, or features a priority act such as Ewan Bleach or Doolally Tap. This is a mandatory cross-calendar QA pass, not an optional discovery angle. A gig can belong in both calendars.
+
 Prioritise:
 
 - Surbiton, Berrylands, Tolworth, Kingston, Thames Ditton, Long Ditton, Hampton Court.
@@ -44,6 +46,7 @@ Rules:
 - Never add past-dated or undated events.
 - Never invent or guess a date from a stale page.
 - Do not duplicate an existing row with the same `date`, `time`, `title` and `venue`.
+- For multi-date festival pages, inspect each date's programme separately; do not assume that finding one date means the whole festival has been covered.
 - Do not re-add rows or close variants rejected in `updater/user-feedback.json` unless the new event is clearly different or much higher value; explain exceptions in the method log.
 - Use positive `include` feedback in `updater/user-feedback.json` to raise similar future rows in sourcing and scoring.
 - The child was born in January 2024. For child-specific programming, prefer toddler/preschool/under-5/all-ages rows and reject obvious older-child rows such as Lego Robotics, coding or robotics clubs, trading-card tournaments, 6+, 8-12, teen or school-age workshops unless the event is independently worthwhile for adults.

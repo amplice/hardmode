@@ -4,7 +4,7 @@ window.GIG_DATA = {
     "title": "Gig Radar",
     "description": "Curated radar of live gigs in traditional jazz and roots-Americana genres around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-09-08",
+    "updated": "2026-09-09",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -21,13 +21,13 @@ window.GIG_DATA = {
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-09-08",
+    "dateBasis": "2026-09-10",
     "counts": {
-      "total": 284,
-      "upcoming": 284,
+      "total": 280,
+      "upcoming": 276,
       "watchlist": 66
     },
-    "generated": "2026-09-08T06:59:14.524Z",
+    "generated": "2026-09-10T07:29:33.398Z",
     "genres": [
       "Kansas City swing",
       "New Orleans / trad jazz",
@@ -49,141 +49,6 @@ window.GIG_DATA = {
     ]
   },
   "gigs": [
-    {
-      "id": "g20260908-hugojennings",
-      "date": "2026-09-08",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Hugo Jennings Big Band",
-      "artist": "Hugo Jennings Big Band",
-      "venue": "PizzaExpress Live Holborn",
-      "area": "Holborn, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://halibuts.com/events/eventdetail/152859-340745-hugo_jennings_big_band-pizza_express_live_holborn-8-Sep-2026-8.00pm",
-      "source": "Halibuts swing listings",
-      "confidence": "verify",
-      "note": "Young swing-era repertory big band — verify how pre-bebop the book runs.",
-      "weekday": "Tue",
-      "dateLabel": "Tue 8 Sep",
-      "monthKey": "2026-09",
-      "monthLabel": "Sep 2026",
-      "sortKey": "2026-09-08 20:00",
-      "travel": "Central London",
-      "genresLabel": "swing",
-      "isPast": false,
-      "isMultiDay": false
-    },
-    {
-      "id": "g20260908-mojo",
-      "date": "2026-09-08",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Mojo Wellington",
-      "artist": "Mojo Wellington",
-      "venue": "Oriole Bar",
-      "area": "Covent Garden, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£4 cover",
-      "url": "https://www.oriolebar.com/oriole-music",
-      "source": "Oriole Bar listings",
-      "confidence": "verify",
-      "note": "Blues/jazz pianist — borderline.",
-      "weekday": "Tue",
-      "dateLabel": "Tue 8 Sep",
-      "monthKey": "2026-09",
-      "monthLabel": "Sep 2026",
-      "sortKey": "2026-09-08 20:00",
-      "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
-      "isMultiDay": false
-    },
-    {
-      "id": "g20260908-midnightinparis",
-      "date": "2026-09-08",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Gypsy Jazz Night: Midnight in Paris",
-      "artist": "Erhan Ozturk's house trio + guest jammers",
-      "venue": "The Hum",
-      "area": "Stoke Newington, London",
-      "genres": [
-        "gypsy jazz"
-      ],
-      "cost": "Free",
-      "url": "https://www.eventbrite.co.uk/e/gypsy-jazz-night-midnight-in-paris-tickets-1438456424889",
-      "source": "The Hum / Eventbrite",
-      "confidence": "confirmed",
-      "note": "Pure Django-style trio followed by an informal jam. This is the final exact future date in the organiser's currently published weekly run; no later autumn renewal is visible yet.",
-      "weekday": "Tue",
-      "dateLabel": "Tue 8 Sep",
-      "monthKey": "2026-09",
-      "monthLabel": "Sep 2026",
-      "sortKey": "2026-09-08 20:00",
-      "travel": "Central London",
-      "genresLabel": "gypsy jazz",
-      "isPast": false,
-      "isMultiDay": false
-    },
-    {
-      "id": "g20260908-celticsession",
-      "date": "2026-09-08",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Jamboree Celtic Session",
-      "artist": "London trad-session musicians",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "Free",
-      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-24/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Weekly traditional session, mainly Irish tunes with some Scottish repertoire. Tagged old-time as the closest permitted canonical roots category.",
-      "weekday": "Tue",
-      "dateLabel": "Tue 8 Sep",
-      "monthKey": "2026-09",
-      "monthLabel": "Sep 2026",
-      "sortKey": "2026-09-08 20:30",
-      "travel": "Central London",
-      "genresLabel": "old-time",
-      "isPast": false,
-      "isMultiDay": false
-    },
-    {
-      "id": "g20260908-dompipkin-nightjar",
-      "date": "2026-09-08",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Dom Pipkin - Outstanding Live New Orleans Piano",
-      "artist": "Dom Pipkin",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£6 cover",
-      "url": "https://www.barnightjar.com/shoreditch-listings/dom-pipkin-duo",
-      "source": "Nightjar Squarespace feed",
-      "confidence": "confirmed",
-      "note": "New Orleans piano drawing on Professor Longhair, Huey Smith, Lee Dorsey and James Booker.",
-      "weekday": "Tue",
-      "dateLabel": "Tue 8 Sep",
-      "monthKey": "2026-09",
-      "monthLabel": "Sep 2026",
-      "sortKey": "2026-09-08 21:00",
-      "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
-      "isMultiDay": false
-    },
     {
       "id": "g20260909-tjjohnsonjamboree",
       "date": "2026-09-09",
@@ -209,7 +74,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-09 15:00",
       "travel": "Central London",
       "genresLabel": "swing · old-school country",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -236,7 +101,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-09 20:00",
       "travel": "Day-trip",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -263,7 +128,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-09 20:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -290,7 +155,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-09 21:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -1653,6 +1518,36 @@ window.GIG_DATA = {
       "sortKey": "2026-09-19 13:00",
       "travel": "Central London",
       "genresLabel": "old-time · New Orleans / trad jazz",
+      "isPast": false,
+      "isMultiDay": false
+    },
+    {
+      "id": "g20260919-ewanbleach-gabrielswharf",
+      "date": "2026-09-19",
+      "endDate": null,
+      "time": "14:00 & 16:00",
+      "title": "Gabriel's Wharf Arts Festival: The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Gabriel's Wharf",
+      "area": "Waterloo / South Bank, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "Free; drop-in",
+      "url": "https://www.coinstreet.org/index.php/arts-festival",
+      "source": "Coin Street",
+      "confidence": "confirmed",
+      "featured": true,
+      "note": "Mandatory Ewan Bleach date and an unusually strong family crossover: two Cable Street Rag Band sets at 14:00 and 16:00 within a free all-ages festival, with swing dance and family art from 12:00-17:00.",
+      "weekday": "Sat",
+      "dateLabel": "Sat 19 Sep",
+      "monthKey": "2026-09",
+      "monthLabel": "Sep 2026",
+      "sortKey": "2026-09-19 14:00 & 16:00",
+      "travel": "Central London",
+      "genresLabel": "hot jazz · New Orleans / trad jazz · swing",
       "isPast": false,
       "isMultiDay": false
     },

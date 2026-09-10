@@ -3,7 +3,7 @@
     "title": "Gig Radar",
     "description": "Curated radar of live gigs in traditional jazz and roots-Americana genres around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-09-08",
+    "updated": "2026-09-09",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -20,66 +20,12 @@
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-09-08",
+    "dateBasis": "2026-09-09",
     "counts": {
-      "upcoming": 284
+      "upcoming": 280
     }
   },
   "gigs": [
-    {
-      "id": "g20260908-hugojennings",
-      "date": "2026-09-08",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Hugo Jennings Big Band",
-      "artist": "Hugo Jennings Big Band",
-      "venue": "PizzaExpress Live Holborn",
-      "area": "Holborn, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://halibuts.com/events/eventdetail/152859-340745-hugo_jennings_big_band-pizza_express_live_holborn-8-Sep-2026-8.00pm",
-      "source": "Halibuts swing listings",
-      "confidence": "verify",
-      "note": "Young swing-era repertory big band — verify how pre-bebop the book runs."
-    },
-    {
-      "id": "g20260908-mojo",
-      "date": "2026-09-08",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Mojo Wellington",
-      "artist": "Mojo Wellington",
-      "venue": "Oriole Bar",
-      "area": "Covent Garden, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£4 cover",
-      "url": "https://www.oriolebar.com/oriole-music",
-      "source": "Oriole Bar listings",
-      "confidence": "verify",
-      "note": "Blues/jazz pianist — borderline."
-    },
-    {
-      "id": "g20260908-dompipkin-nightjar",
-      "date": "2026-09-08",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Dom Pipkin - Outstanding Live New Orleans Piano",
-      "artist": "Dom Pipkin",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£6 cover",
-      "url": "https://www.barnightjar.com/shoreditch-listings/dom-pipkin-duo",
-      "source": "Nightjar Squarespace feed",
-      "confidence": "confirmed",
-      "note": "New Orleans piano drawing on Professor Longhair, Huey Smith, Lee Dorsey and James Booker."
-    },
     {
       "id": "g20260909-maddocks",
       "date": "2026-09-09",
@@ -790,6 +736,27 @@
       "source": "Oriole Bar listings",
       "confidence": "verify",
       "note": "Swing/blues/rockabilly revue (also 15 Aug)."
+    },
+    {
+      "id": "g20260919-ewanbleach-gabrielswharf",
+      "date": "2026-09-19",
+      "endDate": null,
+      "time": "14:00 & 16:00",
+      "title": "Gabriel's Wharf Arts Festival: The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Gabriel's Wharf",
+      "area": "Waterloo / South Bank, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "Free; drop-in",
+      "url": "https://www.coinstreet.org/index.php/arts-festival",
+      "source": "Coin Street",
+      "confidence": "confirmed",
+      "featured": true,
+      "note": "Mandatory Ewan Bleach date and an unusually strong family crossover: two Cable Street Rag Band sets at 14:00 and 16:00 within a free all-ages festival, with swing dance and family art from 12:00-17:00."
     },
     {
       "id": "g20260920-georginajackson",
@@ -2768,24 +2735,6 @@
       "note": "Roaring-20s hot jazz including music of the New Orleans Owls and Halfway House Orchestra; booking essential. Day-trip: roughly 45-55 minutes from Surbiton."
     },
     {
-      "id": "g20260908-celticsession",
-      "date": "2026-09-08",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Jamboree Celtic Session",
-      "artist": "London trad-session musicians",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "Free",
-      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-24/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Weekly traditional session, mainly Irish tunes with some Scottish repertoire. Tagged old-time as the closest permitted canonical roots category."
-    },
-    {
       "id": "g20260915-celticsession",
       "date": "2026-09-15",
       "endDate": null,
@@ -4082,24 +4031,6 @@
       "source": "Fidelio Cafe",
       "confidence": "confirmed",
       "note": "Two intimate sets (19:30 and 20:30) celebrating Django Reinhardt, traditional manouche and hot swing."
-    },
-    {
-      "id": "g20260908-midnightinparis",
-      "date": "2026-09-08",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Gypsy Jazz Night: Midnight in Paris",
-      "artist": "Erhan Ozturk's house trio + guest jammers",
-      "venue": "The Hum",
-      "area": "Stoke Newington, London",
-      "genres": [
-        "gypsy jazz"
-      ],
-      "cost": "Free",
-      "url": "https://www.eventbrite.co.uk/e/gypsy-jazz-night-midnight-in-paris-tickets-1438456424889",
-      "source": "The Hum / Eventbrite",
-      "confidence": "confirmed",
-      "note": "Pure Django-style trio followed by an informal jam. This is the final exact future date in the organiser's currently published weekly run; no later autumn renewal is visible yet."
     },
     {
       "id": "g20260912-caradillon",

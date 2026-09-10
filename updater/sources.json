@@ -172,6 +172,17 @@
                                           ]
                          },
                          {
+                             "name":  "Coin Street / Gabriel's Wharf events",
+                             "url":  "https://www.coinstreet.org/whats-on",
+                             "checkFor":  [
+                                              "Gabriel's Wharf festivals",
+                                              "free daytime music",
+                                              "all-ages arts events",
+                                              "family workshops",
+                                              "Waterloo and South Bank events"
+                                          ]
+                         },
+                         {
                              "name":  "Polka Theatre Wimbledon",
                              "url":  "https://polkatheatre.com/shows/",
                              "checkFor":  [
@@ -574,10 +585,11 @@
                          },
                          {
                              "name":  "RHS Garden Wisley",
-                             "url":  "https://www.rhs.org.uk/gardens/wisley/whats-on?et=3",
+                             "url":  "https://www.rhs.org.uk/gardens/wisley",
                              "checkFor":  [
                                               "Glow, school-holiday family trails, garden festivals and seasonal outdoor events",
-                                              "use the official RHS ticket-session page for exact date ranges and entry windows"
+                                              "use the official RHS ticket-session page for exact date ranges and entry windows",
+                                              "under-5 Welly Walk booking sessions and other preschool-specific activities"
                                           ]
                          },
                          {
@@ -698,6 +710,31 @@
                                               "local choral concerts with orchestra at St Andrew's Church, Surbiton",
                                               "future dates are published well ahead; recheck for public ticket links and prices"
                                           ]
+                         },
+                         {
+                             "name":  "Heritage Open Days local event directory",
+                             "url":  "https://www.heritageopendays.org.uk/whats-on/search-2026-events.html",
+                             "checkFor":  [
+                                              "free open days in Surbiton, Kingston, Thames Ditton and nearby priority areas",
+                                              "family-accessible churches, heritage buildings, music and practical tour age limits",
+                                              "use individual submission pages for exact dates, times and access details"
+                                          ]
+                         },
+                         {
+                             "name":  "Kingston Cycling Campaign family rides",
+                             "url":  "https://kingstoncycling.org.uk/rides-2/familyfriendlyrides/",
+                             "checkFor":  [
+                                              "free all-ages family rides with exact meeting points, distances and booking details",
+                                              "prefer easy local routes suitable for families rather than adult training rides"
+                                          ]
+                         },
+                         {
+                             "name":  "Colets Health and Fitness family events",
+                             "url":  "https://www.eventbrite.co.uk/e/colets-halloween-fireworks-spooktacular-2026-tickets-1995649279717",
+                             "checkFor":  [
+                                              "annual Thames Ditton family fireworks and other clearly child-friendly community events",
+                                              "early light-show timing for younger children, exact ticket prices and entry windows"
+                                          ]
                          }
                      ],
     "searchQueries":  [
@@ -712,6 +749,7 @@
                           "Surbiton Shakespeare in the park 2026",
                           "Irish traditional music session Surbiton Kingston",
                           "Waterloo South Bank family children events 2026",
+                          "Coin Street Gabriel's Wharf family festival music 2026",
                           "Southbank Centre family young people events 2026",
                           "Polka Theatre Wimbledon children\u0027s theatre 2026",
                           "Wimbledon family events children 2026",
@@ -787,6 +825,10 @@
                           "Claremont Landscape Garden family trails Heritage Open Days 2026",
                           "Walton-on-Thames Riverhouse Barn daytime jazz chamber music family 2026",
                           "Kingston Orpheus Choir St Andrew's Surbiton concerts 2026 2027",
-                          "Richmond Concert Series St Mary Magdalene Orange Tree chamber music 2026"
+                          "Richmond Concert Series St Mary Magdalene Orange Tree chamber music 2026",
+                          "site:heritageopendays.org.uk/submission-event Surbiton Kingston Thames Ditton 2026",
+                          "Kingston Cycling Campaign family-friendly rides 2026",
+                          "Colets Thames Ditton family fireworks Halloween 2026",
+                          "RHS Wisley Welly Walks under 5 2026"
                       ]
 }

@@ -1,50 +1,45 @@
 {
-  "generatedAt": "2026-09-07T07:22:37.537Z",
-  "dateBasis": "2026-09-07",
-  "summary": "Removed fourteen finished event rows and one ended recurring series, then added nine high-fit local music, early-years theatre, palace-family and chamber-music rows after a full source refresh.",
+  "generatedAt": "2026-09-10T07:26:51.532Z",
+  "dateBasis": "2026-09-10",
+  "summary": "Removed two finished events, added 17 well-dated family and priority-music events, completed the mandatory gig-calendar QA pass, and expanded discovery through local heritage, family cycling, Colets and RHS booking sources.",
   "added": [
-    "e20260910d: Rob Quo Duo at The Lamb, 10 September (social-only; verify).",
-    "e20260912h: Hampton Court Palace Shire Horse Carriage Rides, weekends 12-27 September (verify operating times and weather).",
-    "e20260913e: Joao de Mello at The Lamb, 13 September (social-only; verify).",
-    "e20260917d: Paul Armer at The Lamb, 17 September (social-only; start time TBC).",
-    "e20260920d: Big Dreams: After Party for ages 0-2 at Polka Theatre, 20 September.",
-    "e20260925b: Richmond Concert Series - The Fidelio Trio, 25 September (ticket price TBC).",
-    "e20261011d: Impressions: From Debussy to Coltrane daytime concert, 11 October (ticket price TBC).",
-    "e20261127b: Constanze, theatre and Mozart music at St Mary Magdalene Church, 27 November (ticket price TBC).",
-    "e20261205d: Kingston Orpheus Choir perform Handel's Messiah in Surbiton, 5 December (ticket details TBC)."
+    "e20260911f: Friday Night Traditional Irish Music Session at the Irish Cultural Centre, 11 September, 17:30-20:00; free and explicitly family-friendly.",
+    "e20260912i: St Matthew's Surbiton Open Day, 12 September, 10:00-15:00; free Heritage Open Days listing.",
+    "e20260912j: Cajun Apres-Midi with La-bas Cajun Band at Jamboree, 12 September, 13:30-17:00; free daytime music and dancing.",
+    "e20260913f: ICC Concert Session with Tad Sargent, Teresa Connolly and Gary Connolly, 13 September, 14:00-16:00; free traditional Irish music.",
+    "e20260920e: Family-friendly autumn bike ride from Beverley Park Pavilion, 20 September, 10:45-12:30; free booking and all ages.",
+    "e20260920f: Ewan Bleach and The Fleeting Paradise Orchestra lunch gig at Jamboree, 20 September, music from 12:15.",
+    "e20260920g: Doolally Tap at The Ivy House, 20 September, 16:00; priority-act gig promoted from Gig Radar with verification retained.",
+    "e20260920h: Swing Dance Sunday with Duke Street Big Band at Regent's Park Bandstand, 20 September, 14:00-17:00; free.",
+    "e20260927a: Ewan Bleach birthday special at The Shaftesbury Tavern, 27 September; free social-only lead with verification retained.",
+    "e20261005a: Welly Walks at RHS Garden Wisley, 5 October, 10:15-10:45; an official under-5 session.",
+    "e20261010b: The Fleeting Paradise Orchestra: Mystic Mood at St Giles' Church, Oxford, 10 October, 19:30-21:30; priority-act listing.",
+    "e20261018d: Doolally Tap at The Ivy House, 18 October, 16:00; priority-act listing with verification retained.",
+    "e20261024b: An Evening with Ewan Bleach: Mystic Mood album launch at Hoxton Hall, 24 October, 19:00-23:00; priority-act listing.",
+    "e20261101c: Colets Halloween Fireworks Spooktacular, 1 November, 16:00-21:00; includes a younger-child light show at 18:30.",
+    "e20261108d: Doolally Tap at The Ivy House, 8 November, 16:00; priority-act listing with verification retained.",
+    "e20261220a: Doolally Tap at The Ivy House, 20 December, 16:00; priority-act listing with verification retained.",
+    "e20261224: Christmas Eve Dance with Five Go Jiving at Southbank Centre, 24 December, 13:00-16:00; free daytime live music and dance classes."
   ],
   "updated": [
-    "Refreshed all 75 configured source endpoints, ran all 85 standard search queries and reviewed 72 fresh social leads.",
-    "Updated Kingston Choral Society's Creation soloists and orchestra from the current official detail page, and replaced the Christmas concert placeholder with its title, prices and specific URL.",
-    "Added Kingston Orpheus Choir as a recurring source and two focused searches; repaired the RHS Wisley URL and expanded the Orange Tree source notes for its new Richmond Concert Series.",
-    "Added the uncertain Ember Choral 6 December Claygate listing to the watchlist because its official page has no time or tickets and files it under past concerts."
+    "Refreshed all 77 configured known-source endpoints and ran all 88 saved search queries before source expansion.",
+    "Repaired the dead RHS Wisley filtered URL to the live garden page and added under-5 booking-session checks.",
+    "Added Heritage Open Days, Kingston Cycling Campaign and Colets family events as recurring discovery sources, with four focused searches.",
+    "Cross-checked every future Gig Radar row and promoted suitable daytime, free or priority-act dates without removing them from the gig calendar."
   ],
   "removed": [
-    "e20260904: Comedy Night at Alcheme, finished 4 September.",
-    "e768: Jazz Fridays at Rose Cafe, finished 4 September.",
-    "e20260904c: Maiastra at St Mary's Twickenham, finished 4 September.",
-    "e820: Rug Rhymes: Autumn, finished 4 September.",
-    "e20260905d: Bad Girls Groove, finished 5 September.",
-    "e20260905e: East and Southeast Asian Culture Festival, finished 5 September.",
-    "e665: Lou Sanders: No Kissing in the Bingo Hall, finished 5 September.",
-    "e20260905c: Maiastra at Riverhouse Barn, finished 5 September.",
-    "e706: Stitch Saturdays, finished 5 September.",
-    "e20260906c: Arab Strap, finished 6 September.",
-    "e20260906: Mole Valley Silver Band at Canbury Gardens, finished 6 September.",
-    "e750: Thames Ditton Miniature Railway public running day, finished 6 September.",
-    "e20260906b: TwickFolk singaround, finished 6 September.",
-    "e618: Walking Tour of Surbiton, finished 6 September.",
-    "r35: Canbury Bandstand Concerts recurring summer pattern, ended 6 September."
+    "e622: David Le Vay Art Show finished on 9 September 2026.",
+    "e623: Meet the Artist Night - Emma Burton finished on 9 September 2026."
   ],
   "counts": {
     "before": {
-      "events": 297,
-      "recurring": 57,
+      "events": 288,
+      "recurring": 56,
       "sources": 53,
-      "watchlist": 76
+      "watchlist": 77
     },
     "after": {
-      "events": 292,
+      "events": 303,
       "recurring": 56,
       "sources": 53,
       "watchlist": 77
