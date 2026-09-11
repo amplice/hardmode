@@ -961,3 +961,28 @@ prompt/prefs/sources, twice-weekly scheduled task) and seeded it with an initial
 - Added Ewan Bleach & The Cable Street Rag Band at the free Gabriel's Wharf Arts Festival on 19 September, with sets at 14:00 and 16:00.
 - Root cause: the earlier pass found Doolally Tap on the festival's 5 September programme but did not inspect the distinct 19 September line-up, so it missed a mandatory Ewan Bleach date.
 - Prevention: added Coin Street/Gabriel's Wharf as a crossover source, a focused Ewan/Coin Street query and a rule to inspect every date on multi-date festival pages and flag family-suitable gig rows for the family calendar.
+
+---
+
+## 2026-09-11 — autonomous update run
+
+**Housekeeping:** removed 12 finished gigs dated 9–10 September. Added 35 future gigs, taking the live set from 280 to 303; the 66 watchlist rows were left intact. Metadata moved to 11 September.
+
+**Mandatory acts and priority sources:**
+- Checked all ten priority acts. Ewan Bleach's official diary, Café Boheme's primary roster, the WeGotTickets organiser feed, Jamboree and the fresh Instagram export produced nine newly held Ewan/Fleeting Paradise rows (24 and 27 Sep; 4 and 18 Oct; 1 and 15 Nov; 4, 6 and 20 Dec). The Shaftesbury Tavern social-only listing is marked `verify`.
+- Dom Glynn's artist-linked Bandsintown/Apple Music listing recovered a public 12 Sep early set at Ain't Nothin' But. Doolally Tap's official diary remained fully represented. Clay Bottom Jug Busters had a fresh “Friday night” Malmesbury post but no explicit calendar date, so it was not guessed. Tuba Skinny showed only US dates; The FoBo Jug Band, Shirt Tail Stompers, Dunajska Kapelye and Tropanka had no new reachable public dates. The Basin Street Brawlers site remains stale/hijacked and yielded nothing usable.
+- Deep-crawled Jamboree's full calendar beyond the previously logged page 9, including individual event pages/organiser-feed corroboration. This added 14 late-December/January instances for Cable Street Rag Band, Prospective Collective, TJ Johnson and the traditional Irish/Celtic session, plus six newly exposed Fleeting Paradise residency dates. French/Scandi Bal Étoile and the broad Flotsam jam were intentionally excluded because they did not map cleanly to the canonical genres.
+- Refreshed The Lamb, Green Note, The Harrison, Nightjar, Spice of Life, Ram Jam, TwickFolk/Eel Pie, The Magic Garden, Epsom Hot Jazz Club, Old Barn Bookham, Irish Cultural Centre, Cecil Sharp House, South London Irish Centre, Half Moon Putney and Riverhouse Barn. Productive results were two Harrison traditional sessions, four Spice of Life vintage/trad-jazz lunches, an Irish Cultural Centre concert session and four future TwickFolk singarounds. Half Moon and Riverhouse stayed dark under their stricter threshold; Eel Pie's current programme remained blues/rock/tribute-led.
+- Rechecked the Coin Street/Gabriel's Wharf date pages separately: the 19 Sep Ewan Bleach daytime/all-ages row was already present and remains a family-calendar candidate; no new dates were published.
+
+**Rotated discovery methods:**
+- NEW/PRODUCTIVE: artist-linked music-service concert feeds recovered Dom Glynn's next-day priority show when the artist site did not expose it clearly.
+- NEW/PRODUCTIVE: Soho restaurant daytime musician rosters found Ewan Bleach with Mlle Lou Lou. Added Café Boheme to `keyVenues` and a focused search query.
+- NEW/NO-YIELD: checked easy-local restaurant calendars and caught Renas Surbiton's “12 Sept” jazz/clarinet result as a stale 2025 page rather than inferring 2026.
+- Ran all 78 configured standard searches through Bing RSS successfully. Results were noisy and mostly corroborative, but they helped route checks to primary calendars. Also refreshed The Jazz Guide, SwingdanceUK, Swing Out London, Halibuts and the main ticketing platforms; no additional high-confidence, non-duplicate rows cleared the genre/travel thresholds.
+- The logged-in browser collector was unavailable in this headless environment. Reconciled the fresh 11 Sep `social-leads.json` export instead (9 configured profiles, 108 leads, no collector login wall); only the exact-date Shaftesbury Tavern priority-act post qualified.
+
+**Dark / next run:**
+- Revisit The Lamb, Ram Jam, South London Irish Centre, Riverhouse Barn and Old Barn Bookham when their rolling calendars advance. Look for an explicit dated Clay Bottom Jug Busters listing rather than interpreting relative social wording.
+- Recheck Green Note and Café Boheme after their next monthly roster refresh, and continue Jamboree beyond January page 11. Watch for 2027 SwingdanceUK items to acquire full dates and named live bands.
+- Continue treating multi-date festival pages as separate programmes and flag daytime/all-ages priority-act rows for the family calendar.

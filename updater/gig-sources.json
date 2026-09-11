@@ -349,7 +349,8 @@
     { "name": "Colchester Jazz Club", "area": "Colchester, Essex", "genres": ["New Orleans / trad jazz"], "url": "https://www.thejazzguide.co.uk/venues/listing/colchester-jazz-club", "note": "NEW 2026-07-19: occasionally books touring trad bands (Sarah Spencer 26 Jul) — cheap Jazz Guide re-check; ~55 min from Liverpool Street." },
     { "name": "The Jazz Centre UK", "area": "Southend-on-Sea, Essex", "genres": ["hot jazz", "New Orleans / trad jazz", "swing"], "url": "https://www.thejazzcentreuk.co.uk/upcoming-events", "note": "NEW 2026-09-08: productive authoritative heritage-jazz calendar with exact dates, times, prices and individual Wix event pages. Mixed programme, so filter out modern/free-improv rows; the strong trad/hot-jazz strand surfaced Great British Jazz Band, Shirt Tail Stompers, Duncan Hemstock and Rico Tomasso. Southend is a long day-trip from Surbiton, so require a very strong genre or priority-act match." },
     { "name": "Twickenham Jazz Club", "area": "The Cabbage Patch, Twickenham", "genres": ["gypsy jazz", "hot jazz", "swing"], "url": "https://twickenhamjazzclub.com/", "note": "NEW 2026-09-02: easy-local Wednesday club with a server-rendered season programme and exact Eventbrite listings. Filter its predominantly mainstream/modern calendar, but prioritise Django, early-jazz and classic-swing programmes; surfaced Harry Diplock on 30 Sep." },
-    { "name": "Paper Moon at Hargrave Hall", "area": "Archway, North London", "genres": ["gypsy jazz", "hot jazz", "swing"], "url": "https://papermoonclub.wordpress.com/", "note": "NEW 2026-09-02: recurring vintage-jazz social-dance club. The organiser diary gives exact dates and named live bands, but ticket pages may be Cloudflare-walled; never infer times or prices from older posts. Surfaced Benoit Viellefon on 18 Oct and a 13 Dec Christmas lead." }
+    { "name": "Paper Moon at Hargrave Hall", "area": "Archway, North London", "genres": ["gypsy jazz", "hot jazz", "swing"], "url": "https://papermoonclub.wordpress.com/", "note": "NEW 2026-09-02: recurring vintage-jazz social-dance club. The organiser diary gives exact dates and named live bands, but ticket pages may be Cloudflare-walled; never infer times or prices from older posts. Surfaced Benoit Viellefon on 18 Oct and a 13 Dec Christmas lead." },
+    { "name": "Café Boheme", "area": "Soho, London", "genres": ["hot jazz", "gypsy jazz", "New Orleans / trad jazz", "swing", "old-school country"], "url": "https://www.cafeboheme.co.uk/live-music", "note": "NEW 2026-09-11: productive official monthly daytime roster with exact artist/date pairings; surfaced Ewan Bleach with Mlle Lou Lou. Apply strict artist-by-artist genre filtering because the wider schedule is mixed." }
   ],
   "closedOrDefunct": [
     { "name": "Le QuecumBar & Brasserie", "note": "PERMANENTLY CLOSED since April 2022 after 19 years. Was 'the' London gypsy-jazz venue — do NOT re-add or chase for listings." },
@@ -460,6 +461,7 @@
     "Twickenham Jazz Club Django swing programme 2026",
     "Paper Moon Hargrave Hall live gypsy jazz dance 2026",
     "Hackney Folk Club old-time traditional London 2026",
-    "Ron's Honky Tonk Fabal Beerhall dates"
+    "Ron's Honky Tonk Fabal Beerhall dates",
+    "Café Boheme Soho live music Ewan Bleach hot jazz"
   ]
 }

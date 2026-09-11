@@ -3,7 +3,7 @@
     "title": "Gig Radar",
     "description": "Curated radar of live gigs in traditional jazz and roots-Americana genres around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-09-09",
+    "updated": "2026-09-11",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -20,196 +20,12 @@
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-09-09",
+    "dateBasis": "2026-09-11",
     "counts": {
-      "upcoming": 280
+      "upcoming": 303
     }
   },
   "gigs": [
-    {
-      "id": "g20260909-maddocks",
-      "date": "2026-09-09",
-      "endDate": null,
-      "time": "20:00",
-      "title": "John Maddocks Down Home Jazzers",
-      "artist": "John Maddocks Down Home Jazzers",
-      "venue": "Amersham Jazz Club (Wycombe Marsh RBL)",
-      "area": "High Wycombe, Bucks",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£14",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/amersham-jazz-club-wycombe-marsh-rbl",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Maddocks also plays Old Barn Hall 9 Aug."
-    },
-    {
-      "id": "g20260909-dompipkin",
-      "date": "2026-09-09",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Dom Pipkin — New Orleans Inspired Piano",
-      "artist": "Dom Pipkin",
-      "venue": "Oriole Bar",
-      "area": "Covent Garden, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£6 cover",
-      "url": "https://www.oriolebar.com/oriole-music",
-      "source": "Oriole Bar listings",
-      "confidence": "confirmed",
-      "note": "London's leading New Orleans-style pianist at Nightjar's sister bar."
-    },
-    {
-      "id": "g20260909-benmartyn-nightjar",
-      "date": "2026-09-09",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Ben Martyn - New Orleans Jazz",
-      "artist": "Ben 'Blue' Martyn",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£6 cover",
-      "url": "https://www.barnightjar.com/shoreditch-listings/ben-martyn-new-orleans-jazz",
-      "source": "Nightjar Squarespace feed",
-      "confidence": "confirmed",
-      "note": "Louisiana-rooted piano and vocals spanning Fats Domino, Professor Longhair, country and early rock'n'roll."
-    },
-    {
-      "id": "g20260910-giacomosmith",
-      "date": "2026-09-10",
-      "endDate": null,
-      "time": "",
-      "title": "The Giacomo Smith Quartet",
-      "artist": "Giacomo Smith",
-      "venue": "Ronnie Scott's",
-      "area": "Soho, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://www.ronniescotts.co.uk/find-a-show",
-      "source": "Ronnie Scott's listings (Chrome-UA crawl)",
-      "confidence": "confirmed",
-      "note": "Kansas Smitty's bandleader — hot-jazz/swing clarinet and alto. Same night as the Winning Post lunch session."
-    },
-    {
-      "id": "g20260910-winningpost",
-      "date": "2026-09-10",
-      "endDate": null,
-      "time": "12:00",
-      "title": "Richard Bennett's New Orleans All Stars",
-      "artist": "Richard Bennett's New Orleans All Stars",
-      "venue": "The Winning Post",
-      "area": "Twickenham, SW London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/winning-post/",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Lunchtime trad-jazz session (doors 11:30, 12–3pm), Shooting Star Chase fundraiser. Year not printed on listing but Sep 10 is a Thursday in 2026 — confirm with venue."
-    },
-    {
-      "id": "g20260910-domglynn",
-      "date": "2026-09-10",
-      "endDate": null,
-      "time": "19:00",
-      "title": "Dom Glynn & His Sunday Best - album release show",
-      "artist": "Dom Glynn & His Sunday Best",
-      "venue": "Hootananny Brixton",
-      "area": "Brixton, London",
-      "genres": [
-        "old-school country",
-        "honky tonk"
-      ],
-      "cost": "",
-      "url": "https://www.songkick.com/venues/497481-hootananny/calendar",
-      "source": "Dom Glynn official EPK + Hootananny/Songkick listing",
-      "confidence": "confirmed",
-      "note": "Doors 19:00. Vintage two-step country and high-energy honky tonk rooted in Johnny Cash and Hank Williams Sr.; London launch for This Fast Life Is Killing Me."
-    },
-    {
-      "id": "g20260910-agsconnolly",
-      "date": "2026-09-10",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Ags Connolly (solo)",
-      "artist": "Ags Connolly",
-      "venue": "The Hyde Tavern",
-      "area": "Winchester, Hampshire",
-      "genres": [
-        "honky tonk",
-        "old-school country"
-      ],
-      "cost": "",
-      "url": "https://agsconnolly.com/shows/",
-      "source": "agsconnolly.com shows page",
-      "confidence": "confirmed",
-      "note": "Traditional honky-tonk/Texas country. Winchester is direct from Surbiton on the SW mainline (~1h). Now confirmed on the artist's own shows page (tickets link); start time still assumed ~20:00."
-    },
-    {
-      "id": "g20260910-owls",
-      "date": "2026-09-10",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Forest Hill Owls",
-      "artist": "Forest Hill Owls",
-      "venue": "Pump House Jazz Club",
-      "area": "Watford, Herts",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£13",
-      "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/forest-hill-owls/",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "No band blurb on the listing — genre inferred from the club's trad Thursday slot. Day-trip: ~25 min from Euston."
-    },
-    {
-      "id": "g20260910-pfeffer",
-      "date": "2026-09-10",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Roy Pfeffer Duo",
-      "artist": "Roy Pfeffer Duo",
-      "venue": "Oriole Bar",
-      "area": "Covent Garden, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£8 (+£6 late set)",
-      "url": "https://www.oriolebar.com/oriole-music",
-      "source": "Oriole Bar listings",
-      "confidence": "verify",
-      "note": "New Orleans-leaning jazz/R&B duo."
-    },
-    {
-      "id": "g20260910-cable-street-rag-band",
-      "date": "2026-09-10",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Limehouse de Reverie with The Cable Street Rag Band",
-      "artist": "Ewan Bleach & The Cable Street Rag Band",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-43/",
-      "source": "Jamboree events (WeGotTickets confirmation)",
-      "confidence": "confirmed",
-      "note": "Weekly Thursday residency date on the official Jamboree page."
-    },
     {
       "id": "g20260911-slowmotion",
       "date": "2026-09-11",
@@ -2807,25 +2623,6 @@
       "note": "Weekly traditional session, mainly Irish tunes with some Scottish repertoire. Tagged old-time as the closest permitted canonical roots category."
     },
     {
-      "id": "g20260909-tjjohnsonjamboree",
-      "date": "2026-09-09",
-      "endDate": null,
-      "time": "15:00",
-      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
-      "artist": "TJ Johnson",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "swing",
-        "old-school country"
-      ],
-      "cost": "Free / donations",
-      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-82/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Daytime set mixing swing-era jazz with blues, gospel and classic country; exact date published by the venue."
-    },
-    {
       "id": "g20260916-tjjohnsonjamboree",
       "date": "2026-09-16",
       "endDate": null,
@@ -4790,24 +4587,6 @@
       "note": "Confirmed live-band Lindy night, 19:00–23:00, with beginner taster and vintage DJs; band name not yet announced."
     },
     {
-      "id": "g20260910-robquo",
-      "date": "2026-09-10",
-      "endDate": null,
-      "time": "",
-      "title": "Rob Quo at The Lamb",
-      "artist": "Rob Quo",
-      "venue": "The Lamb",
-      "area": "Surbiton",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "",
-      "url": "https://www.instagram.com/lamb_surbiton/",
-      "source": "The Lamb Instagram",
-      "confidence": "verify",
-      "note": "Fresh 5 Sep venue post names Rob Quo for Thursday 10 Sep. Hyper-local folk-blues booking; the old-time tag is the nearest canonical roots proxy. No time published, so verify with the venue."
-    },
-    {
       "id": "g20260911-iccsession",
       "date": "2026-09-11",
       "endDate": null,
@@ -5176,6 +4955,667 @@
       "source": "Jamboree",
       "confidence": "confirmed",
       "note": "Free weekly traditional Irish and Celtic session; trad Irish is mapped to the nearest canonical old-time tag."
+    },
+    {
+      "id": "g20260912-domglynn",
+      "date": "2026-09-12",
+      "endDate": null,
+      "time": "19:00",
+      "title": "Dom Glynn & His Sunday Best",
+      "artist": "Dom Glynn & His Sunday Best",
+      "venue": "Ain't Nothin' But... Blues Bar",
+      "area": "Soho, London",
+      "genres": [
+        "old-school country",
+        "honky tonk"
+      ],
+      "cost": "Free before 20:30; later cover may apply",
+      "url": "https://www.bandsintown.com/e/1040038983-dom-glynn-and-his-sunday-best-at-ain%27t-nothin-but-the-blues-bar?came_from=252",
+      "source": "Bandsintown artist feed + venue listing",
+      "confidence": "confirmed",
+      "note": "Priority-act early set in central London; classic country and honky-tonk. Venue is over-18s."
+    },
+    {
+      "id": "g20260913-iccsession",
+      "date": "2026-09-13",
+      "endDate": null,
+      "time": "14:00",
+      "title": "ICC Concert Session with Tad Sargent, Teresa Connolly & Gary Connolly",
+      "artist": "Tad Sargent, Teresa Connolly & Gary Connolly",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "",
+      "url": "https://irishculturalcentre.co.uk/whats-on/",
+      "source": "Irish Cultural Centre",
+      "confidence": "confirmed",
+      "note": "Traditional Irish concert session, 14:00–16:00 (doors 13:30), led by bouzouki, fiddle and accordion players. Trad Irish is mapped to the closest canonical old-time tag."
+    },
+    {
+      "id": "g20260924-ewancafeboheme",
+      "date": "2026-09-24",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Mlle Lou Lou and Ewan Bleach",
+      "artist": "Mlle Lou Lou and Ewan Bleach",
+      "venue": "Café Boheme",
+      "area": "Soho, London",
+      "genres": [
+        "gypsy jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "Free live music; food/drink extra",
+      "url": "https://www.cafeboheme.co.uk/live-music",
+      "source": "Café Boheme official live-music calendar",
+      "confidence": "confirmed",
+      "note": "Priority-act daytime set, 15:00–17:30, billed as chanson, manouche and trad jazz from the streets of Montmartre."
+    },
+    {
+      "id": "g20260927-ewanshaftesbury",
+      "date": "2026-09-27",
+      "endDate": null,
+      "time": "15:00 & 18:45",
+      "title": "Ewan Bleach old-style jazz Sunday",
+      "artist": "Ewan Bleach & band",
+      "venue": "The Shaftesbury Tavern",
+      "area": "Hornsey Road, North London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "Free",
+      "url": "https://www.instagram.com/shaftesburytavern/p/DdCN2OBom3p/",
+      "source": "Shaftesbury Tavern Instagram via Ewan Bleach social export",
+      "confidence": "verify",
+      "note": "Social-only exact-date priority-act lead: Ewan on piano from 15:00, then his old-style jazz band from 18:45. Verify before travel."
+    },
+    {
+      "id": "g20261004-fleetingparadise",
+      "date": "2026-10-04",
+      "endDate": null,
+      "time": "12:15",
+      "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
+      "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "£9–£14",
+      "url": "https://wegottickets.com/Ewanbleachmusic/",
+      "source": "Ewan Bleach WeGotTickets organiser feed + Jamboree",
+      "confidence": "confirmed",
+      "note": "Priority-act Sunday lunch residency; ticket feed gives doors 11:00 and a 12:30 billing while Jamboree's series is advertised from 12:15."
+    },
+    {
+      "id": "g20261018-fleetingparadise",
+      "date": "2026-10-18",
+      "endDate": null,
+      "time": "12:15",
+      "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
+      "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "£9–£14",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-16/",
+      "source": "Jamboree + Ewan Bleach WeGotTickets organiser feed",
+      "confidence": "confirmed",
+      "note": "Priority-act Sunday lunch residency; doors 11:00, music billed from 12:15/12:30."
+    },
+    {
+      "id": "g20261101-fleetingparadise",
+      "date": "2026-11-01",
+      "endDate": null,
+      "time": "12:15",
+      "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
+      "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "£9–£14",
+      "url": "https://wegottickets.com/Ewanbleachmusic/",
+      "source": "Ewan Bleach WeGotTickets organiser feed + Jamboree",
+      "confidence": "confirmed",
+      "note": "Priority-act Sunday lunch residency; doors 11:00, music billed from 12:15/12:30."
+    },
+    {
+      "id": "g20261115-fleetingparadise",
+      "date": "2026-11-15",
+      "endDate": null,
+      "time": "12:15",
+      "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
+      "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "£9–£14",
+      "url": "https://wegottickets.com/Ewanbleachmusic/",
+      "source": "Ewan Bleach WeGotTickets organiser feed + Jamboree",
+      "confidence": "confirmed",
+      "note": "Priority-act Sunday lunch residency; doors 11:00, music billed from 12:15/12:30."
+    },
+    {
+      "id": "g20261206-fleetingparadise",
+      "date": "2026-12-06",
+      "endDate": null,
+      "time": "12:15",
+      "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
+      "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "£9–£14",
+      "url": "https://wegottickets.com/Ewanbleachmusic/",
+      "source": "Ewan Bleach WeGotTickets organiser feed + Jamboree",
+      "confidence": "confirmed",
+      "note": "Priority-act Sunday lunch residency; doors 11:00, music billed from 12:15/12:30."
+    },
+    {
+      "id": "g20261220-fleetingparadise",
+      "date": "2026-12-20",
+      "endDate": null,
+      "time": "12:15",
+      "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
+      "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "£9–£14",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-20/",
+      "source": "Jamboree + Ewan Bleach WeGotTickets organiser feed",
+      "confidence": "confirmed",
+      "note": "Priority-act Sunday lunch residency; doors 11:00, music billed from 12:15/12:30."
+    },
+    {
+      "id": "g20261204-ewanbleachgreen",
+      "date": "2026-12-04",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Ewan Bleach",
+      "artist": "Ewan Bleach",
+      "venue": "Green Note Basement Bar",
+      "area": "Camden, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz"
+      ],
+      "cost": "£12.50 advance",
+      "url": "https://www.greennote.co.uk/production/ewan-bleach/",
+      "source": "Green Note + WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Priority-act dedicated set of 1920s–30s jazz and blues; doors 19:30, music 20:00."
+    },
+    {
+      "id": "g20261107-harrisontunes",
+      "date": "2026-11-07",
+      "endDate": null,
+      "time": "14:00",
+      "title": "Mid-speed English Tune Session",
+      "artist": "Harrison session musicians",
+      "venue": "The Harrison",
+      "area": "King's Cross, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "Free",
+      "url": "https://harrisonvenuelondon.com/harrison-venue-events-gigs-kings-cross/",
+      "source": "The Harrison",
+      "confidence": "confirmed",
+      "note": "Free traditional English tune session open to players and listeners; tagged to the closest canonical roots category."
+    },
+    {
+      "id": "g20261121-harrisonsing",
+      "date": "2026-11-21",
+      "endDate": null,
+      "time": "13:00",
+      "title": "Singaround at The Harrison",
+      "artist": "Harrison singaround participants",
+      "venue": "The Harrison",
+      "area": "King's Cross, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "Free",
+      "url": "https://harrisonvenuelondon.com/events/singaround-london/",
+      "source": "The Harrison",
+      "confidence": "confirmed",
+      "note": "Free friendly folk, sea-shanty and music-hall singaround; bring a song, tune, poem or story."
+    },
+    {
+      "id": "g20261005-jackhoneyborne",
+      "date": "2026-10-05",
+      "endDate": null,
+      "time": "12:30",
+      "title": "Jack Honeyborne (lunchtime session)",
+      "artist": "Jack Honeyborne",
+      "venue": "The Spice of Life",
+      "area": "Soho, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "",
+      "url": "https://www.spiceoflifesoho.com/events",
+      "source": "The Spice of Life official events calendar",
+      "confidence": "confirmed",
+      "note": "Veteran stride and swing pianist in the priority venue's Monday lunchtime jazz series."
+    },
+    {
+      "id": "g20261026-raygelato",
+      "date": "2026-10-26",
+      "endDate": null,
+      "time": "12:30",
+      "title": "Ray Gelato (lunchtime session)",
+      "artist": "Ray Gelato",
+      "venue": "The Spice of Life",
+      "area": "Soho, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "",
+      "url": "https://www.spiceoflifesoho.com/events",
+      "source": "The Spice of Life official events calendar",
+      "confidence": "confirmed",
+      "note": "Strong-fit classic swing and jump-jazz booking in the Monday lunchtime series."
+    },
+    {
+      "id": "g20261207-sarahspencer",
+      "date": "2026-12-07",
+      "endDate": null,
+      "time": "12:30",
+      "title": "Sarah Spencer's Transatlantic Jazz Band (lunchtime session)",
+      "artist": "Sarah Spencer's Transatlantic Jazz Band",
+      "venue": "The Spice of Life",
+      "area": "Soho, London",
+      "genres": [
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "",
+      "url": "https://www.spiceoflifesoho.com/events",
+      "source": "The Spice of Life official events calendar",
+      "confidence": "confirmed",
+      "note": "Traditional-jazz specialist in the priority venue's Monday lunchtime series."
+    },
+    {
+      "id": "g20261214-tjjohnsonspice",
+      "date": "2026-12-14",
+      "endDate": null,
+      "time": "12:30",
+      "title": "T.J. Johnson (lunchtime session)",
+      "artist": "T.J. Johnson",
+      "venue": "The Spice of Life",
+      "area": "Soho, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "cost": "",
+      "url": "https://www.spiceoflifesoho.com/events",
+      "source": "The Spice of Life official events calendar",
+      "confidence": "confirmed",
+      "note": "Roots-jazz pianist and singer mixing swing-era jazz, blues, gospel and classic country."
+    },
+    {
+      "id": "g20270103-twickfolksing",
+      "date": "2027-01-03",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Singaround: informal unplugged song circle",
+      "artist": "TwickFolk singers and musicians",
+      "venue": "The Cabbage Patch (Patchworks)",
+      "area": "Twickenham",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£5",
+      "url": "https://www.twickfolk.co.uk/events/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "Participatory traditional-song circle at an easy local venue; closely matches positive include feedback."
+    },
+    {
+      "id": "g20270131-twickfolksing",
+      "date": "2027-01-31",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Singaround: informal unplugged song circle",
+      "artist": "TwickFolk singers and musicians",
+      "venue": "The Cabbage Patch (Patchworks)",
+      "area": "Twickenham",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£5",
+      "url": "https://www.twickfolk.co.uk/events/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "Participatory traditional-song circle at an easy local venue; closely matches positive include feedback."
+    },
+    {
+      "id": "g20270228-twickfolksing",
+      "date": "2027-02-28",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Singaround: informal unplugged song circle",
+      "artist": "TwickFolk singers and musicians",
+      "venue": "The Cabbage Patch (Patchworks)",
+      "area": "Twickenham",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£5",
+      "url": "https://www.twickfolk.co.uk/events/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "Participatory traditional-song circle at an easy local venue; closely matches positive include feedback."
+    },
+    {
+      "id": "g20270404-twickfolksing",
+      "date": "2027-04-04",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Singaround: informal unplugged song circle",
+      "artist": "TwickFolk singers and musicians",
+      "venue": "The Cabbage Patch (Patchworks)",
+      "area": "Twickenham",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£5",
+      "url": "https://www.twickfolk.co.uk/events/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "Participatory traditional-song circle at an easy local venue; closely matches positive include feedback."
+    },
+    {
+      "id": "g20261210-cablestreet",
+      "date": "2026-12-10",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing"
+      ],
+      "cost": "£9–£22 advance / class option",
+      "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-in-london-10/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Live 1920s and 1930s jazz and swing dance night; optional taster class from 19:00."
+    },
+    {
+      "id": "g20261213-prospective",
+      "date": "2026-12-13",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-12/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Sunday-afternoon small-band swing, 15:00–17:00, from Jamboree's fully paginated primary diary."
+    },
+    {
+      "id": "g20261215-celticsession",
+      "date": "2026-12-15",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-38/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Free traditional Irish and Celtic session; trad Irish is mapped to the nearest canonical old-time tag."
+    },
+    {
+      "id": "g20261216-tjjohnsonjamboree",
+      "date": "2026-12-16",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-95/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Wednesday afternoon roots-jazz session mixing swing-era jazz with blues, gospel and classic country."
+    },
+    {
+      "id": "g20261217-cablestreet",
+      "date": "2026-12-17",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing"
+      ],
+      "cost": "£9–£22 advance / class option",
+      "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-in-london-11/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Live 1920s and 1930s jazz and swing dance night; optional taster class from 19:00."
+    },
+    {
+      "id": "g20261220-prospective",
+      "date": "2026-12-20",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-13/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Sunday-afternoon small-band swing, 15:00–17:00. Same day as the Fleeting Paradise lunch set."
+    },
+    {
+      "id": "g20261222-celticsession",
+      "date": "2026-12-22",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-39/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Free traditional Irish and Celtic session; trad Irish is mapped to the nearest canonical old-time tag."
+    },
+    {
+      "id": "g20261223-tjjohnsonjamboree",
+      "date": "2026-12-23",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-96/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Wednesday afternoon roots-jazz session mixing swing-era jazz with blues, gospel and classic country."
+    },
+    {
+      "id": "g20270103-prospective",
+      "date": "2027-01-03",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-14/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Sunday-afternoon small-band swing, 15:00–17:00."
+    },
+    {
+      "id": "g20270106-tjjohnsonjamboree",
+      "date": "2027-01-06",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-97/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Wednesday afternoon roots-jazz session mixing swing-era jazz with blues, gospel and classic country."
+    },
+    {
+      "id": "g20270107-cablestreet",
+      "date": "2027-01-07",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing"
+      ],
+      "cost": "£9–£22 advance / class option",
+      "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-in-london-12/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Live 1920s and 1930s jazz and swing dance night; optional taster class from 19:00."
+    },
+    {
+      "id": "g20270113-tjjohnsonjamboree",
+      "date": "2027-01-13",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-98/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Wednesday afternoon roots-jazz session mixing swing-era jazz with blues, gospel and classic country."
+    },
+    {
+      "id": "g20270120-tjjohnsonjamboree",
+      "date": "2027-01-20",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-99/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Wednesday afternoon roots-jazz session mixing swing-era jazz with blues, gospel and classic country."
+    },
+    {
+      "id": "g20270127-tjjohnsonjamboree",
+      "date": "2027-01-27",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-100/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Wednesday afternoon roots-jazz session mixing swing-era jazz with blues, gospel and classic country."
     }
   ],
   "watchlist": [
