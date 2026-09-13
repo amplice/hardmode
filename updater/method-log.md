@@ -489,3 +489,25 @@ Format per run:
   - Recheck the Ivy House ticket/detail pages for Doolally Tap years, prices and child-access terms, and clear `verify` only when those pages agree with Doolally's current schedule.
   - Recheck The Lamb's next poster and the Shaftesbury Tavern event page for independent times; continue treating precise social-only leads as verification-required.
   - On or after 16 September, revisit Orange Tree's Richmond Concert Series ticket pages for prices and running times. Keep monitoring TDMR only for a corrected day/date, not by interpreting its contradictory Christmas copy.
+
+## 2026-09-13
+- Method: refreshed all 80 configured `knownSources` endpoints and ran all 92 saved `searchQueries`. Direct probes returned 71 HTTP 200 responses, five 403s, two 404s and two connection errors. Reviewed the current 108-lead social export, removed all 21 rows whose effective end date was before 13 September, checked candidates against exported feedback and exact date/time/title/venue duplicates, and cross-checked all 290 future Gig Radar rows.
+- New sources/methods tried:
+  - DORICH HOUSE POST-REOPENING SWEEP: revisited the museum's own dated news feed after its summer closure. This found a free Open House Festival Sunday opening on 13 September with exact hours and drop-in access.
+  - SQUIRE'S JAVASCRIPT-CALENDAR FALLBACK: used the organiser's current terms page to recover operational details hidden behind the customer-calendar JavaScript. This confirmed the Long Ditton 26-30 October half-term craft block and free trail without inferring dates.
+  - HAMPTON WICK ASSOCIATION VILLAGE DIARY: opened the association's individual event page rather than relying on borough roundups. It supplied the free 18 December children's storytime, torch-lit procession, Richmond Brass Band carols and Santa visit.
+  - JAMBOREE PAGINATED DAYTIME PASS: followed the mandatory Gig Radar QA into Jamboree's primary paginated diary and individual pages, splitting selected dates into one-day rows. Jamboree is now a recurring family source for priority-act lunches and free daytime roots music.
+- What worked:
+  - The mandatory `gig-data.json` pass promoted 32 missing rows: six further Ewan Bleach/Fleeting Paradise lunch dates, the free Café Boheme Ewan set, the verification-required Spice of Life lunch listing, three Cajun afternoons, eleven free TJ Johnson afternoons, five Prospective Collective swing dates, the Harrison all-day festival and four participatory Harrison sessions.
+  - Jamboree's official pages also supplied two free Flotsam Folk workshop/jam dates. Destination rows were limited to strongly in-genre daytime music; weekday late-night priority gigs were left to Gig Radar.
+  - Stanley Picker Gallery's official homepage now confirms `A Socially Useful Production: The Participation Waltz` for 19 September-19 December. The free nearby exhibition was added, while its ages 7-11 Saturday Art Club remains excluded for the toddler-age profile.
+  - Dorich House, Squire's Long Ditton and Hampton Wick each produced a specific, dated, family-relevant local row. Four sources and four focused searches were added, taking configured coverage to 84 sources and 96 queries.
+- What did not work / cautions:
+  - Hampton Court, Kingston Libraries, Southbank Centre, Kew and Momentum blocked direct probes; Sofar's stored API and the current RHS Wisley root returned 404. Search and already-confirmed official detail pages were used where appropriate, and no date was inferred from a failed endpoint.
+  - Broad searches continued to return stale roundups, older-child classes and generic far-field gigs. The adult U3A lunchtime listing, school-age programming, Bell Square/OSO results and generic acoustic/blues-rock rows remained excluded under feedback.
+  - The 28 September Spice of Life Ewan Bleach listing remains `verify:true` because the exact date is currently supported by The Jazz Guide rather than a stable venue detail page. Squire's has exact official details but exposes them on its terms page because the event calendar is JavaScript-driven.
+  - The latest social export's only strong new family-calendar lead was the Harrison folk festival; its official venue page independently confirms the date and programme. Other fresh social posts were already held, late-night, far-field or low-fit.
+- Try next time:
+  - Recheck the Spice of Life calendar for a direct 28 September event page and clear verification only if date and time agree.
+  - Revisit Orange Tree concert tickets after public sale, the corrected TDMR Christmas page, and The Lamb's next poster for exact November times.
+  - Crawl Jamboree's later paginated diary for January 2027 only when the family-calendar range extends, and keep applying the destination threshold to generic free sessions.

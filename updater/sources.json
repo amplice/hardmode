@@ -735,6 +735,42 @@
                                               "annual Thames Ditton family fireworks and other clearly child-friendly community events",
                                               "early light-show timing for younger children, exact ticket prices and entry windows"
                                           ]
+                         },
+                         {
+                             "name":  "Dorich House Museum events",
+                             "url":  "https://www.dorichhousemuseum.org.uk/category/events/",
+                             "checkFor":  [
+                                              "free Open House and extra-opening days",
+                                              "family-accessible heritage and sculpture events",
+                                              "use dated museum posts after the summer closure"
+                                          ]
+                         },
+                         {
+                             "name":  "Squire's Garden Centres family events",
+                             "url":  "https://www.squiresgardencentres.co.uk/shop/customer-events-all.html",
+                             "checkFor":  [
+                                              "Long Ditton and Twickenham children and family events",
+                                              "half-term crafts and free trails",
+                                              "use official terms pages when the JavaScript calendar hides operational details"
+                                          ]
+                         },
+                         {
+                             "name":  "Hampton Wick Association village diary",
+                             "url":  "https://hamptonwick.org.uk/events/multi-listing-events.php",
+                             "checkFor":  [
+                                              "free family village events",
+                                              "Christmas storytime, procession and brass-band carols",
+                                              "individual dated event pages"
+                                          ]
+                         },
+                         {
+                             "name":  "Jamboree daytime music",
+                             "url":  "https://www.jamboreevenue.co.uk/events/",
+                             "checkFor":  [
+                                              "Ewan Bleach and Fleeting Paradise Sunday lunch dates",
+                                              "free daytime swing, Cajun and folk sessions",
+                                              "crawl pagination and use one row per selected date"
+                                          ]
                          }
                      ],
     "searchQueries":  [
@@ -829,6 +865,10 @@
                           "site:heritageopendays.org.uk/submission-event Surbiton Kingston Thames Ditton 2026",
                           "Kingston Cycling Campaign family-friendly rides 2026",
                           "Colets Thames Ditton family fireworks Halloween 2026",
-                          "RHS Wisley Welly Walks under 5 2026"
+                          "RHS Wisley Welly Walks under 5 2026",
+                          "Dorich House Museum family Open House events 2026",
+                          "Squire's Long Ditton children family events 2026",
+                          "Hampton Wick Association free family events Christmas 2026",
+                          "Jamboree Ewan Bleach free daytime swing folk Cajun 2026"
                       ]
 }
