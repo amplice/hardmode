@@ -986,3 +986,34 @@ prompt/prefs/sources, twice-weekly scheduled task) and seeded it with an initial
 - Revisit The Lamb, Ram Jam, South London Irish Centre, Riverhouse Barn and Old Barn Bookham when their rolling calendars advance. Look for an explicit dated Clay Bottom Jug Busters listing rather than interpreting relative social wording.
 - Recheck Green Note and Café Boheme after their next monthly roster refresh, and continue Jamboree beyond January page 11. Watch for 2027 SwingdanceUK items to acquire full dates and named live bands.
 - Continue treating multi-date festival pages as separate programmes and flag daytime/all-ages priority-act rows for the family calendar.
+
+---
+
+## 2026-09-14 — autonomous gig-radar update run
+
+**Housekeeping:** removed 21 finished gigs dated 11–13 September and retained all rows dated today. Added five exact future gigs and promoted The Dime Notes out of the watchlist after resolving its timetable conflict; the dataset now has 287 gigs and 65 watchlist entries before generation. Updated `meta.updated` and `meta.dateBasis` to 14 September.
+
+**Mandatory act sweep:** checked the primary pages, configured secondary routes and fresh social export for all ten priority acts.
+
+- Ewan Bleach's official page, fresh `@ewanbleach` leads, Jamboree/WeGotTickets and Coin Street/Gabriel's Wharf supplied no unheld date; the 19 September daytime/all-ages Cable Street Rag Band show remains represented and remains a family-calendar candidate. Doolally Tap's official diary is unchanged and all five future dates are already held.
+- Clay Bottom Jug Busters' official page remains undated, but today's collector export led to Caryford Hall's authoritative calendar and WeGotTickets page for 3 October. Added it despite the long Castle Cary journey because the run contract says public future priority-act gigs are mandatory; the travel exception is explicit in the note.
+- Tuba Skinny's official Squarespace schedule contains US dates only. FoBo Jug Band, Shirt Tail Stompers, Dom Glynn, Dunajska Kapelye and Tropanka produced no new future public date beyond rows already held. The Basin Street Brawlers domain remains hijacked/stale; Ronnie Scott's, Nightjar and broad ticket/search checks exposed no reliable replacement date.
+
+**Mandatory venue/source refresh:** refreshed every configured priority venue, using structured variants where available.
+
+- Jamboree's own pages returned 406 to the headless fetch, so both WeGotTickets organiser pages and event details were crawled. The specific Dime Notes ticket page proves a 20:00 all-ages show on 20 September, separate from the 12:15 Fleeting Paradise lunch; it was promoted from the watchlist with the contradiction documented.
+- Green Note's full official catalogue added Phil Doleman + Christopher Davis-Shannon (27 November) and The Whippoorwills (19 December). Other clearly eligible entries were already represented; singer-songwriter, bluegrass, blues-rock and modern-jazz rows stayed out.
+- Hackney Folk Club's expanded primary diary added Interstate Express + Old Time Session on 29 October, a strong fiddle/banjo/guitar American-trad match. The Harrison, Spice of Life, Nightjar's Squarespace JSON, Ram Jam's month JSON, TwickFolk/Eel Pie, Magic Garden's Tribe API, Epsom Hot Jazz Club and Old Barn Bookham all had their qualifying published dates already held.
+- Irish Cultural Centre's exact trad session/concert dates were already represented. Its lightly described Finbar & Paul tea dance was held back because the page does not explicitly establish the musical style. Cecil Sharp House's Spektrix API still lists unnamed ceilidh/barndance events without enough live-band genre detail to promote. South London Irish Centre has a fresh past attendance comment but no named exact future bill.
+- Half Moon Putney, Riverhouse Barn, Fighting Cocks, The Lamb, Rose, cornerHOUSE and Cabbage Patch/Eel Pie remained dark under their applicable filters. Fighting Cocks is still rock/punk/metal/open-mic led; Eel Pie is blues-rock/tribute led. Nightjar's unheld dates are blues, soul, Latin, TBA or otherwise outside the target styles.
+
+**Standard and rotated discovery methods:** ran all 79 configured standard queries through Bing RSS (all completed, but result relevance/localisation was unusually poor), then refreshed The Jazz Guide, SwingdanceUK, Swing Out London, Halibuts, What's Cookin', DICE venue searches, Eventbrite/WeGotTickets routes and the configured artist/venue pages.
+
+- *NEW/PRODUCTIVE — CONTRADICTORY-SCHEDULE TICKET AUDIT:* treated ticketing inventory as a separate performance-level schedule rather than a generic secondary check. This resolved The Dime Notes' lunch/evening collision and recovered the valid 20:00 show.
+- *NEW/PRODUCTIVE — SOCIAL LEAD TO COMMUNITY-HALL CALENDAR:* followed the Clay Bottom Jug Busters Instagram lead into Caryford Hall's WordPress calendar, its event page and WeGotTickets record. The three sources agree on date, time, price and lineup.
+- *NEW/CORROBORATIVE — CALENDAR-NATIVE FEED SWEEP:* tested venue iCalendar exports alongside HTML/JSON. Caryford's feed corroborated its full programme; Magic Garden's feed was complete but genre-dark. The organiser crosslinks also exposed a December Somerset skiffle show, rejected because it is well beyond the travel threshold and is not a priority act.
+- DICE venue-name API searches reconfirmed Toulouse Lautrec, Morocco Bound, Piano Smithfield and Cecil Sharp House dates; no non-duplicate match cleared the genre/travel threshold. The fresh 14 September Instagram export covered all nine configured profiles (108 leads, no login wall); social rows were used only as leads unless backed by a primary page.
+
+**Sources and exclusions:** no new recurring source earned promotion to `gig-sources.json`: Hackney Folk Club, DICE, WeGotTickets and Green Note are already configured, while Caryford Hall is too distant and too occasional to become a standing key venue. Kept the Somerset Luke Philbrick skiffle date, unnamed Cecil Sharp House ceilidhs, Nightjar's John Papa Gros solo/R&B date, ICC tea dance and sold-out/vaguely styled swing-standard nights out of the main list under the conservative distance/genre rules.
+
+**Next run:** retry Jamboree's primary pagination after the 406 clears and extend its January horizon; recheck Nightjar after 14 November, Green Note's newly opening 2027 tabs, The Lamb's near-term social posts, South London Irish Centre for a named dated bill, and Paper Moon's still-unannounced Christmas band. Continue checking every Coin Street festival date separately and surface daytime/all-ages priority-act gigs as family-calendar candidates.
