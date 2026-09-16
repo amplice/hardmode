@@ -21,13 +21,13 @@ window.GIG_DATA = {
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-09-14",
+    "dateBasis": "2026-09-16",
     "counts": {
       "total": 287,
-      "upcoming": 287,
+      "upcoming": 280,
       "watchlist": 65
     },
-    "generated": "2026-09-14T06:55:56.836Z",
+    "generated": "2026-09-16T07:18:13.618Z",
     "genres": [
       "Kansas City swing",
       "New Orleans / trad jazz",
@@ -74,7 +74,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-14 12:30",
       "travel": "Central London",
       "genresLabel": "hot jazz · gypsy jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -101,7 +101,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-14 13:30",
       "travel": "Local (SW London)",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -129,7 +129,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-14 19:30",
       "travel": "Central London",
       "genresLabel": "gypsy jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -156,7 +156,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-14 99:99",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -183,7 +183,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-15 20:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -210,7 +210,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-15 20:30",
       "travel": "Central London",
       "genresLabel": "old-time",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -237,7 +237,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-15 99:99",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

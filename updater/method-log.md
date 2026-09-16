@@ -511,3 +511,23 @@ Format per run:
   - Recheck the Spice of Life calendar for a direct 28 September event page and clear verification only if date and time agree.
   - Revisit Orange Tree concert tickets after public sale, the corrected TDMR Christmas page, and The Lamb's next poster for exact November times.
   - Crawl Jamboree's later paginated diary for January 2027 only when the family-calendar range extends, and keep applying the destination threshold to generic free sessions.
+
+## 2026-09-16
+- Method: refreshed all 84 configured `knownSources` endpoints and ran all 96 saved `searchQueries` before expanding the source list. Direct probes returned 70 HTTP 200 responses, eight 403s, two 404s, one 406, one 504 and two connection errors. Reviewed the fresh 108-lead social export, removed all 13 rows whose effective end date was before 16 September, checked exact date/time/title/venue duplicates and exported feedback, and completed the mandatory pass over every future Gig Radar row.
+- New sources/methods tried:
+  - COMMUNITY BRAIN DIRECT EVENT INVENTORY: crawled the organiser's current What's On page and extracted event JSON-LD plus embedded event copy from individual Wix pages. This recovered three strong doorstep rows missed by broader Surbiton feeds: the 27 September Teddy Bear Trail & Picnic, and Surbiton Ski Sunday plus The King's Soup on 11 October.
+  - GREEN NOTE OFFICIAL MATINEE PASS: checked the venue's month-specific October inventory and individual pages after a new social post explicitly described the 17 October Lara Eidi matinee as suitable for friends with families. The page confirmed the date, times and price, but Camden and the singer-songwriter format did not clear the destination threshold; the Shem Fillmore and other adult matinees were likewise left to Gig Radar.
+  - THAMES DITTON RESIDENTS-ARCHIVE SWEEP: searched current and archived residents-association magazines for autumn and Christmas family dates. Results were stale, year-ambiguous or already represented, so no date was inferred. Kingston Heritage's family pages were also checked and exposed no new current-year under-5 date beyond held provision.
+- What worked:
+  - The Community Brain's event-detail pages carried reliable structured start/end times even where search snippets were thin. The Teddy Bear event is a free toddler-plausible local trail and picnic; Ski Sunday welcomes spectators of all ages; The King's Soup follows it with live music, storytelling, a play and community food.
+  - Orange Tree's public-sale recheck confirmed that the three held Richmond Concert Series rows remain bookable/all-ages, but running times and visible prices are still unpublished, so their verification flags remain appropriate.
+  - The Gig Radar QA pass found that almost all qualifying free/daytime/weekend priority-act dates were already represented. It promoted The Dime Notes' all-ages Sunday hot-jazz show on 20 September from a direct Jamboree page; weeknight destination residencies and adult evening sessions did not independently meet the family-calendar threshold.
+  - Source maintenance added The Community Brain What's On as a recurring source and one focused search, taking configured coverage to 85 sources and 97 queries.
+- What did not work / cautions:
+  - Hampton Court, Kingston Libraries, Southbank Centre, Kew and several ticketing/venue pages still blocked direct probes; Sofar's stored API and the current RHS Wisley root still returned 404. Search was used for discovery only and missing dates were not inferred.
+  - The fresh Lamb export contained no new future family-calendar gig: its newest post was a personal request, while the dated Paul Armer and Pirate Day material was already represented or lacked enough additional detail to change held rows.
+  - The Community Brain's recurring Kitchen Roots cafe is a routine Chessington lunch rather than a distinctive family event, so it was not added. The adults-only participation rule for Ski Sunday is stated clearly while retaining the all-ages spectator value.
+- Try next time:
+  - Recheck The Community Brain after 11 October for Seething autumn/lantern events and any fully dated Christmas programme; crawl its Wix JSON-LD before relying on search snippets.
+  - Revisit the Orange Tree ticket iframe for visible prices and running times, The Lamb's next dated poster, and TDMR only after the organiser fixes the contradictory Christmas day/date.
+  - Check current Thames Ditton village/shop organisers directly rather than archived residents magazines, and continue using Green Note only for unusually strong family-explicit or priority-act matinees.

@@ -771,6 +771,16 @@
                                               "free daytime swing, Cajun and folk sessions",
                                               "crawl pagination and use one row per selected date"
                                           ]
+                         },
+                         {
+                             "name":  "The Community Brain What's On",
+                             "url":  "https://www.thecommunitybrain.org/whatson",
+                             "checkFor":  [
+                                              "Surbiton, Tolworth and Kingston community festivals",
+                                              "toddler-friendly trails and picnics",
+                                              "free all-ages local spectacles",
+                                              "Seething events and community music"
+                                          ]
                          }
                      ],
     "searchQueries":  [
@@ -869,6 +879,7 @@
                           "Dorich House Museum family Open House events 2026",
                           "Squire's Long Ditton children family events 2026",
                           "Hampton Wick Association free family events Christmas 2026",
-                          "Jamboree Ewan Bleach free daytime swing folk Cajun 2026"
+                          "Jamboree Ewan Bleach free daytime swing folk Cajun 2026",
+                          "site:thecommunitybrain.org/event-details Surbiton Tolworth family events 2026"
                       ]
 }
