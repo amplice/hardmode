@@ -21,13 +21,13 @@ window.GIG_DATA = {
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-09-17",
+    "dateBasis": "2026-09-19",
     "counts": {
       "total": 280,
-      "upcoming": 280,
+      "upcoming": 270,
       "watchlist": 65
     },
-    "generated": "2026-09-17T06:52:26.165Z",
+    "generated": "2026-09-19T07:16:28.579Z",
     "genres": [
       "Kansas City swing",
       "New Orleans / trad jazz",
@@ -73,7 +73,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-17 20:00",
       "travel": "Day-trip",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -101,7 +101,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-17 20:30",
       "travel": "Central London",
       "genresLabel": "hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -128,7 +128,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-17 20:30",
       "travel": "Central London",
       "genresLabel": "gypsy jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -156,7 +156,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-17 21:00",
       "travel": "Central London",
       "genresLabel": "hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -183,7 +183,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-18 17:30",
       "travel": "Central London",
       "genresLabel": "old-time",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -211,7 +211,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-18 19:00",
       "travel": "Central London",
       "genresLabel": "swing · gypsy jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -238,7 +238,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-18 19:00",
       "travel": "Central London",
       "genresLabel": "old-time",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -265,7 +265,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-18 20:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -292,7 +292,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-18 20:00",
       "travel": "Day-trip",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -319,7 +319,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-18 20:00",
       "travel": "Central London",
       "genresLabel": "old-time",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

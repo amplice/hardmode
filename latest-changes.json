@@ -1,46 +1,55 @@
 {
-  "generatedAt": "2026-09-16T07:14:20.000Z",
-  "dateBasis": "2026-09-16",
-  "summary": "Removed 13 finished events, added 4 confirmed family/community and high-fit music events, completed the Gig Radar QA pass, and added one productive recurring source.",
+  "generatedAt": "2026-09-19T07:14:34Z",
+  "dateBasis": "2026-09-19",
+  "summary": "Removed 12 finished events, added 13 dated family and high-fit music events, checked all 270 future gigs, and added seven watchlist leads.",
   "added": [
-    "e20260927c: Teddy Bear Trail & Picnic, 2026-09-27, 11:00-13:00; Tolworth Broadway and Tolworth Roundabout.",
-    "e20261011e: Surbiton Ski Sunday, 2026-10-11, 11:00-13:00 (registration 10:50); St Mark's Hill.",
-    "e20261011f: The King's Soup, 2026-10-11, 13:15-16:30; Claremont Gardens.",
-    "e20260920i: The Dime Notes, 2026-09-20, 20:30; Jamboree."
+    "e20260919b: Quacky Races, 2026-09-19, 11:00-15:00; Morden Hall Park.",
+    "e20270103: TwickFolk Singaround, 2027-01-03, 19:45; The Cabbage Patch, Twickenham (TwickFolk).",
+    "e20270131: TwickFolk Singaround, 2027-01-31, 19:45; The Cabbage Patch, Twickenham (TwickFolk).",
+    "e20270228: TwickFolk Singaround, 2027-02-28, 19:45; The Cabbage Patch, Twickenham (TwickFolk).",
+    "e20270404: TwickFolk Singaround, 2027-04-04, 19:45; The Cabbage Patch, Twickenham (TwickFolk).",
+    "e20270106: TJ Johnson's Peak of the Week, 2027-01-06, 15:00-17:00; Jamboree.",
+    "e20270113: TJ Johnson's Peak of the Week, 2027-01-13, 15:00-17:00; Jamboree.",
+    "e20270120: TJ Johnson's Peak of the Week, 2027-01-20, 15:00-17:00; Jamboree.",
+    "e20270127: TJ Johnson's Peak of the Week, 2027-01-27, 15:00-17:00; Jamboree.",
+    "e20261018e: Afternoon swing with the Prospective Collective, 2026-10-18, 15:00-17:00; Jamboree.",
+    "e20270103a: Afternoon swing with the Prospective Collective, 2027-01-03, 15:00-17:00; Jamboree.",
+    "e20270124: The Benny Goodman Orchestra's famous 1938 Carnegie Hall Concert, 2027-01-24, 15:00; Cadogan Hall.",
+    "e20261114b: Fidelio Hot Club, 2026-11-14, 14:00-16:00; Toulouse Lautrec Jazz Club."
   ],
   "updated": [
-    "Refreshed all 84 configured known-source endpoints and ran all 96 saved search queries before source expansion.",
-    "Completed the mandatory future Gig Radar cross-check and promoted The Dime Notes all-ages Sunday hot-jazz show; other qualifying daytime, weekend and priority-act rows were already represented.",
-    "Added The Community Brain What's On page as a recurring source and a focused search after it supplied three high-fit local family/community events.",
-    "Rechecked Orange Tree concert sales, the fresh social export, Green Note's official October matinees, Kingston Heritage family pages and Thames Ditton residents' archives; retained verification flags where prices or running times remain unpublished."
+    "e725: repaired official festival URL after organiser moved to surbitonfestival.com.",
+    "Refreshed 85 configured source endpoints and ran all 97 standard search queries; reviewed the 108-lead social export.",
+    "Completed all-future Gig Radar QA; promoted 11 missing gigs, plus the separately discovered 18 October Prospective Collective date and Quacky Races.",
+    "Added Cadogan Hall as a focused jazz-matinee source, three searches, and repaired the Surbiton Festival domain.",
+    "Extended range through 4 April 2027 for confirmed TwickFolk singarounds."
   ],
   "removed": [
-    "e20260910c: Strawberry Hill House Flower Festival finished on 2026-09-13.",
-    "e810: Relaxed Morning in the Magic Garden finished on 2026-09-13.",
-    "e20260913d: Commons Open Day finished on 2026-09-13.",
-    "e20260913c: Quacky Races finished on 2026-09-13.",
-    "e20260913b: Pet Service (annual pet blessing) finished on 2026-09-13.",
-    "e20260913e: Joao de Mello at The Lamb finished on 2026-09-13.",
-    "e20260913: TwickFolk: Nancy Kerr & James Fagan finished on 2026-09-13.",
-    "e814: Hampton Court Palace Garden Open Day finished on 2026-09-13.",
-    "e20260914: Monday Lunchtime Recital: Ludivine Hobson (soprano) finished on 2026-09-14.",
-    "e625: Birds of the Horn of Africa - illustrated talk finished on 2026-09-15.",
-    "e20260913f: ICC Concert Session: Tad Sargent, Teresa Connolly and Gary Connolly finished on 2026-09-13.",
-    "e20260913a: Dorich House Museum Open House Festival day finished on 2026-09-13.",
-    "e20260913g: Afternoon swing with the Prospective Collective finished on 2026-09-13."
+    "e20260916d: Jack Whitehall: Work in Progress (Richmond) finished on 2026-09-16.",
+    "e762: History of Cheese in Henry VIII’s Kitchens finished on 2026-09-16.",
+    "e20260916: Bat Walk in Surbiton finished on 2026-09-16.",
+    "e20260916c: Sam Carter sings Nic Jones finished on 2026-09-16.",
+    "e627: Andrew's Biographer Tells All finished on 2026-09-16.",
+    "e20260917d: Paul Armer at The Lamb finished on 2026-09-17.",
+    "e20260917: Una Coello: Guitar Girl Singalong finished on 2026-09-17.",
+    "e20260917b: The Wedding Present: acoustic set + Q&A (David Gedge) finished on 2026-09-17.",
+    "e769: Jazz Fridays - Featuring the Cafe Jazz Band finished on 2026-09-18.",
+    "e20260918b: WordPlay: Ages 3-5 finished on 2026-09-18.",
+    "e20260918: Ex Cellar Jazz: Funkestra finished on 2026-09-18.",
+    "e20260916a: TJ Johnson's Peak of the Week finished on 2026-09-16."
   ],
   "counts": {
     "before": {
-      "events": 320,
+      "events": 311,
       "recurring": 56,
       "sources": 53,
       "watchlist": 77
     },
     "after": {
-      "events": 311,
+      "events": 312,
       "recurring": 56,
       "sources": 53,
-      "watchlist": 77
+      "watchlist": 84
     }
   }
 }

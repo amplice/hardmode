@@ -114,7 +114,7 @@
                          },
                          {
                              "name":  "Surbiton Festival",
-                             "url":  "https://www.surbitonfestival.co.uk/events/",
+                             "url":  "https://www.surbitonfestival.com/",
                              "checkFor":  [
                                               "Surbiton Festival",
                                               "market day",
@@ -781,6 +781,15 @@
                                               "free all-ages local spectacles",
                                               "Seething events and community music"
                                           ]
+                         },
+                         {
+                             "name": "Cadogan Hall jazz matinees",
+                             "url": "https://cadoganhall.com/whats-on/",
+                             "checkFor": [
+                                 "rare swing and traditional-jazz Sunday matinees",
+                                 "strong adult cultural value; check toddler admission separately",
+                                 "specific dated concert pages"
+                             ]
                          }
                      ],
     "searchQueries":  [
@@ -880,6 +889,9 @@
                           "Squire's Long Ditton children family events 2026",
                           "Hampton Wick Association free family events Christmas 2026",
                           "Jamboree Ewan Bleach free daytime swing folk Cajun 2026",
-                          "site:thecommunitybrain.org/event-details Surbiton Tolworth family events 2026"
+                          "site:thecommunitybrain.org/event-details Surbiton Tolworth family events 2026",
+                          "Cadogan Hall jazz swing Sunday matinee 2027",
+                          "Chessington Garden Centre Circus of Dreams Halloween 2026 dated sessions",
+                          "Weston Green Thames Ditton public Christmas fair 2026"
                       ]
 }
