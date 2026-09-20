@@ -6,7 +6,7 @@
       "priority": "always-include",
       "genres": ["hot jazz", "New Orleans / trad jazz", "swing"],
       "url": "https://www.ewanbleach.com/gigs",
-      "secondaryUrls": ["https://www.ewanbleach.com/", "https://www.songkick.com/artists/10293984-ewan-bleach", "https://www.ents24.com/uk/tour-dates/ewan-bleach"],
+      "secondaryUrls": ["https://www.ewanbleach.com/", "https://ewan-bleach-xdz4.squarespace.com/events", "https://www.songkick.com/artists/10293984-ewan-bleach", "https://www.ents24.com/uk/tour-dates/ewan-bleach"],
       "instagramHandles": ["ewanbleach"],
       "instagramSearchQueries": ["Ewan Bleach Instagram gigs", "site:instagram.com/p ewanbleach Ewan Bleach gig", "Ewan Bleach Cable Street Rag Band Instagram", "Ewan Bleach Fleeting Paradise Orchestra gigs"],
       "crawlRule": "Crawl Ewan's official gigs page every run, then cross-check @ewanbleach, Jamboree, Green Note, Songkick, Ents24, DICE and venue/ticket pages for any missing dates. Use Instagram/social for late additions.",
@@ -358,6 +358,7 @@
     { "name": "Nightjar Carnaby", "note": "CLOSED. The official site now has a closure notice; only crawl the Shoreditch listings/feed." }
   ],
   "aggregators": [
+    { "name": "Mambo Jambo official dates", "url": "https://mambojambo.co.uk/events/list/", "note": "Artist-owned calendar recovered The Lamb Surbiton on 24 Sep 2026 while the pub roster lagged. Acoustic roots duo with traditional tunes and vintage swing in a broader world/folk repertoire: low local threshold at The Lamb, strict filter elsewhere. Do not confuse with Spanish band Los Mambo Jambo. Start time was not published." },
     { "name": "Songkick", "url": "https://www.songkick.com/", "note": "Artist/venue calendar pages work via plain fetch when you know the exact ID (Rob Heron 3743871, Boaters Inn 4052839); search is JS-walled and feeds curl decoy trending artists — WebSearch for the ID first." },
     { "name": "Bandsintown", "url": "https://www.bandsintown.com/", "note": "Effectively DEAD 2026-07-19: browse 403s even with Chrome UA and rest.bandsintown.com now returns an explicit auth-deny. Don't retry." },
     { "name": "DICE API (unified_search)", "url": "https://dice.fm/", "note": "CRACKED 2026-07-19: unauthenticated POST to api.dice.fm/unified_search with {\"q\":\"<venue or artist>\",\"lat\":51.5074,\"lng\":-0.1278} returns dated events with venue and price (prices in pence: 2225 = £22.25). VENUE-NAME queries sweep whole programmes (Toulouse Lautrec, Morocco Bound, Piano Smithfield); genre keywords mostly return fallback/trending noise — filter by expected venue. The JS-only browse pages remain useless." },
@@ -384,6 +385,9 @@
     { "name": "Shrewsbury Django Fest", "url": "https://www.shrewsburydjangofest.co.uk/", "note": "NEW 2026-09-02: annual specialist gypsy-jazz weekend whose homepage and ticket page expose current-year dates, artists and weekend price. The schedule page can lag a year, so do not borrow daily times until it is refreshed; far/overnight threshold applies." }
   ],
   "searchQueries": [
+    "site:mambojambo.co.uk/events The Lamb Surbiton",
+    "site:swingevents.app Shirt Tail Stompers Cecil Sharp House",
+    "Dom Glynn UK Tour venue tickets",
     "gypsy jazz London 2026 gigs",
     "manouche Django night London",
     "hot jazz London 2026",

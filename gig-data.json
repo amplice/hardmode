@@ -3,7 +3,7 @@
     "title": "Gig Radar",
     "description": "Curated radar of live gigs in traditional jazz and roots-Americana genres around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-09-17",
+    "updated": "2026-09-20",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -20,179 +20,12 @@
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-09-17",
+    "dateBasis": "2026-09-20",
     "counts": {
-      "upcoming": 280
+      "upcoming": 285
     }
   },
   "gigs": [
-    {
-      "id": "g20260917-raineys",
-      "date": "2026-09-17",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Raineys' Revue",
-      "artist": "Raineys' Revue",
-      "venue": "Pump House Jazz Club",
-      "area": "Watford, Herts",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£13",
-      "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/raineys-revue/",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Name suggests a classic-blues/Ma Rainey-style revue in the trad Thursday slot — genre unconfirmed."
-    },
-    {
-      "id": "g20260917-cable-street-rag-band",
-      "date": "2026-09-17",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Limehouse de Reverie with The Cable Street Rag Band",
-      "artist": "Ewan Bleach & The Cable Street Rag Band",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-44/",
-      "source": "Jamboree events (WeGotTickets confirmation)",
-      "confidence": "confirmed",
-      "note": "Weekly Thursday residency date on the official Jamboree page."
-    },
-    {
-      "id": "g20260918-swingden",
-      "date": "2026-09-18",
-      "endDate": null,
-      "time": "19:00",
-      "title": "Bishopsgate Swing Live! — Benoit Viellefon & His Hot Club",
-      "artist": "Benoit Viellefon & His Hot Club",
-      "venue": "Bishopsgate Institute (Great Hall)",
-      "area": "Liverpool St, London",
-      "genres": [
-        "swing",
-        "gypsy jazz"
-      ],
-      "cost": "£17 adv (£14 conc), £21 door",
-      "url": "https://www.swingpatrol.co.uk/events/bishopsgate-swing-live/18-09-2026/",
-      "source": "swingpatrol.co.uk + benoitviellefon.com",
-      "confidence": "confirmed",
-      "note": "Contradiction resolved: this is Swing Patrol's monthly LIVE-BAND night ('Bishopsgate Swing Live'), separate from the DJ-only Swing Den whose season ends 4 Sep. Taster lesson 19:00–19:45, dancing to 23:00."
-    },
-    {
-      "id": "g20260918-joemansfield",
-      "date": "2026-09-18",
-      "endDate": null,
-      "time": "19:00",
-      "title": "Joe Mansfield & the Temperance Two",
-      "artist": "Joe Mansfield & the Temperance Two",
-      "venue": "Green Note",
-      "area": "Camden, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "£14",
-      "url": "https://www.greennote.co.uk/production/joe-mansfield-the-temperance-two/",
-      "source": "Green Note",
-      "confidence": "confirmed",
-      "note": "Appalachian old-time string-band set with fiddle, clawhammer banjo and guitar."
-    },
-    {
-      "id": "g20260918-blueharlem",
-      "date": "2026-09-18",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Blue Harlem",
-      "artist": "Blue Harlem",
-      "venue": "The Pheasantry (PizzaExpress Live)",
-      "area": "Chelsea, SW London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://halibuts.com/events/eventdetail/152892-340798-blue_harlem-the_pheasantry-18-Sep-2026-8.00pm",
-      "source": "Halibuts swing listings",
-      "confidence": "confirmed",
-      "note": "Al Nicholls' jump-jive/swing outfit — same night as Bishopsgate Swing Live if choosing."
-    },
-    {
-      "id": "g20260918-swingshift",
-      "date": "2026-09-18",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Chris Dean's Swing Shift",
-      "artist": "Chris Dean's Swing Shift",
-      "venue": "Ongar Jazz Club",
-      "area": "Ongar, Essex",
-      "genres": [
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/ongar-jazz-club",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Big-band swing (Dean leads the Syd Lawrence Orchestra) at a new-to-radar Friday club — day-trip: Central line to Epping plus ~20 min bus/taxi (~75–90 min)."
-    },
-    {
-      "id": "g20260919-labouche",
-      "date": "2026-09-19",
-      "endDate": null,
-      "time": "",
-      "title": "La Bouche Manouche feat. Irene Serra: Got A Little Rhythm!",
-      "artist": "La Bouche Manouche (Irene Serra, vocals)",
-      "venue": "Toulouse Lautrec Jazz Club",
-      "area": "Kennington, London",
-      "genres": [
-        "gypsy jazz"
-      ],
-      "cost": "",
-      "url": "https://toulouselautrec.co.uk/whats-on/la-bouche-manouche/",
-      "source": "Toulouse Lautrec",
-      "confidence": "confirmed",
-      "note": "Venue event page now shows Sat 19 Sep tagged Gypsy Jazz/Swing (weekday matches 2026). Django originals, chanson and swing; two performances in one evening (19:00 & 21:30 per Halibuts/DICE)."
-    },
-    {
-      "id": "g20260919-aishakhan",
-      "date": "2026-09-19",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Aisha Khan & Her Rajahs",
-      "artist": "Aisha Khan & Her Rajahs",
-      "venue": "Oriole Bar",
-      "area": "Covent Garden, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "£12 (+£6 late set)",
-      "url": "https://www.oriolebar.com/oriole-music",
-      "source": "Oriole Bar listings",
-      "confidence": "verify",
-      "note": "Swing/blues/rockabilly revue (also 15 Aug)."
-    },
-    {
-      "id": "g20260919-ewanbleach-gabrielswharf",
-      "date": "2026-09-19",
-      "endDate": null,
-      "time": "14:00 & 16:00",
-      "title": "Gabriel's Wharf Arts Festival: The Cable Street Rag Band",
-      "artist": "Ewan Bleach & The Cable Street Rag Band",
-      "venue": "Gabriel's Wharf",
-      "area": "Waterloo / South Bank, London",
-      "genres": [
-        "hot jazz",
-        "New Orleans / trad jazz",
-        "swing"
-      ],
-      "cost": "Free; drop-in",
-      "url": "https://www.coinstreet.org/index.php/arts-festival",
-      "source": "Coin Street",
-      "confidence": "confirmed",
-      "featured": true,
-      "note": "Mandatory Ewan Bleach date and an unusually strong family crossover: two Cable Street Rag Band sets at 14:00 and 16:00 within a free all-ages festival, with swing dance and family art from 12:00-17:00."
-    },
     {
       "id": "g20260920-georginajackson",
       "date": "2026-09-20",
@@ -215,7 +48,7 @@
       "id": "g20260920-ewanbleach",
       "date": "2026-09-20",
       "endDate": null,
-      "time": "12:15",
+      "time": "12:30",
       "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
       "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
       "venue": "Jamboree",
@@ -224,11 +57,11 @@
         "hot jazz",
         "New Orleans / trad jazz"
       ],
-      "cost": "£9–£14",
-      "url": "https://www.jamboreevenue.co.uk/upcoming-events/",
-      "source": "Jamboree events",
+      "cost": "£13.50 + £1.40 fee; students £9 + fee",
+      "url": "https://wegottickets.com/f/20350",
+      "source": "Ewan Bleach Music / WeGotTickets",
       "confidence": "confirmed",
-      "note": "Second Fleeting Paradise Sunday lunch — same day as the DFTC Brighton open-air show and the Regent's Park swing dance if choosing."
+      "note": "Artist-promoted ticket page explicitly gives music at 12:30 (doors 11:00), correcting the earlier 12:15 listing. All ages; late-1920s/early-1930s territory-band repertoire. Family-calendar candidate."
     },
     {
       "id": "g20260920-sanjacinto",
@@ -2739,24 +2572,6 @@
       "note": "Explicitly billed by Nightjar as hot jazz and swing."
     },
     {
-      "id": "g20260919-daipricegreen",
-      "date": "2026-09-19",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Dai Price & Al Dunn",
-      "artist": "Dai Price & Al Dunn",
-      "venue": "Green Note (Basement Bar)",
-      "area": "Camden, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£13.50",
-      "url": "https://www.greennote.co.uk/production/dai-price-al-dunn/",
-      "source": "Green Note",
-      "confidence": "confirmed",
-      "note": "Piano-and-bass exploration of New Orleans music."
-    },
-    {
       "id": "g20260925-joehiles",
       "date": "2026-09-25",
       "endDate": null,
@@ -3140,24 +2955,6 @@
       "note": "Free friendly folk, sea-shanty and music-hall singaround; bring a song, tune, poem or story."
     },
     {
-      "id": "g20260918-sharonshannon",
-      "date": "2026-09-18",
-      "endDate": null,
-      "time": "20:00",
-      "title": "The Sharon Shannon Trio",
-      "artist": "The Sharon Shannon Trio",
-      "venue": "Irish Cultural Centre",
-      "area": "Hammersmith, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "",
-      "url": "https://irishculturalcentre.co.uk/whats-on/",
-      "source": "Irish Cultural Centre",
-      "confidence": "confirmed",
-      "note": "Major Irish traditional accordion-led booking at an authoritative specialist venue. Traditional Irish/folk is tagged to the closest permitted canonical roots category."
-    },
-    {
       "id": "g20261002-andyirvinequilty",
       "date": "2026-10-02",
       "endDate": null,
@@ -3319,44 +3116,6 @@
       "source": "Fidelio Cafe",
       "confidence": "confirmed",
       "note": "Two intimate sets (19:30 and 20:30) celebrating Django Reinhardt, traditional manouche and hot swing."
-    },
-    {
-      "id": "g20260917-eliseroth",
-      "date": "2026-09-17",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Elise Roth + Thursday Throwdown with Louise Balkwill",
-      "artist": "Elise Roth & Louise Balkwill",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "£6 cover",
-      "url": "https://www.barnightjar.com/shoreditch-listings/elise-roth-throwdown-b9p66",
-      "source": "Nightjar Squarespace feed",
-      "confidence": "confirmed",
-      "note": "A vintage vocal-jazz double bill centred on Tin Pan Alley and Great American Songbook repertoire from the 1920s–40s."
-    },
-    {
-      "id": "g20260919-harrisonfolkfestival",
-      "date": "2026-09-19",
-      "endDate": null,
-      "time": "13:00",
-      "title": "The Harrison All Day Folk Festival",
-      "artist": "Whiskey Moon Face, Homeward Bound Sea Shanty Singalong + guests",
-      "venue": "The Harrison",
-      "area": "King's Cross, London",
-      "genres": [
-        "old-time",
-        "New Orleans / trad jazz"
-      ],
-      "cost": "Free",
-      "url": "https://harrisonvenuelondon.com/events/the-harrison-all-day-folk-festival/",
-      "source": "The Harrison",
-      "confidence": "confirmed",
-      "note": "Broad free folk bill, promoted for the strong traditional strands: participatory sea shanties and Whiskey Moon Face's old-time/New Orleans jazz and klezmer mix."
     },
     {
       "id": "g20260920-prospective",
@@ -4040,24 +3799,6 @@
       "source": "Bishopsgate Institute",
       "confidence": "verify",
       "note": "Confirmed live-band Lindy night, 19:00–23:00, with beginner taster and vintage DJs; band name not yet announced."
-    },
-    {
-      "id": "g20260917-magicviolin",
-      "date": "2026-09-17",
-      "endDate": null,
-      "time": "20:30",
-      "title": "The Magic Violin Trio",
-      "artist": "The Magic Violin Trio",
-      "venue": "The Harrison",
-      "area": "King's Cross, London",
-      "genres": [
-        "gypsy jazz"
-      ],
-      "cost": "?14",
-      "url": "https://harrisonvenuelondon.com/events/the-magic-violin-trio/",
-      "source": "The Harrison",
-      "confidence": "confirmed",
-      "note": "Authentic Balkan, Romany and Eastern European fiddle music; doors 19:30, performance listing 20:30. Gypsy jazz is the nearest canonical tag, not a claim of a Django repertoire."
     },
     {
       "id": "g20260925-makram",
@@ -5098,24 +4839,6 @@
       "note": "Old-school New Orleans jazz and blues trio with cornet, guitar/banjo and tuba; doors 19:30, music 20:00."
     },
     {
-      "id": "g20260918-icctradsession",
-      "date": "2026-09-18",
-      "endDate": null,
-      "time": "17:30",
-      "title": "Friday Night Traditional Irish Music Session",
-      "artist": "Traditional Irish session musicians",
-      "venue": "Irish Cultural Centre",
-      "area": "Hammersmith, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "Free",
-      "url": "https://irishculturalcentre.co.uk/event/friday-night-sessions/",
-      "source": "Irish Cultural Centre",
-      "confidence": "confirmed",
-      "note": "Free, family-friendly traditional Irish session in the foyer lounge, 17:30–20:00. Traditional Irish music is tagged to the closest permitted canonical roots category."
-    },
-    {
       "id": "g20261022-lapazoos",
       "date": "2026-10-22",
       "endDate": null,
@@ -5208,6 +4931,379 @@
       "source": "Green Note",
       "confidence": "confirmed",
       "note": "Vintage-style 1930s–40s Parisian manouche and swing with vocals, violin/trumpet, two guitars and double bass; doors 19:00, music 20:30."
+    },
+    {
+      "id": "g20260924-mambojambo-lamb",
+      "date": "2026-09-24",
+      "endDate": null,
+      "time": "",
+      "title": "Mambo Jambo",
+      "artist": "Mambo Jambo",
+      "venue": "The Lamb",
+      "area": "Surbiton",
+      "genres": [
+        "old-time",
+        "swing"
+      ],
+      "cost": "",
+      "url": "https://mambojambo.co.uk/event/the-lamb-surbiton-2/",
+      "source": "Mambo Jambo official calendar",
+      "confidence": "confirmed",
+      "note": "Doorstep acoustic roots duo mixing folk, jazz and world music; repertoire includes Lil Liza Jane, Sweet Georgia Brown and Appalachian tunes. Exact date confirmed by artist; start time and admission not published. Broad roots programme included under the lower local threshold."
+    },
+    {
+      "id": "g20261018-sanjacinto-bookham",
+      "date": "2026-10-18",
+      "endDate": null,
+      "time": "13:00",
+      "title": "San Jacinto Stompers",
+      "artist": "San Jacinto Stompers",
+      "venue": "Old Barn Hall",
+      "area": "Great Bookham, Surrey",
+      "genres": [
+        "New Orleans / trad jazz",
+        "hot jazz"
+      ],
+      "cost": "£15 cash",
+      "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/san-jacinto-stompers-1",
+      "source": "The Jazz Guide",
+      "confidence": "confirmed",
+      "note": "Early New Orleans revival six-piece; two sets to 15:30, with dancing. Surrey outing: check rail connections to Bookham and the onward walk before travelling."
+    },
+    {
+      "id": "g20261214-harrystrutters-epsom",
+      "date": "2026-12-14",
+      "endDate": null,
+      "time": "13:30",
+      "title": "Harry Strutter's Hot 6 with Marlene",
+      "artist": "Harry Strutter's Hot 6 with Marlene",
+      "venue": "Epsom Hot Jazz Club (St Joseph's Church Hall)",
+      "area": "Epsom, Surrey",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz"
+      ],
+      "cost": "£15 / £20; verify member rate",
+      "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/harry-strutters-hot-6-with-marlene",
+      "source": "The Jazz Guide",
+      "confidence": "verify",
+      "note": "Monday-afternoon traditional jazz; short direct train from Surbiton. Exact year/date printed. Source reverses the usual member/non-member prices, so verify the applicable rate."
+    },
+    {
+      "id": "g20260925-icc-trad-session",
+      "date": "2026-09-25",
+      "endDate": null,
+      "time": "17:30",
+      "title": "Friday Night Traditional Irish Music Session",
+      "artist": "Traditional Irish session musicians",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "Free",
+      "url": "https://irishculturalcentre.co.uk/event/friday-night-sessions/",
+      "source": "Irish Cultural Centre",
+      "confidence": "confirmed",
+      "note": "Official page explicitly lists 25 September, 17:30-20:00. Family-friendly traditional Irish session; mapped to old-time because the schema has no trad-Irish tag."
+    },
+    {
+      "id": "g20261212-tarahowley-icc",
+      "date": "2026-12-12",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Tara Howley in Concert",
+      "artist": "Tara Howley",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£20 / £18",
+      "url": "https://irishculturalcentre.co.uk/event/tara-howley-in-concert/",
+      "source": "Irish Cultural Centre",
+      "confidence": "confirmed",
+      "note": "Irish traditional uilleann pipes, whistle and concertina from the former Riverdance lead piper; includes traditional tunes and folk songs. Doors 19:30. Irish trad mapped to old-time."
+    },
+    {
+      "id": "g20270305-mcgoldrick-icc",
+      "date": "2027-03-05",
+      "endDate": null,
+      "time": "20:00",
+      "title": "McGoldrick McCusker Doyle Tour 2027",
+      "artist": "Mike McGoldrick, John McCusker & John Doyle",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£22 / £20 concessions",
+      "url": "https://irishculturalcentre.co.uk/event/mcgoldrick-mccusker-doyle-tour-2027/",
+      "source": "Irish Cultural Centre",
+      "confidence": "confirmed",
+      "note": "Official calendar now lists both 5 and 12 March separately. Irish traditional songs and tunes; mapped to old-time. Doors 19:30."
+    },
+    {
+      "id": "g20270110-counters-creek-twickfolk",
+      "date": "2027-01-10",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Counter's Creek",
+      "artist": "Counter's Creek",
+      "venue": "TwickFolk at The Cabbage Patch",
+      "area": "Twickenham",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£14 + 10% fee / £17 door",
+      "url": "https://www.twickfolk.co.uk/events/counters-creek/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "Acoustic jigs, reels and dance tunes rooted in the British Isles, with wider influences. Listed time is doors. Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback."
+    },
+    {
+      "id": "g20270221-the-kimberleys-twickfolk",
+      "date": "2027-02-21",
+      "endDate": null,
+      "time": "19:45",
+      "title": "The Kimberleys",
+      "artist": "The Kimberleys",
+      "venue": "TwickFolk at The Cabbage Patch",
+      "area": "Twickenham",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£12 + 10% fee / £15 door",
+      "url": "https://www.twickfolk.co.uk/events/the-kimberleys/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "Traditional British ballads and folk standards are central to this acoustic duo. Listed time is doors. Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback."
+    },
+    {
+      "id": "g20270418-george-sansome-matt-quinn-twickfolk",
+      "date": "2027-04-18",
+      "endDate": null,
+      "time": "19:45",
+      "title": "George Sansome & Matt Quinn",
+      "artist": "George Sansome & Matt Quinn",
+      "venue": "TwickFolk at The Cabbage Patch",
+      "area": "Twickenham",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£14 + 10% fee / £17 door",
+      "url": "https://www.twickfolk.co.uk/events/george-sansome-matt-quinn/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "English traditional singing, harmony and melodeon/concertina/mandolin; support from Jo Girdlestone & Malcolm MacWatt. Listed time is doors. Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback."
+    },
+    {
+      "id": "g20270425-tarren-twickfolk",
+      "date": "2027-04-25",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Tarren",
+      "artist": "Tarren",
+      "venue": "TwickFolk at The Cabbage Patch",
+      "area": "Twickenham",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£15 + 10% fee / £18 door",
+      "url": "https://www.twickfolk.co.uk/events/tarren/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "English-trad instrumental trio on cittern, concertina, fiddle and accordion; includes newly composed material. Listed time is doors. Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback."
+    },
+    {
+      "id": "g20261024-kimberleys-harrison",
+      "date": "2026-10-24",
+      "endDate": null,
+      "time": "19:30",
+      "title": "The Kimberleys",
+      "artist": "The Kimberleys",
+      "venue": "The Harrison",
+      "area": "King's Cross, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "",
+      "url": "https://harrisonvenuelondon.com/events/the-kimberleys/",
+      "source": "The Harrison",
+      "confidence": "confirmed",
+      "note": "Traditional British ballads and folk songs are central to the duo; mapped to old-time. Official venue date and time; ticket price not shown."
+    },
+    {
+      "id": "g20261105-lapazoos-nightjar",
+      "date": "2026-11-05",
+      "endDate": null,
+      "time": "21:00",
+      "title": "The Lapazoos + Thursday Throwdown with Elise Roth",
+      "artist": "The Lapazoos + Elise Roth",
+      "venue": "Nightjar",
+      "area": "Shoreditch, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "£6; late set free",
+      "url": "https://www.barnightjar.com/shoreditch-listings/the-lapazoos-duo",
+      "source": "Nightjar official Squarespace calendar",
+      "confidence": "confirmed",
+      "note": "1920s-30s New Orleans-inspired blues and swing. Elise Roth late set 23:30-01:15; a late date-night option."
+    },
+    {
+      "id": "g20261115-daiprice-nightjar",
+      "date": "2026-11-15",
+      "endDate": null,
+      "time": "21:00",
+      "title": "Dai Price with Al Dunn",
+      "artist": "Dai Price with Al Dunn",
+      "venue": "Nightjar",
+      "area": "Shoreditch, London",
+      "genres": [
+        "honky tonk",
+        "hot jazz"
+      ],
+      "cost": "£6",
+      "url": "https://www.barnightjar.com/shoreditch-listings/dai-price-duo",
+      "source": "Nightjar official Squarespace calendar",
+      "confidence": "confirmed",
+      "note": "Official description explicitly combines honky tonk and early jazz with rhythm and blues; intimate late date-night duo."
+    },
+    {
+      "id": "g20261211-horsenecks-greennote",
+      "date": "2026-12-11",
+      "endDate": null,
+      "time": "20:30",
+      "title": "The Horsenecks",
+      "artist": "The Horsenecks",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "old-time",
+        "old-school country"
+      ],
+      "cost": "£17.50",
+      "url": "https://www.greennote.co.uk/production/the-horsenecks/",
+      "source": "Green Note",
+      "confidence": "confirmed",
+      "note": "Gabrielle Macrae and Barry Southern: Appalachian fiddle, clawhammer banjo, harmony singing and classic country. Mixed repertoire includes bluegrass, but the venue explicitly identifies them as leading old-time interpreters. Doors 19:00."
+    },
+    {
+      "id": "g20260930-mattholborn-cafeboheme",
+      "date": "2026-09-30",
+      "endDate": null,
+      "time": "16:00",
+      "title": "Celebrating Django with Matt Holborn",
+      "artist": "Matt Holborn",
+      "venue": "Café Boheme",
+      "area": "Soho, London",
+      "genres": [
+        "gypsy jazz",
+        "swing"
+      ],
+      "cost": "",
+      "url": "https://www.cafeboheme.co.uk/live-music",
+      "source": "Café Boheme official September 2026 roster",
+      "confidence": "confirmed",
+      "note": "Dated Wednesday daytime set, 16:00-18:30; the venue explicitly describes a 1930s Django programme. Check dining/seating arrangements; no admission price published."
+    },
+    {
+      "id": "g20261102-domglynn-manchester",
+      "date": "2026-11-02",
+      "endDate": null,
+      "time": "19:00",
+      "title": "Dom Glynn & His Sunday Best",
+      "artist": "Dom Glynn & His Sunday Best",
+      "venue": "The Deaf Institute (The Lodge)",
+      "area": "Manchester",
+      "genres": [
+        "honky tonk",
+        "old-school country"
+      ],
+      "cost": "",
+      "url": "https://www.thedeafinstitute.co.uk/event/dom-glynn-his-sunday-best/",
+      "source": "The Deaf Institute",
+      "confidence": "confirmed",
+      "note": "Priority-act UK-tour exception to the normal travel radius. Longer rail trip from Surbiton via London; plan an overnight stay rather than assume a same-night return. Published event time 19:00-22:00."
+    },
+    {
+      "id": "g20261103-domglynn-newcastle",
+      "date": "2026-11-03",
+      "endDate": null,
+      "time": "19:00",
+      "title": "Dom Glynn & His Sunday Best",
+      "artist": "Dom Glynn & His Sunday Best",
+      "venue": "Think Tank?",
+      "area": "Newcastle upon Tyne",
+      "genres": [
+        "honky tonk",
+        "old-school country"
+      ],
+      "cost": "",
+      "url": "https://www.yourfutureisdigital.com/event/dom-glynn-his-sunday-best/",
+      "source": "Digital / Think Tank?",
+      "confidence": "confirmed",
+      "note": "Priority-act UK-tour exception to the normal travel radius. Longer rail trip from Surbiton via London; plan an overnight stay rather than assume a same-night return. Published event time 19:00-23:00; age 14+."
+    },
+    {
+      "id": "g20261104-domglynn-birmingham",
+      "date": "2026-11-04",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Dom Glynn & His Sunday Best",
+      "artist": "Dom Glynn & His Sunday Best",
+      "venue": "Kitchen Garden Cafe",
+      "area": "Birmingham",
+      "genres": [
+        "honky tonk",
+        "old-school country"
+      ],
+      "cost": "",
+      "url": "https://wegottickets.com/f/22783",
+      "source": "Kitchen Garden / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Priority-act UK-tour exception to the normal travel radius. Longer rail trip from Surbiton via London; plan an overnight stay rather than assume a same-night return. Doors 19:30, music 20:00; all ages."
+    },
+    {
+      "id": "g20261105-domglynn-york",
+      "date": "2026-11-05",
+      "endDate": null,
+      "time": "",
+      "title": "Dom Glynn & His Sunday Best",
+      "artist": "Dom Glynn & His Sunday Best",
+      "venue": "FortyFive Vinyl Cafe",
+      "area": "York",
+      "genres": [
+        "honky tonk",
+        "old-school country"
+      ],
+      "cost": "",
+      "url": "https://fixr.co/venue/fortyfive-york-26314",
+      "source": "FIXR venue inventory + Countrymusic.co.uk",
+      "confidence": "confirmed",
+      "note": "Priority-act UK-tour exception to the normal travel radius. Longer rail trip from Surbiton via London; plan an overnight stay rather than assume a same-night return. FIXR lists Thursday 5 November; year corroborated by the dated tour listing. Time omitted because secondary listings disagree; verify before booking."
+    },
+    {
+      "id": "g20261106-domglynn-leeds",
+      "date": "2026-11-06",
+      "endDate": null,
+      "time": "19:30",
+      "title": "Dom Glynn & His Sunday Best",
+      "artist": "Dom Glynn & His Sunday Best",
+      "venue": "Hyde Park Book Club",
+      "area": "Leeds",
+      "genres": [
+        "honky tonk",
+        "old-school country"
+      ],
+      "cost": "",
+      "url": "https://www.hydeparkbookclub.co.uk/new-events-3/2026/11/6/dom-glynn-amp-his-sunday-best",
+      "source": "Hyde Park Book Club",
+      "confidence": "confirmed",
+      "note": "Priority-act UK-tour exception to the normal travel radius. Longer rail trip from Surbiton via London; plan an overnight stay rather than assume a same-night return. Official venue event time 19:30-22:00."
     }
   ],
   "watchlist": [
@@ -5600,6 +5696,12 @@
       "venue": "The Three Moorhens, Hitchin",
       "url": "https://www.hitchinoldtimejam.uk/",
       "note": "Official site confirms a 19:00–22:00 Appalachian old-time string-band session. Strong genre match but too awkward from Surbiton for an ordinary monthly jam; keep as a fallback rather than a main-list trip."
+    },
+    {
+      "name": "Shirt Tail Stompers at Cecil Sharp House - 24 Oct 2026",
+      "venue": "Cecil Sharp House, Camden",
+      "url": "https://www.swingevents.app/events/01a07eae-eb20-724d-b392-95400dc09bb2",
+      "note": "SwingEvents mirrors the promoter Facebook event with a named live band, 24 October and 18:30-22:30. TicketTailor /events/dalstondoesevents/2389713 is blocked, and the primary Facebook page exposes only a title. Verify year/date with the promoter ticket page before promotion; do not conflate with the separately held Southend afternoon show on 24 October."
     }
   ]
 }
