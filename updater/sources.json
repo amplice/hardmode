@@ -790,8 +790,32 @@
                                  "strong adult cultural value; check toddler admission separately",
                                  "specific dated concert pages"
                              ]
-                         }
-                     ],
+                         },
+        {
+            "name": "Mambo Jambo official artist diary",
+            "url": "https://mambojambo.co.uk/events/month/",
+            "checkFor": [
+                "The Lamb Surbiton dates missed by venue social feeds",
+                "Use dated artist listings; never interpret all-day placeholders as performance times"
+            ]
+        },
+        {
+            "name": "Cafe Boheme daytime jazz roster",
+            "url": "https://www.cafeboheme.co.uk/live-music",
+            "checkFor": [
+                "Explicit monthly dated roster and weekday-specific set times",
+                "Priority artists and vintage jazz; confirm child seating and dining requirements"
+            ]
+        },
+        {
+            "name": "Irish Cultural Centre family trad sessions",
+            "url": "https://irishculturalcentre.co.uk/event/friday-night-sessions/",
+            "checkFor": [
+                "Free public sessions explicitly welcoming children",
+                "Fetch current page because indexed snapshots can show last week; add only explicitly dated sessions"
+            ]
+        }
+    ],
     "searchQueries":  [
                           "Surbiton daytime free music events",
                           "Surbiton The Lamb live music Sunday sessions Irish folk",
@@ -892,6 +916,9 @@
                           "site:thecommunitybrain.org/event-details Surbiton Tolworth family events 2026",
                           "Cadogan Hall jazz swing Sunday matinee 2027",
                           "Chessington Garden Centre Circus of Dreams Halloween 2026 dated sessions",
-                          "Weston Green Thames Ditton public Christmas fair 2026"
-                      ]
+                          "Weston Green Thames Ditton public Christmas fair 2026",
+        "Mambo Jambo The Lamb Surbiton 2026 2027 dates",
+        "Cafe Boheme live music September October 2026 Ewan Bleach Django",
+        "Rose Theatre Cafe Jazz Fridays Melbury Teresa Jennings Una Coello 2026"
+    ]
 }
