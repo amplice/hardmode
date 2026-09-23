@@ -140,7 +140,7 @@
       "area": "Camden, London",
       "priority": "high-genre",
       "url": "https://greennote.co.uk/events/",
-      "secondaryUrls": [],
+      "secondaryUrls": ["https://wegottickets.com/location/480"],
       "instagramHandles": ["greennotemusic"],
       "instagramSearchQueries": ["Green Note Camden Instagram folk roots gigs", "site:instagram.com/p greennotemusic Green Note gig"],
       "crawlRule": "Crawl the official listings and check Instagram for new announcements or late additions.",
@@ -385,6 +385,9 @@
     { "name": "Shrewsbury Django Fest", "url": "https://www.shrewsburydjangofest.co.uk/", "note": "NEW 2026-09-02: annual specialist gypsy-jazz weekend whose homepage and ticket page expose current-year dates, artists and weekend price. The schedule page can lag a year, so do not borrow daily times until it is refreshed; far/overnight threshold applies." }
   ],
   "searchQueries": [
+    "site:efdss.org \"The song that shaped me\" concert",
+    "site:wegottickets.com/location/480 old-time honky tonk",
+    "Morocco Bound Bookshop Sessions Folk Night DICE",
     "site:mambojambo.co.uk/events The Lamb Surbiton",
     "site:swingevents.app Shirt Tail Stompers Cecil Sharp House",
     "Dom Glynn UK Tour venue tickets",

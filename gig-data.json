@@ -3,7 +3,7 @@
     "title": "Gig Radar",
     "description": "Curated radar of live gigs in traditional jazz and roots-Americana genres around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-09-20",
+    "updated": "2026-09-23",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -20,216 +20,12 @@
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-09-20",
+    "dateBasis": "2026-09-23",
     "counts": {
-      "upcoming": 285
+      "upcoming": 282
     }
   },
   "gigs": [
-    {
-      "id": "g20260920-georginajackson",
-      "date": "2026-09-20",
-      "endDate": null,
-      "time": "",
-      "title": "Georgina Jackson's Sass and Brass",
-      "artist": "Georgina Jackson",
-      "venue": "Ronnie Scott's",
-      "area": "Soho, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://www.ronniescotts.co.uk/find-a-show",
-      "source": "Ronnie Scott's listings (Chrome-UA crawl)",
-      "confidence": "verify",
-      "note": "Swing trumpet/vocal show — borderline toward mainstream; included per inclusive policy."
-    },
-    {
-      "id": "g20260920-ewanbleach",
-      "date": "2026-09-20",
-      "endDate": null,
-      "time": "12:30",
-      "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
-      "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "hot jazz",
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£13.50 + £1.40 fee; students £9 + fee",
-      "url": "https://wegottickets.com/f/20350",
-      "source": "Ewan Bleach Music / WeGotTickets",
-      "confidence": "confirmed",
-      "note": "Artist-promoted ticket page explicitly gives music at 12:30 (doors 11:00), correcting the earlier 12:15 listing. All ages; late-1920s/early-1930s territory-band repertoire. Family-calendar candidate."
-    },
-    {
-      "id": "g20260920-sanjacinto",
-      "date": "2026-09-20",
-      "endDate": null,
-      "time": "13:00",
-      "title": "San Jacinto Stompers",
-      "artist": "San Jacinto Stompers",
-      "venue": "Old Barn Hall",
-      "area": "Great Bookham, Surrey",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£15 cash",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/old-barn-hall",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Weekly Sunday-lunch trad club; same band plays Epsom 14 Sep."
-    },
-    {
-      "id": "g20260920-dftcbrighton",
-      "date": "2026-09-20",
-      "endDate": null,
-      "time": "14:00",
-      "title": "Swing That Music — Down for the Count All-Stars",
-      "artist": "Down for the Count All-Stars",
-      "venue": "Brighton Open Air Theatre",
-      "area": "Brighton, East Sussex",
-      "genres": [
-        "swing",
-        "hot jazz"
-      ],
-      "cost": "",
-      "url": "https://www.downforthecount.co.uk/live-dates/",
-      "source": "downforthecount.co.uk",
-      "confidence": "confirmed",
-      "note": "Sunday-afternoon open-air swing — day-trip: ~1h from Victoria plus a local bus. Same day as the Regent's Park swing dance if choosing."
-    },
-    {
-      "id": "g20260920-swingdance",
-      "date": "2026-09-20",
-      "endDate": null,
-      "time": "14:00",
-      "title": "Swing Dance Sundays — Duke Street Big Band",
-      "artist": "Duke Street Big Band",
-      "venue": "Regent's Park bandstand (SwingdanceUK)",
-      "area": "Regent's Park, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "Free",
-      "url": "https://swingdanceuk.com/socials/special-events/",
-      "source": "swingdanceuk.com",
-      "confidence": "confirmed",
-      "note": "Free class + big-band swing."
-    },
-    {
-      "id": "g20260920-doolally",
-      "date": "2026-09-20",
-      "endDate": null,
-      "time": "16:00",
-      "title": "Doolally Tap at The Ivy House",
-      "artist": "Doolally Tap",
-      "venue": "The Ivy House",
-      "area": "Nunhead, London",
-      "genres": [
-        "jug band",
-        "hot jazz"
-      ],
-      "cost": "",
-      "url": "https://doolallytap.net/upcoming-gigs",
-      "source": "Doolally Tap official gig diary",
-      "confidence": "confirmed",
-      "note": "Officially listed Sunday-afternoon hot-jazz/jug-band date."
-    },
-    {
-      "id": "g20260920-daiprice",
-      "date": "2026-09-20",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Dai Price - Soulful New Orleans R&B and Vocals",
-      "artist": "Dai Price with Al Dunn",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "honky tonk",
-        "hot jazz"
-      ],
-      "cost": "£6 cover",
-      "url": "https://www.barnightjar.com/shoreditch-listings/dai-price-live",
-      "source": "Nightjar Squarespace feed",
-      "confidence": "verify",
-      "note": "Honky-tonk and early-jazz material mixed with New Orleans R&B; roots-borderline set."
-    },
-    {
-      "id": "g20260921-mcquaid",
-      "date": "2026-09-21",
-      "endDate": null,
-      "time": "12:30",
-      "title": "Michael McQuaid & Duncan Hemstock Sextet (lunchtime session)",
-      "artist": "Michael McQuaid & Duncan Hemstock Sextet",
-      "venue": "The Spice of Life",
-      "area": "Soho, London",
-      "genres": [
-        "hot jazz",
-        "New Orleans / trad jazz"
-      ],
-      "cost": "",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/spice-of-life-jazz-club-soho-london",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "McQuaid is a 1920s hot-jazz specialist — strong fit."
-    },
-    {
-      "id": "g20260921-bandini",
-      "date": "2026-09-21",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Bandini - Dynamic Blues and Jazz Piano",
-      "artist": "Bandini",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "£6 cover",
-      "url": "https://www.barnightjar.com/shoreditch-listings/bandini-blues-piano-gcx2y",
-      "source": "Nightjar Squarespace feed",
-      "confidence": "verify",
-      "note": "Cab Calloway-inflected theatrical blues/jazz piano; borderline, included under the inclusive swing policy."
-    },
-    {
-      "id": "g20260922-noragermain",
-      "date": "2026-09-22",
-      "endDate": null,
-      "time": "",
-      "title": "Nora Germain and Friends",
-      "artist": "Nora Germain",
-      "venue": "Ronnie Scott's",
-      "area": "Soho, London",
-      "genres": [
-        "swing",
-        "gypsy jazz"
-      ],
-      "cost": "",
-      "url": "https://www.ronniescotts.co.uk/find-a-show",
-      "source": "Ronnie Scott's listings (Chrome-UA crawl)",
-      "confidence": "confirmed",
-      "note": "Hot-jazz/swing violinist in the Grappelli tradition."
-    },
-    {
-      "id": "g20260922-ericranzoni",
-      "date": "2026-09-22",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Eric Ranzoni - Boogie Blues and Rhythm Piano",
-      "artist": "Eric Ranzoni",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "£6 cover",
-      "url": "https://www.barnightjar.com/shoreditch-listings/eric-ranzoni-solo",
-      "source": "Nightjar Squarespace feed",
-      "confidence": "verify",
-      "note": "Boogie-woogie/blues piano in a pre-bebop hot-piano vein; borderline for the radar."
-    },
     {
       "id": "g20260923-dixielandkings",
       "date": "2026-09-23",
@@ -266,7 +62,7 @@
       "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-45/",
       "source": "Jamboree events (WeGotTickets confirmation)",
       "confidence": "confirmed",
-      "note": "Weekly Thursday residency date on the official Jamboree page."
+      "note": "Weekly Thursday residency date on the official Jamboree page. Ewan's 40th birthday concert and party, with a late-night jam advertised until 02:00 by the venue's September social posts."
     },
     {
       "id": "g20260924-bronxville",
@@ -377,25 +173,6 @@
       "source": "Green Note listings",
       "confidence": "verify",
       "note": "New Orleans piano tradition (Dr John, James Booker, Professor Longhair) — same night as the Rigmarollers upstairs."
-    },
-    {
-      "id": "g20260926-rigmarollers",
-      "date": "2026-09-26",
-      "endDate": null,
-      "time": "",
-      "title": "The Rigmarollers",
-      "artist": "The Rigmarollers",
-      "venue": "Green Note",
-      "area": "Camden, London",
-      "genres": [
-        "skiffle",
-        "jug band"
-      ],
-      "cost": "£14",
-      "url": "https://www.greennote.co.uk/production/the-rigmarollers/",
-      "source": "Green Note",
-      "confidence": "confirmed",
-      "note": "Vintage-Americana skiffle — sousaphone, washboard, harmonica and string picking."
     },
     {
       "id": "g20260926-viellefon",
@@ -2003,24 +1780,6 @@
       "note": "Roaring-20s hot jazz including music of the New Orleans Owls and Halfway House Orchestra; booking essential. Day-trip: roughly 45-55 minutes from Surbiton."
     },
     {
-      "id": "g20260922-celticsession",
-      "date": "2026-09-22",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Jamboree Celtic Session",
-      "artist": "London trad-session musicians",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "Free",
-      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-26/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Weekly traditional session, mainly Irish tunes with some Scottish repertoire. Tagged old-time as the closest permitted canonical roots category."
-    },
-    {
       "id": "g20260929-celticsession",
       "date": "2026-09-29",
       "endDate": null,
@@ -2667,18 +2426,18 @@
       "date": "2026-10-10",
       "endDate": null,
       "time": "20:00",
-      "title": "Tim Penn & The Second Line",
-      "artist": "Tim Penn & The Second Line",
+      "title": "Tim Penn & Chris Proctor",
+      "artist": "Tim Penn & Chris Proctor",
       "venue": "Green Note (Basement Bar)",
       "area": "Camden, London",
       "genres": [
         "New Orleans / trad jazz"
       ],
-      "cost": "£12.50",
-      "url": "https://www.greennote.co.uk/production/tim-penn/",
-      "source": "Green Note",
+      "cost": "£12.50 + £1.30 fee",
+      "url": "https://wegottickets.com/f/26935",
+      "source": "Green Note / WeGotTickets",
       "confidence": "confirmed",
-      "note": "New Orleans gumbo drawing on Fats Domino, Professor Longhair, Dr John and Allen Toussaint."
+      "note": "Piano/guitar duo, not the Second Line band: the venue ticket page names Chris Proctor. Stride and barrelhouse piano plus New Orleans repertoire; doors 19:30, music 20:00."
     },
     {
       "id": "g20261024-fobojugband",
@@ -2809,24 +2568,6 @@
       "source": "The Jazz Guide",
       "confidence": "verify",
       "note": "Reachable Sunday-lunch trad-jazz club with dancing and light lunches. The rolling page omits the year; weekday/date match 2026, so recheck before travel."
-    },
-    {
-      "id": "g20260920-lukedaniels",
-      "date": "2026-09-20",
-      "endDate": null,
-      "time": "19:45",
-      "title": "Luke Daniels",
-      "artist": "Luke Daniels",
-      "venue": "The Cabbage Patch (Patchworks)",
-      "area": "Twickenham",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "£12 + fee / £15 door",
-      "url": "https://www.twickfolk.co.uk/events/luke-daniels/",
-      "source": "TwickFolk",
-      "confidence": "confirmed",
-      "note": "Melodeon-led programme reworking Gaelic and other traditional source material. Doors 19:45; music is normally 20:00."
     },
     {
       "id": "g20260927-womenoffolk",
@@ -3118,24 +2859,6 @@
       "note": "Two intimate sets (19:30 and 20:30) celebrating Django Reinhardt, traditional manouche and hot swing."
     },
     {
-      "id": "g20260920-prospective",
-      "date": "2026-09-20",
-      "endDate": null,
-      "time": "15:00",
-      "title": "Afternoon Show: Prospective Collective",
-      "artist": "Prospective Collective",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "Free / donations",
-      "url": "https://www.jamboreevenue.co.uk/events/afternoon-show-swing-with-the-prospective-collective-133/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Sunday-afternoon small-band swing, 15:00–17:00, from Jamboree's fully paginated primary diary."
-    },
-    {
       "id": "g20260927-prospective",
       "date": "2026-09-27",
       "endDate": null,
@@ -3360,7 +3083,7 @@
       "id": "g20261129-harrydiplock",
       "date": "2026-11-29",
       "endDate": null,
-      "time": "20:30",
+      "time": "20:00",
       "title": "Harry Diplock Sessions",
       "artist": "Harry Diplock + guest gypsy-jazz musicians",
       "venue": "Green Note (Basement Bar)",
@@ -3369,10 +3092,10 @@
         "gypsy jazz"
       ],
       "cost": "£13.50",
-      "url": "https://www.greennote.co.uk/production/django-reinhardt-sessions-with-harry-diplock/",
-      "source": "Green Note",
+      "url": "https://wegottickets.com/f/27033",
+      "source": "Green Note / WeGotTickets",
       "confidence": "confirmed",
-      "note": "Monthly Django Reinhardt and Stéphane Grappelli session with leading European guests; doors 19:30."
+      "note": "Django Reinhardt and Stephane Grappelli repertoire with guest gypsy-jazz musicians. Venue ticket page confirms music 20:00, doors 19:30, correcting the earlier 20:30 listing."
     },
     {
       "id": "g20261212-dompipkingreen",
@@ -3396,7 +3119,7 @@
       "id": "g20261213-harrydiplock",
       "date": "2026-12-13",
       "endDate": null,
-      "time": "20:30",
+      "time": "20:00",
       "title": "Harry Diplock Sessions",
       "artist": "Harry Diplock + guest gypsy-jazz musicians",
       "venue": "Green Note (Basement Bar)",
@@ -3405,10 +3128,10 @@
         "gypsy jazz"
       ],
       "cost": "£13.50",
-      "url": "https://www.greennote.co.uk/production/django-reinhardt-sessions-with-harry-diplock/",
-      "source": "Green Note",
+      "url": "https://wegottickets.com/f/27034",
+      "source": "Green Note / WeGotTickets",
       "confidence": "confirmed",
-      "note": "Monthly Django Reinhardt and Stéphane Grappelli session with leading European guests; doors 19:30."
+      "note": "Django Reinhardt and Stephane Grappelli repertoire with guest gypsy-jazz musicians. Venue ticket page confirms music 20:00, doors 19:30, correcting the earlier 20:30 listing."
     },
     {
       "id": "g20260928-dodgebrothers",
@@ -4160,7 +3883,7 @@
       "id": "g20261004-fleetingparadise",
       "date": "2026-10-04",
       "endDate": null,
-      "time": "12:15",
+      "time": "12:30",
       "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
       "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
       "venue": "Jamboree",
@@ -4170,17 +3893,17 @@
         "New Orleans / trad jazz",
         "swing"
       ],
-      "cost": "£9–£14",
-      "url": "https://wegottickets.com/Ewanbleachmusic/",
-      "source": "Ewan Bleach WeGotTickets organiser feed + Jamboree",
+      "cost": "£13.50 + £1.40 fee; students £9 + £0.90 fee",
+      "url": "https://wegottickets.com/f/27249",
+      "source": "Ewan Bleach Music / WeGotTickets",
       "confidence": "confirmed",
-      "note": "Priority-act Sunday lunch residency; ticket feed gives doors 11:00 and a 12:30 billing while Jamboree's series is advertised from 12:15."
+      "note": "Artist-promoted ticket page explicitly confirms music 12:30, doors 11:00, correcting the venue calendar's 12:15. Late-1920s/early-1930s territory-band jazz. All ages; family-calendar candidate."
     },
     {
       "id": "g20261018-fleetingparadise",
       "date": "2026-10-18",
       "endDate": null,
-      "time": "12:15",
+      "time": "12:30",
       "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
       "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
       "venue": "Jamboree",
@@ -4190,17 +3913,17 @@
         "New Orleans / trad jazz",
         "swing"
       ],
-      "cost": "£9–£14",
-      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-16/",
-      "source": "Jamboree + Ewan Bleach WeGotTickets organiser feed",
+      "cost": "£13.50 + £1.40 fee; students £9 + £0.90 fee",
+      "url": "https://wegottickets.com/f/27252",
+      "source": "Ewan Bleach Music / WeGotTickets",
       "confidence": "confirmed",
-      "note": "Priority-act Sunday lunch residency; doors 11:00, music billed from 12:15/12:30."
+      "note": "Artist-promoted ticket page explicitly confirms music 12:30, doors 11:00, correcting the venue calendar's 12:15. Late-1920s/early-1930s territory-band jazz. All ages; family-calendar candidate."
     },
     {
       "id": "g20261101-fleetingparadise",
       "date": "2026-11-01",
       "endDate": null,
-      "time": "12:15",
+      "time": "12:30",
       "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
       "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
       "venue": "Jamboree",
@@ -4210,17 +3933,17 @@
         "New Orleans / trad jazz",
         "swing"
       ],
-      "cost": "£9–£14",
-      "url": "https://wegottickets.com/Ewanbleachmusic/",
-      "source": "Ewan Bleach WeGotTickets organiser feed + Jamboree",
+      "cost": "£13.50 + £1.40 fee; students £9 + £0.90 fee",
+      "url": "https://wegottickets.com/f/27255",
+      "source": "Ewan Bleach Music / WeGotTickets",
       "confidence": "confirmed",
-      "note": "Priority-act Sunday lunch residency; doors 11:00, music billed from 12:15/12:30."
+      "note": "Artist-promoted ticket page explicitly confirms music 12:30, doors 11:00, correcting the venue calendar's 12:15. Late-1920s/early-1930s territory-band jazz. All ages; family-calendar candidate."
     },
     {
       "id": "g20261115-fleetingparadise",
       "date": "2026-11-15",
       "endDate": null,
-      "time": "12:15",
+      "time": "12:30",
       "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
       "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
       "venue": "Jamboree",
@@ -4230,17 +3953,17 @@
         "New Orleans / trad jazz",
         "swing"
       ],
-      "cost": "£9–£14",
-      "url": "https://wegottickets.com/Ewanbleachmusic/",
-      "source": "Ewan Bleach WeGotTickets organiser feed + Jamboree",
+      "cost": "£13.50 + £1.40 fee; students £9 + £0.90 fee",
+      "url": "https://wegottickets.com/f/27258",
+      "source": "Ewan Bleach Music / WeGotTickets",
       "confidence": "confirmed",
-      "note": "Priority-act Sunday lunch residency; doors 11:00, music billed from 12:15/12:30."
+      "note": "Artist-promoted ticket page explicitly confirms music 12:30, doors 11:00, correcting the venue calendar's 12:15. Late-1920s/early-1930s territory-band jazz. All ages; family-calendar candidate."
     },
     {
       "id": "g20261206-fleetingparadise",
       "date": "2026-12-06",
       "endDate": null,
-      "time": "12:15",
+      "time": "12:30",
       "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
       "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
       "venue": "Jamboree",
@@ -4250,17 +3973,17 @@
         "New Orleans / trad jazz",
         "swing"
       ],
-      "cost": "£9–£14",
-      "url": "https://wegottickets.com/Ewanbleachmusic/",
-      "source": "Ewan Bleach WeGotTickets organiser feed + Jamboree",
+      "cost": "£13.50 + £1.40 fee; students £9 + £0.90 fee",
+      "url": "https://wegottickets.com/f/27261",
+      "source": "Ewan Bleach Music / WeGotTickets",
       "confidence": "confirmed",
-      "note": "Priority-act Sunday lunch residency; doors 11:00, music billed from 12:15/12:30."
+      "note": "Artist-promoted ticket page explicitly confirms music 12:30, doors 11:00, correcting the venue calendar's 12:15. Late-1920s/early-1930s territory-band jazz. All ages; family-calendar candidate."
     },
     {
       "id": "g20261220-fleetingparadise",
       "date": "2026-12-20",
       "endDate": null,
-      "time": "12:15",
+      "time": "12:30",
       "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
       "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
       "venue": "Jamboree",
@@ -4270,11 +3993,11 @@
         "New Orleans / trad jazz",
         "swing"
       ],
-      "cost": "£9–£14",
-      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-20/",
-      "source": "Jamboree + Ewan Bleach WeGotTickets organiser feed",
+      "cost": "£13.50 + £1.40 fee; students £9 + £0.90 fee",
+      "url": "https://wegottickets.com/f/27265",
+      "source": "Ewan Bleach Music / WeGotTickets",
       "confidence": "confirmed",
-      "note": "Priority-act Sunday lunch residency; doors 11:00, music billed from 12:15/12:30."
+      "note": "Artist-promoted ticket page explicitly confirms music 12:30, doors 11:00, correcting the venue calendar's 12:15. Late-1920s/early-1930s territory-band jazz. All ages; family-calendar candidate."
     },
     {
       "id": "g20261204-ewanbleachgreen",
@@ -4739,26 +4462,6 @@
       "source": "Jamboree",
       "confidence": "confirmed",
       "note": "Wednesday afternoon roots-jazz session mixing swing-era jazz with blues, gospel and classic country."
-    },
-    {
-      "id": "g20260920-dimenotes",
-      "date": "2026-09-20",
-      "endDate": null,
-      "time": "20:00",
-      "title": "The Dime Notes",
-      "artist": "The Dime Notes",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "hot jazz",
-        "New Orleans / trad jazz",
-        "gypsy jazz"
-      ],
-      "cost": "£12 + £1.20 fee",
-      "url": "https://wegottickets.com/f/27393",
-      "source": "Jamboree / WeGotTickets",
-      "confidence": "confirmed",
-      "note": "Evening show of 1920s–30s New Orleans and Chicago jazz with Sol Grimshaw and Lorenzo Morabito, adding a touch of Django. The organiser's ticket page confirms 20:00, resolving the old clash with the separate 12:15 Fleeting Paradise Orchestra lunch show. All ages with accompanied under-18s."
     },
     {
       "id": "g20261003-claybottomjugbusters",
@@ -5304,6 +5007,244 @@
       "source": "Hyde Park Book Club",
       "confidence": "confirmed",
       "note": "Priority-act UK-tour exception to the normal travel radius. Longer rail trip from Surbiton via London; plan an overnight stay rather than assume a same-night return. Official venue event time 19:30-22:00."
+    },
+    {
+      "id": "g20261024-shirttailcecil",
+      "date": "2026-10-24",
+      "endDate": null,
+      "time": "18:30",
+      "title": "The Shirt Tail Stompers play Cecil Sharp House",
+      "artist": "The Shirt Tail Stompers",
+      "venue": "Cecil Sharp House",
+      "area": "Camden, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "",
+      "url": "https://www.tickettailor.com/events/dalstondoesevents/2389713",
+      "source": "Dalston Does Events / TicketTailor",
+      "confidence": "confirmed",
+      "note": "Priority act; ticket page explicitly confirms 24 October 2026, 18:30-22:30. Live-band swing social with DJs between sets. Event opening time; band start not published. Distinct from the Southend afternoon concert."
+    },
+    {
+      "id": "g20260924-leventdunord",
+      "date": "2026-09-24",
+      "endDate": null,
+      "time": "19:30",
+      "title": "Le Vent du Nord",
+      "artist": "Le Vent du Nord",
+      "venue": "Cecil Sharp House",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£25.50; under 30 £12.50",
+      "url": "https://www.efdss.org/whats-on/26-gigs/15997-le-vent-du-nord-2026",
+      "source": "EFDSS / Cecil Sharp House",
+      "confidence": "confirmed",
+      "note": "Quebec traditional fiddle, accordion, hurdy-gurdy, songs and foot percussion; mapped to old-time under the existing trad-folk convention. Doors 19:00."
+    },
+    {
+      "id": "g20260930-steveturner",
+      "date": "2026-09-30",
+      "endDate": null,
+      "time": "19:30",
+      "title": "Trad Night: Steve Turner",
+      "artist": "Steve Turner",
+      "venue": "Cecil Sharp House",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£12.50; under 30 £10.50",
+      "url": "https://www.efdss.org/whats-on/26-gigs/15998-trad-night-steve-turner-2026",
+      "source": "EFDSS / Cecil Sharp House",
+      "confidence": "confirmed",
+      "note": "Unamplified Trad Night: concertina-accompanied traditional songs and tenor-banjo tunes alongside contemporary material. Traditional folk mapped to old-time. Doors 19:00."
+    },
+    {
+      "id": "g20261001-leveret",
+      "date": "2026-10-01",
+      "endDate": null,
+      "time": "19:30",
+      "title": "Leveret",
+      "artist": "Leveret",
+      "venue": "Cecil Sharp House",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£21.50; under 30 £12.50",
+      "url": "https://www.efdss.org/whats-on/26-gigs/15999-leveret-2026",
+      "source": "EFDSS / Cecil Sharp House",
+      "confidence": "confirmed",
+      "note": "Andy Cutting, Sam Sweeney and Rob Harbron play traditional English tunes on melodeon, fiddle and concertina. Audience-request programme; trad instrumental folk mapped to old-time. Doors 19:00."
+    },
+    {
+      "id": "g20261104-macdarayeatescsh",
+      "date": "2026-11-04",
+      "endDate": null,
+      "time": "19:30",
+      "title": "Trad Night: Macdara Yeates",
+      "artist": "Macdara Yeates",
+      "venue": "Cecil Sharp House",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£12.50; under 30 £10.50",
+      "url": "https://www.efdss.org/whats-on/26-gigs/16008-trad-night-macdara-yeates-2026",
+      "source": "EFDSS / Cecil Sharp House",
+      "confidence": "confirmed",
+      "note": "Unamplified Trad Night devoted to traditional Irish singing. Irish trad mapped to canonical old-time; separate from the held December ICC concert. Doors 19:00."
+    },
+    {
+      "id": "g20261112-ryanyoung",
+      "date": "2026-11-12",
+      "endDate": null,
+      "time": "19:30",
+      "title": "Ryan Young",
+      "artist": "Ryan Young",
+      "venue": "Cecil Sharp House",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£19.50; under 30 £12.50",
+      "url": "https://www.efdss.org/whats-on/26-gigs/16022-ryan-young-louis-campbell-2026",
+      "source": "EFDSS / Cecil Sharp House",
+      "confidence": "confirmed",
+      "note": "Traditional Scottish fiddle concert; Scottish trad mapped to old-time under the existing schema. Doors 19:00."
+    },
+    {
+      "id": "g20261202-andyturner",
+      "date": "2026-12-02",
+      "endDate": null,
+      "time": "19:30",
+      "title": "Trad Night: Andy Turner",
+      "artist": "Andy Turner",
+      "venue": "Cecil Sharp House",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£12.50; under 30 £10.50",
+      "url": "https://www.efdss.org/whats-on/26-gigs/16018-trad-night-andy-turner",
+      "source": "EFDSS / Cecil Sharp House",
+      "confidence": "confirmed",
+      "note": "Unamplified Trad Night: traditional songs, Anglo-concertina and dance tunes, including lesser-known Kent repertoire. Traditional folk mapped to old-time. Doors 19:00."
+    },
+    {
+      "id": "g20261126-gracesmithharrison",
+      "date": "2026-11-26",
+      "endDate": null,
+      "time": "19:30",
+      "title": "The Grace Smith Trio and Archie Churchill-Moss",
+      "artist": "The Grace Smith Trio and Archie Churchill-Moss",
+      "venue": "The Harrison",
+      "area": "King's Cross, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£15",
+      "url": "https://harrisonvenuelondon.com/events/the-grace-smith-trio-and-archie-churchill-moss/",
+      "source": "The Harrison / Folk and Roots",
+      "confidence": "confirmed",
+      "note": "Fiddle, concertina and mandolin trio with diatonic accordion player; traditional instrumental folk mapped to old-time. Venue-listed time; confirm music start."
+    },
+    {
+      "id": "g20261003-shawnhessdukes",
+      "date": "2026-10-03",
+      "endDate": null,
+      "time": "19:00",
+      "title": "Shawn Hess & Derek Dames Ohl",
+      "artist": "Shawn Hess & Derek Dames Ohl",
+      "venue": "The Dukes of Highgate",
+      "area": "Highgate, London",
+      "genres": [
+        "honky tonk",
+        "old-school country"
+      ],
+      "cost": "Free",
+      "url": "https://www.thedukesofhighgate.co.uk/events/shawn-hess-derek-dames-ohl/",
+      "source": "The Dukes of Highgate",
+      "confidence": "confirmed",
+      "note": "Official event data confirms 2026. Western country and honky-tonk touring roots double bill; strong genre match for the further north-London trip. Published event window 19:00-23:00."
+    },
+    {
+      "id": "g20261101-catskellington",
+      "date": "2026-11-01",
+      "endDate": null,
+      "time": "12:15",
+      "title": "Jazz & Beer: Cat Skellington Band featuring Richard White",
+      "artist": "Cat Skellington Band featuring Richard White",
+      "venue": "Riverhouse Barn Arts Centre",
+      "area": "Walton-on-Thames, Surrey",
+      "genres": [
+        "gypsy jazz",
+        "swing"
+      ],
+      "cost": "Up to £15; check ticket options",
+      "url": "https://www.riverhousebarn.co.uk/events/172497",
+      "source": "Riverhouse Barn official event / structured data",
+      "confidence": "confirmed",
+      "note": "Acoustic Django-influenced 1920s-30s swing with clarinet, two guitars and bass. Official event data gives 12:15-14:15. Direct train from Surbiton to Walton, then local transport or a walk to the barn."
+    },
+    {
+      "id": "g20261114-raggedout",
+      "date": "2026-11-14",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Ragged Out String Band",
+      "artist": "Ragged Out String Band",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£15 + £1.50 fee",
+      "url": "https://wegottickets.com/f/28906",
+      "source": "Green Note / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Explicit Appalachian old-time fiddle, banjo and guitar repertoire alongside bluegrass; included for the substantial old-time component, not a bluegrass-only bill. Doors 19:00."
+    },
+    {
+      "id": "g20261120-giuliamarro",
+      "date": "2026-11-20",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Giulia Marro Quartet",
+      "artist": "Giulia Marro Quartet",
+      "venue": "Green Note (Basement Bar)",
+      "area": "Camden, London",
+      "genres": [
+        "swing"
+      ],
+      "cost": "£12.50 + £1.30 fee",
+      "url": "https://wegottickets.com/f/28297",
+      "source": "Green Note / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Clarinet/vocals, piano, guitar and double bass playing swing, blues, Great American Songbook and Doc Watson repertoire. Doors 19:30."
+    },
+    {
+      "id": "g20261210-hankwangford",
+      "date": "2026-12-10",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Hank Wangford & The Big Bass Combo",
+      "artist": "Hank Wangford & The Big Bass Combo",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "honky tonk",
+        "old-school country"
+      ],
+      "cost": "£16 + £1.60 fee",
+      "url": "https://wegottickets.com/f/27571",
+      "source": "Green Note / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Explicit honky-tonk and country ballads with twin basses, snare and Noel Dashwood on dobro. Doors 19:00."
     }
   ],
   "watchlist": [
@@ -5698,10 +5639,10 @@
       "note": "Official site confirms a 19:00–22:00 Appalachian old-time string-band session. Strong genre match but too awkward from Surbiton for an ordinary monthly jam; keep as a fallback rather than a main-list trip."
     },
     {
-      "name": "Shirt Tail Stompers at Cecil Sharp House - 24 Oct 2026",
-      "venue": "Cecil Sharp House, Camden",
-      "url": "https://www.swingevents.app/events/01a07eae-eb20-724d-b392-95400dc09bb2",
-      "note": "SwingEvents mirrors the promoter Facebook event with a named live band, 24 October and 18:30-22:30. TicketTailor /events/dalstondoesevents/2389713 is blocked, and the primary Facebook page exposes only a title. Verify year/date with the promoter ticket page before promotion; do not conflate with the separately held Southend afternoon show on 24 October."
+      "name": "Bookshop Sessions: Folk Night - 24 Sep 2026",
+      "venue": "Morocco Bound, Bermondsey (verify branch)",
+      "url": "https://halibuts.com/genre/folk",
+      "note": "Multiple current listings advertise 24 September 2026 at 19:00: English tunes, Irish lilting, Scottish songs and old-time classics. Primary DICE event not recovered; one mirror mixes in Wandsworth wording, so retain as a lead pending exact branch and ticket-page confirmation."
     }
   ]
 }
