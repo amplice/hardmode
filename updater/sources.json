@@ -814,6 +814,24 @@
                 "Free public sessions explicitly welcoming children",
                 "Fetch current page because indexed snapshots can show last week; add only explicitly dated sessions"
             ]
+        },
+        {
+            "name": "Riverhouse Barn official event inventory",
+            "url": "https://www.riverhousebarn.co.uk/",
+            "checkFor": [
+                "Sunday Jazz & Beer vintage swing concerts and chamber music",
+                "Read individual /events/ pages and Event JSON-LD for dates, times and prices",
+                "Confirm under-5 admission; do not interpret a zero lowPrice as general free admission"
+            ]
+        },
+        {
+            "name": "Deen City Farm public seasonal events",
+            "url": "https://www.deencityfarm.co.uk/events/",
+            "checkFor": [
+                "Toddler-plausible public animal encounters, trails and seasonal family events",
+                "Verify explicit year and minimum ages against BookingHound sessions",
+                "Avoid school/group-only learning, older-child garden clubs and stale 2025 archive articles"
+            ]
         }
     ],
     "searchQueries":  [
@@ -919,6 +937,9 @@
                           "Weston Green Thames Ditton public Christmas fair 2026",
         "Mambo Jambo The Lamb Surbiton 2026 2027 dates",
         "Cafe Boheme live music September October 2026 Ewan Bleach Django",
-        "Rose Theatre Cafe Jazz Fridays Melbury Teresa Jennings Una Coello 2026"
+        "Rose Theatre Cafe Jazz Fridays Melbury Teresa Jennings Una Coello 2026",
+        "Riverhouse Barn Jazz Beer Sunday gypsy swing 2026 2027",
+        "Deen City Farm Halloween Christmas 2026 toddler family events",
+        "Maiastra piano quartets string quartets Twickenham Cobham 2026 2027"
     ]
 }
