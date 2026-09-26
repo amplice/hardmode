@@ -3,7 +3,7 @@
     "title": "Gig Radar",
     "description": "Curated radar of live gigs in traditional jazz and roots-Americana genres around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-09-23",
+    "updated": "2026-09-26",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -20,141 +20,27 @@
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-09-23",
+    "dateBasis": "2026-09-26",
     "counts": {
       "upcoming": 282
     }
   },
   "gigs": [
     {
-      "id": "g20260923-dixielandkings",
-      "date": "2026-09-23",
+      "id": "g20261013-wildernessyet-cornerhouse",
+      "date": "2026-10-13",
       "endDate": null,
-      "time": "20:00",
-      "title": "Dixieland Swing Kings",
-      "artist": "Dixieland Swing Kings",
-      "venue": "Amersham Jazz Club (Wycombe Marsh RBL)",
-      "area": "High Wycombe, Bucks",
-      "genres": [
-        "New Orleans / trad jazz",
-        "swing"
-      ],
-      "cost": "£14",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/amersham-jazz-club-wycombe-marsh-rbl",
-      "source": "The Jazz Guide",
+      "time": "",
+      "title": "Folk@thecornerHOUSE - The Wilderness Yet",
+      "artist": "The Wilderness Yet",
+      "venue": "The cornerHOUSE",
+      "area": "Surbiton",
+      "genres": ["old-time"],
+      "cost": "£18; check booking fees",
+      "url": "https://www.thewildernessyet.com/",
+      "source": "The Wilderness Yet official 2026 tour / cornerHOUSE / local listings",
       "confidence": "verify",
-      "note": ""
-    },
-    {
-      "id": "g20260924-cable-street-rag-band",
-      "date": "2026-09-24",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Limehouse de Reverie with The Cable Street Rag Band",
-      "artist": "Ewan Bleach & The Cable Street Rag Band",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-45/",
-      "source": "Jamboree events (WeGotTickets confirmation)",
-      "confidence": "confirmed",
-      "note": "Weekly Thursday residency date on the official Jamboree page. Ewan's 40th birthday concert and party, with a late-night jam advertised until 02:00 by the venue's September social posts."
-    },
-    {
-      "id": "g20260924-bronxville",
-      "date": "2026-09-24",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Bronxville Babies",
-      "artist": "Bronxville Babies",
-      "venue": "Pump House Jazz Club",
-      "area": "Watford, Herts",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "£13",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/the-pump-house",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Hot-jazz/swing vocal outfit (also Ongar 13 Nov). Day-trip: ~25 min from Euston."
-    },
-    {
-      "id": "g20260925-papagros",
-      "date": "2026-09-25",
-      "endDate": null,
-      "time": "19:00",
-      "title": "John 'Papa' Gros - New Orleans' Own",
-      "artist": "John 'Papa' Gros",
-      "venue": "Toulouse Lautrec Jazz Club",
-      "area": "Kennington, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£17.80",
-      "url": "https://dice.fm/event/8e96er-john-papa-gros-new-orleans-own-25th-sep-toulouse-lautrec-london-tickets",
-      "source": "DICE / Toulouse Lautrec",
-      "confidence": "verify",
-      "note": "Early show. Genuine New Orleans piano lineage and Crescent City rhythm, but the set leans funk/soul."
-    },
-    {
-      "id": "g20260925-runnymede",
-      "date": "2026-09-25",
-      "endDate": null,
-      "time": "19:30",
-      "title": "Graham Hughes & The Sunshine Kings",
-      "artist": "Graham Hughes & The Sunshine Kings",
-      "venue": "Runnymede Jazz Club at The Addlestone Centre",
-      "area": "Addlestone, Surrey",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://runnymedejazzclub.chessck.co.uk/ForthcomingBands",
-      "source": "Runnymede Jazz Club programme",
-      "confidence": "confirmed",
-      "note": "Vintage jazz and swing; booking essential by phone. Day-trip: roughly 45-55 minutes from Surbiton by rail/walk, usually changing at Weybridge."
-    },
-    {
-      "id": "g20260925-cosimo",
-      "date": "2026-09-25",
-      "endDate": null,
-      "time": "21:00",
-      "title": "The Cosimo Matassa Project - 1950s New Orleans R&B",
-      "artist": "The Cosimo Matassa Project",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£10 cover (+ late set)",
-      "url": "https://www.barnightjar.com/shoreditch-listings/cosimo-matassa-project-live",
-      "source": "Nightjar Squarespace feed",
-      "confidence": "verify",
-      "note": "Homage to Cosimo Matassa's New Orleans studio and its Fats Domino/Big Joe Turner era; R&B-leaning."
-    },
-    {
-      "id": "g20260925-papagros-b",
-      "date": "2026-09-25",
-      "endDate": null,
-      "time": "21:30",
-      "title": "John 'Papa' Gros - New Orleans' Own",
-      "artist": "John 'Papa' Gros",
-      "venue": "Toulouse Lautrec Jazz Club",
-      "area": "Kennington, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "£17.80",
-      "url": "https://dice.fm/event/ww9ewr-john-papa-gros-new-orleans-own-25th-sep-toulouse-lautrec-london-tickets",
-      "source": "DICE / Toulouse Lautrec",
-      "confidence": "verify",
-      "note": "Late show. Genuine New Orleans piano lineage and Crescent City rhythm, but the set leans funk/soul."
+      "note": "Very local traditional fiddle, flute/guitar and harmony-song trio, with traditional and original repertoire. Artist explicitly confirms 13 October 2026 and venue calendar corroborates it. English/Irish trad mapped to canonical old-time. Local listings disagree between 19:30 and 19:45, so start time is left blank pending venue confirmation."
     },
     {
       "id": "g20260926-dalestorr",
@@ -646,7 +532,7 @@
       "genres": [
         "New Orleans / trad jazz"
       ],
-      "cost": "£15 U3A members / £20 non-members",
+      "cost": "?15 general / ?10 U3A members",
       "url": "https://www.thejazzguide.co.uk/venues/listing/epsom-hot-jazz-club-new-venue",
       "source": "The Jazz Guide",
       "confidence": "verify",
@@ -804,7 +690,7 @@
       "id": "g20261024-ewanbleach",
       "date": "2026-10-24",
       "endDate": null,
-      "time": "19:00",
+      "time": "20:30",
       "title": "An Evening with Ewan Bleach",
       "artist": "Ewan Bleach",
       "venue": "Hoxton Hall",
@@ -813,11 +699,11 @@
         "New Orleans / trad jazz",
         "hot jazz"
       ],
-      "cost": "£32.50",
-      "url": "https://halibuts.com/events/eventdetail/153149-341343-an_evening_with_ewan_bleach-hoxton_hall-24-Oct-2026-7.00pm",
-      "source": "Halibuts swing listings",
+      "cost": "?37.25 including fees (?32.50 face value)",
+      "url": "https://visitgreenwich.seetickets.com/event/an-evening-with-ewan-bleach/hoxton-hall/3673122",
+      "source": "Hoxton Hall / See Tickets",
       "confidence": "confirmed",
-      "note": "Trad-circuit favourite (Cable Street Rag Band, Fleeting Paradise) headlining a Victorian music hall — Hoxton Hall's own ticketing blocks scrapers."
+      "note": "Mystic Mood album launch with the Fleeting Paradise Orchestra and special guests. Ticket page explicitly gives doors 19:00, show 20:30, age 18+."
     },
     {
       "id": "g20261024-peteallen",
@@ -961,11 +847,11 @@
       "genres": [
         "jug band"
       ],
-      "cost": "",
+      "cost": "?15 general / ?10 U3A members",
       "url": "https://www.thejakelegjugband.com/gigs-2",
       "source": "thejakelegjugband.com",
       "confidence": "confirmed",
-      "note": "Epsom is a short direct train from Surbiton. NB rolled out of the club's Jazz Guide diary window (only Aug–Oct displayed 19 Jul) but still listed on the band's own gigs page."
+      "note": "Epsom is a short direct train from Surbiton. Current Jazz Guide roster reconfirms the date."
     },
     {
       "id": "g20261111-degraaf",
@@ -1816,25 +1702,6 @@
       "note": "Weekly traditional session, mainly Irish tunes with some Scottish repertoire. Tagged old-time as the closest permitted canonical roots category."
     },
     {
-      "id": "g20260923-tjjohnsonjamboree",
-      "date": "2026-09-23",
-      "endDate": null,
-      "time": "15:00",
-      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
-      "artist": "TJ Johnson",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "swing",
-        "old-school country"
-      ],
-      "cost": "Free / donations",
-      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-84/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Daytime set mixing swing-era jazz with blues, gospel and classic country; exact date published by the venue."
-    },
-    {
       "id": "g20260930-tjjohnsonjamboree",
       "date": "2026-09-30",
       "endDate": null,
@@ -1928,25 +1795,6 @@
       "source": "Jamboree",
       "confidence": "confirmed",
       "note": "1930s Hot Club-rooted gypsy jazz with tight vocal harmonies, plus a Belgian trio playing classic jazz standards."
-    },
-    {
-      "id": "g20260924-lapazoos",
-      "date": "2026-09-24",
-      "endDate": null,
-      "time": "21:00",
-      "title": "The Lapazoos Duo + Thursday Throwdown with Mazza",
-      "artist": "The Lapazoos Duo + Mazza",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://www.barnightjar.com/shoreditch-listings/lapazoos-duo",
-      "source": "Nightjar Shoreditch official feed",
-      "confidence": "confirmed",
-      "note": "Early New Orleans blues and 1920s–30s swing; official Shoreditch feed."
     },
     {
       "id": "g20260928-benmartyn",
@@ -2329,24 +2177,6 @@
       "source": "Nightjar Shoreditch official feed",
       "confidence": "confirmed",
       "note": "Explicitly billed by Nightjar as hot jazz and swing."
-    },
-    {
-      "id": "g20260925-joehiles",
-      "date": "2026-09-25",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Joe Hiles 3",
-      "artist": "Joe Hiles 3",
-      "venue": "Green Note (Basement Bar)",
-      "area": "Camden, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "£12.50",
-      "url": "https://www.greennote.co.uk/production/joe-hiles-3/",
-      "source": "Green Note",
-      "confidence": "confirmed",
-      "note": "Swing-era trio inspired by Nat King Cole, Billie Holiday and Louis Armstrong."
     },
     {
       "id": "g20260927-petunia",
@@ -3524,41 +3354,22 @@
       "note": "Confirmed live-band Lindy night, 19:00–23:00, with beginner taster and vintage DJs; band name not yet announced."
     },
     {
-      "id": "g20260925-makram",
-      "date": "2026-09-25",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Makram ? Turkish Classical Music",
-      "artist": "Makram with Ewan Bleach",
-      "venue": "Sands Films Music Room",
-      "area": "Rotherhithe, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "",
-      "url": "https://www.ewanbleach.com/events/2026/8/18/makram-turkish-classical-music",
-      "source": "Ewan Bleach official diary",
-      "confidence": "confirmed",
-      "note": "Always-included Ewan Bleach collaboration: Turkish classical makam with clarinet, oud, kanun, percussion and voice. This sits outside the core radar; old-time is used only as the nearest traditional-music schema tag."
-    },
-    {
       "id": "g20261003-greatbritishjazz",
       "date": "2026-10-03",
       "endDate": null,
       "time": "14:00",
-      "title": "From Dixieland to Swing with the Great British Jazz Band",
-      "artist": "The Great British Jazz Band",
+      "title": "The Jazz Centre UK 10th Anniversary All Stars",
+      "artist": "Bruce Adams, Ian Bateman, Julian-Marc Stringle & guests",
       "venue": "The Jazz Centre UK",
       "area": "Southend-on-Sea, Essex",
       "genres": [
-        "New Orleans / trad jazz",
         "swing"
       ],
-      "cost": "",
-      "url": "https://www.thejazzcentreuk.co.uk/events/from-dixieland-to-swing-with-the-great-british-jazz-band-3",
+      "cost": "?15 + ?0.38 ticket service fee",
+      "url": "https://www.thejazzcentreuk.co.uk/events/the-jazz-centre-uk-10th-anniversary-all-stars",
       "source": "The Jazz Centre UK",
-      "confidence": "confirmed",
-      "note": "14:00?16:00 Softpower fundraiser built around Dixieland and mainstream swing. Strong genre match justifies the longer Southend day-trip; allow roughly 90 minutes or more each way from Surbiton."
+      "confidence": "verify",
+      "note": "Venue has cancelled the original Softpower / Great British Jazz Band fundraiser and replaced it with this 14:00-16:00 all-star swinging-mainstream bill. Named trumpet, trombone and clarinet front line; verify the full programme before the longer Southend trip. Allow 90 minutes or more each way from Surbiton."
     },
     {
       "id": "g20261005-elsiefranklin",
@@ -3838,26 +3649,6 @@
       "source": "Jamboree",
       "confidence": "confirmed",
       "note": "Free weekly traditional Irish and Celtic session; trad Irish is mapped to the nearest canonical old-time tag."
-    },
-    {
-      "id": "g20260924-ewancafeboheme",
-      "date": "2026-09-24",
-      "endDate": null,
-      "time": "15:00",
-      "title": "Mlle Lou Lou and Ewan Bleach",
-      "artist": "Mlle Lou Lou and Ewan Bleach",
-      "venue": "Café Boheme",
-      "area": "Soho, London",
-      "genres": [
-        "gypsy jazz",
-        "New Orleans / trad jazz",
-        "swing"
-      ],
-      "cost": "Free live music; food/drink extra",
-      "url": "https://www.cafeboheme.co.uk/live-music",
-      "source": "Café Boheme official live-music calendar",
-      "confidence": "confirmed",
-      "note": "Priority-act daytime set, 15:00–17:30, billed as chanson, manouche and trad jazz from the streets of Montmartre."
     },
     {
       "id": "g20260927-ewanshaftesbury",
@@ -4636,25 +4427,6 @@
       "note": "Vintage-style 1930s–40s Parisian manouche and swing with vocals, violin/trumpet, two guitars and double bass; doors 19:00, music 20:30."
     },
     {
-      "id": "g20260924-mambojambo-lamb",
-      "date": "2026-09-24",
-      "endDate": null,
-      "time": "",
-      "title": "Mambo Jambo",
-      "artist": "Mambo Jambo",
-      "venue": "The Lamb",
-      "area": "Surbiton",
-      "genres": [
-        "old-time",
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://mambojambo.co.uk/event/the-lamb-surbiton-2/",
-      "source": "Mambo Jambo official calendar",
-      "confidence": "confirmed",
-      "note": "Doorstep acoustic roots duo mixing folk, jazz and world music; repertoire includes Lil Liza Jane, Sweet Georgia Brown and Appalachian tunes. Exact date confirmed by artist; start time and admission not published. Broad roots programme included under the lower local threshold."
-    },
-    {
       "id": "g20261018-sanjacinto-bookham",
       "date": "2026-10-18",
       "endDate": null,
@@ -4686,29 +4458,11 @@
         "hot jazz",
         "New Orleans / trad jazz"
       ],
-      "cost": "£15 / £20; verify member rate",
+      "cost": "?15 general / ?10 U3A members",
       "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/harry-strutters-hot-6-with-marlene",
       "source": "The Jazz Guide",
       "confidence": "verify",
-      "note": "Monday-afternoon traditional jazz; short direct train from Surbiton. Exact year/date printed. Source reverses the usual member/non-member prices, so verify the applicable rate."
-    },
-    {
-      "id": "g20260925-icc-trad-session",
-      "date": "2026-09-25",
-      "endDate": null,
-      "time": "17:30",
-      "title": "Friday Night Traditional Irish Music Session",
-      "artist": "Traditional Irish session musicians",
-      "venue": "Irish Cultural Centre",
-      "area": "Hammersmith, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "Free",
-      "url": "https://irishculturalcentre.co.uk/event/friday-night-sessions/",
-      "source": "Irish Cultural Centre",
-      "confidence": "confirmed",
-      "note": "Official page explicitly lists 25 September, 17:30-20:00. Family-friendly traditional Irish session; mapped to old-time because the schema has no trad-Irish tag."
+      "note": "Monday-afternoon traditional jazz; short direct train from Surbiton. Exact year/date printed. Current club listing gives ?15 general admission and ?10 U3A members; verify before travelling."
     },
     {
       "id": "g20261212-tarahowley-icc",
@@ -5028,24 +4782,6 @@
       "note": "Priority act; ticket page explicitly confirms 24 October 2026, 18:30-22:30. Live-band swing social with DJs between sets. Event opening time; band start not published. Distinct from the Southend afternoon concert."
     },
     {
-      "id": "g20260924-leventdunord",
-      "date": "2026-09-24",
-      "endDate": null,
-      "time": "19:30",
-      "title": "Le Vent du Nord",
-      "artist": "Le Vent du Nord",
-      "venue": "Cecil Sharp House",
-      "area": "Camden, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "£25.50; under 30 £12.50",
-      "url": "https://www.efdss.org/whats-on/26-gigs/15997-le-vent-du-nord-2026",
-      "source": "EFDSS / Cecil Sharp House",
-      "confidence": "confirmed",
-      "note": "Quebec traditional fiddle, accordion, hurdy-gurdy, songs and foot percussion; mapped to old-time under the existing trad-folk convention. Doors 19:00."
-    },
-    {
       "id": "g20260930-steveturner",
       "date": "2026-09-30",
       "endDate": null,
@@ -5245,6 +4981,270 @@
       "source": "Green Note / WeGotTickets",
       "confidence": "confirmed",
       "note": "Explicit honky-tonk and country ballads with twin basses, snare and Noel Dashwood on dobro. Doors 19:00."
+    },
+    {
+      "id": "g20260926-ewanbleach-plaquemine",
+      "date": "2026-09-26",
+      "endDate": null,
+      "time": "12:30",
+      "title": "Ewan Bleach - Saturday jazz brunch",
+      "artist": "Ewan Bleach",
+      "venue": "Plaquemine Lock",
+      "area": "Islington, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "",
+      "url": "https://plaqlock.com/live-music-islington/",
+      "source": "Plaquemine Lock live music roster",
+      "confidence": "confirmed",
+      "note": "Priority-act daytime booking explicitly printed on the refreshed weekly roster; brunch music starts around 12:30. Page modified 25 September 2026, with weekdays matching the current year. Dining-pub setting; check table availability and any food requirement. Family-calendar candidate; child admission not explicitly stated."
+    },
+    {
+      "id": "g20261003-ewanbleach-plaquemine",
+      "date": "2026-10-03",
+      "endDate": null,
+      "time": "12:30",
+      "title": "Ewan Bleach - Saturday jazz brunch",
+      "artist": "Ewan Bleach",
+      "venue": "Plaquemine Lock",
+      "area": "Islington, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "",
+      "url": "https://plaqlock.com/live-music-islington/",
+      "source": "Plaquemine Lock live music roster",
+      "confidence": "confirmed",
+      "note": "Priority-act daytime booking explicitly printed on the refreshed weekly roster; brunch music starts around 12:30. Page modified 25 September 2026, with weekdays matching the current year. Dining-pub setting; check table availability and any food requirement. Family-calendar candidate; child admission not explicitly stated."
+    },
+    {
+      "id": "g20261010-ewanbleach-plaquemine",
+      "date": "2026-10-10",
+      "endDate": null,
+      "time": "12:30",
+      "title": "Ewan Bleach - Saturday jazz brunch",
+      "artist": "Ewan Bleach",
+      "venue": "Plaquemine Lock",
+      "area": "Islington, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "",
+      "url": "https://plaqlock.com/live-music-islington/",
+      "source": "Plaquemine Lock live music roster",
+      "confidence": "confirmed",
+      "note": "Priority-act daytime booking explicitly printed on the refreshed weekly roster; brunch music starts around 12:30. Page modified 25 September 2026, with weekdays matching the current year. Dining-pub setting; check table availability and any food requirement. Family-calendar candidate; child admission not explicitly stated."
+    },
+    {
+      "id": "g20261017-ewanbleach-plaquemine",
+      "date": "2026-10-17",
+      "endDate": null,
+      "time": "12:30",
+      "title": "Ewan Bleach - Saturday jazz brunch",
+      "artist": "Ewan Bleach",
+      "venue": "Plaquemine Lock",
+      "area": "Islington, London",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "",
+      "url": "https://plaqlock.com/live-music-islington/",
+      "source": "Plaquemine Lock live music roster",
+      "confidence": "confirmed",
+      "note": "Priority-act daytime booking explicitly printed on the refreshed weekly roster; brunch music starts around 12:30. Page modified 25 September 2026, with weekdays matching the current year. Dining-pub setting; check table availability and any food requirement. Family-calendar candidate; child admission not explicitly stated."
+    },
+    {
+      "id": "g20261003-plaqueminefour",
+      "date": "2026-10-03",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Jack Jules and the Plaquemine Four",
+      "artist": "Jack Jules and the Plaquemine Four",
+      "venue": "Plaquemine Lock",
+      "area": "Islington, London",
+      "genres": [
+        "New Orleans / trad jazz",
+        "hot jazz"
+      ],
+      "cost": "",
+      "url": "https://plaqlock.com/live-music-islington/",
+      "source": "Plaquemine Lock live music roster",
+      "confidence": "confirmed",
+      "note": "Named New Orleans trad-standards band on the dated dinner roster; some funk influences. Music starts around 20:30. Current roster modified 25 September 2026; check dining/table arrangements."
+    },
+    {
+      "id": "g20261017-plaqueminefour",
+      "date": "2026-10-17",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Jack Jules and the Plaquemine Four",
+      "artist": "Jack Jules and the Plaquemine Four",
+      "venue": "Plaquemine Lock",
+      "area": "Islington, London",
+      "genres": [
+        "New Orleans / trad jazz",
+        "hot jazz"
+      ],
+      "cost": "",
+      "url": "https://plaqlock.com/live-music-islington/",
+      "source": "Plaquemine Lock live music roster",
+      "confidence": "confirmed",
+      "note": "Named New Orleans trad-standards band on the dated dinner roster; some funk influences. Music starts around 20:30. Current roster modified 25 September 2026; check dining/table arrangements."
+    },
+    {
+      "id": "g20261002-daiprice-aldunn-plaquemine",
+      "date": "2026-10-02",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Dai Price & Al Dente Dunn",
+      "artist": "Dai Price & Al Dunn",
+      "venue": "Plaquemine Lock",
+      "area": "Islington, London",
+      "genres": [
+        "honky tonk",
+        "New Orleans / trad jazz"
+      ],
+      "cost": "",
+      "url": "https://plaqlock.com/live-music-islington/",
+      "source": "Plaquemine Lock roster / Nightjar artist description",
+      "confidence": "confirmed",
+      "note": "Honky-tonk and early-jazz duo with some rhythm and blues, as described by Nightjar. Explicit dated dinner booking on the roster modified 25 September 2026; music starts around 20:30. Check dining/table arrangements."
+    },
+    {
+      "id": "g20261016-daiprice-aldunn-plaquemine",
+      "date": "2026-10-16",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Dai Price & Al Dente Dunn",
+      "artist": "Dai Price & Al Dunn",
+      "venue": "Plaquemine Lock",
+      "area": "Islington, London",
+      "genres": [
+        "honky tonk",
+        "New Orleans / trad jazz"
+      ],
+      "cost": "",
+      "url": "https://plaqlock.com/live-music-islington/",
+      "source": "Plaquemine Lock roster / Nightjar artist description",
+      "confidence": "confirmed",
+      "note": "Honky-tonk and early-jazz duo with some rhythm and blues, as described by Nightjar. Explicit dated dinner booking on the roster modified 25 September 2026; music starts around 20:30. Check dining/table arrangements."
+    },
+    {
+      "id": "g20261004-shemfillmore-greennote",
+      "date": "2026-10-04",
+      "endDate": null,
+      "time": "14:30",
+      "title": "Shem Fillmore Band - matinee",
+      "artist": "Shem Fillmore Band",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "?12 + booking fee",
+      "url": "https://events.liveit.io/folk-and-roots/shem-fillmore-band-2/",
+      "source": "Folk and Roots / LiveIt / Green Note",
+      "confidence": "confirmed",
+      "note": "Traditional English tune repertoire with fiddle-led arrangements and improvisation. English trad is mapped to canonical old-time. Doors 13:30, music 14:30; exact 2026 date confirmed by promoter ticket page."
+    },
+    {
+      "id": "g20261013-washbourn-madrugada",
+      "date": "2026-10-13",
+      "endDate": null,
+      "time": "20:00",
+      "title": "George Washbourn + Duo Madrugada",
+      "artist": "George Washbourn + Duo Madrugada",
+      "venue": "Green Note (Basement Bar)",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "?12 + booking fee",
+      "url": "https://events.liveit.io/folk-and-roots/george-washbourn-and-duo-madrugada-2/",
+      "source": "Folk and Roots / LiveIt / Green Note",
+      "confidence": "confirmed",
+      "note": "Traditional balfolk tunes and arrangements of traditional folksongs; mapped to canonical old-time. Doors 19:30, music 20:00. Strong repertoire evidence distinguishes this from generic singer-songwriter bills."
+    },
+    {
+      "id": "g20261031-beadling-greennote",
+      "date": "2026-10-31",
+      "endDate": null,
+      "time": "14:30",
+      "title": "The Beadling - matinee",
+      "artist": "The Beadling",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "?12 + booking fee",
+      "url": "https://events.liveit.io/folk-and-roots/the-beadling-2/",
+      "source": "Folk and Roots / LiveIt / Green Note",
+      "confidence": "confirmed",
+      "note": "English folk trio working with traditional stories and tunes, including broadside-ballad repertoire. English trad is mapped to canonical old-time. Doors 13:30, music 14:30; exact date/year confirmed by promoter."
+    },
+    {
+      "id": "g20261030-brownboots-waterloo",
+      "date": "2026-10-30",
+      "endDate": null,
+      "time": "19:30",
+      "title": "Waterloo Ceilidhs - Halloween special",
+      "artist": "Brown Boots Boogie Band with caller Hannah Moore",
+      "venue": "St John's Waterloo",
+      "area": "Waterloo, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "?20 standard / ?16 concession / ?25 supporter, including fees",
+      "url": "https://wegottickets.com/event/693731",
+      "source": "Waterloo Ceilidhs / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Live-band English traditional dance with a caller; beginners welcome. English trad is mapped to canonical old-time. Doors 19:00, dancing 19:30. Opposite Waterloo station, straightforward from Surbiton. All ages, under-16s accompanied; evening timing makes this primarily a date-night option."
+    },
+    {
+      "id": "g20261204-banter-waterloo",
+      "date": "2026-12-04",
+      "endDate": null,
+      "time": "19:30",
+      "title": "Waterloo Ceilidhs - Christmas special",
+      "artist": "Banter with caller Martin Clarke",
+      "venue": "St John's Waterloo",
+      "area": "Waterloo, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "?20 standard / ?16 concession / ?25 supporter, including fees",
+      "url": "https://wegottickets.com/event/693752",
+      "source": "Waterloo Ceilidhs / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Live-band English traditional dance with a caller; beginners welcome. English trad is mapped to canonical old-time. Doors 19:00, dancing 19:30. Opposite Waterloo station, straightforward from Surbiton. All ages, under-16s accompanied; evening timing makes this primarily a date-night option."
+    },
+    {
+      "id": "g20261025-parish-ceili-cricklewood",
+      "date": "2026-10-25",
+      "endDate": null,
+      "time": "14:30",
+      "title": "Return to London Town - Sunday Set Dancing Ceili",
+      "artist": "Parish Ceili Band with Tom Kelleher",
+      "venue": "The Cricklewood Club",
+      "area": "Cricklewood, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "?14; accompanied under-18s free at door",
+      "url": "https://imdl.giftpro.co.uk/events/saturday-set-dancing-ceili-1/",
+      "source": "Irish Music and Dance in London / GiftPro",
+      "confidence": "confirmed",
+      "note": "Named ten-piece traditional Irish ceili band, 14:30-18:30. Trad Irish mapped to canonical old-time. Strong festival/band match warrants the longer cross-London journey from Surbiton. Venue is Cricklewood for 2026; promoter explicitly says the move to Kilburn is in 2027."
     }
   ],
   "watchlist": [
