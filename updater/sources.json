@@ -833,8 +833,33 @@
                 "Avoid school/group-only learning, older-child garden clubs and stale 2025 archive articles"
             ]
         }
+        , {
+            "name": "Kingston Music Service public performances",
+            "url": "https://www.kingstonheritage.org.uk/kingston-music-service-events",
+            "checkFor": ["Free Sunday-afternoon public open rehearsals at All Saints Kingston", "Distinguish public audience invitations from school-only courses; split each published date"]
+        },
+        {
+            "name": "Plaquemine Lock daytime jazz roster",
+            "url": "https://plaqlock.com/live-music-islington/",
+            "checkFor": ["Priority-act Ewan Bleach Saturday brunch dates on current weekly roster", "Approximate 12:30 start; verify roster year, child seating and dining/music charges"]
+        },
+        {
+            "name": "Waterloo Ceilidhs organiser tickets",
+            "url": "https://wegottickets.com/waterlooceilidhs",
+            "checkFor": ["Live-band folk dancing opposite Waterloo station; strong adult evening outing", "Read individual tickets for named bands, caller, date, start and all-ages terms"]
+        },
+        {
+            "name": "Green Note daytime folk and roots",
+            "url": "https://www.greennote.co.uk/events/",
+            "checkFor": ["Weekend folk/trad/hot-jazz matinees with strong genre fit", "Main venue FAQ welcomes all ages; off-site shows have separate policies", "Verify year and start on promoter ticket page; limited unreserved seating"]
+        }
     ],
     "searchQueries":  [
+        "Kingston Music Service public open rehearsals 2026 2027 All Saints",
+        "Plaquemine Lock Ewan Bleach Saturday brunch October 2026",
+        "Waterloo Ceilidhs Brown Boots Banter 2026 St Johns",
+        "New Wimbledon Theatre family shows under 3 admission 2026",
+        "Edith Gardens Citizen Zoo family open day 2026",
                           "Surbiton daytime free music events",
                           "Surbiton The Lamb live music Sunday sessions Irish folk",
                           "Kingston upon Thames free daytime music events",

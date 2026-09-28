@@ -21,13 +21,13 @@ window.GIG_DATA = {
       "New Orleans / trad jazz",
       "swing"
     ],
-    "dateBasis": "2026-09-26",
+    "dateBasis": "2026-09-28",
     "counts": {
       "total": 282,
-      "upcoming": 282,
+      "upcoming": 266,
       "watchlist": 66
     },
-    "generated": "2026-09-26T06:46:47.058Z",
+    "generated": "2026-09-28T07:18:06.650Z",
     "genres": [
       "Kansas City swing",
       "New Orleans / trad jazz",
@@ -75,7 +75,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-26 12:30",
       "travel": "Central London",
       "genresLabel": "hot jazz · New Orleans / trad jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -103,7 +103,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-26 19:00",
       "travel": "Day-trip",
       "genresLabel": "hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -131,7 +131,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-26 19:00",
       "travel": "Central London",
       "genresLabel": "swing · hot jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -158,7 +158,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-26 19:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -185,7 +185,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-26 19:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -212,7 +212,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-26 19:00",
       "travel": "Central London",
       "genresLabel": "gypsy jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -239,7 +239,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-26 20:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -266,7 +266,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-26 21:30",
       "travel": "Central London",
       "genresLabel": "gypsy jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -293,7 +293,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-26 99:99",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -321,7 +321,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-27 13:00",
       "travel": "Local (SW London)",
       "genresLabel": "New Orleans / trad jazz · hot jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -348,7 +348,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-27 15:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -377,7 +377,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-27 15:00 & 18:45",
       "travel": "Central London",
       "genresLabel": "hot jazz · New Orleans / trad jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -405,7 +405,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-27 18:30",
       "travel": "Central London",
       "genresLabel": "swing · Kansas City swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -432,7 +432,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-27 19:45",
       "travel": "Local (SW London)",
       "genresLabel": "old-time",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -459,7 +459,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-27 20:30",
       "travel": "Central London",
       "genresLabel": "old-school country",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -486,7 +486,7 @@ window.GIG_DATA = {
       "sortKey": "2026-09-27 21:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

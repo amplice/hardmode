@@ -1,48 +1,59 @@
 {
-  "generatedAt": "2026-09-25T07:14:01Z",
-  "dateBasis": "2026-09-25",
-  "summary": "Removed 8 finished events and added 8 dated events: five Surbiton community/music events, two Maiastra concerts and one Gig Radar promotion. Reviewed all 274 future gigs; reconciled six priority-act ticket listings with verification flags and added three watchlist leads.",
+  "generatedAt": "2026-09-28T07:15:44Z",
+  "dateBasis": "2026-09-28",
+  "summary": "Removed 15 finished events and added 16 dated events, including eight Gig Radar promotions. Reviewed all 266 future gigs; corrected two existing rows and extended the range to 25 September 2027.",
   "added": [
-    "e20261203d: Celebrate Surbiton at Christmas, 2026-12-03, 16:30-20:00; Surbiton station forecourt.",
-    "e20261129: Christmas Carols at the Legion, 2026-11-29, 17:00-19:00; Surbiton Royal British Legion, Hollyfield Road.",
-    "e20261011: Songs for Summer: Berrylands Belles in Concert, 2026-10-11, 19:30-22:00; Christ Church, 8 Christ Church Road.",
-    "e20261005b: Jazz Jam with Michael Richardson and Alex Hall, 2026-10-05, 19:30-22:30; The Elm Tree, 64 Victoria Road.",
-    "e20261102a: Jazz Jam with Michael Richardson and Alex Hall, 2026-11-02, 19:30-22:30; The Elm Tree, 64 Victoria Road.",
-    "e20261003d: Maiastra: Piano Quartets with Akiko Ono, 2026-10-03, 19:30; St Mary's Church, Church Street.",
-    "e20261213a: Maiastra: String Quartets with Bartosz Woroch, 2026-12-13, 16:00; St Andrew's Church, Downside Bridge Road.",
-    "e20261101d: Jazz & Beer: Cat Skellington Band featuring Richard White, 2026-11-01, 12:15-14:15; Riverhouse Barn Arts Centre."
+    "e20261122a: Kingston Music Service: public open rehearsal, 2026-11-22, 14:00; All Saints Church, Market Place.",
+    "e20270307: Kingston Music Service: public open rehearsal, 2027-03-07, 14:00; All Saints Church, Market Place.",
+    "e20270620: Kingston Music Service: public open rehearsal, 2027-06-20, 14:00; All Saints Church, Market Place.",
+    "e20270925: Surbiton Festival 2027, 2027-09-25, 10:00-16:00; Surbiton town centre.",
+    "e20261002d: Friday Night Traditional Irish Music Session, 2026-10-02, 17:30-20:00; Irish Cultural Centre.",
+    "e20261017f: Edith Gardens Community Open Day, 2026-10-17, 10:00-14:00; Edith Gardens Local Nature Reserve, off Raeburn Avenue.",
+    "e20261009: Kingston Open Studios: Autumn Edition, 2026-10-09, 11:00-17:00 each day; KOPPEL Kingston, 29 Thames Street.",
+    "e20261003e: Ewan Bleach: Saturday jazz brunch, 2026-10-03, Around 12:30; Plaquemine Lock, 139 Graham Street.",
+    "e20261010d: Ewan Bleach: Saturday jazz brunch, 2026-10-10, Around 12:30; Plaquemine Lock, 139 Graham Street.",
+    "e20261017g: Ewan Bleach: Saturday jazz brunch, 2026-10-17, Around 12:30; Plaquemine Lock, 139 Graham Street.",
+    "e20261030a: Waterloo Ceilidhs: Halloween special, 2026-10-30, 19:30 (doors 19:00); St John's Waterloo, 73 Waterloo Road.",
+    "e20261204d: Waterloo Ceilidhs: Christmas special, 2026-12-04, 19:30 (doors 19:00); St John's Waterloo, 73 Waterloo Road.",
+    "e20261004e: Shem Fillmore Band: folk matinee, 2026-10-04, 14:30 (doors 13:30); Green Note, 106 Parkway.",
+    "e20261010e: Lost in the Loop: folk matinee, 2026-10-10, 14:30 (doors 13:30); Green Note, 106 Parkway.",
+    "e20261031d: The Beadling: folk matinee, 2026-10-31, 14:30 (doors 13:30); Green Note, 106 Parkway.",
+    "e20261031e: Halloween Craft Workshop, 2026-10-31, 14:00-16:00; Dorich House Museum, 67 Kingston Vale."
   ],
   "updated": [
-    "e20261004a: refreshed artist ticket URL, prices and all-ages guidance; ticket start 12:30 conflicts with venue 12:15, so verify remains required.",
-    "e20261018a: refreshed artist ticket URL, prices and all-ages guidance; ticket start 12:30 conflicts with venue 12:15, so verify remains required.",
-    "e20261101a: refreshed artist ticket URL, prices and all-ages guidance; ticket start 12:30 conflicts with venue 12:15, so verify remains required.",
-    "e20261115a: refreshed artist ticket URL, prices and all-ages guidance; ticket start 12:30 conflicts with venue 12:15, so verify remains required.",
-    "e20261206a: refreshed artist ticket URL, prices and all-ages guidance; ticket start 12:30 conflicts with venue 12:15, so verify remains required.",
-    "e20261220b: refreshed artist ticket URL, prices and all-ages guidance; ticket start 12:30 conflicts with venue 12:15, so verify remains required.",
-    "Added three watchlist leads; refreshed date metadata; retained range ending 25 April 2027."
+    "e20261205c: corrected cast from ATG official 2026/27 announcement; removed unsupported relaxed-performance claim.",
+    "e20270124: corrected age guidance using Cadogan Hall FAQ; adult matinee retained, verification flag retained.",
+    "Resolved Lost in the Loop watchlist lead; refreshed Spice lead; added two admission-check leads; refreshed metadata."
   ],
   "removed": [
-    "e20260903d: Celebrate Surbiton Forecourt Market (September Thursdays) finished on 2026-09-24.",
-    "e629: Meet the Fellers finished on 2026-09-23.",
-    "e20260924: Connolly Hayes play live blues finished on 2026-09-24.",
-    "e20260924c: Le Vent du Nord finished on 2026-09-24.",
-    "e20260924b: John Hatcher & Friends finished on 2026-09-24.",
-    "e20260923: TJ Johnson's Peak of the Week finished on 2026-09-23.",
-    "e20260924a: Mlle Lou Lou and Ewan Bleach finished on 2026-09-24.",
-    "e20260924d: Mambo Jambo at The Lamb finished on 2026-09-24."
+    "e20260721f: Time Travel Tots & Summer Craft Club finished on 2026-09-25.",
+    "e20260912h: Shire Horse Carriage Rides finished on 2026-09-27.",
+    "e20260916b: TIME by Luxmuralis (immersive light & sound) finished on 2026-09-27.",
+    "e20260922: Present Laughter finished on 2026-09-26.",
+    "e20260925b: Richmond Concert Series: The Fidelio Trio finished on 2026-09-25.",
+    "e20260925: Ria Lina Live on Stage finished on 2026-09-25.",
+    "e725: Surbiton Festival 2026 official market day finished on 2026-09-26.",
+    "e20260926: Speakeasy Brunch (live music + Smok'd food) (Surbiton Festival day) finished on 2026-09-26.",
+    "e669: An Evening with Nigel Owens MBE finished on 2026-09-27.",
+    "e20260927: TwickFolk: Women of Folk finished on 2026-09-27.",
+    "e20260926c: Groove Rats finished on 2026-09-26.",
+    "e20260927a: Ewan Bleach birthday special and old-style jazz finished on 2026-09-27.",
+    "e20260927b: Afternoon swing with the Prospective Collective finished on 2026-09-27.",
+    "e20260927c: Teddy Bear Trail & Picnic finished on 2026-09-27.",
+    "e20260925a: Friday Night Traditional Irish Music Session finished on 2026-09-25."
   ],
   "counts": {
     "before": {
       "events": 313,
       "recurring": 56,
       "sources": 53,
-      "watchlist": 86
+      "watchlist": 89
     },
     "after": {
-      "events": 313,
+      "events": 314,
       "recurring": 56,
       "sources": 53,
-      "watchlist": 89
+      "watchlist": 90
     }
   }
 }
