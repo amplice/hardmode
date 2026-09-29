@@ -352,7 +352,16 @@
     { "name": "Paper Moon at Hargrave Hall", "area": "Archway, North London", "genres": ["gypsy jazz", "hot jazz", "swing"], "url": "https://papermoonclub.wordpress.com/", "note": "NEW 2026-09-02: recurring vintage-jazz social-dance club. The organiser diary gives exact dates and named live bands, but ticket pages may be Cloudflare-walled; never infer times or prices from older posts. Surfaced Benoit Viellefon on 18 Oct and a 13 Dec Christmas lead." },
     { "name": "Café Boheme", "area": "Soho, London", "genres": ["hot jazz", "gypsy jazz", "New Orleans / trad jazz", "swing", "old-school country"], "url": "https://www.cafeboheme.co.uk/live-music", "note": "NEW 2026-09-11: productive official monthly daytime roster with exact artist/date pairings; surfaced Ewan Bleach with Mlle Lou Lou. Apply strict artist-by-artist genre filtering because the wider schedule is mixed." },
     { "name": "Waterloo Ceilidhs at St John's Waterloo", "area": "Waterloo, London", "genres": ["old-time"], "url": "https://waterlooceilidhs.co.uk/", "note": "Named live-band traditional English dances opposite Waterloo station. Check https://wegottickets.com/waterlooceilidhs for exact dates, start times and lineups. 30 Oct Brown Boots Boogie Band and 4 Dec Banter confirmed for 2026; use old-time mapping with explicit English-trad note." },
-    { "name": "Folk at the cornerHOUSE", "area": "Surbiton / Tolworth", "genres": ["old-time"], "url": "https://www.thecornerhouse.org/whats-on", "note": "Very local recurring folk strand. Use the current /whats-on route, not old /events/. Cross-check artist tour pages and ticket times; Wilderness Yet 13 Oct 2026 surfaced here. Skip tribute/theatre and generic singer-songwriter bills." }
+    { "name": "Folk at the cornerHOUSE", "area": "Surbiton / Tolworth", "genres": ["old-time"], "url": "https://www.thecornerhouse.org/whats-on", "note": "Very local recurring folk strand. Use the current /whats-on route, not old /events/. Cross-check artist tour pages and ticket times; Wilderness Yet 13 Oct 2026 surfaced here. Skip tribute/theatre and generic singer-songwriter bills." },
+    {
+      "name": "Knees Up Cecil Sharp Ceilidhs",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "url": "https://www.kneesupcecilsharp.co.uk/programme.html",
+      "note": "Named English ceilidh bands and callers for individual dates; cross-check EFDSS event 15766 and Spektrix instances for times, prices and on-sale status. Retrieved 29 Sep 2026: Folk Camps Party Band 16 Oct, Diatonics 20 Nov and Threepenny Bit 18 Dec. Never infer dates from the monthly rule."
+    }
   ],
   "closedOrDefunct": [
     { "name": "Le QuecumBar & Brasserie", "note": "PERMANENTLY CLOSED since April 2022 after 19 years. Was 'the' London gypsy-jazz venue — do NOT re-add or chase for listings." },
@@ -475,6 +484,9 @@
     "Café Boheme Soho live music Ewan Bleach hot jazz",
     "Waterloo Ceilidhs Brown Boots Banter WeGotTickets",
     "site:imdl.giftpro.co.uk 2026 ceili traditional music",
-    "site:plaqlock.com/live-music-islington Ewan Bleach"
+    "site:plaqlock.com/live-music-islington Ewan Bleach",
+    "Knees Up Cecil Sharp programme bands callers 2026",
+    "London Surrey harvest festival traditional folk live music 2026",
+    "London silent film live ragtime jazz accompaniment 2026"
   ]
 }
