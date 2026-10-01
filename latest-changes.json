@@ -1,59 +1,52 @@
 {
-  "generatedAt": "2026-09-28T07:15:44Z",
-  "dateBasis": "2026-09-28",
-  "summary": "Removed 15 finished events and added 16 dated events, including eight Gig Radar promotions. Reviewed all 266 future gigs; corrected two existing rows and extended the range to 25 September 2027.",
+  "generatedAt": "2026-10-01T07:16:05Z",
+  "dateBasis": "2026-10-01",
+  "summary": "Removed 9 finished events and added 15 dated events, including one Gig Radar promotion and its separately checked Saturday festival counterpart. Reviewed all 262 future gigs; corrected two Kew runs.",
   "added": [
-    "e20261122a: Kingston Music Service: public open rehearsal, 2026-11-22, 14:00; All Saints Church, Market Place.",
-    "e20270307: Kingston Music Service: public open rehearsal, 2027-03-07, 14:00; All Saints Church, Market Place.",
-    "e20270620: Kingston Music Service: public open rehearsal, 2027-06-20, 14:00; All Saints Church, Market Place.",
-    "e20270925: Surbiton Festival 2027, 2027-09-25, 10:00-16:00; Surbiton town centre.",
-    "e20261002d: Friday Night Traditional Irish Music Session, 2026-10-02, 17:30-20:00; Irish Cultural Centre.",
-    "e20261017f: Edith Gardens Community Open Day, 2026-10-17, 10:00-14:00; Edith Gardens Local Nature Reserve, off Raeburn Avenue.",
-    "e20261009: Kingston Open Studios: Autumn Edition, 2026-10-09, 11:00-17:00 each day; KOPPEL Kingston, 29 Thames Street.",
-    "e20261003e: Ewan Bleach: Saturday jazz brunch, 2026-10-03, Around 12:30; Plaquemine Lock, 139 Graham Street.",
-    "e20261010d: Ewan Bleach: Saturday jazz brunch, 2026-10-10, Around 12:30; Plaquemine Lock, 139 Graham Street.",
-    "e20261017g: Ewan Bleach: Saturday jazz brunch, 2026-10-17, Around 12:30; Plaquemine Lock, 139 Graham Street.",
-    "e20261030a: Waterloo Ceilidhs: Halloween special, 2026-10-30, 19:30 (doors 19:00); St John's Waterloo, 73 Waterloo Road.",
-    "e20261204d: Waterloo Ceilidhs: Christmas special, 2026-12-04, 19:30 (doors 19:00); St John's Waterloo, 73 Waterloo Road.",
-    "e20261004e: Shem Fillmore Band: folk matinee, 2026-10-04, 14:30 (doors 13:30); Green Note, 106 Parkway.",
-    "e20261010e: Lost in the Loop: folk matinee, 2026-10-10, 14:30 (doors 13:30); Green Note, 106 Parkway.",
-    "e20261031d: The Beadling: folk matinee, 2026-10-31, 14:30 (doors 13:30); Green Note, 106 Parkway.",
-    "e20261031e: Halloween Craft Workshop, 2026-10-31, 14:00-16:00; Dorich House Museum, 67 Kingston Vale."
+    "e20261002e: The Soot Bunker, 2026-10-02, 19:30; two-night run; the cornerHOUSE, 116 Douglas Road.",
+    "e20261014b: Page to Stage: three short dramas, 2026-10-14, 19:30 each evening; the cornerHOUSE, 116 Douglas Road.",
+    "e20261004f: Tim Penn and TwoManTing at The Lamb, 2026-10-04, Tim Penn 16:30; TwoManTing 19:30; The Lamb, 73 Brighton Road.",
+    "e20261008a: Megan Leigh Mason & Richard Moore at The Lamb, 2026-10-08, 19:30-22:30; The Lamb, 73 Brighton Road.",
+    "e20261015b: Elsie Franklin at The Lamb, 2026-10-15, 19:30-22:30; The Lamb, 73 Brighton Road.",
+    "e20261022: William Poyer at The Lamb, 2026-10-22, 19:30-22:00; The Lamb, 73 Brighton Road.",
+    "e20261025a: Back of a Length at The Lamb, 2026-10-25, 16:30-19:00; The Lamb, 73 Brighton Road.",
+    "e20261029a: Les Boum! at The Lamb, 2026-10-29, 19:30-22:00; The Lamb, 73 Brighton Road.",
+    "e20261129a: Scottish Tea Party & Dance, 2026-11-29, 14:00-17:00; St Mark&#8217;s church hall, Church Hill Road.",
+    "e20261011a: ICC Concert Session: Tad Sargent, Eilish Byrne-Whelehan & James O’Grady, 2026-10-11, 14:00-16:00 (doors 13:30); Irish Cultural Centre, 5 Black’s Road.",
+    "e20261024c: Return to London Town: Parish Ceili Band, 2026-10-24, 16:00-19:00; The Cricklewood Club, 327 Edgware Road.",
+    "e20261025c: Return to London Town: Parish Ceili Band, 2026-10-25, 14:30; finish time to confirm; The Cricklewood Club, 327 Edgware Road.",
+    "e20261017h: Kingston Navratri: Kids Garba, 2026-10-17, 18:00-19:00 kids session; main Garba 19:00-23:00; Hollyfield School, Surbiton Hill Road.",
+    "e20261018f: Kingston Navratri: Mata ki Chowki, 2026-10-18, 15:00-18:00 programme; confirm finish; Hollyfield School, Surbiton Hill Road.",
+    "e20261031f: Kingston Diwali Utsav 2026, 2026-10-31, 16:00-23:00; Chessington School, Garrison Lane."
   ],
   "updated": [
-    "e20261205c: corrected cast from ATG official 2026/27 announcement; removed unsupported relaxed-performance claim.",
-    "e20270124: corrected age guidance using Cadogan Hall FAQ; adult matinee retained, verification flag retained.",
-    "Resolved Lost in the Loop watchlist lead; refreshed Spice lead; added two admission-check leads; refreshed metadata."
+    "e20260509: restored official 31 January 2027 end date and clarified the older-child family trail.",
+    "e20261113b: restored 3 January 2027 end date, current times/starting price and adult-only 3/9 December exclusions.",
+    "Refreshed Spice of Life watchlist; added Sunday ceili timing discrepancy; refreshed calendar metadata."
   ],
   "removed": [
-    "e20260721f: Time Travel Tots & Summer Craft Club finished on 2026-09-25.",
-    "e20260912h: Shire Horse Carriage Rides finished on 2026-09-27.",
-    "e20260916b: TIME by Luxmuralis (immersive light & sound) finished on 2026-09-27.",
-    "e20260922: Present Laughter finished on 2026-09-26.",
-    "e20260925b: Richmond Concert Series: The Fidelio Trio finished on 2026-09-25.",
-    "e20260925: Ria Lina Live on Stage finished on 2026-09-25.",
-    "e725: Surbiton Festival 2026 official market day finished on 2026-09-26.",
-    "e20260926: Speakeasy Brunch (live music + Smok'd food) (Surbiton Festival day) finished on 2026-09-26.",
-    "e669: An Evening with Nigel Owens MBE finished on 2026-09-27.",
-    "e20260927: TwickFolk: Women of Folk finished on 2026-09-27.",
-    "e20260926c: Groove Rats finished on 2026-09-26.",
-    "e20260927a: Ewan Bleach birthday special and old-style jazz finished on 2026-09-27.",
-    "e20260927b: Afternoon swing with the Prospective Collective finished on 2026-09-27.",
-    "e20260927c: Teddy Bear Trail & Picnic finished on 2026-09-27.",
-    "e20260925a: Friday Night Traditional Irish Music Session finished on 2026-09-25."
+    "e773: Luke Jerram: Stepping Out finished on 2026-09-30.",
+    "e20260928: Monday Lunchtime Recital: Slava Antipov (piano) finished on 2026-09-28.",
+    "e704: Adult Book Group finished on 2026-09-29.",
+    "e20260930: TJ Johnson's Peak of the Week finished on 2026-09-30.",
+    "e20260928a: Ewan Bleach's Cable Street Rag Band lunchtime session finished on 2026-09-28.",
+    "e20260929: Melbury Music Quintet finished on 2026-09-29.",
+    "e20260930a: Teresa Jennings: lunchtime jazz finished on 2026-09-30.",
+    "e20260928b: TJ Johnson at Cafe Boheme finished on 2026-09-28.",
+    "e20260930b: Celebrating Django with Matt Holborn finished on 2026-09-30."
   ],
   "counts": {
     "before": {
-      "events": 313,
-      "recurring": 56,
-      "sources": 53,
-      "watchlist": 89
-    },
-    "after": {
       "events": 314,
       "recurring": 56,
       "sources": 53,
       "watchlist": 90
+    },
+    "after": {
+      "events": 320,
+      "recurring": 56,
+      "sources": 53,
+      "watchlist": 91
     }
   }
 }
