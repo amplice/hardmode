@@ -271,9 +271,9 @@
     ],
     "alwaysCheckSources": [
       {
-        "name": "The Lamb Surbiton Instagram/social",
-        "url": "https://www.instagram.com/thelambsurbiton/",
-        "why": "The site often lags social posts; screenshots/OCR should be checked for dated music."
+        "name": "The Lamb Surbiton Facebook and Instagram",
+        "url": "https://www.facebook.com/thelambsurbiton/events",
+        "why": "The authenticated Facebook Upcoming Events list is the best forward programme. Run it every update, then check Instagram @lamb_surbiton for flyer-only additions and late changes."
       },
       {
         "name": "Ram Jam Records",

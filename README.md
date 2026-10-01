@@ -112,6 +112,31 @@ npm run instagram:collect:headless
 npm run instagram:collect:no-ocr
 ```
 
+### Facebook leads
+
+The Lamb's Facebook page has a more complete forward programme than its website. A
+separate authenticated collector reads its Upcoming Events cards, opens the event detail
+pages, and scans feed images with OCR for late additions.
+
+First-time setup, or whenever Facebook logs the saved session out:
+
+```powershell
+npm run facebook:login
+```
+
+Log in in the browser that opens, then press Enter in the terminal. The reusable session
+is stored in `updater/facebook-profile/`, which is ignored by git. To refresh the lead
+file manually:
+
+```powershell
+npm run facebook:collect
+```
+
+The result is written to ignored `updater/facebook-leads.json`. Both scheduled Codex
+updaters run this collector before research, so The Lamb is refreshed without needing a
+Meta developer app. Café Bohème is read from its official live-music roster; Spice of
+Life is read from its official programme and The Jazz Guide.
+
 The older OpenRouter updater is still available for manual review-first runs:
 
 1. Copy `updater/.env.example` to `updater/.env.local`.

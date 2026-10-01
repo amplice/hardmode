@@ -129,10 +129,10 @@
       "area": "Surbiton",
       "priority": "highest-local",
       "url": "https://www.lambsurbiton.co.uk/live-music-surbiton",
-      "secondaryUrls": [],
+      "secondaryUrls": ["https://www.facebook.com/thelambsurbiton/events"],
       "instagramHandles": ["lamb_surbiton"],
       "instagramSearchQueries": ["The Lamb Surbiton Instagram live music", "site:instagram.com/p lamb_surbiton live music Surbiton"],
-      "crawlRule": "Check the site and Instagram every run; the site often lags and Instagram is the primary lead source.",
+      "crawlRule": "Run the authenticated Facebook collector every time and treat the page's Upcoming Events list as the best forward programme; also check Instagram for flyer-only additions and the site for standing information.",
       "includeRule": "Very low threshold because it is hyper-local. Include almost any future live music, especially folk, trad Irish, country, old-time, swing, jazz and daytime/Sunday sessions. Skip generic DJ or private-party posts."
     },
     {
@@ -169,6 +169,17 @@
       "includeRule": "Medium threshold: include hot jazz, swing, New Orleans/trad jazz and clearly vintage acts; filter Latin, soul, funk, modern jazz and generic cocktail-bar listings."
     },
     {
+      "name": "Café Bohème",
+      "area": "Soho, London",
+      "priority": "high-daytime",
+      "url": "https://www.cafeboheme.co.uk/live-music",
+      "secondaryUrls": [],
+      "instagramHandles": [],
+      "instagramSearchQueries": [],
+      "crawlRule": "Read the official monthly live-music roster every run. It is current and publishes exact daily afternoon artists and set times; do not use Facebook unless the official page becomes incomplete.",
+      "includeRule": "Low threshold for free daytime hot jazz, New Orleans/trad, swing, country, Americana, honky-tonk, folk, blues, cajun, manouche and priority artists. Filter unrelated pop/soul and generic dining entertainment artist by artist."
+    },
+    {
       "name": "Spice of Life",
       "area": "Soho, London",
       "priority": "high-daytime",
@@ -177,7 +188,7 @@
       "instagramHandles": [],
       "instagramSearchQueries": ["Spice of Life Soho Instagram jazz lunch", "Spice of Life Monday jazz lunch Soho"],
       "crawlRule": "Check the official events page and Jazz Guide lunch listing every run.",
-      "includeRule": "Low threshold for Monday lunchtime trad/vintage jazz because daytime music is valuable; skip modern/fusion nights unless there is a strong trad/swing connection."
+      "includeRule": "Low threshold for daytime jazz plus clearly relevant Americana, roots, country, folk, skiffle, jug-band, swing and trad/New Orleans bills. Skip comedy, indie, generic open jams and modern/fusion nights without a strong requested-genre connection."
     },
     {
       "name": "Ram Jam Records",
@@ -313,14 +324,14 @@
     { "name": "Fidelio Cafe", "area": "Clerkenwell, London", "genres": ["gypsy jazz"], "url": "https://www.fideliocafe.com/whats-on", "note": "Productive intimate 'Django at the Cafe' Monday series. REFRESHED 2026-08-30: Fidelio's rebuilt official diary now carries exact dates, times, prices and line-ups (14 Sep and 12 Oct); use it first and Sol Grimshaw's guide as a cross-check." },
     { "name": "The Hum", "area": "Stoke Newington, London", "genres": ["gypsy jazz"], "url": "https://www.eventbrite.co.uk/o/the-hum-108764290631", "note": "Emerging gypsy-jazz hub: free weekly Tuesday 'Midnight in Paris' manouche night + 'Gypsy Jazz Icons' concert series (Romane, Robin Nolan). Listings live on their Eventbrite organiser page." },
     { "name": "Ram Jam Records at The Grey Horse", "area": "Kingston", "genres": ["New Orleans / trad jazz", "swing"], "url": "https://www.ramjamrecords.co.uk/events", "note": "LOCAL — Kingston home turf. Occasional New Orleans bookings among mixed jazz/blues + a Sunday jazz jam. KEY TRICK: append ?format=json to the Squarespace events URL for the complete machine-readable calendar with timestamps (135 events retrieved 2026-07-10); works on any Squarespace site (also The Betsey Trotwood). PRIORITY 2026-08-28: also check @ram_jam_records and TicketTailor for late replacements." },
-    { "name": "The Lamb Surbiton", "area": "Surbiton", "genres": ["old-time", "old-school country", "New Orleans / trad jazz", "swing"], "url": "https://www.lambsurbiton.co.uk/live-music-surbiton", "note": "HIGHEST LOCAL PRIORITY. The website is often incomplete; check Instagram @lamb_surbiton every run. Include almost any future live music because it is hyper-local, especially folk/trad Irish, country, old-time, swing, jazz and daytime/Sunday sessions." },
+    { "name": "The Lamb Surbiton", "area": "Surbiton", "genres": ["old-time", "old-school country", "New Orleans / trad jazz", "swing"], "url": "https://www.facebook.com/thelambsurbiton/events", "note": "HIGHEST LOCAL PRIORITY. Run the authenticated Facebook collector every update; its Upcoming Events page is the best forward programme. Also check Instagram @lamb_surbiton for flyer-only additions. Include almost any future live music because it is hyper-local." },
     { "name": "The Dukes of Highgate", "area": "Highgate, London", "genres": ["honky tonk", "old-school country"], "url": "https://www.thedukesofhighgate.co.uk/events/", "note": "London's dedicated honky-tonk bar: free Sunday sessions, country jam nights, US trad-country bookings. KEY TRICK: their WordPress tribe/events REST API is open — /wp-json/tribe/events/v1/events?per_page=50&start_date=YYYY-MM-DD returns every booked event with exact timestamps (proved nothing after 11 Sep 2026 as of 10 Jul). Poll it each run instead of the calendar widget." },
     { "name": "Ron's Honky Tonk (promoter)", "area": "Bermondsey, London (Fabal Beerhall; formerly Water Rats)", "genres": ["honky tonk", "old-school country"], "url": "https://hiverbeers.com/pages/rons-honky-tonk", "note": "Current official home is Hiver/Fabal Beerhall. Cross-check the venue page with Southwark's event listing for exact monthly dates, but ignore the council page's automated long-range recurrence and hold unnamed line-ups until the country style is clear." },
     { "name": "Jamboree", "area": "King's Cross, London", "genres": ["swing", "hot jazz", "cajun", "jug band"], "url": "https://www.jamboreevenue.co.uk/upcoming-events/", "note": "TOP source: weekly free swing afternoons, Tuesday Celtic sessions, Thursday Cable Street Rag Band dance nights, monthly 2nd-Sat Cajun Après-Midi, Ewan Bleach lunches and strong one-offs. REFRESHED 2026-09-08: crawl both /events/page/N/ and /upcoming-events/?pno=N; pagination reached pno=9 and exposed exact Celtic/Cable Street dates through 8 Dec. Cable Street and TJ Johnson are published into Jan 2027. Keep a rolling main-list window to avoid flooding. WeGotTickets /JamboreeVenue is a useful cross-check." },
     { "name": "Epsom Hot Jazz Club", "area": "Epsom, Surrey", "genres": ["hot jazz", "New Orleans / trad jazz", "jug band"], "url": "https://www.thejazzguide.co.uk/venues/listing/epsom-hot-jazz-club-new-venue", "note": "LOCAL day-trip — Monday-afternoon hot-jazz club at St Joseph's Church Hall (doors 13:00, £15/£20); short direct train from Surbiton. Dated diary via The Jazz Guide (year unprinted — weekday-check)." },
     { "name": "Runnymede Jazz Club", "area": "Addlestone, Surrey", "genres": ["New Orleans / trad jazz", "hot jazz", "swing"], "url": "https://runnymedejazzclub.chessck.co.uk/ForthcomingBands", "note": "NEW 2026-08-18: productive monthly traditional-jazz programme at The Addlestone Centre, 19:30–21:45; full named diary published through Mar 2027. Booking essential by phone. Roughly 45–55 minutes from Surbiton by rail/walk, normally changing at Weybridge." },
     { "name": "Old Barn Hall trad jazz Sundays", "area": "Great Bookham, Surrey", "genres": ["New Orleans / trad jazz"], "url": "https://www.thejazzguide.co.uk/venues/listing/old-barn-hall", "note": "Weekly Sunday-lunch trad club (13:00, £15 cash, dancing, light lunches) — very reachable from Surbiton. Dated diary via The Jazz Guide." },
-    { "name": "Spice of Life Monday jazz lunches", "area": "Soho, London", "genres": ["New Orleans / trad jazz", "swing", "jug band"], "url": "https://www.thejazzguide.co.uk/venues/listing/spice-of-life-jazz-club-soho-london", "note": "Monday 12:30 lunchtime trad/vintage sessions (Jake Leg Jug Band, Frisco Bay, Big Easy); dated diary via The Jazz Guide." },
+    { "name": "Spice of Life jazz and Americana", "area": "Soho, London", "genres": ["New Orleans / trad jazz", "swing", "jug band", "old-school country", "old-time"], "url": "https://www.spiceoflifesoho.com/events/", "note": "Check the official programme plus The Jazz Guide every run. Include relevant daytime jazz and explicit Americana/roots/country/folk/skiffle bills; exclude comedy, indie, generic open jams and unsuitable modern/fusion." },
     { "name": "Ronnie Scott's", "area": "Soho, London", "genres": ["New Orleans / trad jazz", "swing"], "url": "https://www.ronniescotts.co.uk/find-a-show", "note": "Mostly modern, but carries trad/swing strands (Tuba Skinny, TJ Johnson, Giacomo Smith, Nora Germain, Ray Gelato Christmas run). Plain fetch 403s — curl with a Chrome UA works; the full find-a-show listing (~20 pages) is crawlable and per-show JSON-LD carries dates (empty array = not on sale yet). TRAP (2026-07-19): show pages can exist before tickets go on sale, and the 'you may also like' sidebar dates look like the show's own date in scraped text — trust only the page's own JSON-LD startDate." },
     { "name": "Green Note", "area": "Camden, London", "genres": ["old-school country", "old-time", "cajun"], "url": "https://greennote.co.uk/events/", "note": "Roots/americana/folk; cherry-pick trad-leaning acts + London Django Collective dates. PRIORITY 2026-08-28: also check @greennotemusic for announcements." },
     { "name": "The Harrison", "area": "King's Cross, London", "genres": ["old-time", "cajun", "old-school country", "skiffle"], "url": "https://harrisonvenuelondon.com/harrison-venue-events-gigs-kings-cross/", "note": "User-requested priority venue. Check full venue programme and Instagram @harrisonpub every run, not just the dormant cajun-jam lead. Include folk/trad/roots, cajun/old-time/singarounds and unusually good date-night folk bookings; skip comedy-only and weak singer-songwriter nights." },

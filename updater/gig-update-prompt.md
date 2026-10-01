@@ -19,6 +19,7 @@ Read before editing:
 - `updater/gig-sources.json` - key venues, aggregators and standard search queries.
 - `updater/instagram-sources.json` - configured Instagram profiles to inspect with the logged-in local browser collector when available.
 - `updater/social-leads.json` - recent Instagram/social leads, if the file exists. Treat these as discovery leads, not authoritative structured data.
+- `updater/facebook-leads.json` - authenticated Facebook leads, if the file exists. The Lamb's event cards and detail text are its best forward programme; prefer newer exact event details over stale venue copy.
 - `updater/gig-method-log.md` - previous discovery methods and dead ends.
 - The `meta` block and a few sample rows of `gig-data.json` so you match the exact field shape and id style.
 
@@ -32,7 +33,7 @@ Delete rows from `gig-data.json` `gigs` whose `date` or `endDate` is before toda
 
 Refresh key venues and run standard search queries. Then try at least 2-3 discovery angles you have not used recently; check `updater/gig-method-log.md` first.
 
-Treat `priorityActs` and `priorityVenues` in `updater/gig-sources.json` as mandatory every run. For each one, crawl the primary URL, useful secondary URLs, pagination/API/feed variants noted in `crawlRule`, and configured Instagram profiles or Instagram search queries when possible. Always include public future gigs for priority acts unless the date is unconfirmed or the event is private. The current priority acts are Ewan Bleach, Doolally Tap, Clay Bottom Jug Busters, Tuba Skinny, The FoBo Jug Band, The Shirt Tail Stompers, Dom Glynn & His Sunday Best, The Basin Street Brawlers, Dunajska Kapelye and Tropanka. The venue/source names the user specifically wants watched closely are: Jamboree, The Lamb Surbiton, Green Note, The Harrison, Nightjar, Spice of Life, Ram Jam Records, TwickFolk/Eel Pie at The Cabbage Patch, The Magic Garden Battersea, Epsom Hot Jazz Club, Old Barn Bookham Jazz Club, Irish Cultural Centre Hammersmith, Cecil Sharp House and South London Irish Centre. Half Moon Putney and Riverhouse Barn should be watched but filtered more strictly.
+Treat `priorityActs` and `priorityVenues` in `updater/gig-sources.json` as mandatory every run. For each one, crawl the primary URL, useful secondary URLs, pagination/API/feed variants noted in `crawlRule`, and configured social profiles when possible. Always include public future gigs for priority acts unless the date is unconfirmed or the event is private. The current priority acts are Ewan Bleach, Doolally Tap, Clay Bottom Jug Busters, Tuba Skinny, The FoBo Jug Band, The Shirt Tail Stompers, Dom Glynn & His Sunday Best, The Basin Street Brawlers, Dunajska Kapelye and Tropanka. The venue/source names the user specifically wants watched closely are: Jamboree, The Lamb Surbiton, Green Note, The Harrison, Nightjar, Café Bohème, Spice of Life, Ram Jam Records, TwickFolk/Eel Pie at The Cabbage Patch, The Magic Garden Battersea, Epsom Hot Jazz Club, Old Barn Bookham Jazz Club, Irish Cultural Centre Hammersmith, Cecil Sharp House and South London Irish Centre. Half Moon Putney and Riverhouse Barn should be watched but filtered more strictly.
 
 Good discovery angles:
 
@@ -90,7 +91,7 @@ Append a dated entry to `updater/gig-method-log.md`: venues/methods tried, what 
 
 ## Hard constraints
 
-- Edit only gig-maintenance files: `gig-data.json`, `updater/gig-sources.json`, `updater/instagram-sources.json`, `updater/social-leads.json`, `updater/gig-method-log.md`, and private `updater/user-feedback.json` only if normalizing exported feedback is necessary.
+- Edit only gig-maintenance files: `gig-data.json`, `updater/gig-sources.json`, `updater/instagram-sources.json`, `updater/social-leads.json`, `updater/facebook-leads.json`, `updater/gig-method-log.md`, and private `updater/user-feedback.json` only if normalizing exported feedback is necessary.
 - Do not touch `calendar-data.json`, `index.html`, `gigs.html`, `assets/`, game files or service worker during unattended update runs.
 - Do not run `git commit` or `git push`; the publish step handles that.
 - Never wipe or wholesale-rewrite the dataset.

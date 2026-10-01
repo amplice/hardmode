@@ -12,6 +12,7 @@ Read these before editing:
 - `updater/user-feedback.json` - private exported feedback, if it exists. Treat `exclude` rows as strong negative signal for exact rows and similar future rows; treat `include` rows as strong positive examples.
 - `updater/sources.json` - known sources and standard search queries.
 - `updater/social-leads.json` - recent Instagram/social leads, if the file exists. Treat these as discovery leads, not authoritative structured data.
+- `updater/facebook-leads.json` - authenticated Facebook leads, if the file exists. The Lamb's event cards and detail text are its best forward programme; prefer newer exact event details over stale venue copy.
 - `latest-changes.json` - what the previous run changed.
 - `updater/method-log.md` - previous discovery methods and dead ends.
 - The `meta` block and a few sample rows of `calendar-data.json` so you match the exact field shape and id style.
@@ -32,7 +33,7 @@ Prioritise:
 
 - Surbiton, Berrylands, Tolworth, Kingston, Thames Ditton, Long Ditton, Hampton Court.
 - Waterloo/South Bank and Wimbledon when the event is family-relevant, free/daytime music, theatre or clearly high quality.
-- Instagram-heavy venues such as The Lamb; social-only details can be added when specific and future-dated, but mark `verify: true` unless independently confirmed.
+- Social-heavy venues such as The Lamb. Check both authenticated Facebook leads and Instagram leads every run; social-only details can be added when specific and future-dated, but mark `verify: true` unless independently confirmed.
 
 ## 3. Add only relevant dated events
 
@@ -83,7 +84,7 @@ Append a dated entry to `updater/method-log.md` recording sources/methods tried,
 
 ## Hard constraints
 
-- Edit only calendar-maintenance files: `calendar-data.json`, `latest-changes.json`, `updater/sources.json`, `updater/method-log.md`, and private `updater/user-feedback.json` only if normalizing exported feedback is necessary.
+- Edit only calendar-maintenance files: `calendar-data.json`, `latest-changes.json`, `updater/sources.json`, `updater/method-log.md`, `updater/facebook-leads.json`, and private `updater/user-feedback.json` only if normalizing exported feedback is necessary.
 - Do not touch `index.html`, `assets/`, `gigs.html`, game files or service worker during unattended update runs.
 - Do not run `git commit` or `git push`; the publish step handles that.
 - Never wipe or wholesale-rewrite the dataset.

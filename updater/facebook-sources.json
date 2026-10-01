@@ -1,0 +1,22 @@
+{
+  "profileDir": "updater/facebook-profile",
+  "output": "updater/facebook-leads.json",
+  "screenshotDir": "updater/social-screenshots",
+  "ocrCacheDir": "updater/ocr-cache",
+  "maxPostsPerPage": 40,
+  "maxScrollSteps": 30,
+  "pages": [
+    {
+      "name": "The Lamb Surbiton",
+      "url": "https://www.facebook.com/thelambsurbiton",
+      "eventsUrl": "https://www.facebook.com/thelambsurbiton/events",
+      "venue": "The Lamb",
+      "area": "Surbiton",
+      "calendarTargets": ["family", "gigs"],
+      "priority": "highest",
+      "maxPosts": 40,
+      "enrichEvents": true,
+      "enabled": true
+    }
+  ]
+}

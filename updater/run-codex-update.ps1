@@ -47,6 +47,22 @@ if (Test-Path $InstagramCollector) {
   }
 }
 
+$FacebookCollector = Join-Path $PSScriptRoot "collect-facebook.mjs"
+if (Test-Path $FacebookCollector) {
+  "--- facebook collect ---" | Out-File -FilePath $RunLog -Append -Encoding utf8
+  $BasePreference = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    & node $FacebookCollector --quiet *>> $RunLog
+    $FacebookExit = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $BasePreference
+  }
+  if ($FacebookExit -ne 0) {
+    "Facebook collection exited with code $FacebookExit; continuing with Codex update." | Out-File -FilePath $RunLog -Append -Encoding utf8
+  }
+}
+
 $PromptText = Get-Content -Raw -Path $PromptFile
 
 # Native CLI stderr can include progress/warnings. Do not let PowerShell promote

@@ -24,6 +24,10 @@
     "instagram:collect": "node updater/collect-instagram.mjs",
     "instagram:collect:headless": "node updater/collect-instagram.mjs --headless",
     "instagram:collect:no-ocr": "node updater/collect-instagram.mjs --no-ocr",
+    "facebook:login": "node updater/facebook-login.mjs",
+    "facebook:collect": "node updater/collect-facebook.mjs",
+    "facebook:collect:headed": "node updater/collect-facebook.mjs --headed",
+    "facebook:collect:no-ocr": "node updater/collect-facebook.mjs --no-ocr",
     "publish": "powershell -NoProfile -ExecutionPolicy Bypass -File updater/publish-site.ps1"
   },
   "devDependencies": {
