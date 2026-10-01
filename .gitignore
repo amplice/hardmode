@@ -3,7 +3,9 @@ updater/.env.local
 updater/backups/
 updater/logs/
 updater/instagram-profile/
+updater/facebook-profile/
 updater/social-leads.json
+updater/facebook-leads.json
 updater/social-screenshots/
 updater/ocr-cache/
 updater/user-feedback.json
