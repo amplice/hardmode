@@ -206,6 +206,15 @@ DESCRIPTION:Genres: old-time\nCost: ?12 + booking fee\nTraditional English tune 
 URL:https://events.liveit.io/folk-and-roots/shem-fillmore-band-2/
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261004-prospective-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261004T150000
+SUMMARY:Prospective Collective — Afternoon Swing with The Prospective Collective
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · hot jazz\nCost: Free / donations\nFree afternoon band playing vintage jazz and swing\, 15:00-17:00. Individually listed date\, cross-checked against the official artist index\; not an inferred weekly recurrence.\nhttps://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-2/
+URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-2/
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261004-twomanting-lamb@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261004T163000
@@ -235,11 +244,11 @@ END:VEVENT
 BEGIN:VEVENT
 UID:g20261004-kathrynroberts@local-events-gig-radar
 DTSTAMP:20261002T000000Z
-DTSTART:20261004T194500
+DTSTART:20261004T200000
 SUMMARY:Kathryn Roberts & Sean Lakeman — Kathryn Roberts & Sean Lakeman
 LOCATION:TwickFolk at The Cabbage Patch\, Twickenham
-DESCRIPTION:Genres: old-time\nCost: £19 + fee / £22 door\nMultiple-award-winning traditional/acoustic duo at an easy local venue. British folk is mapped to the closest permitted canonical roots category.\nhttps://www.twickfolk.co.uk/events/kathryn-roberts-sean-lakeman/
-URL:https://www.twickfolk.co.uk/events/kathryn-roberts-sean-lakeman/
+DESCRIPTION:Genres: old-time\nCost: £19 + fee / £22 door\nMultiple-award-winning traditional/acoustic duo at an easy local venue. British folk is mapped to the closest permitted canonical roots category. Doors 19:45\; music start 20:00 explicitly confirmed by the current organiser ticket inventory.\nhttps://wegottickets.com/f/20802
+URL:https://wegottickets.com/f/20802
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261004-webbcity@local-events-gig-radar
@@ -399,6 +408,15 @@ DESCRIPTION:Genres: old-time\nCost: ?15\nLeading English traditional singer and 
 URL:https://harrisonvenuelondon.com/events/john-kirkpatrick/
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261008-horlock-allen-islingtonfolk@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261008T200000
+SUMMARY:Aaron Horlock & Will Allen — Aaron Horlock & Will Allen at Islington Folk Club
+LOCATION:Islington Folk Club at Brewhouse & Kitchen\, Highbury\, London
+DESCRIPTION:Genres: old-time\nCost: £10 / £8 concessions\; member discounts\nTraditional tunes and songs with melodeon\, fiddle and guitar\; Allen also plays with Brown Boots. Doors 19:30\; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.\nhttps://www.islingtonfolkclub.co.uk/programme.html
+URL:https://www.islingtonfolkclub.co.uk/programme.html
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261008-cablestreet@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261008T203000
@@ -543,6 +561,24 @@ SUMMARY:Kevin Scott's Old Barn Hall Ragtime Jazz Band — Kevin Scott's Old Barn
 LOCATION:Old Barn Hall\, Great Bookham\, Surrey
 DESCRIPTION:Genres: hot jazz · New Orleans / trad jazz\nCost: £15 cash\nReachable Sunday-lunch trad-jazz club with dancing and light lunches. The rolling page omits the year\; weekday/date match 2026\, so recheck before travel.\nhttps://www.thejazzguide.co.uk/venues/listing/old-barn-hall
 URL:https://www.thejazzguide.co.uk/venues/listing/old-barn-hall
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261011-icc-concertsession@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261011T140000
+SUMMARY:Eilish Byrne-Whelehan\, James O'Grady & Tad Sargent — ICC Concert Session: Eilish Byrne-Whelehan\, James O'Grady & Tad Sargent
+LOCATION:Irish Cultural Centre\, Hammersmith\, London
+DESCRIPTION:Genres: old-time\nCost: Free\; booking required\nTraditional Irish fiddle\, uilleann pipes and guitar concert\, 14:00-16:00\; doors 13:30. Named expert players and a free daytime concert justify the Hammersmith trip. Trad Irish mapped to canonical old-time.\nhttps://irishculturalcentre.co.uk/event/icc-concert-session-with-tad-sargent-eilish-byrne-james-ogrady/
+URL:https://irishculturalcentre.co.uk/event/icc-concert-session-with-tad-sargent-eilish-byrne-james-ogrady/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261011-prospective-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261011T150000
+SUMMARY:Prospective Collective — Afternoon Swing with The Prospective Collective
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · hot jazz\nCost: Free / donations\nFree afternoon band playing vintage jazz and swing\, 15:00-17:00. Individually listed date\, cross-checked against the official artist index\; not an inferred weekly recurrence.\nhttps://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-3/
+URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-3/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261011-kasparrapkin-lamb@local-events-gig-radar
@@ -700,6 +736,15 @@ SUMMARY:Elsie Franklin — Elsie Franklin at The Lamb
 LOCATION:The Lamb\, Surbiton
 DESCRIPTION:Genres: old-time · hot jazz\nCost: Check venue\; no ticket price shown\nAcoustic country-blues\, ragtime and jazz on resonator guitar. Hyper-local priority venue\; exact date and start time are confirmed by the current official Facebook event.\nhttps://www.facebook.com/events/4665130173812692/
 URL:https://www.facebook.com/events/4665130173812692/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261015-arrowsmiths-islingtonfolk@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261015T200000
+SUMMARY:Richard & Jess Arrowsmith — Richard & Jess Arrowsmith at Islington Folk Club
+LOCATION:Islington Folk Club at Brewhouse & Kitchen\, Highbury\, London
+DESCRIPTION:Genres: old-time\nCost: £10 / £8 concessions\; member discounts\nTraditional English song\, ballads\, jigs\, Morris tunes and Playford airs on voice\, melodeon and fiddle. Doors 19:30\; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.\nhttps://www.islingtonfolkclub.co.uk/programme.html
+URL:https://www.islingtonfolkclub.co.uk/programme.html
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261015-cablestreet@local-events-gig-radar
@@ -875,6 +920,15 @@ DESCRIPTION:Genres: New Orleans / trad jazz · hot jazz\nCost: £15 cash\nEarly 
 URL:https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/san-jacinto-stompers-1
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261018-prospective-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261018T150000
+SUMMARY:Prospective Collective — Afternoon Swing with The Prospective Collective
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · hot jazz\nCost: Free / donations\nFree afternoon band playing vintage jazz and swing\, 15:00-17:00. Individually listed date\, cross-checked against the official artist index\; not an inferred weekly recurrence.\nhttps://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-4/
+URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-4/
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261018-doolally@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261018T160000
@@ -886,11 +940,11 @@ END:VEVENT
 BEGIN:VEVENT
 UID:g20261018-jackrutter@local-events-gig-radar
 DTSTAMP:20261002T000000Z
-DTSTART:20261018T194500
+DTSTART:20261018T200000
 SUMMARY:Jack Rutter — Jack Rutter
 LOCATION:The Cabbage Patch (Patchworks)\, Twickenham
-DESCRIPTION:Genres: old-time\nCost: £14 + fee / £17 door\nTraditional English song delivered on guitar and bouzouki. Doors 19:45\; music is normally 20:00.\nhttps://www.twickfolk.co.uk/events/
-URL:https://www.twickfolk.co.uk/events/
+DESCRIPTION:Genres: old-time\nCost: £14 + fee / £17 door\nTraditional English song delivered on guitar and bouzouki. Doors 19:45\; music start 20:00 explicitly confirmed by the current organiser ticket inventory.\nhttps://wegottickets.com/f/18514
+URL:https://wegottickets.com/f/18514
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261018-papermoon@local-events-gig-radar
@@ -985,6 +1039,15 @@ SUMMARY:William Poyer — William Poyer at The Lamb
 LOCATION:The Lamb\, Surbiton
 DESCRIPTION:Genres: old-school country · old-time\nCost: Check venue\; no ticket price shown\nAmericana storytelling with folk\, mariachi and Gold Rush influences. Hyper-local priority venue\; exact date and start time are confirmed by the current official Facebook event.\nhttps://www.facebook.com/events/1652567302933473/
 URL:https://www.facebook.com/events/1652567302933473/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261022-nickhart-islingtonfolk@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261022T200000
+SUMMARY:Nick Hart — Nick Hart at Islington Folk Club
+LOCATION:Islington Folk Club at Brewhouse & Kitchen\, Highbury\, London
+DESCRIPTION:Genres: old-time\nCost: £10 / £8 concessions\; member discounts\nSpecialist interpreter of English traditional songs\; a strong repertoire match for the longer north London trip. Doors 19:30\; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.\nhttps://www.islingtonfolkclub.co.uk/programme.html
+URL:https://www.islingtonfolkclub.co.uk/programme.html
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261022-cablestreet@local-events-gig-radar
@@ -1152,6 +1215,15 @@ DESCRIPTION:Genres: old-time\nCost: ?14\; accompanied under-18s free at door\nNa
 URL:https://imdl.giftpro.co.uk/events/saturday-set-dancing-ceili-1/
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261025-prospective-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261025T150000
+SUMMARY:Prospective Collective — Afternoon Swing with The Prospective Collective
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · hot jazz\nCost: Free / donations\nFree afternoon band playing vintage jazz and swing\, 15:00-17:00. Individually listed date\, cross-checked against the official artist index\; not an inferred weekly recurrence.\nhttps://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-5/
+URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-5/
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261025-backofalength-lamb@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261025T163000
@@ -1234,6 +1306,15 @@ SUMMARY:Matt Holborn - Celebrating Django — Matt Holborn - Celebrating Django 
 LOCATION:Café Bohème\, Soho\, London
 DESCRIPTION:Genres: gypsy jazz\nCost: No separate ticket shown\; table booking advised\nA 1930s Paris tribute to Django Reinhardt. Official roster confirms the date and the venue's 16:00-18:30 afternoon music slot.\nhttps://www.cafeboheme.co.uk/live-music
 URL:https://www.cafeboheme.co.uk/live-music
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261028-furrowcollective-cecilsharp@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261028T193000
+SUMMARY:The Furrow Collective — The Furrow Collective
+LOCATION:Cecil Sharp House\, Camden\, London
+DESCRIPTION:Genres: old-time\nCost: £20.50 / £12.50 under-30s\; check booking\nLucy Farrell\, Emily Portman and Alasdair Roberts interpret traditional ballads with voices\, viola\, banjo\, concertina and guitar. English/Scottish traditional song mapped to canonical old-time. Artist diary and venue instance both confirm 28 October 2026 at 19:30.\nhttps://www.efdss.org/choose-seats?EventInstanceId=162801
+URL:https://www.efdss.org/choose-seats?EventInstanceId=162801
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261028-djangochutney@local-events-gig-radar
@@ -1366,6 +1447,15 @@ DESCRIPTION:Genres: hot jazz · New Orleans / trad jazz · swing\nCost: £13.50 
 URL:https://wegottickets.com/f/27255
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261101-prospective-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261101T150000
+SUMMARY:Prospective Collective — Afternoon Swing with The Prospective Collective
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · hot jazz\nCost: Free / donations\nFree afternoon band playing vintage jazz and swing\, 15:00-17:00. Individually listed date\, cross-checked against the official artist index\; not an inferred weekly recurrence.\nhttps://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-6/
+URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-6/
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261101-johnnycampbell@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261101T200000
@@ -1474,6 +1564,15 @@ DESCRIPTION:Genres: old-time\nCost: £20.50 / £12.50 under 30\nHigh-value Irish
 URL:https://www.efdss.org/whats-on/26-gigs/16013-the-haar-2026
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261105-danarobinson-islingtonfolk@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261105T200000
+SUMMARY:Dana Robinson — Dana Robinson at Islington Folk Club
+LOCATION:Islington Folk Club at Brewhouse & Kitchen\, Highbury\, London
+DESCRIPTION:Genres: old-time\nCost: £10 / £8 concessions\; member discounts\nTraditional Appalachian material alongside original roots songs\, with banjo\, mandolin and guitar\; explicitly more than generic Americana. Doors 19:30\; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.\nhttps://www.islingtonfolkclub.co.uk/programme.html
+URL:https://www.islingtonfolkclub.co.uk/programme.html
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261105-cablestreet@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261105T203000
@@ -1563,6 +1662,15 @@ SUMMARY:TJ Johnson & His Band — The Speakeasy Party: TJ Johnson & His Band
 LOCATION:Ram Jam Records\, Kingston
 DESCRIPTION:Genres: New Orleans / trad jazz · honky tonk · swing\nCost: £12 + fees / £15 door / £10 students\nLocal five-piece journey from New Orleans jazz dives through Texas honky-tonks to New York speakeasies.\nhttps://www.ramjamrecords.co.uk/events/07/11/26-tj-johnson-and-his-band
 URL:https://www.ramjamrecords.co.uk/events/07/11/26-tj-johnson-and-his-band
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261108-prospective-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261108T150000
+SUMMARY:Prospective Collective — Afternoon Swing with The Prospective Collective
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · hot jazz\nCost: Free / donations\nFree afternoon band playing vintage jazz and swing\, 15:00-17:00. Individually listed date\, cross-checked against the official artist index\; not an inferred weekly recurrence.\nhttps://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-7/
+URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-7/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261108-doolally@local-events-gig-radar
@@ -1802,6 +1910,15 @@ DESCRIPTION:Genres: hot jazz · New Orleans / trad jazz · swing\nCost: £13.50 
 URL:https://wegottickets.com/f/27258
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261115-prospective-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261115T150000
+SUMMARY:Prospective Collective — Afternoon Swing with The Prospective Collective
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · hot jazz\nCost: Free / donations\nFree afternoon band playing vintage jazz and swing\, 15:00-17:00. Individually listed date\, cross-checked against the official artist index\; not an inferred weekly recurrence.\nhttps://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-8/
+URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-8/
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261115-hermlin@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261115T200000
@@ -1827,6 +1944,24 @@ SUMMARY:Jamboree Celtic session musicians — Traditional Irish & Celtic Session
 LOCATION:Jamboree\, King's Cross\, London
 DESCRIPTION:Genres: old-time\nCost: Free\nFree weekly traditional Irish and Celtic session\; trad Irish is mapped to the nearest canonical old-time tag.\nhttps://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-34/
 URL:https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-34/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261118-tjjohnson-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261118T150000
+SUMMARY:TJ Johnson — TJ Johnson's Peak of the Week
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · old-school country\nCost: Free / donations\nAfternoon piano and vocals across vintage jazz\, country\, gospel and blues\, 15:00-17:00. Explicit individual date in the venue programme\; consistent with the existing residency rows.\nhttps://www.jamboreevenue.co.uk/upcoming-events/?pno=6
+URL:https://www.jamboreevenue.co.uk/upcoming-events/?pno=6
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261119-green-turner-islingtonfolk@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261119T200000
+SUMMARY:Mat Green & Andy Turner — Mat Green & Andy Turner at Islington Folk Club
+LOCATION:Islington Folk Club at Brewhouse & Kitchen\, Highbury\, London
+DESCRIPTION:Genres: old-time\nCost: £10 / £8 concessions\; member discounts\nTraditional eighteenth- and nineteenth-century English dance tunes on fiddle and Anglo concertina\, with singing. Doors 19:30\; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.\nhttps://www.islingtonfolkclub.co.uk/programme.html
+URL:https://www.islingtonfolkclub.co.uk/programme.html
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261119-cablestreet@local-events-gig-radar
@@ -1911,6 +2046,15 @@ DESCRIPTION:Genres: gypsy jazz · swing\nCost: £15\nVintage-style 1930s–40s P
 URL:https://www.greennote.co.uk/production/the-boheme-hot-club/
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261122-prospective-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261122T150000
+SUMMARY:Prospective Collective — Afternoon Swing with The Prospective Collective
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · hot jazz\nCost: Free / donations\nFree afternoon band playing vintage jazz and swing\, 15:00-17:00. Individually listed date\, cross-checked against the official artist index\; not an inferred weekly recurrence.\nhttps://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-9/
+URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-9/
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261122-ellalouis@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261122T180000
@@ -1954,6 +2098,15 @@ SUMMARY:Jamboree Celtic session musicians — Traditional Irish & Celtic Session
 LOCATION:Jamboree\, King's Cross\, London
 DESCRIPTION:Genres: old-time\nCost: Free\nFree weekly traditional Irish and Celtic session\; trad Irish is mapped to the nearest canonical old-time tag.\nhttps://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-35/
 URL:https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-35/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261125-tjjohnson-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261125T150000
+SUMMARY:TJ Johnson — TJ Johnson's Peak of the Week
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · old-school country\nCost: Free / donations\nAfternoon piano and vocals across vintage jazz\, country\, gospel and blues\, 15:00-17:00. Explicit individual date in the venue programme\; consistent with the existing residency rows.\nhttps://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-92/
+URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-92/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261125-viellefon@local-events-gig-radar
@@ -2020,6 +2173,15 @@ DESCRIPTION:Genres: swing\nVenue-tagged Jazz/Swing vintage vocal act — verify 
 URL:https://toulouselautrec.co.uk/event_calendar/biscuit-town-ft-issey-chivers/
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261129-prospective-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261129T150000
+SUMMARY:Prospective Collective — Afternoon Swing with The Prospective Collective
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · hot jazz\nCost: Free / donations\nFree afternoon band playing vintage jazz and swing\, 15:00-17:00. Individually listed date\, cross-checked against the official artist index\; not an inferred weekly recurrence.\nhttps://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-10/
+URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-10/
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261129-harrydiplock@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261129T200000
@@ -2056,6 +2218,15 @@ DESCRIPTION:Genres: swing\nLunchtime 13:30 shows Wed 2 – Wed 23 Dec\; swing-er
 URL:https://www.ronniescotts.co.uk/find-a-show
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261202-tjjohnson-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261202T150000
+SUMMARY:TJ Johnson — TJ Johnson's Peak of the Week
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · old-school country\nCost: Free / donations\nAfternoon piano and vocals across vintage jazz\, country\, gospel and blues\, 15:00-17:00. Explicit individual date in the venue programme\; consistent with the existing residency rows.\nhttps://www.jamboreevenue.co.uk/events/page/2/
+URL:https://www.jamboreevenue.co.uk/events/page/2/
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261202-andyturner@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261202T193000
@@ -2072,6 +2243,15 @@ SUMMARY:Harlem Orchestra — Harlem Orchestra
 LOCATION:The Winning Post\, Twickenham\, SW London
 DESCRIPTION:Genres: hot jazz · swing\n1920s–40s Harlem hot-jazz/swing. Lunchtime session (doors 11:30\, 12–3pm). Year not printed but Dec 3 is a Thursday in 2026 — confirm with venue.\nhttps://www.thejazzguide.co.uk/venues/listing/winning-post/
 URL:https://www.thejazzguide.co.uk/venues/listing/winning-post/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261203-elsiefranklin-islingtonfolk@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261203T200000
+SUMMARY:Elsie Franklin and the Rockettes — Elsie Franklin and the Rockettes at Islington Folk Club
+LOCATION:Islington Folk Club at Brewhouse & Kitchen\, Highbury\, London
+DESCRIPTION:Genres: old-time\nCost: £10 / £8 concessions\; member discounts\nAcoustic country blues on resonator guitar\, double bass\, drums and washboard\; pre-war roots rather than electric blues-rock. Doors 19:30\; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.\nhttps://www.islingtonfolkclub.co.uk/programme.html
+URL:https://www.islingtonfolkclub.co.uk/programme.html
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261203-cablestreet@local-events-gig-radar
@@ -2129,6 +2309,15 @@ DESCRIPTION:Genres: hot jazz · New Orleans / trad jazz · swing\nCost: £13.50 
 URL:https://wegottickets.com/f/27261
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261206-prospective-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261206T150000
+SUMMARY:Prospective Collective — Afternoon Swing with The Prospective Collective
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · hot jazz\nCost: Free / donations\nFree afternoon band playing vintage jazz and swing\, 15:00-17:00. Individually listed date\, cross-checked against the official artist index\; not an inferred weekly recurrence.\nhttps://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-11/
+URL:https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-11/
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261206-jinglebell@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261206T180000
@@ -2140,11 +2329,11 @@ END:VEVENT
 BEGIN:VEVENT
 UID:g20261206-oatesspiers@local-events-gig-radar
 DTSTAMP:20261002T000000Z
-DTSTART:20261206T194500
+DTSTART:20261206T200000
 SUMMARY:Jackie Oates & John Spiers — Christmas Special: Jackie Oates & John Spiers
 LOCATION:The Cabbage Patch (Patchworks)\, Twickenham
-DESCRIPTION:Genres: old-time\nCost: £18 + fee / £21 door\nEnglish traditional fiddle\, song and melodeon Christmas special. Doors 19:45\; music is normally 20:00.\nhttps://www.twickfolk.co.uk/events/
-URL:https://www.twickfolk.co.uk/events/
+DESCRIPTION:Genres: old-time\nCost: £18 + fee / £21 door\nEnglish traditional fiddle\, song and melodeon Christmas special. Doors 19:45\; music start 20:00 explicitly confirmed by the current organiser ticket inventory.\nhttps://wegottickets.com/event/690432
+URL:https://wegottickets.com/event/690432
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261207-sarahspencer@local-events-gig-radar
@@ -2172,6 +2361,15 @@ SUMMARY:Jamboree Celtic session musicians — Traditional Irish & Celtic Session
 LOCATION:Jamboree\, King's Cross\, London
 DESCRIPTION:Genres: old-time\nCost: Free\nFree weekly traditional Irish and Celtic session\; trad Irish is mapped to the nearest canonical old-time tag.\nhttps://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-37/
 URL:https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-37/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261209-tjjohnson-jamboree@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261209T150000
+SUMMARY:TJ Johnson — TJ Johnson's Peak of the Week
+LOCATION:Jamboree\, King's Cross\, London
+DESCRIPTION:Genres: swing · old-school country\nCost: Free / donations\nAfternoon piano and vocals across vintage jazz\, country\, gospel and blues\, 15:00-17:00. Explicit individual date in the venue programme\; consistent with the existing residency rows.\nhttps://www.jamboreevenue.co.uk/upcoming-events/?pno=8
+URL:https://www.jamboreevenue.co.uk/upcoming-events/?pno=8
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261210-doolally@local-events-gig-radar
@@ -2273,6 +2471,15 @@ DESCRIPTION:Genres: old-time\nCost: £20 / £18\nIrish traditional uilleann pipe
 URL:https://irishculturalcentre.co.uk/event/tara-howley-in-concert/
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261212-rhythmkitchen-winterswingball@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261212T213000
+SUMMARY:Pete Long's Rhythm Kitchen with Louise Cookman — Winter Swing Ball - Rhythm Kitchen with Louise Cookman
+LOCATION:Latymer Upper (Main Hall)\, Hammersmith\, London
+DESCRIPTION:Genres: swing\nCost: From £27 / £24 concessions\; advance booking required\nSeven-piece vintage swing band and live-band Lindy dancing. Doors and recorded music 20:30\; band sets 21:30 and 22:45\, finishes 00:30. Prices rise after November\; check the late journey home. No children.\nhttps://www.swingland.com/winter-swing-ball/
+URL:https://www.swingland.com/winter-swing-ball/
+END:VEVENT
+BEGIN:VEVENT
 UID:g20261213-prospective@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20261213T150000
@@ -2316,6 +2523,15 @@ SUMMARY:Jamboree Celtic session musicians — Traditional Irish & Celtic Session
 LOCATION:Jamboree\, King's Cross\, London
 DESCRIPTION:Genres: old-time\nCost: Free\nFree traditional Irish and Celtic session\; trad Irish is mapped to the nearest canonical old-time tag.\nhttps://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-38/
 URL:https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-38/
+END:VEVENT
+BEGIN:VEVENT
+UID:g20261215-shirttailstompers-bedford@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261215T203000
+SUMMARY:The Shirt Tail Stompers — C Jam Christmas Party - The Shirt Tail Stompers
+LOCATION:The Bedford (upstairs ballroom)\, Balham\, London
+DESCRIPTION:Genres: hot jazz · swing\nCost: £20 advance / £25 door\; concessions £15 / £18\nPriority act\, with two live swing sets and dancing 20:30-23:00. Doors 19:00\; optional 19:15 Lindy class costs extra. Published Christmas timetable supersedes the generic weekly class schedule. Balham is reachable via Clapham Junction. 16+\; under-18s accompanied.\nhttps://www.swingland.com/c-jam/schedule/20261215/
+URL:https://www.swingland.com/c-jam/schedule/20261215/
 END:VEVENT
 BEGIN:VEVENT
 UID:g20261216-tjjohnsonjamboree@local-events-gig-radar
@@ -2490,6 +2706,15 @@ DESCRIPTION:Genres: swing\nCost: £25–£50\nClassic big-band swing. Two shows:
 URL:https://cadoganhall.com/whats-on/swing-into-christmas-with-the-down-for-the-count-swing-orchestra-2026/
 END:VEVENT
 BEGIN:VEVENT
+UID:g20261231-brownboots-nye-cecilsharp@local-events-gig-radar
+DTSTAMP:20261002T000000Z
+DTSTART:20261231T203000
+SUMMARY:Brown Boots Boogie Band\; caller Tina Morris — New Year's Eve Ceilidh
+LOCATION:Cecil Sharp House\, Camden\, London
+DESCRIPTION:Genres: old-time\nCost: £55.50 adults / £45.50 under-30s\; advance only\nNamed live traditional dance band with gender-free calling\; doors 20:00\, dancing 20:30-00:30. English ceilidh mapped to canonical old-time. Recommended over 10\; primarily a date-night option. Plan the New Year journey home.\nhttps://www.efdss.org/whats-on/27-dances/16010-31-12-26-nyeceilidh
+URL:https://www.efdss.org/whats-on/27-dances/16010-31-12-26-nyeceilidh
+END:VEVENT
+BEGIN:VEVENT
 UID:g20270103-prospective@local-events-gig-radar
 DTSTAMP:20261002T000000Z
 DTSTART:20270103T150000
@@ -2528,11 +2753,11 @@ END:VEVENT
 BEGIN:VEVENT
 UID:g20270110-counters-creek-twickfolk@local-events-gig-radar
 DTSTAMP:20261002T000000Z
-DTSTART:20270110T194500
+DTSTART:20270110T200000
 SUMMARY:Counter's Creek — Counter's Creek
 LOCATION:TwickFolk at The Cabbage Patch\, Twickenham
-DESCRIPTION:Genres: old-time\nCost: £14 + 10% fee / £17 door\nAcoustic jigs\, reels and dance tunes rooted in the British Isles\, with wider influences. Listed time is doors. Traditional folk mapped to old-time\; easy Twickenham trip and strong fit with positive TwickFolk feedback.\nhttps://www.twickfolk.co.uk/events/counters-creek/
-URL:https://www.twickfolk.co.uk/events/counters-creek/
+DESCRIPTION:Genres: old-time\nCost: £14 + 10% fee / £17 door\nAcoustic jigs\, reels and dance tunes rooted in the British Isles\, with wider influences.  Traditional folk mapped to old-time\; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45\; music start 20:00 explicitly confirmed by the current organiser ticket inventory.\nhttps://wegottickets.com/f/24391
+URL:https://wegottickets.com/f/24391
 END:VEVENT
 BEGIN:VEVENT
 UID:g20270110-agsconnolly@local-events-gig-radar
@@ -2619,11 +2844,11 @@ END:VEVENT
 BEGIN:VEVENT
 UID:g20270221-the-kimberleys-twickfolk@local-events-gig-radar
 DTSTAMP:20261002T000000Z
-DTSTART:20270221T194500
+DTSTART:20270221T200000
 SUMMARY:The Kimberleys — The Kimberleys
 LOCATION:TwickFolk at The Cabbage Patch\, Twickenham
-DESCRIPTION:Genres: old-time\nCost: £12 + 10% fee / £15 door\nTraditional British ballads and folk standards are central to this acoustic duo. Listed time is doors. Traditional folk mapped to old-time\; easy Twickenham trip and strong fit with positive TwickFolk feedback.\nhttps://www.twickfolk.co.uk/events/the-kimberleys/
-URL:https://www.twickfolk.co.uk/events/the-kimberleys/
+DESCRIPTION:Genres: old-time\nCost: £12 + 10% fee / £15 door\nTraditional British ballads and folk standards are central to this acoustic duo.  Traditional folk mapped to old-time\; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45\; music start 20:00 explicitly confirmed by the current organiser ticket inventory.\nhttps://wegottickets.com/f/26965
+URL:https://wegottickets.com/f/26965
 END:VEVENT
 BEGIN:VEVENT
 UID:g20270226-runnymede@local-events-gig-radar
@@ -2691,19 +2916,19 @@ END:VEVENT
 BEGIN:VEVENT
 UID:g20270418-george-sansome-matt-quinn-twickfolk@local-events-gig-radar
 DTSTAMP:20261002T000000Z
-DTSTART:20270418T194500
+DTSTART:20270418T200000
 SUMMARY:George Sansome & Matt Quinn — George Sansome & Matt Quinn
 LOCATION:TwickFolk at The Cabbage Patch\, Twickenham
-DESCRIPTION:Genres: old-time\nCost: £14 + 10% fee / £17 door\nEnglish traditional singing\, harmony and melodeon/concertina/mandolin\; support from Jo Girdlestone & Malcolm MacWatt. Listed time is doors. Traditional folk mapped to old-time\; easy Twickenham trip and strong fit with positive TwickFolk feedback.\nhttps://www.twickfolk.co.uk/events/george-sansome-matt-quinn/
-URL:https://www.twickfolk.co.uk/events/george-sansome-matt-quinn/
+DESCRIPTION:Genres: old-time\nCost: £14 + 10% fee / £17 door\nEnglish traditional singing\, harmony and melodeon/concertina/mandolin\; support from Jo Girdlestone & Malcolm MacWatt.  Traditional folk mapped to old-time\; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45\; music start 20:00 explicitly confirmed by the current organiser ticket inventory.\nhttps://wegottickets.com/f/27959
+URL:https://wegottickets.com/f/27959
 END:VEVENT
 BEGIN:VEVENT
 UID:g20270425-tarren-twickfolk@local-events-gig-radar
 DTSTAMP:20261002T000000Z
-DTSTART:20270425T194500
+DTSTART:20270425T200000
 SUMMARY:Tarren — Tarren
 LOCATION:TwickFolk at The Cabbage Patch\, Twickenham
-DESCRIPTION:Genres: old-time\nCost: £15 + 10% fee / £18 door\nEnglish-trad instrumental trio on cittern\, concertina\, fiddle and accordion\; includes newly composed material. Listed time is doors. Traditional folk mapped to old-time\; easy Twickenham trip and strong fit with positive TwickFolk feedback.\nhttps://www.twickfolk.co.uk/events/tarren/
-URL:https://www.twickfolk.co.uk/events/tarren/
+DESCRIPTION:Genres: old-time\nCost: £15 + 10% fee / £18 door\nEnglish-trad instrumental trio on cittern\, concertina\, fiddle and accordion\; includes newly composed material.  Traditional folk mapped to old-time\; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45\; music start 20:00 explicitly confirmed by the current organiser ticket inventory.\nhttps://wegottickets.com/f/28337
+URL:https://wegottickets.com/f/28337
 END:VEVENT
 END:VCALENDAR

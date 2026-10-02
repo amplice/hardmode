@@ -121,7 +121,7 @@
       "secondaryUrls": ["https://wegottickets.com/JamboreeVenue"],
       "instagramHandles": [],
       "instagramSearchQueries": ["Jamboree Kings Cross Instagram live music", "site:instagram.com JamboreeVenue Jamboree Kings Cross"],
-      "crawlRule": "Crawl the official events and upcoming-events pages plus both pagination forms (/events/page/N/ and /upcoming-events/?pno=N) every run; use WeGotTickets as secondary confirmation.",
+      "crawlRule": "Crawl the official events and upcoming-events pages plus both pagination forms (/events/page/N/ and /upcoming-events/?pno=N) every run; use WeGotTickets as secondary confirmation. If direct requests return 406, use indexed official event pages and /events/artist/london-events/ for the individually dated Prospective Collective roster. Cached pagination can show different horizons; confirm each date rather than trusting page position.",
       "includeRule": "Low threshold: swing, cajun, trad jazz, old-time, jug band, Ewan Bleach/TJ Johnson/Cable Street style dates and strong one-off roots nights should normally be included."
     },
     {
@@ -372,6 +372,15 @@
       ],
       "url": "https://www.kneesupcecilsharp.co.uk/programme.html",
       "note": "Named English ceilidh bands and callers for individual dates; cross-check EFDSS event 15766 and Spektrix instances for times, prices and on-sale status. Retrieved 29 Sep 2026: Folk Camps Party Band 16 Oct, Diatonics 20 Nov and Threepenny Bit 18 Dec. Never infer dates from the monthly rule."
+    },
+    {
+      "name": "Islington Folk Club",
+      "area": "Highbury, London",
+      "genres": [
+        "old-time"
+      ],
+      "url": "https://www.islingtonfolkclub.co.uk/programme.html",
+      "note": "NEW 2 Oct 2026: explicit 2026/2027 dated programme at Brewhouse & Kitchen, 2a Corsica Street. Homepage supplies 20:00 start, 19:30 doors and public admission. Productive for English traditional song, dance tunes and Appalachian old-time; filter generic songwriting, folk-rock and comedy. Direct HTML works when web extraction returns 403."
     }
   ],
   "closedOrDefunct": [
@@ -398,7 +407,7 @@
     { "name": "EFDSS Spektrix API", "url": "https://sales.efdss.org/efdss/api/v3/events", "note": "Cecil Sharp House HTML 403s scrapers, but this public API returns the full event feed as JSON — the reliable way to check for cajun/old-time/square-dance programming. The /instances endpoint gives per-date times (used for Barndance Nov/Dec 2026)." },
     { "name": "The Jazz Guide", "url": "https://www.thejazzguide.co.uk/", "note": "MAJOR find (2026-07): dated diaries for the suburban trad-jazz club circuit (Epsom Hot Jazz Club, Old Barn Hall Bookham, Pump House Watford, Amersham Jazz Club, Spice of Life lunches, Winning Post, 46 Club Uxbridge, Riverhead Sevenoaks). Year unprinted — weekday-check every date. Venue index paginates ?start=N (11 pages, ~85 venues); the national /gigs-and-events/ listing also paginates ?start=N (steps of 20, last page start=140) and is server-rendered. PARSING TRAP (2026-07-19): the national listing interleaves Premium Listing cards (h3.card__title) with plain rows (h4) — naive scraping pairs a row's title with a card's venue and fabricates phantom gigs; parse them separately. WebFetch summaries also invent weekdays on these pages — cross-check raw HTML. Winning Post venue page now 404s (its gigs still appear in the national listing). Diaries are rolling ~4–7 week windows — re-scrape monthly." },
     { "name": "Swing Patrol — Bishopsgate Swing Live", "url": "https://www.swingpatrol.co.uk/events/", "note": "Monthly LIVE-BAND swing dances and balls at Bishopsgate Institute — distinct from the DJ-only 'Swing Den' first-Fridays (skip those). REFRESHED 2026-08-18: Performance Ball 17 Oct and Christmas Party 19 Dec are dated/on sale; bands remain TBA, so keep the explicit TBA artist labels until announced. URL pattern /events/{slug}/DD-MM-YYYY/ can redirect; verify the final page." },
-    { "name": "Swingland live-music events", "url": "https://www.swingland.com/live-music-events/", "note": "London swing-dance school's live-band socials page (A-Train at The Hammersmith Club with Rhythm Kitchen, 20 Jul) — well-dated with prices." },
+    { "name": "Swingland live-music events", "url": "https://www.swingland.com/live-music-events/", "note": "REFRESHED 2 Oct 2026: read /live-music-events/ highlights and follow individual /c-jam/schedule/YYYYMMDD/ pages. The generic timetable differs from Christmas live-band timings. Confirmed Shirt Tail Stompers at The Bedford 15 Dec and Rhythm Kitchen/Louise Cookman Winter Swing Ball 12 Dec. Filter ordinary DJ-only socials." },
     { "name": "UK Jazz News", "url": "https://ukjazznews.com/", "note": "londonjazznews.com 301s here. WebFetch 403s but Chrome-UA curl works; article index is JS-loaded BUT the WordPress REST API works: /wp-json/wp/v2/posts?search=... — useful for previews/leads rather than dated listings. Article pages 403 too, but /wp-json/wp/v2/posts?slug=<slug> returns the full article body via curl (2026-07-13: surfaced the Ewan Bleach Fleeting Paradise Jamboree residency)." },
     { "name": "Jive Aces tour page", "url": "https://jiveaces.org/tour", "note": "UK's hardest-gigging jump-jive/swing band; own gig guide is fully dated (100 Club, Gatehouse, Beaverwood + South-East one-offs)." },
     { "name": "Ags Connolly shows page", "url": "https://agsconnolly.com/shows/", "note": "Primary source for UK trad-country dates (403s WebFetch — use Chrome-UA curl); also surfaces Dave Sutherland bookings." },
@@ -498,6 +507,11 @@
     "site:plaqlock.com/live-music-islington Ewan Bleach",
     "Knees Up Cecil Sharp programme bands callers 2026",
     "London Surrey harvest festival traditional folk live music 2026",
-    "London silent film live ragtime jazz accompaniment 2026"
+    "London silent film live ragtime jazz accompaniment 2026",
+    "Islington Folk Club traditional Appalachian programme",
+    "Swingland C Jam Shirt Tail Stompers Christmas live music",
+    "London charity concert live swing band 2026",
+    "London library traditional folk live concert 2026",
+    "London brewery honky tonk named band 2026"
   ]
 }

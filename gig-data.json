@@ -22,7 +22,7 @@
     ],
     "dateBasis": "2026-10-02",
     "counts": {
-      "upcoming": 296
+      "upcoming": 321
     }
   },
   "gigs": [
@@ -2055,7 +2055,7 @@
       "id": "g20261018-jackrutter",
       "date": "2026-10-18",
       "endDate": null,
-      "time": "19:45",
+      "time": "20:00",
       "title": "Jack Rutter",
       "artist": "Jack Rutter",
       "venue": "The Cabbage Patch (Patchworks)",
@@ -2064,10 +2064,10 @@
         "old-time"
       ],
       "cost": "£14 + fee / £17 door",
-      "url": "https://www.twickfolk.co.uk/events/",
-      "source": "TwickFolk",
+      "url": "https://wegottickets.com/f/18514",
+      "source": "TwickFolk official WeGotTickets organiser and event",
       "confidence": "confirmed",
-      "note": "Traditional English song delivered on guitar and bouzouki. Doors 19:45; music is normally 20:00."
+      "note": "Traditional English song delivered on guitar and bouzouki. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory."
     },
     {
       "id": "g20261122-twickfolksing",
@@ -2091,7 +2091,7 @@
       "id": "g20261206-oatesspiers",
       "date": "2026-12-06",
       "endDate": null,
-      "time": "19:45",
+      "time": "20:00",
       "title": "Christmas Special: Jackie Oates & John Spiers",
       "artist": "Jackie Oates & John Spiers",
       "venue": "The Cabbage Patch (Patchworks)",
@@ -2100,10 +2100,10 @@
         "old-time"
       ],
       "cost": "£18 + fee / £21 door",
-      "url": "https://www.twickfolk.co.uk/events/",
-      "source": "TwickFolk",
+      "url": "https://wegottickets.com/event/690432",
+      "source": "TwickFolk official WeGotTickets organiser and event",
       "confidence": "confirmed",
-      "note": "English traditional fiddle, song and melodeon Christmas special. Doors 19:45; music is normally 20:00."
+      "note": "English traditional fiddle, song and melodeon Christmas special. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory."
     },
     {
       "id": "g20261003-harrisontunes",
@@ -2308,7 +2308,7 @@
       "id": "g20261004-kathrynroberts",
       "date": "2026-10-04",
       "endDate": null,
-      "time": "19:45",
+      "time": "20:00",
       "title": "Kathryn Roberts & Sean Lakeman",
       "artist": "Kathryn Roberts & Sean Lakeman",
       "venue": "TwickFolk at The Cabbage Patch",
@@ -2317,10 +2317,10 @@
         "old-time"
       ],
       "cost": "£19 + fee / £22 door",
-      "url": "https://www.twickfolk.co.uk/events/kathryn-roberts-sean-lakeman/",
-      "source": "TwickFolk",
+      "url": "https://wegottickets.com/f/20802",
+      "source": "TwickFolk official WeGotTickets organiser and event",
       "confidence": "confirmed",
-      "note": "Multiple-award-winning traditional/acoustic duo at an easy local venue. British folk is mapped to the closest permitted canonical roots category."
+      "note": "Multiple-award-winning traditional/acoustic duo at an easy local venue. British folk is mapped to the closest permitted canonical roots category. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory."
     },
     {
       "id": "g20261004-louisianariverhouse",
@@ -4027,7 +4027,7 @@
       "id": "g20270110-counters-creek-twickfolk",
       "date": "2027-01-10",
       "endDate": null,
-      "time": "19:45",
+      "time": "20:00",
       "title": "Counter's Creek",
       "artist": "Counter's Creek",
       "venue": "TwickFolk at The Cabbage Patch",
@@ -4036,16 +4036,16 @@
         "old-time"
       ],
       "cost": "£14 + 10% fee / £17 door",
-      "url": "https://www.twickfolk.co.uk/events/counters-creek/",
-      "source": "TwickFolk",
+      "url": "https://wegottickets.com/f/24391",
+      "source": "TwickFolk official WeGotTickets organiser and event",
       "confidence": "confirmed",
-      "note": "Acoustic jigs, reels and dance tunes rooted in the British Isles, with wider influences. Listed time is doors. Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback."
+      "note": "Acoustic jigs, reels and dance tunes rooted in the British Isles, with wider influences.  Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory."
     },
     {
       "id": "g20270221-the-kimberleys-twickfolk",
       "date": "2027-02-21",
       "endDate": null,
-      "time": "19:45",
+      "time": "20:00",
       "title": "The Kimberleys",
       "artist": "The Kimberleys",
       "venue": "TwickFolk at The Cabbage Patch",
@@ -4054,16 +4054,16 @@
         "old-time"
       ],
       "cost": "£12 + 10% fee / £15 door",
-      "url": "https://www.twickfolk.co.uk/events/the-kimberleys/",
-      "source": "TwickFolk",
+      "url": "https://wegottickets.com/f/26965",
+      "source": "TwickFolk official WeGotTickets organiser and event",
       "confidence": "confirmed",
-      "note": "Traditional British ballads and folk standards are central to this acoustic duo. Listed time is doors. Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback."
+      "note": "Traditional British ballads and folk standards are central to this acoustic duo.  Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory."
     },
     {
       "id": "g20270418-george-sansome-matt-quinn-twickfolk",
       "date": "2027-04-18",
       "endDate": null,
-      "time": "19:45",
+      "time": "20:00",
       "title": "George Sansome & Matt Quinn",
       "artist": "George Sansome & Matt Quinn",
       "venue": "TwickFolk at The Cabbage Patch",
@@ -4072,16 +4072,16 @@
         "old-time"
       ],
       "cost": "£14 + 10% fee / £17 door",
-      "url": "https://www.twickfolk.co.uk/events/george-sansome-matt-quinn/",
-      "source": "TwickFolk",
+      "url": "https://wegottickets.com/f/27959",
+      "source": "TwickFolk official WeGotTickets organiser and event",
       "confidence": "confirmed",
-      "note": "English traditional singing, harmony and melodeon/concertina/mandolin; support from Jo Girdlestone & Malcolm MacWatt. Listed time is doors. Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback."
+      "note": "English traditional singing, harmony and melodeon/concertina/mandolin; support from Jo Girdlestone & Malcolm MacWatt.  Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory."
     },
     {
       "id": "g20270425-tarren-twickfolk",
       "date": "2027-04-25",
       "endDate": null,
-      "time": "19:45",
+      "time": "20:00",
       "title": "Tarren",
       "artist": "Tarren",
       "venue": "TwickFolk at The Cabbage Patch",
@@ -4090,10 +4090,10 @@
         "old-time"
       ],
       "cost": "£15 + 10% fee / £18 door",
-      "url": "https://www.twickfolk.co.uk/events/tarren/",
-      "source": "TwickFolk",
+      "url": "https://wegottickets.com/f/28337",
+      "source": "TwickFolk official WeGotTickets organiser and event",
       "confidence": "confirmed",
-      "note": "English-trad instrumental trio on cittern, concertina, fiddle and accordion; includes newly composed material. Listed time is doors. Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback."
+      "note": "English-trad instrumental trio on cittern, concertina, fiddle and accordion; includes newly composed material.  Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory."
     },
     {
       "id": "g20261024-kimberleys-harrison",
@@ -5515,6 +5515,471 @@
       "source": "The Spice of Life official events programme",
       "confidence": "confirmed",
       "note": "Classic ragtime, blues, stomping swing and New Orleans jazz in the Monday lunchtime programme."
+    },
+    {
+      "id": "g20261215-shirttailstompers-bedford",
+      "date": "2026-12-15",
+      "endDate": null,
+      "time": "20:30",
+      "title": "C Jam Christmas Party - The Shirt Tail Stompers",
+      "artist": "The Shirt Tail Stompers",
+      "venue": "The Bedford (upstairs ballroom)",
+      "area": "Balham, London",
+      "genres": [
+        "hot jazz",
+        "swing"
+      ],
+      "cost": "£20 advance / £25 door; concessions £15 / £18",
+      "url": "https://www.swingland.com/c-jam/schedule/20261215/",
+      "source": "Swingland official dated C Jam schedule",
+      "confidence": "confirmed",
+      "note": "Priority act, with two live swing sets and dancing 20:30-23:00. Doors 19:00; optional 19:15 Lindy class costs extra. Published Christmas timetable supersedes the generic weekly class schedule. Balham is reachable via Clapham Junction. 16+; under-18s accompanied."
+    },
+    {
+      "id": "g20261212-rhythmkitchen-winterswingball",
+      "date": "2026-12-12",
+      "endDate": null,
+      "time": "21:30",
+      "title": "Winter Swing Ball - Rhythm Kitchen with Louise Cookman",
+      "artist": "Pete Long's Rhythm Kitchen with Louise Cookman",
+      "venue": "Latymer Upper (Main Hall)",
+      "area": "Hammersmith, London",
+      "genres": [
+        "swing"
+      ],
+      "cost": "From £27 / £24 concessions; advance booking required",
+      "url": "https://www.swingland.com/winter-swing-ball/",
+      "source": "Swingland official Winter Swing Ball page",
+      "confidence": "confirmed",
+      "note": "Seven-piece vintage swing band and live-band Lindy dancing. Doors and recorded music 20:30; band sets 21:30 and 22:45, finishes 00:30. Prices rise after November; check the late journey home. No children."
+    },
+    {
+      "id": "g20261011-icc-concertsession",
+      "date": "2026-10-11",
+      "endDate": null,
+      "time": "14:00",
+      "title": "ICC Concert Session: Eilish Byrne-Whelehan, James O'Grady & Tad Sargent",
+      "artist": "Eilish Byrne-Whelehan, James O'Grady & Tad Sargent",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "Free; booking required",
+      "url": "https://irishculturalcentre.co.uk/event/icc-concert-session-with-tad-sargent-eilish-byrne-james-ogrady/",
+      "source": "Irish Cultural Centre official event",
+      "confidence": "confirmed",
+      "note": "Traditional Irish fiddle, uilleann pipes and guitar concert, 14:00-16:00; doors 13:30. Named expert players and a free daytime concert justify the Hammersmith trip. Trad Irish mapped to canonical old-time."
+    },
+    {
+      "id": "g20261004-prospective-jamboree",
+      "date": "2026-10-04",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Swing with The Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-2/",
+      "source": "Jamboree official artist index and dated event listings",
+      "confidence": "confirmed",
+      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
+    },
+    {
+      "id": "g20261011-prospective-jamboree",
+      "date": "2026-10-11",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Swing with The Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-3/",
+      "source": "Jamboree official artist index and dated event listings",
+      "confidence": "confirmed",
+      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
+    },
+    {
+      "id": "g20261018-prospective-jamboree",
+      "date": "2026-10-18",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Swing with The Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-4/",
+      "source": "Jamboree official artist index and dated event listings",
+      "confidence": "confirmed",
+      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
+    },
+    {
+      "id": "g20261025-prospective-jamboree",
+      "date": "2026-10-25",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Swing with The Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-5/",
+      "source": "Jamboree official artist index and dated event listings",
+      "confidence": "confirmed",
+      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
+    },
+    {
+      "id": "g20261101-prospective-jamboree",
+      "date": "2026-11-01",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Swing with The Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-6/",
+      "source": "Jamboree official artist index and dated event listings",
+      "confidence": "confirmed",
+      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
+    },
+    {
+      "id": "g20261108-prospective-jamboree",
+      "date": "2026-11-08",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Swing with The Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-7/",
+      "source": "Jamboree official artist index and dated event listings",
+      "confidence": "confirmed",
+      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
+    },
+    {
+      "id": "g20261115-prospective-jamboree",
+      "date": "2026-11-15",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Swing with The Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-8/",
+      "source": "Jamboree official artist index and dated event listings",
+      "confidence": "confirmed",
+      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
+    },
+    {
+      "id": "g20261122-prospective-jamboree",
+      "date": "2026-11-22",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Swing with The Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-9/",
+      "source": "Jamboree official artist index and dated event listings",
+      "confidence": "confirmed",
+      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
+    },
+    {
+      "id": "g20261129-prospective-jamboree",
+      "date": "2026-11-29",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Swing with The Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-10/",
+      "source": "Jamboree official artist index and dated event listings",
+      "confidence": "confirmed",
+      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
+    },
+    {
+      "id": "g20261206-prospective-jamboree",
+      "date": "2026-12-06",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Swing with The Prospective Collective",
+      "artist": "Prospective Collective",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "hot jazz"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-11/",
+      "source": "Jamboree official artist index and dated event listings",
+      "confidence": "confirmed",
+      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
+    },
+    {
+      "id": "g20261118-tjjohnson-jamboree",
+      "date": "2026-11-18",
+      "endDate": null,
+      "time": "15:00",
+      "title": "TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/upcoming-events/?pno=6",
+      "source": "Jamboree official dated listings",
+      "confidence": "confirmed",
+      "note": "Afternoon piano and vocals across vintage jazz, country, gospel and blues, 15:00-17:00. Explicit individual date in the venue programme; consistent with the existing residency rows."
+    },
+    {
+      "id": "g20261125-tjjohnson-jamboree",
+      "date": "2026-11-25",
+      "endDate": null,
+      "time": "15:00",
+      "title": "TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-92/",
+      "source": "Jamboree official dated listings",
+      "confidence": "confirmed",
+      "note": "Afternoon piano and vocals across vintage jazz, country, gospel and blues, 15:00-17:00. Explicit individual date in the venue programme; consistent with the existing residency rows."
+    },
+    {
+      "id": "g20261202-tjjohnson-jamboree",
+      "date": "2026-12-02",
+      "endDate": null,
+      "time": "15:00",
+      "title": "TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/page/2/",
+      "source": "Jamboree official dated listings",
+      "confidence": "confirmed",
+      "note": "Afternoon piano and vocals across vintage jazz, country, gospel and blues, 15:00-17:00. Explicit individual date in the venue programme; consistent with the existing residency rows."
+    },
+    {
+      "id": "g20261209-tjjohnson-jamboree",
+      "date": "2026-12-09",
+      "endDate": null,
+      "time": "15:00",
+      "title": "TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/upcoming-events/?pno=8",
+      "source": "Jamboree official dated listings",
+      "confidence": "confirmed",
+      "note": "Afternoon piano and vocals across vintage jazz, country, gospel and blues, 15:00-17:00. Explicit individual date in the venue programme; consistent with the existing residency rows."
+    },
+    {
+      "id": "g20261008-horlock-allen-islingtonfolk",
+      "date": "2026-10-08",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Aaron Horlock & Will Allen at Islington Folk Club",
+      "artist": "Aaron Horlock & Will Allen",
+      "venue": "Islington Folk Club at Brewhouse & Kitchen",
+      "area": "Highbury, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£10 / £8 concessions; member discounts",
+      "url": "https://www.islingtonfolkclub.co.uk/programme.html",
+      "source": "Islington Folk Club official dated programme and admission page",
+      "confidence": "confirmed",
+      "note": "Traditional tunes and songs with melodeon, fiddle and guitar; Allen also plays with Brown Boots. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable."
+    },
+    {
+      "id": "g20261015-arrowsmiths-islingtonfolk",
+      "date": "2026-10-15",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Richard & Jess Arrowsmith at Islington Folk Club",
+      "artist": "Richard & Jess Arrowsmith",
+      "venue": "Islington Folk Club at Brewhouse & Kitchen",
+      "area": "Highbury, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£10 / £8 concessions; member discounts",
+      "url": "https://www.islingtonfolkclub.co.uk/programme.html",
+      "source": "Islington Folk Club official dated programme and admission page",
+      "confidence": "confirmed",
+      "note": "Traditional English song, ballads, jigs, Morris tunes and Playford airs on voice, melodeon and fiddle. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable."
+    },
+    {
+      "id": "g20261022-nickhart-islingtonfolk",
+      "date": "2026-10-22",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Nick Hart at Islington Folk Club",
+      "artist": "Nick Hart",
+      "venue": "Islington Folk Club at Brewhouse & Kitchen",
+      "area": "Highbury, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£10 / £8 concessions; member discounts",
+      "url": "https://www.islingtonfolkclub.co.uk/programme.html",
+      "source": "Islington Folk Club official dated programme and admission page",
+      "confidence": "confirmed",
+      "note": "Specialist interpreter of English traditional songs; a strong repertoire match for the longer north London trip. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable."
+    },
+    {
+      "id": "g20261105-danarobinson-islingtonfolk",
+      "date": "2026-11-05",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Dana Robinson at Islington Folk Club",
+      "artist": "Dana Robinson",
+      "venue": "Islington Folk Club at Brewhouse & Kitchen",
+      "area": "Highbury, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£10 / £8 concessions; member discounts",
+      "url": "https://www.islingtonfolkclub.co.uk/programme.html",
+      "source": "Islington Folk Club official dated programme and admission page",
+      "confidence": "confirmed",
+      "note": "Traditional Appalachian material alongside original roots songs, with banjo, mandolin and guitar; explicitly more than generic Americana. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable."
+    },
+    {
+      "id": "g20261119-green-turner-islingtonfolk",
+      "date": "2026-11-19",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Mat Green & Andy Turner at Islington Folk Club",
+      "artist": "Mat Green & Andy Turner",
+      "venue": "Islington Folk Club at Brewhouse & Kitchen",
+      "area": "Highbury, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£10 / £8 concessions; member discounts",
+      "url": "https://www.islingtonfolkclub.co.uk/programme.html",
+      "source": "Islington Folk Club official dated programme and admission page",
+      "confidence": "confirmed",
+      "note": "Traditional eighteenth- and nineteenth-century English dance tunes on fiddle and Anglo concertina, with singing. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable."
+    },
+    {
+      "id": "g20261203-elsiefranklin-islingtonfolk",
+      "date": "2026-12-03",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Elsie Franklin and the Rockettes at Islington Folk Club",
+      "artist": "Elsie Franklin and the Rockettes",
+      "venue": "Islington Folk Club at Brewhouse & Kitchen",
+      "area": "Highbury, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£10 / £8 concessions; member discounts",
+      "url": "https://www.islingtonfolkclub.co.uk/programme.html",
+      "source": "Islington Folk Club official dated programme and admission page",
+      "confidence": "confirmed",
+      "note": "Acoustic country blues on resonator guitar, double bass, drums and washboard; pre-war roots rather than electric blues-rock. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable."
+    },
+    {
+      "id": "g20261028-furrowcollective-cecilsharp",
+      "date": "2026-10-28",
+      "endDate": null,
+      "time": "19:30",
+      "title": "The Furrow Collective",
+      "artist": "The Furrow Collective",
+      "venue": "Cecil Sharp House",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£20.50 / £12.50 under-30s; check booking",
+      "url": "https://www.efdss.org/choose-seats?EventInstanceId=162801",
+      "source": "EFDSS listings and Spektrix instance / Alasdair Roberts official live diary",
+      "confidence": "confirmed",
+      "note": "Lucy Farrell, Emily Portman and Alasdair Roberts interpret traditional ballads with voices, viola, banjo, concertina and guitar. English/Scottish traditional song mapped to canonical old-time. Artist diary and venue instance both confirm 28 October 2026 at 19:30."
+    },
+    {
+      "id": "g20261231-brownboots-nye-cecilsharp",
+      "date": "2026-12-31",
+      "endDate": null,
+      "time": "20:30",
+      "title": "New Year's Eve Ceilidh",
+      "artist": "Brown Boots Boogie Band; caller Tina Morris",
+      "venue": "Cecil Sharp House",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£55.50 adults / £45.50 under-30s; advance only",
+      "url": "https://www.efdss.org/whats-on/27-dances/16010-31-12-26-nyeceilidh",
+      "source": "EFDSS official event and Spektrix instance",
+      "confidence": "confirmed",
+      "note": "Named live traditional dance band with gender-free calling; doors 20:00, dancing 20:30-00:30. English ceilidh mapped to canonical old-time. Recommended over 10; primarily a date-night option. Plan the New Year journey home."
     }
   ],
   "watchlist": [
@@ -5913,6 +6378,12 @@
       "venue": "Morocco Bound, Bermondsey (verify branch)",
       "url": "https://halibuts.com/genre/folk",
       "note": "Multiple current listings advertise 24 September 2026 at 19:00: English tunes, Irish lilting, Scottish songs and old-time classics. Primary DICE event not recovered; one mirror mixes in Wandsworth wording, so retain as a lead pending exact branch and ticket-page confirmation."
+    },
+    {
+      "name": "Jake Leg Jug Band - disputed 14 October 2026 venue",
+      "venue": "Old Barn Hall, Bookham OR The Old Duke, Bristol (unresolved)",
+      "url": "https://www.thejazzguide.co.uk/venues/listing/old-barn-hall",
+      "note": "2 Oct check: Jazz Guide embeds a Wednesday 14 Oct 20:30 Jake Leg row under Old Barn Hall, outside its Sunday-lunch pattern. A separate artist-promoted listing places the band at The Old Duke, Bristol that evening. Detail URL returns 403. Do not promote until the venue/year conflict is resolved; possible aggregator venue-association error."
     }
   ]
 }
