@@ -1,34 +1,77 @@
 {
-  "generatedAt": "2026-10-01T23:52:32.282Z",
-  "dateBasis": "2026-10-02",
-  "summary": "Purged 3 finished family rows and 11 finished gigs, corrected and split The Lamb's 4 October bill, added 5 Lamb family-calendar rows, and added 38 Gig Radar rows from The Lamb, Café Bohème and Spice of Life.",
+  "generatedAt": "2026-10-04T07:18:39Z",
+  "dateBasis": "2026-10-04",
+  "summary": "Removed 13 finished events; added 34 dated rows including 28 Gig Radar promotions, toddler drumming, Long Ditton seasonal activities and a family trail; corrected Wisley Glow's January end date.",
   "added": [
-    "e20261004g: Tim Penn and Chris Proctor at The Lamb, 2026-10-04, 19:00; finish not published.",
-    "e20261011g: Kaspar 'Berry' Rapkin and Mia Casey at The Lamb, 2026-10-11, 16:30; finish not published.",
-    "e20261017i: Kirris Riviere and the Delta du Bruit at The Lamb, 2026-10-17, 19:30; finish not published.",
-    "e20261024d: The Fabulous Red Diesel at The Lamb, 2026-10-24, 19:30; finish not published.",
-    "e20261112e: Sam Chase and the Untraditional at The Lamb, 2026-11-12, 20:00; finish not published.",
-    "11 individually dated The Lamb gigs in Gig Radar.",
-    "23 individually dated Café Bohème afternoon jazz/Americana/roots sets.",
-    "4 Spice of Life jazz/Americana additions."
+    "e20261004h: Afternoon swing with the Prospective Collective, 2026-10-04.",
+    "e20261011h: Afternoon swing with the Prospective Collective, 2026-10-11.",
+    "e20261025d: Afternoon swing with the Prospective Collective, 2026-10-25.",
+    "e20261101e: Afternoon swing with the Prospective Collective, 2026-11-01.",
+    "e20261108: Afternoon swing with the Prospective Collective, 2026-11-08.",
+    "e20261115c: Afternoon swing with the Prospective Collective, 2026-11-15.",
+    "e20261122c: Afternoon swing with the Prospective Collective, 2026-11-22.",
+    "e20261129b: Afternoon swing with the Prospective Collective, 2026-11-29.",
+    "e20261206c: Afternoon swing with the Prospective Collective, 2026-12-06.",
+    "e20261118: TJ Johnson's Peak of the Week, 2026-11-18.",
+    "e20261125: TJ Johnson's Peak of the Week, 2026-11-25.",
+    "e20261202: TJ Johnson's Peak of the Week, 2026-12-02.",
+    "e20261209a: TJ Johnson's Peak of the Week, 2026-12-09.",
+    "e20261005c: Tommy Hare: afternoon set, 2026-10-05.",
+    "e20261006a: Laurence Corns: afternoon set, 2026-10-06.",
+    "e20261007a: Ewan Bleach: afternoon set, 2026-10-07.",
+    "e20261008b: Riketté Genesis: afternoon set, 2026-10-08.",
+    "e20261010f: Jonathan Bauer & Louise Balkwill: afternoon set, 2026-10-10.",
+    "e20261012a: Ewan Bleach: afternoon set, 2026-10-12.",
+    "e20261014c: Dai Price: afternoon set, 2026-10-14.",
+    "e20261016f: Caroline Loftus & Honey Boulton: afternoon set, 2026-10-16.",
+    "e20261019a: TJ Johnson: afternoon set, 2026-10-19.",
+    "e20261020b: Savannah Gardner: afternoon set, 2026-10-20.",
+    "e20261022a: Louise Messenger & the Jazz Marauder: afternoon set, 2026-10-22.",
+    "e20261027a: Honey Boulton & Adrian Cox: afternoon set, 2026-10-27.",
+    "e20261028c: Matt Holborn: Celebrating Django, 2026-10-28.",
+    "e20261030c: Graham Hughes: afternoon set, 2026-10-30.",
+    "e20261031g: Julia Titus & George Webster: afternoon set, 2026-10-31.",
+    "e20261009a: Friday Night Traditional Irish Music Session, 2026-10-09.",
+    "e20261027d: African Djembe Drumming for ages 2-6, 2026-10-27.",
+    "e20261128a: Save the Sleigh family trail, 2026-11-28 to 2027-01-03.",
+    "e20261026b: Witch's Spell Trail and spooky crafts, 2026-10-26 to 2026-10-30.",
+    "e20261121e: Santa's Magical Grotto at Long Ditton, 2026-11-21 to 2026-12-24.",
+    "e20261004i: The Dinosaur That Pooped, 2026-10-04."
   ],
   "updated": [
-    "e20261004f split into the corrected 16:30 Two Man Ting event; Tim Penn and Chris Proctor now have their own 19:00 row."
+    "e20261120b: Restored Wisley Glow end to 3 January 2027 from the official booking page; removed the obsolete 31 December cap.",
+    "Resolved the nine-date Prospective Collective and Squire's discovery watchlist gaps; refreshed Wimbledon and Spice leads; added Kingston Santa ticket-session and Café Bohème seating checks."
   ],
   "removed": [
-    "e20261001c: Myles Smith short set + Q&A finished on 2026-10-01.",
-    "e20261001b: Leveret finished on 2026-10-01.",
-    "e20261001: Roving Crows finished on 2026-10-01.",
-    "11 Gig Radar rows dated 29 September-1 October were finished and removed."
+    "e20261002b: WordPlay: Ages 3-5 finished on 2026-10-02.",
+    "e20261002c: Nikita Burzanitsa piano recital finished on 2026-10-02.",
+    "e20261002: Film Night: La Vie En Rose finished on 2026-10-02.",
+    "e707: Stitch Saturdays finished on 2026-10-03.",
+    "e20261003: Harvest Festival at Morden Hall Park finished on 2026-10-03.",
+    "e20261003b: The Bubble Show finished on 2026-10-03.",
+    "e20261003a: The Astrojets finished on 2026-10-03.",
+    "e20261003c: Mid-speed English Tune Session finished on 2026-10-03.",
+    "e20261002a: Jazz Fridays: Cafe Jazz Band finished on 2026-10-02.",
+    "e20261003d: Maiastra: Piano Quartets with Akiko Ono finished on 2026-10-03.",
+    "e20261002d: Friday Night Traditional Irish Music Session finished on 2026-10-02.",
+    "e20261003e: Ewan Bleach: Saturday jazz brunch finished on 2026-10-03.",
+    "e20261002e: The Soot Bunker finished on 2026-10-03."
   ],
   "counts": {
     "before": {
-      "events": 320,
-      "gigs": 269
+      "events": 322,
+      "recurring": 56,
+      "sources": 53,
+      "watchlist": 91
     },
     "after": {
-      "events": 322,
-      "gigs": 296
-    }
+      "events": 343,
+      "recurring": 56,
+      "sources": 53,
+      "watchlist": 91
+    },
+    "added": 34,
+    "updated": 1,
+    "removed": 13
   }
 }

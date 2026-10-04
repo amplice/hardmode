@@ -878,7 +878,31 @@
                                  "Lamb daytime roots and evening folk/chanson plus local theatre and live-band dance",
                                  "Open event detail pages and apply feedback; reject routine classes, quizzes and generic blues-rock"
                              ]
-                         }
+                         },
+        {
+          "name": "Squire's seasonal announcements and event terms",
+          "url": "https://www.squiresgardencentres.co.uk/news/",
+          "checkFor": [
+            "Static seasonal news and /terms-conditions/ confirm centre-specific craft weeks and Santa schedules when the shop calendar is JavaScript-only.",
+            "Long Ditton: 26-30 October 2026 Create & Grow; Santa grotto on selected dates 21 November-24 December. Do not copy other centres' dates or contradictory quiet-session weekday labels."
+          ]
+        },
+        {
+          "name": "John Lewis Kingston Santa experience booking",
+          "url": "https://tickets.eskimojoevents.co.uk/JLP_Kingston2026/",
+          "checkFor": [
+            "Toddler-suitable seasonal Santa tea parties; inspect Kingston-specific sessions before adding.",
+            "FAQ supplies age guidance and total prices. National 4-24 December dates vary by store and are not sufficient local date evidence."
+          ]
+        },
+        {
+          "name": "New Wimbledon Theatre family listings (ATG)",
+          "url": "https://www.atgtickets.com/whats-on/wimbledon/family/",
+          "checkFor": [
+            "Easy-train family theatre with explicit toddler admission; open each show detail for dates, start times and age guidance.",
+            "The Dinosaur That Pooped explicitly welcomes all ages despite recommended 3+; do not assume the same for ballet or other shows."
+          ]
+        }
     ],
     "searchQueries":  [
         "Kingston Music Service public open rehearsals 2026 2027 All Saints",
@@ -994,6 +1018,9 @@
         "Maiastra piano quartets string quartets Twickenham Cobham 2026 2027",
                          "Namaste Kingston Navratri Diwali 2026 children under 5 tickets",
                          "Return to London Town 2026 daytime ceili children admission",
-                         "Surbiton Partnership Lamb October 2026 Elsie Franklin Back of a Length Les Boum"
+                         "Surbiton Partnership Lamb October 2026 Elsie Franklin Back of a Length Les Boum",
+        "site:squiresgardencentres.co.uk Long Ditton Create Grow Christmas 2026 dates",
+        "John Lewis Kingston Santa Tea Party 2026 session dates times",
+        "Morden Hall Park African Djembe drumming ages 2 6 October 2026"
     ]
 }
