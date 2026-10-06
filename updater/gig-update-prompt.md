@@ -4,7 +4,7 @@ You are running headless and unattended as the maintainer of the Gig Radar in th
 
 ## What the radar is for
 
-It tracks live gigs in old-school jazz and trad/roots music: hot jazz, gypsy jazz, western swing, old-time, cajun, zydeco, jug band, skiffle, old-school/classic country, honky tonk, Kansas City swing, New Orleans/trad jazz, trad Irish sessions, and hot pre-bebop swing including live-band Lindy dances.
+It tracks live gigs in old-school jazz, folk and roots music: hot jazz, gypsy jazz, western swing, old-time, cajun, zydeco, jug band, skiffle, old-school/classic country, honky tonk, Kansas City swing, New Orleans/trad jazz, English folk, Irish trad, Scottish folk, ceilidhs, Balkan/klezmer, Americana, strong acoustic/country blues, ragtime, and hot pre-bebop swing including live-band Lindy dances.
 
 Geography: prioritise what is easy from Surbiton. Nearby and easy-to-reach rows have a lower inclusion threshold. Further or awkward trips need a stronger genre match, a better venue, a rarer artist or clearer date-night value.
 
@@ -55,7 +55,7 @@ Rules:
 - Add objects to `gigs` using the exact schema in `HANDOFF.md`.
 - IDs are `g` + `YYYYMMDD` + a short lowercase slug of artist or venue; guarantee uniqueness.
 - Every gig needs: `id`, `date`, `endDate`, `time`, `title`, `artist`, `venue`, `area`, `genres`, `cost`, `url`, `source`, `confidence`, `note`.
-- Normalize every genre to `updater/gig-preferences.json` `canonicalGenres`.
+- Use the most accurate labels from `updater/gig-preferences.json` `canonicalGenres`. Never force one tradition into an unrelated proxy: English folk is not old-time, Irish trad is not old-time, Balkan/klezmer is not gypsy jazz, Americana is not automatically old-school country, and blues/chanson/Afro-roots should retain their own labels.
 - Never add undated or past-dated gigs.
 - Never guess dates from stale pages.
 - Do not duplicate an existing gig with the same `date`, `time`, `artist/title` and `venue`.

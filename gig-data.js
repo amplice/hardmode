@@ -2,9 +2,9 @@
 window.GIG_DATA = {
   "meta": {
     "title": "Gig Radar",
-    "description": "Curated radar of live gigs in traditional jazz and roots-Americana genres around London and reachable from Surbiton.",
+    "description": "Curated radar of traditional jazz, folk, Americana and related roots music around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-10-05",
+    "updated": "2026-10-06",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -19,24 +19,57 @@ window.GIG_DATA = {
       "honky tonk",
       "Kansas City swing",
       "New Orleans / trad jazz",
-      "swing"
+      "swing",
+      "English folk",
+      "Irish trad",
+      "Scottish folk",
+      "British folk",
+      "folk",
+      "folk dance / ceilidh",
+      "Americana",
+      "Balkan / klezmer",
+      "French chanson",
+      "Afro-roots",
+      "blues",
+      "country blues",
+      "ragtime",
+      "gospel",
+      "rhythm and blues",
+      "balfolk",
+      "roots jazz"
     ],
-    "dateBasis": "2026-10-05",
+    "dateBasis": "2026-10-06",
     "counts": {
-      "total": 299,
-      "upcoming": 299,
+      "total": 294,
+      "upcoming": 294,
       "watchlist": 68
     },
-    "generated": "2026-10-05T06:49:44.641Z",
+    "generated": "2026-10-06T15:01:24.071Z",
     "genres": [
+      "Americana",
+      "Balkan / klezmer",
+      "British folk",
+      "English folk",
+      "French chanson",
+      "Irish trad",
       "New Orleans / trad jazz",
+      "Scottish folk",
+      "balfolk",
+      "blues",
       "cajun",
+      "country blues",
+      "folk",
+      "folk dance / ceilidh",
+      "gospel",
       "gypsy jazz",
       "honky tonk",
       "hot jazz",
       "jug band",
       "old-school country",
       "old-time",
+      "ragtime",
+      "rhythm and blues",
+      "roots jazz",
       "swing",
       "western swing"
     ],
@@ -47,144 +80,6 @@ window.GIG_DATA = {
     ]
   },
   "gigs": [
-    {
-      "id": "g20261005-jackhoneyborne",
-      "date": "2026-10-05",
-      "endDate": null,
-      "time": "12:30",
-      "title": "Jack Honeyborne (lunchtime session)",
-      "artist": "Jack Honeyborne",
-      "venue": "The Spice of Life",
-      "area": "Soho, London",
-      "genres": [
-        "swing",
-        "hot jazz"
-      ],
-      "cost": "",
-      "url": "https://www.spiceoflifesoho.com/events",
-      "source": "The Spice of Life official events calendar",
-      "confidence": "confirmed",
-      "note": "Veteran stride and swing pianist in the priority venue's Monday lunchtime jazz series.",
-      "weekday": "Mon",
-      "dateLabel": "Mon 5 Oct",
-      "monthKey": "2026-10",
-      "monthLabel": "Oct 2026",
-      "sortKey": "2026-10-05 12:30",
-      "travel": "Central London",
-      "genresLabel": "swing · hot jazz",
-      "isPast": false,
-      "isMultiDay": false
-    },
-    {
-      "id": "g20261005-tommyhare-boheme",
-      "date": "2026-10-05",
-      "endDate": null,
-      "time": "16:00-18:30",
-      "title": "Tommy Hare - afternoon set",
-      "artist": "Tommy Hare",
-      "venue": "Café Bohème",
-      "area": "Soho, London",
-      "genres": [
-        "honky tonk",
-        "old-school country"
-      ],
-      "cost": "No separate ticket shown; table booking advised",
-      "url": "https://www.cafeboheme.co.uk/live-music",
-      "source": "Café Bohème official October 2026 live-music roster",
-      "confidence": "confirmed",
-      "note": "Honky-tonk soul set. Official roster confirms the date and the venue's 16:00-18:30 afternoon music slot.",
-      "weekday": "Mon",
-      "dateLabel": "Mon 5 Oct",
-      "monthKey": "2026-10",
-      "monthLabel": "Oct 2026",
-      "sortKey": "2026-10-05 16:00-18:30",
-      "travel": "Central London",
-      "genresLabel": "honky tonk · old-school country",
-      "isPast": false,
-      "isMultiDay": false
-    },
-    {
-      "id": "g20261005-100club",
-      "date": "2026-10-05",
-      "endDate": null,
-      "time": "19:30",
-      "title": "Stompin' at the 100 Club — Denmark Street Big Band",
-      "artist": "Denmark Street Big Band",
-      "venue": "The 100 Club",
-      "area": "Soho, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://swingdanceuk.com/socials/special-events/",
-      "source": "swingdanceuk.com",
-      "confidence": "confirmed",
-      "note": "Swing-dance night; class 19:45, live band 20:45 & 21:45.",
-      "weekday": "Mon",
-      "dateLabel": "Mon 5 Oct",
-      "monthKey": "2026-10",
-      "monthLabel": "Oct 2026",
-      "sortKey": "2026-10-05 19:30",
-      "travel": "Central London",
-      "genresLabel": "swing",
-      "isPast": false,
-      "isMultiDay": false
-    },
-    {
-      "id": "g20261005-elsiefranklin",
-      "date": "2026-10-05",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Elsie Franklin and the Rockettes",
-      "artist": "Elsie Franklin and the Rockettes",
-      "venue": "Green Note",
-      "area": "Camden, London",
-      "genres": [
-        "hot jazz",
-        "old-time"
-      ],
-      "cost": "?13",
-      "url": "https://www.greennote.co.uk/production/folk-and-roots-presents-elsie-franklin-and-the-rockettes/",
-      "source": "Green Note + artist Instagram",
-      "confidence": "confirmed",
-      "note": "Country blues, ragtime and early jazz in a small-room setting; 20:30 is Green Note's advertised main-show time.",
-      "weekday": "Mon",
-      "dateLabel": "Mon 5 Oct",
-      "monthKey": "2026-10",
-      "monthLabel": "Oct 2026",
-      "sortKey": "2026-10-05 20:30",
-      "travel": "Central London",
-      "genresLabel": "hot jazz · old-time",
-      "isPast": false,
-      "isMultiDay": false
-    },
-    {
-      "id": "g20261005-daiprice",
-      "date": "2026-10-05",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Dai Price",
-      "artist": "Dai Price",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "",
-      "url": "https://www.barnightjar.com/shoreditch-listings/dai-price-session",
-      "source": "Nightjar Shoreditch official feed",
-      "confidence": "confirmed",
-      "note": "New Orleans R&B and roots piano/vocals.",
-      "weekday": "Mon",
-      "dateLabel": "Mon 5 Oct",
-      "monthKey": "2026-10",
-      "monthLabel": "Oct 2026",
-      "sortKey": "2026-10-05 21:00",
-      "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
-      "isMultiDay": false
-    },
     {
       "id": "g20261006-laurencecorns-boheme",
       "date": "2026-10-06",
@@ -249,20 +144,21 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad",
+        "Scottish folk"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-28/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Weekly traditional session, mainly Irish tunes with some Scottish repertoire. Tagged old-time as the closest permitted canonical roots category.",
+      "note": "Weekly traditional session, mainly Irish tunes with some Scottish repertoire.",
       "weekday": "Tue",
       "dateLabel": "Tue 6 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-06 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad · Scottish folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -277,7 +173,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-86/",
@@ -290,7 +188,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-07 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -387,7 +285,8 @@ window.GIG_DATA = {
       "venue": "Toulouse Lautrec Jazz Club",
       "area": "Kennington, London",
       "genres": [
-        "swing"
+        "swing",
+        "blues"
       ],
       "cost": "",
       "url": "https://toulouselautrec.co.uk/whats-on/",
@@ -400,7 +299,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-08 19:30",
       "travel": "Central London",
-      "genresLabel": "swing",
+      "genresLabel": "swing · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -414,8 +313,8 @@ window.GIG_DATA = {
       "venue": "The Lamb",
       "area": "Surbiton",
       "genres": [
-        "old-school country",
-        "old-time"
+        "Americana",
+        "folk"
       ],
       "cost": "Check venue; no ticket price shown",
       "url": "https://surbitonpartnership.co.uk/event/megan-leigh-mason-richard-moore-play-the-lamb/",
@@ -428,7 +327,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-08 19:30",
       "travel": "Local (SW London)",
-      "genresLabel": "old-school country · old-time",
+      "genresLabel": "Americana · folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -442,20 +341,20 @@ window.GIG_DATA = {
       "venue": "The Harrison",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "?15",
       "url": "https://harrisonvenuelondon.com/events/john-kirkpatrick/",
       "source": "The Harrison",
       "confidence": "confirmed",
-      "note": "Leading English traditional singer and melodeon/accordion player; doors 19:00, performance listing 20:00. English trad is mapped to the nearest canonical old-time tag.",
+      "note": "Leading English traditional singer and melodeon/accordion player; doors 19:00, performance listing 20:00.",
       "weekday": "Thu",
       "dateLabel": "Thu 8 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-08 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -469,20 +368,20 @@ window.GIG_DATA = {
       "venue": "Islington Folk Club at Brewhouse & Kitchen",
       "area": "Highbury, London",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "£10 / £8 concessions; member discounts",
       "url": "https://www.islingtonfolkclub.co.uk/programme.html",
       "source": "Islington Folk Club official dated programme and admission page",
       "confidence": "confirmed",
-      "note": "Traditional tunes and songs with melodeon, fiddle and guitar; Allen also plays with Brown Boots. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.",
+      "note": "Traditional tunes and songs with melodeon, fiddle and guitar; Allen also plays with Brown Boots. Doors 19:30; club 20:00-22:30.",
       "weekday": "Thu",
       "dateLabel": "Thu 8 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-08 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -497,7 +396,8 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "hot jazz",
-        "swing"
+        "swing",
+        "ragtime"
       ],
       "cost": "£9–£22 advance / class option",
       "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-in-london/",
@@ -510,7 +410,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-08 20:30",
       "travel": "Central London",
-      "genresLabel": "hot jazz · swing",
+      "genresLabel": "hot jazz · swing · ragtime",
       "isPast": false,
       "isMultiDay": false
     },
@@ -551,7 +451,8 @@ window.GIG_DATA = {
       "venue": "Café Bohème",
       "area": "Soho, London",
       "genres": [
-        "swing"
+        "swing",
+        "blues"
       ],
       "cost": "No separate ticket shown; table booking advised",
       "url": "https://www.cafeboheme.co.uk/live-music",
@@ -564,7 +465,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-09 15:00-17:30",
       "travel": "Central London",
-      "genresLabel": "swing",
+      "genresLabel": "swing · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -632,7 +533,8 @@ window.GIG_DATA = {
       "venue": "Nightjar",
       "area": "Shoreditch, London",
       "genres": [
-        "swing"
+        "swing",
+        "rhythm and blues"
       ],
       "cost": "",
       "url": "https://www.barnightjar.com/shoreditch-listings/the-four-flames-quartet",
@@ -645,7 +547,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-09 21:00",
       "travel": "Central London",
-      "genresLabel": "swing",
+      "genresLabel": "swing · rhythm and blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -688,7 +590,8 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "cajun"
+        "cajun",
+        "folk dance / ceilidh"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/upcoming-events/",
@@ -701,7 +604,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-10 13:30",
       "travel": "Central London",
-      "genresLabel": "cajun",
+      "genresLabel": "cajun · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -715,20 +618,23 @@ window.GIG_DATA = {
       "venue": "Green Note",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "Irish trad",
+        "Scottish folk",
+        "English folk",
+        "folk dance / ceilidh"
       ],
       "cost": "£12",
       "url": "https://www.greennote.co.uk/production/folk-and-roots-presents-lost-in-the-loop-matinee-show/",
       "source": "Green Note",
       "confidence": "confirmed",
-      "note": "Traditional dance tunes led by Irish jigs, reels and polkas, with Scottish, English and Scandinavian material; tagged to the closest canonical roots category.",
+      "note": "Traditional dance tunes led by Irish jigs, reels and polkas, with Scottish, English and Scandinavian material;",
       "weekday": "Sat",
       "dateLabel": "Sat 10 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-10 14:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad · Scottish folk · English folk · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -799,7 +705,8 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "old-time",
+        "folk dance / ceilidh"
       ],
       "cost": "",
       "url": "https://www.barndance.org/programme.html",
@@ -812,7 +719,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-10 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "old-time · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -853,20 +760,20 @@ window.GIG_DATA = {
       "venue": "Irish Cultural Centre",
       "area": "Hammersmith, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "",
       "url": "https://irishculturalcentre.co.uk/whats-on/",
       "source": "Irish Cultural Centre",
       "confidence": "confirmed",
-      "note": "High-energy Irish traditional band at the ICC. Traditional Irish/folk is tagged to the closest permitted canonical roots category.",
+      "note": "High-energy Irish traditional band at the ICC.",
       "weekday": "Sat",
       "dateLabel": "Sat 10 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-10 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -909,7 +816,8 @@ window.GIG_DATA = {
       "area": "Great Bookham, Surrey",
       "genres": [
         "hot jazz",
-        "New Orleans / trad jazz"
+        "New Orleans / trad jazz",
+        "ragtime"
       ],
       "cost": "£15 cash",
       "url": "https://www.thejazzguide.co.uk/venues/listing/old-barn-hall",
@@ -922,7 +830,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-11 13:00",
       "travel": "Local (SW London)",
-      "genresLabel": "hot jazz · New Orleans / trad jazz",
+      "genresLabel": "hot jazz · New Orleans / trad jazz · ragtime",
       "isPast": false,
       "isMultiDay": false
     },
@@ -936,20 +844,20 @@ window.GIG_DATA = {
       "venue": "Irish Cultural Centre",
       "area": "Hammersmith, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free; booking required",
       "url": "https://irishculturalcentre.co.uk/event/icc-concert-session-with-tad-sargent-eilish-byrne-james-ogrady/",
       "source": "Irish Cultural Centre official event",
       "confidence": "confirmed",
-      "note": "Traditional Irish fiddle, uilleann pipes and guitar concert, 14:00-16:00; doors 13:30. Named expert players and a free daytime concert justify the Hammersmith trip. Trad Irish mapped to canonical old-time.",
+      "note": "Traditional Irish fiddle, uilleann pipes and guitar concert, 14:00-16:00; doors 13:30. Named expert players and a free daytime concert justify the Hammersmith trip.",
       "weekday": "Sun",
       "dateLabel": "Sun 11 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-11 14:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -991,20 +899,20 @@ window.GIG_DATA = {
       "venue": "The Lamb",
       "area": "Surbiton",
       "genres": [
-        "old-time"
+        "blues"
       ],
       "cost": "Check venue; no ticket price shown",
       "url": "https://www.facebook.com/events/1069449279335685/",
       "source": "The Lamb official Facebook event",
       "confidence": "confirmed",
-      "note": "Vintage blues duo with resonator guitar and washboard/drums; old-time is the closest canonical roots tag. Hyper-local priority venue; exact date and start time are confirmed by the current official Facebook event.",
+      "note": "Vintage blues duo with resonator guitar and washboard/drums. Hyper-local priority venue; exact date and start time are confirmed by the current official Facebook event.",
       "weekday": "Sun",
       "dateLabel": "Sun 11 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-11 16:30",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1018,7 +926,7 @@ window.GIG_DATA = {
       "venue": "The Cabbage Patch (Patchworks)",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "folk"
       ],
       "cost": "£5",
       "url": "https://www.twickfolk.co.uk/events/",
@@ -1031,7 +939,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-11 19:45",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1156,8 +1064,9 @@ window.GIG_DATA = {
       "venue": "Café Bohème",
       "area": "Soho, London",
       "genres": [
-        "old-school country",
-        "swing"
+        "Americana",
+        "swing",
+        "blues"
       ],
       "cost": "No separate ticket shown; table booking advised",
       "url": "https://www.cafeboheme.co.uk/live-music",
@@ -1170,7 +1079,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-13 16:00-18:30",
       "travel": "Central London",
-      "genresLabel": "old-school country · swing",
+      "genresLabel": "Americana · swing · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1184,20 +1093,21 @@ window.GIG_DATA = {
       "venue": "The cornerHOUSE",
       "area": "Surbiton",
       "genres": [
-        "old-time"
+        "Irish trad",
+        "English folk"
       ],
       "cost": "£18; check booking fees",
       "url": "https://www.thecornerhouse.org/event-details/folk-thecornerhouse-the-wilderness-yet",
       "source": "The cornerHOUSE official event / The Wilderness Yet official 2026 tour",
       "confidence": "confirmed",
-      "note": "Very local traditional fiddle, flute/guitar and harmony-song trio, with traditional and original repertoire. Venue detail page now explicitly confirms 13 October 2026, 19:45-22:30, resolving the earlier conflicting local times. English/Irish trad mapped to canonical old-time.",
+      "note": "Very local traditional fiddle, flute/guitar and harmony-song trio, with traditional and original repertoire. Venue detail page now explicitly confirms 13 October 2026, 19:45-22:30, resolving the earlier conflicting local times.",
       "weekday": "Tue",
       "dateLabel": "Tue 13 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-13 19:45",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad · English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1211,20 +1121,21 @@ window.GIG_DATA = {
       "venue": "Green Note (Basement Bar)",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "balfolk",
+        "folk"
       ],
       "cost": "?12 + booking fee",
       "url": "https://events.liveit.io/folk-and-roots/george-washbourn-and-duo-madrugada-2/",
       "source": "Folk and Roots / LiveIt / Green Note",
       "confidence": "confirmed",
-      "note": "Traditional balfolk tunes and arrangements of traditional folksongs; mapped to canonical old-time. Doors 19:30, music 20:00. Strong repertoire evidence distinguishes this from generic singer-songwriter bills.",
+      "note": "Traditional balfolk tunes and arrangements of Doors 19:30, music 20:00. Strong repertoire evidence distinguishes this from generic singer-songwriter bills.",
       "weekday": "Tue",
       "dateLabel": "Tue 13 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-13 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "balfolk · folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1238,20 +1149,20 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-29/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Weekly traditional session led by established musicians and focused mainly on Irish tunes. Tagged old-time as the closest permitted canonical roots category.",
+      "note": "Weekly traditional session led by established musicians and focused mainly on Irish tunes.",
       "weekday": "Tue",
       "dateLabel": "Tue 13 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-13 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1321,7 +1232,8 @@ window.GIG_DATA = {
       "area": "Soho, London",
       "genres": [
         "cajun",
-        "old-time"
+        "folk",
+        "roots jazz"
       ],
       "cost": "No separate ticket shown; table booking advised",
       "url": "https://www.cafeboheme.co.uk/live-music",
@@ -1334,7 +1246,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-14 16:00-18:30",
       "travel": "Central London",
-      "genresLabel": "cajun · old-time",
+      "genresLabel": "cajun · folk · roots jazz",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1376,7 +1288,9 @@ window.GIG_DATA = {
       "venue": "Oriole Bar",
       "area": "Covent Garden, London",
       "genres": [
-        "New Orleans / trad jazz"
+        "New Orleans / trad jazz",
+        "blues",
+        "rhythm and blues"
       ],
       "cost": "£6 cover charge per person",
       "url": "https://www.oriolebar.com/oriole-music/dom-pipkin-solo",
@@ -1389,7 +1303,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-14 20:00",
       "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz",
+      "genresLabel": "New Orleans / trad jazz · blues · rhythm and blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1403,7 +1317,7 @@ window.GIG_DATA = {
       "venue": "Café Bohème",
       "area": "Soho, London",
       "genres": [
-        "old-time",
+        "blues",
         "hot jazz"
       ],
       "cost": "No separate ticket shown; table booking advised",
@@ -1417,7 +1331,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-15 15:00-17:30",
       "travel": "Central London",
-      "genresLabel": "old-time · hot jazz",
+      "genresLabel": "blues · hot jazz",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1458,7 +1372,8 @@ window.GIG_DATA = {
       "venue": "The Lamb",
       "area": "Surbiton",
       "genres": [
-        "old-time",
+        "country blues",
+        "ragtime",
         "hot jazz"
       ],
       "cost": "Check venue; no ticket price shown",
@@ -1472,7 +1387,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-15 19:30",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time · hot jazz",
+      "genresLabel": "country blues · ragtime · hot jazz",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1486,20 +1401,20 @@ window.GIG_DATA = {
       "venue": "Islington Folk Club at Brewhouse & Kitchen",
       "area": "Highbury, London",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "£10 / £8 concessions; member discounts",
       "url": "https://www.islingtonfolkclub.co.uk/programme.html",
       "source": "Islington Folk Club official dated programme and admission page",
       "confidence": "confirmed",
-      "note": "Traditional English song, ballads, jigs, Morris tunes and Playford airs on voice, melodeon and fiddle. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.",
+      "note": "Traditional English song, ballads, jigs, Morris tunes and Playford airs on voice, melodeon and fiddle. Doors 19:30; club 20:00-22:30.",
       "weekday": "Thu",
       "dateLabel": "Thu 15 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-15 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1569,7 +1484,8 @@ window.GIG_DATA = {
       "area": "Soho, London",
       "genres": [
         "hot jazz",
-        "swing"
+        "swing",
+        "blues"
       ],
       "cost": "No separate ticket shown; table booking advised",
       "url": "https://www.cafeboheme.co.uk/live-music",
@@ -1582,7 +1498,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-16 15:00-17:30",
       "travel": "Central London",
-      "genresLabel": "hot jazz · swing",
+      "genresLabel": "hot jazz · swing · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1624,20 +1540,21 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "English folk",
+        "folk dance / ceilidh"
       ],
       "cost": "£15; £10 concessions; £5 under 18; under 7 free; advance booking fee may apply",
       "url": "https://www.kneesupcecilsharp.co.uk/programme.html",
       "source": "Knees Up official named programme / EFDSS individual dates and Spektrix instances",
       "confidence": "confirmed",
-      "note": "Live-band English ceilidh, 20:00-23:00, with dances explained for newcomers and experienced dancers. Named band and caller are printed for this individual 2026 date; EFDSS confirms the date is on sale. Traditional English dance music mapped to canonical old-time. Doors 19:30; evening date-night option.",
+      "note": "Live-band English ceilidh, 20:00-23:00, with dances explained for newcomers and experienced dancers. Named band and caller are printed for this individual 2026 date; EFDSS confirms the date is on sale. Doors 19:30; evening date-night option.",
       "weekday": "Fri",
       "dateLabel": "Fri 16 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-16 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1651,8 +1568,7 @@ window.GIG_DATA = {
       "venue": "Green Note",
       "area": "Camden, London",
       "genres": [
-        "gypsy jazz",
-        "swing"
+        "Balkan / klezmer"
       ],
       "cost": "?15",
       "url": "https://www.greennote.co.uk/production/dunajska-kapelye/",
@@ -1665,7 +1581,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-16 20:30",
       "travel": "Central London",
-      "genresLabel": "gypsy jazz · swing",
+      "genresLabel": "Balkan / klezmer",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1680,7 +1596,9 @@ window.GIG_DATA = {
       "area": "Islington, London",
       "genres": [
         "honky tonk",
-        "New Orleans / trad jazz"
+        "New Orleans / trad jazz",
+        "blues",
+        "rhythm and blues"
       ],
       "cost": "",
       "url": "https://plaqlock.com/live-music-islington/",
@@ -1693,7 +1611,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-16 20:30",
       "travel": "Central London",
-      "genresLabel": "honky tonk · New Orleans / trad jazz",
+      "genresLabel": "honky tonk · New Orleans / trad jazz · blues · rhythm and blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1763,7 +1681,7 @@ window.GIG_DATA = {
       "venue": "The Harrison",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "folk"
       ],
       "cost": "Free",
       "url": "https://harrisonvenuelondon.com/events/singaround-london/",
@@ -1776,7 +1694,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-17 13:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1817,8 +1735,8 @@ window.GIG_DATA = {
       "venue": "The Lamb",
       "area": "Surbiton",
       "genres": [
-        "New Orleans / trad jazz",
-        "old-time"
+        "blues",
+        "rhythm and blues"
       ],
       "cost": "Check venue; no ticket price shown",
       "url": "https://www.facebook.com/events/1656543549202624/",
@@ -1831,7 +1749,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-17 19:30",
       "travel": "Local (SW London)",
-      "genresLabel": "New Orleans / trad jazz · old-time",
+      "genresLabel": "blues · rhythm and blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -1845,7 +1763,8 @@ window.GIG_DATA = {
       "venue": "Green Note",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "country blues",
+        "ragtime"
       ],
       "cost": "£15",
       "url": "https://www.greennote.co.uk/production/erin-harpe-country-blues-duo-2/",
@@ -1858,7 +1777,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-17 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "country blues · ragtime",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2095,7 +2014,7 @@ window.GIG_DATA = {
       "venue": "The Cabbage Patch (Patchworks)",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "£14 + fee / £17 door",
       "url": "https://wegottickets.com/f/18514",
@@ -2108,7 +2027,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-18 20:00",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2152,7 +2071,9 @@ window.GIG_DATA = {
       "area": "Soho, London",
       "genres": [
         "swing",
-        "hot jazz"
+        "hot jazz",
+        "blues",
+        "rhythm and blues"
       ],
       "cost": "No separate ticket shown; table booking advised",
       "url": "https://www.cafeboheme.co.uk/live-music",
@@ -2165,7 +2086,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-19 16:00-18:30",
       "travel": "Central London",
-      "genresLabel": "swing · hot jazz",
+      "genresLabel": "swing · hot jazz · blues · rhythm and blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2207,7 +2128,8 @@ window.GIG_DATA = {
       "area": "Soho, London",
       "genres": [
         "old-school country",
-        "western swing"
+        "western swing",
+        "blues"
       ],
       "cost": "No separate ticket shown; table booking advised",
       "url": "https://www.cafeboheme.co.uk/live-music",
@@ -2220,7 +2142,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-20 16:00-18:30",
       "travel": "Central London",
-      "genresLabel": "old-school country · western swing",
+      "genresLabel": "old-school country · western swing · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2262,20 +2184,20 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-30/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Weekly traditional session focused mainly on Irish tunes. Tagged old-time as the closest permitted canonical roots category.",
+      "note": "Weekly traditional session focused mainly on Irish tunes.",
       "weekday": "Tue",
       "dateLabel": "Tue 20 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-20 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2290,7 +2212,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/afternoon-show-tj-johnsons-peak-of-the-week-128/",
@@ -2303,7 +2227,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-21 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2371,8 +2295,8 @@ window.GIG_DATA = {
       "venue": "The Lamb",
       "area": "Surbiton",
       "genres": [
-        "old-school country",
-        "old-time"
+        "Americana",
+        "folk"
       ],
       "cost": "Check venue; no ticket price shown",
       "url": "https://www.facebook.com/events/1652567302933473/",
@@ -2385,7 +2309,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-22 19:30",
       "travel": "Local (SW London)",
-      "genresLabel": "old-school country · old-time",
+      "genresLabel": "Americana · folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2399,20 +2323,20 @@ window.GIG_DATA = {
       "venue": "Islington Folk Club at Brewhouse & Kitchen",
       "area": "Highbury, London",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "£10 / £8 concessions; member discounts",
       "url": "https://www.islingtonfolkclub.co.uk/programme.html",
       "source": "Islington Folk Club official dated programme and admission page",
       "confidence": "confirmed",
-      "note": "Specialist interpreter of English traditional songs; a strong repertoire match for the longer north London trip. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.",
+      "note": "Specialist interpreter of English traditional songs; a strong repertoire match for the longer north London trip. Doors 19:30; club 20:00-22:30.",
       "weekday": "Thu",
       "dateLabel": "Thu 22 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-22 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2455,7 +2379,8 @@ window.GIG_DATA = {
       "area": "Shoreditch, London",
       "genres": [
         "New Orleans / trad jazz",
-        "swing"
+        "swing",
+        "blues"
       ],
       "cost": "",
       "url": "https://www.barnightjar.com/shoreditch-listings/the-lapazoos-duo-eric-ranzoni",
@@ -2468,7 +2393,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-22 21:00",
       "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz · swing",
+      "genresLabel": "New Orleans / trad jazz · swing · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2482,8 +2407,8 @@ window.GIG_DATA = {
       "venue": "Café Bohème",
       "area": "Soho, London",
       "genres": [
-        "old-time",
-        "hot jazz"
+        "roots jazz",
+        "blues"
       ],
       "cost": "No separate ticket shown; table booking advised",
       "url": "https://www.cafeboheme.co.uk/live-music",
@@ -2496,7 +2421,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-23 15:00-17:30",
       "travel": "Central London",
-      "genresLabel": "old-time · hot jazz",
+      "genresLabel": "roots jazz · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2510,7 +2435,8 @@ window.GIG_DATA = {
       "venue": "Nightjar",
       "area": "Shoreditch, London",
       "genres": [
-        "New Orleans / trad jazz"
+        "New Orleans / trad jazz",
+        "rhythm and blues"
       ],
       "cost": "",
       "url": "https://www.barnightjar.com/shoreditch-listings/cosimo-matassa-project",
@@ -2523,7 +2449,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-23 21:00",
       "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz",
+      "genresLabel": "New Orleans / trad jazz · rhythm and blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2676,20 +2602,20 @@ window.GIG_DATA = {
       "venue": "Irish Cultural Centre",
       "area": "Hammersmith, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "£15",
       "url": "https://irishculturalcentre.co.uk/event/the-oneills-october-seis-main-london-concert/",
       "source": "Irish Cultural Centre",
       "confidence": "confirmed",
-      "note": "Intergenerational family concert with traditional Irish music at its heart, alongside folk song and ballads. Tagged old-time as the closest permitted canonical roots category.",
+      "note": "Intergenerational family concert with traditional Irish music at its heart, alongside folk song and ballads.",
       "weekday": "Sat",
       "dateLabel": "Sat 24 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-24 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2703,20 +2629,20 @@ window.GIG_DATA = {
       "venue": "The Harrison",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "British folk"
       ],
       "cost": "",
       "url": "https://harrisonvenuelondon.com/events/the-kimberleys/",
       "source": "The Harrison",
       "confidence": "confirmed",
-      "note": "Traditional British ballads and folk songs are central to the duo; mapped to old-time. Official venue date and time; ticket price not shown.",
+      "note": "Traditional British ballads and folk songs are central to the duo Official venue date and time; ticket price not shown.",
       "weekday": "Sat",
       "dateLabel": "Sat 24 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-24 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "British folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2731,7 +2657,8 @@ window.GIG_DATA = {
       "area": "Surbiton",
       "genres": [
         "swing",
-        "hot jazz"
+        "hot jazz",
+        "blues"
       ],
       "cost": "Check venue; no ticket price shown",
       "url": "https://www.facebook.com/events/1114170384385375/",
@@ -2744,7 +2671,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-24 19:30",
       "travel": "Local (SW London)",
-      "genresLabel": "swing · hot jazz",
+      "genresLabel": "swing · hot jazz · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2758,21 +2685,21 @@ window.GIG_DATA = {
       "venue": "Riverhouse Barn Arts Centre",
       "area": "Walton-on-Thames, Surrey",
       "genres": [
-        "old-time",
+        "Balkan / klezmer",
         "gypsy jazz"
       ],
       "cost": "£23",
       "url": "https://www.riverhousebarn.co.uk/events/175177",
       "source": "Riverhouse Barn official event and structured event data",
       "confidence": "confirmed",
-      "note": "Balkan and Russian traditional tunes, czardas and Gaelic folk with violin-led gypsy-jazz energy; a strong nearby match to the positive Dunajska Kapelye/Tropanka taste signals. Eastern European trad mapped to old-time. Train to Walton-on-Thames plus onward bus/taxi or a walk to the riverside venue; allow for the last leg. 19:30-21:30.",
+      "note": "Balkan and Russian traditional tunes, czardas and Gaelic folk with violin-led gypsy-jazz energy; a strong nearby match to the positive Dunajska Kapelye/Tropanka taste signals. Train to Walton-on-Thames plus onward bus/taxi or a walk to the riverside venue; allow for the last leg. 19:30-21:30.",
       "weekday": "Sat",
       "dateLabel": "Sat 24 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-24 19:30",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time · gypsy jazz",
+      "genresLabel": "Balkan / klezmer · gypsy jazz",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2786,7 +2713,9 @@ window.GIG_DATA = {
       "venue": "Green Note (Basement Bar)",
       "area": "Camden, London",
       "genres": [
-        "jug band"
+        "jug band",
+        "blues",
+        "ragtime"
       ],
       "cost": "£12.50",
       "url": "https://www.greennote.co.uk/production/the-fobo-jug-band/",
@@ -2799,7 +2728,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-24 20:00",
       "travel": "Central London",
-      "genresLabel": "jug band",
+      "genresLabel": "jug band · blues · ragtime",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2813,7 +2742,8 @@ window.GIG_DATA = {
       "venue": "Ram Jam Records",
       "area": "Kingston",
       "genres": [
-        "New Orleans / trad jazz"
+        "New Orleans / trad jazz",
+        "rhythm and blues"
       ],
       "cost": "Tickets coming soon",
       "url": "https://www.ramjamrecords.co.uk/events/24/10/26-tim-penn-and-the-second-line",
@@ -2826,7 +2756,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-24 20:00",
       "travel": "Local (SW London)",
-      "genresLabel": "New Orleans / trad jazz",
+      "genresLabel": "New Orleans / trad jazz · rhythm and blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2923,20 +2853,21 @@ window.GIG_DATA = {
       "venue": "The Cricklewood Club",
       "area": "Cricklewood, London",
       "genres": [
-        "old-time"
+        "Irish trad",
+        "folk dance / ceilidh"
       ],
       "cost": "?14; accompanied under-18s free at door",
       "url": "https://imdl.giftpro.co.uk/events/saturday-set-dancing-ceili-1/",
       "source": "Irish Music and Dance in London / GiftPro",
       "confidence": "confirmed",
-      "note": "Named ten-piece traditional Irish ceili band, 14:30-18:30. Trad Irish mapped to canonical old-time. Strong festival/band match warrants the longer cross-London journey from Surbiton. Venue is Cricklewood for 2026; promoter explicitly says the move to Kilburn is in 2027.",
+      "note": "Named ten-piece traditional Irish ceili band, 14:30-18:30. Strong festival/band match warrants the longer cross-London journey from Surbiton. Venue is Cricklewood for 2026; promoter explicitly says the move to Kilburn is in 2027.",
       "weekday": "Sun",
       "dateLabel": "Sun 25 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-25 14:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -2978,7 +2909,7 @@ window.GIG_DATA = {
       "venue": "The Lamb",
       "area": "Surbiton",
       "genres": [
-        "old-time"
+        "British folk"
       ],
       "cost": "Check venue; no ticket price shown",
       "url": "https://www.facebook.com/events/2266642734100772/",
@@ -2991,7 +2922,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-25 16:30",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "British folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3060,8 +2991,8 @@ window.GIG_DATA = {
       "venue": "Café Bohème",
       "area": "Soho, London",
       "genres": [
-        "swing",
-        "old-time"
+        "blues",
+        "swing"
       ],
       "cost": "No separate ticket shown; table booking advised",
       "url": "https://www.cafeboheme.co.uk/live-music",
@@ -3074,7 +3005,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-26 16:00-18:30",
       "travel": "Central London",
-      "genresLabel": "swing · old-time",
+      "genresLabel": "blues · swing",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3088,20 +3019,20 @@ window.GIG_DATA = {
       "venue": "Green Note",
       "area": "Camden, London",
       "genres": [
-        "gypsy jazz"
+        "Balkan / klezmer"
       ],
       "cost": "?12 advance / ?10 concessions / ?15 door",
       "url": "https://folkandroots.co.uk/tropanka/",
       "source": "Folk and Roots + Green Note",
       "confidence": "confirmed",
-      "note": "Priority-watch Balkan/Klezmer live-band date spanning Bulgarian, Macedonian and Transylvanian traditions; doors 19:00, music 20:30. Gypsy jazz is the nearest canonical proxy.",
+      "note": "Priority-watch Balkan/Klezmer live-band date spanning Bulgarian, Macedonian and Transylvanian traditions; doors 19:00, music 20:30.",
       "weekday": "Mon",
       "dateLabel": "Mon 26 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-26 20:30",
       "travel": "Central London",
-      "genresLabel": "gypsy jazz",
+      "genresLabel": "Balkan / klezmer",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3143,20 +3074,20 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-31/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Weekly traditional session focused mainly on Irish tunes. Tagged old-time as the closest permitted canonical roots category.",
+      "note": "Weekly traditional session focused mainly on Irish tunes.",
       "weekday": "Tue",
       "dateLabel": "Tue 27 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-27 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3171,7 +3102,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-88/",
@@ -3184,7 +3117,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-28 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3225,20 +3158,21 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "Scottish folk",
+        "English folk"
       ],
       "cost": "£20.50 / £12.50 under-30s; check booking",
       "url": "https://www.efdss.org/choose-seats?EventInstanceId=162801",
       "source": "EFDSS listings and Spektrix instance / Alasdair Roberts official live diary",
       "confidence": "confirmed",
-      "note": "Lucy Farrell, Emily Portman and Alasdair Roberts interpret traditional ballads with voices, viola, banjo, concertina and guitar. English/Scottish traditional song mapped to canonical old-time. Artist diary and venue instance both confirm 28 October 2026 at 19:30.",
+      "note": "Lucy Farrell, Emily Portman and Alasdair Roberts interpret traditional ballads with voices, viola, banjo, concertina and guitar. Artist diary and venue instance both confirm 28 October 2026 at 19:30.",
       "weekday": "Wed",
       "dateLabel": "Wed 28 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-28 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Scottish folk · English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3281,7 +3215,8 @@ window.GIG_DATA = {
       "area": "Homerton, London",
       "genres": [
         "old-time",
-        "old-school country"
+        "old-school country",
+        "blues"
       ],
       "cost": "",
       "url": "https://www.hackneyfolk.club/events/interstate-express-old-time-session",
@@ -3294,7 +3229,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-29 19:00",
       "travel": "Central London",
-      "genresLabel": "old-time · old-school country",
+      "genresLabel": "old-time · old-school country · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3308,20 +3243,20 @@ window.GIG_DATA = {
       "venue": "The Lamb",
       "area": "Surbiton",
       "genres": [
-        "old-time"
+        "French chanson"
       ],
       "cost": "Check venue; no ticket price shown",
       "url": "https://www.facebook.com/events/1663053138792318/",
       "source": "The Lamb official Facebook event",
       "confidence": "confirmed",
-      "note": "French chanson with instrumental arrangements, storytelling and humour; old-time is an approximate canonical traditional-roots tag. Hyper-local priority venue; exact date and start time are confirmed by the current official Facebook event.",
+      "note": "French chanson with instrumental arrangements, storytelling and humour. Hyper-local priority venue; exact date and start time are confirmed by the current official Facebook event.",
       "weekday": "Thu",
       "dateLabel": "Thu 29 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-29 19:30",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "French chanson",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3392,7 +3327,8 @@ window.GIG_DATA = {
       "area": "Addlestone, Surrey",
       "genres": [
         "New Orleans / trad jazz",
-        "swing"
+        "swing",
+        "gospel"
       ],
       "cost": "",
       "url": "https://runnymedejazzclub.chessck.co.uk/ForthcomingBands",
@@ -3405,7 +3341,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-30 19:30",
       "travel": "Local (SW London)",
-      "genresLabel": "New Orleans / trad jazz · swing",
+      "genresLabel": "New Orleans / trad jazz · swing · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3419,20 +3355,21 @@ window.GIG_DATA = {
       "venue": "St John's Waterloo",
       "area": "Waterloo, London",
       "genres": [
-        "old-time"
+        "English folk",
+        "folk dance / ceilidh"
       ],
       "cost": "?20 standard / ?16 concession / ?25 supporter, including fees",
       "url": "https://wegottickets.com/event/693731",
       "source": "Waterloo Ceilidhs / WeGotTickets",
       "confidence": "confirmed",
-      "note": "Live-band English traditional dance with a caller; beginners welcome. English trad is mapped to canonical old-time. Doors 19:00, dancing 19:30. Opposite Waterloo station, straightforward from Surbiton. All ages, under-16s accompanied; evening timing makes this primarily a date-night option.",
+      "note": "Live-band English traditional dance with a caller; beginners welcome. Doors 19:00, dancing 19:30. Opposite Waterloo station, straightforward from Surbiton. All ages, under-16s accompanied; evening timing makes this primarily a date-night option.",
       "weekday": "Fri",
       "dateLabel": "Fri 30 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-30 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3474,20 +3411,20 @@ window.GIG_DATA = {
       "venue": "Green Note",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "?12 + booking fee",
       "url": "https://events.liveit.io/folk-and-roots/the-beadling-2/",
       "source": "Folk and Roots / LiveIt / Green Note",
       "confidence": "confirmed",
-      "note": "English folk trio working with traditional stories and tunes, including broadside-ballad repertoire. English trad is mapped to canonical old-time. Doors 13:30, music 14:30; exact date/year confirmed by promoter.",
+      "note": "English folk trio working with traditional stories and tunes, including broadside-ballad repertoire. Doors 13:30, music 14:30; exact date/year confirmed by promoter.",
       "weekday": "Sat",
       "dateLabel": "Sat 31 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-31 14:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3501,7 +3438,8 @@ window.GIG_DATA = {
       "venue": "Café Bohème",
       "area": "Soho, London",
       "genres": [
-        "old-time",
+        "blues",
+        "gospel",
         "hot jazz"
       ],
       "cost": "No separate ticket shown; table booking advised",
@@ -3515,7 +3453,7 @@ window.GIG_DATA = {
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-31 15:00-17:30",
       "travel": "Central London",
-      "genresLabel": "old-time · hot jazz",
+      "genresLabel": "blues · gospel · hot jazz",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3529,20 +3467,20 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "£17.50; £12.50 under 30",
       "url": "https://www.efdss.org/whats-on/16004-goblin-band-2026",
       "source": "EFDSS event page and Spektrix catalogue",
       "confidence": "confirmed",
-      "note": "English traditional folk with harmony singing, fiddle, squeezeboxes and hurdy-gurdy; support from recorder quartet Follia 4. Strong traditional repertoire justifies the Camden trip. English trad mapped to canonical old-time. Doors 19:00; music 19:30-21:30. Price includes building levy.",
+      "note": "English traditional folk with harmony singing, fiddle, squeezeboxes and hurdy-gurdy; support from recorder quartet Follia 4. Strong traditional repertoire justifies the Camden trip. Doors 19:00; music 19:30-21:30. Price includes building levy.",
       "weekday": "Sat",
       "dateLabel": "Sat 31 Oct",
       "monthKey": "2026-10",
       "monthLabel": "Oct 2026",
       "sortKey": "2026-10-31 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3669,20 +3607,20 @@ window.GIG_DATA = {
       "venue": "TwickFolk at The Cabbage Patch",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "£12 + fee / £15 door",
       "url": "https://www.twickfolk.co.uk/events/johnny-campbell/",
       "source": "TwickFolk",
       "confidence": "confirmed",
-      "note": "Campbell's deeply researched traditional songs of northern England make this an unusually strong local roots booking; British folk is mapped to the closest canonical tag.",
+      "note": "Campbell's deeply researched traditional songs of northern England make this an unusually strong local roots booking;",
       "weekday": "Sun",
       "dateLabel": "Sun 1 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-01 20:00",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3696,7 +3634,8 @@ window.GIG_DATA = {
       "venue": "Nightjar",
       "area": "Shoreditch, London",
       "genres": [
-        "swing"
+        "swing",
+        "blues"
       ],
       "cost": "",
       "url": "https://www.barnightjar.com/shoreditch-listings/laurence-corns-duo-6xh7c",
@@ -3709,7 +3648,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-01 21:00",
       "travel": "Central London",
-      "genresLabel": "swing",
+      "genresLabel": "swing · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3751,7 +3690,9 @@ window.GIG_DATA = {
       "venue": "Nightjar",
       "area": "Shoreditch, London",
       "genres": [
-        "New Orleans / trad jazz"
+        "New Orleans / trad jazz",
+        "blues",
+        "rhythm and blues"
       ],
       "cost": "",
       "url": "https://www.barnightjar.com/shoreditch-listings/dai-price-piano",
@@ -3764,7 +3705,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-02 21:00",
       "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz",
+      "genresLabel": "New Orleans / trad jazz · blues · rhythm and blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3833,20 +3774,20 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-32/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Weekly traditional session focused mainly on Irish tunes. Tagged old-time as the closest permitted canonical roots category.",
+      "note": "Weekly traditional session focused mainly on Irish tunes.",
       "weekday": "Tue",
       "dateLabel": "Tue 3 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-03 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3861,7 +3802,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-89/",
@@ -3874,7 +3817,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-04 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3888,20 +3831,20 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "£12.50; under 30 £10.50",
       "url": "https://www.efdss.org/whats-on/26-gigs/16008-trad-night-macdara-yeates-2026",
       "source": "EFDSS / Cecil Sharp House",
       "confidence": "confirmed",
-      "note": "Unamplified Trad Night devoted to traditional Irish singing. Irish trad mapped to canonical old-time; separate from the held December ICC concert. Doors 19:00.",
+      "note": "Unamplified Trad Night devoted to traditional Irish singing. Doors 19:00.",
       "weekday": "Wed",
       "dateLabel": "Wed 4 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-04 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3971,20 +3914,20 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "£20.50 / £12.50 under 30",
       "url": "https://www.efdss.org/whats-on/26-gigs/16013-the-haar-2026",
       "source": "EFDSS / Cecil Sharp House",
       "confidence": "confirmed",
-      "note": "High-value Irish traditional quartet with voice, fiddle, accordion and bodhrán, performing spontaneous arrangements of traditional songs; 19:30–21:30. Traditional Irish music is tagged to the closest permitted canonical roots category.",
+      "note": "High-value Irish traditional quartet with voice, fiddle, accordion and bodhrán, performing spontaneous arrangements of traditional songs; 19:30–21:30.",
       "weekday": "Thu",
       "dateLabel": "Thu 5 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-05 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -3998,20 +3941,21 @@ window.GIG_DATA = {
       "venue": "Islington Folk Club at Brewhouse & Kitchen",
       "area": "Highbury, London",
       "genres": [
-        "old-time"
+        "old-time",
+        "Americana"
       ],
       "cost": "£10 / £8 concessions; member discounts",
       "url": "https://www.islingtonfolkclub.co.uk/programme.html",
       "source": "Islington Folk Club official dated programme and admission page",
       "confidence": "confirmed",
-      "note": "Traditional Appalachian material alongside original roots songs, with banjo, mandolin and guitar; explicitly more than generic Americana. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.",
+      "note": "Traditional Appalachian material alongside original roots songs, with banjo, mandolin and guitar; explicitly more than generic Americana. Doors 19:30; club 20:00-22:30.",
       "weekday": "Thu",
       "dateLabel": "Thu 5 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-05 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "old-time · Americana",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4055,7 +3999,8 @@ window.GIG_DATA = {
       "genres": [
         "hot jazz",
         "New Orleans / trad jazz",
-        "swing"
+        "swing",
+        "blues"
       ],
       "cost": "£6; late set free",
       "url": "https://www.barnightjar.com/shoreditch-listings/the-lapazoos-duo",
@@ -4068,7 +4013,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-05 21:00",
       "travel": "Central London",
-      "genresLabel": "hot jazz · New Orleans / trad jazz · swing",
+      "genresLabel": "hot jazz · New Orleans / trad jazz · swing · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4138,20 +4083,20 @@ window.GIG_DATA = {
       "venue": "Riverhouse Barn Arts Centre",
       "area": "Walton-on-Thames, Surrey",
       "genres": [
-        "old-time"
+        "British folk"
       ],
       "cost": "£22",
       "url": "https://www.riverhousebarn.co.uk/events/170592",
       "source": "Riverhouse Barn official event and structured event data",
       "confidence": "confirmed",
-      "note": "Experienced fiddle, guitar and hand-percussion trio playing music rooted in British Isles traditions alongside original and global material. Traditional folk mapped to old-time; included for the strong live musicianship and reachable Walton venue. Train to Walton-on-Thames plus onward bus/taxi or a walk; allow for the last leg. 20:00-22:00.",
+      "note": "Experienced fiddle, guitar and hand-percussion trio playing music rooted in British Isles traditions alongside original and global material. Train to Walton-on-Thames plus onward bus/taxi or a walk; allow for the last leg. 20:00-22:00.",
       "weekday": "Fri",
       "dateLabel": "Fri 6 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-06 20:00",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "British folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4165,7 +4110,8 @@ window.GIG_DATA = {
       "venue": "Nightjar",
       "area": "Shoreditch, London",
       "genres": [
-        "New Orleans / trad jazz"
+        "New Orleans / trad jazz",
+        "blues"
       ],
       "cost": "",
       "url": "https://www.barnightjar.com/shoreditch-listings/tim-penn-the-second-line",
@@ -4178,7 +4124,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-06 21:00",
       "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz",
+      "genresLabel": "New Orleans / trad jazz · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4219,20 +4165,21 @@ window.GIG_DATA = {
       "venue": "The Harrison",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "English folk",
+        "folk"
       ],
       "cost": "Free",
       "url": "https://harrisonvenuelondon.com/harrison-venue-events-gigs-kings-cross/",
       "source": "The Harrison",
       "confidence": "confirmed",
-      "note": "Free traditional English tune session open to players and listeners; tagged to the closest canonical roots category.",
+      "note": "Free traditional English tune session open to players and listeners;",
       "weekday": "Sat",
       "dateLabel": "Sat 7 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-07 14:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk · folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4246,20 +4193,20 @@ window.GIG_DATA = {
       "venue": "Irish Cultural Centre",
       "area": "Hammersmith, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "",
       "url": "https://irishculturalcentre.co.uk/whats-on/",
       "source": "Irish Cultural Centre",
       "confidence": "confirmed",
-      "note": "One of the leading contemporary Irish traditional instrumental bands; first of two nights. Traditional Irish/folk is tagged to the closest permitted canonical roots category.",
+      "note": "One of the leading contemporary Irish traditional instrumental bands; first of two nights.",
       "weekday": "Sat",
       "dateLabel": "Sat 7 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-07 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4273,20 +4220,22 @@ window.GIG_DATA = {
       "venue": "Green Note (Basement Bar)",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "country blues",
+        "ragtime",
+        "gospel"
       ],
       "cost": "£13.80 including booking fee",
       "url": "https://wegottickets.com/f/26939",
       "source": "Green Note promoted WeGotTickets event / artist official biography",
       "confidence": "confirmed",
-      "note": "Acoustic ragtime, traditional blues and gospel rather than a generic electric blues-rock bill; Green Note places this act in its old-time strand. Canonical old-time is an approximate tag for this pre-war roots-adjacent repertoire. Doors 19:30; music 20:00. Limited first-come seating and no step-free basement access.",
+      "note": "Acoustic ragtime, traditional blues and gospel rather than a generic electric blues-rock bill; Green Note places this act in its old-time strand. Doors 19:30; music 20:00. Limited first-come seating and no step-free basement access.",
       "weekday": "Sat",
       "dateLabel": "Sat 7 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-07 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "country blues · ragtime · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4302,7 +4251,8 @@ window.GIG_DATA = {
       "genres": [
         "hot jazz",
         "New Orleans / trad jazz",
-        "swing"
+        "swing",
+        "ragtime"
       ],
       "cost": "Usually £15 on the door; confirm event admission",
       "url": "https://www.jazzinthespa.co.uk/",
@@ -4315,7 +4265,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-07 20:00",
       "travel": "Day-trip",
-      "genresLabel": "hot jazz · New Orleans / trad jazz · swing",
+      "genresLabel": "hot jazz · New Orleans / trad jazz · swing · ragtime",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4414,20 +4364,20 @@ window.GIG_DATA = {
       "venue": "Irish Cultural Centre",
       "area": "Hammersmith, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "",
       "url": "https://irishculturalcentre.co.uk/whats-on/",
       "source": "Irish Cultural Centre",
       "confidence": "confirmed",
-      "note": "One of the leading contemporary Irish traditional instrumental bands; second of two nights. Traditional Irish/folk is tagged to the closest permitted canonical roots category.",
+      "note": "One of the leading contemporary Irish traditional instrumental bands; second of two nights.",
       "weekday": "Sun",
       "dateLabel": "Sun 8 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-08 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4441,7 +4391,9 @@ window.GIG_DATA = {
       "venue": "Nightjar",
       "area": "Shoreditch, London",
       "genres": [
-        "New Orleans / trad jazz"
+        "New Orleans / trad jazz",
+        "blues",
+        "rhythm and blues"
       ],
       "cost": "",
       "url": "https://www.barnightjar.com/shoreditch-listings/tim-penn-duo-nightjar",
@@ -4454,7 +4406,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-08 21:00",
       "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz",
+      "genresLabel": "New Orleans / trad jazz · blues · rhythm and blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4523,20 +4475,20 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-33/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Weekly traditional session focused mainly on Irish tunes. Tagged old-time as the closest permitted canonical roots category.",
+      "note": "Weekly traditional session focused mainly on Irish tunes.",
       "weekday": "Tue",
       "dateLabel": "Tue 10 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-10 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4578,7 +4530,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-90/",
@@ -4591,7 +4545,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-11 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4633,7 +4587,8 @@ window.GIG_DATA = {
       "venue": "Nightjar",
       "area": "Shoreditch, London",
       "genres": [
-        "New Orleans / trad jazz"
+        "New Orleans / trad jazz",
+        "blues"
       ],
       "cost": "",
       "url": "https://www.barnightjar.com/shoreditch-listings/ben-martyn-solo-blues-piano",
@@ -4646,7 +4601,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-11 21:00",
       "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz",
+      "genresLabel": "New Orleans / trad jazz · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4687,20 +4642,20 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "Scottish folk"
       ],
       "cost": "£19.50; under 30 £12.50",
       "url": "https://www.efdss.org/whats-on/26-gigs/16022-ryan-young-louis-campbell-2026",
       "source": "EFDSS / Cecil Sharp House",
       "confidence": "confirmed",
-      "note": "Traditional Scottish fiddle concert; Scottish trad mapped to old-time under the existing schema. Doors 19:00.",
+      "note": "Traditional Scottish fiddle concert; Scottish trad Doors 19:00.",
       "weekday": "Thu",
       "dateLabel": "Thu 12 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-12 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Scottish folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4714,8 +4669,8 @@ window.GIG_DATA = {
       "venue": "The Lamb",
       "area": "Surbiton",
       "genres": [
-        "old-time",
-        "old-school country"
+        "Americana",
+        "folk"
       ],
       "cost": "Check venue; no ticket price shown",
       "url": "https://www.facebook.com/events/1962346144456684/",
@@ -4728,7 +4683,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-12 20:00",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time · old-school country",
+      "genresLabel": "Americana · folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4799,7 +4754,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "hot jazz",
-        "swing"
+        "swing",
+        "blues",
+        "gospel"
       ],
       "cost": "£14 early-bird / £18 advance",
       "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-music-in-london-49/",
@@ -4812,7 +4769,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-13 21:00",
       "travel": "Central London",
-      "genresLabel": "hot jazz · swing",
+      "genresLabel": "hot jazz · swing · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4826,7 +4783,8 @@ window.GIG_DATA = {
       "venue": "Nightjar",
       "area": "Shoreditch, London",
       "genres": [
-        "hot jazz"
+        "hot jazz",
+        "blues"
       ],
       "cost": "",
       "url": "https://www.barnightjar.com/shoreditch-listings/the-boneshakers",
@@ -4839,7 +4797,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-13 21:00",
       "travel": "Central London",
-      "genresLabel": "hot jazz",
+      "genresLabel": "hot jazz · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4882,7 +4840,8 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "cajun"
+        "cajun",
+        "folk dance / ceilidh"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/upcoming-events/",
@@ -4895,7 +4854,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-14 13:30",
       "travel": "Central London",
-      "genresLabel": "cajun",
+      "genresLabel": "cajun · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4936,7 +4895,7 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "folk dance / ceilidh"
       ],
       "cost": "",
       "url": "https://www.cecilsharphouse.org/whats-on",
@@ -4949,7 +4908,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-14 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -4963,20 +4922,21 @@ window.GIG_DATA = {
       "venue": "Irish Cultural Centre",
       "area": "Hammersmith, London",
       "genres": [
-        "old-time"
+        "Irish trad",
+        "British folk"
       ],
       "cost": "£20",
       "url": "https://irishculturalcentre.co.uk/event/peter-street-toby-shaer-archie-moss-jack-warnock/",
       "source": "Irish Cultural Centre",
       "confidence": "confirmed",
-      "note": "Double bill of leading traditional musicians from the Irish and wider UK folk circuits. Tagged old-time as the closest permitted canonical roots category.",
+      "note": "Double bill of leading traditional musicians from the Irish and wider UK folk circuits.",
       "weekday": "Sat",
       "dateLabel": "Sat 14 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-14 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad · British folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5158,7 +5118,9 @@ window.GIG_DATA = {
       "area": "Shoreditch, London",
       "genres": [
         "honky tonk",
-        "hot jazz"
+        "hot jazz",
+        "blues",
+        "rhythm and blues"
       ],
       "cost": "£6",
       "url": "https://www.barnightjar.com/shoreditch-listings/dai-price-duo",
@@ -5171,7 +5133,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-15 21:00",
       "travel": "Central London",
-      "genresLabel": "honky tonk · hot jazz",
+      "genresLabel": "honky tonk · hot jazz · blues · rhythm and blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5185,20 +5147,20 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-34/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Free weekly traditional Irish and Celtic session; trad Irish is mapped to the nearest canonical old-time tag.",
+      "note": "Free weekly traditional Irish and Celtic session;",
       "weekday": "Tue",
       "dateLabel": "Tue 17 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-17 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5213,7 +5175,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/upcoming-events/?pno=6",
@@ -5226,7 +5190,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-18 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5240,20 +5204,20 @@ window.GIG_DATA = {
       "venue": "Islington Folk Club at Brewhouse & Kitchen",
       "area": "Highbury, London",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "£10 / £8 concessions; member discounts",
       "url": "https://www.islingtonfolkclub.co.uk/programme.html",
       "source": "Islington Folk Club official dated programme and admission page",
       "confidence": "confirmed",
-      "note": "Traditional eighteenth- and nineteenth-century English dance tunes on fiddle and Anglo concertina, with singing. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.",
+      "note": "Traditional eighteenth- and nineteenth-century English dance tunes on fiddle and Anglo concertina, with singing. Doors 19:30; club 20:00-22:30.",
       "weekday": "Thu",
       "dateLabel": "Thu 19 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-19 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5350,7 +5314,8 @@ window.GIG_DATA = {
       "venue": "Green Note (Basement Bar)",
       "area": "Camden, London",
       "genres": [
-        "swing"
+        "swing",
+        "blues"
       ],
       "cost": "£12.50 + £1.30 fee",
       "url": "https://wegottickets.com/f/28297",
@@ -5363,7 +5328,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-20 20:00",
       "travel": "Central London",
-      "genresLabel": "swing",
+      "genresLabel": "swing · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5377,20 +5342,21 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "English folk",
+        "folk dance / ceilidh"
       ],
       "cost": "£15; £10 concessions; £5 under 18; under 7 free; advance booking fee may apply",
       "url": "https://www.kneesupcecilsharp.co.uk/programme.html",
       "source": "Knees Up official named programme / EFDSS individual dates and Spektrix instances",
       "confidence": "confirmed",
-      "note": "Live-band English ceilidh, 20:00-23:00, with dances explained for newcomers and experienced dancers. Named band and caller are printed for this individual 2026 date; EFDSS confirms the date is on sale. Traditional English dance music mapped to canonical old-time. Doors 19:30; evening date-night option.",
+      "note": "Live-band English ceilidh, 20:00-23:00, with dances explained for newcomers and experienced dancers. Named band and caller are printed for this individual 2026 date; EFDSS confirms the date is on sale. Doors 19:30; evening date-night option.",
       "weekday": "Fri",
       "dateLabel": "Fri 20 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-20 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5404,7 +5370,7 @@ window.GIG_DATA = {
       "venue": "The Harrison",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "folk"
       ],
       "cost": "Free",
       "url": "https://harrisonvenuelondon.com/events/singaround-london/",
@@ -5417,7 +5383,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-21 13:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5459,20 +5425,20 @@ window.GIG_DATA = {
       "venue": "Irish Cultural Centre",
       "area": "Hammersmith, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "",
       "url": "https://irishculturalcentre.co.uk/whats-on/",
       "source": "Irish Cultural Centre",
       "confidence": "confirmed",
-      "note": "Long-established family ensemble described by the venue as a living institution of Irish folk music. Traditional Irish/folk is tagged to the closest permitted canonical roots category.",
+      "note": "Long-established family ensemble described by the venue as a living institution of Irish folk music.",
       "weekday": "Sat",
       "dateLabel": "Sat 21 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-21 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5570,7 +5536,7 @@ window.GIG_DATA = {
       "venue": "The Cabbage Patch (Patchworks)",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "folk"
       ],
       "cost": "£5",
       "url": "https://www.twickfolk.co.uk/events/",
@@ -5583,7 +5549,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-22 19:45",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5652,20 +5618,20 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-35/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Free weekly traditional Irish and Celtic session; trad Irish is mapped to the nearest canonical old-time tag.",
+      "note": "Free weekly traditional Irish and Celtic session;",
       "weekday": "Tue",
       "dateLabel": "Tue 24 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-24 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5680,7 +5646,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-92/",
@@ -5693,7 +5661,7 @@ window.GIG_DATA = {
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-25 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5735,20 +5703,20 @@ window.GIG_DATA = {
       "venue": "The Harrison",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "folk"
       ],
       "cost": "£15",
       "url": "https://harrisonvenuelondon.com/events/the-grace-smith-trio-and-archie-churchill-moss/",
       "source": "The Harrison / Folk and Roots",
       "confidence": "confirmed",
-      "note": "Fiddle, concertina and mandolin trio with diatonic accordion player; traditional instrumental folk mapped to old-time. Venue-listed time; confirm music start.",
+      "note": "Fiddle, concertina and mandolin trio with diatonic accordion player; traditional instrumental folk Venue-listed time; confirm music start.",
       "weekday": "Thu",
       "dateLabel": "Thu 26 Nov",
       "monthKey": "2026-11",
       "monthLabel": "Nov 2026",
       "sortKey": "2026-11-26 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -5984,20 +5952,20 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-36/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Free weekly traditional Irish and Celtic session; trad Irish is mapped to the nearest canonical old-time tag.",
+      "note": "Free weekly traditional Irish and Celtic session;",
       "weekday": "Tue",
       "dateLabel": "Tue 1 Dec",
       "monthKey": "2026-12",
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-01 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6039,7 +6007,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/page/2/",
@@ -6052,7 +6022,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-02 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6066,20 +6036,21 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "English folk",
+        "folk dance / ceilidh"
       ],
       "cost": "£12.50; under 30 £10.50",
       "url": "https://www.efdss.org/whats-on/26-gigs/16018-trad-night-andy-turner",
       "source": "EFDSS / Cecil Sharp House",
       "confidence": "confirmed",
-      "note": "Unamplified Trad Night: traditional songs, Anglo-concertina and dance tunes, including lesser-known Kent repertoire. Traditional folk mapped to old-time. Doors 19:00.",
+      "note": "Unamplified Trad Night: traditional songs, Anglo-concertina and dance tunes, including lesser-known Kent repertoire. Doors 19:00.",
       "weekday": "Wed",
       "dateLabel": "Wed 2 Dec",
       "monthKey": "2026-12",
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-02 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6121,20 +6092,21 @@ window.GIG_DATA = {
       "venue": "Islington Folk Club at Brewhouse & Kitchen",
       "area": "Highbury, London",
       "genres": [
-        "old-time"
+        "country blues",
+        "ragtime"
       ],
       "cost": "£10 / £8 concessions; member discounts",
       "url": "https://www.islingtonfolkclub.co.uk/programme.html",
       "source": "Islington Folk Club official dated programme and admission page",
       "confidence": "confirmed",
-      "note": "Acoustic country blues on resonator guitar, double bass, drums and washboard; pre-war roots rather than electric blues-rock. Doors 19:30; club 20:00-22:30. British traditional song/country-blues mapped to the closest canonical old-time tag where applicable.",
+      "note": "Acoustic country blues on resonator guitar, double bass, drums and washboard; pre-war roots rather than electric blues-rock. Doors 19:30; club 20:00-22:30.",
       "weekday": "Thu",
       "dateLabel": "Thu 3 Dec",
       "monthKey": "2026-12",
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-03 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "country blues · ragtime",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6176,20 +6148,21 @@ window.GIG_DATA = {
       "venue": "St John's Waterloo",
       "area": "Waterloo, London",
       "genres": [
-        "old-time"
+        "English folk",
+        "folk dance / ceilidh"
       ],
       "cost": "?20 standard / ?16 concession / ?25 supporter, including fees",
       "url": "https://wegottickets.com/event/693752",
       "source": "Waterloo Ceilidhs / WeGotTickets",
       "confidence": "confirmed",
-      "note": "Live-band English traditional dance with a caller; beginners welcome. English trad is mapped to canonical old-time. Doors 19:00, dancing 19:30. Opposite Waterloo station, straightforward from Surbiton. All ages, under-16s accompanied; evening timing makes this primarily a date-night option.",
+      "note": "Live-band English traditional dance with a caller; beginners welcome. Doors 19:00, dancing 19:30. Opposite Waterloo station, straightforward from Surbiton. All ages, under-16s accompanied; evening timing makes this primarily a date-night option.",
       "weekday": "Fri",
       "dateLabel": "Fri 4 Dec",
       "monthKey": "2026-12",
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-04 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6204,7 +6177,8 @@ window.GIG_DATA = {
       "area": "Camden, London",
       "genres": [
         "hot jazz",
-        "New Orleans / trad jazz"
+        "New Orleans / trad jazz",
+        "blues"
       ],
       "cost": "£12.50 advance",
       "url": "https://www.greennote.co.uk/production/ewan-bleach/",
@@ -6217,7 +6191,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-04 20:00",
       "travel": "Central London",
-      "genresLabel": "hot jazz · New Orleans / trad jazz",
+      "genresLabel": "hot jazz · New Orleans / trad jazz · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6258,7 +6232,9 @@ window.GIG_DATA = {
       "venue": "Ram Jam Records at The Grey Horse",
       "area": "Kingston",
       "genres": [
-        "swing"
+        "swing",
+        "blues",
+        "rhythm and blues"
       ],
       "cost": "£14 advance / £17 door / £12 students; check fees",
       "url": "https://www.ramjamrecords.co.uk/events/05/12/26-jump-66",
@@ -6271,7 +6247,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-05 21:00",
       "travel": "Local (SW London)",
-      "genresLabel": "swing",
+      "genresLabel": "swing · blues · rhythm and blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6397,7 +6373,7 @@ window.GIG_DATA = {
       "venue": "The Cabbage Patch (Patchworks)",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "£18 + fee / £21 door",
       "url": "https://wegottickets.com/event/690432",
@@ -6410,7 +6386,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-06 20:00",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6479,20 +6455,20 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-37/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Free weekly traditional Irish and Celtic session; trad Irish is mapped to the nearest canonical old-time tag.",
+      "note": "Free weekly traditional Irish and Celtic session;",
       "weekday": "Tue",
       "dateLabel": "Tue 8 Dec",
       "monthKey": "2026-12",
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-08 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6507,7 +6483,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/upcoming-events/?pno=8",
@@ -6520,7 +6498,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-09 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6562,20 +6540,20 @@ window.GIG_DATA = {
       "venue": "Irish Cultural Centre",
       "area": "Hammersmith, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "",
       "url": "https://irishculturalcentre.co.uk/whats-on/",
       "source": "Irish Cultural Centre",
       "confidence": "confirmed",
-      "note": "Traditional Dublin singer launching a collection of old Irish folk songs. Traditional Irish/folk is tagged to the closest permitted canonical roots category.",
+      "note": "Traditional Dublin singer launching a collection of old Irish folk songs.",
       "weekday": "Thu",
       "dateLabel": "Thu 10 Dec",
       "monthKey": "2026-12",
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-10 19:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6700,7 +6678,8 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "cajun"
+        "cajun",
+        "folk dance / ceilidh"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/upcoming-events/",
@@ -6713,7 +6692,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-12 13:30",
       "travel": "Central London",
-      "genresLabel": "cajun",
+      "genresLabel": "cajun · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6754,7 +6733,7 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "folk dance / ceilidh"
       ],
       "cost": "",
       "url": "https://www.cecilsharphouse.org/whats-on",
@@ -6767,7 +6746,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-12 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6808,20 +6787,20 @@ window.GIG_DATA = {
       "venue": "Irish Cultural Centre",
       "area": "Hammersmith, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "£20 / £18",
       "url": "https://irishculturalcentre.co.uk/event/tara-howley-in-concert/",
       "source": "Irish Cultural Centre",
       "confidence": "confirmed",
-      "note": "Irish traditional uilleann pipes, whistle and concertina from the former Riverdance lead piper; includes traditional tunes and folk songs. Doors 19:30. Irish trad mapped to old-time.",
+      "note": "Irish traditional uilleann pipes, whistle and concertina from the former Riverdance lead piper; includes traditional tunes and folk songs. Doors 19:30.",
       "weekday": "Sat",
       "dateLabel": "Sat 12 Dec",
       "monthKey": "2026-12",
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-12 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6917,7 +6896,9 @@ window.GIG_DATA = {
       "area": "Soho, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "",
       "url": "https://www.spiceoflifesoho.com/events",
@@ -6930,7 +6911,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-14 12:30",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -6972,20 +6953,20 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-38/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Free traditional Irish and Celtic session; trad Irish is mapped to the nearest canonical old-time tag.",
+      "note": "Free traditional Irish and Celtic session;",
       "weekday": "Tue",
       "dateLabel": "Tue 15 Dec",
       "monthKey": "2026-12",
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-15 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7028,7 +7009,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-95/",
@@ -7041,7 +7024,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-16 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7138,20 +7121,21 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "English folk",
+        "folk dance / ceilidh"
       ],
       "cost": "£15; £10 concessions; £5 under 18; under 7 free; advance booking fee may apply",
       "url": "https://www.kneesupcecilsharp.co.uk/programme.html",
       "source": "Knees Up official named programme / EFDSS individual dates and Spektrix instances",
       "confidence": "confirmed",
-      "note": "Live-band English ceilidh, 20:00-23:00, with dances explained for newcomers and experienced dancers. Named band and caller are printed for this individual 2026 date; EFDSS confirms the date is on sale. Traditional English dance music mapped to canonical old-time. Doors 19:30; evening date-night option.",
+      "note": "Live-band English ceilidh, 20:00-23:00, with dances explained for newcomers and experienced dancers. Named band and caller are printed for this individual 2026 date; EFDSS confirms the date is on sale. Doors 19:30; evening date-night option.",
       "weekday": "Fri",
       "dateLabel": "Fri 18 Dec",
       "monthKey": "2026-12",
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-18 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7220,7 +7204,8 @@ window.GIG_DATA = {
       "area": "Camden, London",
       "genres": [
         "New Orleans / trad jazz",
-        "hot jazz"
+        "hot jazz",
+        "blues"
       ],
       "cost": "£12.50",
       "url": "https://www.greennote.co.uk/production/the-whippoorwills/",
@@ -7233,7 +7218,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-19 20:00",
       "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz · hot jazz",
+      "genresLabel": "New Orleans / trad jazz · hot jazz · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7247,7 +7232,8 @@ window.GIG_DATA = {
       "venue": "Oriole Bar",
       "area": "Covent Garden, London",
       "genres": [
-        "swing"
+        "swing",
+        "blues"
       ],
       "cost": "£12 cover; late set from 22:30 £6",
       "url": "https://www.oriolebar.com/oriole-music/aisha-khan-trio-oriole",
@@ -7260,7 +7246,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-19 20:00",
       "travel": "Central London",
-      "genresLabel": "swing",
+      "genresLabel": "swing · blues",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7440,20 +7426,20 @@ window.GIG_DATA = {
       "venue": "Jamboree",
       "area": "King's Cross, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "Free",
       "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-39/",
       "source": "Jamboree",
       "confidence": "confirmed",
-      "note": "Free traditional Irish and Celtic session; trad Irish is mapped to the nearest canonical old-time tag.",
+      "note": "Free traditional Irish and Celtic session;",
       "weekday": "Tue",
       "dateLabel": "Tue 22 Dec",
       "monthKey": "2026-12",
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-22 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7468,7 +7454,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-96/",
@@ -7481,7 +7469,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-23 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7524,7 +7512,9 @@ window.GIG_DATA = {
       "genres": [
         "New Orleans / trad jazz",
         "hot jazz",
-        "swing"
+        "swing",
+        "blues",
+        "ragtime"
       ],
       "cost": "Check venue",
       "url": "https://www.spiceoflifesoho.com/events/",
@@ -7537,7 +7527,7 @@ window.GIG_DATA = {
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-28 12:30",
       "travel": "Central London",
-      "genresLabel": "New Orleans / trad jazz · hot jazz · swing",
+      "genresLabel": "New Orleans / trad jazz · hot jazz · swing · blues · ragtime",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7578,20 +7568,21 @@ window.GIG_DATA = {
       "venue": "Cecil Sharp House",
       "area": "Camden, London",
       "genres": [
-        "old-time"
+        "English folk",
+        "folk dance / ceilidh"
       ],
       "cost": "£55.50 adults / £45.50 under-30s; advance only",
       "url": "https://www.efdss.org/whats-on/27-dances/16010-31-12-26-nyeceilidh",
       "source": "EFDSS official event and Spektrix instance",
       "confidence": "confirmed",
-      "note": "Named live traditional dance band with gender-free calling; doors 20:00, dancing 20:30-00:30. English ceilidh mapped to canonical old-time. Recommended over 10; primarily a date-night option. Plan the New Year journey home.",
+      "note": "Named live traditional dance band with gender-free calling; doors 20:00, dancing 20:30-00:30. Recommended over 10; primarily a date-night option. Plan the New Year journey home.",
       "weekday": "Thu",
       "dateLabel": "Thu 31 Dec",
       "monthKey": "2026-12",
       "monthLabel": "Dec 2026",
       "sortKey": "2026-12-31 20:30",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk · folk dance / ceilidh",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7632,7 +7623,7 @@ window.GIG_DATA = {
       "venue": "The Cabbage Patch (Patchworks)",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "folk"
       ],
       "cost": "£5",
       "url": "https://www.twickfolk.co.uk/events/",
@@ -7645,7 +7636,7 @@ window.GIG_DATA = {
       "monthLabel": "Jan 2027",
       "sortKey": "2027-01-03 19:45",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7660,7 +7651,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-97/",
@@ -7673,7 +7666,7 @@ window.GIG_DATA = {
       "monthLabel": "Jan 2027",
       "sortKey": "2027-01-06 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7715,20 +7708,20 @@ window.GIG_DATA = {
       "venue": "TwickFolk at The Cabbage Patch",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "British folk"
       ],
       "cost": "£14 + 10% fee / £17 door",
       "url": "https://wegottickets.com/f/24391",
       "source": "TwickFolk official WeGotTickets organiser and event",
       "confidence": "confirmed",
-      "note": "Acoustic jigs, reels and dance tunes rooted in the British Isles, with wider influences.  Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory.",
+      "note": "Acoustic jigs, reels and dance tunes rooted in the British Isles, with wider influences. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory.",
       "weekday": "Sun",
       "dateLabel": "Sun 10 Jan",
       "monthKey": "2027-01",
       "monthLabel": "Jan 2027",
       "sortKey": "2027-01-10 20:00",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "British folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7771,7 +7764,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-98/",
@@ -7784,7 +7779,7 @@ window.GIG_DATA = {
       "monthLabel": "Jan 2027",
       "sortKey": "2027-01-13 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7826,7 +7821,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-99/",
@@ -7839,7 +7836,7 @@ window.GIG_DATA = {
       "monthLabel": "Jan 2027",
       "sortKey": "2027-01-20 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7881,7 +7878,9 @@ window.GIG_DATA = {
       "area": "King's Cross, London",
       "genres": [
         "swing",
-        "old-school country"
+        "old-school country",
+        "blues",
+        "gospel"
       ],
       "cost": "Free / donations",
       "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-100/",
@@ -7894,7 +7893,7 @@ window.GIG_DATA = {
       "monthLabel": "Jan 2027",
       "sortKey": "2027-01-27 15:00",
       "travel": "Central London",
-      "genresLabel": "swing · old-school country",
+      "genresLabel": "swing · old-school country · blues · gospel",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7935,7 +7934,7 @@ window.GIG_DATA = {
       "venue": "The Cabbage Patch (Patchworks)",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "folk"
       ],
       "cost": "£5",
       "url": "https://www.twickfolk.co.uk/events/",
@@ -7948,7 +7947,7 @@ window.GIG_DATA = {
       "monthLabel": "Jan 2027",
       "sortKey": "2027-01-31 19:45",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -7989,20 +7988,20 @@ window.GIG_DATA = {
       "venue": "TwickFolk at The Cabbage Patch",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "British folk"
       ],
       "cost": "£12 + 10% fee / £15 door",
       "url": "https://wegottickets.com/f/26965",
       "source": "TwickFolk official WeGotTickets organiser and event",
       "confidence": "confirmed",
-      "note": "Traditional British ballads and folk standards are central to this acoustic duo.  Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory.",
+      "note": "Traditional British ballads and folk standards are central to this acoustic duo. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory.",
       "weekday": "Sun",
       "dateLabel": "Sun 21 Feb",
       "monthKey": "2027-02",
       "monthLabel": "Feb 2027",
       "sortKey": "2027-02-21 20:00",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "British folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -8044,7 +8043,7 @@ window.GIG_DATA = {
       "venue": "The Cabbage Patch (Patchworks)",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "folk"
       ],
       "cost": "£5",
       "url": "https://www.twickfolk.co.uk/events/",
@@ -8057,7 +8056,7 @@ window.GIG_DATA = {
       "monthLabel": "Feb 2027",
       "sortKey": "2027-02-28 19:45",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -8071,20 +8070,20 @@ window.GIG_DATA = {
       "venue": "Irish Cultural Centre",
       "area": "Hammersmith, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "£22 / £20 concessions",
       "url": "https://irishculturalcentre.co.uk/event/mcgoldrick-mccusker-doyle-tour-2027/",
       "source": "Irish Cultural Centre",
       "confidence": "confirmed",
-      "note": "Official calendar now lists both 5 and 12 March separately. Irish traditional songs and tunes; mapped to old-time. Doors 19:30.",
+      "note": "Official calendar now lists both 5 and 12 March separately. Doors 19:30.",
       "weekday": "Fri",
       "dateLabel": "Fri 5 Mar",
       "monthKey": "2027-03",
       "monthLabel": "Mar 2027",
       "sortKey": "2027-03-05 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -8127,20 +8126,20 @@ window.GIG_DATA = {
       "venue": "Irish Cultural Centre",
       "area": "Hammersmith, London",
       "genres": [
-        "old-time"
+        "Irish trad"
       ],
       "cost": "",
       "url": "https://irishculturalcentre.co.uk/whats-on/",
       "source": "Irish Cultural Centre",
       "confidence": "confirmed",
-      "note": "Far-ahead flagship folk trio with strong traditional tune and song credentials. Traditional Irish/folk is tagged to the closest permitted canonical roots category.",
+      "note": "Far-ahead flagship folk trio with strong traditional tune and song credentials.",
       "weekday": "Fri",
       "dateLabel": "Fri 12 Mar",
       "monthKey": "2027-03",
       "monthLabel": "Mar 2027",
       "sortKey": "2027-03-12 20:00",
       "travel": "Central London",
-      "genresLabel": "old-time",
+      "genresLabel": "Irish trad",
       "isPast": false,
       "isMultiDay": false
     },
@@ -8182,7 +8181,7 @@ window.GIG_DATA = {
       "venue": "The Cabbage Patch (Patchworks)",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "folk"
       ],
       "cost": "£5",
       "url": "https://www.twickfolk.co.uk/events/",
@@ -8195,7 +8194,7 @@ window.GIG_DATA = {
       "monthLabel": "Apr 2027",
       "sortKey": "2027-04-04 19:45",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -8209,20 +8208,20 @@ window.GIG_DATA = {
       "venue": "TwickFolk at The Cabbage Patch",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "£14 + 10% fee / £17 door",
       "url": "https://wegottickets.com/f/27959",
       "source": "TwickFolk official WeGotTickets organiser and event",
       "confidence": "confirmed",
-      "note": "English traditional singing, harmony and melodeon/concertina/mandolin; support from Jo Girdlestone & Malcolm MacWatt.  Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory.",
+      "note": "English traditional singing, harmony and melodeon/concertina/mandolin; support from Jo Girdlestone & Malcolm MacWatt. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory.",
       "weekday": "Sun",
       "dateLabel": "Sun 18 Apr",
       "monthKey": "2027-04",
       "monthLabel": "Apr 2027",
       "sortKey": "2027-04-18 20:00",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -8236,20 +8235,20 @@ window.GIG_DATA = {
       "venue": "TwickFolk at The Cabbage Patch",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "English folk"
       ],
       "cost": "£15 + 10% fee / £18 door",
       "url": "https://wegottickets.com/f/28337",
       "source": "TwickFolk official WeGotTickets organiser and event",
       "confidence": "confirmed",
-      "note": "English-trad instrumental trio on cittern, concertina, fiddle and accordion; includes newly composed material.  Traditional folk mapped to old-time; easy Twickenham trip and strong fit with positive TwickFolk feedback. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory.",
+      "note": "English-trad instrumental trio on cittern, concertina, fiddle and accordion; includes newly composed material. Doors 19:45; music start 20:00 explicitly confirmed by the current organiser ticket inventory.",
       "weekday": "Sun",
       "dateLabel": "Sun 25 Apr",
       "monthKey": "2027-04",
       "monthLabel": "Apr 2027",
       "sortKey": "2027-04-25 20:00",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk",
       "isPast": false,
       "isMultiDay": false
     },
@@ -8263,20 +8262,22 @@ window.GIG_DATA = {
       "venue": "TwickFolk at The Cabbage Patch",
       "area": "Twickenham",
       "genres": [
-        "old-time"
+        "English folk",
+        "Americana",
+        "blues"
       ],
       "cost": "£18 + £1.80 booking fee",
       "url": "https://wegottickets.com/f/29522",
       "source": "TwickFolk official WeGotTickets event",
       "confidence": "confirmed",
-      "note": "English traditional song, American folk and acoustic blues from a leading fingerstyle guitarist and banjo player. Traditional repertoire mapped to old-time. Strong nearby folk booking supported by positive TwickFolk feedback; doors 19:45, music 20:00. All ages.",
+      "note": "English traditional song, American folk and acoustic blues from a leading fingerstyle guitarist and banjo player. Strong nearby folk booking supported by positive TwickFolk feedback; doors 19:45, music 20:00. All ages.",
       "weekday": "Sun",
       "dateLabel": "Sun 9 May",
       "monthKey": "2027-05",
       "monthLabel": "May 2027",
       "sortKey": "2027-05-09 20:00",
       "travel": "Local (SW London)",
-      "genresLabel": "old-time",
+      "genresLabel": "English folk · Americana · blues",
       "isPast": false,
       "isMultiDay": false
     }

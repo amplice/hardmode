@@ -9,6 +9,7 @@ const srcPath = new URL("gig-data.json", root);
 const jsPath = new URL("gig-data.js", root);
 const icsPath = new URL("gigs.ics", root);
 const htmlPath = new URL("gigs.html", root);
+const preferencesPath = new URL("updater/gig-preferences.json", root);
 
 const today = process.argv.includes("--date")
   ? process.argv[process.argv.indexOf("--date") + 1]
@@ -20,6 +21,8 @@ const today = process.argv.includes("--date")
     }).format(new Date());
 
 const data = JSON.parse(fs.readFileSync(srcPath, "utf8"));
+const preferences = JSON.parse(fs.readFileSync(preferencesPath, "utf8"));
+const allowedGenres = new Set(preferences.canonicalGenres || []);
 
 if (!fs.existsSync(htmlPath)) throw new Error("Missing gigs.html");
 if (!fs.existsSync(jsPath)) throw new Error("Missing gig-data.js; run npm run gig:generate");
@@ -50,6 +53,9 @@ for (const g of data.gigs || []) {
   if (!g.venue) throw new Error(`Gig ${g.id} missing venue`);
   if (!g.title && !g.artist) throw new Error(`Gig ${g.id} missing title/artist`);
   if (!Array.isArray(g.genres) || g.genres.length === 0) throw new Error(`Gig ${g.id} missing genres`);
+  for (const genre of g.genres) {
+    if (!allowedGenres.has(genre)) throw new Error(`Gig ${g.id} has unknown genre: ${genre}`);
+  }
   const key = `${g.date}|${g.time || ""}|${(g.title || g.artist || "").toLowerCase()}|${(g.venue || "").toLowerCase()}`;
   seen.set(key, (seen.get(key) || 0) + 1);
   if ((g.endDate || g.date) < today) past += 1;

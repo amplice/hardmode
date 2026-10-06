@@ -1233,3 +1233,14 @@ A parallel early-jazz search surfaced **Sol's Hot Town Stompers at Morocco Bound
 **Validation:** ran `npm run gig:generate` then `npm run gig:validate` successfully in a fresh temporary copy containing the exact updated gig-data.json, package.json, repository scripts and gigs.html. This preserves the maintenance-only edit allowlist; publishing must regenerate JS/ICS. Validation: **299 gigs, 68 watchlist, 10 genres, zero pastFinished, zero duplicateKeys**, latest 9 May 2027. Extra checks passed for required fields, canonical genres, unique ids, artist/date/time/venue duplicates, metadata counts and preservation of retained objects. Only gig-data.json, updater/gig-sources.json and this log changed.
 
 **Next:** resolve the Morocco Bound primary ticket/branch and Old Barn venue conflict; watch Lamb's November additions, later Nightjar public dates and Ewan's independent venue bookings; use Riverhouse event JSON-LD and live Oriole JSON rather than search-cache dates. Retry DICE before depending on its previously working API. Continue strict filtering at Half Moon, Eel Pie and Magic Garden.
+
+
+---
+
+## 2026-10-06 - direct genre taxonomy
+
+Replaced the narrow proxy taxonomy with direct, readable genre labels. English folk, Irish trad, Scottish folk, British folk, folk dance / ceilidh, Americana, Balkan / klezmer, French chanson, blues, country blues, ragtime, gospel, rhythm and blues, balfolk and roots jazz are now first-class genres. Genuine Appalachian old-time recordings and performances remain labelled old-time; the label is no longer used as a substitute for unrelated English or Irish music.
+
+Reclassified the full current radar and removed proxy-language from event notes. Examples include The Wilderness Yet as Irish trad / English folk, Lost in the Loop as Irish / Scottish / English folk and ceilidh, Dunajska Kapelye and Tropanka as Balkan / klezmer, Les Boum as French chanson, and Porch Swing Blues as country blues / ragtime / gospel. Updated source metadata, the update prompt, preferences and the page's genre recognizer so future updates use the same vocabulary. The validator now rejects genres outside the configured canonical list.
+
+Pruned five finished rows while regenerating the radar. Validation passed with **294 upcoming gigs, 68 watchlist entries, 26 represented genres, zero pastFinished and zero duplicateKeys**, latest date **9 May 2027**.
