@@ -38,13 +38,13 @@ window.GIG_DATA = {
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-10-06",
+    "dateBasis": "2026-10-07",
     "counts": {
       "total": 294,
-      "upcoming": 294,
+      "upcoming": 291,
       "watchlist": 68
     },
-    "generated": "2026-10-06T15:01:24.071Z",
+    "generated": "2026-10-07T07:19:31.581Z",
     "genres": [
       "Americana",
       "Balkan / klezmer",
@@ -104,7 +104,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-06 16:00-18:30",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -131,7 +131,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-06 19:30",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -159,7 +159,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-06 20:30",
       "travel": "Central London",
       "genresLabel": "Irish trad · Scottish folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

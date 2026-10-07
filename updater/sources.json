@@ -902,7 +902,11 @@
             "Easy-train family theatre with explicit toddler admission; open each show detail for dates, start times and age guidance.",
             "The Dinosaur That Pooped explicitly welcomes all ages despite recommended 3+; do not assume the same for ballet or other shows."
           ]
-        }
+        },
+        {"name": "Baby Broadway / Baby Gospel / Baby Knees Up", "url": "https://babybroadway.co.uk/mec-category/south-west-london/", "checkFor": ["Wimbledon and easy-train early-years music; verify individual dates, ages and prices", "Check promoter and venue start times separately; December Clapham title/time table conflict remains unresolved"]},
+        {"name": "Imperial War Museum London family festival programme", "url": "https://www.iwm.org.uk/events/big-story-festival", "checkFor": ["Free all-ages daytime music near Waterloo", "Inspect each festival day separately; 25 and 26 October 2026 both have Tom Carradine singalongs; reject school-age workshops"]},
+        {"name": "The Mitre Hampton Court public seasonal events", "url": "https://mitrehamptoncourt.com/whats-on/", "checkFor": ["Free public Christmas market and lights switch-on; index supplies explicit year", "Only family-relevant music/seasonal events; skip wellness, generic dining and cocktails"]}
+
     ],
     "searchQueries":  [
         "Kingston Music Service public open rehearsals 2026 2027 All Saints",
@@ -1021,6 +1025,11 @@
                          "Surbiton Partnership Lamb October 2026 Elsie Franklin Back of a Length Les Boum",
         "site:squiresgardencentres.co.uk Long Ditton Create Grow Christmas 2026 dates",
         "John Lewis Kingston Santa Tea Party 2026 session dates times",
-        "Morden Hall Park African Djembe drumming ages 2 6 October 2026"
+        "Morden Hall Park African Djembe drumming ages 2 6 October 2026",
+        "Baby Broadway Baby Gospel Wimbledon family concerts 2026 2027",
+        "Imperial War Museum Big Story Festival family music each day 2026",
+        "Mitre Hampton Court public Christmas market 2026",
+        "RNLI Teddington family public events 2026 2027"
+
     ]
 }
