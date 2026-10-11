@@ -390,7 +390,27 @@
       "note": "NEW 2 Oct 2026: explicit 2026/2027 dated programme at Brewhouse & Kitchen, 2a Corsica Street. Homepage supplies 20:00 start, 19:30 doors and public admission. Productive for English traditional song, dance tunes and Appalachian old-time; filter generic songwriting, folk-rock and comedy. Direct HTML works when web extraction returns 403."
     },
     {"name": "Fiddle Paradiddle Pop-up Ceilidh", "area": "Balham, London", "genres": ["folk dance / ceilidh", "Scottish folk"], "url": "https://popupceilidh.co.uk/", "note": "NEW 8 Oct 2026: named live band and callers, with individually dated pages for The Bedford and St Thomas Church in Balham. Follow each event ticket link to DesignMyNight for admission and first-dance times; distinguish doors from dancing. Do not extrapolate recurrence. Balham via Clapham Junction is the priority; apply a stricter travel threshold to Reading and other branches."},
-    {"name": "Jazz Caf? POSK", "area": "Hammersmith, London", "genres": ["gypsy jazz", "Balkan / klezmer", "swing"], "url": "https://posk.org/en/events/", "note": "NEW 8 Oct 2026: Polish cultural centre programme and official ticket organiser https://www.eventbrite.co.uk/o/jazz-cafe-posk-75916550803 . Productive for 23 Oct Jakub Cywi?ski with Piotr Jordan, Zac Gvi and Charlie Wheatley. Much of the programme is modern jazz: include only explicit traditional, gypsy-jazz or Eastern European repertoire. Check the exact date, line-up and King Street venue, not just the word jazz."}
+    {"name": "Jazz Caf? POSK", "area": "Hammersmith, London", "genres": ["gypsy jazz", "Balkan / klezmer", "swing"], "url": "https://posk.org/en/events/", "note": "NEW 8 Oct 2026: Polish cultural centre programme and official ticket organiser https://www.eventbrite.co.uk/o/jazz-cafe-posk-75916550803 . Productive for 23 Oct Jakub Cywi?ski with Piotr Jordan, Zac Gvi and Charlie Wheatley. Much of the programme is modern jazz: include only explicit traditional, gypsy-jazz or Eastern European repertoire. Check the exact date, line-up and King Street venue, not just the word jazz."},
+    {
+      "name": "London Balfolk - named-band Grand Bals",
+      "area": "Hampstead, London",
+      "genres": [
+        "balfolk",
+        "folk dance / ceilidh"
+      ],
+      "url": "https://londonbalfolk.org.uk/",
+      "note": "NEW 11 Oct 2026: organiser lists exact-year Grand Bals, with Fienta tickets and separate workshop/live-set times. Productive for Rowan Rheingans + Duo Also on 28 Oct and Naragonia on 5 Dec at Heath Street Baptist Church. Regular Bal Etoile sessions mix recorded music and live participation: do not assume a concert band or infer recurrence."
+    },
+    {
+      "name": "606 Club - selective vintage swing/acoustic country",
+      "area": "Chelsea, London",
+      "genres": [
+        "swing",
+        "old-school country"
+      ],
+      "url": "https://www.606club.co.uk/events/",
+      "note": "NEW 11 Oct 2026: Clock Winders Sunday lunch is an explicit vintage swing/acoustic-country match. Most of the calendar is modern jazz, soul or fusion and must be filtered strictly. Check exact event pages, music charge and food policy; Imperial Wharf via Clapham Junction makes this relatively easy from Surbiton."
+    }
   ],
   "closedOrDefunct": [
     { "name": "Le QuecumBar & Brasserie", "note": "PERMANENTLY CLOSED since April 2022 after 19 years. Was 'the' London gypsy-jazz venue — do NOT re-add or chase for listings." },
@@ -425,7 +445,22 @@
     { "name": "Shrewsbury Django Fest", "url": "https://www.shrewsburydjangofest.co.uk/", "note": "NEW 2026-09-02: annual specialist gypsy-jazz weekend whose homepage and ticket page expose current-year dates, artists and weekend price. The schedule page can lag a year, so do not borrow daily times until it is refreshed; far/overnight threshold applies." },
     { "name": "Irish Music and Dance in London tickets", "url": "https://imdl.giftpro.co.uk/", "note": "Promoter-owned traditional Irish concerts and Return to London Town ceili tickets. Exact date/year, named musicians and venue changes are explicit; use the Irish trad canonical label and stricter travel filter for north London." },
     {"name": "Jazz in The Spa - priority-act tour cross-check", "url": "https://www.jazzinthespa.co.uk/", "note": "Boston Spa Village Hall, West Yorkshire. Official programme explicitly pairs artists with month/year and date. Productive on 5 Oct 2026: Ewan Bleach and Cable Street Rag Band, 7 Nov at 20:00, absent from the artist diary. Far outside normal radius: use for mandatory priority-act public dates with an overnight-travel note; do not import the whole programme."},
-    {"name": "Fever - exact roots gig ticket pages", "url": "https://feverup.com/en/london", "note": "NEW 8 Oct 2026: exact bookable listing https://feverup.com/m/791290 resolved Sol?s Hot Town Stompers at Morocco Bound Bermondsey on 22 Nov. Useful alternative when DICE or a venue embed is thin; verify the year, selected date, named band and venue branch against organiser context. Exclude candlelight tributes, generic jazz experiences and algorithmic similar-event suggestions."}
+    {"name": "Fever - exact roots gig ticket pages", "url": "https://feverup.com/en/london", "note": "NEW 8 Oct 2026: exact bookable listing https://feverup.com/m/791290 resolved Sol?s Hot Town Stompers at Morocco Bound Bermondsey on 22 Nov. Useful alternative when DICE or a venue embed is thin; verify the year, selected date, named band and venue branch against organiser context. Exclude candlelight tributes, generic jazz experiences and algorithmic similar-event suggestions."},
+    {
+      "name": "Music at Marigolds - priority jug/trad bookings",
+      "url": "https://musicatmarigolds.co.uk/pages/gigs.htm",
+      "note": "NEW 11 Oct 2026: explicit 2027 programme confirms FoBo Jug Band on 7 May. Current address from /pages/contactus.htm is Burnt Mill Snooker and Social Club, Edinburgh Gate, Harlow CM20 2DQ; older cricket-club addresses are stale. Frameset site; inspect programme directly. Do not extrapolate start times/prices from other gigs. Longer trip requires priority artist or especially strong trad match; filter modern jazz and electric blues."
+    },
+    {
+      "name": "The Sassenachs - public ceilidh diary",
+      "url": "https://www.ceilidh.london/see-the-sassenachs-ceilidh-band-live",
+      "note": "NEW 11 Oct 2026: band-owned dates identify the live band where London Ceilidh Club ticket templates say band TBA. Cross-check each linked organiser ticket for date, venue, price and start. Four exact dates added. Big Penny Social 20-25 Jan remains a range on watchlist; do not infer daily gigs. Lochnagar also publishes a useful independent artist diary at https://www.lochnagar.band/new-page-2 ."
+    },
+    {
+      "name": "Gigantic - priority artist support billing",
+      "url": "https://www.gigantic.com/dom-glynn-tickets",
+      "note": "NEW 11 Oct 2026: artist listing and individual ticket pages explicitly name Dom Glynn supporting Jake Vaadeland on 19/21/22 Oct in Birmingham/Bristol/Brighton. Check Performing artists, distinguish doors from support set, and do not turn solo billing into His Sunday Best. Priority UK dates may need overnight travel notes; avoid importing an entire unrelated headliner tour."
+    }
   ],
   "searchQueries": [
     "site:efdss.org \"The song that shaped me\" concert",
@@ -531,6 +566,11 @@
     "site:posk.org \"gypsy\" \"jazz\"",
     "site:eventbrite.co.uk \"Jazz Caf? POSK\" \"Piotr Jordan\"",
     "site:feverup.com \"Morocco Bound\" \"New Orleans\"",
-    "site:soas.ac.uk concert traditional folk"
+    "site:soas.ac.uk concert traditional folk",
+    "\"FoBo Jug Band\" \"Marigolds\" 2027",
+    "site:gigantic.com \"Dom Glynn\" tickets",
+    "site:londonbalfolk.org.uk \"Grand Bal\"",
+    "site:ceilidh.london \"Public\" \"2027\"",
+    "site:606club.co.uk \"swing\" \"country\""
   ]
 }
