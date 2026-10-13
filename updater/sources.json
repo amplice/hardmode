@@ -905,7 +905,47 @@
         },
         {"name": "Baby Broadway / Baby Gospel / Baby Knees Up", "url": "https://babybroadway.co.uk/mec-category/south-west-london/", "checkFor": ["Wimbledon and easy-train early-years music; verify individual dates, ages and prices", "Check promoter and venue start times separately; December Clapham title/time table conflict remains unresolved"]},
         {"name": "Imperial War Museum London family festival programme", "url": "https://www.iwm.org.uk/events/big-story-festival", "checkFor": ["Free all-ages daytime music near Waterloo", "Inspect each festival day separately; 25 and 26 October 2026 both have Tom Carradine singalongs; reject school-age workshops"]},
-        {"name": "The Mitre Hampton Court public seasonal events", "url": "https://mitrehamptoncourt.com/whats-on/", "checkFor": ["Free public Christmas market and lights switch-on; index supplies explicit year", "Only family-relevant music/seasonal events; skip wellness, generic dining and cocktails"]}
+        {"name": "The Mitre Hampton Court public seasonal events", "url": "https://mitrehamptoncourt.com/whats-on/", "checkFor": ["Free public Christmas market and lights switch-on; index supplies explicit year", "Only family-relevant music/seasonal events; skip wellness, generic dining and cocktails"]},
+    {
+      "name": "Little Angel Theatre toddler productions",
+      "url": "https://www.littleangeltheatre.com/whats-on/",
+      "checkFor": [
+        "High-quality ages 2-5 puppetry worth the destination trip",
+        "Use live programme and exact year; search indexes can retain previous runs; reject older-child workshops"
+      ]
+    },
+    {
+      "name": "Kingston Third Age Orchestra public concerts",
+      "url": "https://kingstonthirdageorchestra.org.uk/concerts/",
+      "checkFor": [
+        "Public afternoon classical concerts at St Mark's Surbiton",
+        "Distinguish public performances from age-specific participation; check ticket prices when published"
+      ]
+    },
+    {
+      "name": "Hampton Kempton Waterworks Railway special events",
+      "url": "https://hamptonkemptonrailway.org.uk/special-events-2026/",
+      "checkFor": [
+        "Family steam weekends and toddler-friendly seasonal train rides",
+        "Read each dated programme and booking options; museum tickets are separate; replace annual URL when the next programme appears"
+      ]
+    },
+    {
+      "name": "606 Club Sunday lunchtime music",
+      "url": "https://www.606club.co.uk/events/",
+      "checkFor": [
+        "Daytime vintage swing, acoustic country and jazz with confirmed child admission",
+        "Check the visiting FAQ, music charge, dining requirements and no-highchair constraint; skip generic evening jazz"
+      ]
+    },
+    {
+      "name": "Creative Youth FUSEBOX public family performances",
+      "url": "https://creativeyouthcharity.org/whats-on/",
+      "checkFor": [
+        "Kingston toddler and preschool theatre, including public Christmas Troll performances",
+        "Separate public dates from school/nursery bookings; avoid school-age-only workshops"
+      ]
+    }
 
     ],
     "searchQueries":  [
@@ -1029,7 +1069,12 @@
         "Baby Broadway Baby Gospel Wimbledon family concerts 2026 2027",
         "Imperial War Museum Big Story Festival family music each day 2026",
         "Mitre Hampton Court public Christmas market 2026",
-        "RNLI Teddington family public events 2026 2027"
+        "RNLI Teddington family public events 2026 2027",
+    "Little Angel Theatre Pip Posy toddler puppetry 2026 2027",
+    "Kingston Third Age Orchestra Surbiton concert December 2026",
+    "Hampton Kempton Waterworks Railway special events 2026 Christmas",
+    "606 Club Sunday lunchtime swing jazz children 2026",
+    "Creative Youth FUSEBOX Kingston toddler Christmas Troll 2026"
 
     ]
 }
