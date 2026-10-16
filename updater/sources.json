@@ -945,8 +945,31 @@
         "Kingston toddler and preschool theatre, including public Christmas Troll performances",
         "Separate public dates from school/nursery bookings; avoid school-age-only workshops"
       ]
-    }
-
+    },
+        {
+          "name": "Orleans House Gallery early years and seasonal events",
+          "url": "https://orleanshousegallery.org/whats-on/calendar/",
+          "checkFor": [
+            "Ages 2-5 Play: Make: Art, split each explicitly published fortnightly date",
+            "Free seasonal fairs with daytime choir performances; inspect both days and avoid assuming named lineups"
+          ]
+        },
+        {
+          "name": "Long Nose Puppets official touring diary",
+          "url": "https://www.longnosepuppets.com/tour-dates.html",
+          "checkFor": [
+            "High-quality toddler puppetry at reachable venues; verify prices and times with the venue",
+            "Kingston Village Hall in Lewes is not Kingston upon Thames; do not transpose locations"
+          ]
+        },
+        {
+          "name": "Southbank OAE toddler concert programme",
+          "url": "https://www.southbankcentre.co.uk/bio/orchestra-of-the-age-of-enlightenment/",
+          "checkFor": [
+            "Ages 2-5 OAE TOTS and FUNharmonics companion workshops",
+            "Read individual date ticket sessions; keep unresolved times/prices watchlisted rather than copying another concert"
+          ]
+        }
     ],
     "searchQueries":  [
         "Kingston Music Service public open rehearsals 2026 2027 All Saints",
@@ -1074,7 +1097,10 @@
     "Kingston Third Age Orchestra Surbiton concert December 2026",
     "Hampton Kempton Waterworks Railway special events 2026 Christmas",
     "606 Club Sunday lunchtime swing jazz children 2026",
-    "Creative Youth FUSEBOX Kingston toddler Christmas Troll 2026"
-
+    "Creative Youth FUSEBOX Kingston toddler Christmas Troll 2026",
+        "Orleans House Gallery Play Make Art 2026 2027 ages 2 5 dates",
+        "Long Nose Puppets Penguin Little Lyric 2026 2027 toddler tour dates",
+        "Southbank OAE TOTS 2027 individual session times tickets",
+        "Teddington Together Lights Up 2026 programme times"
     ]
 }

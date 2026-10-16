@@ -38,13 +38,13 @@ window.GIG_DATA = {
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-10-13",
+    "dateBasis": "2026-10-16",
     "counts": {
       "total": 303,
-      "upcoming": 294,
+      "upcoming": 279,
       "watchlist": 69
     },
-    "generated": "2026-10-13T07:24:44.307Z",
+    "generated": "2026-10-16T07:23:49.193Z",
     "genres": [
       "Americana",
       "Balkan / klezmer",
@@ -355,7 +355,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-13 16:00-18:30",
       "travel": "Central London",
       "genresLabel": "Americana · swing · blues",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -383,7 +383,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-13 19:45",
       "travel": "Local (SW London)",
       "genresLabel": "Irish trad · English folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -411,7 +411,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-13 20:00",
       "travel": "Central London",
       "genresLabel": "balfolk · folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -438,7 +438,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-13 20:30",
       "travel": "Central London",
       "genresLabel": "Irish trad",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -465,7 +465,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-13 21:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -493,7 +493,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-14 15:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -522,7 +522,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-14 16:00-18:30",
       "travel": "Central London",
       "genresLabel": "cajun · folk · roots jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -550,7 +550,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-14 19:30",
       "travel": "Central London",
       "genresLabel": "honky tonk · old-school country",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -579,7 +579,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-14 20:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz · blues · rhythm and blues",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -607,7 +607,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-15 15:00-17:30",
       "travel": "Central London",
       "genresLabel": "blues · hot jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -634,7 +634,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-15 19:30",
       "travel": "Central London",
       "genresLabel": "gypsy jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -663,7 +663,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-15 19:30",
       "travel": "Local (SW London)",
       "genresLabel": "country blues · ragtime · hot jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -690,7 +690,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-15 20:00",
       "travel": "Central London",
       "genresLabel": "English folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -718,7 +718,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-15 20:30",
       "travel": "Central London",
       "genresLabel": "hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -745,7 +745,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-15 21:00",
       "travel": "Central London",
       "genresLabel": "old-time",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
