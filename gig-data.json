@@ -3,7 +3,7 @@
     "title": "Gig Radar",
     "description": "Curated radar of traditional jazz, folk, Americana and related roots music around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-10-11",
+    "updated": "2026-10-17",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -37,105 +37,12 @@
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-10-11",
+    "dateBasis": "2026-10-17",
     "counts": {
-      "upcoming": 303
+      "upcoming": 295
     }
   },
   "gigs": [
-    {
-      "id": "g20261013-wildernessyet-cornerhouse",
-      "date": "2026-10-13",
-      "endDate": null,
-      "time": "19:45",
-      "title": "Folk@thecornerHOUSE - The Wilderness Yet",
-      "artist": "The Wilderness Yet",
-      "venue": "The cornerHOUSE",
-      "area": "Surbiton",
-      "genres": [
-        "Irish trad",
-        "English folk"
-      ],
-      "cost": "£18; check booking fees",
-      "url": "https://www.thecornerhouse.org/event-details/folk-thecornerhouse-the-wilderness-yet",
-      "source": "The cornerHOUSE official event / The Wilderness Yet official 2026 tour",
-      "confidence": "confirmed",
-      "note": "Very local traditional fiddle, flute/guitar and harmony-song trio, with traditional and original repertoire. Venue detail page now explicitly confirms 13 October 2026, 19:45-22:30, resolving the earlier conflicting local times."
-    },
-    {
-      "id": "g20261012-jackman",
-      "date": "2026-10-12",
-      "endDate": null,
-      "time": "13:30",
-      "title": "Paula Jackman's Jazz Masters",
-      "artist": "Paula Jackman's Jazz Masters",
-      "venue": "Epsom Hot Jazz Club (St Joseph's Church Hall)",
-      "area": "Epsom, Surrey",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "?15 general / ?10 U3A members",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/epsom-hot-jazz-club-new-venue",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Trad clarinettist; Monday afternoon, doors 13:00 — short direct train from Surbiton."
-    },
-    {
-      "id": "g20261014-johnmiller",
-      "date": "2026-10-14",
-      "endDate": null,
-      "time": "19:30",
-      "title": "What's Cookin' presents John Miller and his Country Casuals + Grace Under Fire",
-      "artist": "John Miller and his Country Casuals + Grace Under Fire",
-      "venue": "What's Cookin' (Leytonstone Social Club)",
-      "area": "Leytonstone, London",
-      "genres": [
-        "honky tonk",
-        "old-school country"
-      ],
-      "cost": "£12",
-      "url": "https://whatscookin.co.uk/shows/john-miller-and-his-country-casuals",
-      "source": "whatscookin.co.uk",
-      "confidence": "confirmed",
-      "note": "Billed 'the purest country singer on these islands'; support Grace Under Fire is Aisha Khan's vintage-country/rockabilly outfit — squarely on-brief."
-    },
-    {
-      "id": "g20261015-gypsydynamite",
-      "date": "2026-10-15",
-      "endDate": null,
-      "time": "19:30",
-      "title": "Gypsy Dynamite: 15th Anniversary",
-      "artist": "Gypsy Dynamite",
-      "venue": "Toulouse Lautrec Jazz Club",
-      "area": "Kennington, London",
-      "genres": [
-        "gypsy jazz"
-      ],
-      "cost": "",
-      "url": "https://toulouselautrec.co.uk/whats-on/",
-      "source": "Toulouse Lautrec what's-on",
-      "confidence": "confirmed",
-      "note": "Venue-tagged Gypsy Jazz — anniversary show from the guitar duo (also at Oriole Bar 30 Jul). Time assumed evening; confirm on the event page."
-    },
-    {
-      "id": "g20261016-dftcbedford",
-      "date": "2026-10-16",
-      "endDate": null,
-      "time": "19:30",
-      "title": "Swing That Music — Down for the Count All-Stars",
-      "artist": "Down for the Count All-Stars",
-      "venue": "The Quarry Theatre at St Luke's",
-      "area": "Bedford",
-      "genres": [
-        "swing",
-        "hot jazz"
-      ],
-      "cost": "",
-      "url": "https://www.downforthecount.co.uk/live-dates/",
-      "source": "downforthecount.co.uk",
-      "confidence": "confirmed",
-      "note": "Day-trip: ~40 min from St Pancras; evening return feasible."
-    },
     {
       "id": "g20261017-sutherland",
       "date": "2026-10-17",
@@ -1232,61 +1139,6 @@
       "note": "1930s Hot Club-rooted gypsy jazz with tight vocal harmonies, plus a Belgian trio playing classic jazz standards."
     },
     {
-      "id": "g20261011-carolinebellbird",
-      "date": "2026-10-11",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Caroline and the Bellbird Boys Duo",
-      "artist": "Caroline and the Bellbird Boys Duo",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://www.barnightjar.com/shoreditch-listings/caroline-loftus-duo-nightjar",
-      "source": "Nightjar Shoreditch official feed",
-      "confidence": "confirmed",
-      "note": "Early-jazz and swing duo date from the official feed."
-    },
-    {
-      "id": "g20261013-dompipkin",
-      "date": "2026-10-13",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Dom Pipkin — New Orleans Piano",
-      "artist": "Dom Pipkin",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "",
-      "url": "https://www.barnightjar.com/shoreditch-listings/dom-pipkin-duo-l5dte-c6fr5",
-      "source": "Nightjar Shoreditch official feed",
-      "confidence": "confirmed",
-      "note": "Authentic New Orleans piano repertoire."
-    },
-    {
-      "id": "g20261016-fallenheroes",
-      "date": "2026-10-16",
-      "endDate": null,
-      "time": "21:00",
-      "title": "The Fallen Heroes",
-      "artist": "The Fallen Heroes",
-      "venue": "Nightjar",
-      "area": "Shoreditch, London",
-      "genres": [
-        "New Orleans / trad jazz"
-      ],
-      "cost": "",
-      "url": "https://www.barnightjar.com/shoreditch-listings/the-fallen-heroes-quartet",
-      "source": "Nightjar Shoreditch official feed",
-      "confidence": "confirmed",
-      "note": "New Orleans-rooted quartet from the official Nightjar feed."
-    },
-    {
       "id": "g20261017-pinstripesuit",
       "date": "2026-10-17",
       "endDate": null,
@@ -1573,26 +1425,6 @@
       "note": "Local five-piece journey from New Orleans jazz dives through Texas honky-tonks to New York speakeasies."
     },
     {
-      "id": "g20261011-oldbarnragtime",
-      "date": "2026-10-11",
-      "endDate": null,
-      "time": "13:00",
-      "title": "Kevin Scott's Old Barn Hall Ragtime Jazz Band",
-      "artist": "Kevin Scott's Old Barn Hall Ragtime Jazz Band",
-      "venue": "Old Barn Hall",
-      "area": "Great Bookham, Surrey",
-      "genres": [
-        "hot jazz",
-        "New Orleans / trad jazz",
-        "ragtime"
-      ],
-      "cost": "£15 cash",
-      "url": "https://www.thejazzguide.co.uk/venues/listing/old-barn-hall",
-      "source": "The Jazz Guide",
-      "confidence": "verify",
-      "note": "Reachable Sunday-lunch trad-jazz club with dancing and light lunches. The rolling page omits the year; weekday/date match 2026, so recheck before travel."
-    },
-    {
       "id": "g20261025-louisianarhythm",
       "date": "2026-10-25",
       "endDate": null,
@@ -1609,24 +1441,6 @@
       "source": "The Jazz Guide",
       "confidence": "verify",
       "note": "Reachable Sunday-lunch trad-jazz club with dancing and light lunches. The rolling page omits the year; weekday/date match 2026, so recheck before travel."
-    },
-    {
-      "id": "g20261011-twickfolksing",
-      "date": "2026-10-11",
-      "endDate": null,
-      "time": "19:45",
-      "title": "Singaround: informal unplugged song circle",
-      "artist": "TwickFolk singers and musicians",
-      "venue": "The Cabbage Patch (Patchworks)",
-      "area": "Twickenham",
-      "genres": [
-        "folk"
-      ],
-      "cost": "£5",
-      "url": "https://www.twickfolk.co.uk/events/",
-      "source": "TwickFolk",
-      "confidence": "confirmed",
-      "note": "Participatory traditional-song circle; closely matches the user's positive include feedback. Doors 19:45; music is normally 20:00."
     },
     {
       "id": "g20261018-jackrutter",
@@ -1791,62 +1605,6 @@
       "note": "Far-ahead flagship folk trio with strong traditional tune and song credentials."
     },
     {
-      "id": "g20261012-djangocafe",
-      "date": "2026-10-12",
-      "endDate": null,
-      "time": "19:30",
-      "title": "Django at the Cafe",
-      "artist": "Ray Rafols, Cornelius Corkery, Sol Grimshaw & Toby Yapp",
-      "venue": "Fidelio Cafe",
-      "area": "Clerkenwell, London",
-      "genres": [
-        "gypsy jazz",
-        "swing"
-      ],
-      "cost": "£25",
-      "url": "https://www.fideliocafe.com/whats-on/django-at-the-cafe-10-august-9nf22-995zy",
-      "source": "Fidelio Cafe",
-      "confidence": "confirmed",
-      "note": "Two intimate sets (19:30 and 20:30) celebrating Django Reinhardt, traditional manouche and hot swing."
-    },
-    {
-      "id": "g20261013-celticsession",
-      "date": "2026-10-13",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Jamboree Celtic Session",
-      "artist": "London trad-session musicians",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "Irish trad"
-      ],
-      "cost": "Free",
-      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-29/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Weekly traditional session led by established musicians and focused mainly on Irish tunes."
-    },
-    {
-      "id": "g20261014-tjjohnsonjamboree",
-      "date": "2026-10-14",
-      "endDate": null,
-      "time": "15:00",
-      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
-      "artist": "TJ Johnson",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "New Orleans / trad jazz",
-        "swing"
-      ],
-      "cost": "Free / donations",
-      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-87/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Weekly Wednesday afternoon roots-jazz session, 15:00–17:00, on Jamboree's primary diary."
-    },
-    {
       "id": "g20261018-papermoon",
       "date": "2026-10-18",
       "endDate": null,
@@ -1993,43 +1751,6 @@
       "source": "Green Note / WeGotTickets",
       "confidence": "confirmed",
       "note": "Django Reinhardt and Stephane Grappelli repertoire with guest gypsy-jazz musicians. Venue ticket page confirms music 20:00, doors 19:30, correcting the earlier 20:30 listing."
-    },
-    {
-      "id": "g20261015-cablestreet",
-      "date": "2026-10-15",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Limehouse de Reverie with The Cable Street Rag Band",
-      "artist": "Ewan Bleach & The Cable Street Rag Band",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "£9–£22 advance / class option",
-      "url": "https://www.jamboreevenue.co.uk/events/live-jazz-and-swing-in-london-2/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Weekly dance night of live 1920s and 1930s jazz and swing; optional taster class from 19:00."
-    },
-    {
-      "id": "g20261015-molskyanger",
-      "date": "2026-10-15",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Bruce Molsky & Darol Anger",
-      "artist": "Bruce Molsky & Darol Anger",
-      "venue": "Chats Palace",
-      "area": "Homerton, London",
-      "genres": [
-        "old-time"
-      ],
-      "cost": "£24 / £17 concessions and members",
-      "url": "https://www.hackneyfolk.club/events/bruce-molsky-darol-anger",
-      "source": "Hackney Folk Club",
-      "confidence": "confirmed",
-      "note": "Rare London pairing of two master American roots fiddlers. Doors and Irish trad session 19:00, floorspots 20:00, headline set 21:00, bar session 22:00."
     },
     {
       "id": "g20261017-erinharpe",
@@ -2355,24 +2076,6 @@
       "source": "Bishopsgate Institute",
       "confidence": "verify",
       "note": "Confirmed live-band Lindy night, 19:00–23:00, with beginner taster and vintage DJs; band name not yet announced."
-    },
-    {
-      "id": "g20261016-dunajska",
-      "date": "2026-10-16",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Dunajska Kapelye",
-      "artist": "Dunajska Kapelye",
-      "venue": "Green Note",
-      "area": "Camden, London",
-      "genres": [
-        "Balkan / klezmer"
-      ],
-      "cost": "?15",
-      "url": "https://www.greennote.co.uk/production/dunajska-kapelye/",
-      "source": "Green Note",
-      "confidence": "confirmed",
-      "note": "Priority-watch act playing traditional Gypsy and Eastern European tunes with jazz improvisation; doors 19:00, music 20:30."
     },
     {
       "id": "g20261024-shirttail",
@@ -3820,46 +3523,6 @@
       "note": "Named New Orleans trad-standards band on the dated dinner roster; some funk influences. Music starts around 20:30. Current roster modified 25 September 2026; check dining/table arrangements."
     },
     {
-      "id": "g20261016-daiprice-aldunn-plaquemine",
-      "date": "2026-10-16",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Dai Price & Al Dente Dunn",
-      "artist": "Dai Price & Al Dunn",
-      "venue": "Plaquemine Lock",
-      "area": "Islington, London",
-      "genres": [
-        "honky tonk",
-        "New Orleans / trad jazz",
-        "blues",
-        "rhythm and blues"
-      ],
-      "cost": "",
-      "url": "https://plaqlock.com/live-music-islington/",
-      "source": "Plaquemine Lock roster / Nightjar artist description",
-      "confidence": "confirmed",
-      "note": "Honky-tonk and early-jazz duo with some rhythm and blues, as described by Nightjar. Explicit dated dinner booking on the roster modified 25 September 2026; music starts around 20:30. Check dining/table arrangements."
-    },
-    {
-      "id": "g20261013-washbourn-madrugada",
-      "date": "2026-10-13",
-      "endDate": null,
-      "time": "20:00",
-      "title": "George Washbourn + Duo Madrugada",
-      "artist": "George Washbourn + Duo Madrugada",
-      "venue": "Green Note (Basement Bar)",
-      "area": "Camden, London",
-      "genres": [
-        "balfolk",
-        "folk"
-      ],
-      "cost": "?12 + booking fee",
-      "url": "https://events.liveit.io/folk-and-roots/george-washbourn-and-duo-madrugada-2/",
-      "source": "Folk and Roots / LiveIt / Green Note",
-      "confidence": "confirmed",
-      "note": "Traditional balfolk tunes and arrangements of Doors 19:30, music 20:00. Strong repertoire evidence distinguishes this from generic singer-songwriter bills."
-    },
-    {
       "id": "g20261031-beadling-greennote",
       "date": "2026-10-31",
       "endDate": null,
@@ -3953,25 +3616,6 @@
       "note": "English traditional folk with harmony singing, fiddle, squeezeboxes and hurdy-gurdy; support from recorder quartet Follia 4. Strong traditional repertoire justifies the Camden trip. Doors 19:00; music 19:30-21:30. Price includes building levy."
     },
     {
-      "id": "g20261016-folkcamps-ceilidh",
-      "date": "2026-10-16",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Knees Up Cecil Sharp Ceilidh - Folk Camps Party Band",
-      "artist": "Folk Camps Party Band; caller Jane Bird",
-      "venue": "Cecil Sharp House",
-      "area": "Camden, London",
-      "genres": [
-        "English folk",
-        "folk dance / ceilidh"
-      ],
-      "cost": "£15; £10 concessions; £5 under 18; under 7 free; advance booking fee may apply",
-      "url": "https://www.kneesupcecilsharp.co.uk/programme.html",
-      "source": "Knees Up official named programme / EFDSS individual dates and Spektrix instances",
-      "confidence": "confirmed",
-      "note": "Live-band English ceilidh, 20:00-23:00, with dances explained for newcomers and experienced dancers. Named band and caller are printed for this individual 2026 date; EFDSS confirms the date is on sale. Doors 19:30; evening date-night option."
-    },
-    {
       "id": "g20261120-diatonics-ceilidh",
       "date": "2026-11-20",
       "endDate": null,
@@ -4028,44 +3672,6 @@
       "source": "Green Note promoted WeGotTickets event / artist official biography",
       "confidence": "confirmed",
       "note": "Acoustic ragtime, traditional blues and gospel rather than a generic electric blues-rock bill; Green Note places this act in its old-time strand. Doors 19:30; music 20:00. Limited first-come seating and no step-free basement access."
-    },
-    {
-      "id": "g20261011-kasparrapkin-lamb",
-      "date": "2026-10-11",
-      "endDate": null,
-      "time": "16:30",
-      "title": "Kaspar 'Berry' Rapkin and Mia Casey at The Lamb",
-      "artist": "Kaspar 'Berry' Rapkin and Mia Casey",
-      "venue": "The Lamb",
-      "area": "Surbiton",
-      "genres": [
-        "blues"
-      ],
-      "cost": "Check venue; no ticket price shown",
-      "url": "https://www.facebook.com/events/1069449279335685/",
-      "source": "The Lamb official Facebook event",
-      "confidence": "confirmed",
-      "note": "Vintage blues duo with resonator guitar and washboard/drums. Hyper-local priority venue; exact date and start time are confirmed by the current official Facebook event."
-    },
-    {
-      "id": "g20261015-elsiefranklin-lamb",
-      "date": "2026-10-15",
-      "endDate": null,
-      "time": "19:30",
-      "title": "Elsie Franklin at The Lamb",
-      "artist": "Elsie Franklin",
-      "venue": "The Lamb",
-      "area": "Surbiton",
-      "genres": [
-        "country blues",
-        "ragtime",
-        "hot jazz"
-      ],
-      "cost": "Check venue; no ticket price shown",
-      "url": "https://www.facebook.com/events/4665130173812692/",
-      "source": "The Lamb official Facebook event",
-      "confidence": "confirmed",
-      "note": "Acoustic country-blues, ragtime and jazz on resonator guitar. Hyper-local priority venue; exact date and start time are confirmed by the current official Facebook event."
     },
     {
       "id": "g20261017-kirrisriviere-lamb",
@@ -4179,104 +3785,6 @@
       "source": "The Lamb official Facebook event",
       "confidence": "confirmed",
       "note": "Folk/Americana band date; Facebook currently supplies the exact listing but only a video link for repertoire detail. Hyper-local priority venue; exact date and start time are confirmed by the current official Facebook event."
-    },
-    {
-      "id": "g20261012-ewanbleach-boheme",
-      "date": "2026-10-12",
-      "endDate": null,
-      "time": "16:00-18:30",
-      "title": "Ewan Bleach - afternoon set",
-      "artist": "Ewan Bleach",
-      "venue": "Café Bohème",
-      "area": "Soho, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "No separate ticket shown; table booking advised",
-      "url": "https://www.cafeboheme.co.uk/live-music",
-      "source": "Café Bohème official October 2026 live-music roster",
-      "confidence": "confirmed",
-      "note": "Priority artist playing foxtrots and dance-hall swing from the hot-jazz era. Official roster confirms the date and the venue's 16:00-18:30 afternoon music slot."
-    },
-    {
-      "id": "g20261013-megcavanaugh-boheme",
-      "date": "2026-10-13",
-      "endDate": null,
-      "time": "16:00-18:30",
-      "title": "Meg Cavanaugh - afternoon set",
-      "artist": "Meg Cavanaugh",
-      "venue": "Café Bohème",
-      "area": "Soho, London",
-      "genres": [
-        "Americana",
-        "swing",
-        "blues"
-      ],
-      "cost": "No separate ticket shown; table booking advised",
-      "url": "https://www.cafeboheme.co.uk/live-music",
-      "source": "Café Bohème official October 2026 live-music roster",
-      "confidence": "confirmed",
-      "note": "Americana, melodic jazz and blues. Official roster confirms the date and the venue's 16:00-18:30 afternoon music slot."
-    },
-    {
-      "id": "g20261014-daiprice-boheme",
-      "date": "2026-10-14",
-      "endDate": null,
-      "time": "16:00-18:30",
-      "title": "Dai Price - afternoon set",
-      "artist": "Dai Price",
-      "venue": "Café Bohème",
-      "area": "Soho, London",
-      "genres": [
-        "cajun",
-        "folk",
-        "roots jazz"
-      ],
-      "cost": "No separate ticket shown; table booking advised",
-      "url": "https://www.cafeboheme.co.uk/live-music",
-      "source": "Café Bohème official October 2026 live-music roster",
-      "confidence": "confirmed",
-      "note": "Cajun, folk and roots-jazz gumbo. Official roster confirms the date and the venue's 16:00-18:30 afternoon music slot."
-    },
-    {
-      "id": "g20261015-errollinton-boheme",
-      "date": "2026-10-15",
-      "endDate": null,
-      "time": "15:00-17:30",
-      "title": "Errol Linton Duo - afternoon set",
-      "artist": "Errol Linton Duo",
-      "venue": "Café Bohème",
-      "area": "Soho, London",
-      "genres": [
-        "blues",
-        "hot jazz"
-      ],
-      "cost": "No separate ticket shown; table booking advised",
-      "url": "https://www.cafeboheme.co.uk/live-music",
-      "source": "Café Bohème official October 2026 live-music roster",
-      "confidence": "confirmed",
-      "note": "Old-time British blues and jazz with Caribbean rhythm. Official roster confirms the date and the venue's 15:00-17:30 afternoon music slot."
-    },
-    {
-      "id": "g20261016-loftusboulton-boheme",
-      "date": "2026-10-16",
-      "endDate": null,
-      "time": "15:00-17:30",
-      "title": "Caroline Loftus and Honey Boulton - afternoon set",
-      "artist": "Caroline Loftus and Honey Boulton",
-      "venue": "Café Bohème",
-      "area": "Soho, London",
-      "genres": [
-        "hot jazz",
-        "swing",
-        "blues"
-      ],
-      "cost": "No separate ticket shown; table booking advised",
-      "url": "https://www.cafeboheme.co.uk/live-music",
-      "source": "Café Bohème official October 2026 live-music roster",
-      "confidence": "confirmed",
-      "note": "Vintage jazz and blues. Official roster confirms the date and the venue's 15:00-17:30 afternoon music slot."
     },
     {
       "id": "g20261019-tjjohnson-boheme",
@@ -4568,43 +4076,6 @@
       "note": "Seven-piece vintage swing band and live-band Lindy dancing. Doors and recorded music 20:30; band sets 21:30 and 22:45, finishes 00:30. Prices rise after November; check the late journey home. No children."
     },
     {
-      "id": "g20261011-icc-concertsession",
-      "date": "2026-10-11",
-      "endDate": null,
-      "time": "14:00",
-      "title": "ICC Concert Session: Eilish Byrne-Whelehan, James O'Grady & Tad Sargent",
-      "artist": "Eilish Byrne-Whelehan, James O'Grady & Tad Sargent",
-      "venue": "Irish Cultural Centre",
-      "area": "Hammersmith, London",
-      "genres": [
-        "Irish trad"
-      ],
-      "cost": "Free; booking required",
-      "url": "https://irishculturalcentre.co.uk/event/icc-concert-session-with-tad-sargent-eilish-byrne-james-ogrady/",
-      "source": "Irish Cultural Centre official event",
-      "confidence": "confirmed",
-      "note": "Traditional Irish fiddle, uilleann pipes and guitar concert, 14:00-16:00; doors 13:30. Named expert players and a free daytime concert justify the Hammersmith trip."
-    },
-    {
-      "id": "g20261011-prospective-jamboree",
-      "date": "2026-10-11",
-      "endDate": null,
-      "time": "15:00",
-      "title": "Afternoon Swing with The Prospective Collective",
-      "artist": "Prospective Collective",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "swing",
-        "hot jazz"
-      ],
-      "cost": "Free / donations",
-      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-3/",
-      "source": "Jamboree official artist index and dated event listings",
-      "confidence": "confirmed",
-      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
-    },
-    {
       "id": "g20261018-prospective-jamboree",
       "date": "2026-10-18",
       "endDate": null,
@@ -4841,24 +4312,6 @@
       "note": "Afternoon piano and vocals across vintage jazz, country, gospel and blues, 15:00-17:00. Explicit individual date in the venue programme; consistent with the existing residency rows."
     },
     {
-      "id": "g20261015-arrowsmiths-islingtonfolk",
-      "date": "2026-10-15",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Richard & Jess Arrowsmith at Islington Folk Club",
-      "artist": "Richard & Jess Arrowsmith",
-      "venue": "Islington Folk Club at Brewhouse & Kitchen",
-      "area": "Highbury, London",
-      "genres": [
-        "English folk"
-      ],
-      "cost": "£10 / £8 concessions; member discounts",
-      "url": "https://www.islingtonfolkclub.co.uk/programme.html",
-      "source": "Islington Folk Club official dated programme and admission page",
-      "confidence": "confirmed",
-      "note": "Traditional English song, ballads, jigs, Morris tunes and Playford airs on voice, melodeon and fiddle. Doors 19:30; club 20:00-22:30."
-    },
-    {
       "id": "g20261022-nickhart-islingtonfolk",
       "date": "2026-10-22",
       "endDate": null,
@@ -5067,26 +4520,6 @@
       "source": "Ram Jam Records official December feed and event detail",
       "confidence": "confirmed",
       "note": "Very local six-piece with sax, double bass and keys, explicitly billed for jumping swing and retro jump blues. Mixed set also includes classic soul, R&B and ska; included at the lower Kingston threshold for its documented swing strand. Doors 19:00, live music 21:00."
-    },
-    {
-      "id": "g20261014-dompipkin-oriole",
-      "date": "2026-10-14",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Dom Pipkin - New Orleans Piano",
-      "artist": "Dom Pipkin",
-      "venue": "Oriole Bar",
-      "area": "Covent Garden, London",
-      "genres": [
-        "New Orleans / trad jazz",
-        "blues",
-        "rhythm and blues"
-      ],
-      "cost": "£6 cover charge per person",
-      "url": "https://www.oriolebar.com/oriole-music/dom-pipkin-solo",
-      "source": "Oriole official live-music and per-event Squarespace feeds",
-      "confidence": "confirmed",
-      "note": "New Orleans piano drawing on Professor Longhair, Huey Piano Smith and James Booker, mixing older jazz and blues with R&B/funk. 20:00-22:00, reachable via Waterloo. Current venue calendar confirms 14 October; check the booking date because the venue reuses event links."
     },
     {
       "id": "g20261219-aishakhan-oriole",
@@ -5758,6 +5191,413 @@
       "source": "The Magic Garden official event page",
       "confidence": "confirmed",
       "note": "Live French chanson band playing Brel, Gainsbourg, Trenet and Piaf with instrumental virtuosity and humour. Listing starts 21:00; exact band set time unannounced. DJ Chewy She also appears and the full night runs to 02:00 on 31 October. Included for the named live band. Reachable via Clapham Junction and local bus/walk."
+    },
+    {
+      "id": "g20261018-joaomello-lamb",
+      "date": "2026-10-18",
+      "endDate": null,
+      "time": "17:00",
+      "title": "João Mello",
+      "artist": "João Mello",
+      "venue": "The Lamb",
+      "area": "Surbiton",
+      "genres": [
+        "blues"
+      ],
+      "cost": "",
+      "url": "https://www.facebook.com/events/1813734906307603/",
+      "source": "The Lamb Facebook — authenticated event detail",
+      "confidence": "verify",
+      "note": "Exact 18 October event card and detail captured 17 October. Piano and vocals across blues, jazz, soul, rock and Brazilian funk; included under the lower doorstep threshold, with a mixed repertoire. Price not published; social-only, verify before travel."
+    },
+    {
+      "id": "g20261025-elsiefranklin-lamb",
+      "date": "2026-10-25",
+      "endDate": null,
+      "time": "19:00",
+      "title": "Elsie Franklin",
+      "artist": "Elsie Franklin",
+      "venue": "The Lamb",
+      "area": "Surbiton",
+      "genres": [
+        "country blues",
+        "ragtime"
+      ],
+      "cost": "",
+      "url": "https://www.facebook.com/events/4665130173812692/",
+      "source": "The Lamb Facebook — authenticated event detail",
+      "confidence": "verify",
+      "note": "Exact dated event detail captured 17 October: acoustic country blues, ragtime and jazz on National resonator guitar. Price not published; social-only, verify the set time. Separate from the afternoon Back of a Length booking."
+    },
+    {
+      "id": "g20261017-harpday-icc",
+      "date": "2026-10-17",
+      "endDate": null,
+      "time": "12:00",
+      "title": "International Harp Day — Lá na Cruite 2026",
+      "artist": "Tara Viscardi, Donnchadh Mac Aodha & ICC harp classes",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free; advance booking required",
+      "url": "https://irishculturalcentre.co.uk/event/international-harp-day-la-na-cruite-2026/",
+      "source": "irishculturalcentre.co.uk",
+      "confidence": "confirmed",
+      "note": "Public group and solo harp performances, 12:00–13:00, celebrating Irish harp music. The dated concert is separate from the teaching programme."
+    },
+    {
+      "id": "g20261030-samhaintrad-icc",
+      "date": "2026-10-30",
+      "endDate": null,
+      "time": "17:30",
+      "title": "Spooky Samhain Trad Session",
+      "artist": "London traditional Irish session musicians",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://irishculturalcentre.co.uk/event/spooky-samhain-trad-session/",
+      "source": "irishculturalcentre.co.uk",
+      "confidence": "confirmed",
+      "note": "Special dated Halloween edition of the traditional Irish session, 17:30–20:00. Family-friendly public live music; instruments and voices welcome. Not a generic open mic or inferred weekly recurrence."
+    },
+    {
+      "id": "g20270124-mairtinoconnor-icc",
+      "date": "2027-01-24",
+      "endDate": null,
+      "time": "19:30",
+      "title": "The Máirtín O’Connor Trio",
+      "artist": "Máirtín O’Connor, Cathal Hayden & Séamie O’Dowd",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "£27.50 / £25 early bird",
+      "url": "https://irishculturalcentre.co.uk/event/the-mairtin-oconnor-trio/",
+      "source": "irishculturalcentre.co.uk",
+      "confidence": "confirmed",
+      "note": "Accordion, fiddle/banjo and guitar trio rooted in Irish traditional music. Doors 19:00; concert 19:30."
+    },
+    {
+      "id": "g20270320-andyirvine-icc",
+      "date": "2027-03-20",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Andy Irvine in Concert",
+      "artist": "Andy Irvine",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "Irish trad",
+        "Balkan / klezmer"
+      ],
+      "cost": "£22 / £20",
+      "url": "https://irishculturalcentre.co.uk/event/andy-irvine-in-concert-2/",
+      "source": "irishculturalcentre.co.uk",
+      "confidence": "confirmed",
+      "note": "Irish traditional songs, Balkan dance tunes and original songs from the Planxty musician. Doors 19:30; concert 20:00."
+    },
+    {
+      "id": "g20270409-daoirifarrell-icc",
+      "date": "2027-04-09",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Daoirí Farrell",
+      "artist": "Daoirí Farrell",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "£21",
+      "url": "https://irishculturalcentre.co.uk/event/daoiri-farrell-3/",
+      "source": "irishculturalcentre.co.uk",
+      "confidence": "confirmed",
+      "note": "Traditional Irish singer and bouzouki player. Official listing advertises Friday 9 and Saturday 10 April as a two-night concert run; this row is for Friday 9 April. Doors 19:30; starts 20:00."
+    },
+    {
+      "id": "g20270410-daoirifarrell-icc",
+      "date": "2027-04-10",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Daoirí Farrell",
+      "artist": "Daoirí Farrell",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "£21",
+      "url": "https://irishculturalcentre.co.uk/event/daoiri-farrell-3/",
+      "source": "irishculturalcentre.co.uk",
+      "confidence": "confirmed",
+      "note": "Traditional Irish singer and bouzouki player. Official listing advertises Friday 9 and Saturday 10 April as a two-night concert run; this row is for Saturday 10 April. Doors 19:30; starts 20:00."
+    },
+    {
+      "id": "g20261101-hughcrozier-oldbarn",
+      "date": "2026-11-01",
+      "endDate": null,
+      "time": "13:00",
+      "title": "Hugh Crozier's New Orleans Jazz Band",
+      "artist": "Hugh Crozier's New Orleans Jazz Band",
+      "venue": "Old Barn Hall",
+      "area": "Great Bookham, Surrey",
+      "genres": [
+        "New Orleans / trad jazz",
+        "ragtime"
+      ],
+      "cost": "£15 headline / £14 body — confirm",
+      "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/hugh-croziers-new-orleans-jazz-band-1",
+      "source": "The Jazz Guide — exact Old Barn event",
+      "confidence": "confirmed",
+      "note": "Dated traditional-jazz Sunday programme, 13:00–15:30. Travel: rail towards Bookham or Leatherhead, then a local connection to Old Barn Hall; check Sunday connections before booking. The Jazz Guide gives conflicting admission prices, although the date and time agree."
+    },
+    {
+      "id": "g20261108-neworleansbump-oldbarn",
+      "date": "2026-11-08",
+      "endDate": null,
+      "time": "13:00",
+      "title": "New Orleans Bump",
+      "artist": "New Orleans Bump",
+      "venue": "Old Barn Hall",
+      "area": "Great Bookham, Surrey",
+      "genres": [
+        "New Orleans / trad jazz",
+        "hot jazz"
+      ],
+      "cost": "£15",
+      "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/new-orleans-bump-1",
+      "source": "The Jazz Guide — exact Old Barn event",
+      "confidence": "confirmed",
+      "note": "Dated traditional-jazz Sunday programme, 13:00–15:30. Travel: rail towards Bookham or Leatherhead, then a local connection to Old Barn Hall; check Sunday connections before booking."
+    },
+    {
+      "id": "g20261115-tonyscriven-oldbarn",
+      "date": "2026-11-15",
+      "endDate": null,
+      "time": "13:00",
+      "title": "Tony Scriven's Sunshine Band",
+      "artist": "Tony Scriven's Sunshine Band",
+      "venue": "Old Barn Hall",
+      "area": "Great Bookham, Surrey",
+      "genres": [
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "£15",
+      "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/tony-scrivens-sunshine-band-1",
+      "source": "The Jazz Guide — exact Old Barn event",
+      "confidence": "confirmed",
+      "note": "Dated traditional-jazz Sunday programme, 13:00–15:30. Travel: rail towards Bookham or Leatherhead, then a local connection to Old Barn Hall; check Sunday connections before booking."
+    },
+    {
+      "id": "g20261122-wanderers-oldbarn",
+      "date": "2026-11-22",
+      "endDate": null,
+      "time": "13:00",
+      "title": "New Orleans Wanderers",
+      "artist": "New Orleans Wanderers",
+      "venue": "Old Barn Hall",
+      "area": "Great Bookham, Surrey",
+      "genres": [
+        "New Orleans / trad jazz",
+        "swing"
+      ],
+      "cost": "£15",
+      "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/new-orleans-wanderers-1",
+      "source": "The Jazz Guide — exact Old Barn event",
+      "confidence": "confirmed",
+      "note": "Dated traditional-jazz Sunday programme, 13:00–15:30. Travel: rail towards Bookham or Leatherhead, then a local connection to Old Barn Hall; check Sunday connections before booking."
+    },
+    {
+      "id": "g20261129-algiersstrutters-oldbarn",
+      "date": "2026-11-29",
+      "endDate": null,
+      "time": "13:00",
+      "title": "Algiers Strutters",
+      "artist": "Algiers Strutters",
+      "venue": "Old Barn Hall",
+      "area": "Great Bookham, Surrey",
+      "genres": [
+        "New Orleans / trad jazz"
+      ],
+      "cost": "£15",
+      "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/algiers-strutters",
+      "source": "The Jazz Guide — exact Old Barn event",
+      "confidence": "confirmed",
+      "note": "Dated traditional-jazz Sunday programme, 13:00–15:30. Travel: rail towards Bookham or Leatherhead, then a local connection to Old Barn Hall; check Sunday connections before booking."
+    },
+    {
+      "id": "g20261103-guydavis-greennote",
+      "date": "2026-11-03",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Guy Davis",
+      "artist": "Guy Davis",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "country blues",
+        "blues"
+      ],
+      "cost": "£19.80 including booking fee",
+      "url": "https://wegottickets.com/f/28230",
+      "source": "Green Note / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Acoustic traditional blues from the singer, guitarist and storyteller. Official venue production and exact dated ticket page agree; doors 19:00, music 20:30."
+    },
+    {
+      "id": "g20261215-yanavlaeva-greennote",
+      "date": "2026-12-15",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Yana Vlaeva with Ned Cartwright & guests",
+      "artist": "Yana Vlaeva with Ned Cartwright & guests",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "Balkan / klezmer"
+      ],
+      "cost": "£16.50 including booking fee",
+      "url": "https://wegottickets.com/f/30050",
+      "source": "Green Note / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Traditional Bulgarian regional songs, a cappella and with piano, guitar and clarinet accompaniment. Exact ticket page gives a 20:00 start, doors 19:00."
+    },
+    {
+      "id": "g20270215-jovanabackovic-greennote",
+      "date": "2027-02-15",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Folk and Roots presents Jovana Backovic",
+      "artist": "Jovana Backovic",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "Balkan / klezmer"
+      ],
+      "cost": "£12 advance; fees may apply",
+      "url": "https://events.liveit.io/folk-and-roots/jovana-backovic/",
+      "source": "Green Note / Folk and Roots / LIVE IT",
+      "confidence": "confirmed",
+      "note": "Traditional Serbian, Hungarian, Macedonian, Greek, Bulgarian and Sephardic songs. Exact organiser ticket page confirms 15 February 2027, doors 19:00, music 20:30; venue production lists £12 advance."
+    },
+    {
+      "id": "g20270525-georgejackson-greennote",
+      "date": "2027-05-25",
+      "endDate": null,
+      "time": "20:30",
+      "title": "George Jackson",
+      "artist": "George Jackson",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "old-time"
+      ],
+      "cost": "£16.50 including booking fee",
+      "url": "https://wegottickets.com/f/30056",
+      "source": "Green Note / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Fiddler associated with Tall Poppy String Band and Jake Blount. Advertised programme and biography explicitly span old-time and bluegrass traditions plus original fiddle tunes; included for the substantial old-time connection. Doors 19:00."
+    },
+    {
+      "id": "g20261104-heartlessrogues-goldenhinde",
+      "date": "2026-11-04",
+      "endDate": null,
+      "time": "20:15",
+      "title": "Frankie Heartless & The Heartless Rogues",
+      "artist": "Frankie Heartless & The Heartless Rogues",
+      "venue": "The Golden Hinde",
+      "area": "Bankside / London Bridge, London",
+      "genres": [
+        "English folk",
+        "folk"
+      ],
+      "cost": "£13",
+      "url": "https://www.goldenhinde.co.uk/whats-on/10-music/717-frankie-heartless-and-the-heartless-rogues-on-the-golden-hinde",
+      "source": "goldenhinde.co.uk",
+      "confidence": "confirmed",
+      "note": "Sea shanties and jigs aboard the historic ship, with mandolin, violin, guitar, banjo and accordion. Doors 19:45; music 20:15. Central London via Waterloo and onward to London Bridge/Bankside."
+    },
+    {
+      "id": "g20261121-isleaveashanty-goldenhinde",
+      "date": "2026-11-21",
+      "endDate": null,
+      "time": "19:30",
+      "title": "Isle ’Ave A Shanty",
+      "artist": "Isle ’Ave A Shanty",
+      "venue": "The Golden Hinde",
+      "area": "Bankside / London Bridge, London",
+      "genres": [
+        "English folk"
+      ],
+      "cost": "£15",
+      "url": "https://www.goldenhinde.co.uk/whats-on/10-music/760-isle-ave-a-shanty-live-on-the-golden-hinde",
+      "source": "goldenhinde.co.uk",
+      "confidence": "confirmed",
+      "note": "Six-piece a cappella maritime-song group, with shanties and vocal harmonies aboard the ship. Doors 19:00; music 19:30. Central London via Waterloo and onward to London Bridge/Bankside."
+    },
+    {
+      "id": "g20261121-seashantyfestival-cuttysark",
+      "date": "2026-11-21",
+      "endDate": null,
+      "time": "10:30",
+      "title": "Cutty Sark Sea Shanty Festival",
+      "artist": "Swinging the Lead, Silver Darlings, Hog Eye Men, Sonny Brazil, London Sea Shanty Collective, Upping the Shanty & Queer History Club Choir",
+      "venue": "Cutty Sark",
+      "area": "Greenwich, London",
+      "genres": [
+        "English folk",
+        "folk"
+      ],
+      "cost": "Included with ship entry: £22 adult / £11 child 4–15 / under-4s free",
+      "url": "https://www.rmg.co.uk/whats-on/cutty-sark/sea-shanty-festival-2026",
+      "source": "Royal Museums Greenwich",
+      "confidence": "confirmed",
+      "note": "Full-day live maritime-song festival; first music 10:30, further sets through 17:30, ship open 10:00–18:00. Strong destination/family-day value. Travel via Waterloo and onward Jubilee/DLR connections to Greenwich; allow extra time compared with central London gigs."
+    },
+    {
+      "id": "g20261101-buenosklezmer-radlett",
+      "date": "2026-11-01",
+      "endDate": null,
+      "time": "19:30",
+      "title": "Buenos Klezmer",
+      "artist": "Buenos Klezmer",
+      "venue": "The Radlett Centre",
+      "area": "Radlett, Hertfordshire",
+      "genres": [
+        "Balkan / klezmer"
+      ],
+      "cost": "£24",
+      "url": "https://www.radlettcentre.co.uk/What-s-On/Music/Buenos-Klezmer",
+      "source": "radlettcentre.co.uk",
+      "confidence": "confirmed",
+      "note": "Yiddish and Ladino songs and klezmer instrumentals with Maya Levy, Eyal Pik, Daniel Gouly, Mayda Narvey and Mark Greenfield. Strong genre match justifies a longer trip: travel through central London to a Thameslink service for Radlett, then walk to the centre; check Sunday return connections."
+    },
+    {
+      "id": "g20261107-ewanbleach-darlington",
+      "date": "2026-11-07",
+      "endDate": null,
+      "time": "12:30",
+      "title": "Ewan Bleach & The Cable Street Ragtime Band",
+      "artist": "Ewan Bleach & The Cable Street Ragtime Band",
+      "venue": "St Augustine's Parish Hall",
+      "area": "Darlington, County Durham",
+      "genres": [
+        "hot jazz",
+        "New Orleans / trad jazz",
+        "ragtime"
+      ],
+      "cost": "£10; under-16s free with an accompanying adult",
+      "url": "https://www.darlingtonjazz.co.uk/events.html",
+      "source": "Darlington New Orleans Jazz Club — official events JSON",
+      "confidence": "confirmed",
+      "note": "Priority-act exception to the normal travel radius. Official /data/events.json confirms 7 November 2026, 12:30–15:00, doors 12:00. Long-distance trip via London King’s Cross; consider overnight planning and check train availability. Well beyond an ordinary Surbiton outing. Separate from the held Boston Spa evening booking."
     }
   ],
   "watchlist": [
@@ -6174,6 +6014,12 @@
       "venue": "Big Penny Social, Walthamstow, London",
       "url": "https://www.ceilidh.london/see-the-sassenachs-ceilidh-band-live",
       "note": "11 October 2026: artist diary publishes a 20-25 January 2027 range, without individual public-performance dates, times or ticket links. Do not create six daily gigs from a range; recover organiser tickets and exact live-band bookings first."
+    },
+    {
+      "name": "Islington Menorah Lighting — December 2026 date conflict",
+      "venue": "Islington Green, London",
+      "url": "https://www.jewishislington.co.uk/event/islington-menorah-lighting-1-9",
+      "note": "17 October 2026: organiser live page says 6 December, 16:00–18:00, with free live klezmer; cached search/open text instead gives 14 December, 16:00–19:30. Hold until the organiser date agrees across current details and tickets; named band also unpublished. No dated gig added."
     }
   ]
 }

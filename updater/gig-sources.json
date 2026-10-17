@@ -6,7 +6,7 @@
       "priority": "always-include",
       "genres": ["hot jazz", "New Orleans / trad jazz", "swing"],
       "url": "https://www.ewanbleach.com/gigs",
-      "secondaryUrls": ["https://www.ewanbleach.com/", "https://ewan-bleach-xdz4.squarespace.com/events", "https://www.songkick.com/artists/10293984-ewan-bleach", "https://www.ents24.com/uk/tour-dates/ewan-bleach"],
+      "secondaryUrls": ["https://www.ewanbleach.com/", "https://ewan-bleach-xdz4.squarespace.com/events", "https://www.songkick.com/artists/4541743-ewan-bleach", "https://www.ents24.com/uk/tour-dates/ewan-bleach"],
       "instagramHandles": ["ewanbleach"],
       "instagramSearchQueries": ["Ewan Bleach Instagram gigs", "site:instagram.com/p ewanbleach Ewan Bleach gig", "Ewan Bleach Cable Street Rag Band Instagram", "Ewan Bleach Fleeting Paradise Orchestra gigs"],
       "crawlRule": "Crawl Ewan's official gigs page every run, then cross-check @ewanbleach, Jamboree, Green Note, Songkick, Ents24, DICE and venue/ticket pages for any missing dates. Use Instagram/social for late additions.",
@@ -410,6 +410,17 @@
       ],
       "url": "https://www.606club.co.uk/events/",
       "note": "NEW 11 Oct 2026: Clock Winders Sunday lunch is an explicit vintage swing/acoustic-country match. Most of the calendar is modern jazz, soul or fusion and must be filtered strictly. Check exact event pages, music charge and food policy; Imperial Wharf via Clapham Junction makes this relatively easy from Surbiton."
+    },
+    {
+      "name": "The Golden Hinde",
+      "area": "Bankside / London Bridge, London",
+      "genres": [
+        "English folk",
+        "folk",
+        "country blues"
+      ],
+      "url": "https://www.goldenhinde.co.uk/whats-on",
+      "note": "Recurring intimate shipboard concerts. Exact music pages recovered Frankie Heartless & The Heartless Rogues and Isle Ave A Shanty in November 2026; Ags Connolly was already held. Prioritise shanties, traditional folk and strong acoustic country/blues. Inspect individual dates and distinguish doors from music; do not import all talks, theatre or general ship activities."
     }
   ],
   "closedOrDefunct": [
@@ -460,6 +471,16 @@
       "name": "Gigantic - priority artist support billing",
       "url": "https://www.gigantic.com/dom-glynn-tickets",
       "note": "NEW 11 Oct 2026: artist listing and individual ticket pages explicitly name Dom Glynn supporting Jake Vaadeland on 19/21/22 Oct in Birmingham/Bristol/Brighton. Check Performing artists, distinguish doors from support set, and do not turn solo billing into His Sunday Best. Priority UK dates may need overnight travel notes; avoid importing an entire unrelated headliner tour."
+    },
+    {
+      "name": "Darlington New Orleans Jazz Club — priority-act cross-check",
+      "url": "https://www.darlingtonjazz.co.uk/events.html",
+      "note": "Official calendar loads /data/events.json, which gives explicit year, venue, price, doors and music times. Recovered Ewan Bleach/Cable Street Ragtime Band on 7 November 2026. Far outside the normal Surbiton radius: use for priority acts or exceptional destination bookings, with a clear long-distance travel note; do not import the whole programme."
+    },
+    {
+      "name": "Folk and Roots — LIVE IT tickets",
+      "url": "https://events.liveit.io/folk-and-roots/",
+      "note": "Useful exact-date ticket fallback when a Green Note production is indexed without a year. Jovana Backovic ticket page confirmed 15 February 2027 and music/door times. Follow event-specific links from the artist or venue; retain strict traditional-folk/Balkan filtering rather than all promoter bookings."
     }
   ],
   "searchQueries": [
@@ -571,6 +592,11 @@
     "site:gigantic.com \"Dom Glynn\" tickets",
     "site:londonbalfolk.org.uk \"Grand Bal\"",
     "site:ceilidh.london \"Public\" \"2027\"",
-    "site:606club.co.uk \"swing\" \"country\""
+    "site:606club.co.uk \"swing\" \"country\"",
+    "site:goldenhinde.co.uk/whats-on shanty folk concert 2026 2027",
+    "site:rmg.co.uk/whats-on/cutty-sark \"sea shanty\" festival",
+    "site:radlettcentre.co.uk \"Klezmer\"",
+    "site:darlingtonjazz.co.uk \"Ewan Bleach\"",
+    "site:events.liveit.io/folk-and-roots \"2027\" traditional"
   ]
 }
