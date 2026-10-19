@@ -876,7 +876,8 @@
                              "checkFor": [
                                  "Paginate dated all-category events beyond the six-page homepage window",
                                  "Lamb daytime roots and evening folk/chanson plus local theatre and live-band dance",
-                                 "Open event detail pages and apply feedback; reject routine classes, quizzes and generic blues-rock"
+                                 "Open event detail pages and apply feedback; reject routine classes, quizzes and generic blues-rock",
+        "2026-10-19: full API recovered; start_date=2026-10-19 returned 289 unique future events over six pages. Requested per_page=100 is capped at 50. Follow total_pages and deduplicate IDs; inspect description for performance times."
                              ]
                          },
         {
@@ -969,6 +970,39 @@
             "Ages 2-5 OAE TOTS and FUNharmonics companion workshops",
             "Read individual date ticket sessions; keep unresolved times/prices watchlisted rather than copying another concert"
           ]
+        },
+        {
+            "name": "King’s Church Thames Tots seasonal early-years sessions",
+            "url": "https://www.kingschurch.com/thames-tots",
+            "checkFor": [
+                "Explicit dated toddler dress-up and Christmas sessions",
+                "Split selected dates; do not infer weekly recurrence or free admission from free-play wording"
+            ]
+        },
+        {
+            "name": "Tolworth Showtrain official organiser",
+            "url": "https://www.tolworthshowtrain.co.uk/showtrain/showtrain%202026.html",
+            "checkFor": [
+                "Public opening hours on each day",
+                "Family prices, live steam rides and Surbiton shuttle; avoid club-stand setup times"
+            ]
+        },
+        {
+            "name": "Cutty Sark daytime maritime folk festivals",
+            "url": "https://www.rmg.co.uk/whats-on/cutty-sark",
+            "checkFor": [
+                "Sea Shanty Festival and daytime folk",
+                "Destination threshold: strong genre/family fit; inspect each festival programme"
+            ]
+        },
+        {
+            "name": "London Museum of Water & Steam special steam days",
+            "url": "https://lmws.digitickets.co.uk/category/51367",
+            "checkFor": [
+                "Each dated Steam Up weekend and family ticket options",
+                "Official event index can be empty; use homepage and ticket portal",
+                "Verify year and each separate event; distinguish museum admission from joint transport tickets"
+            ]
         }
     ],
     "searchQueries":  [
@@ -1101,6 +1135,10 @@
         "Orleans House Gallery Play Make Art 2026 2027 ages 2 5 dates",
         "Long Nose Puppets Penguin Little Lyric 2026 2027 toddler tour dates",
         "Southbank OAE TOTS 2027 individual session times tickets",
-        "Teddington Together Lights Up 2026 programme times"
+        "Teddington Together Lights Up 2026 programme times",
+        "Thames Tots Kings Church Thames Ditton toddler Christmas light party 2026 2027",
+        "Tolworth Showtrain 2026 2027 public opening times family steam rides",
+        "Cutty Sark Sea Shanty Festival 2026 2027 family daytime programme",
+        "London Museum Water Steam 2026 2027 steam up children under 5 dates"
     ]
 }

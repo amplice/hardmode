@@ -38,13 +38,13 @@ window.GIG_DATA = {
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-10-17",
+    "dateBasis": "2026-10-19",
     "counts": {
       "total": 295,
-      "upcoming": 295,
+      "upcoming": 278,
       "watchlist": 70
     },
-    "generated": "2026-10-17T06:50:24.172Z",
+    "generated": "2026-10-19T07:21:55.444Z",
     "genres": [
       "Americana",
       "Balkan / klezmer",
@@ -104,7 +104,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-17 12:00",
       "travel": "Central London",
       "genresLabel": "Irish trad",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -133,7 +133,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-17 12:30",
       "travel": "Central London",
       "genresLabel": "hot jazz · New Orleans / trad jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -160,7 +160,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-17 13:00",
       "travel": "Central London",
       "genresLabel": "folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -187,7 +187,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-17 19:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -215,7 +215,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-17 19:30",
       "travel": "Local (SW London)",
       "genresLabel": "blues · rhythm and blues",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -243,7 +243,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-17 20:30",
       "travel": "Central London",
       "genresLabel": "country blues · ragtime",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -271,7 +271,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-17 20:30",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz · hot jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -298,7 +298,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-17 21:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -326,7 +326,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-17 99:99",
       "travel": "Central London",
       "genresLabel": "old-school country · honky tonk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -355,7 +355,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-18 12:30",
       "travel": "Central London",
       "genresLabel": "hot jazz · New Orleans / trad jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -382,7 +382,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-18 13:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -410,7 +410,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-18 13:00",
       "travel": "Local (SW London)",
       "genresLabel": "New Orleans / trad jazz · hot jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -438,7 +438,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-18 15:00",
       "travel": "Central London",
       "genresLabel": "swing · hot jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -466,7 +466,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-18 16:00",
       "travel": "Central London",
       "genresLabel": "jug band · hot jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -493,7 +493,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-18 17:00",
       "travel": "Local (SW London)",
       "genresLabel": "blues",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -520,7 +520,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-18 20:00",
       "travel": "Local (SW London)",
       "genresLabel": "English folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -549,7 +549,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-18 99:99",
       "travel": "Central London",
       "genresLabel": "gypsy jazz · hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
