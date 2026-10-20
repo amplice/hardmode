@@ -50,7 +50,7 @@
       "priority": "priority-watch",
       "genres": ["jug band", "old-time", "skiffle"],
       "url": "https://www.fobojugband.com/",
-      "secondaryUrls": ["https://www.greennote.co.uk/"],
+      "secondaryUrls": ["https://www.greennote.co.uk/", "https://www.songkick.com/artists/5572518"],
       "instagramHandles": [],
       "instagramSearchQueries": ["FoBo Jug Band Instagram", "FoBo Jug Band London gigs", "site:greennote.co.uk FoBo Jug Band"],
       "crawlRule": "Search official site/social, Green Note, Folk and Honey, Data Thistle, ticketing and broad web for London/South-East dates every run.",
@@ -421,6 +421,27 @@
       ],
       "url": "https://www.goldenhinde.co.uk/whats-on",
       "note": "Recurring intimate shipboard concerts. Exact music pages recovered Frankie Heartless & The Heartless Rogues and Isle Ave A Shanty in November 2026; Ags Connolly was already held. Prioritise shanties, traditional folk and strong acoustic country/blues. Inspect individual dates and distinguish doors from music; do not import all talks, theatre or general ship activities."
+    },
+    {
+      "name": "RSCDS London — St Columba’s Church Hall",
+      "area": "Pont Street, London",
+      "genres": [
+        "Scottish folk",
+        "folk dance / ceilidh"
+      ],
+      "url": "https://www.rscdslondon.org.uk/branch-events",
+      "note": "Check individual event pages for exact dates, named live musicians, ticket prices and beginner suitability. Distinguish Scottish country dances from called ceilidhs. October 2026 refresh found Autumn Wednesday, Christmas Dance and January Burns Ceilidh; do not extrapolate annual dates or reuse old pricing without checking."
+    },
+    {
+      "name": "Walthamstow Folk Club",
+      "area": "Walthamstow, London",
+      "genres": [
+        "English folk",
+        "British folk",
+        "folk"
+      ],
+      "url": "https://walthamstowfolk.co.uk/",
+      "note": "At Ye Olde Rose & Crown, 53 Hoe Street. Longer cross-London journey warrants a strong traditional-song/tune match or distinctive seasonal concert. Open individual dated guest pages and linked WeGotTickets; menu dates alone and generic singer-songwriter billing are insufficient."
     }
   ],
   "closedOrDefunct": [
@@ -597,6 +618,11 @@
     "site:rmg.co.uk/whats-on/cutty-sark \"sea shanty\" festival",
     "site:radlettcentre.co.uk \"Klezmer\"",
     "site:darlingtonjazz.co.uk \"Ewan Bleach\"",
-    "site:events.liveit.io/folk-and-roots \"2027\" traditional"
+    "site:events.liveit.io/folk-and-roots \"2027\" traditional",
+    "site:rscdslondon.org.uk \"live music\" \"2027\"",
+    "site:walthamstowfolk.co.uk \"2027\" traditional",
+    "London wassail traditional songs January 2027 live music",
+    "London \"Delta blues\" \"2027\" acoustic",
+    "site:wegottickets.com \"Nothing in Rambling\" London"
   ]
 }
