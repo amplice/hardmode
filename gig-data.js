@@ -38,13 +38,13 @@ window.GIG_DATA = {
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-10-20",
+    "dateBasis": "2026-10-22",
     "counts": {
       "total": 296,
-      "upcoming": 296,
+      "upcoming": 288,
       "watchlist": 71
     },
-    "generated": "2026-10-20T06:50:38.335Z",
+    "generated": "2026-10-22T07:18:32.285Z",
     "genres": [
       "Americana",
       "Balkan / klezmer",
@@ -106,7 +106,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-20 16:00-18:30",
       "travel": "Central London",
       "genresLabel": "old-school country · western swing · blues",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -134,7 +134,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-20 20:15",
       "travel": "Central London",
       "genresLabel": "old-school country · honky tonk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -161,7 +161,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-20 20:30",
       "travel": "Central London",
       "genresLabel": "Irish trad",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -188,7 +188,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-20 21:00",
       "travel": "Central London",
       "genresLabel": "swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -218,7 +218,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-21 15:00",
       "travel": "Central London",
       "genresLabel": "swing · old-school country · blues · gospel",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -245,7 +245,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-21 16:00",
       "travel": "Central London",
       "genresLabel": "French chanson",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -272,7 +272,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-21 19:30",
       "travel": "Central London",
       "genresLabel": "old-time",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -300,7 +300,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-21 99:99",
       "travel": "Day-trip",
       "genresLabel": "old-school country · honky tonk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

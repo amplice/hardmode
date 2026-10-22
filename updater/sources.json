@@ -1003,7 +1003,23 @@
                 "Official event index can be empty; use homepage and ticket portal",
                 "Verify year and each separate event; distinguish museum admission from joint transport tickets"
             ]
-        }
+        },
+                         {
+                             "name": "EFG London Jazz Festival free and family programme",
+                             "url": "https://efglondonjazzfestival.org.uk/",
+                             "checkFor": [
+                                 "Inspect each date and venue independently; prioritise Waterloo/Southbank free live music.",
+                                 "Family branding is not age guidance: some Clore events are 7+ and Baby Jazz Club is 0-14 months. Mix & Move explicitly welcomes all ages."
+                             ]
+                         },
+                         {
+                             "name": "Elsie Franklin official artist diary",
+                             "url": "https://www.elsiefranklin.com/shows.html",
+                             "checkFor": [
+                                 "The Lamb dates and ragtime/chanson-adjacent local performances",
+                                 "Compare live HTML against cached pages and current venue event cards; 25 October 2026 start conflict: venue 19:00, artist 20:00."
+                             ]
+                         }
     ],
     "searchQueries":  [
         "Kingston Music Service public open rehearsals 2026 2027 All Saints",
@@ -1139,6 +1155,9 @@
         "Thames Tots Kings Church Thames Ditton toddler Christmas light party 2026 2027",
         "Tolworth Showtrain 2026 2027 public opening times family steam rides",
         "Cutty Sark Sea Shanty Festival 2026 2027 family daytime programme",
-        "London Museum Water Steam 2026 2027 steam up children under 5 dates"
+        "London Museum Water Steam 2026 2027 steam up children under 5 dates",
+        "EFG London Jazz Festival free all ages Southbank Clore Ballroom 2026 2027",
+        "Regency Bookshop Surbiton toddler storytelling author events 2026 2027",
+        "Elsie Franklin The Lamb Surbiton 2026 2027 dates times"
     ]
 }
