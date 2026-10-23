@@ -502,6 +502,16 @@
       "name": "Folk and Roots — LIVE IT tickets",
       "url": "https://events.liveit.io/folk-and-roots/",
       "note": "Useful exact-date ticket fallback when a Green Note production is indexed without a year. Jovana Backovic ticket page confirmed 15 February 2027 and music/door times. Follow event-specific links from the artist or venue; retain strict traditional-folk/Balkan filtering rather than all promoter bookings."
+    },
+    {
+      "name": "EFG London Jazz Festival - selective traditional strands",
+      "url": "https://efglondonjazzfestival.org.uk/",
+      "note": "23 Oct 2026: exact event pages give year, stage/door times, venue and ticket price. Trio Manouche at George IV on 19 Nov is productive. Filter the festival aggressively for hot/trad jazz, swing and manouche; do not import contemporary jazz or treat the whole festival as one curated concert."
+    },
+    {
+      "name": "Marion & Sobo Band official concert diary",
+      "url": "https://marionandsobo.com/en/concerts/",
+      "note": "23 Oct 2026: artist-owned current-year itinerary resolves separate 19:00 and 21:30 Toulouse Lautrec shows where venue ticket embeds show only multiple times. Acoustic gypsy jazz, swing and chanson. Check London/South-East dates and retain the normal travel threshold; the 2027 anniversary tour is still unannounced."
     }
   ],
   "searchQueries": [
@@ -623,6 +633,11 @@
     "site:walthamstowfolk.co.uk \"2027\" traditional",
     "London wassail traditional songs January 2027 live music",
     "London \"Delta blues\" \"2027\" acoustic",
-    "site:wegottickets.com \"Nothing in Rambling\" London"
+    "site:wegottickets.com \"Nothing in Rambling\" London",
+    "London Nordic traditional fiddle nyckelharpa concert 2026 2027",
+    "site:londonwelsh.org/events traditional folk concert",
+    "heritage railway live trad jazz Surrey Hampshire 2026 2027",
+    "site:efglondonjazzfestival.org.uk/events gypsy swing manouche",
+    "site:marionandsobo.com/en/concerts London"
   ]
 }
