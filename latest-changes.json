@@ -1,53 +1,60 @@
 {
-  "generatedAt": "2026-10-22T07:16:43Z",
-  "dateBasis": "2026-10-22",
-  "summary": "Removed 7 finished events; added 16 dated events including six Gig Radar promotions; updated Elsie Franklin timing evidence and Kingston Market reopening.",
+  "generatedAt": "2026-10-25T07:15:02Z",
+  "dateBasis": "2026-10-25",
+  "summary": "Removed 21 finished rows; added 9 dated events including seven Lamb gigs, Phil Beer matinee and Mother Goose sensory panto; corrected two existing listings.",
   "added": [
-    "e20270608: Folk at the cornerHOUSE: Honey & the Bear, 2027-06-08.",
-    "e20270720: Folk at the cornerHOUSE: We Mavericks, 2027-07-20.",
-    "e20270810: Folk at the cornerHOUSE: Sherburn Bartley Sanders, 2027-08-10.",
-    "e20270914: Folk at the cornerHOUSE: Bob Fox, 2027-09-14.",
-    "e20271012: Folk at the cornerHOUSE: Clive Gregson, 2027-10-12.",
-    "e20271109: Folk at the cornerHOUSE: Katie Spencer, 2027-11-09.",
-    "e20271221: Folk at the cornerHOUSE: Donnelly & South's Christmas Cracker, 2027-12-21.",
-    "e20270126: Sheerluck Holmes and the Hound of the Darcyvilles, 2027-01-26 to 2027-01-30.",
-    "e20261031i: Damo & the Dynamites: Halloween rockabilly, 2026-10-31.",
-    "e20261120a: Mix & Move: EFG London Jazz Festival Special, 2026-11-20.",
-    "e20261115d: The Rheingans Sisters: matinee, 2026-11-15.",
-    "e20261029e: Les Boum!: afternoon chanson, 2026-10-29.",
-    "e20261031j: Afternoon Klezmer Jam, 2026-10-31.",
-    "e20261107c: Afternoon Balkan and Roma Jam, 2026-11-07.",
-    "e20261205g: Afternoon Balkan and Roma Jam, 2026-12-05.",
-    "e20270207: TwickFolk: Benji Kirkpatrick, 2027-02-07."
+    "e20261101h: Danny Horn and Richard Moore at The Lamb, 2026-11-01.",
+    "e20261108a: The Rigmarollers at The Lamb, 2026-11-08.",
+    "e20261115e: Fran McGillivray and Mike Burke at The Lamb, 2026-11-15.",
+    "e20261119a: Savannah Gardner at The Lamb, 2026-11-19.",
+    "e20261122d: Dryadic at The Lamb, 2026-11-22.",
+    "e20261126a: Elsie Franklin at The Lamb, 2026-11-26.",
+    "e20261129c: The Fabulous Red Diesel at The Lamb, 2026-11-29.",
+    "e20261206e: Phil Beer: folk matinee, 2026-12-06.",
+    "e20261219f: Mother Goose: sensory family pantomime, 2026-12-19."
   ],
   "updated": [
-    "e20261112: Replaced obsolete site-closure wording with council-confirmed phased reopening on 19 October; retained Christmas verification flag.",
-    "e20261025f: Confirmed date and free admission in current artist diary; retained venue 19:00 with explicit 20:00 conflict and verify flag."
+    "e20261108b: Reconciled the existing Tractor Watson lead with the exact Jake Watson venue card; set 8 November start to 16:30 and replaced the discovery URL.",
+    "e644: Corrected Anna Dyson meet-the-artist evening from 9 to 17 November, 19:00-21:00, using the official venue detail; added free admission and specific URL."
   ],
   "removed": [
-    "e20261019: Monday Lunchtime Recital: Ioana Voicu (viola) (finished 2026-10-19).",
-    "e20261020: Judi Dench: Is It Too Late to Make a Run for It? (finished 2026-10-20).",
-    "e638: Aeronautical talk (finished 2026-10-21).",
-    "e20261021: TJ Johnson's Peak of the Week (finished 2026-10-21).",
-    "e20261020a: Melbury Music Quintet (finished 2026-10-20).",
-    "e20261019a: TJ Johnson: afternoon set (finished 2026-10-19).",
-    "e20261020b: Savannah Gardner: afternoon set (finished 2026-10-20)."
+    "e20260917c: Once Upon a Play (under-5s) (finished 2026-10-22).",
+    "e20260921b: a small and quiet light (finished 2026-10-24).",
+    "e671: Jane Eyre (finished 2026-10-24).",
+    "e20261021b: My Fair Lady (finished 2026-10-24).",
+    "e20261022b: Belinda O'Hooley and Jackie Oates (finished 2026-10-22).",
+    "e20261022c: Frontier Sapiens Adventure Film Festival (finished 2026-10-22).",
+    "e20261023f: WordPlay: Ages 3-5 (finished 2026-10-23).",
+    "e20261023: Comedy Night at the cornerHOUSE (Jimmy McGhie, Ada Campe) (finished 2026-10-23).",
+    "e20261023e: Tom Thorp & ILUMETRIS: Here, There be Monsters (jazz) (finished 2026-10-23).",
+    "e20261024: R.U.M - Rhythmic. Underground. Movement. (finished 2026-10-24).",
+    "e20261024a: Tim Penn and the Second Line (finished 2026-10-24).",
+    "e20261024b: An Evening with Ewan Bleach: Mystic Mood album launch (finished 2026-10-24).",
+    "e20261022: William Poyer at The Lamb (finished 2026-10-22).",
+    "e20261024c: Return to London Town: Parish Ceili Band (finished 2026-10-24).",
+    "e20261024d: The Fabulous Red Diesel at The Lamb (finished 2026-10-24; venue announced cancellation).",
+    "e20261022a: Louise Messenger & the Jazz Marauder: afternoon set (finished 2026-10-22).",
+    "e20261024e: Bandini Duo: afternoon set (finished 2026-10-24).",
+    "e20261024f: The Budapest Café Orchestra (finished 2026-10-24).",
+    "e20261024g: Penguin: Long Nose Puppets (finished 2026-10-24).",
+    "e20261023a: Thames Tots: light-themed dress-up session (finished 2026-10-23).",
+    "e20261023b: Friday Night Traditional Irish Music Session (finished 2026-10-23)."
   ],
   "counts": {
     "before": {
-      "events": 300,
-      "recurring": 56,
-      "sources": 53,
-      "watchlist": 97
-    },
-    "after": {
       "events": 309,
       "recurring": 56,
       "sources": 53,
       "watchlist": 98
     },
-    "added": 16,
+    "after": {
+      "events": 297,
+      "recurring": 56,
+      "sources": 53,
+      "watchlist": 99
+    },
+    "added": 9,
     "updated": 2,
-    "removed": 7
+    "removed": 21
   }
 }

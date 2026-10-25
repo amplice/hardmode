@@ -1019,6 +1019,30 @@
                                  "The Lamb dates and ragtime/chanson-adjacent local performances",
                                  "Compare live HTML against cached pages and current venue event cards; 25 October 2026 start conflict: venue 19:00, artist 20:00."
                              ]
+                         },
+                         {
+                             "name": "Head2Head Sensory Theatre public family pantomimes",
+                             "url": "https://h2hsensorytheatre.com/whats-on-for-families/family-pantomimes/",
+                             "checkFor": [
+                                 "Surbiton cornerHOUSE public all-ages sensory shows; distinguish public tickets from school-only tours.",
+                                 "Follow each venue/date to its product ticket; performance copy can override approximate aggregator start times."
+                             ]
+                         },
+                         {
+                             "name": "The Lamb authenticated Facebook forward programme",
+                             "url": "https://www.facebook.com/thelambsurbiton/events",
+                             "checkFor": [
+                                 "Read updater/facebook-leads.json exact forward cards every run; check Instagram too.",
+                                 "Use newer named dates over stale venue copy, reconcile artist aliases, record cancellations and retain verify for social-only details."
+                             ]
+                         },
+                         {
+                             "name": "The Rigmarollers official forward diary",
+                             "url": "https://www.therigmarollers.com/gigs",
+                             "checkFor": [
+                                 "New Orleans and roots trio at The Lamb and Twickenham venues.",
+                                 "Require exact start/admission evidence; 29 November 2026 Rose & Lion is currently watchlisted."
+                             ]
                          }
     ],
     "searchQueries":  [
@@ -1158,6 +1182,9 @@
         "London Museum Water Steam 2026 2027 steam up children under 5 dates",
         "EFG London Jazz Festival free all ages Southbank Clore Ballroom 2026 2027",
         "Regency Bookshop Surbiton toddler storytelling author events 2026 2027",
-        "Elsie Franklin The Lamb Surbiton 2026 2027 dates times"
+        "Elsie Franklin The Lamb Surbiton 2026 2027 dates times",
+        "Head2Head sensory Mother Goose cornerHOUSE Surbiton 2026 2027 public family pantomime",
+        "The Lamb Surbiton November 2026 Jake Watson Dryadic Rigmarollers Savannah Gardner",
+        "Rigmarollers Rose Lion Twickenham November 2026 time admission"
     ]
 }
