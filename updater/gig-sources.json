@@ -298,7 +298,7 @@
       "secondaryUrls": [],
       "instagramHandles": [],
       "instagramSearchQueries": ["Riverhouse Barn Walton folk roots jazz gig 2026", "Riverhouse Barn Instagram music jazz folk"],
-      "crawlRule": "Check official what's-on/music listings and search/social for notable roots or jazz nights.",
+      "crawlRule": "Check /music and individual /events/<id> pages. Their Event JSON-LD supplies full year, start/end times and prices when visible text is incomplete. Retain the strict traditional/roots filter; 26 October recovered GreenMatthews and Enrico Tomasso's Riverboat Shufflers.",
       "includeRule": "Medium filter. Include nearby folk/roots, trad jazz, swing, old-school country or unusually good chamber-adjacent music; skip theatre, comedy, generic classical filler and weak singer-songwriter rows."
     },
     {
@@ -314,7 +314,21 @@
     }
   ],
   "keyVenues": [
-    { "name": "Coin Street / Gabriel's Wharf", "area": "Waterloo / South Bank, London", "genres": ["hot jazz", "New Orleans / trad jazz", "swing"], "url": "https://www.coinstreet.org/whats-on", "note": "Family-crossover source rather than a regular music venue. Check for free all-ages festivals and inspect every date in multi-date event pages. The 2026 Arts Festival had different priority acts on 5 Sep (Doolally Tap) and 19 Sep (Ewan Bleach/Cable Street Rag Band)." },
+    {
+      "name": "Kings Place - traditional folk programme",
+      "area": "King's Cross, London",
+      "genres": [
+        "English folk",
+        "Irish trad",
+        "Scottish folk",
+        "British folk",
+        "folk",
+        "Balkan / klezmer"
+      ],
+      "url": "https://www.kingsplace.co.uk/whats-on/folk/",
+      "note": "Productive for named traditional singers, concertina/fiddle players and visiting Quebec or Cape Breton ensembles. Open each event detail and confirm its year in the current programme or tickets. Use performance time, not doors; retain booking-fee caveats. Filter indie-folk, generic singer-songwriters, fusion and electronic bills rather than importing the whole folk category."
+    },
+    { "name": "Coin Street / Gabriel's Wharf", "area": "Waterloo / South Bank, London", "genres": ["hot jazz", "New Orleans / trad jazz", "swing"], "url": "https://www.coinstreet.org/whats-on", "note": "Family-crossover source rather than a regular music venue. Check for free all-ages festivals and inspect every date in multi-date event pages. The 2026 Arts Festival had different priority acts on 5 Sep (Doolally Tap) and 19 Sep (Ewan Bleach/Cable Street Rag Band). Checked 26 October 2026: the official /gabriels-wharf page now says the Wharf is closed. Continue watching Coin Street neighbourhood announcements, but do not assume the old site or September festival will recur." },
     { "name": "Toulouse Lautrec Jazz Club", "area": "Kennington, London", "genres": ["gypsy jazz", "hot jazz"], "url": "https://toulouselautrec.co.uk/", "note": "CURRENT premier London gypsy-jazz venue (La Bouche Manouche, London Django Collective). Regular manouche nights + annual London Gypsy Jazz Festival (Apr, out of the summer window). Ticketing subdomain sometimes 403s — read the main site." },
     { "name": "Vortex Jazz Club — 'Gypsy Jazz Monthly'", "area": "Dalston, London", "genres": ["gypsy jazz", "New Orleans / trad jazz"], "url": "https://www.vortexjazz.co.uk/", "note": "Monthly manouche residency (Gina Boreham) since 2006, plus trad acts (Tuba Skinny played here). JS calendar — dates appear closer to the time." },
     { "name": "Cecil Sharp House (EFDSS)", "area": "Camden, London", "genres": ["English folk", "Irish trad", "Scottish folk", "folk dance / ceilidh", "cajun", "zydeco", "old-time", "western swing"], "url": "https://www.cecilsharphouse.org/whats-on", "note": "English, Irish and Scottish traditional music, ceilidhs, cajun/zydeco dances, old-time jams, string-band nights and square dances." },
@@ -638,6 +652,11 @@
     "site:londonwelsh.org/events traditional folk concert",
     "heritage railway live trad jazz Surrey Hampshire 2026 2027",
     "site:efglondonjazzfestival.org.uk/events gypsy swing manouche",
-    "site:marionandsobo.com/en/concerts London"
+    "site:marionandsobo.com/en/concerts London",
+    "site:kingsplace.co.uk/whats-on/folk concertina traditional 2026 2027",
+    "site:concertina.org London concert traditional 2026 2027",
+    "London Romani cultural centre klezmer traditional concert 2026 2027",
+    "site:wiltons.org.uk traditional folk music 2026 2027",
+    "site:thecornerhouse.org Jez Lowe folk 2026 2027"
   ]
 }
