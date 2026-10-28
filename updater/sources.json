@@ -1041,9 +1041,33 @@
                              "url": "https://www.therigmarollers.com/gigs",
                              "checkFor": [
                                  "New Orleans and roots trio at The Lamb and Twickenham venues.",
-                                 "Require exact start/admission evidence; 29 November 2026 Rose & Lion is currently watchlisted."
+                                 "Require exact start/admission evidence; Rose & Lion 29 November 2026 is now confirmed at 19:00-21:00, with admission still to check. Read event body rather than URL date."
                              ]
-                         }
+                         },
+        {
+            "name": "The Magic Garden official programme",
+            "url": "https://www.magicgardenpub.com/",
+            "checkFor": [
+                "Specific daytime family shows, free performances and toddler-plausible events",
+                "Separate daytime family listings from late-night bands and parties; verify each exact event page"
+            ]
+        },
+        {
+            "name": "The Rose & Lion, Twickenham official programme",
+            "url": "https://roseandliontwickenham.com/",
+            "checkFor": [
+                "Nearby roots, traditional jazz and folk acts, especially The Rigmarollers",
+                "Read exact event body and structured date: URL slugs can contain a different day; confirm unpublished admission"
+            ]
+        },
+        {
+            "name": "Kings Place folk programme",
+            "url": "https://www.kingsplace.co.uk/whats-on/folk/",
+            "checkFor": [
+                "High-quality daytime traditional folk matinees worth a destination trip",
+                "Check each date, Hall Two seating, event-specific restrictions and child tickets; daytime does not imply toddler suitability"
+            ]
+        }
     ],
     "searchQueries":  [
         "Kingston Music Service public open rehearsals 2026 2027 All Saints",
@@ -1185,6 +1209,9 @@
         "Elsie Franklin The Lamb Surbiton 2026 2027 dates times",
         "Head2Head sensory Mother Goose cornerHOUSE Surbiton 2026 2027 public family pantomime",
         "The Lamb Surbiton November 2026 Jake Watson Dryadic Rigmarollers Savannah Gardner",
-        "Rigmarollers Rose Lion Twickenham November 2026 time admission"
+        "Rigmarollers Rose Lion Twickenham November 2026 time admission",
+        "Magic Garden Battersea free family daytime magic events 2026 2027",
+        "Rose Lion Twickenham Rigmarollers traditional jazz folk 2026 2027",
+        "Kings Place Quebec traditional folk Sunday matinee child tickets seating 2026 2027"
     ]
 }
