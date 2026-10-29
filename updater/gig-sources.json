@@ -333,7 +333,7 @@
     { "name": "Vortex Jazz Club — 'Gypsy Jazz Monthly'", "area": "Dalston, London", "genres": ["gypsy jazz", "New Orleans / trad jazz"], "url": "https://www.vortexjazz.co.uk/", "note": "Monthly manouche residency (Gina Boreham) since 2006, plus trad acts (Tuba Skinny played here). JS calendar — dates appear closer to the time." },
     { "name": "Cecil Sharp House (EFDSS)", "area": "Camden, London", "genres": ["English folk", "Irish trad", "Scottish folk", "folk dance / ceilidh", "cajun", "zydeco", "old-time", "western swing"], "url": "https://www.cecilsharphouse.org/whats-on", "note": "English, Irish and Scottish traditional music, ceilidhs, cajun/zydeco dances, old-time jams, string-band nights and square dances." },
     { "name": "SwingdanceUK special events", "area": "London (Regent's Park, 100 Club, Southbank, museums)", "genres": ["swing"], "url": "https://swingdanceuk.com/socials/special-events/", "note": "RICHEST confirmed source for live-band classic swing: free Regent's Park Sunday big bands (summer), 'Stompin' at the 100 Club', seasonal dances. Well-dated far ahead." },
-    { "name": "Nightjar", "area": "Shoreditch, London", "genres": ["hot jazz", "swing", "New Orleans / trad jazz"], "url": "https://www.barnightjar.com/shoreditch-listings", "note": "Nightly 21:00 hot jazz/swing/NO acts, cover on the door (no tickets). Append ?format=json for the full Squarespace upcoming feed (dates and blurbs); re-scrape every run and filter Latin/soul/global listings. REFRESHED 2026-08-30: Shoreditch feed now runs through 14 Nov. Carnaby has closed." },
+    { "name": "Nightjar", "area": "Shoreditch, London", "genres": ["hot jazz", "swing", "New Orleans / trad jazz"], "url": "https://www.barnightjar.com/shoreditch-listings", "note": "Nightly hot jazz/swing/New Orleans acts. Use /shoreditch-listings?format=json and per-event ?format=json; checked 29 Oct 2026 with selected listings into December and a January entry. Reconcile old rows against changed bills and private-hire closures: 5 Nov Lapazoos and 21 Nov Pinstripe listings were superseded. Search caches can lag the live feed. Filter Latin, soul, modern jazz, generic cocktail-bar entertainment and private events. Carnaby is closed." },
     { "name": "The 100 Club", "area": "Oxford St, London", "genres": ["New Orleans / trad jazz", "swing"], "url": "https://www.the100club.co.uk/100club-events/", "note": "Trad-jazz strands + hosts SwingdanceUK's 'Stompin' at the 100 Club' nights. NB: old /listings/ URL now 404s — use /100club-events/. TRAP (2026-07-22): event-slug date suffixes lie ('roots-of-the-king...-09-26' is actually Sun 16 Aug) — trust the event page's printed date; site only renders ~6 weeks ahead, use Halibuts for its Oct–Dec strand." },
     { "name": "Plaquemine Lock (Louisiana pub)", "area": "Islington (Angel), London", "genres": ["cajun", "zydeco", "jug band", "New Orleans / trad jazz"], "url": "https://plaqlock.com/live-music-islington", "note": "Official weekly roster refreshed 25 Sep 2026; now covers 21 Sep-18 Oct with named Ewan Bleach brunches and Jack Jules/Dai Price dinner dates. Follow redirects and read live HTML: search-engine cache can show an older roster. Check dateModified and exact weekday/date pairs; never extrapolate recurring dates. Times are approximate: brunch 12:30, dinner 20:30." },
     { "name": "Fidelio Cafe", "area": "Clerkenwell, London", "genres": ["gypsy jazz"], "url": "https://www.fideliocafe.com/whats-on", "note": "Productive intimate 'Django at the Cafe' Monday series. REFRESHED 2026-08-30: Fidelio's rebuilt official diary now carries exact dates, times, prices and line-ups (14 Sep and 12 Oct); use it first and Sol Grimshaw's guide as a cross-check." },
@@ -464,6 +464,21 @@
     { "name": "Nightjar Carnaby", "note": "CLOSED. The official site now has a closure notice; only crawl the Shoreditch listings/feed." }
   ],
   "aggregators": [
+    {
+      "name": "Rebetiko Carnival - Greek traditional music",
+      "url": "https://rebetikocarnival.co.uk/events/",
+      "note": "29 Oct 2026: promoter detail pages resolve named bands and exact music times for Green Note Rebet Asker matinees. Cross-check linked tickets for year, age policy and price. Greek rebetiko is a distinct urban folk tradition: use folk with precise notes, not a gypsy-jazz proxy. Upcoming tags may retain expired events; ignore unrelated sidebar recommendations."
+    },
+    {
+      "name": "London Sacred Harp - annual singing gatherings",
+      "url": "https://londonsacredharp.org/london-all-day/",
+      "note": "29 Oct 2026: annual 31 Oct / 1 Nov 2026 gathering is explicitly dated. Participatory American shape-note folk-hymn singing, not a staged concert; new singers and all beliefs welcome. Prefer the dedicated current-year section over the general calendar for singing versus registration times. Older years share the same page; never mix them. Keep ordinary singing-school classes out of the radar."
+    },
+    {
+      "name": "Rockin Roots Events - acoustic blues double bills",
+      "url": "https://rockinrootsevents.co.uk/",
+      "note": "29 Oct 2026: exact promoter page and Gigantic ticket confirm Nothing in Rambling plus Kaspar & Lucy at Bromley Little Theatre on 9 May 2027. Productive for early acoustic Delta/Hill Country blues. Apply strict repertoire and travel checks; do not import generic electric blues-rock or tribute shows."
+    },
     { "name": "Mambo Jambo official dates", "url": "https://mambojambo.co.uk/events/list/", "note": "Artist-owned calendar recovered The Lamb Surbiton on 24 Sep 2026 while the pub roster lagged. Acoustic roots duo with traditional tunes and vintage swing in a broader world/folk repertoire: low local threshold at The Lamb, strict filter elsewhere. Do not confuse with Spanish band Los Mambo Jambo. Start time was not published." },
     { "name": "Songkick", "url": "https://www.songkick.com/", "note": "Artist/venue calendar pages work via plain fetch when you know the exact ID (Rob Heron 3743871, Boaters Inn 4052839); search is JS-walled and feeds curl decoy trending artists — WebSearch for the ID first." },
     { "name": "Bandsintown", "url": "https://www.bandsintown.com/", "note": "Effectively DEAD 2026-07-19: browse 403s even with Chrome UA and rest.bandsintown.com now returns an explicit auth-deny. Don't retry." },
@@ -657,6 +672,11 @@
     "site:concertina.org London concert traditional 2026 2027",
     "London Romani cultural centre klezmer traditional concert 2026 2027",
     "site:wiltons.org.uk traditional folk music 2026 2027",
-    "site:thecornerhouse.org Jez Lowe folk 2026 2027"
+    "site:thecornerhouse.org Jez Lowe folk 2026 2027",
+    "site:rebetikocarnival.co.uk/events Greek roots upcoming",
+    "site:londonsacredharp.org/london-all-day 2026 2027",
+    "London Surrey dulcimer concert 2026 2027",
+    "site:rockinrootsevents.co.uk acoustic Delta blues",
+    "site:eventbrite.co.uk \"London Scandi Session\""
   ]
 }
