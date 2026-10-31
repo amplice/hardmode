@@ -32,7 +32,8 @@
                                               "free cafe music",
                                               "daytime music",
                                               "comedy",
-                                              "talks"
+                                              "talks",
+                                              "2026-10-31: direct detail HTML works again. JSON-LD establishes years, but series start/end spans are envelopes: split only the selected dates explicitly listed in the body."
                                           ]
                          },
                          {
@@ -292,7 +293,8 @@
                                               "nature/rewilding/swift/bat walks",
                                               "free town-centre family events",
                                               "server-rendered and readable when VisitKingston/KingstonFirst are blocked",
-                                              "UPDATE 25 Jul 2026: the old ?page=N pagination quirk is GONE - bare /events now returns the full listing in one page and ?page=N returns empty"
+                                              "UPDATE 25 Jul 2026: the old ?page=N pagination quirk is GONE - bare /events now returns the full listing in one page and ?page=N returns empty",
+                                              "2026-10-31: pagination is active again; inspect ?page=1 after the initial page."
                                           ]
                          },
                          {
@@ -1067,6 +1069,30 @@
                 "High-quality daytime traditional folk matinees worth a destination trip",
                 "Check each date, Hall Two seating, event-specific restrictions and child tickets; daytime does not imply toddler suitability"
             ]
+        },
+        {
+          "name": "Theatreship daytime traditional music",
+          "url": "https://www.theatreship.co.uk/",
+          "checkFor": [
+            "Free all-ages daytime folk sessions; follow official Eventbrite detail for exact year and admission.",
+            "Historic ship has stairs and no step-free theatre access; apply destination threshold."
+          ]
+        },
+        {
+          "name": "Teddington Together seasonal community events",
+          "url": "https://www.teddingtontogether.org/",
+          "checkFor": [
+            "Public seasonal family programmes and carols; inspect current detail HTML.",
+            "2026 Lights Up live page has the full 16:30-20:00 timetable while web cache still says details to follow."
+          ]
+        },
+        {
+          "name": "Folk and Roots daytime concert promoter",
+          "url": "https://folkandroots.co.uk/",
+          "checkFor": [
+            "Selected traditional-folk matinees at Green Note and other reachable venues.",
+            "Use exact Liveit/WeGotTickets date, venue child policy and current prices; do not copy late or distant shows wholesale."
+          ]
         }
     ],
     "searchQueries":  [
@@ -1212,6 +1238,9 @@
         "Rigmarollers Rose Lion Twickenham November 2026 time admission",
         "Magic Garden Battersea free family daytime magic events 2026 2027",
         "Rose Lion Twickenham Rigmarollers traditional jazz folk 2026 2027",
-        "Kings Place Quebec traditional folk Sunday matinee child tickets seating 2026 2027"
+        "Kings Place Quebec traditional folk Sunday matinee child tickets seating 2026 2027",
+        "Theatreship London Scandi Session all ages free 2026 2027",
+        "Folk and Roots Green Note matinee 2026 2027",
+        "Kingston Spring Grove Morris Phoenix Clog Christmas wassail 2026 2027"
     ]
 }

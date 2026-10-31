@@ -38,13 +38,13 @@ window.GIG_DATA = {
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-10-29",
+    "dateBasis": "2026-10-31",
     "counts": {
       "total": 296,
-      "upcoming": 296,
+      "upcoming": 287,
       "watchlist": 73
     },
-    "generated": "2026-10-29T06:48:25.919Z",
+    "generated": "2026-10-31T07:14:47.172Z",
     "genres": [
       "Americana",
       "Balkan / klezmer",
@@ -104,7 +104,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-29 15:00",
       "travel": "Central London",
       "genresLabel": "French chanson",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -133,7 +133,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-29 19:00",
       "travel": "Central London",
       "genresLabel": "old-time · old-school country · blues",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -160,7 +160,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-29 19:30",
       "travel": "Local (SW London)",
       "genresLabel": "French chanson",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -188,7 +188,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-29 20:30",
       "travel": "Central London",
       "genresLabel": "hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -216,7 +216,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-30 15:00-17:30",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz · hot jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -243,7 +243,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-30 17:30",
       "travel": "Central London",
       "genresLabel": "Irish trad",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -272,7 +272,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-30 19:30",
       "travel": "Local (SW London)",
       "genresLabel": "New Orleans / trad jazz · swing · gospel",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -300,7 +300,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-30 19:30",
       "travel": "Central London",
       "genresLabel": "English folk · folk dance / ceilidh",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -328,7 +328,7 @@ window.GIG_DATA = {
       "sortKey": "2026-10-30 20:00",
       "travel": "Central London",
       "genresLabel": "Scottish folk · folk dance / ceilidh",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

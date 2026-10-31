@@ -1,55 +1,57 @@
 {
-  "generatedAt": "2026-10-28T07:19:51Z",
-  "dateBasis": "2026-10-28",
-  "summary": "Removed 16 finished rows; added 6 dated events, including four Gig Radar matinees and a free family magic show; refreshed five retained listings.",
+  "generatedAt": "2026-10-31T07:13:59Z",
+  "dateBasis": "2026-10-31",
+  "summary": "Removed 17 finished events; added 11 dated events, including five free Rose cafe performances and two Gig Radar promotions; marked one active trail sold out.",
   "added": [
-    "e20261031k: Family Magic Show with Maximilian, 2026-10-31.",
-    "e20261129d: GreenMatthews: Midwinter Revels, 2026-11-29.",
-    "e20261206f: Jazz & Beer: Enrico Tomasso's Riverboat Shufflers, 2026-12-06.",
-    "e20261129e: Genticorum: Quebec folk matinee, 2026-11-29.",
-    "e20270131a: La Deferlance: Quebec folk matinee, 2027-01-31.",
-    "e20261129f: The Rigmarollers at the Rose & Lion, 2026-11-29."
+    "e20261105a: Jazz with the Half-Diminished Band, 2026-11-05.",
+    "e20261217a: Jazz with the Half-Diminished Band, 2026-12-17.",
+    "e20261103: Teresa Jennings: lunchtime jazz, 2026-11-03.",
+    "e20261211c: Teresa Jennings: lunchtime jazz, 2026-12-11.",
+    "e20261117: Different People: free lunchtime music, 2026-11-17.",
+    "e20261108e: Rebet Asker: The Usual Suspects - family matinee, 2026-11-08.",
+    "e20261213b: London Scandi Session with Chris Dyer, 2026-12-13.",
+    "e20261101i: Some Foreign Shore - folk matinee, 2026-11-01.",
+    "e20261126b: Teddington Lights Up 2026, 2026-11-26.",
+    "e20261106b: Friday Night Traditional Irish Music Session, 2026-11-06.",
+    "e20261115f: ICC Concert Session: Tad Sargent, Rita Farrell and Sinead Linane, 2026-11-15."
   ],
   "updated": [
-    "e20261219: Added official 22:00 finish and flagged conflicting ticket prices: choir GBP16 versus Partnership GBP21.56 including fees.",
-    "e20261101a: Rechecked the separate all-ages ticket page, recorded fee-inclusive prices and corrected stale 12:15 sort key to the held 12:30 start; retained venue-time verification.",
-    "e20261115a: Rechecked the separate all-ages ticket page, recorded fee-inclusive prices and corrected stale 12:15 sort key to the held 12:30 start; retained venue-time verification.",
-    "e20261206a: Rechecked the separate all-ages ticket page, recorded fee-inclusive prices and corrected stale 12:15 sort key to the held 12:30 start; retained venue-time verification.",
-    "e20261220b: Rechecked the separate all-ages ticket page, recorded fee-inclusive prices and corrected stale 12:15 sort key to the held 12:30 start; retained venue-time verification."
+    "e20261026a: Marked Hampton Wick Halloween Trail sold out; retained the active run for existing ticket holders."
   ],
   "removed": [
-    "e20261015: Wimbledon BookFest 2026 (finished 2026-10-25).",
-    "e20261025: Fairport Convention - Autumn Tour 2026 (finished 2026-10-25).",
-    "e20261025b: TwickFolk: Luke Jackson (finished 2026-10-25).",
-    "e20261026: Monday Lunchtime Recital: The Bergmann Duo (recorder and piano) (finished 2026-10-26).",
-    "e20261027c: Sensory Space Adventure (ages 0-4) (finished 2026-10-27).",
-    "e20261027b: Bach to Baby Half Term Concert (finished 2026-10-27).",
-    "e705: Adult Book Group (finished 2026-10-27).",
-    "e20261025f: Elsie Franklin at The Lamb (finished 2026-10-25).",
-    "e20261025a: Back of a Length at The Lamb (finished 2026-10-25).",
-    "e20261025c: Return to London Town: Parish Ceili Band (finished 2026-10-25).",
-    "e20261025d: Afternoon swing with the Prospective Collective (finished 2026-10-25).",
-    "e20261027a: Honey Boulton & Adrian Cox: afternoon set (finished 2026-10-27).",
-    "e20261027d: African Djembe Drumming for ages 2-6 (finished 2026-10-27).",
-    "e20261025e: Family Knees Up: Tom Carradine at Big Story Festival (finished 2026-10-25).",
-    "e20261026c: Family Knees Up: Tom Carradine at Big Story Festival (finished 2026-10-26).",
-    "e20261024h: October Steam Up (finished 2026-10-25)."
+    "e20261029d: Half-term pumpkin carving (finished 2026-10-29).",
+    "e20261028: The Furrow Collective (finished 2026-10-28).",
+    "e639: Fellers Men's Group (finished 2026-10-28).",
+    "e20261029b: Mr Sleepybum's Dream Machine (finished 2026-10-29).",
+    "e20261029: Stevie Watts & The Whirlybirds (finished 2026-10-29).",
+    "e20261030b: Family Autumn Wreath Workshop (ages 4+) (finished 2026-10-30).",
+    "e20261030: Wolf Hall - Words, Music, Power (finished 2026-10-30).",
+    "e20261028a: TJ Johnson's Peak of the Week (finished 2026-10-28).",
+    "e20261030a: Waterloo Ceilidhs: Halloween special (finished 2026-10-30).",
+    "e20261029a: Les Boum! at The Lamb (finished 2026-10-29).",
+    "e20261028c: Matt Holborn: Celebrating Django (finished 2026-10-28).",
+    "e20261030c: Graham Hughes: afternoon set (finished 2026-10-30).",
+    "e20261026b: Witch's Spell Trail and spooky crafts (finished 2026-10-30).",
+    "e20261029c: Baby Gospel: Black History Month Special (finished 2026-10-29).",
+    "e20261030d: Play: Make: Art (ages 2-5) (finished 2026-10-30).",
+    "e20261030e: Spooky Samhain Trad Session (finished 2026-10-30).",
+    "e20261029e: Les Boum!: afternoon chanson (finished 2026-10-29)."
   ],
   "counts": {
     "before": {
-      "events": 297,
-      "recurring": 56,
-      "sources": 53,
-      "watchlist": 99
-    },
-    "after": {
       "events": 287,
       "recurring": 56,
       "sources": 53,
       "watchlist": 103
     },
-    "added": 6,
-    "updated": 5,
-    "removed": 16
+    "after": {
+      "events": 281,
+      "recurring": 56,
+      "sources": 53,
+      "watchlist": 103
+    },
+    "added": 11,
+    "updated": 1,
+    "removed": 17
   }
 }
