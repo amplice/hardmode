@@ -456,6 +456,13 @@
       ],
       "url": "https://walthamstowfolk.co.uk/",
       "note": "At Ye Olde Rose & Crown, 53 Hoe Street. Longer cross-London journey warrants a strong traditional-song/tune match or distinctive seasonal concert. Open individual dated guest pages and linked WeGotTickets; menu dates alone and generic singer-songwriter billing are insufficient."
+    },
+    {
+      "name": "The Rose Hill",
+      "area": "Brighton, East Sussex",
+      "genres": ["old-time", "folk", "folk dance / ceilidh"],
+      "url": "https://therosehill.co.uk/",
+      "note": "Selective day-trip source: Appalachian step-dance networks led to the dated 29 November 2026 old-time session with Guy Hayes and Ian Kearey. Inspect individual event pages for full year, workshop versus music-session times and separate prices. Require a strong traditional/acoustic match and explicit travel note; most experimental, electronic and contemporary programming is outside scope. Do not infer a recurring session from one date."
     }
   ],
   "closedOrDefunct": [
@@ -677,6 +684,9 @@
     "site:londonsacredharp.org/london-all-day 2026 2027",
     "London Surrey dulcimer concert 2026 2027",
     "site:rockinrootsevents.co.uk acoustic Delta blues",
-    "site:eventbrite.co.uk \"London Scandi Session\""
+    "site:eventbrite.co.uk \"London Scandi Session\"",
+    "site:therosehill.co.uk/event/ Appalachian old-time session",
+    "site:pipers.ie \"London\" \"International Uilleann Piping Day\"",
+    "site:applause.org.uk traditional folk acoustic village hall Surrey Kent Sussex"
   ]
 }
