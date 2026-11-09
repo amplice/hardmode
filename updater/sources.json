@@ -1093,6 +1093,14 @@
             "Selected traditional-folk matinees at Green Note and other reachable venues.",
             "Use exact Liveit/WeGotTickets date, venue child policy and current prices; do not copy late or distant shows wholesale."
           ]
+        },
+        {
+          "name": "Battersea Arts Centre early-years public programme",
+          "url": "https://bac.org.uk/whats-on/",
+          "checkFor": [
+            "Paginate the full programme; toddler theatre and relaxed public shows can appear on page 2. Easy via Clapham Junction.",
+            "Verify the year with the official bac Spektrix event/instance API; distinguish public times from school/nursery performances. Reject 6+ family concerts for this child."
+          ]
         }
     ],
     "searchQueries":  [
@@ -1241,6 +1249,9 @@
         "Kings Place Quebec traditional folk Sunday matinee child tickets seating 2026 2027",
         "Theatreship London Scandi Session all ages free 2026 2027",
         "Folk and Roots Green Note matinee 2026 2027",
-        "Kingston Spring Grove Morris Phoenix Clog Christmas wassail 2026 2027"
+        "Kingston Spring Grove Morris Phoenix Clog Christmas wassail 2026 2027",
+        "Battersea Arts Centre toddler public theatre Dear Santa 2026 2027",
+        "Plaquemine Lock Ewan Bleach November December 2026 brunch child seating",
+        "Cafe Boheme November 2026 vintage jazz Ewan Bleach daytime"
     ]
 }
