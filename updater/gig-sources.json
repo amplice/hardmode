@@ -155,7 +155,7 @@
       "secondaryUrls": ["https://theharrisonpub.com/kings-cross-venue-gigs-live-music-comedy/"],
       "instagramHandles": ["harrisonpub"],
       "instagramSearchQueries": ["The Harrison Kings Cross Instagram folk roots gigs", "site:instagram.com/p harrisonpub folk gig Harrison"],
-      "crawlRule": "Check the venue listings and Instagram every run; do not limit this to the dormant cajun jam note.",
+      "crawlRule": "Check the venue listings and Instagram every run; do not limit this to the dormant cajun jam note. Reconcile cancellations and replacements against live HTML and linked LIVE IT tickets; cached detail pages can retain previous-year dates. Music time may differ from the venue calendar doors time.",
       "includeRule": "Medium threshold: include trad/folk/roots, cajun/old-time/singarounds and unusually good date-night folk bookings; skip comedy-only and ordinary singer-songwriter nights."
     },
     {
@@ -463,6 +463,15 @@
       "genres": ["old-time", "folk", "folk dance / ceilidh"],
       "url": "https://therosehill.co.uk/",
       "note": "Selective day-trip source: Appalachian step-dance networks led to the dated 29 November 2026 old-time session with Guy Hayes and Ian Kearey. Inspect individual event pages for full year, workshop versus music-session times and separate prices. Require a strong traditional/acoustic match and explicit travel note; most experimental, electronic and contemporary programming is outside scope. Do not infer a recurring session from one date."
+    },
+    {
+      "name": "London Gallery Quire - West Gallery concerts",
+      "area": "London (various churches)",
+      "genres": [
+        "English folk"
+      ],
+      "url": "https://lgq.org.uk/diary-of-events",
+      "note": "Artist-owned diary for Georgian village-carol, hymn and psalmody concerts with acoustic instruments. Check the homepage for times missing from diary entries; separate public concerts from rehearsals and worship. Do not reuse prior-year church prices. Productive 10 November 2026: two December London concerts."
     }
   ],
   "closedOrDefunct": [
@@ -687,6 +696,10 @@
     "site:eventbrite.co.uk \"London Scandi Session\"",
     "site:therosehill.co.uk/event/ Appalachian old-time session",
     "site:pipers.ie \"London\" \"International Uilleann Piping Day\"",
-    "site:applause.org.uk traditional folk acoustic village hall Surrey Kent Sussex"
+    "site:applause.org.uk traditional folk acoustic village hall Surrey Kent Sussex",
+    "site:lgq.org.uk Christmas concert diary",
+    "Surrey folk club traditional named artists upcoming programme",
+    "London South East Breton balfolk named band dance",
+    "London autoharp concert traditional roots"
   ]
 }
