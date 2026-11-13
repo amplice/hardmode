@@ -262,10 +262,10 @@
       "area": "Camden, London",
       "priority": "highest-folk-dance",
       "url": "https://www.cecilsharphouse.org/whats-on",
-      "secondaryUrls": ["https://sales.efdss.org/efdss/api/v3/events"],
+      "secondaryUrls": ["https://sales.efdss.org/efdss/api/v3/events", "https://www.folkengland.org/whats-on/26-gigs"],
       "instagramHandles": [],
       "instagramSearchQueries": ["Cecil Sharp House cajun old-time dance Instagram", "EFDSS cajun old-time square dance 2026"],
-      "crawlRule": "Use the public EFDSS Spektrix API first, then the visible whats-on page for descriptions and late context.",
+      "crawlRule": "Use the public EFDSS Spektrix API first, then the visible whats-on page for descriptions and late context. The new Folk England domain carries the detailed spring/summer 2027 programme; use its exact event pages for repertoire, prices and music/doors times, cross-checking Spektrix instances.",
       "includeRule": "Low threshold for cajun, zydeco, old-time, square dances, barndances and live-band folk dancing. Skip classes, talks and generic folk-adjacent theatre."
     },
     {
@@ -700,6 +700,10 @@
     "site:lgq.org.uk Christmas concert diary",
     "Surrey folk club traditional named artists upcoming programme",
     "London South East Breton balfolk named band dance",
-    "London autoharp concert traditional roots"
+    "London autoharp concert traditional roots",
+    "London hurdy gurdy traditional concert 2027",
+    "London Sephardic Ladino traditional concert 2027",
+    "London live band tea dance 2027",
+    "site:folkengland.org/whats-on/ traditional 2027"
   ]
 }
