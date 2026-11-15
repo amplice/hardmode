@@ -38,13 +38,13 @@ window.GIG_DATA = {
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-11-13",
+    "dateBasis": "2026-11-15",
     "counts": {
       "total": 279,
-      "upcoming": 279,
+      "upcoming": 266,
       "watchlist": 78
     },
-    "generated": "2026-11-13T06:49:28.367Z",
+    "generated": "2026-11-15T07:25:21.697Z",
     "genres": [
       "Americana",
       "Balkan / klezmer",
@@ -103,7 +103,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-13 15:00",
       "travel": "Central London",
       "genresLabel": "blues",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -131,7 +131,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-13 20:00",
       "travel": "Day-trip",
       "genresLabel": "hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -159,7 +159,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-13 21:00",
       "travel": "Central London",
       "genresLabel": "hot jazz · blues",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -186,7 +186,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-13 21:00",
       "travel": "Central London",
       "genresLabel": "Balkan / klezmer",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -243,7 +243,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-14 12:30",
       "travel": "Central London",
       "genresLabel": "hot jazz · New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -271,7 +271,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-14 13:30",
       "travel": "Central London",
       "genresLabel": "cajun · folk dance / ceilidh",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -298,7 +298,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-14 14:00",
       "travel": "Central London",
       "genresLabel": "gypsy jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -325,7 +325,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-14 20:00",
       "travel": "Central London",
       "genresLabel": "folk dance / ceilidh",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -353,7 +353,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-14 20:00",
       "travel": "Central London",
       "genresLabel": "Irish trad · British folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -380,7 +380,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-14 20:00",
       "travel": "Central London",
       "genresLabel": "Scottish folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -407,7 +407,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-14 20:30",
       "travel": "Central London",
       "genresLabel": "old-time",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -435,7 +435,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-14 21:00",
       "travel": "Central London",
       "genresLabel": "hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -463,7 +463,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-14 99:99",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

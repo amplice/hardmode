@@ -1101,8 +1101,32 @@
             "Paginate the full programme; toddler theatre and relaxed public shows can appear on page 2. Easy via Clapham Junction.",
             "Verify the year with the official bac Spektrix event/instance API; distinguish public times from school/nursery performances. Reject 6+ family concerts for this child."
           ]
-        }
-    ],
+        },
+                         {
+                             "name": "HKUK Kingston Community Centre cultural events",
+                             "url": "https://hk.uk/en/carnival-2026",
+                             "checkFor": [
+                                 "Public cultural fairs, exhibitions and family events in central Kingston",
+                                 "Read each festival date separately; the food market and publishing fair use different days. Follow official ticket pages for address and registration."
+                             ]
+                         },
+                         {
+                             "name": "Bentall Centre seasonal family events",
+                             "url": "https://www.bentallcentre.co.uk/whats-on/",
+                             "checkFor": [
+                                 "Low-cost Christmas grotto and toddler-relevant seasonal activities",
+                                 "Follow organiser Eventbrite links for explicit years, selected dates and prices; do not infer trail dates from a separate grotto."
+                             ]
+                         },
+                         {
+                             "name": "Eel Pie Island Artists open studios",
+                             "url": "https://www.eelpieislandartists.co.uk/pages/open-studios",
+                             "checkFor": [
+                                 "Dated free winter and summer open studios",
+                                 "Check timed booking rules and working-boatyard access; museum opening hours are a separate programme."
+                             ]
+                         }
+                     ],
     "searchQueries":  [
         "Kingston Music Service public open rehearsals 2026 2027 All Saints",
         "Plaquemine Lock Ewan Bleach Saturday brunch October 2026",
@@ -1252,6 +1276,9 @@
         "Kingston Spring Grove Morris Phoenix Clog Christmas wassail 2026 2027",
         "Battersea Arts Centre toddler public theatre Dear Santa 2026 2027",
         "Plaquemine Lock Ewan Bleach November December 2026 brunch child seating",
-        "Cafe Boheme November 2026 vintage jazz Ewan Bleach daytime"
-    ]
+        "Cafe Boheme November 2026 vintage jazz Ewan Bleach daytime",
+                          "HKUK Kingston community centre cultural fair family 2026 2027",
+                          "Bentall Centre Christmas Santa trail 2026 2027 dates tickets",
+                          "EFG London Jazz Festival Southbank free family Sound Lines Homegrown programme 2026"
+                     ]
 }
