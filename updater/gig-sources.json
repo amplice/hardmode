@@ -315,18 +315,12 @@
   ],
   "keyVenues": [
     {
-      "name": "Kings Place - traditional folk programme",
+      "name": "Kings Place - traditional folk and early-jazz programmes",
       "area": "King's Cross, London",
-      "genres": [
-        "English folk",
-        "Irish trad",
-        "Scottish folk",
-        "British folk",
-        "folk",
-        "Balkan / klezmer"
-      ],
+      "genres": ["English folk","Irish trad","Scottish folk","British folk","folk","Balkan / klezmer","ragtime","swing","roots jazz"],
       "url": "https://www.kingsplace.co.uk/whats-on/folk/",
-      "note": "Productive for named traditional singers, concertina/fiddle players and visiting Quebec or Cape Breton ensembles. Open each event detail and confirm its year in the current programme or tickets. Use performance time, not doors; retain booking-fee caveats. Filter indie-folk, generic singer-songwriters, fusion and electronic bills rather than importing the whole folk category."
+      "secondaryUrls": ["https://www.kingsplace.co.uk/whats-on/jazz/"],
+      "note": "Productive for named traditional singers, concertina/fiddle players and visiting Quebec or Cape Breton ensembles. Open each event detail and confirm its year in the current programme or tickets. Use performance time, not doors; retain booking-fee caveats. Filter indie-folk, generic singer-songwriters, fusion and electronic bills rather than importing the whole folk category. 16 Nov 2026: named early-jazz programmes also proved productive (Joe Webb’s 7-A-Side and Giacomo Smith’s Routes In Ragtime). Check each programme explicitly for ragtime/stride/early-jazz content; do not import the modern-jazz category wholesale. Note future booking-open dates."
     },
     { "name": "Coin Street / Gabriel's Wharf", "area": "Waterloo / South Bank, London", "genres": ["hot jazz", "New Orleans / trad jazz", "swing"], "url": "https://www.coinstreet.org/whats-on", "note": "Family-crossover source rather than a regular music venue. Check for free all-ages festivals and inspect every date in multi-date event pages. The 2026 Arts Festival had different priority acts on 5 Sep (Doolally Tap) and 19 Sep (Ewan Bleach/Cable Street Rag Band). Checked 26 October 2026: the official /gabriels-wharf page now says the Wharf is closed. Continue watching Coin Street neighbourhood announcements, but do not assume the old site or September festival will recur." },
     { "name": "Toulouse Lautrec Jazz Club", "area": "Kennington, London", "genres": ["gypsy jazz", "hot jazz"], "url": "https://toulouselautrec.co.uk/", "note": "CURRENT premier London gypsy-jazz venue (La Bouche Manouche, London Django Collective). Regular manouche nights + annual London Gypsy Jazz Festival (Apr, out of the summer window). Ticketing subdomain sometimes 403s — read the main site." },
@@ -480,6 +474,16 @@
     { "name": "Nightjar Carnaby", "note": "CLOSED. The official site now has a closure notice; only crawl the Shoreditch listings/feed." }
   ],
   "aggregators": [
+    {
+      "name": "Kathryn Tickell - official live dates",
+      "url": "https://www.kathryntickell.com/live-dates",
+      "note": "Artist-owned diary for Northumbrian pipes/fiddle and traditional collaborations. 16 Nov 2026: confirms Kathryn Tickell & Mick McAuley in Twyford near Winchester on 17 Apr 2027; watchlist pending ticket/time and return-travel checks. Distinguish Twyford, Hampshire from Twyford, Berkshire. Apply a strong match and practical journey threshold outside London."
+    },
+    {
+      "name": "Borough Welsh Chapel - Plygain programme",
+      "url": "https://boroughwelshchapel.com/",
+      "note": "Official chapel website announces traditional Welsh Plygain carol gatherings. 16 Nov 2026: early January 2027 promised, exact date pending. Do not treat ordinary services as concerts or extrapolate dates; older chapel domains may be unofficial."
+    },
     {
       "name": "Rebetiko Carnival - Greek traditional music",
       "url": "https://rebetikocarnival.co.uk/events/",
@@ -704,6 +708,9 @@
     "London hurdy gurdy traditional concert 2027",
     "London Sephardic Ladino traditional concert 2027",
     "London live band tea dance 2027",
-    "site:folkengland.org/whats-on/ traditional 2027"
+    "site:folkengland.org/whats-on/ traditional 2027",
+    "London Welsh Plygain January 2027 traditional carols",
+    "site.kingsplace.co.uk ragtime stride 2027",
+    "Kathryn Tickell Mick McAuley 2027 Twyford concert"
   ]
 }
