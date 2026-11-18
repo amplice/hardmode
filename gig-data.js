@@ -38,13 +38,13 @@ window.GIG_DATA = {
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-11-16",
+    "dateBasis": "2026-11-18",
     "counts": {
       "total": 266,
-      "upcoming": 266,
+      "upcoming": 262,
       "watchlist": 80
     },
-    "generated": "2026-11-16T06:53:05.944Z",
+    "generated": "2026-11-18T07:23:05.430Z",
     "genres": [
       "Americana",
       "Balkan / klezmer",
@@ -133,7 +133,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-16 16:00",
       "travel": "Central London",
       "genresLabel": "cajun · folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -160,7 +160,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-16 20:30",
       "travel": "Central London",
       "genresLabel": "folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -187,7 +187,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-17 20:00",
       "travel": "Central London",
       "genresLabel": "Irish trad",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -214,7 +214,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-17 20:30",
       "travel": "Central London",
       "genresLabel": "Irish trad",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

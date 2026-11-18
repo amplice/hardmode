@@ -1,65 +1,58 @@
 {
-  "generatedAt": "2026-11-15T07:21:39Z",
-  "dateBasis": "2026-11-15",
-  "summary": "Removed 21 finished events; added 13 dated outings, including three Gig Radar promotions, free Southbank festival days, local Christmas attractions and Maiastra concerts; corrected three retained rows.",
+  "generatedAt": "2026-11-18T07:19:32Z",
+  "dateBasis": "2026-11-18",
+  "summary": "Removed 13 finished events; added 15 dated outings including five free WordPlay sessions, farm Christmas activities, Dorich House events and chamber/medieval music; corrected two Bach to Baby listings.",
   "added": [
-    "e20261115g: HKUK Carnival: publishing fair and exhibition, 2026-11-15.",
-    "e20261205i: Eel Pie Island Winter Open Studios, 2026-12-05.",
-    "e20261201: Santa's Grotto at the Bentall Centre, 2026-12-01.",
-    "e20261120d: Friday Night Traditional Irish Music Session, 2026-11-20.",
-    "e20270123: Maiastra: String Quartets with Alex Reddington, 2027-01-23.",
-    "e20270227: Maiastra: Piano Quintets with David Waterman, 2027-02-27.",
-    "e20270409: Maiastra: String Quartets with Arisa Fujita, 2027-04-09.",
-    "e20261115h: Sound Lines: Voice and Percussion, 2026-11-15.",
-    "e20261122e: Homegrown: free jazz festival day, 2026-11-22.",
-    "e20261116a: Dai Price: Cajun and folk afternoon, 2026-11-16.",
-    "e20261118a: Savannah Gardner: country afternoon, 2026-11-18.",
-    "e20261125a: Celebrating Django with Matt Holborn, 2026-11-25.",
-    "e20261128i: Dom Glynn and His Sunday Best: afternoon set, 2026-11-28."
+    "e20270129: WordPlay: Ages 3-5, 2027-01-29.",
+    "e20270212: WordPlay: Ages 3-5, 2027-02-12.",
+    "e20270226: WordPlay: Ages 3-5, 2027-02-26.",
+    "e20270312: WordPlay: Ages 3-5, 2027-03-12.",
+    "e20270326: WordPlay: Ages 3-5, 2027-03-26.",
+    "e20261212h: Santa's Grotto at Deen City Farm, 2026-12-12.",
+    "e20261205j: Storytime with Santa, 2026-12-05.",
+    "e20261221: Clay Decoration Painting (ages 2+), 2026-12-21.",
+    "e20261222a: Wooden Decoration Painting (ages 2+), 2026-12-22.",
+    "e20261203e: Kingston University Christmas lunchtime concert, 2026-12-03.",
+    "e20261212i: Pop Up Portraits: free family activity, 2026-12-12.",
+    "e20261204g: Stars, Snow & Firelight: Nette Robinson and Tony Woods, 2026-12-04.",
+    "e20270130a: A Medieval Chorus: Green Dragon Guild, 2027-01-30.",
+    "e20270716: Maiastra: String Quartets with Akiko Ono, 2027-07-16.",
+    "e20270911: Maiastra: String Quartets with Florence Cooke, 2027-09-11."
   ],
   "updated": [
-    "e20261122: Corrected singaround to 19:30, doors 19:15, and linked the exact event.",
-    "e653: Corrected Jez Lowe start to 19:45 and finish to 22:30 from the venue detail.",
-    "e20261120a: Named the Hot Dog Corn Dogs, corrected indoor setting and flagged conflicting finish times."
+    "e20261124: Updated programme, 45-minute duration and current GBP18 online / GBP20 door prices from official booking data.",
+    "e20261208: Updated programme, 45-minute duration and current GBP18 online / GBP20 door prices from official booking data."
   ],
   "removed": [
-    "e20261109: Monday Lunchtime Recital: Thady Cooney (piano) (finished 2026-11-09).",
-    "e646: Hannah White live on stage (finished 2026-11-10).",
-    "e20261110: Life Drawing at the Pub (finished 2026-11-10).",
-    "e674: The Magic of Motown (finished 2026-11-11).",
-    "e675: Russell Watson - An Intimate Evening with The Voice (finished 2026-11-12).",
-    "e20261112b: Ryan Young with Louis Campbell (finished 2026-11-12).",
-    "e20261112c: Landmark Live Comedy (finished 2026-11-12).",
-    "e20261113: Storytime & Twirling Toddlers: The Mitten (finished 2026-11-13).",
-    "e20261113c: WordPlay: Ages 3-5 (finished 2026-11-13).",
-    "e20261114: Speakeasy Brunch (live music + Smok'd food) (finished 2026-11-14).",
-    "e20261111: TJ Johnson's Peak of the Week (finished 2026-11-11).",
-    "e20261114a: Cajun Après-Midi: dance lesson, live band and jam (finished 2026-11-14).",
-    "e20261114b: Fidelio Hot Club (finished 2026-11-14).",
-    "e20261112a: Una Coello Guitar Girl: Dinosaurs Singalong (finished 2026-11-12).",
-    "e20261112d: Melbury Music Quintet (finished 2026-11-12).",
-    "e20261113a: Jazz Fridays: Cafe Jazz Band (finished 2026-11-13).",
-    "e20261112e: Sam Chase and the Untraditional at The Lamb (finished 2026-11-12).",
-    "e20261113d: Play: Make: Art (ages 2-5) (finished 2026-11-13).",
-    "e20261111a: Ewan Bleach: afternoon jazz (finished 2026-11-11).",
-    "e20261114c: Ewan Bleach: Saturday jazz brunch (finished 2026-11-14).",
-    "e20261113e: Friday Night Traditional Irish Music Session (finished 2026-11-13)."
+    "e644: Anna Dyson: Meet the Artist (finished 2026-11-17).",
+    "e20261115: Jazz At The Movies (finished 2026-11-15).",
+    "e20261115b: TwickFolk: Hunter Muskett (finished 2026-11-15).",
+    "e20261116: Monday Lunchtime Recital: Soraya Vergee (piano) (finished 2026-11-16).",
+    "e20261115a: Ewan Bleach and The Fleeting Paradise Orchestra: lunch gig (finished 2026-11-15).",
+    "e20261115c: Afternoon swing with the Prospective Collective (finished 2026-11-15).",
+    "e20261115d: The Rheingans Sisters: matinee (finished 2026-11-15).",
+    "e20261115e: Fran McGillivray and Mike Burke at The Lamb (finished 2026-11-15).",
+    "e20261117: Different People: free lunchtime music (finished 2026-11-17).",
+    "e20261115f: ICC Concert Session: Tad Sargent, Rita Farrell and Sinead Linane (finished 2026-11-15).",
+    "e20261115g: HKUK Carnival: publishing fair and exhibition (finished 2026-11-15).",
+    "e20261115h: Sound Lines: Voice and Percussion (finished 2026-11-15).",
+    "e20261116a: Dai Price: Cajun and folk afternoon (finished 2026-11-16)."
   ],
   "counts": {
     "before": {
-      "events": 236,
-      "recurring": 56,
-      "sources": 53,
-      "watchlist": 106
-    },
-    "after": {
       "events": 228,
       "recurring": 56,
       "sources": 53,
       "watchlist": 108
     },
-    "added": 13,
-    "updated": 3,
-    "removed": 21
+    "after": {
+      "events": 230,
+      "recurring": 56,
+      "sources": 53,
+      "watchlist": 109
+    },
+    "added": 15,
+    "updated": 2,
+    "removed": 13
   }
 }

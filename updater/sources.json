@@ -739,14 +739,15 @@
                                           ]
                          },
                          {
-                             "name":  "Dorich House Museum events",
-                             "url":  "https://www.dorichhousemuseum.org.uk/category/events/",
-                             "checkFor":  [
-                                              "free Open House and extra-opening days",
-                                              "family-accessible heritage and sculpture events",
-                                              "use dated museum posts after the summer closure"
-                                          ]
-                         },
+      "name": "Dorich House Museum events",
+      "url": "https://www.dorichhousemuseum.org.uk/whats-on/",
+      "checkFor": [
+        "free Open House and extra-opening days",
+        "family-accessible heritage and sculpture events",
+        "use dated museum posts after the summer closure",
+        "2026-11-18: Route migration: use /whats-on/; /news-events/ and /category/events/ now fail. Inspect each Winter Weekends date separately for university lunchtime music and family portraits; distinguish adult lectures/workshops."
+      ]
+    },
                          {
                              "name":  "Squire's Garden Centres family events",
                              "url":  "https://www.squiresgardencentres.co.uk/shop/customer-events-all.html",
@@ -1125,7 +1126,15 @@
                                  "Dated free winter and summer open studios",
                                  "Check timed booking rules and working-boatyard access; museum opening hours are a separate programme."
                              ]
-                         }
+                         },
+    {
+      "name": "Strawberry Hill House official ticket inventory",
+      "url": "https://tickets.strawberryhillhouse.org.uk/tickets",
+      "checkFor": [
+        "After Dark early/medieval music and seasonal cultural programmes",
+        "Use exact event ticket pages for year, price and arrival versus performance times; index slots can be arrival times."
+      ]
+    }
                      ],
     "searchQueries":  [
         "Kingston Music Service public open rehearsals 2026 2027 All Saints",
@@ -1279,6 +1288,10 @@
         "Cafe Boheme November 2026 vintage jazz Ewan Bleach daytime",
                           "HKUK Kingston community centre cultural fair family 2026 2027",
                           "Bentall Centre Christmas Santa trail 2026 2027 dates tickets",
-                          "EFG London Jazz Festival Southbank free family Sound Lines Homegrown programme 2026"
+                          "EFG London Jazz Festival Southbank free family Sound Lines Homegrown programme 2026",
+        "Dorich House Winter Weekends Kingston University free concert family portraits 2026 2027",
+        "Southbank WordPlay ages 3 5 January February March 2027 dates",
+        "Deen City Farm Christmas 2026 Santa decoration painting ages 2 booking",
+        "Strawberry Hill After Dark medieval music 2027 performance times"
                      ]
 }
