@@ -3,7 +3,7 @@
     "title": "Gig Radar",
     "description": "Curated radar of traditional jazz, folk, Americana and related roots music around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-11-16",
+    "updated": "2026-11-19",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -37,32 +37,12 @@
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-11-16",
+    "dateBasis": "2026-11-19",
     "counts": {
-      "upcoming": 266
+      "upcoming": 287
     }
   },
   "gigs": [
-    {
-      "id": "g20261113-efglondon",
-      "date": "2026-11-13",
-      "endDate": "2026-11-22",
-      "time": "",
-      "title": "EFG London Jazz Festival 2026 (trad / gypsy strands)",
-      "artist": "Trio Manouche + 60+ venues citywide",
-      "venue": "Barbican, Southbank & 60+ venues",
-      "area": "Various, London",
-      "genres": [
-        "gypsy jazz",
-        "New Orleans / trad jazz",
-        "hot jazz"
-      ],
-      "cost": "",
-      "url": "https://efglondonjazzfestival.org.uk/",
-      "source": "efglondonjazzfestival.org.uk",
-      "confidence": "confirmed",
-      "note": "Festival dates confirmed; reliably carries trad/hot/gypsy strands. Cherry-pick manouche/trad gigs from the What's On listing."
-    },
     {
       "id": "g20261120-nattycongeroo",
       "date": "2026-11-20",
@@ -909,24 +889,6 @@
       "source": "Bishopsgate Institute",
       "confidence": "verify",
       "note": "Confirmed live-band Lindy night, 19:00–23:00, with beginner taster and vintage DJs; band name not yet announced."
-    },
-    {
-      "id": "g20261117-celticsession",
-      "date": "2026-11-17",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Traditional Irish & Celtic Session",
-      "artist": "Jamboree Celtic session musicians",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "Irish trad"
-      ],
-      "cost": "Free",
-      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-34/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Free weekly traditional Irish and Celtic session;"
     },
     {
       "id": "g20261119-cablestreet",
@@ -1995,27 +1957,6 @@
       "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
     },
     {
-      "id": "g20261118-tjjohnson-jamboree",
-      "date": "2026-11-18",
-      "endDate": null,
-      "time": "15:00",
-      "title": "TJ Johnson's Peak of the Week",
-      "artist": "TJ Johnson",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "swing",
-        "old-school country",
-        "blues",
-        "gospel"
-      ],
-      "cost": "Free / donations",
-      "url": "https://www.jamboreevenue.co.uk/upcoming-events/?pno=6",
-      "source": "Jamboree official dated listings",
-      "confidence": "confirmed",
-      "note": "Afternoon piano and vocals across vintage jazz, country, gospel and blues, 15:00-17:00. Explicit individual date in the venue programme; consistent with the existing residency rows."
-    },
-    {
       "id": "g20261125-tjjohnson-jamboree",
       "date": "2026-11-25",
       "endDate": null,
@@ -2823,24 +2764,6 @@
       "note": "Full-day live maritime-song festival; first music 10:30, further sets through 17:30, ship open 10:00–18:00. Strong destination/family-day value. Travel via Waterloo and onward Jubilee/DLR connections to Greenwich; allow extra time compared with central London gigs."
     },
     {
-      "id": "g20261116-rheingans-green-note",
-      "date": "2026-11-16",
-      "endDate": null,
-      "time": "20:30",
-      "title": "The Rheingans Sisters",
-      "artist": "The Rheingans Sisters",
-      "venue": "Green Note",
-      "area": "Camden, London",
-      "genres": [
-        "folk"
-      ],
-      "cost": "£22 / £16.50 low-income concession incl. fees",
-      "url": "https://wegottickets.com/f/24914",
-      "source": "FolkandRoots / WeGotTickets",
-      "confidence": "confirmed",
-      "note": "Intimate acoustic retrospective from the folk duo, with songs and tunes from their established repertoire plus new solo songwriting. Doors 19:00; all ages. One of three separately ticketed shows."
-    },
-    {
       "id": "g20261213-savannah-country-christmas",
       "date": "2026-12-13",
       "endDate": null,
@@ -3274,24 +3197,6 @@
       "note": "Pre-war acoustic blues, ragtime and early jazz on resonator guitar; strong close-to-home match. Exact forthcoming event card checked 26 October; social-only details, so verify before travel."
     },
     {
-      "id": "g20261117-jacquelynhynes",
-      "date": "2026-11-17",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Jacquelyn Hynes",
-      "artist": "Jacquelyn Hynes",
-      "venue": "Green Note",
-      "area": "Camden, London",
-      "genres": [
-        "Irish trad"
-      ],
-      "cost": "£15.40 including booking fee",
-      "url": "https://wegottickets.com/f/30880",
-      "source": "Folk and Roots / WeGotTickets",
-      "confidence": "confirmed",
-      "note": "Irish flute and traditional song at a specialist acoustic venue. Exact ticket gives music 20:00, doors 19:30 and all ages."
-    },
-    {
       "id": "g20270820-travellingriverside",
       "date": "2027-08-20",
       "endDate": null,
@@ -3704,44 +3609,6 @@
       "note": "Traditional Scandinavian tunes led by fiddler and nyckelharpa player Chris Dyer. Musicians and listeners welcome, all ages, until 17:00. Nordic folk retains the broad folk label. Via Waterloo and Jubilee line to Canary Wharf, then walk; historic ship has stairs and no step-free access to the theatre."
     },
     {
-      "id": "g20261116-daiprice-boheme",
-      "date": "2026-11-16",
-      "endDate": null,
-      "time": "16:00",
-      "title": "Dai Price",
-      "artist": "Dai Price",
-      "venue": "Café Bohème",
-      "area": "Soho, London",
-      "genres": [
-        "cajun",
-        "folk"
-      ],
-      "cost": "",
-      "url": "https://www.cafeboheme.co.uk/live-music",
-      "source": "Café Bohème official November 2026 schedule",
-      "confidence": "confirmed",
-      "note": "Cajun and folk repertoire."
-    },
-    {
-      "id": "g20261118-savannahgardner-boheme",
-      "date": "2026-11-18",
-      "endDate": null,
-      "time": "16:00",
-      "title": "Savannah Gardner",
-      "artist": "Savannah Gardner",
-      "venue": "Café Bohème",
-      "area": "Soho, London",
-      "genres": [
-        "Americana",
-        "blues"
-      ],
-      "cost": "",
-      "url": "https://www.cafeboheme.co.uk/live-music",
-      "source": "Café Bohème official November 2026 schedule",
-      "confidence": "confirmed",
-      "note": "Country Americana and outlaw blues."
-    },
-    {
       "id": "g20261120-remibanklyn-boheme",
       "date": "2026-11-20",
       "endDate": null,
@@ -3965,24 +3832,6 @@
       "source": "Nowboy Records official Ticket Tailor listing",
       "confidence": "confirmed",
       "note": "Priority-act exception for Dom Glynn on a mixed bill also featuring alt-country, bluegrass and outlaw soul. Published event window 19:00–22:15; individual set times unannounced. Longer trip via Clapham Junction to Brighton plus the walk to Dyke Road; check late returns."
-    },
-    {
-      "id": "g20261118-danimilano-nightjar",
-      "date": "2026-11-18",
-      "endDate": null,
-      "time": "21:00",
-      "title": "Dani Milano",
-      "artist": "Dani Milano",
-      "venue": "Nightjar Shoreditch",
-      "area": "Shoreditch, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "£6 cover charge",
-      "url": "https://www.barnightjar.com/shoreditch-listings/dani-milano-nightjar",
-      "source": "Nightjar official live listings feed and event page",
-      "confidence": "confirmed",
-      "note": "1930s–40s swing with Italian standards and some originals."
     },
     {
       "id": "g20261120-jukejointfour-nightjar",
@@ -5023,6 +4872,557 @@
       "source": "Kings Place official event",
       "confidence": "confirmed",
       "note": "Original early-jazz-rooted music inspired by the 1920s and the Great Migration, with references to Jelly Roll Morton, Louis Armstrong and Bessie Smith. Clarinet-led ensemble with trumpet, trombone, piano, banjo and drums. Doors 19:00; about 1 hour 50 minutes including interval. Tickets scheduled on sale 15 December at 10:00."
+    },
+    {
+      "id": "g20261121-shukoronins",
+      "date": "2026-11-21",
+      "endDate": null,
+      "time": "21:00",
+      "title": "The Speakeasy Party: Shuko and the Ronins",
+      "artist": "Shuko and the Ronins",
+      "venue": "Ram Jam Records at The Grey Horse",
+      "area": "Kingston",
+      "genres": [
+        "blues"
+      ],
+      "cost": "",
+      "url": "https://www.ramjamrecords.co.uk/events/21/11/26-shuko-and-the-ronins",
+      "source": "Ram Jam Records",
+      "confidence": "confirmed",
+      "note": "Shuko Fujita fronts a new quintet playing retro roots and boogie at the local Saturday speakeasy. Doors 19:00."
+    },
+    {
+      "id": "g20261123-hartwin",
+      "date": "2026-11-23",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Folk and Roots Presents: Hartwin",
+      "artist": "Hartwin Dhoore with Chris Avery supporting",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "folk"
+      ],
+      "cost": "£14 face value",
+      "url": "https://events.liveit.io/folk-and-roots/hartwin-dhoore/",
+      "source": "Folk and Roots / Green Note / Hartwin",
+      "confidence": "confirmed",
+      "note": "Solo Flemish diatonic accordion with support from Welsh traditional guitarist Chris Avery. Doors 19:00."
+    },
+    {
+      "id": "g20261125-tishhinojosa",
+      "date": "2026-11-25",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Tish Hinojosa + Anny Celsi",
+      "artist": "Tish Hinojosa + Anny Celsi",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "Americana",
+        "folk"
+      ],
+      "cost": "£17 face value",
+      "url": "https://www.greennote.co.uk/production/tish-hinojosa-anny-celsi/",
+      "source": "Green Note / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Austin roots songwriter Hinojosa draws on Texas country, Mexican music and folk. Doors 19:00."
+    },
+    {
+      "id": "g20261128-jimmyregal",
+      "date": "2026-11-28",
+      "endDate": null,
+      "time": "21:00",
+      "title": "The Speakeasy Party: Jimmy Regal and the Royals",
+      "artist": "Jimmy Regal and the Royals",
+      "venue": "Ram Jam Records at The Grey Horse",
+      "area": "Kingston",
+      "genres": [
+        "blues",
+        "rhythm and blues"
+      ],
+      "cost": "£12 + fees; £15 door; £10 students",
+      "url": "https://www.ramjamrecords.co.uk/events/28-11-26-jimmy-regal-and-the-royals",
+      "source": "Ram Jam Records",
+      "confidence": "confirmed",
+      "note": "Harmonica-led blues and lowdown rhythm and blues with Joff Watkins. Doors 19:00."
+    },
+    {
+      "id": "g20261204-acousticbluesrevue",
+      "date": "2026-12-04",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Acoustic Blues Revue",
+      "artist": "Simon Prager, Doc Stenson & Wendy Lanchin",
+      "venue": "Karamel",
+      "area": "Wood Green, London",
+      "genres": [
+        "country blues",
+        "ragtime",
+        "skiffle"
+      ],
+      "cost": "£13 standard; £10 early bird; £5 concessions, before fees",
+      "url": "https://www.musicglue.com/karamel/events/2026-12-04-acoustic-blues-revue-karamel",
+      "source": "Collage Arts / Karamel",
+      "confidence": "confirmed",
+      "note": "Acoustic blues, ragtime and skiffle from a trio with roots in the British country-blues scene. Prager draws on Rev. Gary Davis. Doors 19:00."
+    },
+    {
+      "id": "g20261206-iccconcertsession",
+      "date": "2026-12-06",
+      "endDate": null,
+      "time": "14:00",
+      "title": "ICC Concert Session with Tad Sargent, Tara Viscardi & Dermot Crehan",
+      "artist": "Tad Sargent, Tara Viscardi & Dermot Crehan",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free; booking required",
+      "url": "https://irishculturalcentre.co.uk/event/icc-concert-session-with-tad-sargent-tara-viscardi-dermot-crehan/",
+      "source": "Irish Cultural Centre",
+      "confidence": "confirmed",
+      "note": "Afternoon concert with Irish harpist Tara Viscardi, Clare-trad fiddler Dermot Crehan and guitarist Tad Sargent. Doors 13:30."
+    },
+    {
+      "id": "g20261212-dustmedown",
+      "date": "2026-12-12",
+      "endDate": null,
+      "time": "21:00",
+      "title": "Dust Me Down Blues Band",
+      "artist": "Dust Me Down Blues Band",
+      "venue": "Ram Jam Records at The Grey Horse",
+      "area": "Kingston",
+      "genres": [
+        "blues"
+      ],
+      "cost": "£12 advance; £15 door; £10 students",
+      "url": "https://www.ramjamrecords.co.uk/events/12-12-26-dust-me-down-blues-band",
+      "source": "Ram Jam Records",
+      "confidence": "confirmed",
+      "note": "Blues roots guitar from Davide Mazzantini and vocals from Ray Wallen at the Kingston speakeasy. Doors 19:00."
+    },
+    {
+      "id": "g20261218-bohemehotclub",
+      "date": "2026-12-18",
+      "endDate": null,
+      "time": "20:00",
+      "title": "The Bohème Hot Club",
+      "artist": "The Bohème Hot Club",
+      "venue": "Karamel",
+      "area": "Wood Green, London",
+      "genres": [
+        "gypsy jazz",
+        "swing"
+      ],
+      "cost": "£13 standard; £10 early bird; £5 concessions, before fees",
+      "url": "https://www.musicglue.com/karamel/events/2026-12-18-the-boheme-hot-club-karamel",
+      "source": "Collage Arts / Karamel",
+      "confidence": "confirmed",
+      "note": "Five-piece Django-era swing group with vocals, two guitars, violin or trumpet and double bass. Doors 19:00."
+    },
+    {
+      "id": "g20261231-swinglandnye",
+      "date": "2026-12-31",
+      "endDate": "2027-01-01",
+      "time": "20:00",
+      "title": "The 1931 Club New Year's Eve Dance Party",
+      "artist": "Louise Messenger & Her Savoy Swing",
+      "venue": "The Bedford (upstairs ballroom)",
+      "area": "Balham, London",
+      "genres": [
+        "swing"
+      ],
+      "cost": "£50 advance; limited £45 early bird",
+      "url": "https://www.swingland.com/the1931club/schedule/20261231/",
+      "source": "Swingland",
+      "confidence": "confirmed",
+      "note": "Live swing for dancing. The party runs 20:00–01:00, with arrival fizz and canapés included. Advance booking required. Check New Year's Eve return services."
+    },
+    {
+      "id": "g20270103-fleetingparadise",
+      "date": "2027-01-03",
+      "endDate": null,
+      "time": "12:30",
+      "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
+      "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing",
+        "Kansas City swing"
+      ],
+      "cost": "£14.90 standard incl. fees",
+      "url": "https://wegottickets.com/f/32465",
+      "source": "Ewan Bleach Music / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "All-ages Sunday lunchtime show. Late-1920s and early-1930s territory-band arrangements, including Bennie Moten and early Duke Ellington. Doors 11:00."
+    },
+    {
+      "id": "g20270106-guildfordwassail",
+      "date": "2027-01-06",
+      "endDate": null,
+      "time": "19:15",
+      "title": "Guildford Twelfth Night Wassail",
+      "artist": "Pilgrim Morris",
+      "venue": "The Star Inn and town-centre pubs",
+      "area": "Guildford, Surrey",
+      "genres": [
+        "English folk"
+      ],
+      "cost": "",
+      "url": "https://www.pilgrimmorris.org.uk/twelfth-night/",
+      "source": "Pilgrim Morris / Surrey Hills Meander",
+      "confidence": "confirmed",
+      "note": "Traditional carols, Morris and the Guildford Mummers Play. The organiser's route starts at 19:15 at the Star Inn. Direct train from Surbiton to Guildford, then walk to Quarry Street. Check the route and last train."
+    },
+    {
+      "id": "g20270108-dunajska",
+      "date": "2027-01-08",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Dunajska Kapelye",
+      "artist": "Dunajska Kapelye",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "Balkan / klezmer",
+        "gypsy jazz"
+      ],
+      "cost": "£16.50 incl. fee",
+      "url": "https://wegottickets.com/f/32555",
+      "source": "Green Note / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Piotr Jordan and Zac Gvirtzman lead a set spanning Romanian wedding dances, klezmer and Hot Club jazz. Doors 19:00."
+    },
+    {
+      "id": "g20270114-cablestreet",
+      "date": "2027-01-14",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing",
+        "ragtime"
+      ],
+      "cost": "£14.90 standard incl. fees",
+      "url": "https://wegottickets.com/f/32467",
+      "source": "Ewan Bleach Music / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Rags, blues, foxtrots and early swing with Ewan Bleach. Optional pre-gig dance class at 19:00 requires the appropriate ticket."
+    },
+    {
+      "id": "g20270117-fleetingparadise",
+      "date": "2027-01-17",
+      "endDate": null,
+      "time": "12:30",
+      "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
+      "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing",
+        "Kansas City swing"
+      ],
+      "cost": "£14.90 standard incl. fees",
+      "url": "https://wegottickets.com/f/32469",
+      "source": "Ewan Bleach Music / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "All-ages Sunday lunchtime show. Late-1920s and early-1930s territory-band arrangements, including Bennie Moten and early Duke Ellington. Doors 11:00."
+    },
+    {
+      "id": "g20270121-cablestreet",
+      "date": "2027-01-21",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing",
+        "ragtime"
+      ],
+      "cost": "£14.90 standard incl. fees",
+      "url": "https://wegottickets.com/f/32470",
+      "source": "Ewan Bleach Music / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Rags, blues, foxtrots and early swing with Ewan Bleach. Optional pre-gig dance class at 19:00 requires the appropriate ticket."
+    },
+    {
+      "id": "g20270128-cablestreet",
+      "date": "2027-01-28",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing",
+        "ragtime"
+      ],
+      "cost": "£14.90 standard incl. fees",
+      "url": "https://wegottickets.com/f/32471",
+      "source": "Ewan Bleach Music / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Rags, blues, foxtrots and early swing with Ewan Bleach. Optional pre-gig dance class at 19:00 requires the appropriate ticket."
+    },
+    {
+      "id": "g20270204-cablestreet",
+      "date": "2027-02-04",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing",
+        "ragtime"
+      ],
+      "cost": "£14.90 standard incl. fees",
+      "url": "https://wegottickets.com/f/32472",
+      "source": "Ewan Bleach Music / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Rags, blues, foxtrots and early swing with Ewan Bleach. Optional pre-gig dance class at 19:00 requires the appropriate ticket."
+    },
+    {
+      "id": "g20270207-fleetingparadise",
+      "date": "2027-02-07",
+      "endDate": null,
+      "time": "12:30",
+      "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
+      "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing",
+        "Kansas City swing"
+      ],
+      "cost": "£14.90 standard incl. fees",
+      "url": "https://wegottickets.com/f/32473",
+      "source": "Ewan Bleach Music / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "All-ages Sunday lunchtime show. Late-1920s and early-1930s territory-band arrangements, including Bennie Moten and early Duke Ellington. Doors 11:00."
+    },
+    {
+      "id": "g20270211-cablestreet",
+      "date": "2027-02-11",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing",
+        "ragtime"
+      ],
+      "cost": "£14.90 standard incl. fees",
+      "url": "https://wegottickets.com/f/32474",
+      "source": "Ewan Bleach Music / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Rags, blues, foxtrots and early swing with Ewan Bleach. Optional pre-gig dance class at 19:00 requires the appropriate ticket."
+    },
+    {
+      "id": "g20270213-mckennafamily",
+      "date": "2027-02-13",
+      "endDate": null,
+      "time": "20:00",
+      "title": "The McKenna Family in Concert",
+      "artist": "The McKenna Family",
+      "venue": "Irish Cultural Centre",
+      "area": "Hammersmith, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "£20 / £18",
+      "url": "https://irishculturalcentre.co.uk/event/the-mckenna-family-in-concert/",
+      "source": "Irish Cultural Centre",
+      "confidence": "confirmed",
+      "note": "Seven siblings play family repertoire from Tyrone and north Monaghan on fiddles, uilleann pipes, harp, accordion and concertina. Doors 19:30."
+    },
+    {
+      "id": "g20270218-cablestreet",
+      "date": "2027-02-18",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing",
+        "ragtime"
+      ],
+      "cost": "£14.90 standard incl. fees",
+      "url": "https://wegottickets.com/f/32475",
+      "source": "Ewan Bleach Music / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Rags, blues, foxtrots and early swing with Ewan Bleach. Optional pre-gig dance class at 19:00 requires the appropriate ticket."
+    },
+    {
+      "id": "g20270221-fleetingparadise",
+      "date": "2027-02-21",
+      "endDate": null,
+      "time": "12:30",
+      "title": "A Lunch Gig with Ewan Bleach & The Fleeting Paradise Orchestra",
+      "artist": "Ewan Bleach & The Fleeting Paradise Orchestra",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing",
+        "Kansas City swing"
+      ],
+      "cost": "£14.90 standard incl. fees",
+      "url": "https://wegottickets.com/f/32476",
+      "source": "Ewan Bleach Music / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "All-ages Sunday lunchtime show. Late-1920s and early-1930s territory-band arrangements, including Bennie Moten and early Duke Ellington. Doors 11:00."
+    },
+    {
+      "id": "g20270225-cablestreet",
+      "date": "2027-02-25",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Limehouse de Reverie with The Cable Street Rag Band",
+      "artist": "Ewan Bleach & The Cable Street Rag Band",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "hot jazz",
+        "swing",
+        "ragtime"
+      ],
+      "cost": "£14.90 standard incl. fees",
+      "url": "https://wegottickets.com/f/32477",
+      "source": "Ewan Bleach Music / WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Rags, blues, foxtrots and early swing with Ewan Bleach. Optional pre-gig dance class at 19:00 requires the appropriate ticket."
+    },
+    {
+      "id": "g20270523-bracejutz",
+      "date": "2027-05-23",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Eric Brace & Thomm Jutz at TwickFolk",
+      "artist": "Eric Brace & Thomm Jutz",
+      "venue": "The Cabbage Patch (Patchworks)",
+      "area": "Twickenham",
+      "genres": [
+        "Americana"
+      ],
+      "cost": "£15.40 incl. online fee; £17 door",
+      "url": "https://www.twickfolk.co.uk/events/eric-brace-thomm-jutz/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "Nashville acoustic roots duo with close vocal harmonies and fingerpicked guitars. Jutz also worked with Martin Simpson on Appalachian repertoire."
+    },
+    {
+      "id": "g20270530-twicksingaround",
+      "date": "2027-05-30",
+      "endDate": null,
+      "time": "19:45",
+      "title": "TwickFolk singaround",
+      "artist": "TwickFolk singers and players",
+      "venue": "The Cabbage Patch (Patchworks)",
+      "area": "Twickenham",
+      "genres": [
+        "folk"
+      ],
+      "cost": "£5 on the door",
+      "url": "https://www.twickfolk.co.uk/events/singaround-informal-unplugged-song-circle-35/",
+      "source": "TwickFolk",
+      "confidence": "confirmed",
+      "note": "Unplugged song circle including shanties, traditional songs and original material. Listeners and performers welcome."
+    },
+    {
+      "id": "g20270910-bulgarianvoices",
+      "date": "2027-09-10",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Le Mystère des Voix Bulgares: Voices and Strings",
+      "artist": "Le Mystère des Voix Bulgares & Quarto Quartet",
+      "venue": "Barbican Hall",
+      "area": "City of London",
+      "genres": [
+        "Balkan / klezmer"
+      ],
+      "cost": "From £29 incl. transaction fee",
+      "url": "https://www.barbican.org.uk/whats-on/2027/event/le-mystere-des-voix-bulgares",
+      "source": "Barbican",
+      "confidence": "confirmed",
+      "note": "Rare London performance of Bulgarian traditional vocal repertoire and new Georgi Andreev compositions with string quartet."
+    },
+    {
+      "id": "g20261209-collierswoodshanties",
+      "date": "2026-12-09",
+      "endDate": null,
+      "time": "19:00",
+      "title": "Shanty Singers of Colliers Wood",
+      "artist": "Colliers Wood Shanty Singers",
+      "venue": "The Golden Hinde",
+      "area": "Bankside, London",
+      "genres": [
+        "English folk"
+      ],
+      "cost": "£10 + booking fee",
+      "url": "https://www.goldenhinde.co.uk/whats-on/10-music/665-shanty-singers-of-colliers-wood-this-december",
+      "source": "The Golden Hinde",
+      "confidence": "confirmed",
+      "note": "Three acoustic sets of traditional sea shanties, with chorus sheets for joining in. Venue lists the evening from 19:00."
+    },
+    {
+      "id": "g20261212-coryboro",
+      "date": "2026-12-12",
+      "endDate": null,
+      "time": "14:00",
+      "title": "Côr Y Boro: Music & Wassailing",
+      "artist": "Côr Y Boro",
+      "venue": "The Golden Hinde",
+      "area": "Bankside, London",
+      "genres": [
+        "folk"
+      ],
+      "cost": "Included in ship admission",
+      "url": "https://www.goldenhinde.co.uk/music-wassailing",
+      "source": "The Golden Hinde",
+      "confidence": "confirmed",
+      "note": "Afternoon choir singing aboard the ship for the venue’s wassailing celebration, 14:00–16:00."
+    },
+    {
+      "id": "g20270512-savannahgardner",
+      "date": "2027-05-12",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Savannah Gardner Live Aboard The Golden Hinde",
+      "artist": "Savannah Gardner",
+      "venue": "The Golden Hinde",
+      "area": "Bankside, London",
+      "genres": [
+        "old-school country",
+        "Americana"
+      ],
+      "cost": "£18",
+      "url": "https://www.goldenhinde.co.uk/whats-on/10-music/849-savannah-gardner-live-aboard-the-golden-hinde",
+      "source": "The Golden Hinde",
+      "confidence": "confirmed",
+      "note": "Classic country and outlaw Americana with jazz and blues influences in a small shipboard venue. Doors 19:30."
     }
   ],
   "watchlist": [

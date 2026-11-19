@@ -6,7 +6,7 @@
       "priority": "always-include",
       "genres": ["hot jazz", "New Orleans / trad jazz", "swing"],
       "url": "https://www.ewanbleach.com/gigs",
-      "secondaryUrls": ["https://www.ewanbleach.com/", "https://ewan-bleach-xdz4.squarespace.com/events", "https://www.songkick.com/artists/4541743-ewan-bleach", "https://www.ents24.com/uk/tour-dates/ewan-bleach"],
+      "secondaryUrls": ["https://www.ewanbleach.com/","https://ewan-bleach-xdz4.squarespace.com/events","https://www.songkick.com/artists/4541743-ewan-bleach","https://www.ents24.com/uk/tour-dates/ewan-bleach","https://wegottickets.com/Ewanbleachmusic/","https://wegottickets.com/location/1774"],
       "instagramHandles": ["ewanbleach"],
       "instagramSearchQueries": ["Ewan Bleach Instagram gigs", "site:instagram.com/p ewanbleach Ewan Bleach gig", "Ewan Bleach Cable Street Rag Band Instagram", "Ewan Bleach Fleeting Paradise Orchestra gigs"],
       "crawlRule": "Crawl Ewan's official gigs page every run, then cross-check @ewanbleach, Jamboree, Green Note, Songkick, Ents24, DICE and venue/ticket pages for any missing dates. Use Instagram/social for late additions.",
@@ -314,6 +314,7 @@
     }
   ],
   "keyVenues": [
+    {"name":"Karamel - Collage Arts roots and vintage jazz","area":"Wood Green, London","genres":["country blues","ragtime","skiffle","gypsy jazz","swing"],"url":"https://www.musicglue.com/karamel","note":"Exact Collage Arts ticket pages distinguish doors and performance times. Productive for acoustic country blues and Django-era swing. Filter the broad modern jazz and other listings."},
     {
       "name": "Kings Place - traditional folk and early-jazz programmes",
       "area": "King's Cross, London",
@@ -474,6 +475,7 @@
     { "name": "Nightjar Carnaby", "note": "CLOSED. The official site now has a closure notice; only crawl the Shoreditch listings/feed." }
   ],
   "aggregators": [
+    {"name":"Pilgrim Morris - Guildford traditional music and customs","url":"https://www.pilgrimmorris.org.uk/events/","secondaryUrls":["https://www.pilgrimmorris.org.uk/twelfth-night/"],"note":"Official Guildford-area dance-out diary and Twelfth Night route for traditional carols and Morris. Pair the annual itinerary with a dated current-year listing before including it."},
     {
       "name": "Kathryn Tickell - official live dates",
       "url": "https://www.kathryntickell.com/live-dates",
@@ -564,6 +566,9 @@
     }
   ],
   "searchQueries": [
+    "site:musicglue.com/karamel acoustic country blues ragtime gypsy jazz",
+    "Pilgrim Morris Guildford Twelfth Night wassail traditional carols current dates",
+    "Balkan traditional vocal ensembles London Bulgarian folk concert Barbican",
     "site:efdss.org \"The song that shaped me\" concert",
     "site:wegottickets.com/location/480 old-time honky tonk",
     "Morocco Bound Bookshop Sessions Folk Night DICE",
