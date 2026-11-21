@@ -1,58 +1,63 @@
 {
-  "generatedAt": "2026-11-18T07:19:32Z",
-  "dateBasis": "2026-11-18",
-  "summary": "Removed 13 finished events; added 15 dated outings including five free WordPlay sessions, farm Christmas activities, Dorich House events and chamber/medieval music; corrected two Bach to Baby listings.",
+  "generatedAt": "2026-11-21T07:16:46.226Z",
+  "dateBasis": "2026-11-21",
+  "summary": "Removed 10 finished events, added 22 dated outings and updated 3 Hampton Court listings. Additions include local Christmas fairs, four Ewan Bleach Sunday lunches and live wassailing on the Golden Hinde.",
   "added": [
-    "e20270129: WordPlay: Ages 3-5, 2027-01-29.",
-    "e20270212: WordPlay: Ages 3-5, 2027-02-12.",
-    "e20270226: WordPlay: Ages 3-5, 2027-02-26.",
-    "e20270312: WordPlay: Ages 3-5, 2027-03-12.",
-    "e20270326: WordPlay: Ages 3-5, 2027-03-26.",
-    "e20261212h: Santa's Grotto at Deen City Farm, 2026-12-12.",
-    "e20261205j: Storytime with Santa, 2026-12-05.",
-    "e20261221: Clay Decoration Painting (ages 2+), 2026-12-21.",
-    "e20261222a: Wooden Decoration Painting (ages 2+), 2026-12-22.",
-    "e20261203e: Kingston University Christmas lunchtime concert, 2026-12-03.",
-    "e20261212i: Pop Up Portraits: free family activity, 2026-12-12.",
-    "e20261204g: Stars, Snow & Firelight: Nette Robinson and Tony Woods, 2026-12-04.",
-    "e20270130a: A Medieval Chorus: Green Dragon Guild, 2027-01-30.",
-    "e20270716: Maiastra: String Quartets with Akiko Ono, 2027-07-16.",
-    "e20270911: Maiastra: String Quartets with Florence Cooke, 2027-09-11."
+    "e20261122f: Long Ditton Lights Up for Christmas, 2026-11-22.",
+    "e20261126e: Magical Molesey, 2026-11-26.",
+    "e20261127d: New Malden Christmas Party and lights switch-on, 2026-11-27.",
+    "e20261127e: Friday Night Traditional Irish Music Session, 2026-11-27.",
+    "e20261129g: Thames Ditton Christmas Fayre, 2026-11-29.",
+    "e20261205k: St Matthew’s Primary School Christmas Fair, 2026-12-05.",
+    "e20261206g: ICC Concert Session: Tad Sargent, Tara Viscardi & Dermot Crehan, 2026-12-06.",
+    "e20261207a: Jazz Jam Night at The Elm Tree, 2026-12-07.",
+    "e20261208a: Winter Palace: relaxed visit, 2026-12-08.",
+    "e20261212j: Côr Y Boro: Music & Wassailing, 2026-12-12.",
+    "e20261212k: New Malden Christmas Tree Festival, 2026-12-12 to 2026-12-24.",
+    "e20261216b: Music on the Green: Come & Sing Carols, 2026-12-16.",
+    "e20270120a: Music on the Green: Fontina Winds, 2027-01-20.",
+    "e20270217: Music on the Green: David Way & Julie Aherne, 2027-02-17.",
+    "e20270317: Music on the Green: Amberg Trio, 2027-03-17.",
+    "e20261221a: Ewan Bleach’s Fleeting Paradise Orchestra: Christmas Special, 2026-12-21.",
+    "e20270103b: Ewan Bleach and The Fleeting Paradise Orchestra: lunch gig, 2027-01-03.",
+    "e20270117: Ewan Bleach and The Fleeting Paradise Orchestra: lunch gig, 2027-01-17.",
+    "e20270207a: Ewan Bleach and The Fleeting Paradise Orchestra: lunch gig, 2027-02-07.",
+    "e20270221a: Ewan Bleach and The Fleeting Paradise Orchestra: lunch gig, 2027-02-21.",
+    "e20270523: TwickFolk: Eric Brace & Thomm Jutz, 2027-05-23.",
+    "e20270530: TwickFolk Singaround, 2027-05-30."
   ],
   "updated": [
-    "e20261124: Updated programme, 45-minute duration and current GBP18 online / GBP20 door prices from official booking data.",
-    "e20261208: Updated programme, 45-minute duration and current GBP18 online / GBP20 door prices from official booking data."
+    "e755: Confirmed the Christmas Beast Ball programme and under-5 admission.",
+    "e745: Added the Great Fountain Garden location and live bandstand music.",
+    "e746: Added the Great Fountain Garden location and live bandstand music."
   ],
   "removed": [
-    "e644: Anna Dyson: Meet the Artist (finished 2026-11-17).",
-    "e20261115: Jazz At The Movies (finished 2026-11-15).",
-    "e20261115b: TwickFolk: Hunter Muskett (finished 2026-11-15).",
-    "e20261116: Monday Lunchtime Recital: Soraya Vergee (piano) (finished 2026-11-16).",
-    "e20261115a: Ewan Bleach and The Fleeting Paradise Orchestra: lunch gig (finished 2026-11-15).",
-    "e20261115c: Afternoon swing with the Prospective Collective (finished 2026-11-15).",
-    "e20261115d: The Rheingans Sisters: matinee (finished 2026-11-15).",
-    "e20261115e: Fran McGillivray and Mike Burke at The Lamb (finished 2026-11-15).",
-    "e20261117: Different People: free lunchtime music (finished 2026-11-17).",
-    "e20261115f: ICC Concert Session: Tad Sargent, Rita Farrell and Sinead Linane (finished 2026-11-15).",
-    "e20261115g: HKUK Carnival: publishing fair and exhibition (finished 2026-11-15).",
-    "e20261115h: Sound Lines: Voice and Percussion (finished 2026-11-15).",
-    "e20261116a: Dai Price: Cajun and folk afternoon (finished 2026-11-16)."
+    "e648: The Tradescants and Their Gardens (finished 2026-11-18).",
+    "e649: War Graves and the Stories They Tell (finished 2026-11-18).",
+    "e20261120c: WordPlay: Ages 3-5 (finished 2026-11-20).",
+    "e20261120: Ex Cellar Jazz (November session) (finished 2026-11-20).",
+    "e20261118: TJ Johnson's Peak of the Week (finished 2026-11-18).",
+    "e20261119: Christmas Market by the Thames (finished 2026-11-19).",
+    "e20261120a: Mix & Move: EFG London Jazz Festival Special (finished 2026-11-20).",
+    "e20261119a: Savannah Gardner at The Lamb (finished 2026-11-19).",
+    "e20261120d: Friday Night Traditional Irish Music Session (finished 2026-11-20).",
+    "e20261118a: Savannah Gardner: country afternoon (finished 2026-11-18)."
   ],
   "counts": {
     "before": {
-      "events": 228,
-      "recurring": 56,
-      "sources": 53,
-      "watchlist": 108
-    },
-    "after": {
       "events": 230,
       "recurring": 56,
       "sources": 53,
       "watchlist": 109
     },
-    "added": 15,
-    "updated": 2,
-    "removed": 13
+    "after": {
+      "events": 242,
+      "recurring": 56,
+      "sources": 53,
+      "watchlist": 109
+    },
+    "added": 22,
+    "updated": 3,
+    "removed": 10
   }
 }

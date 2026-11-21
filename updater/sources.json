@@ -1134,7 +1134,31 @@
         "After Dark early/medieval music and seasonal cultural programmes",
         "Use exact event ticket pages for year, price and arrival versus performance times; index slots can be arrival times."
       ]
-    }
+    },
+      {
+        "name": "Chessington District Residents’ Association event calendar",
+        "url": "https://chessingtondra.org.uk/events/",
+        "checkFor": [
+          "Chessington and Hook community fairs and family theatre",
+          "verify prices, public access and exact sessions with the organiser"
+        ]
+      },
+      {
+        "name": "New Malden Town Centre Partnership events",
+        "url": "https://www.newmaldenpartnership.com/newsletters",
+        "checkFor": [
+          "Jubilee Square family celebrations and live music",
+          "open exact event notice for public hours"
+        ]
+      },
+      {
+        "name": "Music on the Green Esher lunchtime concerts",
+        "url": "https://www.esherparish.org.uk/?q=node%2F38",
+        "checkFor": [
+          "free lunchtime chamber music and participatory carols",
+          "check current and prior programme PDFs for individually dated next-season listings"
+        ]
+      }
                      ],
     "searchQueries":  [
         "Kingston Music Service public open rehearsals 2026 2027 All Saints",
@@ -1292,6 +1316,10 @@
         "Dorich House Winter Weekends Kingston University free concert family portraits 2026 2027",
         "Southbank WordPlay ages 3 5 January February March 2027 dates",
         "Deen City Farm Christmas 2026 Santa decoration painting ages 2 booking",
-        "Strawberry Hill After Dark medieval music 2027 performance times"
+        "Strawberry Hill After Dark medieval music 2027 performance times",
+        "Chessington Hook residents association family events public school fair Chessington Garden Centre confirmed 2026 2027",
+        "New Malden Town Centre Partnership Jubilee Square family events live music 2026 2027",
+        "Esher Parish Music on the Green 2027 chamber recital programme PDF",
+        "The Golden Hinde family daytime live music wassailing 2026 2027"
                      ]
 }
