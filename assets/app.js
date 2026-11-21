@@ -308,7 +308,7 @@
       .sort((a, b) => {
         const dateOrder = a.date.localeCompare(b.date);
         if (dateOrder) return dateOrder;
-        return (a.sortKey || `${a.date} ${a.time || ''}`).localeCompare(b.sortKey || `${b.date} ${b.time || ''}`) || score(b) - score(a);
+        return (parseClock(a.time) || '99:99').localeCompare(parseClock(b.time) || '99:99') || score(b) - score(a);
       });
   }
 
@@ -324,24 +324,8 @@
 
   function groupName(event) {
     const diff = daysUntil(event.date);
-    if (diff === 0) return 'Today';
-    if (diff === 1) return 'Tomorrow';
-    if (diff <= 7) return 'Next 7 days';
-    const d = parseIso(event.date);
-    return d ? new Intl.DateTimeFormat('en-GB', { month: 'long' }).format(d) : 'Later';
-  }
-
-  function eventTags(event) {
-    const tags = [];
-    if (isFamily(event) && isToddlerFit(event)) tags.push('toddler-fit');
-    if (isWeekend(event)) tags.push('weekend');
-    if (isDaytime(event)) tags.push('daytime');
-    if (isMusic(event)) tags.push('music');
-    if (isTheatre(event)) tags.push('theatre');
-    if (isFree(event)) tags.push('free');
-    if (event.verify) tags.push('verify');
-    if (event.tier) tags.push(event.tier);
-    return tags.slice(0, 5);
+    const prefix = diff === 0 ? 'Today, ' : diff === 1 ? 'Tomorrow, ' : '';
+    return prefix + fmtDate(event.date);
   }
 
   function eventCard(event) {
@@ -352,15 +336,14 @@
     return `
       <article class="event-card ${skipped ? 'is-muted' : ''} ${isArchived(event.id) ? 'is-archived' : ''}">
         <div class="date-block">
-          <strong>${esc(dateSpan(event))}</strong>
-          <span>${esc(event.time || 'Time not listed')}</span>
+          <strong>${esc(event.time || 'Time not listed')}</strong>
+          ${endDate(event) !== event.date ? `<span>Until ${esc(fmtDate(endDate(event)))}</span>` : ''}
         </div>
         <div class="event-main">
           <button class="title-button" type="button" data-open="${esc(event.id)}">${esc(event.title || 'Untitled event')}</button>
           <div class="event-meta">${esc([event.venue, event.area].filter(Boolean).join(', '))}</div>
-          ${event.description ? `<p>${esc(event.description)}</p>` : ''}
           ${skipped?.note ? `<p class="feedback-note"><strong>Skip reason:</strong> ${esc(skipped.note)}</p>` : ''}
-          <div class="tag-row">${eventTags(event).map(tag => `<span>${esc(tag)}</span>`).join('')}</div>
+          <div class="tag-row">${[event.cost, event.travelBucket, event.verify && 'Check details'].filter(Boolean).map(tag => `<span>${esc(tag)}</span>`).join('')}</div>
           <div class="action-row">
             <a class="btn small primary" target="_blank" rel="noopener" href="${esc(googleUrl(event))}">Google</a>
             <button class="btn small ${isSaved(event.id) ? 'active' : ''}" type="button" data-save="${esc(event.id)}">${saveLabel}</button>
@@ -386,7 +369,7 @@
     if (!rows.length) {
       $('content').innerHTML = `
         <section class="empty-state">
-          <h2>${esc(lens.label)}</h2>
+          <h2 class="agenda-heading">${esc(lens.label)}</h2>
           <p>No matching events. Try a wider range or another lens.</p>
         </section>
       `;
