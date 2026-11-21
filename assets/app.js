@@ -4,7 +4,6 @@
   const SOURCES = DATA.sources || [];
   const WATCHLIST = DATA.watchlist || [];
   const LATEST = DATA.latestChanges || null;
-  const RANGE_END = '2026-12-31';
   const STORAGE_KEY = 'surbiton-calendar-state-v5';
   const OLD_STORAGE_KEY = 'surbiton-calendar-state-v4';
   const FAVORITES_KEY = 'surbiton-calendar-favorites-v1';
@@ -13,7 +12,7 @@
   const BANK_HOLIDAYS = new Set(['2026-08-31', '2026-12-25', '2026-12-28']);
 
   const LENSES = [
-    { id: 'home', label: 'Best next', help: 'A short, opinionated list.' },
+    { id: 'home', label: 'Coming up', help: 'Family picks in date order.' },
     { id: 'all', label: 'All', help: 'Everything upcoming in range.' },
     { id: 'weekday', label: 'Weekday kid', help: 'Daytime things for nanny/toddler.' },
     { id: 'weekend', label: 'Weekend family', help: 'Weekends and bank holidays.' },
@@ -57,13 +56,7 @@
     }).format(new Date());
   }
 
-  function clampIso(value, min, max) {
-    if (value < min) return min;
-    if (value > max) return max;
-    return value;
-  }
-
-  const TODAY = clampIso(londonToday(), DATA.meta?.dateBasis || '2026-08-28', RANGE_END);
+  const TODAY = londonToday();
 
   function parseIso(iso) {
     if (!iso) return null;
@@ -272,11 +265,12 @@
     if (state.range === 'next90') return { from: TODAY, to: addDays(TODAY, 90), label: 'next 3 months' };
     if (state.range === 'weekend') {
       const d = parseIso(TODAY);
-      const offset = (6 - d.getDay() + 7) % 7;
+      const offset = d.getDay() === 0 ? 0 : (6 - d.getDay() + 7) % 7;
       const from = addDays(TODAY, offset);
-      return { from, to: addDays(from, 1), label: `this weekend (${fmtDate(from)} - ${fmtDate(addDays(from, 1))})` };
+      const to = d.getDay() === 0 ? from : addDays(from, 1);
+      return { from, to, label: 'this weekend' };
     }
-    if (state.range === 'all') return { from: TODAY, to: RANGE_END, label: 'through end of year' };
+    if (state.range === 'all') return { from: TODAY, to: '9999-12-31', label: 'all upcoming' };
     return { from: TODAY, to: addDays(TODAY, 30), label: 'next 30 days' };
   }
 
@@ -312,12 +306,8 @@
       .filter(matchesSearch)
       .filter(lensMatch)
       .sort((a, b) => {
-        if (state.lens === 'home') {
-          const featuredDelta = Number(Boolean(b.featured)) - Number(Boolean(a.featured));
-          if (featuredDelta) return featuredDelta;
-        }
-        const longDelta = Number(isLongRun(a)) - Number(isLongRun(b));
-        if (state.lens === 'home' && longDelta) return longDelta;
+        const dateOrder = a.date.localeCompare(b.date);
+        if (dateOrder) return dateOrder;
         return (a.sortKey || `${a.date} ${a.time || ''}`).localeCompare(b.sortKey || `${b.date} ${b.time || ''}`) || score(b) - score(a);
       });
   }
@@ -333,7 +323,6 @@
   }
 
   function groupName(event) {
-    if (event.date < TODAY && endDate(event) >= TODAY) return 'Already running';
     const diff = daysUntil(event.date);
     if (diff === 0) return 'Today';
     if (diff === 1) return 'Tomorrow';
@@ -403,15 +392,18 @@
       `;
       return;
     }
-    const limit = state.lens === 'home' && !expandedList ? 24 : rows.length;
-    const shown = rows.slice(0, limit);
-    const extra = rows.length - shown.length;
+    const dated = rows.filter(event => event.date >= TODAY);
+    const ongoing = rows.filter(event => event.date < TODAY)
+      .sort((a, b) => endDate(a).localeCompare(endDate(b)));
+    const keepOpen = $('content').querySelector('.ongoing[open]') || !dated.length || state.q.trim();
+    const limit = state.lens === 'home' && !expandedList ? 24 : dated.length;
+    const shown = dated.slice(0, limit);
+    const extra = dated.length - shown.length;
     const groups = groupedRows(shown);
     $('content').innerHTML = `
       <section class="section-head">
         <div>
           <h2>${esc(lens.label)}</h2>
-          <p>${esc(lens.help)}</p>
         </div>
         ${state.lens === 'archive' && rows.length ? '<button class="btn" type="button" data-unarchive-all>Unarchive all</button>' : ''}
         ${state.lens === 'skips' ? '<button class="btn" type="button" data-export-feedback>Export feedback</button>' : ''}
@@ -422,7 +414,11 @@
           <div class="event-list">${items.map(eventCard).join('')}</div>
         </section>
       `).join('')}
-      ${extra > 0 ? `<button class="btn load-more" type="button" data-show-all>Show all ${rows.length}</button>` : ''}
+      ${extra > 0 ? `<button class="btn load-more" type="button" data-show-all>Show ${extra} more dated events</button>` : ''}
+      ${ongoing.length ? `<details class="ongoing event-group" ${keepOpen ? 'open' : ''}>
+        <summary>Already running (${ongoing.length})</summary>
+        <div class="event-list">${ongoing.map(eventCard).join('')}</div>
+      </details>` : ''}
     `;
   }
 
@@ -469,7 +465,6 @@
     $('lensTabs').innerHTML = LENSES.map(lens => `
       <button class="lens ${state.lens === lens.id ? 'active' : ''}" type="button" data-lens="${esc(lens.id)}">
         <strong>${esc(lens.label)}</strong>
-        <span>${esc(lens.help)}</span>
       </button>
     `).join('');
   }
@@ -495,7 +490,7 @@
     $('statusStrip').innerHTML = `
       <div>${parts.map(esc).join(' / ')}</div>
       <div class="status-actions">
-        <span>${personalBits.length ? personalBits.map(esc).join(' / ') : 'Archive hides this instance. Not for us trains future updates.'}</span>
+        <span>${personalBits.map(esc).join(' / ')}</span>
         <button class="btn small" type="button" data-lens="${state.lens === 'sources' ? 'home' : 'sources'}">${state.lens === 'sources' ? 'Back to planner' : 'Sources + feedback'}</button>
       </div>
     `;
