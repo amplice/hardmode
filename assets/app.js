@@ -133,6 +133,11 @@
   }
 
   function isToddlerFit(event) {
+    const age = normalize(event.ageRange).trim();
+    const years = Number(TODAY.slice(0, 4)) - 2024;
+    // Only apply an age limit when the listing gives a numeric admission range.
+    const bounds = age.match(/^(?:ages?\s*)?(\d+)\s*(?:\+|[-–]\s*(\d+)\b)/);
+    if (bounds && !/months/.test(age) && (years < Number(bounds[1]) || (bounds[2] && years > Number(bounds[2])))) return false;
     const text = hay(event);
     if (/(lego robotics|yu-?gi-?oh|trading-card|trading card|coding club|robotics club)/.test(text)) return false;
     if (/(ages?\s*(6\+|7\+|8\+|10\+|8\s*-\s*12|6\s*-\s*12)|\b8\s*-\s*12\b|\b6\s*-\s*12\b)/.test(text)) return false;
@@ -261,6 +266,10 @@
   }
 
   function rangeBounds() {
+    if (state.range === 'today' || state.range === 'tomorrow') {
+      const day = state.range === 'today' ? TODAY : addDays(TODAY, 1);
+      return { from: day, to: day, label: state.range };
+    }
     if (state.range === 'next7') return { from: TODAY, to: addDays(TODAY, 7), label: 'next 7 days' };
     if (state.range === 'next90') return { from: TODAY, to: addDays(TODAY, 90), label: 'next 3 months' };
     if (state.range === 'weekend') {
@@ -296,7 +305,8 @@
 
   function matchesSearch(event) {
     if (!state.q.trim()) return true;
-    return hay(event).includes(normalize(state.q));
+    const searchable = normalize([hay(event), event.ageRange, event.bookingRequired, event.travelBucket].filter(Boolean).join(' '));
+    return normalize(state.q).trim().split(/\s+/).every(word => searchable.includes(word));
   }
 
   function currentRows() {
@@ -344,6 +354,7 @@
           <div class="event-meta">${esc([event.venue, event.area].filter(Boolean).join(', '))}</div>
           ${skipped?.note ? `<p class="feedback-note"><strong>Skip reason:</strong> ${esc(skipped.note)}</p>` : ''}
           <div class="tag-row">${[event.cost, event.travelBucket, event.verify && 'Check details'].filter(Boolean).map(tag => `<span>${esc(tag)}</span>`).join('')}</div>
+          ${event.bookingRequired && event.bookingRequired !== 'No ticket flagged' ? `<div class="event-meta">${esc(event.bookingRequired)}</div>` : ''}
           <div class="action-row">
             <a class="btn small primary" target="_blank" rel="noopener" href="${esc(googleUrl(event))}">Google</a>
             <button class="btn small ${isSaved(event.id) ? 'active' : ''}" type="button" data-save="${esc(event.id)}">${saveLabel}</button>
@@ -375,8 +386,9 @@
       `;
       return;
     }
-    const dated = rows.filter(event => event.date >= TODAY);
-    const ongoing = rows.filter(event => event.date < TODAY)
+    const { from } = rangeBounds();
+    const dated = rows.filter(event => event.date >= from);
+    const ongoing = rows.filter(event => event.date < from)
       .sort((a, b) => endDate(a).localeCompare(endDate(b)));
     const keepOpen = $('content').querySelector('.ongoing[open]') || !dated.length || state.q.trim();
     const limit = state.lens === 'home' && !expandedList ? 24 : dated.length;
@@ -657,7 +669,10 @@
         <p class="muted">${esc(dateSpan(event))}${event.time ? ` / ${esc(event.time)}` : ''}</p>
       </div>
       <dl class="detail-grid">
-        <dt>Place</dt><dd>${esc([event.venue, event.area].filter(Boolean).join(', ') || 'Not listed')}</dd>
+        <dt>Place</dt><dd>${esc([event.venue, event.area].filter(Boolean).join(', ') || 'Not listed')}
+          ${event.venue ? `<a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=${encodeURIComponent(event.mapQuery || [event.venue,event.area,'UK'].filter(Boolean).join(', '))}">Directions</a>` : ''}</dd>
+        ${event.ageRange ? `<dt>Ages</dt><dd>${esc(event.ageRange)}</dd>` : ''}
+        ${event.bookingRequired && event.bookingRequired !== 'No ticket flagged' ? `<dt>Booking</dt><dd>${esc(event.bookingRequired)}</dd>` : ''}
         <dt>Cost</dt><dd>${esc(event.cost || 'Not listed')}</dd>
         <dt>Kind</dt><dd>${esc([event.category, event.type].filter(Boolean).join(' / ') || 'Not listed')}</dd>
         <dt>Travel</dt><dd>${esc(event.travelBucket || event.tier || 'Check route')}</dd>
