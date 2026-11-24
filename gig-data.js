@@ -38,13 +38,13 @@ window.GIG_DATA = {
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-11-22",
+    "dateBasis": "2026-11-24",
     "counts": {
       "total": 292,
-      "upcoming": 292,
+      "upcoming": 284,
       "watchlist": 80
     },
-    "generated": "2026-11-22T06:50:53.907Z",
+    "generated": "2026-11-24T07:27:33.593Z",
     "genres": [
       "Americana",
       "Balkan / klezmer",
@@ -106,7 +106,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-22 13:00",
       "travel": "Local (SW London)",
       "genresLabel": "New Orleans / trad jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -134,7 +134,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-22 15:00",
       "travel": "Central London",
       "genresLabel": "swing · hot jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -162,7 +162,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-22 18:00",
       "travel": "Central London",
       "genresLabel": "swing · New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -192,7 +192,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-22 19:00",
       "travel": "Central London",
       "genresLabel": "hot jazz · New Orleans / trad jazz · swing · ragtime",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -219,7 +219,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-22 19:30",
       "travel": "Local (SW London)",
       "genresLabel": "folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -247,7 +247,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-23 12:30",
       "travel": "Central London",
       "genresLabel": "hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -275,7 +275,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-23 16:00",
       "travel": "Central London",
       "genresLabel": "hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -302,7 +302,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-23 20:30",
       "travel": "Central London",
       "genresLabel": "folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

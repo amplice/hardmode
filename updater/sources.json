@@ -1158,6 +1158,38 @@
           "free lunchtime chamber music and participatory carols",
           "check current and prior programme PDFs for individually dated next-season listings"
         ]
+      },
+      {
+        "name": "Merton Libraries public events and bookings",
+        "url": "https://merton.events.mylibrary.digital/",
+        "checkFor": [
+          "Wimbledon Library seasonal choir performances and under-5 music",
+          "Check each event's age band, date and availability. The seasonal series can contain last year's listings."
+        ]
+      },
+      {
+        "name": "The Nest Collective family folk programme",
+        "url": "https://thenestcollective.co.uk/events",
+        "checkFor": [
+          "All-ages daytime ceilidhs with live bands",
+          "Open the family event and its organiser ticket listing for start time and admission."
+        ]
+      },
+      {
+        "name": "The Golden Hinde public music programme",
+        "url": "https://www.goldenhinde.co.uk/whats-on",
+        "checkFor": [
+          "Daytime maritime music, wassailing and participatory shanty evenings",
+          "Compare venue times with individual organiser tickets and their price including fees."
+        ]
+      },
+      {
+        "name": "St Nicholas’ Church Thames Ditton seasonal programme",
+        "url": "https://www.stnicholaschurch.org.uk/christmas",
+        "checkFor": [
+          "Family craft afternoons, carols and public seasonal events",
+          "Follow the parish booking link for the year, time, price and session details."
+        ]
       }
                      ],
     "searchQueries":  [
@@ -1320,6 +1352,11 @@
         "Chessington Hook residents association family events public school fair Chessington Garden Centre confirmed 2026 2027",
         "New Malden Town Centre Partnership Jubilee Square family events live music 2026 2027",
         "Esher Parish Music on the Green 2027 chamber recital programme PDF",
-        "The Golden Hinde family daytime live music wassailing 2026 2027"
+        "The Golden Hinde family daytime live music wassailing 2026 2027",
+        "Wimbledon Library Merton Libraries Christmas Rock Choir under 5 concerts 2026 2027",
+        "The Nest Collective family ceilidh Grand Junction Burns children 2027 Big Penny Social family session times",
+        "Polka Theatre 2027 2028 public performances Adventure Theatre ages 2 3 Wimbledon Peek-a-Bloom dates",
+        "St Nicholas Thames Ditton Christingle craft afternoon public booking 2026 2027",
+        "Southbank Centre classical season guide OAE TOTS 2027 public session times March June"
                      ]
 }
