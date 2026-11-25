@@ -3,7 +3,7 @@
     "title": "Gig Radar",
     "description": "Curated radar of traditional jazz, folk, Americana and related roots music around London and reachable from Surbiton.",
     "timezone": "Europe/London",
-    "updated": "2026-11-22",
+    "updated": "2026-11-25",
     "scope": "Greater London plus places easily reached by train from Surbiton (SW London hub + central London via Waterloo); occasional day-trips flagged with travel notes.",
     "genresTracked": [
       "hot jazz",
@@ -37,49 +37,12 @@
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-11-22",
+    "dateBasis": "2026-11-25",
     "counts": {
-      "upcoming": 292
+      "upcoming": 322
     }
   },
   "gigs": [
-    {
-      "id": "g20261122-ellalouis",
-      "date": "2026-11-22",
-      "endDate": null,
-      "time": "18:00",
-      "title": "Swingin' with Strings: Ella and Louis sing Gershwin",
-      "artist": "Jazz Repertory Company feat. Enrico Tomasso & Nicola Emmanuelle",
-      "venue": "Cadogan Hall",
-      "area": "Sloane Square, SW London",
-      "genres": [
-        "swing",
-        "New Orleans / trad jazz"
-      ],
-      "cost": "",
-      "url": "https://cadoganhall.com/series/the-jazz-repertory-company-presents/",
-      "source": "Cadogan Hall JRC series page",
-      "confidence": "confirmed",
-      "note": "Ella & Louis / Porgy and Bess recreation — Enrico Tomasso is the UK's leading Armstrong-style hot trumpeter."
-    },
-    {
-      "id": "g20261124-jakeleg",
-      "date": "2026-11-24",
-      "endDate": null,
-      "time": "14:00",
-      "title": "The Jake Leg Jug Band",
-      "artist": "The Jake Leg Jug Band",
-      "venue": "Datchet Village Hall",
-      "area": "Datchet, Berkshire",
-      "genres": [
-        "jug band"
-      ],
-      "cost": "",
-      "url": "https://www.thejakelegjugband.com/gigs-2",
-      "source": "thejakelegjugband.com",
-      "confidence": "confirmed",
-      "note": "Datchet is on the Waterloo line (via Staines)."
-    },
     {
       "id": "g20261125-viellefon",
       "date": "2026-11-25",
@@ -653,24 +616,6 @@
       "note": "Classic Hot Club and gypsy swing alongside Romanian, Hungarian, French and British folk material."
     },
     {
-      "id": "g20261122-twickfolksing",
-      "date": "2026-11-22",
-      "endDate": null,
-      "time": "19:30",
-      "title": "Singaround: informal unplugged song circle",
-      "artist": "TwickFolk singers and musicians",
-      "venue": "The Cabbage Patch (Patchworks)",
-      "area": "Twickenham",
-      "genres": [
-        "folk"
-      ],
-      "cost": "£5",
-      "url": "https://www.twickfolk.co.uk/events/singaround-informal-unplugged-song-circle-29/",
-      "source": "TwickFolk",
-      "confidence": "confirmed",
-      "note": "Final singaround of the year, raising funds for Prostate Cancer UK. Official detail specifies an earlier 19:30 start and 19:15 doors. Informal song circle welcoming listeners; closely matches positive user feedback."
-    },
-    {
       "id": "g20261206-oatesspiers",
       "date": "2026-12-06",
       "endDate": null,
@@ -813,24 +758,6 @@
       "source": "Bishopsgate Institute",
       "confidence": "verify",
       "note": "Confirmed live-band Lindy night, 19:00–23:00, with beginner taster and vintage DJs; band name not yet announced."
-    },
-    {
-      "id": "g20261124-celticsession",
-      "date": "2026-11-24",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Traditional Irish & Celtic Session",
-      "artist": "Jamboree Celtic session musicians",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "Irish trad"
-      ],
-      "cost": "Free",
-      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-35/",
-      "source": "Jamboree",
-      "confidence": "confirmed",
-      "note": "Free weekly traditional Irish and Celtic session;"
     },
     {
       "id": "g20261126-cablestreet",
@@ -1614,25 +1541,6 @@
       "note": "Live-band English ceilidh, 20:00-23:00, with dances explained for newcomers and experienced dancers. Named band and caller are printed for this individual 2026 date; EFDSS confirms the date is on sale. Doors 19:30; evening date-night option."
     },
     {
-      "id": "g20261123-foresthillowls-spice",
-      "date": "2026-11-23",
-      "endDate": null,
-      "time": "12:30",
-      "title": "The Forest Hill Owls at The Spice of Life",
-      "artist": "The Forest Hill Owls",
-      "venue": "The Spice of Life",
-      "area": "Soho, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "Check venue",
-      "url": "https://www.spiceoflifesoho.com/events/",
-      "source": "The Spice of Life official events programme",
-      "confidence": "confirmed",
-      "note": "Authentic 1920s and early-1930s hot jazz and dance-band arrangements in the Monday lunchtime club."
-    },
-    {
       "id": "g20261221-fleetingparadise-spice",
       "date": "2026-12-21",
       "endDate": null,
@@ -1709,25 +1617,6 @@
       "source": "Swingland official Winter Swing Ball page",
       "confidence": "confirmed",
       "note": "Seven-piece vintage swing band and live-band Lindy dancing. Doors and recorded music 20:30; band sets 21:30 and 22:45, finishes 00:30. Prices rise after November; check the late journey home. No children."
-    },
-    {
-      "id": "g20261122-prospective-jamboree",
-      "date": "2026-11-22",
-      "endDate": null,
-      "time": "15:00",
-      "title": "Afternoon Swing with The Prospective Collective",
-      "artist": "Prospective Collective",
-      "venue": "Jamboree",
-      "area": "King's Cross, London",
-      "genres": [
-        "swing",
-        "hot jazz"
-      ],
-      "cost": "Free / donations",
-      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-and-swing-in-london-9/",
-      "source": "Jamboree official artist index and dated event listings",
-      "confidence": "confirmed",
-      "note": "Free afternoon band playing vintage jazz and swing, 15:00-17:00. Individually listed date, cross-checked against the official artist index; not an inferred weekly recurrence."
     },
     {
       "id": "g20261129-prospective-jamboree",
@@ -1944,27 +1833,6 @@
       "source": "Nightjar official calendar feed",
       "confidence": "confirmed",
       "note": "Robin Phillips leads classic swing with some 1990s swing-revival repertoire. Checked 29 October: venue now lists this band on 28 November and private hire on 21 November; the old event URL returns 404. Music 21:00-23:00, with a separately charged midnight set."
-    },
-    {
-      "id": "g20261122-solhottown-moroccobound",
-      "date": "2026-11-22",
-      "endDate": null,
-      "time": "19:00",
-      "title": "Sol?s Hot Town Stompers - New Orleans Jazz",
-      "artist": "Sol?s Hot Town Stompers",
-      "venue": "Morocco Bound Bermondsey",
-      "area": "Bermondsey, London",
-      "genres": [
-        "hot jazz",
-        "New Orleans / trad jazz",
-        "swing",
-        "ragtime"
-      ],
-      "cost": "?13.50",
-      "url": "https://feverup.com/m/791290",
-      "source": "Morocco Bound / Fever ticket listing",
-      "confidence": "confirmed",
-      "note": "Sol Grimshaw?s five-piece plays early jazz, blues, ragtime and jug-band repertoire inspired by Armstrong, Oliver and Bechet. Ticket page confirms 22 November and the Bermondsey branch at 1a Morocco Street, resolving the watchlist lead. Advertised event start 19:00, duration four hours; 18+. Reach via Waterloo and London Bridge."
     },
     {
       "id": "g20261127-fiddleparadiddle-standrews",
@@ -2391,25 +2259,6 @@
       "source": "irishculturalcentre.co.uk",
       "confidence": "confirmed",
       "note": "Traditional Irish singer and bouzouki player. Official listing advertises Friday 9 and Saturday 10 April as a two-night concert run; this row is for Saturday 10 April. Doors 19:30; starts 20:00."
-    },
-    {
-      "id": "g20261122-wanderers-oldbarn",
-      "date": "2026-11-22",
-      "endDate": null,
-      "time": "13:00",
-      "title": "New Orleans Wanderers",
-      "artist": "New Orleans Wanderers",
-      "venue": "Old Barn Hall",
-      "area": "Great Bookham, Surrey",
-      "genres": [
-        "New Orleans / trad jazz",
-        "swing"
-      ],
-      "cost": "£15",
-      "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/new-orleans-wanderers-1",
-      "source": "The Jazz Guide — exact Old Barn event",
-      "confidence": "confirmed",
-      "note": "Dated traditional-jazz Sunday programme, 13:00–15:30. Travel: rail towards Bookham or Leatherhead, then a local connection to Old Barn Hall; check Sunday connections before booking."
     },
     {
       "id": "g20261129-algiersstrutters-oldbarn",
@@ -3289,43 +3138,6 @@
       "source": "Theatreship official Eventbrite ticket and Event JSON-LD",
       "confidence": "confirmed",
       "note": "Traditional Scandinavian tunes led by fiddler and nyckelharpa player Chris Dyer. Musicians and listeners welcome, all ages, until 17:00. Nordic folk retains the broad folk label. Via Waterloo and Jubilee line to Canary Wharf, then walk; historic ship has stairs and no step-free access to the theatre."
-    },
-    {
-      "id": "g20261123-honeybunnyadriancox-boheme",
-      "date": "2026-11-23",
-      "endDate": null,
-      "time": "16:00",
-      "title": "Honey Bunny Boulton & Adrian Cox",
-      "artist": "Honey Bunny Boulton & Adrian Cox",
-      "venue": "Café Bohème",
-      "area": "Soho, London",
-      "genres": [
-        "hot jazz",
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://www.cafeboheme.co.uk/live-music",
-      "source": "Café Bohème official November 2026 schedule",
-      "confidence": "confirmed",
-      "note": "Early jazz with guest Adrian Cox."
-    },
-    {
-      "id": "g20261124-laurencecorns-boheme",
-      "date": "2026-11-24",
-      "endDate": null,
-      "time": "16:00",
-      "title": "Laurence Corns",
-      "artist": "Laurence Corns",
-      "venue": "Café Bohème",
-      "area": "Soho, London",
-      "genres": [
-        "swing"
-      ],
-      "cost": "",
-      "url": "https://www.cafeboheme.co.uk/live-music",
-      "source": "Café Bohème official November 2026 schedule",
-      "confidence": "confirmed",
-      "note": "Prohibition-era swing."
     },
     {
       "id": "g20261126-bauerbalkwill-boheme",
@@ -4294,24 +4106,6 @@
       "note": "Accordion, fiddle/flute and guitar/voice trio reinterpreting UK, Irish and European traditions, including Irish-language song. Doors 19:00; concert 19:30-21:30. Listed price includes 75p building levy."
     },
     {
-      "id": "g20261124-zeeya-greennote",
-      "date": "2026-11-24",
-      "endDate": null,
-      "time": "20:00",
-      "title": "Zeeya — pre-war rebetiko and Greek folk",
-      "artist": "Zeeya",
-      "venue": "Green Note Basement",
-      "area": "Camden, London",
-      "genres": [
-        "folk"
-      ],
-      "cost": "£11 including booking fee",
-      "url": "https://www.greennote.co.uk/production/zeeya/",
-      "source": "Green Note official programme + WeGotTickets",
-      "confidence": "confirmed",
-      "note": "Guitar and violin duo exploring pre-war Greek urban folk songs with contemporary interpretations. Doors 19:30; music 20:00. Live ticket page /f/31769 confirms 2026 and £10 plus £1 booking fee."
-    },
-    {
       "id": "g20261125-mattholborn-cafeboheme",
       "date": "2026-11-25",
       "endDate": null,
@@ -4460,24 +4254,6 @@
       "source": "Kings Place official event",
       "confidence": "confirmed",
       "note": "Original early-jazz-rooted music inspired by the 1920s and the Great Migration, with references to Jelly Roll Morton, Louis Armstrong and Bessie Smith. Clarinet-led ensemble with trumpet, trombone, piano, banjo and drums. Doors 19:00; about 1 hour 50 minutes including interval. Tickets scheduled on sale 15 December at 10:00."
-    },
-    {
-      "id": "g20261123-hartwin",
-      "date": "2026-11-23",
-      "endDate": null,
-      "time": "20:30",
-      "title": "Folk and Roots Presents: Hartwin",
-      "artist": "Hartwin Dhoore with Chris Avery supporting",
-      "venue": "Green Note",
-      "area": "Camden, London",
-      "genres": [
-        "folk"
-      ],
-      "cost": "£14 face value",
-      "url": "https://events.liveit.io/folk-and-roots/hartwin-dhoore/",
-      "source": "Folk and Roots / Green Note / Hartwin",
-      "confidence": "confirmed",
-      "note": "Solo Flemish diatonic accordion with support from Welsh traditional guitarist Chris Avery. Doors 19:00."
     },
     {
       "id": "g20261125-tishhinojosa",
@@ -5525,6 +5301,784 @@
       "source": "Lochnagar diary / London Ceilidh Club",
       "confidence": "confirmed",
       "note": "Lochnagar’s public diary names the band for the Camden dance. Doors 19:00, dancing 20:00–23:00. The separate Porchester Hall supper has its own tickets."
+    },
+    {
+      "id": "g20270105-celticsession",
+      "date": "2027-01-05",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-39/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270112-celticsession",
+      "date": "2027-01-12",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-40/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270119-celticsession",
+      "date": "2027-01-19",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-41/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270126-celticsession",
+      "date": "2027-01-26",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-42/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270202-celticsession",
+      "date": "2027-02-02",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-43/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270209-celticsession",
+      "date": "2027-02-09",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-44/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270216-celticsession",
+      "date": "2027-02-16",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-45/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270223-celticsession",
+      "date": "2027-02-23",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-46/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270309-celticsession",
+      "date": "2027-03-09",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-47/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270316-celticsession",
+      "date": "2027-03-16",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-48/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270323-celticsession",
+      "date": "2027-03-23",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-49/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270330-celticsession",
+      "date": "2027-03-30",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/live-irish-and-celtic-folk-music-in-london-50/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270302-celticsession",
+      "date": "2027-03-02",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Traditional Irish & Celtic Session",
+      "artist": "Jamboree Celtic session musicians",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "Free",
+      "url": "https://www.jamboreevenue.co.uk/events/celtic-session-70/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "London session musicians play mainly Irish tunes with some Scottish repertoire."
+    },
+    {
+      "id": "g20270203-tjjohnsonjamboree",
+      "date": "2027-02-03",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country",
+        "blues",
+        "gospel"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/page/2/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Wednesday afternoon roots-jazz session mixing swing-era jazz with blues, gospel and classic country."
+    },
+    {
+      "id": "g20270210-tjjohnsonjamboree",
+      "date": "2027-02-10",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country",
+        "blues",
+        "gospel"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-102/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Wednesday afternoon roots-jazz session mixing swing-era jazz with blues, gospel and classic country."
+    },
+    {
+      "id": "g20270217-tjjohnsonjamboree",
+      "date": "2027-02-17",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country",
+        "blues",
+        "gospel"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-103/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Wednesday afternoon roots-jazz session mixing swing-era jazz with blues, gospel and classic country."
+    },
+    {
+      "id": "g20270224-tjjohnsonjamboree",
+      "date": "2027-02-24",
+      "endDate": null,
+      "time": "15:00",
+      "title": "Afternoon Show: TJ Johnson's Peak of the Week",
+      "artist": "TJ Johnson",
+      "venue": "Jamboree",
+      "area": "King's Cross, London",
+      "genres": [
+        "swing",
+        "old-school country",
+        "blues",
+        "gospel"
+      ],
+      "cost": "Free / donations",
+      "url": "https://www.jamboreevenue.co.uk/events/live-afternoon-jazz-in-london-104/",
+      "source": "Jamboree",
+      "confidence": "confirmed",
+      "note": "Wednesday afternoon roots-jazz session mixing swing-era jazz with blues, gospel and classic country."
+    },
+    {
+      "id": "g20261214-petrie",
+      "date": "2026-12-14",
+      "endDate": null,
+      "time": "20:15",
+      "title": "Ian Petrie Trio",
+      "artist": "Ian Petrie Trio",
+      "venue": "Croydon Folk Club at Ruskin House",
+      "area": "Croydon, South London",
+      "genres": [
+        "English folk"
+      ],
+      "cost": "£13.20 / £11 members",
+      "url": "https://wegottickets.com/f/31761",
+      "source": "Croydon Folk Club on WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Kent folk-club and barn-dance repertoire for voice, accordion and fiddle."
+    },
+    {
+      "id": "g20270118-dovesvagaries",
+      "date": "2027-01-18",
+      "endDate": null,
+      "time": "20:15",
+      "title": "Dove’s Vagaries",
+      "artist": "Dove’s Vagaries",
+      "venue": "Croydon Folk Club at Ruskin House",
+      "area": "Croydon, South London",
+      "genres": [
+        "folk",
+        "folk dance / ceilidh"
+      ],
+      "cost": "£8.80 / £6.60 members",
+      "url": "https://wegottickets.com/f/32730",
+      "source": "Croydon Folk Club on WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Two multi-instrumentalists mix folk songs and ceilidh tunes with audience participation."
+    },
+    {
+      "id": "g20270125-swandyer",
+      "date": "2027-01-25",
+      "endDate": null,
+      "time": "20:15",
+      "title": "Vicki Swan & Jonny Dyer",
+      "artist": "Vicki Swan & Jonny Dyer",
+      "venue": "Croydon Folk Club at Ruskin House",
+      "area": "Croydon, South London",
+      "genres": [
+        "folk"
+      ],
+      "cost": "£13.20 / £11 members",
+      "url": "https://wegottickets.com/f/32731",
+      "source": "Croydon Folk Club on WeGotTickets",
+      "confidence": "confirmed",
+      "note": "The nyckelharpa duo bring their traditional folk programme to Croydon. Doors at 20:00."
+    },
+    {
+      "id": "g20270222-harpguitar",
+      "date": "2027-02-22",
+      "endDate": null,
+      "time": "20:15",
+      "title": "Chris Newman & Máire Ní Chathasaigh",
+      "artist": "Chris Newman & Máire Ní Chathasaigh",
+      "venue": "Croydon Folk Club at Ruskin House",
+      "area": "Croydon, South London",
+      "genres": [
+        "Irish trad",
+        "hot jazz"
+      ],
+      "cost": "£17.60 / £13.20 members",
+      "url": "https://wegottickets.com/f/32736",
+      "source": "Croydon Folk Club on WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Irish harp and acoustic guitar in a programme spanning traditional Irish tunes, hot jazz, bluegrass and baroque."
+    },
+    {
+      "id": "g20270308-mcgillivrayburke",
+      "date": "2027-03-08",
+      "endDate": null,
+      "time": "20:15",
+      "title": "Fran McGillivray & Mike Burke",
+      "artist": "Fran McGillivray & Mike Burke",
+      "venue": "Croydon Folk Club at Ruskin House",
+      "area": "Croydon, South London",
+      "genres": [
+        "blues"
+      ],
+      "cost": "£13.20 / £11 members",
+      "url": "https://wegottickets.com/f/32737",
+      "source": "Croydon Folk Club on WeGotTickets",
+      "confidence": "confirmed",
+      "note": "Acoustic blues duo whose repertoire includes Robert Johnson, Little Walter and Willie Dixon."
+    },
+    {
+      "id": "g20270225-swandyer",
+      "date": "2027-02-25",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Vicki Swan & Jonny Dyer",
+      "artist": "Vicki Swan & Jonny Dyer",
+      "venue": "Islington Folk Club at Brewhouse & Kitchen",
+      "area": "Islington, London",
+      "genres": [
+        "folk"
+      ],
+      "cost": "",
+      "url": "https://www.swan-dyer.co.uk/gigs/",
+      "source": "Swan & Dyer artist diary and club information",
+      "confidence": "confirmed",
+      "note": "The duo’s diary confirms the date. The club advertises a usual 20:00 start."
+    },
+    {
+      "id": "g20270614-swandyer",
+      "date": "2027-06-14",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Vicki Swan & Jonny Dyer",
+      "artist": "Vicki Swan & Jonny Dyer",
+      "venue": "The Cellar Upstairs at The Alpaca",
+      "area": "Islington, London",
+      "genres": [
+        "folk"
+      ],
+      "cost": "",
+      "url": "https://www.swan-dyer.co.uk/gigs/",
+      "source": "Swan & Dyer artist diary and club information",
+      "confidence": "confirmed",
+      "note": "The duo’s diary confirms the date. The club advertises a usual 20:00 start."
+    },
+    {
+      "id": "g20261130-rosiestewart",
+      "date": "2026-11-30",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Rosie Stewart",
+      "artist": "Rosie Stewart",
+      "venue": "The Cellar Upstairs at The Alpaca",
+      "area": "Islington, London",
+      "genres": [
+        "Irish trad"
+      ],
+      "cost": "£10 / £8 members, cash",
+      "url": "https://cellarupstairs.org.uk/",
+      "source": "The Cellar Upstairs programme",
+      "confidence": "confirmed",
+      "note": "Traditional songs from County Fermanagh, including repertoire Stewart learnt from her father."
+    },
+    {
+      "id": "g20261206-islingtonklezmer",
+      "date": "2026-12-06",
+      "endDate": null,
+      "time": "16:00",
+      "title": "Live klezmer at the Islington Menorah Lighting",
+      "artist": "Live klezmer band (name unannounced)",
+      "venue": "Islington Green",
+      "area": "Angel, London",
+      "genres": [
+        "Balkan / klezmer"
+      ],
+      "cost": "Free",
+      "url": "https://www.jewishislington.co.uk/chanukah",
+      "source": "Jewish Islington programme and RSVP",
+      "confidence": "confirmed",
+      "note": "Free outdoor all-ages event from 16:00 to 18:00. Individual set time unpublished."
+    },
+    {
+      "id": "g20270111-wee4epsom",
+      "date": "2027-01-11",
+      "endDate": null,
+      "time": "13:00",
+      "title": "Wee 4 with Megs Etherington",
+      "artist": "Wee 4 with Megs Etherington",
+      "venue": "Epsom Hot Jazz Club (St Joseph's Church Hall)",
+      "area": "Epsom, Surrey",
+      "genres": [
+        "New Orleans / trad jazz"
+      ],
+      "cost": "£15 / £10 U3A",
+      "url": "https://www.thejazzguide.co.uk/gigs-and-events/gigs-concerts/listing/wee-4-with-megs-etherington",
+      "source": "The Jazz Guide dated Epsom concert listing",
+      "confidence": "confirmed",
+      "note": "Monday afternoon trad jazz. The event card lists 13:00 and the club gives 13:30 as its usual music start. From Epsom station continue to St Margaret Drive."
+    },
+    {
+      "id": "g20261202-ranzoni",
+      "date": "2026-12-02",
+      "endDate": null,
+      "time": "21:00",
+      "title": "Boogie blues and rhythm piano",
+      "artist": "Eric Ranzoni",
+      "venue": "Nightjar Shoreditch",
+      "area": "Shoreditch, London",
+      "genres": [
+        "blues"
+      ],
+      "cost": "£6 cover",
+      "url": "https://www.barnightjar.com/shoreditch-listings/eric-ranzoni-solo",
+      "source": "Nightjar Shoreditch",
+      "confidence": "confirmed",
+      "note": "Blues piano and vocals from Mud Morganfield’s pianist."
+    },
+    {
+      "id": "g20270106-ranzoni",
+      "date": "2027-01-06",
+      "endDate": null,
+      "time": "21:00",
+      "title": "Boogie blues and rhythm piano",
+      "artist": "Eric Ranzoni",
+      "venue": "Nightjar Shoreditch",
+      "area": "Shoreditch, London",
+      "genres": [
+        "blues"
+      ],
+      "cost": "£6 cover",
+      "url": "https://www.barnightjar.com/shoreditch-listings/eric-ranzoni-piano-duo",
+      "source": "Nightjar Shoreditch",
+      "confidence": "confirmed",
+      "note": "Blues piano and vocals from Mud Morganfield’s pianist."
+    },
+    {
+      "id": "g20270518-griffinzango",
+      "date": "2027-05-18",
+      "endDate": null,
+      "time": "20:30",
+      "title": "Kate Griffin & Matchume Zango",
+      "artist": "Kate Griffin & Matchume Zango",
+      "venue": "Green Note",
+      "area": "Camden, London",
+      "genres": [
+        "Afro-roots",
+        "folk"
+      ],
+      "cost": "£15",
+      "url": "https://www.greennote.co.uk/production/kate-griffin-matchume-zango/",
+      "source": "Green Note",
+      "confidence": "confirmed",
+      "note": "Clawhammer banjo meets Mozambican timbila. Doors at 19:00."
+    },
+    {
+      "id": "g20261212-tradcraic",
+      "date": "2026-12-12",
+      "endDate": null,
+      "time": "19:00",
+      "title": "Trad Craic with The Burning Glass, Jez Hellard and Jayne Pomplas",
+      "artist": "The Burning Glass, Jez Hellard and Jayne Pomplas",
+      "venue": "The Magic Garden",
+      "area": "Battersea, London",
+      "genres": [
+        "folk",
+        "Irish trad"
+      ],
+      "cost": "",
+      "url": "https://magicgardenpub.com/event/trad-craic-with-the-burning-glass-dj-chewy-she-the-magic-garden/",
+      "source": "Magic Garden programme",
+      "confidence": "confirmed",
+      "note": "Doors/event time. Hellard brings jigs, reels and ballads alongside Irish fiddler Jayne Pomplas. DJ Chewy She follows the live bill."
+    },
+    {
+      "id": "g20270108-gnawavan",
+      "date": "2027-01-08",
+      "endDate": null,
+      "time": "21:00",
+      "title": "Gnawavan",
+      "artist": "Gnawavan",
+      "venue": "The Magic Garden",
+      "area": "Battersea, London",
+      "genres": [
+        "Afro-roots"
+      ],
+      "cost": "",
+      "url": "https://magicgardenpub.com/event/the-neghma-band-the-magic-garden-2/",
+      "source": "Magic Garden programme",
+      "confidence": "confirmed",
+      "note": "Mouad Neghma leads a Moroccan Gnawa set on vocals and guembri, with bass, keys and drums. DJ Jamie Renton also appears."
+    },
+    {
+      "id": "g20261222-quaggymorris",
+      "date": "2026-12-22",
+      "endDate": null,
+      "time": "19:00",
+      "title": "Quagmas pub tour",
+      "artist": "Quaggy Morris",
+      "venue": "Skehans, Earl of Derby and Beer Rebellion",
+      "area": "Telegraph Hill and Peckham, London",
+      "genres": [
+        "English folk",
+        "folk dance / ceilidh"
+      ],
+      "cost": "",
+      "url": "https://www.quaggymorris.co.uk/events.html",
+      "source": "Quaggy Morris events diary",
+      "confidence": "confirmed",
+      "note": "The dance side starts at Skehans at 19:00, reaches the Earl of Derby at 20:00 and Beer Rebellion at 21:00."
+    },
+    {
+      "id": "g20270130-quaggymorris",
+      "date": "2027-01-30",
+      "endDate": null,
+      "time": "13:30",
+      "title": "Penge orchard wassail",
+      "artist": "Quaggy Morris",
+      "venue": "Orchard, Alexandra Recreation Ground",
+      "area": "Penge, South London",
+      "genres": [
+        "English folk",
+        "folk dance / ceilidh"
+      ],
+      "cost": "",
+      "url": "https://www.quaggymorris.co.uk/events.html",
+      "source": "Quaggy Morris events diary",
+      "confidence": "confirmed",
+      "note": "An hour of traditional song, Morris dancing and poetry around the apple trees."
+    },
+    {
+      "id": "g20261215-cutashine",
+      "date": "2026-12-15",
+      "endDate": null,
+      "time": "19:00",
+      "title": "Cut A Shine Christmas Ceilidh",
+      "artist": "Cut A Shine",
+      "venue": "Fox and Firkin",
+      "area": "Lewisham, London",
+      "genres": [
+        "folk dance / ceilidh"
+      ],
+      "cost": "£12–£15",
+      "url": "https://foxfirkin.com/event/cutashine-christmas-ceilidh-15th-december-2026/",
+      "source": "Fox and Firkin and Cut A Shine",
+      "confidence": "confirmed",
+      "note": "Called festive barn dance with a live band. Event runs until 22:30."
+    },
+    {
+      "id": "g20261216-cutashine",
+      "date": "2026-12-16",
+      "endDate": null,
+      "time": "19:00",
+      "title": "Cut A Shine Christmas Ceilidh",
+      "artist": "Cut A Shine",
+      "venue": "Fox and Firkin",
+      "area": "Lewisham, London",
+      "genres": [
+        "folk dance / ceilidh"
+      ],
+      "cost": "£12–£15",
+      "url": "https://foxfirkin.com/event/cutashine-christmas-ceilidh-16th-december-2026/",
+      "source": "Fox and Firkin and Cut A Shine",
+      "confidence": "confirmed",
+      "note": "Called festive barn dance with a live band. Event runs until 22:30."
+    },
+    {
+      "id": "g20261219-cutashinefamily",
+      "date": "2026-12-19",
+      "endDate": null,
+      "time": "13:00",
+      "title": "Festive Family Barn Dance",
+      "artist": "Cut A Shine with Mini Folk",
+      "venue": "Round Chapel",
+      "area": "Hackney, London",
+      "genres": [
+        "folk dance / ceilidh"
+      ],
+      "cost": "",
+      "url": "https://www.cutashine.co.uk/events/festive-family-barn-dance",
+      "source": "Cut A Shine event programme",
+      "confidence": "confirmed",
+      "note": "All ages, with dances taught for small children and adults. Event runs to 16:00."
+    },
+    {
+      "id": "g20261219-cutashine",
+      "date": "2026-12-19",
+      "endDate": null,
+      "time": "20:00",
+      "title": "Winter Ceilidh",
+      "artist": "Cut A Shine",
+      "venue": "Round Chapel",
+      "area": "Hackney, London",
+      "genres": [
+        "folk dance / ceilidh"
+      ],
+      "cost": "£14–£20",
+      "url": "https://www.cutashine.co.uk/events/winter-ceilidh-the-round-chapel",
+      "source": "Cut A Shine event programme",
+      "confidence": "confirmed",
+      "note": "Evening barn dance with live band and caller. Doors at 19:30 and first dances at 20:00."
+    },
+    {
+      "id": "g20270121-cutashine",
+      "date": "2027-01-21",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Burns Night Ceilidh",
+      "artist": "Cut A Shine",
+      "venue": "Round Chapel",
+      "area": "Hackney, London",
+      "genres": [
+        "folk dance / ceilidh",
+        "Scottish folk"
+      ],
+      "cost": "",
+      "url": "https://www.cutashine.co.uk/events/burns-night-ceilidh-thurs-21st",
+      "source": "Cut A Shine event programme",
+      "confidence": "confirmed",
+      "note": "Scottish ceilidh with a live band and caller. Doors at 19:00 and first dances at 19:45."
+    },
+    {
+      "id": "g20270122-cutashine",
+      "date": "2027-01-22",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Burns Night Ceilidh",
+      "artist": "Cut A Shine",
+      "venue": "Round Chapel",
+      "area": "Hackney, London",
+      "genres": [
+        "folk dance / ceilidh",
+        "Scottish folk"
+      ],
+      "cost": "",
+      "url": "https://www.cutashine.co.uk/events/burns-night-barn-dance-friday",
+      "source": "Cut A Shine event programme",
+      "confidence": "confirmed",
+      "note": "Scottish ceilidh with a live band and caller. Doors at 19:00 and first dances at 19:45."
+    },
+    {
+      "id": "g20270123-cutashine",
+      "date": "2027-01-23",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Burns Night Ceilidh",
+      "artist": "Cut A Shine",
+      "venue": "Round Chapel",
+      "area": "Hackney, London",
+      "genres": [
+        "folk dance / ceilidh",
+        "Scottish folk"
+      ],
+      "cost": "",
+      "url": "https://www.cutashine.co.uk/events/burns-night-barn-dance-saturday-22nd-jan",
+      "source": "Cut A Shine event programme",
+      "confidence": "confirmed",
+      "note": "Scottish ceilidh with a live band and caller. Doors at 19:00 and first dances at 19:45."
+    },
+    {
+      "id": "g20270124-cutashine",
+      "date": "2027-01-24",
+      "endDate": null,
+      "time": "19:45",
+      "title": "Burns Night Ceilidh",
+      "artist": "Cut A Shine",
+      "venue": "Round Chapel",
+      "area": "Hackney, London",
+      "genres": [
+        "folk dance / ceilidh",
+        "Scottish folk"
+      ],
+      "cost": "",
+      "url": "https://www.cutashine.co.uk/events/burns-night-ceilidh-sunday-24th",
+      "source": "Cut A Shine event programme",
+      "confidence": "confirmed",
+      "note": "Scottish ceilidh with a live band and caller. Doors at 19:00 and first dances at 19:45."
     }
   ],
   "watchlist": [
@@ -5943,12 +6497,6 @@
       "note": "22 November: Friday party, Saturday dance slots, weekend family sessions and Monday supper are in the radar. Check individual 2027 tickets for additional evening dates within 20–24 January. An indexed DICE bundle displays the previous year."
     },
     {
-      "name": "Islington Menorah Lighting — December 2026 date conflict",
-      "venue": "Islington Green, London",
-      "url": "https://www.jewishislington.co.uk/event/islington-menorah-lighting-1-9",
-      "note": "17 October 2026: organiser live page says 6 December, 16:00–18:00, with free live klezmer; cached search/open text instead gives 14 December, 16:00–19:30. Hold until the organiser date agrees across current details and tickets; named band also unpublished. No dated gig added."
-    },
-    {
       "name": "Bal ?toile ? live-band confirmation pending (13 January 2027)",
       "venue": "Jamboree, King's Cross, London",
       "url": "https://www.jamboreevenue.co.uk/events/live-european-folk-music-in-london-8/",
@@ -6007,6 +6555,12 @@
       "venue": "St Mary’s Church, Twyford, Winchester, Hampshire",
       "url": "https://www.kathryntickell.com/live-dates",
       "note": "Artist diary confirms 17 April 2027 at St Mary’s Church, Twyford, Winchester SO21 1NS: Northumbrian pipes/fiddle and Irish melodeon, whistles and song. Strong English/Irish traditional match, but a longer trip from Surbiton requiring a train plus onward local travel. Linked See Tickets event 3731850 was blocked; confirm start time, admission and practical return before main-list promotion."
+    },
+    {
+      "name": "Brixton Tatterjacks Day of Dance, spring 2027",
+      "venue": "Brixton, London",
+      "url": "https://www.quaggymorris.co.uk/events.html",
+      "note": "Quaggy Morris lists the gathering with date and times TBC. Check the host itinerary for a public performance and live musicians."
     }
   ]
 }

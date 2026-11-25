@@ -315,6 +315,47 @@
   ],
   "keyVenues": [
     {
+      "name": "Quaggy Morris",
+      "area": "South East London",
+      "genres": [
+        "English folk",
+        "folk dance / ceilidh"
+      ],
+      "url": "https://www.quaggymorris.co.uk/events.html",
+      "note": "Use dated dance itineraries and orchard wassails above the past-events heading."
+    },
+    {
+      "name": "Cut A Shine",
+      "area": "Hackney and Lewisham, London",
+      "genres": [
+        "folk dance / ceilidh",
+        "Scottish folk"
+      ],
+      "url": "https://www.cutashine.co.uk/events",
+      "note": "Check each evening and family dance separately against the running order and year."
+    },
+    {
+      "name": "The Cellar Upstairs",
+      "area": "Islington, London",
+      "genres": [
+        "folk",
+        "Irish trad"
+      ],
+      "url": "https://cellarupstairs.org.uk/",
+      "note": "Check the dated term programme for traditional guest singers. Admission is cash on the door."
+    },
+    {
+      "name": "Croydon Folk Club",
+      "area": "Croydon, London",
+      "genres": [
+        "folk",
+        "Irish trad",
+        "blues"
+      ],
+      "url": "https://wegottickets.com/croydonfolkclub/",
+      "note": "Use the individual club tickets for repertoire, music time and member prices."
+    },
+    {
       "name": "Big Penny Social",
       "area": "Walthamstow, London",
       "genres": [
@@ -581,6 +622,9 @@
     }
   ],
   "searchQueries": [
+    "site:cutashine.co.uk/events London live band family barn dance",
+    "site:wegottickets.com Croydon Folk Club Ruskin House traditional harp fiddle",
+    "London rapper sword dance pub itineraries wassail folk musicians",
     "site:bigpennysocial.co.uk/whats-on Sassenachs family ceilidh",
     "site:thenestcollective.co.uk/events live band ceilidh London",
     "Sussex village carols Shepherds Arise quire band public concerts",

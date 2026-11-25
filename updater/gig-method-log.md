@@ -1651,3 +1651,26 @@ Discovery methods and follow-up:
 Both npm run gig:generate and npm run gig:validate passed in a temporary copy of the exact final data and repository scripts. Final counts are 292 upcoming gigs, 80 watchlist entries, 27 genres, zero past-finished rows and zero duplicate keys. Latest gig is 10 September 2027.
 
 Next run: recheck December Café Bohème, fresh Lamb cards, additional Big Penny midweek tickets and the Cecil Sharp programme leads. Use Green Note's venue ticket roster alongside Ewan's diary for further dates.
+
+
+## 2026-11-25 — Jamboree winter sessions, Croydon folk tickets and called dances
+
+Removed 12 past gigs and added 42 dated listings. Promoted the Islington Menorah Lighting after the organiser's current programme and event-specific RSVP agreed on 6 December, 16:00–18:00 at Islington Green. The organiser specifies live klezmer only for that programme. Added the undated Brixton Tatterjacks spring dance gathering to the watchlist.
+
+Ran all 154 configured search queries. The initial direct sweep covered 185 unique URLs across ten priority acts, 18 priority venues, other venues and specialist sources. Of those, 142 returned HTTP 200. Checked both Jamboree pagination routes through page 10, the indexed official listings and promoter tickets, Ram Jam month feeds through March and the Flaming Alligators event JSON, Nightjar's Shoreditch feed, Magic Garden's Tribe feed, and the Cecil Sharp House Spektrix events and two watchlisted event instances. Jamboree rejected direct requests, but indexed individual venue pages supplied the Celtic sessions through 30 March and four February TJ Johnson afternoons. The 2 March session has a different URL pattern. Confirm each date before extending either series.
+
+Ewan's diary and promoter tickets supported existing dates, including the 18 February Cable Street show on the promoter and venue listings. Doolally's December dates are held. FoBo, Shirt Tail Stompers, Dom Glynn and Dunajska had no newly verified in-scope booking. The Clay Bottom Jug Busters, Tuba Skinny, Basin Street Brawlers and Tropanka checks produced no new local date. Tuba's London shows and Tropanka's Green Note ticket were past. Coin Street's festival separates its two September line-ups. No new all-ages priority-act booking surfaced. Existing Ewan orchestra lunches remain family-calendar candidates; confirm the music start against the ticket when booking because the venue and promoter publish different times.
+
+Today's authenticated exports covered all nine Instagram profiles (108 leads) and The Lamb's Facebook page (40 leads, two upcoming cards). Elsie Franklin's 26 November card confirms the held booking; the Fabulous Red Diesel bill falls outside the filter. Café Bohème still publishes November. The Harrison lists Hop Skotshne and marks the displaced bill cancelled. TwickFolk's singarounds remain positive feedback examples. The private export contains no gig-specific decisions. Ram Jam describes the Flaming Alligators as funk and jazz fusion. Riverhouse returned an empty 202, and South London Irish Centre's standing session listings still need date-specific confirmation.
+
+Epsom's individual Jazz Guide page gives Wee 4 with Megs Etherington on 11 January 2027 at 13:00. Nightjar added two Eric Ranzoni piano dates. Magic Garden's line-up text identified the live musicians on the Trad Craic and Gnawavan bills. Green Note supplied Kate Griffin and Matchume Zango's banjo and timbila concert.
+
+Discovery methods and source changes:
+
+- Followed nyckelharpa player diaries into folk-club promoter tickets. Croydon's tickets give 20:15 music after 20:00 doors. Added five concerts including Dove's Vagaries and Máire Ní Chathasaigh with Chris Newman. Swan and Dyer's own diary also confirms the Islington and Cellar Upstairs bookings. The Cellar's term programme added Fermanagh singer Rosie Stewart.
+- Cross-checked seasonal community programmes against individual RSVPs. Islington's free klezmer afternoon is a family-calendar candidate. Other menorah lightings lacked the same music evidence.
+- Followed London rapper-sword and Morris team itineraries to Quaggy Morris's three-stop pub tour and the Penge orchard wassail. Searches for mechanical-organ and ragtime programmes yielded no verified in-scope concert.
+- Followed the Cut A Shine artist diary into separate Lewisham and Hackney bookings. The Round Chapel's 19 December afternoon family dance and evening ceilidh are separate bookings. The four January Burns running orders confirm a 19:45 first dance, including Saturday 23 January despite a typo in the heading. The 19 December family dance explicitly welcomes small children and is a family-calendar candidate.
+- Added Croydon Folk Club, The Cellar Upstairs, Cut A Shine and Quaggy Morris as recurring sources, plus three queries. Next check their spring programmes, the December Café Bohème roster, fresh Lamb cards, and any individually dated Wimbledon Irish Centre or Riverhouse bill.
+
+Both npm run gig:generate and npm run gig:validate passed in a temporary copy of the final data and repository scripts. Final counts were 322 upcoming gigs, 80 watchlist entries, 28 genres, zero past-finished gigs and zero duplicate keys. Latest date 10 September 2027.
