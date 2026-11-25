@@ -4,6 +4,8 @@ You are running headless and unattended as the maintainer of the Family Calendar
 
 ## 0. Orient yourself first
 
+For a local festival with several attractions, name independently visitable highlights and their venues in the calendar title. Keep the organiser's umbrella name in the description and distinguish the programme hours from each attraction's confirmed times.
+
 Read these before editing:
 
 - `HANDOFF.md` - project contract, data model, field schemas and validation workflow.
