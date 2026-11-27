@@ -38,13 +38,13 @@ window.GIG_DATA = {
       "balfolk",
       "roots jazz"
     ],
-    "dateBasis": "2026-11-25",
+    "dateBasis": "2026-11-27",
     "counts": {
       "total": 322,
-      "upcoming": 322,
+      "upcoming": 310,
       "watchlist": 80
     },
-    "generated": "2026-11-25T06:51:00.671Z",
+    "generated": "2026-11-27T07:21:34.023Z",
     "genres": [
       "Afro-roots",
       "Americana",
@@ -109,7 +109,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-25 15:00",
       "travel": "Central London",
       "genresLabel": "swing · old-school country · blues · gospel",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -137,7 +137,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-25 16:00",
       "travel": "Central London",
       "genresLabel": "gypsy jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -165,7 +165,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-25 19:30",
       "travel": "Day-trip",
       "genresLabel": "hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -193,7 +193,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-25 20:30",
       "travel": "Central London",
       "genresLabel": "Americana · folk",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -220,7 +220,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-26 15:00",
       "travel": "Central London",
       "genresLabel": "New Orleans / trad jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -248,7 +248,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-26 19:00",
       "travel": "Day-trip",
       "genresLabel": "honky tonk · Americana",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -277,7 +277,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-26 19:30",
       "travel": "Local (SW London)",
       "genresLabel": "country blues · ragtime · roots jazz",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -306,7 +306,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-26 20:00",
       "travel": "Central London",
       "genresLabel": "country blues · ragtime · blues",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -333,7 +333,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-26 20:00",
       "travel": "Central London",
       "genresLabel": "Balkan / klezmer",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -361,7 +361,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-26 20:30",
       "travel": "Central London",
       "genresLabel": "hot jazz · swing",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -389,7 +389,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-26 21:00",
       "travel": "Central London",
       "genresLabel": "swing · blues",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {
@@ -417,7 +417,7 @@ window.GIG_DATA = {
       "sortKey": "2026-11-26 23:30",
       "travel": "Central London",
       "genresLabel": "country blues · old-school country",
-      "isPast": false,
+      "isPast": true,
       "isMultiDay": false
     },
     {

@@ -1190,6 +1190,26 @@
           "Family craft afternoons, carols and public seasonal events",
           "Follow the parish booking link for the year, time, price and session details."
         ]
+      },
+      {
+        "name": "Kingston Christmas Market stage schedule",
+        "url": "https://www.kingstonchristmasmarket.co.uk/stage-schedule/",
+        "checkFor": ["Read all dates for daytime choirs, jazz and brass on the Pyramid Bar stage. Adjacent hourly slots may be the same act."]
+      },
+      {
+        "name": "Wimbledon Village Stables public events",
+        "url": "https://www.wvstables.com/whats-on/",
+        "checkFor": ["Check stable-yard carols, family parades and public booking times against the current year's stable page."]
+      },
+      {
+        "name": "Love Walton town centre events",
+        "url": "https://lovewalton.co.uk/",
+        "checkFor": ["Festival of Light, family events and live music. Check each attraction's venue and times in the organiser's programme."]
+      },
+      {
+        "name": "Quaggy Morris public dance diary",
+        "url": "https://www.quaggymorris.co.uk/events.html",
+        "checkFor": ["Dated weekend orchard wassails and daytime traditional dance events within reach of Surbiton."]
       }
                      ],
     "searchQueries":  [
@@ -1357,6 +1377,10 @@
         "The Nest Collective family ceilidh Grand Junction Burns children 2027 Big Penny Social family session times",
         "Polka Theatre 2027 2028 public performances Adventure Theatre ages 2 3 Wimbledon Peek-a-Bloom dates",
         "St Nicholas Thames Ditton Christingle craft afternoon public booking 2026 2027",
-        "Southbank Centre classical season guide OAE TOTS 2027 public session times March June"
+        "Southbank Centre classical season guide OAE TOTS 2027 public session times March June",
+        "Kingston Christmas Market Pyramid Bar stage schedule daytime choir jazz brass 2026 2027",
+        "Wimbledon Village Stables carols stable yard family December current year ticket times",
+        "Love Walton Festival of Light stage parade Giving Grotto programme times",
+        "Quaggy Morris orchard wassail Penge weekend dancing 2027"
                      ]
 }
