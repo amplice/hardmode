@@ -527,6 +527,16 @@
   ],
   "aggregators": [
     {
+      "name": "London Barndance Company",
+      "url": "https://www.barndance.org/programme.html",
+      "note": "Check each named live band and caller against the organiser’s dated programme, including corrections to the printed season and December date changes."
+    },
+    {
+      "name": "Lewes Saturday Folk Club",
+      "url": "http://www.lewessaturdayfolkclub.org/",
+      "note": "Follow the Programme link. The club moves between venues. Prioritise Sussex source singers, instrumentalists and special participatory events. Confirm venue and return travel for each date."
+    },
+    {
       "name": "The Nest Collective",
       "url": "https://thenestcollective.co.uk/events",
       "note": "Promoter for live folk concerts and Ceilidh Liberation Front dances. Check family and evening bookings separately on shared dates."
@@ -622,6 +632,9 @@
     }
   ],
   "searchQueries": [
+    "site:barndance.org/programme.html London contra caller band Cecil Sharp House",
+    "Lewes Saturday Folk Club Sussex traditional concert programme venue",
+    "London barrelhouse boogie woogie live piano blues club",
     "site:cutashine.co.uk/events London live band family barn dance",
     "site:wegottickets.com Croydon Folk Club Ruskin House traditional harp fiddle",
     "London rapper sword dance pub itineraries wassail folk musicians",

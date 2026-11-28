@@ -1674,3 +1674,25 @@ Discovery methods and source changes:
 - Added Croydon Folk Club, The Cellar Upstairs, Cut A Shine and Quaggy Morris as recurring sources, plus three queries. Next check their spring programmes, the December Café Bohème roster, fresh Lamb cards, and any individually dated Wimbledon Irish Centre or Riverhouse bill.
 
 Both npm run gig:generate and npm run gig:validate passed in a temporary copy of the final data and repository scripts. Final counts were 322 upcoming gigs, 80 watchlist entries, 28 genres, zero past-finished gigs and zero duplicate keys. Latest date 10 September 2027.
+
+
+## 2026-11-28 ? The Lamb, live contra bands and Sussex singers
+
+Removed 20 finished gigs and added 29. Two existing listings gained booking or line-up details. The private feedback export still favours TwickFolk singarounds and contains no gig-specific decisions.
+
+Ran all 157 configured searches. The direct sweep attempted 189 distinct URLs across the ten priority acts, 18 priority venues, key venues and specialist listings. Of those, 146 returned HTTP 200. Checked both Jamboree pagination patterns through page 10, then used indexed venue listings and the promoter tickets after direct requests returned 406. Follow-ups included Ram Jam?s November?March feeds and individual Jimmy Regal and Dust Me Down event JSON, the Shoreditch Nightjar calendar, Magic Garden?s dated Tribe feed and Cecil Sharp House?s Spektrix barndance instances.
+
+Ewan?s artist diary and Jamboree tickets reconfirmed the held orchestra lunches and Cable Street dates. Doolally?s Sidcup and Ivy House dates, FoBo at Marigolds, Shirt Tail Stompers at the Bedford, Dom Glynn at Caf? Boh?me and Green Note, and Dunajska?s Green Note booking were already listed. No additional in-scope date was confirmed for Clay Bottom Jug Busters, Tuba Skinny, Basin Street Brawlers or Tropanka. Coin Street?s September festival had Doolally on 5 September and Cable Street on 19 September. Its Gabriel?s Wharf page now reports the site closed. Family-calendar candidates already on the radar include Dom Glynn?s afternoon set today and Ewan?s Jamboree lunches on 6 and 20 December. Check age arrangements for the caf?.
+
+Today?s authenticated exports covered nine Instagram profiles (108 leads with OCR) and 40 Facebook leads including two upcoming Lamb cards. The Lamb?s card and its dated flyer agree on Kaspar and the Swamp Dogs tonight at 20:00. The same flyer lists Les Boum! on 3 December at 19:30. Both carry social-only verification flags. The Fabulous Red Diesel event describes contemporary indie jazz. TwickFolk posted that Jackie Oates and John Spiers on 6 December is sold out with a waiting list. Green Note?s repost of Martin Harley led to two separate promoter tickets, each with a 20:15 music start.
+
+Nightjar?s January?March feed added seven named roots bookings. The Magic Garden?s event descriptions confirmed two free West African concerts, Gambian kora player Ansu Suso and Guinean singer-guitarist Mosi Conde. Caf? Boh?me still showed November. The Harrison, Spice of Life, Ram Jam, TwickFolk/Eel Pie, Epsom, Old Barn, the Irish Cultural Centre and Half Moon yielded no further addition. Riverhouse returned HTTP 202 and the Wimbledon Irish Centre still needs a dated public bill.
+
+Three discovery routes:
+- Followed historical country-dance caller diaries to the London Barndance Company?s own season. The organiser names the band and caller for all eleven 2027 dates and for 12 December 2026. Used the corrected March and June callers, skipped the August break and recorded 4 December 2027 as published. The organiser?s tariff explicitly applies to 2026.
+- Traced the Sussex concertina and source-singing circuit to Lewes Saturday Folk Club. Its working HTTP programme gives a different room for each date. Added Crows, Will Duke, the Hollington Tipteerers, the Copper Family and the Barcombe all-day singaround, with onward travel notes. The 2 January wassail has no confirmed room and stays on the watchlist.
+- Searched barrelhouse piano and boogie-woogie club bills. The 100 Club memorial had no announced players and the Canary Wharf festive lunches were too loosely tied to the requested repertoire. Kept the explicitly billed Nightjar piano sets.
+
+Added the London Barndance and Lewes organisers and three reusable searches. Next check the Lewes wassail venue, December Caf? Boh?me roster, new Lamb event cards and any change to TwickFolk ticket availability.
+
+Both npm run gig:generate and npm run gig:validate passed on a temporary copy of the final data and repository scripts. Final counts were 331 upcoming gigs, 81 watchlist entries, 29 genres, zero past-finished gigs and zero duplicate keys. Latest date is 4 December 2027.
